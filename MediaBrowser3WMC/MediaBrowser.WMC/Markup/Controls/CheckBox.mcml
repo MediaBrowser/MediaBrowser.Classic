@@ -1,0 +1,133 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://MsCorLib/System"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  >
+
+	<UI Name="CBTest">
+		<Locals>
+			<BooleanChoice Name="Bool" Value="true" />
+		</Locals>
+		<Content>
+			<me:CheckBox Checked="[Bool]" Label="Check Test" Font="Courier,12"/>
+		</Content>
+	</UI>
+
+	<UI Name="CheckBox">
+
+		<Properties>
+			<BooleanChoice Name="Checked" BooleanChoice="$Required" />
+			<cor:String Name="Label" String="$Required" />
+			<Font Name="Font" Font="$Required"/>
+      <EditableText Name="FocusItem" />
+		</Properties>
+
+		<Locals>
+			<ClickHandler Name="Clicker" />
+		</Locals>
+
+		<Rules>
+
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+			<Binding Source="[Label]" Target="[Lbl.Content]"/>
+
+			<Changed Source="[Clicker.Invoked]">
+				<Actions>
+					<Set Target="[Checked.Value]" Value="[Checked.Value]">
+						<Transformer>
+							<BooleanTransformer Inverse="true"/>
+						</Transformer>
+					</Set>
+					<PlaySound Sound="sound://sounds:Miniselect" />
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Checked.Value]">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="true" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxCheckedFocus" />
+				</Actions>
+			</Changed>
+
+			<Condition Source="[Clicker.Clicking]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxCheckedFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Clicker.Clicking]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxUncheckedFocus" />
+				</Actions>
+			</Condition>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[FocusItem.Value]" Value="[Label]" />
+        </Actions>
+      </Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="true" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxCheckedFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxUncheckedFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="false">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="true" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxCheckedNoFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="false">
+				<Conditions>
+					<Equality Source="[Checked.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:CheckBoxUncheckedNoFocus" />
+				</Actions>
+			</Condition>
+
+		</Rules>
+
+		<Content>
+			<Panel>
+				<Layout>
+					<FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
+				</Layout>
+				<Children>
+					<Graphic Name="BoxImage" Content="image://i:CheckBoxUncheckedNoFocus" MaximumSize="34,34" />
+					<Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,0,0" />
+				</Children>
+			</Panel>
+		</Content>
+
+	</UI>
+
+
+</Mcml>

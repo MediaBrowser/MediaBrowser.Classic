@@ -1,0 +1,19 @@
+﻿<application title="media browser" id="{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}"
+             StartMenuStripTitle="Media Browser" > 
+  <entrypoint id="{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
+         addin="MediaBrowser.MyAddIn, MediaBrowser,Culture=Neutral,Version=2.2.4.0,PublicKeyToken=59fc04479785fd64"
+         title="media browser"
+         description="Browse your media"
+       ImageUrl=".\Application.png"
+       inactiveImageURL=".\ApplicationInactive.png">
+    <category category="Services\Tv"/>
+  </entrypoint>
+  <entrypoint id="{b8f02923-484e-483e-b227-e5a810c77724}"
+				addin="MediaBrowser.MyAddIn, MediaBrowser,Culture=Neutral,Version=2.2.4.0,PublicKeyToken=59fc04479785fd64"
+				title="Media Browser Config"
+				description="Configure Media Browser"
+        Context="configMB"
+      ImageUrl=".\Application.png"
+      inactiveImageURL=".\ApplicationInactive.png">
+  </entrypoint>  
+</application>

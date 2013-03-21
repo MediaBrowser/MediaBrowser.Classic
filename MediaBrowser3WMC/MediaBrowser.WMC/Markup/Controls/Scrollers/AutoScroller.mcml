@@ -1,0 +1,292 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:me="Me">
+
+
+	<UI Name="AutoScroller">
+
+		<Properties>
+			<cor:String Name="Text" String="" />
+			<Font Name="Font" Font="$Required"/>
+			<Color Name="Color" Color="color://s:FontColorMedium"/>
+			<Color Name="FocusColor" Color="color://s:FontColorLight"/>
+			<Image Name="FocusImage" Image="image://i:BlankImage"/>
+			<Size Name="IndicatorSize" Size="10,20"/>
+      <Size Name="MaxSize" Size="10,200"/>
+		</Properties>
+		<Locals>
+			<ScrollingHandler Name="ScrollingHandler" HandleDirectionalKeys="true" />
+			<ScrollingData Name="ScrollingData" />
+			<Command Name="ScrollUpCommand" />
+			<Command Name="ScrollDownCommand" />
+			<cor:Single Name="Pages" Single="1" />
+			<a:Scroller Name="Scroller"/>
+		</Locals>
+
+		<Rules>
+			<!-- Defaults and Bindings-->
+			<Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+
+			<Binding Source="[Text]" Target="[TextVal.Content]" />
+
+			<Changed Source="[ScrollingData.CurrentPage]" >
+				<Actions>
+					<Invoke Target="[Scroller.ComputeSize]" ResultTarget="[Indicator.MinimumSize]"
+							ExclusiveApply="false" InvokePolicy="AsynchronousNormal">
+						<size>
+							<Size Size="[MaxSize]" />
+						</size>
+						<currentPage>
+							<cor:Single Single="[ScrollingData.CurrentPage]" />
+						</currentPage>
+						<totalPages>
+							<cor:Single Single="[ScrollingData.TotalPages]" />
+						</totalPages>
+					</Invoke>
+				</Actions>
+			</Changed>
+
+			<!-- Detect if Text property has no value -->
+			<Changed Source="[Text]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Text.Length]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[MainPanel.Visible]" Value="false"/>
+				</Actions>
+			</Changed>
+
+			<!-- Detect if Text property has a value -->
+			<Changed Source="[Text]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Text.Length]" ConditionOp="NotEquals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[MainPanel.Visible]" Value="true"/>
+          <Invoke Target="[ScrollingData.Home]" ></Invoke>
+				</Actions>
+			</Changed>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Actions>
+					<Set Target="[TextVal.Color]" Value="[FocusColor]" />
+					<Set Target="[ImagePanel.Content]" Value="[FocusImage]" />
+				</Actions>
+			</Condition>
+
+			<Changed Source="[ScrollUpCommand.Invoked]">
+				<Actions>
+					<Invoke Target="[ScrollingData.ScrollUp]"/>
+				</Actions>
+			</Changed>
+			<Changed Source="[ScrollDownCommand.Invoked]">
+				<Actions>
+					<Invoke Target="[ScrollingData.ScrollDown]"/>
+				</Actions>
+			</Changed>
+
+			<Rule>
+				<Conditions>
+					<Equality Source="[ScrollingData.TotalPages]" ConditionOp="LessThanOrEquals" Value="1" />
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollInfo.Visible]" Value="false" />
+					<Set Target="[ImagePanel.MouseInteractive]" Value="false" />
+					<Set Target="[Input.KeyInteractive]" Value="false" />
+				</Actions>
+			</Rule>
+
+			<Rule>
+				<Conditions>
+					<Equality Source="[ScrollingData.TotalPages]" ConditionOp="GreaterThan" Value="1" />
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollInfo.Visible]" Value="true" />
+					<Set Target="[ImagePanel.MouseInteractive]" Value="true" />
+					<Set Target="[Input.KeyInteractive]" Value="true" />
+				</Actions>
+			</Rule>
+
+		</Rules>
+
+		<Content>
+			<Panel Name="MainPanel" Layout="Dock" >
+				<Children>
+					<Graphic Content="image://i:BlankImage" Name="ImagePanel" MouseInteractive="true" Layout="Form" >
+						<LayoutInput>
+							<DockLayoutInput Position="Client"/>
+						</LayoutInput>
+						<Children>
+							<Scroller Orientation="Vertical" FadeSize="-5"  ScrollingData="[ScrollingData]" >
+								<LayoutInput>
+									<AnchorLayoutInput Horizontal="Fill" ContributesToHeight="true" />
+								</LayoutInput>
+								<Children>
+									<Text Name="TextVal" Color="[Color]" Font="[Font]" WordWrap="true" Content="[Text]" Margins="10,0,0,0" />
+								</Children>
+							</Scroller>
+						</Children>
+					</Graphic>
+
+					<Panel Name="ScrollInfo" Visible="true"  >
+            <Layout>
+              <FlowLayout HideOffscreenItems="false"/>
+            </Layout>
+						<LayoutInput>
+							<DockLayoutInput Position="Left"/>
+						</LayoutInput>
+						<Children>
+							<ColorFill Name="Sidebar" Content="DimGray" Alpha="0.7" Layout="Dock" MaximumSize="10,200">
+								<Children>
+									<ColorFill Name="Indicator" Content="White" MinimumSize="10,20">
+										<LayoutInput>
+											<DockLayoutInput Position="Top"/>
+										</LayoutInput>
+									</ColorFill>
+								</Children>
+							</ColorFill>
+						</Children>
+					</Panel>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+  <!-- This UI is used for Automatically Scrolling Text on Screen without User Input -->
+  <UI Name="AutoScrollText">
+    <Properties>
+      <cor:String Name="Text" String="" />
+      <Font Name="Font" Font="$Required"/>
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      <Color Name="FocusColor" Color="color://s:FontColorLight"/>
+      <cor:Int32 Name="ScrollSpeed" Int32="1"/>
+      <cor:Int32 Name="ScrollDelay" Int32="8000"/>
+      <cor:Boolean Name="Enabled" Boolean="true" />
+    </Properties>
+
+    <Locals>
+      
+      <ScrollingHandler Name="ScrollingHandler" HandleDirectionalKeys="false" />
+      <ScrollingData Name="ScrollingData" ScrollStep="[ScrollSpeed]"/>
+
+      <Timer Name="ScrollText" Interval="100" AutoRepeat="true" Enabled="false" />
+      <Timer Name="Delay" Interval="[ScrollDelay]" AutoRepeat="false" Enabled="true"/>
+      <Timer Name="EndDelay" Interval="[ScrollDelay]" AutoRepeat="false" Enabled="false"/>
+      <cor:Single Name="ScrollTime" Single="10"></cor:Single>
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="false" />
+
+      <Changed Source="[Delay.Tick]">
+        <Actions>
+          <Invoke Target="[Delay.Stop]"></Invoke>
+          <Invoke Target="[ScrollText.Start]"></Invoke>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ScrollText.Tick]">
+        <Conditions>
+          <Equality Source="[ScrollingData.CanScrollDown]" ConditionOp="Equals" Value="true"></Equality>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollDown]" ></Invoke>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ScrollText.Tick]">
+        <Conditions>
+          <Equality Source="[ScrollingData.CanScrollDown]" ConditionOp="Equals" Value="false"></Equality>
+        </Conditions>
+        <Actions>
+          <Set Target="[testtext.Content]" Value="Wait at end"></Set>
+          <Invoke Target="[ScrollText.Stop]"></Invoke>
+          <Invoke Target="[EndDelay.Start]"></Invoke>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[EndDelay.Tick]">
+        <Actions>
+          <Invoke Target="[ScrollingData.Home]" ></Invoke>
+          <Invoke Target="[Delay.Start]"></Invoke>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Text]" InitialEvaluate="true">
+        <Actions>
+          <Invoke Target="[ScrollingData.Home]" ></Invoke>
+          <Invoke Target="[Delay.Stop]"></Invoke>
+          <Invoke Target="[ScrollText.Stop]"></Invoke>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Text]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Enabled]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Delay.Start]"></Invoke>
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Text]" Target="[TextVal.Content]" />
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+
+
+    </Rules>
+
+    <Content>
+      <Panel Layout="Center" >
+        <Children>
+
+          <Panel>
+            <Children>
+              <Text Name="testtext" Color="0,255,200,200" Font="[Font]" WordWrap="true" Content="Waiting..." Padding="0,0,0,0"></Text>
+
+            </Children>
+          </Panel>
+          <Graphic Name="MainPanel" Content="image://i:BlankImage" Layout="Dock" Padding="5,5,5,5">
+            <Children>
+
+              <Scroller Name="AutoText" Orientation="Vertical" FadeSize="5"  ScrollingData="[ScrollingData]" >
+
+                <LayoutInput>
+                  <AnchorLayoutInput Horizontal="Fill" ContributesToHeight="true" Vertical="Fill" />
+                </LayoutInput>
+                <Children>
+
+                  <Text Name="TextVal" Color="[Color]" Font="[Font]" WordWrap="true" Content="[Text]"
+                        Padding="0,0,0,50">
+                    <Animations>
+                      <Animation Type="Move">
+                        <Keyframes>
+                          <PositionKeyframe RelativeTo="Current" Time="0"/>
+                          <PositionKeyframe RelativeTo="Final" Time="0.5"/>
+                        </Keyframes>
+                      </Animation>
+                      <Animation Type="Alpha">
+                        <Keyframes>
+                          <AlphaKeyframe RelativeTo="Current" Time="0"/>
+                          <AlphaKeyframe RelativeTo="Final" Time="0.6"/>
+                        </Keyframes>
+                      </Animation>
+
+                    </Animations>
+                  </Text>
+
+                </Children>
+              </Scroller>
+            </Children>
+          </Graphic>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+
+
+</Mcml>

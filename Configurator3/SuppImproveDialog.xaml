@@ -1,0 +1,12 @@
+﻿<Window x:Class="Configurator.SuppImproveDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Support Improvement Program" Height="311" Width="534" ShowInTaskbar="False" ResizeMode="NoResize" Topmost="True">
+    <Grid>
+        <Label Height="44" Margin="45,12,46,0" Name="label1" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" HorizontalContentAlignment="Center" Content="Please Help Improve Media Browser"></Label>
+        <TextBlock Margin="35,62,33,57" Name="tbMessage" FontSize="14" Text="This is a message..." TextWrapping="Wrap" />
+        <Button Height="35" HorizontalAlignment="Right" Margin="0,0,25,12" Name="btnOK" VerticalAlignment="Bottom" Width="85" FontSize="14" IsDefault="True" Click="btnOK_Click" Content="Yes I'll Help!"></Button>
+        <CheckBox Height="21" Margin="70,0,295,17.81" Name="cbxDontShowAgain" VerticalAlignment="Bottom" FontSize="14" Content="Don't ask again"></CheckBox>
+        <Button Content="No Thanks" FontSize="14" Height="35" HorizontalAlignment="Right" IsDefault="False" Margin="0,0,116,12" Name="button1" VerticalAlignment="Bottom" Width="85" IsCancel="True" />
+    </Grid>
+</Window>

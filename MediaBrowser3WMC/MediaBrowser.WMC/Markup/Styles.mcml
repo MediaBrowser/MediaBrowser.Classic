@@ -1,0 +1,104 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:me="Me"
+	  >
+
+  <!-- These style names are taken from the Design Guidelines spec. -->
+  <!-- There should be a 1-to-1 mapping to enable easy editing. -->
+
+  <Color Name="Background.A" Color="133,146,148"/>
+  <Color Name="Background.B" Color="80, 95, 108"/>
+  <Color Name="Background.C" Color="21, 35, 39"/>
+
+  <Color Name="Container.A" Color="191,130,130,130"/>
+  <Color Name="Container.B" Color="191,55, 62, 64"/>
+
+  <Color Name="Text.Copy"	    Color="255,255,255,255"/>
+  <Color Name="Text.Active"   Color="255,255,255,255"/>
+  <Color Name="Text.Negative" Color="255,54,57,9"/>
+
+  <Color Name="Accent.A" Color="255,255,255"/>
+  <Color Name="Accent.B" Color="182,206,0"/>
+
+  <!-- Fonts -->
+
+  <Font Name="MainMenuSectionTitle" Font="Calibri Bold,48"/>
+  <Font Name="SectionTitle"         Font="Calibri Bold,32"/>
+  <Font Name="CopyText"             Font="Calibri,22"/>
+  <Font Name="SecondaryText"        Font="Segoe Media Center Semibold,24"/>
+  <Font Name="TertiaryText"         Font="Calibri,16"/>
+  <Font Name="GalleryItemSubText"   Font="Calibri,14"/>
+
+  <Font Name="EditText"             Font="Segoe UI,20"/>
+  <Font Name="KeyboardText"         Font="Segoe UI,18"/>
+
+  <Color Name="BackgroundColor" Color="Black"/>
+  
+
+	<!--<Color Name="MediumBlue" Color="255, 2, 120, 212"/>
+	<Color Name="ZoomBackgroundBlue" Color="255, 32, 83, 136"/>
+	<Color Name="OurLightBlue" Color="255, 151, 217, 255"/>
+    <Color Name="CustomLightBlue" Color="255, 95, 196, 255"/>
+-->
+	<Color Name="MediumBlue" Color="255, 3,117,165"/>
+	<Color Name="ZoomBackgroundBlue" Color="255, 32, 83, 136"/>
+	<Color Name="OurLightBlue" Color="255, 147,212,250"/>
+    
+
+	<Font Name="CheckBoxFont" Font="Segoe Media Center Semibold,16" />
+	<Color Name="CheckBoxColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="TextEditFont" Font="Segoe Media Center Semibold,16" />
+	<Color Name="TextEditColor" Color="White"/>
+	<Color Name="TextEditLabelColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="ConfigTitleFont" Font="Segoe Media Center Semibold,18"/>
+
+	<Font Name="LastWatchedFont" Font="Segoe Media Center,14"/>
+	<Color Name="LastWatchedColor" Color="White"/>
+
+	<Font Name="CounterFont" Font="Segoe Media Center, 18"/>
+	<Color Name="CounterColor"  Color="White"/>
+	<Color Name="CounterTotalColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="GenreFont" Font="Segoe Media Center,16"/>
+	<Color Name="GenreColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="RuntimeFont" Font="Segoe Media Center,14"/>
+	<Color Name="RuntimeColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="PosterViewTitleFont" Font="Segoe Media Center,26"/>
+	<Color Name="PosterViewTitleColor" Color="White"/>
+
+	<Font Name="UnwatchedCountFont" Font="Segoe Media Center, 14, Bold"/>
+	<Font Name="PosterLabelFont" Font="Segoe Media Center, 20, Bold"/>
+	<Color Name="PosterLabelColor" Color="White"/>
+	<Font Name="PosterTopLabelFont" Font="Segoe Media Center Semibold, 16"/>
+	<Color Name="PosterTopLabelColor" Color="White"/>
+
+	<Font Name="RadioFont" Font="Segoe Media Center Semibold,16"/>
+	<Color Name="RadioColor" Color="255, 151, 217, 255"/>
+
+	<Font Name="SummaryFont" Font="Segoe Media Center,16"/>
+	<Color Name="SummaryColor" Color="255, 151, 217, 255"/>
+	<Color Name="SummaryFocusColor" Color="White"/>
+
+	<Font Name="TitleFont" Font="Segoe Media Center Semibold,20"/>
+	<Color Name="TitleColor" Color="White"/>
+
+	<Font Name="SubTitleFont" Font="Segoe Media Center, 18"/>
+	<Color Name="SubTitleColor" Color="White"/>
+
+	<Font Name="DirectorTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="DirectorFont" Font="Segoe Media Center Semibold,16"/>
+	<Color Name="DirectorColor" Color="White"/>
+
+	<Font Name="WriterTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="WriterFont" Font="Segoe Media Center Semibold,16"/>
+	<Color Name="WriterColor" Color="White"/>
+
+	<Font Name="MovieTitleFont" Font="Segoe Media Center Light, 36"/>
+	<Color Name="FilterColor" Color="6,31,84"/>
+	<cor:Single Name="FilterAlpha" Single="0.71" />
+			
+</Mcml>

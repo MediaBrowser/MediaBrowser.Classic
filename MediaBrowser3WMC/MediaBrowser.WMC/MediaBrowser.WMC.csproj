@@ -1,0 +1,1150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C6B27E5F-3D83-4D71-85B9-AF83C8392721}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MediaBrowser</RootNamespace>
+    <AssemblyName>MediaBrowser</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AssemblyOriginatorKeyFile>MediaBrowser.snk</AssemblyOriginatorKeyFile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <FullyQualifiedOutputPath>$(MSBuildProjectDirectory)\bin\Debug</FullyQualifiedOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>Migrated rules for MediaBrowser.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <FullyQualifiedOutputPath>$(MSBuildProjectDirectory)\bin\Release</FullyQualifiedOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <StartWorkingDirectory>$(windir)\eHome</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartArguments>/entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}</StartArguments>
+    <StartProgram>C:\Windows\ehome\ehshell.exe</StartProgram>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.MediaCenter, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Windows\ehome\Microsoft.MediaCenter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.MediaCenter.UI, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Windows\ehome\Microsoft.MediaCenter.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.621\lib\net35\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Sqlite\System.Data.SQLite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiInteraction\ApiClient.cs" />
+    <Compile Include="ApiInteraction\AuthenticationExtensions.cs" />
+    <Compile Include="ApiInteraction\BaseApiClient.cs" />
+    <Compile Include="ApiInteraction\IHttpClient.cs" />
+    <Compile Include="ApiInteraction\MbHttpClient.cs" />
+    <Compile Include="ApiInteraction\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="ApiInteraction\NullLogger.cs" />
+    <Compile Include="ApiInteraction\SerializationFormats.cs" />
+    <Compile Include="ApiInteraction\ServerLocator.cs" />
+    <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
+    <Compile Include="Library\Entities\LocalCacheFolder.cs" />
+    <Compile Include="Library\Entities\StaticFolder.cs" />
+    <Compile Include="Library\Entities\User.cs" />
+    <Compile Include="Library\Events\GenericEventArgs.cs" />
+    <Compile Include="Library\Events\PlaybackStateEventArgs.cs" />
+    <Compile Include="Library\Events\PlayStateSaveEventArgs.cs" />
+    <Compile Include="Library\Configuration\ApplicationPaths.cs" />
+    <Compile Include="Library\Entities\BoxSet.cs" />
+    <Compile Include="Library\Entities\GenericItem.cs" />
+    <Compile Include="Library\Entities\IContainer.cs" />
+    <Compile Include="Library\Entities\IGroupInIndex.cs" />
+    <Compile Include="Library\Entities\IMovie.cs" />
+    <Compile Include="Library\Entities\SearchResultFolder.cs" />
+    <Compile Include="Library\EntityDiscovery\BoxSetResolver.cs" />
+    <Compile Include="Library\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Library\Factories\Kernel.cs" />
+    <Compile Include="Library\Filesystem\AttributedContents.cs" />
+    <Compile Include="Library\Filesystem\VirtualFolder.cs" />
+    <Compile Include="Library\Filesystem\VodcastContents.cs" />
+    <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
+    <Compile Include="Library\Interfaces\ISupportsTrailers.cs" />
+    <Compile Include="Library\Localization\AURatingsDictionary.cs" />
+    <Compile Include="Library\Localization\NLRatingsDictionary.cs" />
+    <Compile Include="Library\Localization\GBRatingsDictionary.cs" />
+    <Compile Include="Library\Localization\RatingsDefinition.cs" />
+    <Compile Include="Library\Localization\USRatingsDictionary.cs" />
+    <Compile Include="Library\Logging\FileLogger.cs" />
+    <Compile Include="Library\Logging\ILogger.cs" />
+    <Compile Include="Library\Logging\LoggerBase.cs" />
+    <Compile Include="Library\Logging\LogRow.cs" />
+    <Compile Include="Library\Logging\LogSeverity.cs" />
+    <Compile Include="Library\Logging\MultiLogger.cs" />
+    <Compile Include="Library\Logging\ThreadedLogger.cs" />
+    <Compile Include="Library\Logging\TraceLogger.cs" />
+    <Compile Include="Library\Metadata\MetadataProviders.cs" />
+    <Compile Include="Library\Network\DownloadPolicy.cs" />
+    <Compile Include="Library\Network\RSSFeed.cs" />
+    <Compile Include="Library\Persistance\MB3ApiRepository.cs" />
+    <Compile Include="Library\Persistance\SQLiteDisplayRepository.cs" />
+    <Compile Include="Library\Persistance\FileBasedDictionary.cs" />
+    <Compile Include="Library\Persistance\IPersistableChangeNotifiable.cs" />
+    <Compile Include="Library\Playables\ExternalPlayer\ConfigurableExternalPlaybackController.cs" />
+    <Compile Include="Library\Playables\ExternalPlayer\ExternalPlaybackController.cs" />
+    <Compile Include="Library\Playables\ExternalPlayer\PlayableExternal.cs" />
+    <Compile Include="Library\Playables\ExternalPlayer\PlayableExternalConfigurator.cs" />
+    <Compile Include="Library\Playables\MpcHc\MpcHcConfigurator.cs" />
+    <Compile Include="Library\Playables\MpcHc\MpcHcPlaybackController.cs" />
+    <Compile Include="Library\Playables\MpcHc\PlayableMpcHc.cs" />
+    <Compile Include="Library\Playables\PlayableInternal.cs" />
+    <Compile Include="Library\Playables\PlaybackControllerHelper.cs" />
+    <Compile Include="Library\Playables\TMT5\PlayableTMT5.cs" />
+    <Compile Include="Library\Playables\TMT5\PlayableTMT5AddInForWMC.cs" />
+    <Compile Include="Library\Playables\TMT5\TMT5AddInForWMCConfigurator.cs" />
+    <Compile Include="Library\Playables\TMT5\TMT5Configurator.cs" />
+    <Compile Include="Library\Playables\TMT5\TMT5AddInPlaybackController.cs" />
+    <Compile Include="Library\Playables\TMT5\TMT5PlaybackController.cs" />
+    <Compile Include="Library\Playables\VLC2\PlayableVLC2.cs" />
+    <Compile Include="Library\Playables\VLC2\VLC2Configurator.cs" />
+    <Compile Include="Library\Playables\VLC2\VLC2PlaybackController.cs" />
+    <Compile Include="Library\Providers\LegacyMovieProviderFromXml.cs" />
+    <Compile Include="Library\Providers\MBDefaultImageProvider.cs" />
+    <Compile Include="Library\Providers\MBMovieProviderFromJson.cs" />
+    <Compile Include="Library\Providers\VideoFormatProvider.cs" />
+    <Compile Include="Library\Entities\Actor.cs" />
+    <Compile Include="Library\Entities\Attributes\NotSourcedFromProvider.cs" />
+    <Compile Include="Library\Entities\IFolder.cs" />
+    <Compile Include="Library\Entities\Index.cs" />
+    <Compile Include="Library\Entities\IShow.cs" />
+    <Compile Include="Library\Entities\MediaInfoData.cs" />
+    <Compile Include="Library\Entities\PlaybackStatus.cs" />
+    <Compile Include="Library\Entities\BaseItem.cs" />
+    <Compile Include="Library\Entities\Episode.cs" />
+    <Compile Include="Library\Entities\Folder.cs" />
+    <Compile Include="Library\Entities\Media.cs" />
+    <Compile Include="Library\Entities\Movie.cs" />
+    <Compile Include="Library\Entities\Person.cs" />
+    <Compile Include="Library\Entities\AggregateFolder.cs" />
+    <Compile Include="Library\Entities\Series.cs" />
+    <Compile Include="Library\Entities\Show.cs" />
+    <Compile Include="Library\Entities\Season.cs" />
+    <Compile Include="Library\Entities\Studio.cs" />
+    <Compile Include="Library\Entities\Video.cs" />
+    <Compile Include="Library\Entities\VodCast.cs" />
+    <Compile Include="Library\Entities\VodCastVideo.cs" />
+    <Compile Include="Library\EntityDiscovery\ChainedEntityResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\EntityResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\EpisodeResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\FolderResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\Parameters\InitializationParameter.cs" />
+    <Compile Include="Library\EntityDiscovery\Parameters\MediaTypeInitializationParameter.cs" />
+    <Compile Include="Library\EntityDiscovery\MovieResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\Parameters\MovieVolumeInitializationParameter.cs" />
+    <Compile Include="Library\EntityDiscovery\SeasonResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\SeriesResolver.cs" />
+    <Compile Include="Library\EntityDiscovery\VodCastResolver.cs" />
+    <Compile Include="Library\Extensions\BinaryReaderExtensions.cs" />
+    <Compile Include="Library\Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Library\Extensions\DistinctExtensions.cs" />
+    <Compile Include="Library\Extensions\EncryptionHelpers.cs" />
+    <Compile Include="Library\Extensions\FileFormatHelpers.cs" />
+    <Compile Include="Library\Extensions\FileTimeExtensions.cs" />
+    <Compile Include="Library\Extensions\IMediaLocationExtensions.cs" />
+    <Compile Include="Library\Extensions\Interceptor.cs" />
+    <Compile Include="Library\Extensions\StreamExtensions.cs" />
+    <Compile Include="Library\Factories\LibraryImageFactory.cs" />
+    <Compile Include="Library\Factories\MediaLocationFactory.cs" />
+    <Compile Include="Library\Factories\PlayableItemFactory.cs" />
+    <Compile Include="Library\Filesystem\FileInfo.cs" />
+    <Compile Include="Library\Filesystem\FolderMediaLocation.cs" />
+    <Compile Include="Library\Filesystem\IFolderMediaLocation.cs" />
+    <Compile Include="Library\Filesystem\IMediaLocation.cs" />
+    <Compile Include="Library\Filesystem\MediaLocation.cs" />
+    <Compile Include="Library\Filesystem\ProtectedFileStream.cs" />
+    <Compile Include="Library\Filesystem\VirtualFolderContents.cs" />
+    <Compile Include="Library\Filesystem\VirtualFolderMediaLocation.cs" />
+    <Compile Include="Library\ImageManagement\LibraryImage.cs" />
+    <Compile Include="Library\ImageManagement\FilesystemImage.cs" />
+    <Compile Include="Library\ImageManagement\RemoteImage.cs" />
+    <Compile Include="Library\Interfaces\IMediaLocationFactory.cs" />
+    <Compile Include="Library\Interfaces\IMetadataProvider.cs" />
+    <Compile Include="Library\Interop\FindFileApis.cs" />
+    <Compile Include="Library\Interop\ShellNativeMethods.cs" />
+    <Compile Include="Library\Interop\ShortcutNativeMethods.cs" />
+    <Compile Include="Library\Metadata\MetadataProviderFactory.cs" />
+    <Compile Include="Library\Metadata\MetadataRefreshOptions.cs" />
+    <Compile Include="Library\Plugins\IPlugin.cs" />
+    <Compile Include="Library\Plugins\Plugin.cs" />
+    <Compile Include="Library\Sorting\BaseItemEqualityComparer.cs" />
+    <Compile Include="Library\Sorting\SortHelper.cs" />
+    <Compile Include="Library\Threading\Async.cs" />
+    <Compile Include="Library\Threading\BackgroundProcessor.cs" />
+    <Compile Include="Library\Providers\Attributes\SupportedTypeAttribute.cs" />
+    <Compile Include="Library\Providers\TVDB\RemoteEpisodeProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\LocalEpisodeProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\LocalSeriesProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\RemoteSeasonProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\RemoteSeriesProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\TVUtils.cs" />
+    <Compile Include="Library\Sorting\BaseItemComparer.cs" />
+    <Compile Include="Library\ItemNameComparer.cs" />
+    <Compile Include="Library\Extensions\DiffAction.cs" />
+    <Compile Include="Library\Extensions\DiffExtension.cs" />
+    <Compile Include="Library\Extensions\DiffPair.cs" />
+    <Compile Include="Library\MediaType.cs" />
+    <Compile Include="Library\MediaTypeResolver.cs" />
+    <Compile Include="Library\Persistance\PersisatableProperty.cs" />
+    <Compile Include="Library\Persistance\Persistable.cs" />
+    <Compile Include="Library\Persistance\PersistableField.cs" />
+    <Compile Include="Library\Persistance\PersistAttribute.cs" />
+    <Compile Include="Library\Persistance\SafeItemRepository.cs" />
+    <Compile Include="Library\Persistance\SerializationException.cs" />
+    <Compile Include="Library\Persistance\Serializer.cs" />
+    <Compile Include="Library\Persistance\SerializerGeneric.cs">
+      <DependentUpon>Serializer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\Providers\Attributes\RequiresInternetAttribute.cs" />
+    <Compile Include="Library\Providers\Attributes\SlowProviderAttribute.cs" />
+    <Compile Include="Library\Providers\BaseMetadataProvider.cs" />
+    <Compile Include="Library\Metadata\MetadataProviderHelper.cs" />
+    <Compile Include="Library\Providers\Attributes\ProviderPriorityAttribute.cs" />
+    <Compile Include="Library\Sorting\IndexType.cs" />
+    <Compile Include="Library\Sorting\SortOrder.cs" />
+    <Compile Include="Library\TripleTapIndex.cs" />
+    <Compile Include="Library\UserInput\KeyboardListener.cs" />
+    <Compile Include="Library\UserInput\RemoteCommand.cs" />
+    <Compile Include="Library\Util\Helper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\Extensions\BinaryWriterExtensions.cs" />
+    <Compile Include="Library\ImageSource.cs" />
+    <Compile Include="Library\Factories\ItemFactory.cs" />
+    <Compile Include="Library\Persistance\ItemRepository.cs" />
+    <Compile Include="Library\Interfaces\IItemRepository.cs" />
+    <Compile Include="Library\Playables\PlayableItem.cs" />
+    <Compile Include="Library\Factories\PlaybackStatusFactory.cs" />
+    <Compile Include="Library\Providers\ImageFromMediaLocationProvider.cs" />
+    <Compile Include="Library\Providers\ImageByNameProvider.cs" />
+    <Compile Include="Library\Providers\MovieDbProvider.cs" />
+    <Compile Include="Library\Providers\MovieProviderFromXml.cs" />
+    <Compile Include="Library\Providers\VirtualFolderProvider.cs" />
+    <Compile Include="Library\ThreadPoolSizes.cs" />
+    <Compile Include="Library\Transcode.cs" />
+    <Compile Include="Library\Extensions\XmlExtensions.cs" />
+    <Compile Include="Library\Util\Lazy.cs" />
+    <Compile Include="Library\Util\MutexWrapper.cs" />
+    <Compile Include="Library\Util\Taskbar.cs" />
+    <Compile Include="Library\VideoFormat.cs" />
+    <Compile Include="Model\Configuration\UserConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Connectivity\ClientConnectionInfo.cs" />
+    <Compile Include="Model\Drawing\DrawingUtils.cs" />
+    <Compile Include="Model\DTO\BaseItemDto.cs" />
+    <Compile Include="Model\DTO\BaseItemPerson.cs" />
+    <Compile Include="Model\DTO\ChapterInfoDto.cs" />
+    <Compile Include="Model\DTO\IItemDto.cs" />
+    <Compile Include="Model\DTO\ImageOptions.cs" />
+    <Compile Include="Model\DTO\StreamOptions.cs" />
+    <Compile Include="Model\DTO\UserDto.cs" />
+    <Compile Include="Model\DTO\UserItemDataDto.cs" />
+    <Compile Include="Model\Entities\BaseItemInfo.cs" />
+    <Compile Include="Model\Entities\ChapterInfo.cs" />
+    <Compile Include="Model\Entities\DisplayPreferences.cs" />
+    <Compile Include="Model\Entities\IByReferenceItem.cs" />
+    <Compile Include="Model\Entities\IHasMediaStreams.cs" />
+    <Compile Include="Model\Entities\IHasProviderIds.cs" />
+    <Compile Include="Model\Entities\ImageDownloadOptions.cs" />
+    <Compile Include="Model\Entities\ImageType.cs" />
+    <Compile Include="Model\Entities\LibraryUpdateInfo.cs" />
+    <Compile Include="Model\Entities\LocationType.cs" />
+    <Compile Include="Model\Entities\MBRegistrationRecord.cs" />
+    <Compile Include="Model\Entities\MediaStream.cs" />
+    <Compile Include="Model\Entities\MediaType.cs" />
+    <Compile Include="Model\Entities\MetadataProviders.cs" />
+    <Compile Include="Model\Entities\ParentalRating.cs" />
+    <Compile Include="Model\Entities\PersonType.cs" />
+    <Compile Include="Model\Entities\PluginSecurityInfo.cs" />
+    <Compile Include="Model\Entities\RequestResult.cs" />
+    <Compile Include="Model\Entities\SeriesStatus.cs" />
+    <Compile Include="Model\Entities\VideoFormat.cs" />
+    <Compile Include="Model\Entities\VideoType.cs" />
+    <Compile Include="Model\Entities\VirtualFolderInfo.cs" />
+    <Compile Include="Model\Extensions\ModelExtensions.cs" />
+    <Compile Include="Model\Globalization\CountryInfo.cs" />
+    <Compile Include="Model\Globalization\CultureDto.cs" />
+    <Compile Include="Model\IO\FileSystemEntryInfo.cs" />
+    <Compile Include="Model\IO\IZipClient.cs" />
+    <Compile Include="Model\Logging\ILogger.cs" />
+    <Compile Include="Model\Logging\ILogManager.cs" />
+    <Compile Include="Model\Logging\LogSeverity.cs" />
+    <Compile Include="Model\MediaInfo\BlurayDiscInfo.cs" />
+    <Compile Include="Model\MediaInfo\IBlurayExaminer.cs" />
+    <Compile Include="Model\Net\HttpException.cs" />
+    <Compile Include="Model\Net\NetworkShare.cs" />
+    <Compile Include="Model\Net\NetworkShareType.cs" />
+    <Compile Include="Model\Querying\ItemFields.cs" />
+    <Compile Include="Model\Querying\ItemFilter.cs" />
+    <Compile Include="Model\Querying\ItemQuery.cs" />
+    <Compile Include="Model\Querying\ItemsByNameQuery.cs" />
+    <Compile Include="Model\Querying\ItemSortBy.cs" />
+    <Compile Include="Model\Querying\ItemsResult.cs" />
+    <Compile Include="Model\Serialization\IJsonSerializer.cs" />
+    <Compile Include="Model\Serialization\IProtobufSerializer.cs" />
+    <Compile Include="Model\Serialization\IXmlSerializer.cs" />
+    <Compile Include="Model\System\SystemInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Tasks\SystemEvent.cs" />
+    <Compile Include="Model\Tasks\TaskCompletionStatus.cs" />
+    <Compile Include="Model\Tasks\TaskInfo.cs" />
+    <Compile Include="Model\Tasks\TaskResult.cs" />
+    <Compile Include="Model\Tasks\TaskState.cs" />
+    <Compile Include="Model\Tasks\TaskTriggerInfo.cs" />
+    <Compile Include="Model\Updates\InstallationInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Updates\PackageInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Updates\PackageType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Updates\PackageVersionClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Updates\PackageVersionInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Weather\WeatherForecast.cs" />
+    <Compile Include="Model\Weather\WeatherInfo.cs" />
+    <Compile Include="Model\Weather\WeatherStatus.cs" />
+    <Compile Include="Model\Weather\WeatherUnits.cs" />
+    <Compile Include="Model\Web\QueryStringDictionary.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Library\Util\Profiler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="BaseItemClassDiagram.cd" />
+    <EmbeddedResource Include="Library\Playables\MpcHc\MpcHcSettings.reg" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="DevInstall.cmd" />
+    <None Include="MediaBrowser.snk" />
+    <None Include="MediaBrowser3.pfx" />
+    <None Include="Migrated rules for MediaBrowser.ruleset" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Background.png" />
+    <Content Include="Images\BackgroundBlack.png" />
+    <Content Include="Images\BackgroundDefault.png" />
+    <None Include="Images\banner.png" />
+    <Content Include="Images\BlackBtnAlpha50.png" />
+    <Content Include="Images\BlackBtnAlpha50forTabRt.png" />
+    <Content Include="Images\BlackBtnAlpha65.png" />
+    <Content Include="Images\BlackTabAlpha50.png" />
+    <Content Include="Images\BlockedCover.png" />
+    <Content Include="Images\Button\ButtonLeftFocusBlack.png" />
+    <Content Include="Images\Button\ButtonLeftFocusDefault.png" />
+    <Content Include="Images\Button\ButtonNewFocus.png" />
+    <Content Include="Images\Checkbox\CheckBoxCheckedFocus.png" />
+    <Content Include="Images\Checkbox\CheckBoxCheckedNoFocus.png" />
+    <Content Include="Images\Checkbox\CheckBoxUncheckedFocus.png" />
+    <Content Include="Images\Checkbox\CheckBoxUncheckedNoFocus.png" />
+    <Content Include="Images\Config.png" />
+    <None Include="Images\Icons\IconShuffle.png" />
+    <None Include="Images\Root\roottopw.png" />
+    <None Include="Images\Root\rootscrollhilite.png" />
+    <Content Include="Images\Icons\IconAdded.png" />
+    <None Include="Images\Icons\IconNext.png" />
+    <None Include="Images\Icons\IconPrevious.png" />
+    <Content Include="Images\Icons\IconKeyboard.png" />
+    <Content Include="Images\Icons\IconKeyboardFocus.png" />
+    <Content Include="Images\Icons\IconRemote.png" />
+    <Content Include="Images\Icons\IconSearch.png" />
+    <Content Include="Images\Icons\IconWatched.png" />
+    <Content Include="Images\Lock.png" />
+    <Content Include="Images\Locked.png" />
+    <Content Include="Images\Application.png" />
+    <Content Include="Images\mblogo1000.png" />
+    <Content Include="Images\MediaInfo\aspect_125.png" />
+    <Content Include="Images\MediaInfo\aspect_133.png" />
+    <Content Include="Images\MediaInfo\aspect_137.png" />
+    <Content Include="Images\MediaInfo\aspect_143.png" />
+    <Content Include="Images\MediaInfo\aspect_144.png" />
+    <Content Include="Images\MediaInfo\aspect_150.png" />
+    <Content Include="Images\MediaInfo\aspect_156.png" />
+    <Content Include="Images\MediaInfo\aspect_166.png" />
+    <Content Include="Images\MediaInfo\aspect_177.png" />
+    <Content Include="Images\MediaInfo\aspect_178.png" />
+    <Content Include="Images\MediaInfo\aspect_181.png" />
+    <Content Include="Images\MediaInfo\aspect_185.png" />
+    <Content Include="Images\MediaInfo\aspect_200.png" />
+    <Content Include="Images\MediaInfo\aspect_220.png" />
+    <Content Include="Images\MediaInfo\aspect_235.png" />
+    <Content Include="Images\MediaInfo\aspect_239.png" />
+    <Content Include="Images\MediaInfo\aspect_240.png" />
+    <Content Include="Images\MediaInfo\aspect_255.png" />
+    <Content Include="Images\MediaInfo\aspect_259.png" />
+    <Content Include="Images\MediaInfo\aspect_266.png" />
+    <Content Include="Images\MediaInfo\aspect_276.png" />
+    <Content Include="Images\MediaInfo\aspect_400.png" />
+    <Content Include="Images\MediaInfo\channels_1.png" />
+    <Content Include="Images\MediaInfo\channels_2.png" />
+    <Content Include="Images\MediaInfo\channels_3.png" />
+    <Content Include="Images\MediaInfo\channels_4.png" />
+    <Content Include="Images\MediaInfo\channels_5.png" />
+    <Content Include="Images\MediaInfo\channels_6.png" />
+    <Content Include="Images\MediaInfo\channels_7.png" />
+    <Content Include="Images\MediaInfo\channels_8.png" />
+    <Content Include="Images\MediaInfo\codec_aac.png" />
+    <Content Include="Images\MediaInfo\codec_ac3.png" />
+    <Content Include="Images\MediaInfo\codec_asf.png" />
+    <Content Include="Images\MediaInfo\codec_ddplus.png" />
+    <Content Include="Images\MediaInfo\codec_ddtruehd.png" />
+    <Content Include="Images\MediaInfo\codec_divx.png" />
+    <Content Include="Images\MediaInfo\codec_dts.png" />
+    <Content Include="Images\MediaInfo\codec_dts_9624.png" />
+    <Content Include="Images\MediaInfo\codec_dts_ds.png" />
+    <Content Include="Images\MediaInfo\codec_dts_es.png" />
+    <Content Include="Images\MediaInfo\codec_dts_hd_hra.png" />
+    <Content Include="Images\MediaInfo\codec_dts_hd_ma.png" />
+    <Content Include="Images\MediaInfo\codec_flac.png" />
+    <Content Include="Images\MediaInfo\codec_h262.png" />
+    <Content Include="Images\MediaInfo\codec_h264.png" />
+    <Content Include="Images\MediaInfo\codec_mp3.png" />
+    <Content Include="Images\MediaInfo\codec_mpeg1video.png" />
+    <Content Include="Images\MediaInfo\codec_mpeg4visual.png" />
+    <Content Include="Images\MediaInfo\codec_mpegaudio.png" />
+    <Content Include="Images\MediaInfo\codec_mpegvideo.png" />
+    <Content Include="Images\MediaInfo\codec_on2_vp6.png" />
+    <Content Include="Images\MediaInfo\codec_pcm.png" />
+    <Content Include="Images\MediaInfo\codec_sorenson_h263.png" />
+    <Content Include="Images\MediaInfo\codec_theora.png" />
+    <Content Include="Images\MediaInfo\codec_vc1.png" />
+    <Content Include="Images\MediaInfo\codec_vorbis.png" />
+    <Content Include="Images\MediaInfo\codec_wma.png" />
+    <Content Include="Images\MediaInfo\codec_wmv.png" />
+    <Content Include="Images\MediaInfo\codec_wmv_hd.png" />
+    <Content Include="Images\MediaInfo\codec_xvid.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_aspect_169.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_aspect_1851.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_aspect_2391.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_aspect_32.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_aspect_43.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_aac.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_ac3.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_asf.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_divx.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_dts.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_h264.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_mpegaudio.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_vc1.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_wma.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_wmv.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_codec_xvid.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_hdtype_1080.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_hdtype_720.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_media_avi.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_media_bluray.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_media_dvd.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_media_hddvd.png" />
+    <Content Include="Images\MediaInfo\Diamond\d_media_mkv.png" />
+    <Content Include="Images\MediaInfo\hdtype_1080.png" />
+    <Content Include="Images\MediaInfo\hdtype_1080i.png" />
+    <Content Include="Images\MediaInfo\hdtype_1080p.png" />
+    <Content Include="Images\MediaInfo\hdtype_720.png" />
+    <Content Include="Images\MediaInfo\hdtype_720i.png" />
+    <Content Include="Images\MediaInfo\hdtype_720p.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddplus_50.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddplus_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddplus_61.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddplus_71.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddtruehd_50.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddtruehd_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddtruehd_61.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_ddtruehd_71.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dd_10.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dd_20.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dd_30.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dd_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_9624_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_ds_10.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_ds_20.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_ds_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_es_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_es_61.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_hra_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_hra_61.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_hra_71.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_30.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_40.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_50.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_51.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_61.png" />
+    <Content Include="Images\MediaInfo\Legacy Channels\codec_dts_hd_ma_71.png" />
+    <Content Include="Images\MediaInfo\media_3d.png" />
+    <Content Include="Images\MediaInfo\media_3gp.png" />
+    <Content Include="Images\MediaInfo\media_asf.png" />
+    <Content Include="Images\MediaInfo\media_avi.png" />
+    <Content Include="Images\MediaInfo\media_bluray.png" />
+    <Content Include="Images\MediaInfo\media_dvd.png" />
+    <Content Include="Images\MediaInfo\media_dvrms.png" />
+    <Content Include="Images\MediaInfo\media_flv.png" />
+    <Content Include="Images\MediaInfo\media_hd.png" />
+    <Content Include="Images\MediaInfo\media_hddvd.png" />
+    <Content Include="Images\MediaInfo\media_iso.png" />
+    <Content Include="Images\MediaInfo\media_m2ts.png" />
+    <Content Include="Images\MediaInfo\media_mkv.png" />
+    <Content Include="Images\MediaInfo\media_mov.png" />
+    <Content Include="Images\MediaInfo\media_mp4.png" />
+    <Content Include="Images\MediaInfo\media_mpeg.png" />
+    <Content Include="Images\MediaInfo\media_ogg.png" />
+    <Content Include="Images\MediaInfo\media_ts.png" />
+    <Content Include="Images\MediaInfo\media_wmv.png" />
+    <Content Include="Images\MediaInfo\media_wtv.png" />
+    <Content Include="Images\plainborder.png" />
+    <None Include="Images\Ratings\rated-gb-12.png" />
+    <None Include="Images\Ratings\rated-gb-18.png" />
+    <None Include="Images\Ratings\rated-gb-12a.png" />
+    <None Include="Images\Ratings\rated-gb-15.png" />
+    <Content Include="Images\Ratings\Rated-NL-9.png" />
+    <Content Include="Images\Ratings\Rated-NL-12.png" />
+    <Content Include="Images\Ratings\Rated-NL-16.png" />
+    <Content Include="Images\Ratings\Rated-NL-6.png" />
+    <Content Include="Images\Ratings\Rated-NL-AL.png" />
+    <Content Include="Images\Ratings\Rated-Custom.png" />
+    <Content Include="Images\Ratings\Rated-G.png" />
+    <Content Include="Images\Ratings\rated-gb-pg.png" />
+    <Content Include="Images\Ratings\Rated-NC-17.png" />
+    <Content Include="Images\Ratings\rated-nl-mg6.png" />
+    <Content Include="Images\Ratings\Rated-NR.png" />
+    <Content Include="Images\Ratings\Rated-PG.png" />
+    <Content Include="Images\Ratings\Rated-PG-13.png" />
+    <Content Include="Images\Ratings\Rated-R.png" />
+    <None Include="Images\Ratings\rated-gb-r18.png" />
+    <None Include="Images\Ratings\rated-gb-u.png" />
+    <Content Include="Images\Ratings\Rated-Unrated.png" />
+    <Content Include="Images\Icons\IconFloral.png" />
+    <Content Include="Images\Ratings\Rated-TV-14.png" />
+    <Content Include="Images\Ratings\Rated-TV-G.png" />
+    <Content Include="Images\Ratings\Rated-TV-MA.png" />
+    <Content Include="Images\Ratings\Rated-TV-PG.png" />
+    <Content Include="Images\Ratings\Rated-TV-Y.png" />
+    <Content Include="Images\Ratings\Rated-TV-Y7-FV.png" />
+    <Content Include="Images\Ratings\Rated-TV-Y7.png" />
+    <Content Include="Images\Root\flashHorB.png" />
+    <Content Include="Images\Root\flashHorT.png" />
+    <Content Include="Images\Root\poster-frame.png" />
+    <Content Include="Images\Root\rootscrollhilitefocus.png" />
+    <Content Include="Images\Special\Gears.png" />
+    <Content Include="Images\Special\GreenBallDark.png" />
+    <Content Include="Images\Special\GreenBallGlow.png" />
+    <Content Include="Images\Special\GreenBallLight.png" />
+    <Content Include="Images\Special\GreenBallShadow.png" />
+    <Content Include="Images\Special\Starburst.png" />
+    <Content Include="Images\Spinner\DecrementFocused.png" />
+    <Content Include="Images\Spinner\DecrementNoFocus.png" />
+    <Content Include="Images\DetailBorderShadow.png" />
+    <Content Include="Images\hd1080.png" />
+    <Content Include="Images\hd720.png" />
+    <Content Include="Images\Icons\IconActors.png" />
+    <Content Include="Images\Icons\IconDelete.png" />
+    <Content Include="Images\Icons\IconMusic.png" />
+    <Content Include="Images\Icons\IconPlay.png" />
+    <Content Include="Images\Icons\IconRefresh.png" />
+    <Content Include="Images\Icons\IconResume.png" />
+    <Content Include="Images\Icons\IconSummary.png" />
+    <Content Include="Images\Icons\IconTrailers.png" />
+    <Content Include="Images\Spinner\IncrementNoFocus.png" />
+    <Content Include="Images\Spinner\IncrementFocused.png" />
+    <Content Include="Images\Index.png" />
+    <Content Include="Images\MediaInfo\HD.png" />
+    <Content Include="Images\MediaInfo\hd1080.png" />
+    <Content Include="Images\MediaInfo\hd720.png" />
+    <Content Include="Images\Options\actor.png" />
+    <Content Include="Images\Options\backdrop.png" />
+    <Content Include="Images\Options\banners.png" />
+    <Content Include="Images\Options\bg-focused.png" />
+    <Content Include="Images\Options\bg-selected.png" />
+    <Content Include="Images\Options\bg-unfocused.png" />
+    <Content Include="Images\Options\bg-unfocusedBlack.png" />
+    <Content Include="Images\Options\close.png" />
+    <Content Include="Images\Options\config.png" />
+    <Content Include="Images\Options\date.png" />
+    <Content Include="Images\Options\director.png" />
+    <Content Include="Images\Options\enlarge.png" />
+    <Content Include="Images\Options\genre.png" />
+    <Content Include="Images\Options\index.png" />
+    <Content Include="Images\Options\labels.png" />
+    <Content Include="Images\Options\name.png" />
+    <Content Include="Images\Options\none.png" />
+    <Content Include="Images\Options\rating.png" />
+    <Content Include="Images\Options\runtime.png" />
+    <Content Include="Images\Options\shine.png" />
+    <Content Include="Images\Options\shrink.png" />
+    <Content Include="Images\Options\sort.png" />
+    <Content Include="Images\Options\studio.png" />
+    <Content Include="Images\Options\unwatched.png" />
+    <Content Include="Images\Options\vertscroll.png" />
+    <Content Include="Images\Options\view.png" />
+    <Content Include="Images\Options\viewCoverflow.png" />
+    <Content Include="Images\Options\viewDetail.png" />
+    <Content Include="Images\Options\viewPoster.png" />
+    <Content Include="Images\Options\viewThumb.png" />
+    <Content Include="Images\Options\viewThumbstrip.png" />
+    <Content Include="Images\Options\year.png" />
+    <Content Include="Images\Pivot\PivotArrowLeft.png" />
+    <Content Include="Images\Pivot\PivotArrowLeftNoFocus.png" />
+    <Content Include="Images\Pivot\PivotArrowRight.png" />
+    <Content Include="Images\Pivot\PivotArrowRightNoFocus.png" />
+    <Content Include="Images\RadioButton\RadioFocus.png" />
+    <Content Include="Images\RadioButton\RadioNoFocus.png" />
+    <Content Include="Images\RadioButton\RadioSelectFocus.png" />
+    <Content Include="Images\RadioButton\RadioSelectNoFocus.png" />
+    <Content Include="Images\Ratings\Rated-G_full.png" />
+    <Content Include="Images\Ratings\Rated-NC-17_full.png" />
+    <Content Include="Images\Ratings\Rated-NR_full.png" />
+    <Content Include="Images\Ratings\Rated-PG-13_full.png" />
+    <Content Include="Images\Ratings\Rated-PG_full.png" />
+    <Content Include="Images\Ratings\Rated-R_full.png" />
+    <Content Include="Images\Sort.png" />
+    <Content Include="Images\spacer.png" />
+    <Content Include="Images\Special\FilmScreen.png" />
+    <Content Include="Images\Special\Header.png" />
+    <Content Include="Images\Special\Header2.png" />
+    <Content Include="Images\Special\Header3.png" />
+    <Content Include="Images\Special\MissingPerson.jpg" />
+    <Content Include="Images\Special\Tab_Base.png" />
+    <Content Include="Images\Special\Tab_Selected.png" />
+    <Content Include="Images\Special\Tab_SelectedF.png" />
+    <Content Include="Images\Special\Underline.png" />
+    <Content Include="Images\Star\Star_Full.png" />
+    <Content Include="Images\Star\Star_Empty.png" />
+    <Content Include="Images\Star\Star_Half.png" />
+    <Content Include="Images\UnLock1.png" />
+    <Content Include="Images\UnLocked.png" />
+    <Content Include="Images\Unwatched\Tick.png" />
+    <Content Include="Images\Unwatched\TickPoster.png" />
+    <Content Include="Images\Unwatched\TickPosterBase.png" />
+    <Content Include="Images\Unwatched\Unwatched.png" />
+    <Content Include="Images\Unwatched\UnwatchedBase.png" />
+    <Content Include="Images\UserLoginDefault.png" />
+    <Content Include="Images\Vanilla\arrows\left.png" />
+    <Content Include="Images\Vanilla\arrows\right.png" />
+    <Content Include="Images\Vanilla\buttons\actor.png" />
+    <Content Include="Images\Vanilla\buttons\backdrop.png" />
+    <Content Include="Images\Vanilla\buttons\banners.png" />
+    <Content Include="Images\Vanilla\buttons\bg-focused.png" />
+    <Content Include="Images\Vanilla\buttons\bg-red.png" />
+    <Content Include="Images\Vanilla\buttons\bg-selected.png" />
+    <Content Include="Images\Vanilla\buttons\bg-unfocused.png" />
+    <Content Include="Images\Vanilla\buttons\bg-unfocusedBlack.png" />
+    <Content Include="Images\Vanilla\buttons\close.png" />
+    <Content Include="Images\Vanilla\buttons\config.png" />
+    <Content Include="Images\Vanilla\buttons\date.png" />
+    <Content Include="Images\Vanilla\buttons\director.png" />
+    <Content Include="Images\Vanilla\buttons\enlarge.png" />
+    <Content Include="Images\Vanilla\buttons\genre.png" />
+    <Content Include="Images\Vanilla\buttons\index.png" />
+    <Content Include="Images\Vanilla\buttons\labels.png" />
+    <Content Include="Images\Vanilla\buttons\name.png" />
+    <Content Include="Images\Vanilla\buttons\none.png" />
+    <Content Include="Images\Vanilla\buttons\PlayAll.png" />
+    <Content Include="Images\Vanilla\buttons\PlayRandom.png" />
+    <Content Include="Images\Vanilla\buttons\PlayUnwatched.png" />
+    <None Include="Images\Vanilla\buttons\QueueAll.png" />
+    <Content Include="Images\Vanilla\buttons\rating.png" />
+    <Content Include="Images\Vanilla\buttons\runtime.png" />
+    <Content Include="Images\Vanilla\buttons\shine.png" />
+    <Content Include="Images\Vanilla\buttons\shrink.png" />
+    <Content Include="Images\Vanilla\buttons\sort.png" />
+    <Content Include="Images\Vanilla\buttons\studio.png" />
+    <Content Include="Images\Vanilla\buttons\unwatched.png" />
+    <Content Include="Images\Vanilla\buttons\vertscroll.png" />
+    <Content Include="Images\Vanilla\buttons\view.png" />
+    <Content Include="Images\Vanilla\buttons\viewCoverflow.png" />
+    <Content Include="Images\Vanilla\buttons\viewDetail.png" />
+    <Content Include="Images\Vanilla\buttons\viewPoster.png" />
+    <Content Include="Images\Vanilla\buttons\viewThumb.png" />
+    <Content Include="Images\Vanilla\buttons\viewThumbstrip.png" />
+    <Content Include="Images\Vanilla\buttons\year.png" />
+    <Content Include="Images\Weather\0.png" />
+    <Content Include="Images\Weather\1.png" />
+    <Content Include="Images\Weather\10.png" />
+    <Content Include="Images\Weather\11.png" />
+    <Content Include="Images\Weather\12.png" />
+    <Content Include="Images\Weather\13.png" />
+    <Content Include="Images\Weather\14.png" />
+    <Content Include="Images\Weather\15.png" />
+    <Content Include="Images\Weather\16.png" />
+    <Content Include="Images\Weather\17.png" />
+    <Content Include="Images\Weather\18.png" />
+    <Content Include="Images\Weather\19.png" />
+    <Content Include="Images\Weather\2.png" />
+    <Content Include="Images\Weather\20.png" />
+    <Content Include="Images\Weather\21.png" />
+    <Content Include="Images\Weather\22.png" />
+    <Content Include="Images\Weather\23.png" />
+    <Content Include="Images\Weather\24.png" />
+    <Content Include="Images\Weather\25.png" />
+    <Content Include="Images\Weather\26.png" />
+    <Content Include="Images\Weather\27.png" />
+    <Content Include="Images\Weather\28.png" />
+    <Content Include="Images\Weather\29.png" />
+    <Content Include="Images\Weather\3.png" />
+    <Content Include="Images\Weather\30.png" />
+    <Content Include="Images\Weather\31.png" />
+    <Content Include="Images\Weather\32.png" />
+    <Content Include="Images\Weather\33.png" />
+    <Content Include="Images\Weather\34.png" />
+    <Content Include="Images\Weather\35.png" />
+    <Content Include="Images\Weather\36.png" />
+    <Content Include="Images\Weather\37.png" />
+    <Content Include="Images\Weather\38.png" />
+    <Content Include="Images\Weather\39.png" />
+    <Content Include="Images\Weather\4.png" />
+    <Content Include="Images\Weather\40.png" />
+    <Content Include="Images\Weather\41.png" />
+    <Content Include="Images\Weather\42.png" />
+    <Content Include="Images\Weather\43.png" />
+    <Content Include="Images\Weather\44.png" />
+    <Content Include="Images\Weather\45.png" />
+    <Content Include="Images\Weather\46.png" />
+    <Content Include="Images\Weather\47.png" />
+    <Content Include="Images\Weather\5.png" />
+    <Content Include="Images\Weather\6.png" />
+    <Content Include="Images\Weather\7.png" />
+    <Content Include="Images\Weather\8.png" />
+    <Content Include="Images\Weather\9.png" />
+    <Content Include="Images\Weather\readme.txt" />
+    <Content Include="Images\zoompane.png" />
+    <Content Include="Library\LICENSE.txt" />
+    <Content Include="Markup\Base\Sounds.mcml" />
+    <Content Include="Images\ApplicationInactive.png" />
+    <Content Include="Images\Button\ButtonDisabled.png" />
+    <Content Include="Images\Button\ButtonDormant.png" />
+    <Content Include="Images\Button\ButtonLeftFocus.png" />
+    <Content Include="Images\Button\ButtonLeftFocusOverlay.png" />
+    <Content Include="Images\Button\ButtonNoFocus.png" />
+    <Content Include="Images\ButtonSelection.png" />
+    <None Include="Images\ButtonSelection2.png" />
+    <Content Include="Images\folder.png" />
+    <None Include="Images\lines.png" />
+    <Compile Include="Code\Application.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Attributes\CommentAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ConfigData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Exceptions\ConnectionIsDownException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ItemType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\KeyFile.cs" />
+    <Compile Include="Code\Launch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\ActorItemWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\AsyncImageLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\BaseModelItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\Clock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\DirectorItemWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\DisplayPreferences.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\FancyText.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\FolderChildren.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\FolderModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\Information.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\Item.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\ItemImages.cs">
+      <DependentUpon>Item.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\ItemMetadata.cs">
+      <DependentUpon>Item.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\MultiBackdrop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\PlaybackController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\Scroller.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\SizeRef.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\StringRef.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\StudioItemWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ModelItems\YahooWeather.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\MyHistoryOrientedPageSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ServiceConfigData.cs" />
+    <Compile Include="Code\ShadowTypes\Colors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ShadowTypes\Inset.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ShadowTypes\Size.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ShadowTypes\Vector3.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Updater.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\Entities\Attributes\DontClearOnForcedRefresh.cs" />
+    <Compile Include="Library\Entities\IndexFolder.cs" />
+    <Compile Include="Library\EntryPoint\EntryPointResolver.cs" />
+    <Compile Include="Library\Extensions\BinaryLineReader.cs" />
+    <Compile Include="Library\Filesystem\MBDirectoryWatcher.cs" />
+    <None Include="Library\ImageManagement\FilesystemProcessedImage.cs" />
+    <Compile Include="Library\ImageManagement\IImageCache.cs" />
+    <Compile Include="Library\ImageManagement\ImageCache.cs" />
+    <Compile Include="Library\ImageManagement\SQLiteImageCache.cs" />
+    <Compile Include="Library\Input\IsMouseActiveHooker.cs" />
+    <Compile Include="Library\Interfaces\ITrailerProvider.cs" />
+    <Compile Include="Library\Persistance\SQLiteRepository.cs" />
+    <Compile Include="Library\Registration\MBRegistration.cs" />
+    <Compile Include="Library\ServiceInteraction\IPCCommands.cs" />
+    <Compile Include="Library\ServiceInteraction\MBClientConnector.cs" />
+    <Compile Include="Library\Localization\BaseStrings.cs" />
+    <Compile Include="Library\Localization\LocalizedStrings.cs" />
+    <Compile Include="Library\Network\WebDownload.cs" />
+    <Compile Include="Library\Persistance\AbstractMember.cs" />
+    <Compile Include="Library\Persistance\MemoizingRepository.cs" />
+    <Compile Include="Library\Persistance\SkipSerializationValidationAttribute.cs" />
+    <Compile Include="Library\Persistance\XmlSettings.cs" />
+    <Compile Include="Library\Persistance\SqliteItemRepository.cs" />
+    <Compile Include="Library\Plugins\Configuration\DefaultAttribute.cs" />
+    <Compile Include="Library\Plugins\Configuration\ExtAttribute.cs" />
+    <Compile Include="Library\Plugins\Configuration\GroupAttribute.cs" />
+    <Compile Include="Library\Plugins\Configuration\HiddenAttribute.cs" />
+    <Compile Include="Library\Plugins\Configuration\ItemsAttribute.cs" />
+    <Compile Include="Library\Plugins\Configuration\LabelAttribute.cs" />
+    <Compile Include="Library\Entities\Genre.cs" />
+    <Compile Include="Library\Entities\Year.cs" />
+    <Compile Include="Library\Factories\BaseItemFactoryGeneric.cs">
+      <DependentUpon>BaseItemFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\Factories\BaseItemFactory.cs" />
+    <None Include="Library\ImageManagement\ProxyCachedRemoteImage.cs" />
+    <Compile Include="Library\Localization\LocalizedStringData.cs" />
+    <Compile Include="Library\Logging\Logger.cs" />
+    <Compile Include="Library\ParentalControl.cs" />
+    <Compile Include="Library\Plugins\BasePlugin.cs" />
+    <Compile Include="Library\Plugins\IPluginConfiguration.cs" />
+    <Compile Include="Library\Plugins\PluginConfigurationOptions.cs" />
+    <Compile Include="Library\Plugins\PluginSourceCollection.cs" />
+    <Compile Include="Library\Plugins\RemotePlugin.cs" />
+    <Compile Include="Library\Providers\FolderProviderFromXml.cs" />
+    <Compile Include="Library\Providers\LocalTrailerProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\LocalSeasonProvider.cs" />
+    <Compile Include="Library\Ratings.cs" />
+    <Compile Include="Library\ServiceInteraction\MBServiceController.cs" />
+    <Compile Include="Library\Threading\DelayedWeakReference.cs" />
+    <Compile Include="Library\UI\ExternalSplashForm.cs" />
+    <Compile Include="Library\UI\ConfigPanel.cs" />
+    <Compile Include="Library\UI\MenuManager.cs" />
+    <Compile Include="Library\UI\ResumeMenuItem.cs" />
+    <Compile Include="Library\UI\MenuItem.cs" />
+    <Compile Include="Library\UI\MenuType.cs" />
+    <Compile Include="Library\UI\ViewTheme.cs" />
+    <Compile Include="Library\Util\BreadCrumbs.cs" />
+    <Compile Include="Library\Util\CustomResourceManager.cs" />
+    <Content Include="Markup\Base\Animations.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Base\Images.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\ActivityIndicator.mcml" />
+    <Content Include="Markup\Controls\ArtistList.mcml" />
+    <Content Include="Markup\Controls\Backdrop.mcml" />
+    <Content Include="Markup\Controls\Buttons\PCIndicatorButton.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\Buttons\DirectorButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\GenreButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\ImageButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\ItemButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\LinkItem.mcml" />
+    <Content Include="Markup\Controls\Buttons\ListButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\PersonButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\PluginUpdateButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\SimpleButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\SpinImageButton.mcml" />
+    <Content Include="Markup\Controls\CheckBox.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\Buttons\HeaderButton.mcml" />
+    <Content Include="Markup\Controls\UserIndicator.mcml" />
+    <Content Include="Markup\Controls\DiamondPagination.mcml" />
+    <None Include="Markup\Controls\EdgeDetection.mcml" />
+    <Content Include="Markup\Controls\ExtendedPagination.mcml" />
+    <Content Include="Markup\Controls\InfoStrip.mcml" />
+    <Content Include="Markup\Controls\Popups\ContextMenu.mcml" />
+    <Content Include="Markup\Controls\Popups\NumberPad.mcml" />
+    <Content Include="Markup\Controls\Scrollers\FancyText.mcml" />
+    <Content Include="Markup\Controls\InfoMarquee.mcml" />
+    <Content Include="Markup\Controls\Directors.mcml" />
+    <Content Include="Markup\Controls\FocusSelector.mcml" />
+    <Content Include="Markup\Controls\GenreList.mcml" />
+    <Content Include="Markup\Controls\ItemPoster.mcml" />
+    <Content Include="Markup\Controls\LastWatched.mcml" />
+    <Content Include="Markup\Controls\ListView.mcml" />
+    <Content Include="Markup\Controls\MediaInfoPanel.mcml" />
+    <Content Include="Markup\Controls\MovieInfo.mcml" />
+    <Content Include="Markup\Controls\MPAARating.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\NowPlayingViewport.mcml" />
+    <Content Include="Markup\Controls\PINEdit.mcml" />
+    <Content Include="Markup\Controls\Pivots\Pivot.mcml" />
+    <Content Include="Markup\Controls\Pivots\PivotItem.mcml" />
+    <Content Include="Markup\Controls\Popups\PopupPlay.mcml" />
+    <Content Include="Markup\Controls\PosterItemTitle.mcml" />
+    <Content Include="Markup\Controls\PosterViewItem.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\RadioGroup.mcml" />
+    <Content Include="Markup\Controls\Scrollers\AutoScroller.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\Scrollers\PosterScroller.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\Scrollers\ScrollableText.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\Spinners\ColorSpinner.mcml" />
+    <Content Include="Markup\Controls\Spinners\SimpleSpinner.mcml" />
+    <Content Include="Markup\Controls\Spinners\SpinnerText.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Controls\StarRating.mcml" />
+    <Content Include="Markup\Controls\Summary.mcml" />
+    <Content Include="Markup\Controls\Tabs\Tab.mcml" />
+    <Content Include="Markup\Controls\Tabs\TabItem.mcml" />
+    <Content Include="Markup\Controls\TextEdit.mcml" />
+    <Content Include="Markup\Controls\TitleSet.mcml" />
+    <Content Include="Markup\Controls\ViewMenu.mcml" />
+    <Content Include="Markup\Controls\Weather.mcml" />
+    <Content Include="Markup\Controls\Writers.mcml" />
+    <Content Include="Markup\LoginPage.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\DefaultSS.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\ConfigPage.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\ExternalPlayback.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutCoverflow.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutRoot.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\LayoutThumb.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutThumbStrip.mcml" />
+    <Content Include="Markup\StylesBlackExtender.mcml" />
+    <Content Include="Markup\StylesDefaultExtender.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\FontsSmall.mcml" />
+    <Content Include="Markup\FontsDefault.mcml" />
+    <Content Include="Markup\StylesBlack.mcml" />
+    <Content Include="Markup\Themes\Default\SearchPane.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\Splash.mcml" />
+    <Content Include="Markup\Themes\Default\ParentalPINEntry.mcml" />
+    <Content Include="Markup\Themes\Default\Selectors\PageDefault.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\ViewMovieDefault.mcml" />
+    <Content Include="Markup\Themes\Default\ViewMovieMinimal.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\Selectors\PageDetailArea.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Themes\Default\LayoutDetails.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\Page.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\MovieDetailsPage.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutPoster.mcml" />
+    <Content Include="Markup\StylesDefault.mcml" />
+    <Content Include="Registration7.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>%25windir%25\eHome\McmlVerifier.exe -verbose -assemblyredirect:"$(FullyQualifiedOutputPath)" -directory:"$(ProjectDir)Markup"
+cd "$(ProjectDir)"
+"$(ProjectDir)DevInstall.cmd" /$(ConfigurationName)</PostBuildEvent>
+    <PreBuildEvent>copy "$(ProjectDir)Markup\StylesDefault.mcml" "$(TargetDir)Styles_DoNotEdit.mcml"
+copy "$(ProjectDir)Markup\FontsDefault.mcml" "$(TargetDir)Fonts_DoNotEdit.mcml"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

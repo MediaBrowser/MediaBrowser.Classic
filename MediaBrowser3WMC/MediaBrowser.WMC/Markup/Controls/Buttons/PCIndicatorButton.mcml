@@ -1,0 +1,107 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:me="Me"
+      >
+
+
+
+  <UI Name="PCIndicatorButton">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Size Name="Size" Size="25,25" />
+      <Image Name="FocusImage" Image="image://i:ButtonLeftFocus" />
+      <Image Name="BlankImage" Image="null" />
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker" />
+      
+    </Locals>
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <!--<Binding Source="[Application.Config.ParentalControlEnabled]" Target="[BoxImage.Visible]" />-->
+
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.ParentalControlUnlocked]" Value="false" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Application.UnlockPC]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.ParentalControlUnlocked]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Application.RelockPC]" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[BoxImage.Content]" Value="[FocusImage]"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[BoxImage]" Animation="animation://me:ButtonPress"/>
+        </Actions>
+      </Condition>
+
+      <Changed Source="[Application.Config.ParentalControlEnabled]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Application.Config.ParentalControlEnabled]" Value="false"/>
+          <Equality Source="[Application.Config.ParentalControlUnlocked]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[LockImg.Content]"  Value="image://i:UnLocked" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application.Config.ParentalControlEnabled]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Application.Config.ParentalControlEnabled]" Value="false"/>
+          <Equality Source="[Application.Config.ParentalControlUnlocked]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[BoxImage.Visible]"  Value="false" />
+        </Actions>
+      </Changed>
+
+    </Rules>
+    <Content>
+      <Graphic Name="BoxImage" Content="[BlankImage]" SizingPolicy="SizeToChildren" Padding="8,8,8,8" >
+        <Children>
+          <Panel >
+            <Children>
+              <Graphic Name="LockImg" Content="image://i:Locked" MaximumSize="[Size]" MinimumSize="[Size]" MaintainAspectRatio="true" ></Graphic>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+  <Animation Name="ButtonPress" Loop="0" CenterPointPercent="0.5,0.5,1.0">
+    <Keyframes>
+      <ScaleKeyframe Time="0.00" RelativeTo="Current" Interpolation="Log"/>
+      <ScaleKeyframe Time="0.08" Value="0.9,0.9,1.0"/>
+      <ScaleKeyframe Time="0.15" Value="1.0,1.0,1.0"/>
+    </Keyframes>
+  </Animation>
+
+
+
+</Mcml>

@@ -1,0 +1,129 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+      xmlns:me="Me">
+
+	<UI Name="PluginUpdateButton">
+
+
+		<Content>
+      <Panel Name="MainPanel"  >
+        <Layout>
+          <FlowLayout Orientation="Horizontal" ItemAlignment="Center" Spacing="10,10"/>
+        </Layout>
+        <Children>
+ 			    <me:GreenBallIndicator MaximumSize="40,40" />
+          <Text Color="AntiqueWhite" Font="Segoe Media Center, 16" Content="Some of your plug-ins have updates available" />
+        </Children>
+      </Panel>
+		</Content>
+
+	</UI>
+  
+  <UI Name="GreenBallIndicator">
+
+    <Properties>
+      <cor:String Name="LabelText" String="" />
+
+      <!-- Label color and font properties. -->
+      <Font Name="LabelFont" Font="Century Gothic,16"/>
+      <Color Name="LabelColor" Color="215,215,215"/>
+      <Color Name="LabelHover" Color="255,255,255"/>
+      <Color Name="LabelClicking" Color="112,112,112"/>
+
+    </Properties>
+
+    <Rules>
+      
+      <!-- make non-interactive -->
+      <Default Target="[Input.KeyInteractive]" Value="false" />
+      
+      <!-- The command description is displayed by the text box. A  -->
+      <!-- binding is used in case the description changes at       -->
+      <!-- runtime.                                                 -->
+      <Binding Source="[LabelText]" Target="[LabelShadow.Content]"/>
+      <Binding Source="[LabelText]" Target="[Label.Content]"/>
+
+    </Rules>
+
+    <Content>
+
+      <Panel Layout="Anchor">
+        <Children>
+
+          <Text Name="Label" Font="[LabelFont]" Color="[LabelColor]"/>
+
+          <Text Name="LabelShadow" Font="[LabelFont]" Color="0,0,0">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Label,0,3" Top="Label,0,3"/>
+            </LayoutInput>
+          </Text>
+
+          <Graphic Name="GreenBallLight" Content="image://me:GreenBallLight"
+                   MouseInteractive="false">
+            <Animations>
+              <Animation Type="Idle" Loop="-1">
+                <Keyframes>
+                  <AlphaKeyframe Time="0" Value="0"/>
+                  <AlphaKeyframe Time="1.3" Value="1"/>
+                  <AlphaKeyframe Time="1.7" Value="1"/>
+                  <AlphaKeyframe Time="3" Value="0"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Graphic>
+
+          <Graphic Name="GreenBallDark" Content="image://me:GreenBallDark"/>
+
+          <Graphic Name="GreenBallGlow" Content="image://me:GreenBallGlow" Alpha=".8">
+            <LayoutInput>
+              <AnchorLayoutInput Left="GreenBallLight,0,-8" Top="GreenBallLight,1"
+                                 ContributesToWidth="false" ContributesToHeight="false"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Idle" Loop="-1">
+                <Keyframes>
+                  <AlphaKeyframe Time="0" Value="0"/>
+                  <AlphaKeyframe Time="1.3" Value=".5"/>
+                  <AlphaKeyframe Time="1.7" Value=".5"/>
+                  <AlphaKeyframe Time="3" Value="0"/>
+                  <RotateKeyframe Time="0" Value="-75deg;1,0,0"/>
+                  <RotateKeyframe Time="0.001" Value="-75deg;1,0,0"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Graphic>
+
+          <Graphic Name="GreenBallShadow" Content="image://me:GreenBallShadow" Alpha=".8">
+            <LayoutInput>
+              <AnchorLayoutInput Left="GreenBallLight,0,-5" Top="GreenBallLight,1,-7"
+                                 ContributesToWidth="false" ContributesToHeight="false"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Idle" Loop="-1" CenterPointPercent=".5,.5,.5">
+                <Keyframes>
+                  <AlphaKeyframe Time="0" Value="1"/>
+                  <AlphaKeyframe Time="1.3" Value="1"/>
+                  <AlphaKeyframe Time="1.7" Value="1"/>
+                  <AlphaKeyframe Time="3" Value="1"/>
+                  <RotateKeyframe Time="0" Value="-75deg;1,0,0"/>
+                  <RotateKeyframe Time="0.001" Value="-75deg;1,0,0"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Graphic>
+
+        </Children>
+      </Panel>
+
+    </Content>
+
+  </UI>
+
+  <!-- Images -->
+
+  <Image Name="GreenBallLight" Source="resx://MediaBrowser/MediaBrowser.Resources/GreenBallLight" />
+  <Image Name="GreenBallDark" Source="resx://MediaBrowser/MediaBrowser.Resources/GreenBallDark" />
+  <Image Name="GreenBallGlow" Source="resx://MediaBrowser/MediaBrowser.Resources/GreenBallGlow" />
+  <Image Name="GreenBallShadow" Source="resx://MediaBrowser/MediaBrowser.Resources/GreenBallShadow" />
+
+</Mcml>

@@ -1,0 +1,206 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+    xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
+    xmlns:me="Me"
+    >
+
+  <UI Name="LoginPage">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Rules>
+
+      <!-- Configuration Checks & Display Setup -->
+      <Binding Source="[Application.AvailableUsers]" Target="[Repeater.Source]" />
+
+
+
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form">
+        <Children>
+          <Text Name="Title" Content="Please Select a User Profile >" Font="Segoe UI, 28" Color="color://s:FontColorLight" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,.2" Top="Parent,.1"/>
+            </LayoutInput>
+
+          </Text>
+          <Repeater Name="Repeater" DiscardOffscreenVisuals="false" Margins="20,30,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Top="Title,1,10"/>
+            </LayoutInput>
+            <Layout>
+              <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="4,4"/>
+            </Layout>
+            <Animations>
+              <Animation Type="Move">
+                <Keyframes>
+                  <PositionKeyframe Time="0" RelativeTo="Current"/>
+                  <PositionKeyframe Time="0.3" RelativeTo="Final" Interpolation="EaseIn"/>
+                </Keyframes>
+              </Animation>
+              <Animation Type="Show">
+                <Keyframes>
+                  <ScaleKeyframe Time="0" Value="0,0,0" />
+                  <ScaleKeyframe Time=".3" Value="1,1,1" Interpolation="SCurve"/>
+                </Keyframes>
+              </Animation>
+              <Animation Type="Hide">
+                <Keyframes>
+                  <ScaleKeyframe Time="0" Value="1,1,1" Interpolation="SCurve"/>
+                  <ScaleKeyframe Time="0.2" Value="0,0,0" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+            <Content>
+              <!--<Text Content="[RepeatedItem!lib:Item.Name]" Color="color://s:FontColorLight" MinimumSize="200,0" MaximumSize="200,0" />-->
+              <me:UserTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" />
+            </Content>
+          </Repeater>
+          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,0" MaximumSize="400,0" MaintainAspectRatio="true">
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </Graphic>
+          <Clip FadeSize="720" Orientation="Vertical" FadeAmount="1" ShowNear="false"
+            CenterPointPercent="0.5,0.5,0.5" Layout="Fill" >
+            <Children>
+              <ColorFill Content="DarkGray" Layout="Fill"/>
+            </Children>
+          </Clip>
+          <Graphic Content="image://i:Background" Layout="Fill"/>
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+
+  <UI Name="UserTile">
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:Item Name="Item" Item="$Required" />
+      <Size Name="IconSize" Size="120,120" />
+      <Index Name="Index" Index="null" />
+      <cor:String Name="Label" String="" />
+      <Vector3 Name="FocusZoom" Vector3="1.1,1.1,1.1" />
+      <Font Name="Font" Font="font://f:CP_ConfigItemFont" />
+      <Size Name="Size" Size="248,162" />
+      <Command Name="Command" Available="false" />
+      <Color Name="BGColor" Color="DarkBlue" />
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" />
+      <cor:String Name="LowerName" String="" />
+
+      <AnchorLayoutInput Name="TextStandardLayout" Top="Parent,1,-40" Bottom="Parent, 1,-4" Left="Parent, 0, 2" Right="Parent, 1" />
+    </Locals>
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true" />
+      <Default Target="[ItemPoster.Alpha]" Value=".9" />
+      <Binding Source="[Item.PrimaryImage]" Target="[ItemPoster.Content]" />
+      <Default Target="[Title.Content]" Value="[Label]">
+        <Conditions>
+          <Equality Source="[Label]" ConditionOp="NotEquals" Value=""/>
+        </Conditions>
+      </Default>
+      <Default Target="[Title.Content]" Value="[Item.Name]">
+        <Conditions>
+          <Equality Source="[Label]" Value=""/>
+        </Conditions>
+        <Transformer>
+          <FormatTransformer ToLower="true"/>
+        </Transformer>
+      </Default>
+
+      <Changed Source="[Input.KeyFocus]">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Bg.Scale]" Value="[FocusZoom]" />
+          <!--<Set Target="[TileShadow.Visible]" Value="true" />-->
+          <Set Target="[ItemPoster.Alpha]" Value="1" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Command.Invoke]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="false" />
+          <IsValid Source="[Item]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.SelectAction]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <Panel Name="Bg" Layout="Anchor" MinimumSize="[Size]" MaximumSize="[Size]" Scale="1,1,1" CenterPointPercent="0.5,0.5,0.5">
+        <Children>
+          <Panel Name="TextArea" Layout="Form" LayoutInput="[TextStandardLayout]" >
+            <Children>
+              <Text Name="Title" Content="[Label]" Font="[Font]" Color="color://s:FontColorLight" HorizontalAlignment="Center" WordWrap="true" MaximumLines="2" FadeSize="150" >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Parent, 0, 2" Horizontal="Near" />
+                </LayoutInput>
+
+              </Text>
+            </Children>
+          </Panel>
+          <Clip FadeSize="20" Orientation="Vertical" ShowFar="false" Alpha=".45" MaximumSize="0,45">
+            <LayoutInput>
+              <AnchorLayoutInput Bottom="Parent, 1" Horizontal="Fill" />
+            </LayoutInput>
+            <Children>
+              <ColorFill ColorFilter="70,70,100" Layout="Fill" />
+            </Children>
+          </Clip>
+          <Graphic Name="ItemPoster" Content="image://i:BlankImage"  MaintainAspectRatio="true" MaximumSize="[IconSize]">
+            <LayoutInput>
+              <AnchorLayoutInput Top="Parent, 0"/>
+            </LayoutInput>
+          </Graphic>
+          <ColorFill Name="TileBg" Content="[BGColor]" Layout="Fill" />
+          <!--<Graphic Name="TileShadow" Content="image://me:Frame" MaintainAspectRatio="true" ColorFilter="White" CenterPointPercent="0.5,0.5,0.5" Alpha=".8"  Visible="false">
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0,-1" Right="Parent,1,1" Top="Parent,0,-1" Bottom="Parent,1,1" ContributesToHeight="false" ContributesToWidth="false" />
+            </LayoutInput>
+          </Graphic>-->
+          <Panel Layout="Fill" />
+        </Children>
+        <Animations>
+          <Animation Type="Scale">
+            <Keyframes>
+              <ScaleKeyframe Time="0" Interpolation="Linear" RelativeTo="Current" />
+              <ScaleKeyframe Time="0.4" Interpolation="Linear" RelativeTo="Final" />
+            </Keyframes>
+          </Animation>
+        </Animations>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

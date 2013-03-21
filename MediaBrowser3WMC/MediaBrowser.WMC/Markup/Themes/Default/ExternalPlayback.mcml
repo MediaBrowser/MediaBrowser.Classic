@@ -1,0 +1,96 @@
+<Mcml   xmlns="http://schemas.microsoft.com/2006/mcml"
+	      xmlns:cor="assembly://MSCorLib/System"
+        xmlns:a="assembly://MediaBrowser/MediaBrowser"
+        xmlns:s="file://Styles_DoNotEdit.mcml"
+        xmlns:f="file://Fonts_DoNotEdit.mcml"
+        xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+        xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+      >
+
+	<UI Name="ExternalPlayback">
+
+		<Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ShortcutHandler Shortcut="FastForward" HandlerStage="Bubbled" Handle="true" Name="FastForward"/>
+      <ShortcutHandler Shortcut="Rewind" HandlerStage="Bubbled" Handle="true" Name="Rewind"/>
+      <ShortcutHandler Shortcut="SkipForward" HandlerStage="Bubbled" Handle="true" Name="SkipForward"/>
+      <ShortcutHandler Shortcut="SkipBack" HandlerStage="Bubbled" Handle="true" Name="SkipBack"/>
+      <ShortcutHandler Shortcut="Pause" HandlerStage="Bubbled" Handle="true" Name="Pause"/>
+      <ShortcutHandler Shortcut="Play" HandlerStage="Bubbled" Handle="true" Name="Play"/>
+      <ShortcutHandler Shortcut="Stop" HandlerStage="Bubbled" Handle="true" Name="Stop"/>
+      <Command Name="DoNothing"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[FastForward.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="FastForward" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Rewind.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="Rewind" />
+        </Actions>
+      </Changed>
+      <Changed Source="[SkipForward.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="SkipForward" />
+        </Actions>
+      </Changed>
+      <Changed Source="[SkipBack.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="SkipBack" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Pause.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="Pause" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Play.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="Play" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Stop.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.ProcessCommand]" command="Stop" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+		<Content>
+      <Panel Layout="Center">
+        <Children>
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+          </Clip>
+
+
+          <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+            <Children>
+              <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                <Children>
+                  <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                </Children>
+              </Clip>
+              <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+            </Children>
+          </Panel>
+
+          <sb:SimpleButton  Name="Done" Text="Done" Command="[DoNothing]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
+
+        </Children>
+      </Panel>
+    </Content>
+
+
+	</UI>
+
+</Mcml>

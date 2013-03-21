@@ -1,0 +1,18 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      >
+
+  <!--
+  <Sound Name="Select"          Source="resx://McmlSamples/McmlSamples.Resources/Select" />
+  <Sound Name="Miniselect"      Source="resx://McmlSamples/McmlSamples.Resources/Miniselect" />
+  <Sound Name="Focus"           Source="resx://McmlSamples/McmlSamples.Resources/Focus" />
+  <Sound Name="Error"           Source="resx://McmlSamples/McmlSamples.Resources/Error" />
+  <Sound Name="PageTransition"  Source="resx://McmlSamples/McmlSamples.Resources/PageTransition" />
+  -->
+
+  
+
+  <Sound Name="Select"          Source="res://ehres!MiniSelect_a.wav" />
+  <Sound Name="Miniselect"      Source="res://ehres!MiniSelect_a.wav" />
+  <Sound Name="Focus"           Source="res://ehres!Focus_a.wav" />
+  
+</Mcml>

@@ -1,0 +1,89 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
+    xmlns:s="file://Styles_DoNotEdit.mcml"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+      xmlns:np="resx://MediaBrowser/MediaBrowser.Resources/NumberPad"
+      >
+
+  <UI Name="ParentalPINEntry">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <cor:String Name="PromptString" cor:String="Please Enter PIN" />
+    </Properties>
+
+    <Locals>
+      <EditableText Name="PIN" Value=""/>
+      <Command Name="PINEntered" />
+      <Command Name="ShowNumPad" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[PIN.Value]" Value="" />
+      <Default Target="[MyText.Content]" Value="[PromptString]"/>
+      <!--if not called by us (user used "back" to get to us) exit immediately-->
+      <Condition Source="[Application.RequestingPIN]" SourceValue="false">
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Condition>
+     <Changed Source="[PINEntered.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.ParentalPINEntered]" />
+        </Actions>
+      </Changed>
+      <Binding Source="[PIN.Value]" Target="[Application.CustomPINEntry]">
+      </Binding>
+      <Changed Source="[ShowNumPad.Invoked]" >
+        <Actions>
+          <Set Target="[NumberPad.Visible]" Value="true"/>
+          <Set Target="[ShowPadBtn.Visible]" Value="false"/>
+          <Invoke Target="[NumberPad.NavigateInto]" />
+        </Actions>
+      </Changed>
+      
+    </Rules>
+
+    <Content>
+      <Panel Layout="Form" >
+        <Children>
+          <Text Name="MyText" Color="White" Font="Calibri, 24">
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,.40" Horizontal="Center"/>
+            </LayoutInput>  
+          </Text>
+          <Panel Name="PINPanel" >
+            <Layout>
+              <FlowLayout Orientation="Horizontal" />
+            </Layout>
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,.50" Horizontal="Center"/>
+            </LayoutInput>
+            <Children>
+              <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
+              </pe:PINEdit>
+              <sb:SimpleButton Name="ShowPadBtn" Text="1,2,3" Size="50,50" Font="Segoe Media Center, 8" Command="[ShowNumPad]" />
+            </Children>
+            
+          </Panel>
+          <np:NumberPad  Name="NumberPad" Theme="[Application.Config.Theme]" EditBox="[PIN]" Visible="false" >
+            <LayoutInput>
+              <FormLayoutInput Top="PINPanel,1,30"/>
+            </LayoutInput>
+          </np:NumberPad>
+        
+        
+        </Children>
+      </Panel>
+
+      
+    </Content>
+
+  </UI>
+
+</Mcml>

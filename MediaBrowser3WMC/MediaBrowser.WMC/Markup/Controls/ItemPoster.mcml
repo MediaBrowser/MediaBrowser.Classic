@@ -1,0 +1,27 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  >
+
+	<UI Name="ItemPoster">
+		<Properties>
+			<lib:Item Name="Model" Item="$Required"/>
+			<lib:Item Name="ModelFast" Item="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Model.PrimaryImage]" Target="[Poster.Content]" />
+		</Rules>
+		<Content>
+			<Panel Layout="Anchor">
+				<Children>
+					<Graphic Name="Poster" MaintainAspectRatio="true">
+						<LayoutInput>
+							<AnchorLayoutInput Horizontal="Center" Vertical="Near"/>
+						</LayoutInput>
+					</Graphic>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+</Mcml>

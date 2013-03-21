@@ -1,0 +1,35 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  >
+
+  <UI Name="Writers">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+      <Font Name="TitleFont" Font="$Required"/>
+    </Properties>
+
+
+
+    <Rules>
+      <Binding Source="[Item.WritersString]" Target="[Writers.Content]"/>
+      <Condition Source="[Item.Writers.Count]" ConditionOp="GreaterThan" SourceValue="0" Target="[MainPanel.Visible]" Value="true"  />
+    </Rules>
+
+    <Content>
+      <Panel Name="MainPanel" Layout="HorizontalFlow"  Visible="false">
+        <Children>
+          <Text Content="[Application.LocalStrings.#WrittenByDetail!cor:String]" Font="[TitleFont]" Color="color://s:FontColorLight" />
+          <Text Name="Writers" Font="[Font]" WordWrap="true" Color="color://s:FontColorLight" Content="[Item.DirectorString]"/>
+        </Children>
+      </Panel>
+    </Content>
+
+  </UI>
+
+</Mcml>

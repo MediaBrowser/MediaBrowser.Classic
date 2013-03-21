@@ -1,0 +1,97 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:me="Me">
+
+  <UI Name="SimpleSpinner">
+
+    <Properties>
+      <IValueRange Name="Model" IValueRange="$Required" />
+      <Color Name="BackgroundColor" Color="Transparent" />
+      <FormatTransformer Name="LabelTransformer" Format="{0}" />
+      <Font Name="Font" Font="$Required"/>
+		  <Font Name="ValueFont" Font="$Required"/>
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      <cor:String Name="Label" String="" />
+      <EditableText Name="FocusItem" />
+      <Size Name="LabelMinSize" Size="200,0"/>
+      <Size Name="ValueMinSize" Size="150,35"/>
+    </Properties>
+
+    <Locals>
+      <InvokeCommand Name="Previous" Target="[Model.PreviousValue]" />
+      <InvokeCommand Name="Next" Target="[Model.NextValue]" />
+      <cor:Boolean Name="HasFocus" />
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Model.Value]" Target="[Value.Content]" Transformer="[LabelTransformer]" />
+      <Binding Source="[Model.HasNextValue]" Target="[Next.Available]"/>
+      <Binding Source="[Model.HasPreviousValue]" Target="[Previous.Available]"/>
+
+      <Condition Source="[Model.HasPreviousValue]" ConditionOp="Equals" SourceValue="false">
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[btnNext.NavigateInto]" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Model.HasNextValue]" ConditionOp="Equals" SourceValue="false">
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[btnPrevious.NavigateInto]" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[FocusItem.Value]" Value="[Label]" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="true" Target="[HasFocus]" Value="[Input.DeepKeyFocus]" />
+      <Condition Source="[Input.DeepMouseFocus]" SourceValue="true" Target="[HasFocus]" Value="[Input.DeepMouseFocus]" />
+
+    </Rules>
+
+    <Content>
+      <Panel Navigation="Row">
+        <Layout>
+          <FlowLayout Orientation="Horizontal" />
+        </Layout>
+        <Children>
+
+          <Text Name="Text" Content="[Label]" Font="[Font]" Color="[Color]" MinimumSize="[LabelMinSize]" />
+
+          <!-- Previous button -->
+          <vm:ImageBtn Name="btnPrevious" Focused="image://i:DecrementFocus"
+                       NonFocused="image://i:DecrementNoFocus"
+                       Command="[Previous]"/>
+
+          <!-- Next button -->
+          <vm:ImageBtn Name="btnNext" Focused="image://i:IncrementFocus"
+                       NonFocused="image://i:IncrementNoFocus"
+                       Command="[Next]"/>
+
+          <!-- Current value -->
+          <ColorFill Name="Background" Content="Transparent" MinimumSize="[ValueMinSize]" MaximumSize="175,35" Padding="5,0,0,5">
+            <Children>
+              <Text Name="Value" Font="[ValueFont]" Color="color://s:FontColorLight" />
+            </Children>
+          </ColorFill>
+
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

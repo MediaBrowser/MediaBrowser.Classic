@@ -1,0 +1,1235 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://mscorlib/System"
+      xmlns:proxy ="assembly://ehiProxy/ehiProxy"
+      xmlns:me = "Me"
+      >
+  
+  
+  <UI Name="ExtendedPagination">
+    <Properties>
+      <cor:Single Name="Value" Single="0"/>
+      <cor:Single Name="MaxPages" Single="0"/>
+    </Properties>
+    <Locals>
+      <Color Name="EmptyStar" Color="Gray" />
+      <Color Name="FullStar"  Color="White" />
+      <Font Name="Font" Font="Segoe UI SemiBold, 16" />
+    </Locals> 
+    <Rules>
+      
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="true"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="2"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[FullStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="2"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="3"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[FullStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="3"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="4"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[FullStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="4"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[FullStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="5"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="6"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[FullStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="6"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="8"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[FullStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="8"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="9"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[FullStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="9"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="10"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[FullStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="10"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="11"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[FullStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="11"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="13"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[FullStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="13"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="14"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[FullStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="14"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="15"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[FullStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="15"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="16"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[FullStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="16"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="18"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[FullStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="18"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="19"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[FullStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="19"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="20"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[FullStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="20"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="21"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[FullStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="21"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="23"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[FullStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="23"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="24"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[FullStar]"/>
+          <Set Target="[T20.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="24"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T6.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T7.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T8.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T9.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T10.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T11.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T12.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T13.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T14.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T15.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T16.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T17.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T18.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T19.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T20.Color]" Value="[FullStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="0"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="2"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="false"/>
+          <Set Target="[T3.Visible]" Value="false"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+          <Set Target="[T6.Visible]" Value="false"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="2"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="3"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="false"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+          <Set Target="[T6.Visible]" Value="false"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="3"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="4"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+          <Set Target="[T6.Visible]" Value="false"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="4"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+          <Set Target="[T6.Visible]" Value="false"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="5"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="6"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="false"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="6"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="8"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="false"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="8"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="9"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="false"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="9"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="10"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="false"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="10"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="11"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="false"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="11"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="13"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="false"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="13"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="14"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="false"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="14"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="15"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="false"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="15"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="16"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="false"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="16"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="18"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="false"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="18"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="19"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="false"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="19"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="20"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="true"/>
+          <Set Target="[T17.Visible]" Value="false"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="20"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="21"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="true"/>
+          <Set Target="[T17.Visible]" Value="true"/>
+          <Set Target="[T18.Visible]" Value="false"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="21"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="23"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="true"/>
+          <Set Target="[T17.Visible]" Value="true"/>
+          <Set Target="[T18.Visible]" Value="true"/>
+          <Set Target="[T19.Visible]" Value="false"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="23"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="24"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="true"/>
+          <Set Target="[T17.Visible]" Value="true"/>
+          <Set Target="[T18.Visible]" Value="true"/>
+          <Set Target="[T19.Visible]" Value="true"/>
+          <Set Target="[T20.Visible]" Value="false"/>
+        </Actions>
+      </Changed>      
+      
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="24"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+          <Set Target="[T6.Visible]" Value="true"/>
+          <Set Target="[T7.Visible]" Value="true"/>
+          <Set Target="[T8.Visible]" Value="true"/>
+          <Set Target="[T9.Visible]" Value="true"/>
+          <Set Target="[T10.Visible]" Value="true"/>
+          <Set Target="[T11.Visible]" Value="true"/>
+          <Set Target="[T12.Visible]" Value="true"/>
+          <Set Target="[T13.Visible]" Value="true"/>
+          <Set Target="[T14.Visible]" Value="true"/>
+          <Set Target="[T15.Visible]" Value="true"/>
+          <Set Target="[T16.Visible]" Value="true"/>
+          <Set Target="[T17.Visible]" Value="true"/>
+          <Set Target="[T18.Visible]" Value="true"/>
+          <Set Target="[T19.Visible]" Value="true"/>
+          <Set Target="[T20.Visible]" Value="true"/>
+        </Actions>
+      </Changed>
+      
+    </Rules>
+
+    <Content>
+      <Panel Layout="HorizontalFlow">
+        <Children>
+          <Panel Name="Stars" Visible="true">
+            <Layout>
+              <FlowLayout Spacing="2,2" Orientation="Horizontal"/>
+            </Layout>
+            <Children>
+              <Text Name="T1" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T2" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T3" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T4" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T5" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T6" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T7" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T8" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T9" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T10" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T11" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T12" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T13" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T14" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T15" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T16" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T17" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T18" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T19" Content="●" Font="[Font]" Color="Gray" />
+              <Text Name="T20" Content="●" Font="[Font]" Color="Gray" />
+            </Children>
+          </Panel>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

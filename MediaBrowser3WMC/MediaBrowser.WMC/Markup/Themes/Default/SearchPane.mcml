@@ -1,0 +1,176 @@
+<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+	    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:te="resx://MediaBrowser/MediaBrowser.Resources/TextEdit"
+      xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+      xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+      xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+  	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+  	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
+      >
+
+  <UI Name="SearchPane">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+      <lib:Ratings Name="Ratings" />
+
+      <!-- Coloring -->
+      <Color Name="HeadingColor" Color="AliceBlue"/>
+      <!--<Color Name="GradientColor" Color="200,0,0,0"/>
+      <Color Name="LineColor" Color="200,200,200"/>-->
+      <Color Name="GradientColor" Color="color://s:Search_GradientColor"/>
+      <Color Name="LineColor" Color="color://s:Search_LineColor"/>
+      <!-- End Coloring-->
+    </Properties>
+
+    <Locals>
+      <EditableText Name="SearchValue"/>
+      <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
+      <Command Name="Search"/>
+      <Command Name="OSK"/>
+      <addin:AddInHost Name="AddInHost" />
+      <BooleanChoice Name="IncludeNested" />
+      <BooleanChoice Name="UnwatchedOnly" />
+
+      <Choice Name="RatingsStrings" Options="[Ratings.ToStrings]" />
+      <Choice Name="RatingsValues" Options="[Ratings.ToValues]" />
+      <Choice Name="RatingDirection">
+        <Options>
+          <cor:String String="[Application.LocalStrings.#Lower!cor:String]" />
+          <cor:String String="[Application.LocalStrings.#Higher!cor:String]" />
+        </Options>
+      </Choice>
+      <Choice Name="RatingDirectionValues">
+        <Options>
+          <cor:Int32 Int32="1" />
+          <cor:Int32 Int32="-1" />
+        </Options>
+      </Choice>
+    </Locals>
+
+    <Rules>
+      <Default Target="[IncludeNested.Value]" Value="true" />
+      <Changed Source="[Back.Invoked]" >
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <!--Bring up keyboard-->
+      <Changed Source="[OSK.Invoked]" >
+        <Actions>
+          <Invoke
+                  Target="[AddInHost.MediaCenterEnvironment.ShowOnscreenKeyboard]"
+                  editableText="[SearchValue]"
+                  passwordMasked="false"
+                  maxLength="50"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Search.Invoked]" >
+        <Conditions>
+          <IsValid Source="[Application.CurrentFolderModel]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Application.CurrentFolderModel.Search]"
+                  searchValue="[SearchValue.Value]"
+                  includeSubs="[IncludeNested.Value]"
+                  unwatchedOnly="[UnwatchedOnly.Value]"
+                  rating="[RatingsValues.Chosen!cor:Int32]"
+                  ratingFactor="[RatingDirectionValues.Chosen!cor:Int32]"
+                  />
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[RatingsStrings.ChosenIndex]" Target="[RatingsValues.ChosenIndex]" />
+      <Binding Source="[RatingDirection.ChosenIndex]" Target="[RatingDirectionValues.ChosenIndex]" />
+
+    </Rules>
+
+    <Content>
+      <Panel Layout="Form" Navigation="ContainAll">
+        <Children>
+          <Text Content="[Application.LocalStrings.#Search!cor:String]" Alpha=".55" Color="AliceBlue" Font="Segoe Media Center, 32" >
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,0,10" Left="Title,0"/>
+            </LayoutInput>
+          </Text>
+          
+          <Panel Name="Title" Layout="HorizontalFlow">
+            <Layout>
+              <FlowLayout Orientation="Horizontal"/>
+            </Layout>
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,0,80" Right="Parent,0.5, -10" />
+            </LayoutInput>
+            <Children>
+              <te:TextEdit Name="SearchField" Label="[Application.LocalStrings.#TitleContains!cor:String]" EditableText="[SearchValue]" MaximumSize="450,0" EditSize="250,34" Font="font://f:SE_DefaultFont" MaxChars="50" />
+              <vm:ImageBtn Name="OSKBtn" Command="[OSK]" Focused="image://i:KeyFocus" NonFocused="image://i:Key"  />              
+            </Children>
+          </Panel>
+
+          <Panel Layout="VerticalFlow">
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,0,55" Left="Parent, 0.5, 20" />
+            </LayoutInput>
+            <Children>
+              <cb:CheckBox Name="Nested" Label="[Application.LocalStrings.#IncludeNested!cor:String]" Checked="[IncludeNested]" Font="font://f:SE_DefaultFont" />
+              <cb:CheckBox Name="Unwatched" Label="[Application.LocalStrings.#UnwatchedOnly!cor:String]" Checked="[UnwatchedOnly]" Font="font://f:SE_DefaultFont" />
+              <Panel Layout="HorizontalFlow">
+                <Children>
+                  <st:VerticalSpinnerText Model="[RatingsStrings]" Label="[Application.LocalStrings.#FilterByRated!cor:String]" Color="color://s:FontColorMedium" Font="font://f:SE_DefaultFont" LabelMinSize="160,0" ValueMinSize="90,0" ValueFont="font://f:SE_DefaultFont" DefaultString="[Application.LocalStrings.#Any!cor:String]"  ControlsMargin="175,0,0,0" />
+                  <st:VerticalSpinnerText Model="[RatingDirection]" Label="[Application.LocalStrings.#Or!cor:String]" Color="color://s:FontColorMedium" Font="font://f:SE_DefaultFont" LabelMinSize="35,0" ValueMinSize="90,0" ValueFont="font://f:SE_DefaultFont" DefaultString="[Application.LocalStrings.#Lower!cor:String]" ControlsMargin="40,0,0,0"/>    
+                </Children>
+              </Panel>              
+            </Children>
+          </Panel>
+
+
+          <Clip FadeSize="50" Orientation="Vertical" FadeAmount="1" 
+            CenterPointPercent="0.5,0.5,0.5">
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,0,55" Left="Title, 1, 10" Bottom="Parent, 1, -75" />
+            </LayoutInput>
+            <Children>
+              <ColorFill Content="[LineColor]" Layout="Fill" MaximumSize="2,0"/>
+            </Children>
+          </Clip>
+
+          
+          <Panel Name="ButtonPanel" Layout="HorizontalFlow" Navigation="PreferFocusOrder">
+            <Layout>
+              <FlowLayout Orientation="Horizontal" StripAlignment="Center"/>
+            </Layout>
+            <LayoutInput>
+              <AnchorLayoutInput Top="Parent, 0, 150" Left="Title, 0" Right="Title, 1" />
+            </LayoutInput>
+            <Children>
+              <Panel FocusOrder="1"></Panel>
+              <sb:SimpleButton Name="CancelButton" Text="[Application.LocalStrings.#Cancel!cor:String]" FocusOrder="10" Size="150,50" Font="font://f:CP_ButtonFont" Command="[Close]" Margins="0,0,30,0" />
+              <sb:SimpleButton Name="SearchButton" Text="[Application.LocalStrings.#Search!cor:String]" FocusOrder="1" Size="150,50" Font="font://f:CP_ButtonFont" Command="[Search]" />
+            </Children>
+          </Panel>
+
+          <Clip FadeSize="50" Orientation="Vertical" FadeAmount="1" ShowNear="false"
+            CenterPointPercent="0.5,0.5,0.5" Layout="Fill" >
+            <Children>
+              <ColorFill Content="[GradientColor]" Layout="Fill"/>
+            </Children>
+          </Clip>
+
+        </Children>
+      </Panel>
+
+    </Content>
+
+  </UI>
+
+</Mcml>

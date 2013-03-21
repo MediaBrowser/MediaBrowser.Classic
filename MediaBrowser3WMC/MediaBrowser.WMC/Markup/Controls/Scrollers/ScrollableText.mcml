@@ -1,0 +1,140 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:me="Me">
+
+
+	<UI Name="ScrollableText">
+
+		<Properties>
+			<cor:String Name="Text" String="" />
+			<Font Name="Font" Font="$Required"/>
+			<Color Name="Color" Color="LightBlue"/>
+			<Color Name="FocusColor" Color="White"/>
+			<Inset Name="ImagePadding" Inset="0,0,0,0"/>
+			<Image Name="FocusImage" Image="image://i:BlankImage"/>
+		</Properties>
+		<Locals>
+			<ScrollingHandler Name="ScrollingHandler" HandleDirectionalKeys="true"/>
+			<ScrollingData Name="ScrollingData" />
+			<Command Name="ScrollUpCommand" />
+			<Command Name="ScrollDownCommand" />
+		</Locals>
+
+		<Rules>
+
+			<Changed Source="[Text]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Text.Length]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[MainPanel.Visible]" Value="false"/>
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Text]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Text.Length]" ConditionOp="NotEquals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[MainPanel.Visible]" Value="true"/>
+          <Invoke Target="[ScrollingData.Home]" ></Invoke>
+				</Actions>
+			</Changed>
+
+
+			<Binding Source="[Text]" Target="[TextVal.Content]" />
+			<Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[TextVal.Color]" Value="[FocusColor]"/>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[ImagePanel.Content]" Value="[FocusImage]"/>
+
+
+
+			<Changed Source="[ScrollUpCommand.Invoked]">
+				<Actions>
+					<Invoke Target="[ScrollingData.ScrollUp]"/>
+				</Actions>
+			</Changed>
+			<Changed Source="[ScrollDownCommand.Invoked]">
+				<Actions>
+					<Invoke Target="[ScrollingData.ScrollDown]"/>
+				</Actions>
+			</Changed>
+
+			<Binding Source="[ScrollingData.CurrentPage]" Target="[CurrentPage.Content]">
+				<Transformer>
+					<FormatTransformer Format="{0:F0}"/>
+				</Transformer>
+			</Binding>
+
+			<Binding Source="[ScrollingData.TotalPages]" Target="[TotalPages.Content]">
+				<Transformer>
+					<FormatTransformer Format="{0:F0}"/>
+				</Transformer>
+			</Binding>
+
+			<Rule>
+				<Conditions>
+					<Equality Source="[ScrollingData.TotalPages]" ConditionOp="LessThanOrEquals" Value="1" />
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollInfo.Visible]" Value="false" />
+				</Actions>
+			</Rule>
+
+		</Rules>
+
+		<Content>
+			<Panel Name="MainPanel" Layout="Dock" >
+				<Children>
+					<Graphic Content="image://i:BlankImage" Name="ImagePanel" MouseInteractive="true" Layout="Form" Padding="[ImagePadding]" >
+						<LayoutInput>
+							<DockLayoutInput Position="Client"/>
+						</LayoutInput>
+						<Children>
+							<Scroller Orientation="Vertical" FadeSize="-5"  ScrollingData="[ScrollingData]" >
+								<LayoutInput>
+									<AnchorLayoutInput Horizontal="Fill" ContributesToHeight="true" Vertical="Near" />
+								</LayoutInput>
+								<Children>
+									<Text Name="TextVal" Color="[Color]" Font="[Font]" WordWrap="true" Content="[Text]"
+                        Padding="0,0,0,50">
+										<Animations>
+											<Animation Type="Move">
+												<Keyframes>
+													<PositionKeyframe Time="0" Value="0,0,0" RelativeTo="Current" Interpolation="Exp"/>
+													<PositionKeyframe Time=".1" Value="0,0,0"/>
+												</Keyframes>
+											</Animation>
+										</Animations>
+									</Text>
+                  
+								</Children>
+							</Scroller>
+						</Children>
+					</Graphic>
+					<Panel Name="ScrollInfo" Visible="true"  >
+						<LayoutInput>
+							<DockLayoutInput Position="Bottom" Alignment="Far" />
+						</LayoutInput>
+						<Children>
+							<Panel Layout="HorizontalFlow" Margins="0,5,0,0">
+								<Children>
+									<Text Name="CurrentPage" Font="[Font]" Color="[Color]" />
+									<Text Content="|" Font="[Font]" Color="[Color]" />
+									<Text Name="TotalPages"  Font="[Font]" Color="[Color]" />
+								</Children>
+							</Panel>
+
+						</Children>
+					</Panel>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+  
+</Mcml>

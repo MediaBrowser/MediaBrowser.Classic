@@ -1,0 +1,106 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
+      xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+  	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me">
+
+  <UI Name="SpinnerText" BaseUI="ss:SimpleSpinner">
+    <Properties>
+      <cor:String Name="DefaultString" String="Default"/>
+      <Choice Name="Model" Choice="$Required" />
+    </Properties>
+
+    <Locals>
+      <cor:Boolean Name="InitialFocusSet" Boolean="false"/>
+      <Timer Name="CheckInitialFocus" Interval="20" Enabled="false"/>
+    </Locals>
+
+    <Rules>
+      <Default Target="[Model.Default]"  Value="[DefaultString]" />
+      <!--<Default Target="[Background.Content]"  Value="SlateBlue" />-->
+
+      <!-- Set timer to check that we succeeded -->
+      <Rule>
+        <Conditions>
+          <Equality Source="[InitialFocusSet]" Value="false"/>
+          <IsValid Source="[DefaultString]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[InitialFocusSet]" Value="true"/>
+          <Set Target="[CheckInitialFocus.Enabled]" Value="true"/>
+        </Actions>
+      </Rule>
+
+      <!-- If focus isn't on the right item, move to the next position -->
+      <Changed Source="[CheckInitialFocus.Tick]">
+        <Conditions>
+          <Equality Source="[Model.Chosen!cor:String]" ConditionOp="NotEquals" Value="[DefaultString]"/>
+          <Equality Source="[Model.HasNextValue]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Model.NextValue]" InvokePolicy="Synchronous" />
+        </Actions>
+      </Changed>
+
+      <!-- Shutdown the timer object once item is found -->
+      <Changed Source="[CheckInitialFocus.Tick]">
+        <Conditions>
+          <Equality Source="[Model.Chosen!cor:String]" ConditionOp="Equals" Value="[DefaultString]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[CheckInitialFocus.Enabled]" Value="false"/>
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+  </UI>
+
+
+  <UI Name="VerticalSpinnerText" BaseUI="me:SpinnerText">
+    <Properties>
+      <Inset Name="ControlsMargin" Inset="80,0,0,0" />
+    </Properties>
+    <Content>
+      <Panel Layout="VerticalFlow">
+        <Children>
+          
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Text Name="Text" Content="[Label]" Font="[Font]" Color="[Color]" MinimumSize="[LabelMinSize]" />
+          
+              <!-- Current value -->
+              <ColorFill Name="Background" Content="Transparent" MinimumSize="[ValueMinSize]" MaximumSize="175,35" Padding="5,0,0,5">
+                <Children>
+                  <Text Name="Value" Font="[ValueFont]" Color="color://s:FontColorLight" />
+                </Children>
+              </ColorFill>
+
+            </Children>
+          </Panel>
+
+          <Panel Name="Controls" Layout="HorizontalFlow" Margins="[ControlsMargin]">
+            <Children>
+              <!-- Previous button -->
+              <vm:ImageBtn Name="btnPrevious" Focused="image://i:DecrementFocus"
+                           NonFocused="image://i:DecrementNoFocus"
+                           Command="[Previous]"/>
+
+              <!-- Next button -->
+              <vm:ImageBtn Name="btnNext" Focused="image://i:IncrementFocus"
+                           NonFocused="image://i:IncrementNoFocus"
+                           Command="[Next]"/>
+
+            </Children>
+          </Panel>
+          
+        </Children>
+      </Panel>
+      
+    </Content>
+  </UI>
+
+</Mcml>

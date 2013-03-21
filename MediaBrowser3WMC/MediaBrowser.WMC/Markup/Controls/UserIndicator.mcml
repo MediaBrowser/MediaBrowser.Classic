@@ -1,0 +1,47 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:cor="assembly://MSCorLib/System"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:me="Me">
+
+  <UI Name="UserIndicator">
+    
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <Color Name="OverlayColor" Color="White"/>
+      <Font Name="Font" Font="Segoe UI, 18"/>
+    </Properties>
+    <Locals>
+      <Command Name="DoAction"/>
+
+    </Locals>
+    <Rules>
+      <Binding Source="[Application.CurrentUser.PrimaryImage]" Target="[UserButton.Icon]" />
+      <Binding Source="[Application.CurrentUser.Name]" Target="[UserButton.Text]" />
+
+      <Changed Source="[DoAction.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.Logout]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    
+    <Content>
+      <Panel Name="MainPanel" MaximumSize="160,60" Layout="HorizontalFlow" CenterPointPercent="0.5,0.5,0.5" Padding="2,2,2,2" Visible="true">
+        <Children>
+          <ib:ImageButton Name="UserButton" Text="[Application.CurrentUser.Name]" Color="color://s:FontColorMedium" Command="[DoAction]"
+                          Icon="[Application.CurrentUser.PrimaryImage]" 
+                          Font="[Font]" DisplayText="true" MinSize="150,50" Visible="true"/>
+        </Children>
+      </Panel>
+    </Content>
+    
+  </UI>
+
+  <!-- Images -->
+
+  <Image Name="Gears" Source="resx://MediaBrowser/MediaBrowser.Resources/Gears" />
+
+</Mcml>

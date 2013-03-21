@@ -1,0 +1,210 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://mscorlib/System"
+      xmlns:proxy ="assembly://ehiProxy/ehiProxy"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:me = "Me"
+      >
+
+  
+
+  <UI Name="StarRating">
+    <Properties>
+      <cor:Single Name="Value" Single="0"/>
+      <Size Name="Size" Size="0,25"/>
+    </Properties>
+    <Locals>
+      <Image Name="EmptyStar" Image="image://i:StarEmpty" />
+      <Image Name="HalfStar"  Image="image://i:StarHalf" />
+      <Image Name="FullStar"  Image="image://i:StarFull" />
+    </Locals>
+    <Rules>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="true"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="1"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[HalfStar]"/>
+          <Set Target="[Star2.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star3.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="1"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="2"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star3.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="2"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="3"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[HalfStar]"/>
+          <Set Target="[Star3.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="3"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="4"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="4"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[HalfStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="5"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="6"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[FullStar]"/>
+          <Set Target="[Star4.Content]" Value="[EmptyStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="6"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="7"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[FullStar]"/>
+          <Set Target="[Star4.Content]" Value="[HalfStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="7"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="8"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[FullStar]"/>
+          <Set Target="[Star4.Content]" Value="[FullStar]"/>
+          <Set Target="[Star5.Content]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="8"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="9"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[FullStar]"/>
+          <Set Target="[Star4.Content]" Value="[FullStar]"/>
+          <Set Target="[Star5.Content]" Value="[HalfStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="9"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="10"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Star1.Content]" Value="[FullStar]"/>
+          <Set Target="[Star2.Content]" Value="[FullStar]"/>
+          <Set Target="[Star3.Content]" Value="[FullStar]"/>
+          <Set Target="[Star4.Content]" Value="[FullStar]"/>
+          <Set Target="[Star5.Content]" Value="[FullStar]"/>
+        </Actions>
+      </Changed>
+     
+    </Rules>
+
+    <Content>
+      <Panel Layout="Scale" MaximumSize="[Size]" >
+        <Children>
+          <Panel>
+            <Children>
+              <Panel Name="Stars" Visible="false">
+                <Layout>
+                  <FlowLayout Spacing="2,2" Orientation="Horizontal"/>
+                </Layout>
+                <Children>
+                  <Graphic Name="Star1" />
+                  <Graphic Name="Star2" />
+                  <Graphic Name="Star3" />
+                  <Graphic Name="Star4" />
+                  <Graphic Name="Star5" />
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+          
+          
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+
+
+</Mcml>

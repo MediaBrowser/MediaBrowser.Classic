@@ -1,0 +1,78 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+      xmlns:me="Me"
+      >
+
+	<Aggregate Source="resx://MediaBrowser/MediaBrowser.Resources/TabItem" />
+
+	<UI Name="Tab">
+
+		<Properties>
+			<Choice Name="Model" Choice="$Required"/>
+      <Color Name="FilterColor" Color="Black"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+
+		<Locals>
+
+			<ScrollingHandler Name="ScrollingHandler" HandlerStage="Bubbled" />
+			<ScrollingData Name="ScrollingData" />
+
+		</Locals>
+
+		<Rules>
+
+			<Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]" />
+			<Default Target="[ScrollingData.Repeater]" Value="[ButtonRepeater]" />
+
+			<Rule ConditionLogicalOp="And">
+				<Conditions>
+					<Equality Source="[Input.DeepMouseFocus]" Value="true"/>
+					<Equality Source="[Input.DeepKeyFocus]" Value="false"/>
+					<Equality Source="[Model.Description]" Value=""/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Model.Description]" Value="Active"/>
+				</Actions>
+			</Rule>
+
+			<Rule ConditionLogicalOp="And">
+				<Conditions>
+					<Equality Source="[Input.DeepMouseFocus]" Value="false"/>
+					<Equality Source="[Input.DeepKeyFocus]" Value="true"/>
+					<Equality Source="[Model.Description]" Value=""/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Model.Description]" Value="Active"/>
+				</Actions>
+			</Rule>
+
+			<Rule ConditionLogicalOp="And">
+				<Conditions>
+					<Equality Source="[Input.DeepMouseFocus]" Value="false"/>
+					<Equality Source="[Input.DeepKeyFocus]" Value="false"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Model.Description]" Value=""/>
+				</Actions>
+			</Rule>
+		</Rules>
+
+		<Content>
+			<Repeater Source="[Model.Options]" Layout="HorizontalFlow" Name="ButtonRepeater" Navigation="RememberFocus">
+				<Animations>
+					<Animation Animation="animation://anim:ScrollerMoveItemSmooth"/>
+				</Animations>
+				<Layout>
+					<FlowLayout Repeat="Never" RepeatGap="100,0" Spacing="5,0" ItemAlignment="Near"/>
+				</Layout>
+				<Content>
+					<me:TabItem Label="[RepeatedItem.ToString]" FilterColor="[FilterColor]" 
+                      Index="[RepeatedItemIndex]" Model="[Model]" Font="[Font]"/>
+				</Content>
+			</Repeater>
+		</Content>
+	</UI>
+
+</Mcml>

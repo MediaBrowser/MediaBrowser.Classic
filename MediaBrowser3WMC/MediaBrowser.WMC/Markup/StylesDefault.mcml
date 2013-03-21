@@ -1,0 +1,42 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:me="Me"
+	  >
+
+	<!-- The background used when the posters zoom, sows most ovbiously when labels are turned on -->
+	<Color Name="PosterZoomBackground" Color="Transparent"/>
+  <Color Name="PanelBackground" Color="255, 32, 83, 136"/>
+	
+	<!-- The 3 font colors used in the app -->
+	<Color Name="FontColorLight" Color="White"/>
+	<Color Name="FontColorMedium" Color="255, 147,212,250"/>
+	<Color Name="FontColorDark" Color="255, 3,117,165"/>
+	<Color Name="TabFontColorLight" Color="White"/>
+	<Color Name="TabFontColorMedium" Color="255, 147,212,250"/>
+
+	<!-- The color of the filter and associated alpha level used in the minimal movie page and also to define the color of the watch/unwatch markers in poster views-->
+	<Color Name="FilterColor" Color="6,31,84"/>
+	<Color Name="FillColor" Color="6,31,84"/>
+	<cor:Single Name="FilterAlpha" Single="0.8" />
+	
+	<!-- color filter applied to backdrops on thumbstrip view and detailed movie view-->
+	<Color Name="BackdropFilter" Color="92,92,92"/>
+	
+	<!-- Background is faded vertically from color1 in the middle to color2 top and bottom-->
+	<Color Name="BackgroundColor1" Color="4,28,71" />
+	<Color Name="BackgroundColor2" Color="7,24,60" />
+
+	<cor:Single Name="BackdropAlpha" Single="1" />
+	<cor:Single Name="PosterDimAlpha" Single="1" />
+	<cor:Boolean Name="ShowWatchedMarkerBackgrounds" Boolean="true" />
+	<Color Name="MirrorFilter" Color="70,70,70"/>
+	<cor:Single Name="MirrorAlpha" Single="1" />
+	<Color Name="DimPosterFilter" Color="150,150,150"/>
+
+  <!-- Watched Text Color Default -->
+  <Color Name="ListViewWatchedTextColor" Color="LightSkyBlue" />
+  <!-- Search -->
+  <Color Name="Search_GradientColor" Color="200,0,0,0" />
+  <Color Name="Search_LineColor" Color="200,200,200" />
+
+</Mcml>

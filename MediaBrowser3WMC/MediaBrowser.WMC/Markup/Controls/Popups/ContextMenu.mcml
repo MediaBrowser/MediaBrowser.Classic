@@ -1,0 +1,226 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+		  xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+
+  <UI Name="ContextMenu">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+
+    <Content>
+      <me:ActionMenu Name="Menu" Close="[Close]" Application="[Application]" />
+    </Content>
+  </UI>
+
+  <UI Name="PlayMenu">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+
+    <Content>
+      <me:ActionMenu Name="Menu" Close="[Close]" Application="[Application]" MenuType="Play"/>
+    </Content>
+  </UI>
+
+  <UI Name="ActionMenu">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+      <cor:String Name="MenuType" String="Context" />
+    </Properties>
+
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+      <cor:Int32 Name="ItemCount" Int32="0" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+      <Default Target="[Input.KeyFocusOnMouseEnter]" Value="true" />
+      <Binding Target="[ListRepeater.Source]" Source="[Application.ContextMenu]" />
+
+      <Default Target="[Title.Content]" Value="[Application.LocalStrings.#PlayMenuCMenu!cor:String]" >
+        <Conditions>
+          <Equality Source="[MenuType]" Value="Play" />
+        </Conditions>
+      </Default>
+
+      <Changed Source="[Input.DeepMouseFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepMouseFocus]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application.CurrentItem]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MenuType]" Value="Play" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ListRepeater.Source]" Value="[Application.PlayMenu]" />
+          <Set Target="[ItemCount]" Value="[Application.PlayMenu.Count]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.CurrentItem]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MenuType]" Value="Context" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ListRepeater.Source]" Value="[Application.ContextMenu]" />
+          <Set Target="[ItemCount]" Value="[Application.ContextMenu.Count]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application.ContextMenu]" >
+        <Conditions>
+          <Equality Source="[MenuType]" Value="Context" />
+          <Equality ConditionOp="GreaterThan" Source="[Application.ContextMenu.Count]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ListRepeater.NavigateIntoIndex]" index="0" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" ConditionOp="NotEquals" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+
+
+      <!--<Changed Source="[Input.DeepKeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>-->
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="255,0,15,60"  Navigation="ContainAll,Group">
+        <Children>
+          <Graphic Content="image://i:ZoomPane"  SizingPolicy="SizeToChildren"
+                   MaintainAspectRatio="false" Padding="20,20,20,20" >
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+            </Layout>
+            <Children>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                </Layout>
+                <Children>
+                  <Text Name="Title" Content="[Application.LocalStrings.#ItemMenuCMenu!cor:String]" Font="font://f:CP_ConfigTitleFont" Color="color://s:FontColorLight"/>
+                  <ColorFill Content="DimGray" Alpha="0.8" Layout="Fill" MaximumSize="300,2" />
+                  <Text Content=" "/>
+                  <Text Name="Empty" Content="No Available Options" Font="font://f:MI_NotAvailableFont" Alpha=".7" Color="color://s:FontColorLight" Visible="false" />
+                  <Repeater Name="ListRepeater" Source="[Application.ContextMenu]" Layout="VerticalFlow" MinimumSize="200,50">
+                    <Content>
+                      <me:MenuItem option="[RepeatedItem!lib:MenuItem]" Close="[Close]" Font="font://f:MI_ButtonFont" Application="[Application]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Panel>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                </Layout>
+                <Children>
+                  <Text Content=" "/>
+                  <vm:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+  <UI Name="MenuItem">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:MenuItem Name="option" MenuItem="$Required" />
+      <Command Name="Close" Command="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Locals>
+      <Command Name="DoAction"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[DoAction.Invoked]">
+        <Conditions>
+          <Equality Source="[option.ItemType]" Value="action" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+          <Invoke Target="[option.DoCommand]"  item="[Application.CurrentItem]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[DoAction.Invoked]">
+        <Conditions>
+          <Equality Source="[option.ItemType]" Value="menu" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[option.DoCommand]"  item="[Application.CurrentItem]"/>
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Application.CurrentItem]" InitialEvaluate="true">
+        <Actions>
+          <Set Target="[OptionButton.Icon]" Value="[option.Icon]" />
+          <Set Target="[OptionButton.Text]" Value="[option.Text]" />
+          <Set Target="[DoAction.Available]" Value="[option.Enabled]" />
+        </Actions>
+      </Changed>
+
+      <Binding Target="[DoAction.Available]" Source="[option.Enabled]" />
+      <Binding Target="[OptionButton.Icon]" Source="[option.Icon]" />
+      <Binding Target="[OptionButton.Text]" Source="[option.Text]" />
+
+    </Rules>
+
+    <Content>
+      <Panel Layout="HorizontalFlow" >
+        <Children>
+          <ib:ImageButton Name="OptionButton" Text="[option.Text]" Color="color://s:FontColorMedium" Command="[DoAction]"
+                          Icon="[option.Icon]" Size="300,50"
+                          Font="[Font]" DisplayText="true" MinSize="300,50" Visible="true"/>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

@@ -1,0 +1,11 @@
+﻿<Window x:Class="Configurator.AddPodcastForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Add Podcast" Height="175" Width="450" ResizeMode="NoResize">
+    <Grid>
+        <Button Height="32" HorizontalAlignment="Right" Margin="0,0,20,20" Name="okButton" VerticalAlignment="Bottom" Width="80" Click="okButton_Click">OK</Button>
+        <Button Height="32" Margin="0,0,110,20" Name="button2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" Click="button2_Click">Cancel</Button>
+        <TextBox Margin="20,50,20,0" Height="28" VerticalAlignment="Top" Name="podcastAddress" />
+        <Label Height="28" Margin="20,20,20,0" Name="label1" VerticalAlignment="Top" FontSize="14">Enter the address of the podcast</Label>
+    </Grid>
+</Window>

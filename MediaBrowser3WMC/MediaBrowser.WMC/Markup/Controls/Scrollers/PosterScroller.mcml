@@ -1,0 +1,344 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+    xmlns:fs="resx://MediaBrowser/MediaBrowser.Resources/FocusSelector"
+    xmlns:pvi="resx://MediaBrowser/MediaBrowser.Resources/PosterViewItem"
+    xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
+    xmlns:s="file://Styles_DoNotEdit.mcml"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  >
+
+	<UI Name="PosterScroller">
+
+		<Properties>
+			<a:Application Name="Application" Application="$Required"/>
+			<lib:FolderModel Name="Folder" FolderModel="$Required"/>
+			<cor:Int32 Name="RowLimit"  />
+			<cor:Boolean Name="NoEndPadding" Boolean="false" />
+			<Font Name="TopLabelFont" Font="$Required"/>
+			<Font Name="LabelFont" Font="$Required"/>
+			<Font Name="UnwatchedCountFont" Font="$Required"/>
+			<cor:Boolean Name="CenterFocus" Boolean="false" />
+      <cor:Boolean Name="RightFocus" Boolean="false" />
+		</Properties>
+		<Locals>
+      <cor:Int32 Name="Startup" />
+             <Command Name="ClosePopupPlay"/>
+			<!-- Use the MouseWheel handler to handle the mouse wheel.  -->
+			<ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="ScrollingHandler"/>
+
+			<ScrollingData Name="VScrollingData" />
+			<ScrollingData Name="HScrollingData" EndPaddingRelativeTo="Far" EndPadding="400" BeginPadding="100" BeginPaddingRelativeTo="Near"/>
+			<ScrollingData Name="CenterScollingData" LockedAlignment="0.5" LockedPosition="0.5"/>
+			<ScrollingData Name="RightScollingData" LockedAlignment="0.75" LockedPosition="0.75"/>
+			<ScrollingData Name="ScrollingData" />
+			
+			<Environment Name="Environment" />
+
+			<GridLayout Name="MyLayout" Repeat="WhenTooBig" RepeatGap="100" Orientation="Vertical" Rows="[RowLimit]" Columns="0"
+						AllowWrap="true" Spacing="[Application.Config.GridSpacing]" MinorAlignment="Center" MajorAlignment="Center" />
+
+			<ShortcutHandler Name="JumpForward" Shortcut="SkipForward" HandlerStage="Bubbled" Handle="true" />
+			<ShortcutHandler Name="JumpBack" Shortcut="SkipBack" HandlerStage="Bubbled" Handle="true"/>
+			<IntRangedValue Name="NavCount" Value="0" />
+
+			<cor:Int32 Name="NormalKeyRepeat" Int32="150"/>
+			<!-- This must be less than anim delay -->
+
+			<cor:Int32 Name="FastKeyRepeat" Int32="75"/>
+
+			<cor:Int32 Name="AnimDelay" Int32="200" />
+			<!-- This must be greater than NormalKeyRepeat-->
+
+			<cor:Int32 Name="SpeedUpDelay" Int32="7"/>
+			<!--The number of items to got across at normal speed before speeding up -->
+			<FormLayoutInput Name="HLayout" Horizontal="Fill" Vertical="Center"/>
+			<FormLayoutInput Name="VLayout" Horizontal="Center" Vertical="Fill"/>
+		</Locals>
+
+
+		<Rules>
+      <!--The below default dummy rule is used to navigate to the proper first item.  using a generic rule or changed does not work the first time-->
+      <Default Target="[Startup]" Value="1" ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.NavigatingForward]" Value="true"/>
+          <Equality Source="[Folder.Children.Count]" ConditionOp="GreaterThan" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[MyRepeater.NavigateIntoIndex]"  index="[Folder.FirstUnwatchedIndex]"/>
+        </Actions>
+      </Default>
+
+      <!--These rules allow the user to move over the posters with the mouse without them scrolling away under them-->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="true"/>
+          <!--<Equality Source="[NoEndPadding]" Value="false" />-->
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.LockedPosition]" Value="-1" />
+          <Set Target="[ScrollingData.LockedAlignment]" Value="-1" />
+          <Set Target="[ScrollingData.BeginPadding]" Value="30" />
+          <Set Target="[ScrollingData.EndPadding]" Value="30" />
+        </Actions>
+      </Rule>
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="false"/>
+          <Equality Source="[CenterFocus]" Value="false" />
+          <Equality Source="[RightFocus]" Value="false" />
+          <!--<Equality Source="[NoEndPadding]" Value="false" />-->
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.BeginPadding]" Value="100" />
+          <Set Target="[ScrollingData.EndPadding]" Value="400" />
+        </Actions>
+      </Rule>
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="false"/>
+          <Equality Source="[CenterFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.LockedAlignment]" Value=".5" />
+          <Set Target="[ScrollingData.LockedPosition]" Value=".5" />
+        </Actions>
+      </Rule>
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="false"/>
+          <Equality Source="[RightFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.LockedAlignment]" Value=".75" />
+          <Set Target="[ScrollingData.LockedPosition]" Value=".75" />
+        </Actions>
+      </Rule>
+
+
+      <Binding Source="[Folder.ReferenceSize]" Target="[MyLayout.ReferenceSize]"/>
+			<Condition Source="[NoEndPadding]" ConditionOp="Equals" SourceValue="true">
+				<Actions>
+					<Set Target="[HScrollingData.EndPadding]" Value="30" />
+					<Set Target="[HScrollingData.BeginPadding]" Value="30" />
+				</Actions>
+			</Condition>
+			<Condition Source="[Folder.DisplayPrefs.VerticalScroll.Value]" SourceValue="true">
+				<Actions>
+					<Set Target="[Scroller.Orientation]" Value="Vertical" />
+					<Set Target="[MyLayout.Orientation]" Value="Horizontal" />
+					<Set Target="[MyLayout.Rows]" Value="0" />
+					<Set Target="[ItemPanel.Padding]" Value="0,50,0,50" />
+					<Set Target="[Scroller.LayoutInput]" Value="[VLayout]" />
+					<Set Target="[MyLayout.Repeat]" Value="Never" />
+					<Set Target="[MyLayout.RepeatGap]" Value="0" />
+					<Set Target="[ScrollingData]" Value="[VScrollingData]" />
+				</Actions>
+			</Condition>
+			<Condition Source="[Folder.DisplayPrefs.VerticalScroll.Value]" SourceValue="false">
+				<Actions>
+					<Set Target="[Scroller.Orientation]" Value="Horizontal" />
+					<Set Target="[MyLayout.Orientation]" Value="Vertical" />
+					<!--<Set Target="[MyLayout.Rows]" Value="[RowLimit]" />-->
+					<Set Target="[ItemPanel.Padding]" Value="0,0,0,0" />
+					<Set Target="[Scroller.LayoutInput]" Value="[HLayout]" />
+					<Set Target="[MyLayout.Repeat]" Value="WhenTooBig" />
+					<Set Target="[MyLayout.RepeatGap]" Value="100" />
+					
+				</Actions>
+			</Condition>
+
+			<Changed Source="[Folder.DisplayPrefs.VerticalScroll.Value]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Folder.DisplayPrefs.VerticalScroll.Value]" Value="false" />	
+					<Equality Source="[CenterFocus]"  Value="false"/>
+					<Equality Source="[RightFocus]"  Value="false"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollingData]" Value="[HScrollingData]" />	
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Folder.DisplayPrefs.VerticalScroll.Value]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Folder.DisplayPrefs.VerticalScroll.Value]" Value="false" />
+					<Equality Source="[CenterFocus]"  Value="true"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollingData]" Value="[CenterScollingData]" />
+				</Actions>
+			</Changed>
+			
+			<Changed Source="[Folder.DisplayPrefs.VerticalScroll.Value]" InitialEvaluate="true">
+				<Conditions>
+					<Equality Source="[Folder.DisplayPrefs.VerticalScroll.Value]" Value="false" />
+					<Equality Source="[RightFocus]"  Value="true"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[ScrollingData]" Value="[RightScollingData]" />
+				</Actions>
+			</Changed>
+			
+		
+
+			<Rule>
+				<Conditions>
+					<Equality Source="[Folder.Children.Count]" ConditionOp="LessThanOrEquals"  Value="4"/>
+					<Equality Source="[Folder.DisplayPrefs.VerticalScroll.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[MyLayout.Rows]" Value="1" />
+				</Actions>
+			</Rule>
+
+			<Rule>
+				<Conditions>
+					<Equality Source="[Folder.Children.Count]" ConditionOp="GreaterThan"  Value="4"/>
+					<Equality Source="[Folder.DisplayPrefs.VerticalScroll.Value]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[MyLayout.Rows]" Value="[RowLimit]" />
+				</Actions>
+			</Rule>
+
+
+			<Rule>
+				<Conditions>
+					<Modified Source="[JumpForward.Invoked]"/>
+				</Conditions>
+				<Actions>
+					<Invoke Target="[ScrollingData.PageDown]"/>
+				</Actions>
+			</Rule>
+
+			<Rule>
+				<Conditions>
+					<Modified Source="[JumpBack.Invoked]"/>
+				</Conditions>
+				<Actions>
+					<Invoke Target="[ScrollingData.PageUp]"/>
+				</Actions>
+			</Rule>
+
+			<Changed Source="[Folder.JILShift]">
+				<Actions>
+					<Invoke Target="[ScrollingData.Scroll]"  amount="[Folder.JILShift]"/>
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Application]" InitialEvaluate="true">
+				<Actions>
+					<Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[NormalKeyRepeat]" />
+				</Actions>
+			</Changed>
+
+      <!--
+			<Changed Source="[NavCount.Value]">
+				<Conditions>
+					<Equality Source="[NavCount.Value]" ConditionOp="Equals" Value="[SpeedUpDelay]"/>
+				</Conditions>
+				<Actions>
+					<Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[FastKeyRepeat]" />
+				</Actions>
+			</Changed>
+
+			<Changed Source="[NavCount.Value]">
+				<Conditions>
+					<Equality Source="[NavCount.Value]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[NormalKeyRepeat]" />
+				</Actions>
+			</Changed>
+      -->
+
+			<!-- Give ScrollingData to ScrollingHandler. -->
+			<Binding Target="[ScrollingHandler.ScrollingData]" Source="[ScrollingData]"/>
+			<Binding Target="[Scroller.ScrollingData]" Source="[ScrollingData]" />
+			<!-- Give Repeater to ScrollingData. -->
+			<Default Target="[ScrollingData.Repeater]" Value="[MyRepeater]"/>
+			<Binding Target="[FocusRect.Scaling]" Source="[Folder.PosterZoom]" />
+			<Binding Target="[MyRepeater.Source]" Source="[Folder.Children]" />
+      <!--<Binding Target="[PopupPlay.Item]" Source="[Folder.SelectedChild]" />
+      <Binding Target="[PopupPlay.Visible]" Source="[Application.DisplayPopupPlay]" />-->
+
+      <!--<Rule>
+        <Conditions>
+          <Equality Source="[Application.DisplayPopupPlay]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[PopupPlay.Visible]" Value="true" />
+          <Invoke Target="[PopupPlay.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[ClosePopupPlay.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayPopupPlay]" Value="false" />
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[PopupPlay.Visible]" Value="false"/>
+          --><!--<Invoke Target="[Scroller.NavigateInto]" />--><!--          
+        </Actions>
+      </Changed>-->
+
+      <!-- Hide focus frame image -->
+      <Condition Source="[Application.Config.HideFocusFrame]" ConditionOp="Equals" SourceValue="true" 
+                 Target="[FocusRect.FocusImage]" Value="image://i:BlankImage" />
+		</Rules>
+
+		<Content>
+			<!--Panel Name="ItemPanel" Layout="Form" Navigation="ContainHorizontal" >-->
+      <!-- Removed ContainHorizontal in order for Edge Redirect Control to function. -->
+      <Panel Name="ItemPanel" Layout="Form">
+				<Children>
+          <!--<pp:PopupPlay Name="PopupPlay" Visible="false" Item="[Folder.SelectedChild]" Close="[ClosePopupPlay]"
+                        Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0.2" Right="Parent,.8"
+											 Top="Parent,0.3" Bottom="Parent,.7" />
+            </LayoutInput>
+          </pp:PopupPlay>-->
+					<fs:FocusSelector Name="FocusRect">
+						<LayoutInput>
+							<FormLayoutInput Left="Focus,0,-3" Right="Focus,1,3"
+											 Top="Focus,0,-3" Bottom="Focus,1,3"
+											 ContributesToHeight="false"
+											 ContributesToWidth="false"/>
+						</LayoutInput>
+
+					</fs:FocusSelector>
+					<Scroller Orientation="Horizontal" FadeSize="-50" Name="Scroller" Navigation="RememberFocus" ScrollingData="[ScrollingData]">
+						<Children>
+							<Repeater Source="[Folder.Children]" Name="MyRepeater" ContentName="BaseItem" Layout="[MyLayout]" DiscardOffscreenVisuals="false" >
+								<Animations>
+                  <Animation Type="Move">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" RelativeTo="Current" Interpolation="EaseIn, 1.0, 0.25"/>
+                      <PositionKeyframe Time="0.75" RelativeTo="Final"  />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+							</Repeater>
+						</Children>
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Vertical="Center"/>
+						</LayoutInput>
+					</Scroller>
+				</Children>
+			</Panel>
+		</Content>
+		<Content Name="BaseItem">
+
+
+			<pvi:PosterViewItem ImageSize="[Folder.ActualThumbSize]" AnimDelay="[AnimDelay]" NavCount="[NavCount]" 
+                          ShowLabels="[Folder.DisplayPrefs.ShowLabels]" Application="[Application]" Index="[RepeatedItemIndex]" 
+                          Item="[RepeatedItem!lib:Item]" ParentItem="[Folder]" TopLabelFont="[TopLabelFont]" 
+                          LabelFont="[LabelFont]" UnwatchedCountFont="[UnwatchedCountFont]"/>
+		</Content>
+	</UI>
+
+</Mcml>

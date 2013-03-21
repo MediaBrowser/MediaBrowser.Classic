@@ -1,0 +1,45 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+ 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+      
+    xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds" 
+>
+
+  <UI Name="EdgeDetect">
+    <Properties>
+      <BooleanChoice Name="InFocus" BooleanChoice="$Required" />
+    </Properties>
+
+    <Locals>
+      <Image Name="BlankImage" Source="resx://Mediabrowser/Mediabrowser.Resources/BlankImage" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Binding Source="[Input.KeyFocus]" Target="[InFocus.Value]" />
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[InFocus.Value]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Focus" />
+        </Actions>
+      </Rule>
+      
+    </Rules>
+
+    <Content>
+      <Panel Name="ConfigFocusPanel" MinimumSize="25,25">
+        <Children>
+          <Graphic Name="HiddenButton" Content="[BlankImage]"/>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

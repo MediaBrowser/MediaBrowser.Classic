@@ -1,0 +1,89 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System" 
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:me="Me">
+
+ 
+	<UI Name="DirectorButton">
+
+		<Properties>
+
+			<a:Application Name="Application" Application="$Required"/>
+			<cor:String Name="DirectorName" String="$Required" />
+			<lib:Item Name="Item" Item="$Required"/>
+			<cor:String Name="Text" String="" />
+			<Size Name="Size" Size="0,0" />
+			<Font Name="Font" Font="$Required" />
+			<Color Name="Color" Color="White"/>
+
+		</Properties>
+
+		<Locals>
+			<ClickHandler Name="Clicker" />			
+		</Locals>
+
+		<Rules>
+
+			<Rule>
+				<Conditions>
+					<Modified Source="[Clicker.Invoked]"/>
+				</Conditions>
+				<Actions>
+					<PlaySound Sound="sound://sd:Select" />
+					<Invoke Target="[Application.NavigateToDirector]"  director="[DirectorName]" currentMovie="[Item]"/>
+				</Actions>
+			</Rule>
+
+			<Binding Source="[Input.KeyFocus]" Target="[Underline.Visible]" />
+			<Binding Source="[Input.MouseFocus]" Target="[Underline.Visible]" />
+			<Binding Source="[Font]" Target="[Label.Font]" />
+			<Binding Source="[Text]" Target="[Label.Content]" />
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+
+			<Rule>
+				<Conditions>
+					<Modified Source="[Clicker.Invoked]"/>
+				</Conditions>
+				<Actions>
+					<PlaySound Sound="sound://sd:Select" />
+				</Actions>
+			</Rule>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Actions>
+					<Set Target="[Label.Color]" Value="White" />
+					<PlaySound Sound="sound://sd:Focus" />
+				</Actions>
+			</Condition>
+
+			
+		</Rules>
+
+		<Content>
+
+			<Panel Layout="Anchor">
+				<Children>
+					<Graphic Name="Underline" Content="image://i:Underline"  Visible="true" MaximumSize="0,2" >
+						<LayoutInput>
+							<AnchorLayoutInput Left="TextBlock,0" Right="TextBlock,1" Bottom="TextBlock,1,-3"/>
+						</LayoutInput>
+					</Graphic>
+
+					<Panel Name="TextBlock" MouseInteractive="true" Layout="Anchor" >
+						<Children>
+							<Text Name="Label" Color="[Color]" Margins="0,0,0,0" Font="[Font]" />
+						</Children>
+					</Panel>
+
+			
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+	
+	
+</Mcml>

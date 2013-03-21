@@ -1,0 +1,343 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:me="Me"
+      >
+
+
+  <UI Name="YahooWeather">
+
+    <Locals>
+      <a:YahooWeather Name="YahooWeather"/>
+      <Font Name="Font" Font="Segoe Media Center Semibold,18" />
+      <Timer Name="WeatherStartupTimer" Interval="300" AutoRepeat="false" Enabled="true"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[YahooWeather.Temp]">
+        <Conditions>
+          <Equality Source="[YahooWeather.Temp]" ConditionOp="Equals" Value="nulldata" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Base.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+      
+      <Binding Source="[YahooWeather.Temp]" Target="[Temp.Content]"/>
+      <Binding Source="[YahooWeather.Unit]" Target="[Unit.Content]" />
+      <Binding Source="[YahooWeather.Location]" Target="[Location.Content]" />
+      <Binding Source="[YahooWeather.CodeDescription]" Target="[Desc.Content]" />
+      <Binding Source="[YahooWeather.ImageUrl!Image]" Target="[Icon.Content]" >
+        <Conditions>
+          <Equality Source="[YahooWeather.ImageUrl]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+      </Binding>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[WeatherStartupTimer.Tick]"  />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[YahooWeather.GetWeatherInfo]" InvokePolicy="AsynchronousLowPri" />
+        </Actions>
+      </Rule>
+
+    </Rules>
+
+    <Content>
+      <Graphic Name="Base" Content="image://i:BlankImage"  SizingPolicy="SizeToChildren">
+        <Children>
+          <Text Content="Yahoo! Weather" Color="White" Font="[Font]" >
+            <Animations>
+              <Animation Type="Idle" Loop="0">
+                <Keyframes>
+                  <ScaleKeyframe Time="0" Value="1,1,1" RelativeTo="Current"/>
+                  <ScaleKeyframe Time="3" Value="1,1,1" RelativeTo="Current"/>
+                  <ScaleKeyframe Time="3.5" Value="0,0,0"/>
+                  <AlphaKeyframe Time="0" Value="1" RelativeTo="Current"/>
+                  <AlphaKeyframe Time="3" Value="1" RelativeTo="Current"/>
+                  <AlphaKeyframe Time="3.7" Value="0"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Text>
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Text Name="Temp" Color="White" Font="[Font]" />
+              <Text Content="°" Color="White" Font="[Font]" />
+              <Text Name="Unit" Color="White" Font="[Font]" />
+              <Graphic Name="Icon" Content="image://i:BlankImage" />
+              <Text Name="Desc" Color="White" Font="[Font]" Margins="10,0,10,0"/>
+              <Text Name="Location" Color="LightGray" Font="[Font]"  />
+            </Children>
+            <Animations>
+              <Animation Type="Idle" Loop="0">
+                <Keyframes>
+                  <PositionKeyframe Time="0" Value="500,0,0" Interpolation="SCurve"/>
+                  <PositionKeyframe Time="4.5" Value="500,0,0" Interpolation="SCurve"/>
+                  <PositionKeyframe Time="5" Value="0,0,0"/>
+                  <AlphaKeyframe Time="0" Value="0"/>
+                  <AlphaKeyframe Time="4.5" Value="0"/>
+                  <AlphaKeyframe Time="5" Value="1"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Panel>
+
+        </Children>
+      </Graphic>
+
+    </Content>
+  </UI>
+
+  <UI Name="YahooWeatherLarge">
+
+    <Locals>
+      <a:YahooWeather Name="YahooWeather"/>
+      <Font Name="Font" Font="Segoe Media Center Semibold,18" />
+      <Font Name="LargeFont" Font="Segoe Media Center Semibold,28" />
+      <Timer Name="WeatherStartupTimer" Interval="300" AutoRepeat="false" Enabled="true"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[YahooWeather.Temp]">
+        <Conditions>
+          <Equality Source="[YahooWeather.Temp]" ConditionOp="NotEquals" Value="nulldata" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Bg.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Binding Source="[YahooWeather.LongTemp]" Target="[Temp.Content]"/>
+      <Binding Source="[YahooWeather.Location]" Target="[Location.Content]" >
+      <Transformer>
+        <FormatTransformer ToUpper="true"/>
+      </Transformer>
+      </Binding>
+      <Binding Source="[YahooWeather.ImageUrl!Image]" Target="[Icon.Content]" >
+        <Conditions>
+          <Equality Source="[YahooWeather.ImageUrl]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+      </Binding>
+      <Binding Source="[YahooWeather.Forecast]" Target="[Repeater.Source]" />
+
+      <!-- Shadow-->
+      <Binding Source="[YahooWeather.Location]" Target="[LocationShadow.Content]" >
+        <Transformer>
+          <FormatTransformer ToUpper="true"/>
+        </Transformer>
+      </Binding>
+      <Binding Source="[YahooWeather.LongTemp]" Target="[TempShadow.Content]"/>
+
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[WeatherStartupTimer.Tick]"  />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[YahooWeather.GetWeatherInfo]" InvokePolicy="AsynchronousLowPri" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[Input.KeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Bg.Content]" Value="image://me:HiliteBtn" />
+          <Set Target="[Repeater.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+    <Content>
+      <Graphic Name="Bg" Content="image://i:BlankImage" SizingPolicy="SizeToChildren" Padding="0,0,5,0"
+               Visible="false">
+        <Layout>
+          <FlowLayout Orientation="Horizontal" />
+        </Layout>
+        <Children>
+          <!-- Icon -->
+          <Graphic Name="Icon" Content="image://i:BlankImage" />
+          
+          <!-- Information Panel -->
+          <Panel>
+            <Layout>
+              <FlowLayout Orientation="Vertical" Spacing="-10,-10" />
+            </Layout>
+            <Children>
+              <Text Content="Yahoo! Weather" Color="White" Font="[Font]" >
+                <Animations>
+                  <Animation Type="Idle" Loop="0">
+                    <Keyframes>
+                      <ScaleKeyframe Time="0" Value="1,1,1" RelativeTo="Current"/>
+                      <ScaleKeyframe Time="2" Value="1,1,1" RelativeTo="Current"/>
+                      <ScaleKeyframe Time="2.5" Value="0,0,0"/>
+                      <AlphaKeyframe Time="0" Value="1" RelativeTo="Current"/>
+                      <AlphaKeyframe Time="2" Value="1" RelativeTo="Current"/>
+                      <AlphaKeyframe Time="2.7" Value="0"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Text>
+              <!-- Country -->
+              <Panel>
+                <Children>
+                  <ColorFill Content="Transparent" Layout="Anchor" >
+                    <Children>
+                      <Text Name="Location" Color="LightGray" Font="[LargeFont]" />
+                      <Text Name="LocationShadow" Color="Black" Font="[LargeFont]"  >
+                        <LayoutInput>
+                          <AnchorLayoutInput Left="Location, 0, 2" Top="Location, 0,2"/>
+                        </LayoutInput>
+                      </Text>
+                    </Children>
+                  </ColorFill>
+                </Children>
+                <Animations>
+                  <Animation Type="Idle" Loop="0">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" Value="500,0,0" Interpolation="SCurve"/>
+                      <PositionKeyframe Time="3.5" Value="500,0,0" Interpolation="SCurve"/>
+                      <PositionKeyframe Time="4" Value="0,0,0"/>
+                      <AlphaKeyframe Time="0" Value="0"/>
+                      <AlphaKeyframe Time="3.5" Value="0"/>
+                      <AlphaKeyframe Time="4" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Panel>
+
+              <!-- Current Settings -->
+              <Panel>
+                <Children>
+                  <ColorFill Content="Transparent" Layout="Anchor" >
+                    <Children>
+                      <Text Name="Temp" Color="White" Font="[Font]" />
+                      <Text Name="TempShadow" Color="Black" Font="[Font]" >
+                        <LayoutInput>
+                          <AnchorLayoutInput Left="Temp, 0, 2" Top="Temp, 0,2"/>
+                        </LayoutInput>
+                      </Text>
+                    </Children>
+                  </ColorFill>
+
+                </Children>
+                <Animations>
+                  <Animation Type="Idle" Loop="0">
+                    <Keyframes>
+                      <!--<PositionKeyframe Time="0" Value="500,0,0" Interpolation="SCurve"/>
+                      <PositionKeyframe Time="5" Value="500,0,0" Interpolation="SCurve"/>
+                      <PositionKeyframe Time="6" Value="0,0,0"/>-->
+                      <AlphaKeyframe Time="0" Value="0"/>
+                      <AlphaKeyframe Time="3" Value="0"/>
+                      <AlphaKeyframe Time="4" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Panel>
+
+            </Children>
+          </Panel>
+
+          
+
+          <!-- Extended Day Forecast-->
+
+          <Repeater Name="Repeater" Visible="false">
+            <Layout>
+              <FlowLayout Orientation="Horizontal"/>
+            </Layout>
+            <Content>
+              <me:ForecastMini ForecastItem="[RepeatedItem!a:ForecastItem]" Index="[RepeatedItemIndex]" />
+            </Content>
+            <Divider>
+              <Clip FadeSize="25" Orientation="Vertical" FadeAmount="1" >
+                <Children>
+                  <ColorFill Content="color://s:FontColorDark" Alpha="0.8" Layout="Fill" MaximumSize="2,120" />
+                </Children>
+              </Clip>
+            </Divider>
+            <Animations>
+              <Animation Type="Show">
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+                  <PositionKeyframe Time="0.0" Value="50,0,0" />
+                  <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Repeater>
+
+        </Children>
+        <Animations>
+          <Animation Type="Size">
+            <Keyframes>
+              <SizeKeyframe Time="0" RelativeTo="Current"/>
+              <SizeKeyframe Time="0.2" RelativeTo="Final"/>
+            </Keyframes>
+          </Animation>
+        </Animations>
+      </Graphic>
+
+    </Content>
+  </UI>
+
+  <UI Name="ForecastMini">
+    <Properties>
+      <a:ForecastItem Name="ForecastItem" ForecastItem="$Required" />
+      <Index Name="Index" Index="$Required"/>
+    </Properties>
+    <Rules>
+      <Binding Source="[ForecastItem.Low]" Target="[txtLow.Content]" >
+        <Transformer>
+          <FormatTransformer Format="{0}°"/>
+        </Transformer>
+      </Binding>
+      <Binding Source="[ForecastItem.High]" Target="[txtHigh.Content]" >
+        <Transformer>
+          <FormatTransformer Format="{0}°"/>
+        </Transformer>
+      </Binding>
+    </Rules>
+
+    <Locals>
+      <Color Name="LightColor" Color="color://s:FontColorLight" />
+      <Color Name="MediumColor" Color="color://s:FontColorMedium" />
+      <Color Name="DarkColor" Color="color://s:FontColorDark" />
+      <Font Name="DayFont" Font="Segoe Media Center, 20" />
+      <Font Name="HiLoFont" Font="Segoe Media Center, 16" />
+    </Locals>
+
+    <Content>
+      <Panel Layout="VerticalFlow" MaximumSize="0,120" Padding="5,0,5,0">
+        <Layout>
+          <FlowLayout Orientation="Vertical" ItemAlignment="Center" StripAlignment="Near" Spacing="-5,-5"/>
+        </Layout>
+        <Children>
+          <Text Content="[ForecastItem.Day]" Color="[LightColor]"  Font="[HiLoFont]"/>
+          <Graphic Content="[ForecastItem.ImageUrl!Image]" MaximumSize="64,64" MaintainAspectRatio="true" />
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Text Content="L:" Color="[DarkColor]" Font="[HiLoFont]"/>
+              <Text Name="txtLow" Color="[LightColor]" Font="[HiLoFont]"/>
+              <Text Content="H:" Color="[DarkColor]" Font="[HiLoFont]" Margins="10,0,0,0"/>
+              <Text Name="txtHigh" Color="[LightColor]" Font="[HiLoFont]"/>
+            </Children>
+          </Panel>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <Image Name="HiliteBtn" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusBlack" NineGrid="5,5,5,5" />
+
+</Mcml>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "Configurator.csproj", "{BFC13060-06AF-4516-9898-95AE087A71AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowser.WMC", "..\MediaBrowser3WMC\MediaBrowser.WMC\MediaBrowser.WMC.csproj", "{C6B27E5F-3D83-4D71-85B9-AF83C8392721}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFC13060-06AF-4516-9898-95AE087A71AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC13060-06AF-4516-9898-95AE087A71AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC13060-06AF-4516-9898-95AE087A71AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC13060-06AF-4516-9898-95AE087A71AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6B27E5F-3D83-4D71-85B9-AF83C8392721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6B27E5F-3D83-4D71-85B9-AF83C8392721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6B27E5F-3D83-4D71-85B9-AF83C8392721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6B27E5F-3D83-4D71-85B9-AF83C8392721}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

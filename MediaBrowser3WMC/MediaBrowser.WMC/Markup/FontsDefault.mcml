@@ -1,0 +1,121 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:me="Me"
+	  >
+	<!-- Page -->
+	<Font Name="P_BreadcrumbFont" Font="Segoe Media Center Light, 36"/>
+	<Font Name="P_BreadcrumbSmallFont" Font="Segoe Media Center, 16"/>
+	<Font Name="P_ConfigButtons" Font="Segoe Media Center Semibold,18"/>
+	<Font Name="P_FindAsYouTypeFont" Font="Segoe Media Center Semibold,150"/>
+	<Font Name="P_ClockFont" Font="Segoe Media Center Semibold,18"/>
+
+	<!-- Config Page -->
+	<Font Name="CP_ConfigTitleFont" Font="Segoe Media Center Light, 36"/>
+	<Font Name="CP_ConfigItemFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="CP_ConfigHeaderFont" Font="Segoe Media Center Semibold, 20"/>
+	<Font Name="CP_ButtonFont" Font="Segoe Media Center, 20" />
+	<Font Name="CP_ColorSpinnerValueFont" Font="Segoe Media Center,10"/>
+	<Font Name="CP_VersionFont" Font="Segoe Media Center, 10"/>
+
+	<!-- Movie Minimal -->
+	<Font Name="MM_TitleFont" Font="Segoe Media Center Light, 36"/>
+	<Font Name="MM_ClockFont" Font="Segoe Media Center Light, 36"/>
+  <Font Name="MM_ArtistFont" Font="Segoe Media Center Light, 30"/>
+	<Font Name="MM_ButtonFont" Font="Segoe Media Center, 20" />
+	<Font Name="MM_SummaryFont" Font="Segoe Media Center,16"/>
+	<Font Name="MM_ActorFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="MM_ItemTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="MM_ItemFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="MM_GenreFont" Font="Segoe Media Center,16"/>
+	<Font Name="MM_SummaryFont" Font="Segoe Media Center,16"/>
+	<Font Name="MM_TabFont" Font="Segoe Media Center,20" />
+  <Font Name="MM_FirstAiredTitleFont" Font="Segoe Media Center, 16"/>
+  <Font Name="MM_FirstAiredFont" Font="Segoe Media Center Semibold,16"/>
+  <Font Name="MM_MediaInfoFont" Font="Arial,13"/>
+
+	<!-- Movie Default -->
+	<Font Name="MD_TitleFont" Font="Segoe Media Center Light, 46"/>
+	<Font Name="MD_ButtonFont" Font="Segoe Media Center, 20" />
+	<Font Name="MD_SummaryFont" Font="Segoe Media Center,16"/>
+	<Font Name="MD_ActorFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="MD_ImdbRatingFont" Font="Segoe Media Center,14"/>
+	<Font Name="MD_RuntimeFont" Font="Segoe Media Center,16"/>
+	<Font Name="MD_MediaInfoFont" Font="Segoe Media Center Semibold,14"/>
+	<Font Name="MD_DirectorTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="MD_DirectorFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="MD_GenreFont" Font="Segoe Media Center,16"/>
+
+	<!-- Thumb Details-->
+	<Font Name="PD_TitleFont" Font="Segoe Media Center Semibold, 20"/>
+	<Font Name="PD_SubTitleFont" Font="Segoe Media Center, 18"/>
+	<Font Name="PD_CounterFont" Font="Segoe Media Center, 18"/>
+	<Font Name="PD_LastWatchedFont" Font="Segoe Media Center,16"/>
+	<Font Name="PD_SummaryFont" Font="Segoe Media Center,16"/>
+	<Font Name="PD_UnwatchedCountFont" Font="Segoe Media Center, 14, Bold"/>
+	<Font Name="PD_PosterLabelFont" Font="Segoe Media Center, 20, Bold"/>
+	<Font Name="PD_PosterTopLabelFont" Font="Segoe Media Center Semibold, 16"/>
+
+	<!-- Thumb Details Movie Info control -->
+	<Font Name="TD_MI_DirectorTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="TD_MI_DirectorFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="TD_MI_WriterTitleFont" Font="Segoe Media Center,16"/>
+	<Font Name="TD_MI_WriterFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="TD_MI_GenreFont" Font="Segoe Media Center,16"/>
+	<Font Name="TD_MI_RuntimeFont" Font="Segoe Media Center,16"/>
+	<Font Name="TD_MI_ProductionYearFont" Font="Segoe Media Center Semibold,16"/>
+	<Font Name="TD_MI_MediaInfoFont" Font="Arial,14"/>
+  <Font Name="TD_MI_FirstAiredTitleFont" Font="Segoe Media Center, 16"/>
+  <Font Name="TD_MI_FirstAiredFont" Font="Segoe Media Center Semibold,16"/>
+
+	<!-- Strip View -->
+	<Font Name="SV_TitleFont" Font="Segoe Media Center Semibold, 20"/>
+	<Font Name="SV_SubTitleFont" Font="Segoe Media Center, 18"/>
+	<Font Name="SV_CounterFont" Font="Segoe Media Center, 18"/>
+	<Font Name="SV_LastWatchedFont" Font="Segoe Media Center,16"/>
+	<Font Name="SV_SummaryFont" Font="Segoe Media Center,16"/>
+	<Font Name="SV_UnwatchedCountFont" Font="Segoe Media Center, 14, Bold"/>
+	<Font Name="SV_PosterLabelFont" Font="Segoe Media Center, 20, Bold"/>
+	<Font Name="SV_PosterTopLabelFont" Font="Segoe Media Center Semibold, 16"/>
+
+	<!-- Details View -->
+	<Font Name="DV_ListButtonFont" FontName="Segoe Media Center" FontSize="20" />
+	<Font Name="DV_GenreFont" Font="Segoe Media Center,16"/>
+	<Font Name="DV_RuntimeFont" Font="Segoe Media Center,16"/>
+	<Font Name="DV_TitleFont" Font="Segoe Media Center Semibold,20"/>
+	<Font Name="DV_SubTitleFont" Font="Segoe Media Center, 18"/>
+	<Font Name="DV_LastWatchedFont" Font="Segoe Media Center,16"/>
+	<Font Name="DV_SummaryFont" Font="Segoe Media Center,16"/>
+  <Font Name="DV_FirstAiredTitleFont" Font="Segoe Media Center,16"/>
+  <Font Name="DV_FirstAiredFont" Font="Segoe Media Center Semibold,16"/>
+  <Font Name="DV_ProductionYearFont" Font="Segoe Media Center Semibold,16"/>
+
+	<!-- Search -->
+	<Font Name="SE_DefaultFont" Font="Segoe Media Center Semibold,18"/>
+
+	<!-- View Menu -->
+	<Font Name="VM_ConfigItemFont" Font="Segoe Media Center Semibold,16"/>
+
+	<!-- Poster View -->
+	<Font Name="PV_TitleFont" Font="Segoe Media Center,26"/>
+	<Font Name="PV_RuntimeFont" Font="Segoe Media Center,16"/>
+	<Font Name="PV_UnwatchedCountFont" Font="Segoe Media Center, 14, Bold"/>
+	<Font Name="PV_PosterLabelFont" Font="Segoe Media Center, 20, Bold"/>
+	<Font Name="PV_PosterTopLabelFont" Font="Segoe Media Center Semibold, 16"/>
+	<Font Name="PV_CounterFont" Font="Segoe Media Center, 18"/>
+
+	<!-- General -->
+	<Font Name="PivotItemFont" Font="Segoe Media Center Semibold,19"/>
+	<Font Name="PivotItemFocusFont" Font="Segoe Media Center Semibold,20"/>
+
+	<!-- Cover Flow View -->
+	<Font Name="CV_TitleFont" Font="Segoe Media Center,26"/>
+	<Font Name="CV_SubTitleFont" Font="Segoe Media Center, 18"/>
+	<Font Name="CV_CounterFont" Font="Segoe Media Center, 18"/>
+	<Font Name="CV_UnwatchedCountFont" Font="Segoe Media Center, 14, Bold"/>
+	<Font Name="CV_PosterTopLabelFont" Font="Segoe Media Center Semibold, 16"/>
+  
+  <!-- Menu Fonts -->
+  <Font Name="MI_ButtonFont" Font="Segoe Media Center, 20" />
+  <Font Name="MI_NotAvailableFont" Font="Brush Script MT,18" />
+
+</Mcml>

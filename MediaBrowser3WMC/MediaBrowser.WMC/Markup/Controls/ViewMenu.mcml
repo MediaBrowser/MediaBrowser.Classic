@@ -1,0 +1,411 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:s="file://Styles_DoNotEdit.mcml"
+    xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+    xmlns:rg="resx://MediaBrowser/MediaBrowser.Resources/RadioGroup"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:me="Me"
+	  >
+
+  <Image Name="Border" Source="resx://MediaBrowser/MediaBrowser.Resources/ZoomPane" NineGrid="4,4,4,4"/>
+
+
+  <UI Name="BaseBtn">
+    <Properties>
+      <cor:String Name="LabelText" String="$Required" />
+      <ICommand Name="Command" ICommand="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+    </Locals>
+    <Rules>
+      <!--<Binding Source="[Text]" Target="[Label.Content]" />-->
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Condition Source="[Input.KeyFocus]"  SourceValue="true">
+        <Actions>
+          <Set Target="[Label.Color]" Value="color://s:FontColorLight" />
+        </Actions>
+      </Condition>
+      <Condition Source="[Input.KeyFocus]"  SourceValue="false">
+        <Actions>
+          <Set Target="[Label.Color]" Value="color://s:FontColorMedium" />
+        </Actions>
+      </Condition>
+    </Rules>
+    <Content>
+      <Text Name="Label" Content="[LabelText]" Font="[Font]" Color="color://s:FontColorMedium" />
+    </Content>
+  </UI>
+
+  <UI Name="ImageBtn">
+    <Properties>
+      <Image Name="Focused" Image="$Required"/>
+      <Image Name="NonFocused" Image="$Required"/>
+      <ICommand Name="Command" ICommand="$Required"/>
+
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+    </Locals>
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Condition Source="[Input.KeyFocus]"  SourceValue="true">
+        <Actions>
+          <Set Target="[Label.Content]" Value="[Focused]" />
+        </Actions>
+      </Condition>
+      <Condition Source="[Input.KeyFocus]"  SourceValue="false">
+        <Actions>
+          <Set Target="[Label.Content]" Value="[NonFocused]" />
+        </Actions>
+      </Condition>
+    </Rules>
+    <Content>
+      <Panel>
+        <Children>
+          <Graphic Name="Label" Content="[NonFocused]" MaximumSize="34,34"/>
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+
+
+  <UI Name="ViewsButton">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <ICommand Name="Command" ICommand="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+      <Image Name="Image" Image="null"/>
+      <Image Name="FocusImage" Image="image://i:ButtonLeftFocus" />
+    </Locals>
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[BoxImage.Content]" Value="[FocusImage]"/>
+          <Set Target="[Label.Color]" Value="color://s:FontColorLight"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[BoxImage]" Animation="animation://me:ButtonPress"/>
+        </Actions>
+      </Condition>
+
+    </Rules>
+    <Content>
+      <Graphic Name="BoxImage" Content="[Image]" SizingPolicy="SizeToChildren" Padding="15,2,15,2">
+        <Children>
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Graphic Content="image://i:Lines" Margins="0,9,5,0" MaximumSize="15,15"></Graphic>
+              <Text Name="Label" Content="[Application.LocalStrings.#ViewDispPref!cor:String]" Color="color://s:FontColorDark" Font="[Font]"/>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+  <Animation Name="ButtonPress" Loop="0" CenterPointPercent="0.5,0.5,1.0">
+    <Keyframes>
+      <ScaleKeyframe Time="0.00" RelativeTo="Current" Interpolation="Log"/>
+      <ScaleKeyframe Time="0.08" Value="0.9,0.9,1.0"/>
+      <ScaleKeyframe Time="0.15" Value="1.0,1.0,1.0"/>
+    </Keyframes>
+  </Animation>
+
+  <UI Name="ViewConfiguration">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:DisplayPreferences Name="Prefs" DisplayPreferences="$Required" />
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+      <Command Name="Increase" />
+      <Command Name="Decrease"/>
+    </Locals>
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[ThumbSize.Visible]" Value="false" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[ThumbSize.Visible]" Value="true" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[ShowLabels.Visible]" Value="false" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[ShowLabels.Visible]" Value="true" />
+
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Poster" Target="[VerticalScroll.Visible]" Value="true" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Thumb" Target="[VerticalScroll.Visible]" Value="true" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="ThumbStrip" Target="[VerticalScroll.Visible]" Value="true" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="CoverFlow" Target="[VerticalScroll.Visible]" Value="false" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[VerticalScroll.Visible]" Value="false" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="ThumbStrip" Target="[UseCoverflow.Visible]" Value="false" />
+      <Condition Source="[Prefs.ViewTypeString]" ConditionOp="Equals" SourceValue="ThumbStrip" Target="[UseCoverflow.Visible]" Value="true" />
+      <Changed Source="[Increase.Invoked]">
+        <Actions>
+          <Invoke Target="[Prefs.IncreaseThumbSize]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[Decrease.Invoked]">
+        <Actions>
+          <Invoke Target="[Prefs.DecreaseThumbSize]"/>
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <ColorFill Name="Main" Content="color://s:PanelBackground"  Navigation="ContainAll,Group" Padding="-3,-3,-3,-3">
+        <Children>
+          <Graphic Content="image://i:ZoomPane"  SizingPolicy="SizeToChildren"  Padding="10,10,10,10" MaintainAspectRatio="false">
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+            </Layout>
+            <Children>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                </Layout>
+                <Children>
+                  <rg:RadioGroup Model="[Prefs.ViewType]" Font="font://f:VM_ConfigItemFont" />
+                  <cb:CheckBox Name="ShowLabels" Label="[Application.LocalStrings.#ShowLabelsDispPref!cor:String]" Checked="[Prefs.ShowLabels]" Font="font://f:VM_ConfigItemFont"/>
+                  <cb:CheckBox Name="VerticalScroll" Label="[Application.LocalStrings.#VerticalScrollDispPref!cor:String]" Checked="[Prefs.VerticalScroll]" Font="font://f:VM_ConfigItemFont"/>
+                  <cb:CheckBox Name="UseBanner" Label="[Application.LocalStrings.#UseBannersDispPref!cor:String]" Checked="[Prefs.UseBanner]" Font="font://f:VM_ConfigItemFont"/>
+                  <cb:CheckBox Name="UseCoverflow" Label="[Application.LocalStrings.#UseCoverflowDispPref!cor:String]" Checked="[Prefs.UseCoverflow]" Font="font://f:VM_ConfigItemFont"/>
+                  <Panel Name="ThumbSize" >
+                    <Layout>
+                      <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                    </Layout>
+                    <Children>
+                      <Text Content="[Application.LocalStrings.#ThumbSizeDispPref!cor:String]" Color="color://s:FontColorMedium" Font="font://f:VM_ConfigItemFont"/>
+                      <me:ImageBtn Focused="image://i:DecrementFocus" NonFocused="image://i:DecrementNoFocus" Command="[Decrease]"/>
+                      <me:ImageBtn Focused="image://i:IncrementFocus" NonFocused="image://i:IncrementNoFocus" Command="[Increase]"/>
+                    </Children>
+                  </Panel>
+
+                </Children>
+              </Panel>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                </Layout>
+                <Children>
+                  <me:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+  <UI Name="IntSpin">
+    <Properties>
+      <cor:String Name="Label" String=""/>
+      <IntRangedValue Name="Int" IntRangedValue="$Required"/>
+    </Properties>
+    <Locals>
+      <Command Name="Increase" />
+      <Command Name="Decrease"/>
+    </Locals>
+    <Rules>
+      <Binding Source="[Int.Value!cor:String]" Target="[Text.Content]" />
+      <Binding Source="[Label]" Target="[Lbl.Content]" />
+      <Changed Source="[Increase.Invoked]">
+        <Actions>
+          <Invoke Target="[Int.NextValue]"/>
+          <!--
+					<Set Target="[Int.Value]" Value="[Int.Value]">
+						<Transformer>
+							<MathTransformer Add="1"/>
+						</Transformer>
+					</Set>-->
+        </Actions>
+      </Changed>
+      <Changed Source="[Decrease.Invoked]">
+        <Actions>
+          <Invoke Target="[Int.PreviousValue]"/>
+          <!--
+					<Set Target="[Int.Value]" Value="[Int.Value]">
+						<Transformer>
+							<MathTransformer Add="-1"/>
+						</Transformer>
+					</Set>-->
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <Panel Layout="HorizontalFlow" Navigation="Row">
+        <Children>
+          <Text Name="Lbl" Color="color://s:FontColorMedium" Font="font://f:VM_ConfigItemFont" />
+          <me:ImageBtn Focused="image://i:DecrementFocus" NonFocused="image://i:DecrementNoFocus" Command="[Decrease]"/>
+          <Text Name="Text" Color="color://s:FontColorLight" Font="font://f:VM_ConfigItemFont" />
+          <me:ImageBtn Focused="image://i:IncrementFocus" NonFocused="image://i:IncrementNoFocus" Command="[Increase]"/>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <UI Name="ImgButton">
+    <Properties>
+      <ICommand Name="Command" ICommand="$Required"/>
+      <cor:String Name="Content" String=""/>
+      <Image Name="Image" Image="image://i:Lines"/>
+      <cor:Boolean Name="Enabled" Boolean="true" />
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+      <Image Name="FocusImage" Image="image://i:ButtonLeftFocus" />
+      <Image Name="BlankImage" Image="null" />
+    </Locals>
+    <Rules>
+
+      <Binding Source="[Enabled]" Target="[Input.KeyInteractive]" />
+      <Condition Source="[Enabled]" ConditionOp="Equals" SourceValue="false" Target="[BoxImage.Alpha]" Value="0.3" />
+
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Enabled]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[BoxImage.Content]" Value="[FocusImage]"/>
+          <Set Target="[Label.Color]" Value="color://s:FontColorLight"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[BoxImage]" Animation="animation://me:ButtonPress"/>
+        </Actions>
+      </Condition>
+      <Binding Source="[Content]" Target="[Label.Content]" />
+    </Rules>
+    <Content>
+      <Graphic Name="BoxImage" Alpha="1" Content="[BlankImage]" SizingPolicy="SizeToChildren" Padding="15,2,15,2" >
+        <Children>
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Graphic Content="[Image]" Margins="0,6,5,0" MaximumSize="0,20" MinimumSize="0,20" MaintainAspectRatio="true"></Graphic>
+              <Text Name="Label"  Color="color://s:FontColorDark" Font="[Font]"/>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+  <UI Name="CfgButton">
+    <Properties>
+      <ICommand Name="Command" ICommand="$Required"/>
+      <Image Name="Image" Image="image://i:ConfigImg"/>
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+      <Image Name="FocusImage" Image="image://i:ButtonLeftFocus" />
+      <Image Name="BlankImage" Image="null" />
+    </Locals>
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[BoxImage.Content]" Value="[FocusImage]"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[BoxImage]" Animation="animation://me:ButtonPress"/>
+        </Actions>
+      </Condition>
+    </Rules>
+    <Content>
+      <Graphic Name="BoxImage" Content="[BlankImage]" SizingPolicy="SizeToChildren" Padding="8,8,8,8" >
+        <Children>
+          <Panel >
+            <Children>
+              <Graphic Content="[Image]" MaximumSize="23,23" MaintainAspectRatio="true" ></Graphic>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+  <UI Name="RadioConfiguration">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Choice Name="Choice" Choice="$Required" />
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+    </Locals>
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+    </Rules>
+    <Content>
+      <ColorFill Name="Main" Content="color://s:PanelBackground"  Navigation="ContainAll,Group" Padding="-3,-3,-3,-3">
+        <Children>
+          <Graphic Content="image://i:ZoomPane"  SizingPolicy="SizeToChildren"  Padding="10,10,10,10" MaintainAspectRatio="false">
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+            </Layout>
+            <Children>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                </Layout>
+                <Children>
+                  <rg:RadioGroup Model="[Choice]" Font="font://f:VM_ConfigItemFont"/>
+                </Children>
+              </Panel>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                </Layout>
+                <Children>
+                  <me:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+</Mcml>

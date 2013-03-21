@@ -1,0 +1,57 @@
+<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+		xmlns:pd="resx://MediaBrowser/MediaBrowser.Resources/PageDefault"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+    xmlns:me="Me"
+>
+  
+  <UI Name="DefaultScreenSaver">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:FolderModel Name="Folder" FolderModel="$Required"/>
+    </Properties>
+    <Locals>
+      <!--The following should block input from reaching the MB interface while we are active-->
+      <KeyHandler Name="KeyEater" Handle="true" Key="Any"/>
+      <ClickHandler Name="MouseEater" HandlePrimaryMouseButton="true" HandleEnterSpaceKeys="true"/>
+      <ShortcutHandler Name="BackEater" Handle="true" Shortcut="Back"/>
+      <ShortcutHandler Name="EnterEater" Handle="true" Shortcut="Enter"/>
+    </Locals>
+    <Rules>
+
+      <Changed Source="[Application.ScreenSaverActive]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.ScreenSaverActive]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScreenSaver.NavigateInto]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    
+    <Content>
+      <Panel Name="ScreenSaver" Visible="[Application.ScreenSaverActive]">
+        <Children>
+          <ColorFill Content="Black" >
+            <Children>
+              <Graphic Content="image://i:MBLogo" Scale="0.25,.18,0" Alpha=".7">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,.33" Top="Parent,.45"/>
+                </LayoutInput>
+                <Animations>
+                  <Animation Animation="animation://an:FloatAround"/>
+                </Animations>
+              </Graphic>
+            </Children>
+          </ColorFill>
+        </Children>
+
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

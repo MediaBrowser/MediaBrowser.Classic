@@ -1,0 +1,54 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:ai="resx://MediaBrowser/MediaBrowser.Resources/ActivityIndicator"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:me="Me"
+      >
+
+
+  <UI Name="InfoMarquee">
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <Color Name="Color" Color="White"/>
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Application.Information.DisplayText]" Target="[InfoPanelDisplay.Content]"  />
+      <Binding Source="[Application.Information.MajorActivity]" Target="[ActivityInd.Visible]"  />
+    </Rules>
+
+    <Content>
+      <Panel Layout="Form" >
+        <Children>
+          <ai:ActivityIndicator Name="ActivityInd" Application="[Application]" MaximumSize="30,30" Visible="false">
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" />
+            </LayoutInput>            
+          </ai:ActivityIndicator>
+          <Text Name="InfoPanelDisplay" Font="font://f:P_ClockFont" Color="[Color]">
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0,35" />
+            </LayoutInput>
+            <Animations>
+              <Animation Type="ContentChangeShow">
+                <Keyframes>
+                  <AlphaKeyframe Time="0" Value="0"/>
+                  <AlphaKeyframe Time="0.4" Value="0"/>
+                  <AlphaKeyframe Time=".8" Value="1"/>
+                </Keyframes>
+              </Animation>
+              <Animation Type="ContentChangeHide">
+                <Keyframes>
+                  <AlphaKeyframe Time="0" Value="1"/>
+                  <AlphaKeyframe Time="0.4" Value="0"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Text>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

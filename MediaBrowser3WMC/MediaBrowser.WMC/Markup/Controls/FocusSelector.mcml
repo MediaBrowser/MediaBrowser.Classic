@@ -1,0 +1,38 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  >
+
+	<UI Name="FocusSelector">
+		<Properties>
+			<Image Name="FocusImage" Image="image://i:ZoomPane"/>
+			<Vector3 Name="Scaling" Vector3="1,1,1"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Scaling]" Target="[Graphic.Scale]" />
+		</Rules>
+		<Content>
+			<Graphic Name="Graphic" Content="[FocusImage]" MaintainAspectRatio="true" CenterPointPercent="0.5,0.5,0.5" >
+				<Animations>
+					<Animation Name="MoveAnimation" Type="Move">
+						<Keyframes>
+							<PositionKeyframe Time="0.0" Value="0,0,0" RelativeTo="Current"  Interpolation="EaseOut"/>
+							<PositionKeyframe Time=".2" Value="0,0,0" RelativeTo="Final"/>
+						</Keyframes>
+					</Animation>
+
+					<Animation Name="SizeAnimation" Type="Size">
+						<Keyframes>
+							<SizeKeyframe Time="0.0" Value="0,0,0" RelativeTo="Current" Interpolation="SCurve, 0.5"/>
+							<SizeKeyframe Time=".2" Value="0,0,0" RelativeTo="Final"/>
+						</Keyframes>
+					</Animation>
+				</Animations>
+			</Graphic>
+		</Content>
+	</UI>
+
+
+	
+	
+</Mcml>

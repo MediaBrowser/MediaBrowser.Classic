@@ -1,0 +1,59 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
+      xmlns:me="Me">
+
+  <UI Name="ColorSpinner" BaseUI="ss:SimpleSpinner">
+    <Properties>
+      <Color Name="SpinnerColor" Color="6,31,84"/>
+      <Choice Name="Model" Choice="$Required" />
+    </Properties>
+
+    <Locals>
+      <cor:Boolean Name="InitialFocusSet" Boolean="false"/>
+      <Timer Name="CheckInitialFocus" Interval="20" Enabled="false"/>
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Model.Chosen!Color]" Target="[Background.Content]" />
+      <Default Target="[Value.Visible]" Value="false" />
+      <Default Target="[Model.Default]"  Value="[SpinnerColor]" />
+
+      <!-- Set timer to check that we succeeded -->
+      <Rule>
+        <Conditions>
+          <Equality Source="[InitialFocusSet]" Value="false"/>
+          <IsValid Source="[SpinnerColor]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[InitialFocusSet]" Value="true"/>
+          <Set Target="[CheckInitialFocus.Enabled]" Value="true"/>
+        </Actions>
+      </Rule>
+
+      <!-- If focus isn't on the right item, move to the next position -->
+      <Changed Source="[CheckInitialFocus.Tick]">
+        <Conditions>
+          <Equality Source="[Model.Chosen!Color]" ConditionOp="NotEquals" Value="[SpinnerColor]"/>
+          <Equality Source="[Model.HasNextValue]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Model.NextValue]" InvokePolicy="Synchronous" />
+        </Actions>
+      </Changed>
+
+      <!-- Shutdown the timer object once item is found -->
+      <Changed Source="[CheckInitialFocus.Tick]">
+        <Conditions>
+          <Equality Source="[Model.Chosen!Color]" ConditionOp="Equals" Value="[SpinnerColor]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[CheckInitialFocus.Enabled]" Value="false"/>
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+  </UI>
+
+</Mcml>

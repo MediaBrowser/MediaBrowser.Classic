@@ -1,0 +1,37 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:col="assembly://MSCorLib/System.Collections"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  >
+
+
+  <UI Name="ArtistList">
+    <Properties>
+      <col:IList Name="SourceData" IList="$Required" />
+      <Font Name="Font" Font="$Required"/>
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      <cor:Boolean Name="AllowWrap" Boolean="true"/>
+      <cor:Boolean Name="WordWrap" Boolean="false"/>
+      <Size Name="MaxSize" Size="0,0"/>
+      <cor:Int32 Name="MaxLines" Int32="2"/>
+    </Properties>
+    <Rules>
+      <Binding Target="[ArtistRepeater.Source]" Source="[SourceData]"/>
+    </Rules>
+
+    <Content>
+      <Repeater Name="ArtistRepeater" MaximumSize="[MaxSize]" >
+        <Layout>
+          <FlowLayout Orientation="Horizontal" AllowWrap="[AllowWrap]" Spacing="25,0" />
+        </Layout>
+        <Divider>
+          <Text Content="●" Font="[Font]" Color="[Color]" Alpha="0.6"  />
+        </Divider>
+        <Content>
+          <Text WordWrap="[WordWrap]" Content="[RepeatedItem!lib:ActorItemWrapper.Actor.DisplayName]" Font="[Font]" Color="[Color]" MaximumLines="[MaxLines]" />
+        </Content>
+      </Repeater>
+    </Content>
+  </UI>
+</Mcml>

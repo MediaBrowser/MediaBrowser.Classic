@@ -1,0 +1,162 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:lb="resx://MediaBrowser/MediaBrowser.Resources/ListButton"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+    xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      >
+
+	<UI Name="ListView">
+
+		<Properties>
+			<a:Application Name="Application" Application="$Required"/>
+			<lib:FolderModel Name="Folder" FolderModel="$Required"/>
+			<Font Name="Font" Font="$Required" />
+		</Properties>
+
+		<Locals>
+      <cor:Int32 Name="Startup" />
+			<!-- Use the MouseWheel handler to handle the mouse wheel.  -->
+			<ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="ScrollingHandler"/>
+
+			<ScrollingData Name="ScrollingData" />
+			<cor:Int32 Name="CounterValue" Int32="0" />
+			<IntRangedValue Name="SelectedIndex" Value="0"/>
+      <Command Name="ClosePopupPlay"/>
+		</Locals>
+
+		<Rules>
+
+      <!--The below default dummy rule is used to navigate to the proper first item.  using a generic rule or changed does not work the first time-->
+      <Default Target="[Startup]" Value="1" ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Application.NavigatingForward]" Value="true"/>
+          <Equality Source="[Folder.Children.Count]" ConditionOp="GreaterThan" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[MyRepeater.NavigateIntoIndex]"  index="[Folder.FirstUnwatchedIndex]"/>
+        </Actions>
+      </Default>
+
+      <Binding Source="[SelectedIndex.Value]" Target="[Folder.SelectedChildIndex]" />
+			<!-- Give ScrollingData to ScrollingHandler. -->
+			<Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+
+			<!-- Give Repeater to ScrollingData. -->
+			<Default Target="[ScrollingData.Repeater]" Value="[MyRepeater]"/>
+
+			<Binding Source="[SelectedIndex.Value]" Target="[CounterValue]" >
+				<Transformer>
+					<MathTransformer Add="1" />
+				</Transformer>
+			</Binding>
+			<Binding Source="[CounterValue]" Target="[List_Counter.Content]" >
+				<Transformer>
+					<FormatTransformer Format="{0} "/>
+				</Transformer>
+			</Binding>
+
+			<!--`Bind the current number of Folder Items to the List Total -->
+			<Binding Source="[Folder.Children.Count]" Target="[List_Total.Content]" >
+				<Transformer>
+					<FormatTransformer Format="| {0}" />
+				</Transformer>
+			</Binding>
+
+			<Binding Source="[Folder.Children]" Target="[MyRepeater.Source]"/>
+			<Changed Source="[Folder.JILShift]">
+				<Actions>
+					<Invoke Target="[ScrollingData.Scroll]"  amount="[Folder.JILShift]"/>
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Application]" InitialEvaluate="true">
+				<Actions>
+					<Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val ="50" />
+				</Actions>
+			</Changed>
+
+      <!--<Binding Target="[PopupPlay.Item]" Source="[Folder.SelectedChild]" />
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.DisplayPopupPlay]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[PopupPlay.Visible]" Value="true" />
+          <Invoke Target="[PopupPlay.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[ClosePopupPlay.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayPopupPlay]" Value="false" />
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[PopupPlay.Visible]" Value="false"/>
+          <Invoke Target="[Scroller.NavigateInto]" />
+        </Actions>
+      </Changed>-->
+		</Rules>
+
+		<Content>
+			<Panel Layout="Dock">
+				<Children>
+
+					<!-- Spacer -->
+					<Panel>
+						<LayoutInput>
+							<DockLayoutInput Position="Left" Alignment="Near"  />
+						</LayoutInput>
+						<Children>
+							<ColorFill Content="Transparent" Alpha=".8" MinimumSize="1,440" Margins="15,10,5,10" />
+						</Children>
+					</Panel>
+
+					<!-- List Counter -->
+					<Panel>
+						<LayoutInput>
+							<DockLayoutInput Alignment="Far" Position="Bottom"  />
+						</LayoutInput>
+						<Children>
+							<Panel Layout="HorizontalFlow" Margins="0,25,0,0" >
+								<Children>
+									<Text Name="List_Counter" Content="0" Color="color://s:FontColorMedium" Font="[Font]" />
+									<Text Name="List_Total" Content="0" Color="color://s:FontColorMedium" Font="[Font]" Margins="0,0,20,0" />
+								</Children>
+							</Panel>
+						</Children>
+					</Panel>
+
+          <!-- Popup Play Panel -->
+          <!--<pp:PopupPlay Name="PopupPlay" Visible="false" Item="[Folder.SelectedChild]" Close="[ClosePopupPlay]"
+                    Application="[Application]" >
+            <LayoutInput>
+              <DockLayoutInput Alignment="Center"  Position="Client"  />
+            </LayoutInput>
+          </pp:PopupPlay>-->
+
+					<!-- List Repeater -->
+					<Scroller Orientation="Vertical" FadeSize="-10" Margins="15,0,0,5" Name="Scroller" Navigation="RememberFocus" ScrollingData="[ScrollingData]" >
+						<LayoutInput>
+							<DockLayoutInput Alignment="Fill"  Position="Client"  />
+						</LayoutInput>
+						<Children>
+							<Repeater Source="[Folder.Children]" Layout="Fill" Name="MyRepeater" ContentName="BaseItem">
+								<Layout>
+									<FlowLayout Orientation="Vertical"  ItemAlignment="Center" Spacing="4,0"/>
+								</Layout>
+							</Repeater>
+						</Children>
+					</Scroller>
+				</Children>
+			</Panel>
+		</Content>
+		<Content Name="BaseItem">
+			<lb:ListButton Application="[Application]" Index="[RepeatedItemIndex]" Item="[RepeatedItem!lib:Item]" SelectedIndex="[SelectedIndex]" Font="[Font]"/>
+		</Content>
+	</UI>
+
+</Mcml>

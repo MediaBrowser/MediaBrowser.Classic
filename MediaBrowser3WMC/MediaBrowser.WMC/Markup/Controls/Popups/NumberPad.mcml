@@ -1,0 +1,228 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"      
+		  xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu" 
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	    xmlns:me="Me"
+	  >
+
+  <!--I'm sure there's a more elegant way to do this, but here's a quick and dirty that works...-->
+	<UI Name="NumberPad">
+      <Properties>        
+        <EditableText Name="EditBox" EditableText="$Required" />
+        <cor:String Name="Theme" String=""/>
+      </Properties>
+    
+      <Locals>
+        <Command Name="Cmd1" />
+        <Command Name="Cmd2" />
+        <Command Name="Cmd3" />
+        <Command Name="Cmd4" />
+        <Command Name="Cmd5" />
+        <Command Name="Cmd6" />
+        <Command Name="Cmd7" />
+        <Command Name="Cmd8" />
+        <Command Name="Cmd9" />
+        <Command Name="Cmd0" />
+      </Locals>
+    
+      <Rules>
+        <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+        <Default Target="[Input.KeyInteractive]" Value="true" />
+        <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+
+        <Changed Source="[Cmd0.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="0"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd1.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="1"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd2.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="2"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd3.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="3"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd4.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="4"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd5.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="5"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd6.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="6"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd7.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="7"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd8.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="8"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Cmd9.Invoked]">
+          <Actions>
+            <!-- Concatenate this value to the editable text. -->
+            <Invoke Target="[EditBox.Value.Concat]"
+              ResultTarget="[EditBox.Value]"
+              str0="[EditBox.Value]"
+              str1="9"/>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+          </Actions>
+        </Changed>
+        <Condition Source="[Theme]" SourceValue="Black" Target="[Main.Content]" Value="resx://MediaBrowser/MediaBrowser.Resources/BackgroundBlack"/>
+
+      </Rules>
+    
+      <Content>
+        <Graphic Name="Main" Content="resx://MediaBrowser/MediaBrowser.Resources/Background" SizingPolicy="SizeToChildren">
+          <Children>
+            <Graphic  Content="image://i:ZoomPane" SizingPolicy="SizeToChildren" Alpha=".75"
+                     MaintainAspectRatio="false" Padding="10,10,10,10" >
+              <Layout>
+                <FlowLayout Orientation="Vertical" ItemAlignment="Center"/>
+              </Layout>
+              <Children>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                  </Layout>
+                  <Children>
+                    <sb:SimpleButton Name="btn7" Text="7" Command="[Cmd7]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn8" Text="8" Command="[Cmd8]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn9" Text="9" Command="[Cmd9]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                  </Children>
+                </Panel>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                  </Layout>
+                  <Children>
+                    <sb:SimpleButton Name="btn4" Text="4" Command="[Cmd4]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn5" Text="5" Command="[Cmd5]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn6" Text="6" Command="[Cmd6]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                  </Children>
+                </Panel>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                  </Layout>
+                  <Children>
+                    <sb:SimpleButton Name="btn1" Text="1" Command="[Cmd1]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn2" Text="2" Command="[Cmd2]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                    <sb:SimpleButton Name="btn3" Text="3" Command="[Cmd3]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                  </Children>
+                </Panel>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                  </Layout>
+                  <Children>
+                    <sb:SimpleButton Name="btn0" Text="0" Command="[Cmd0]"
+                                    Size="50,50"
+                                    Font="font://f:MM_ButtonFont" />
+                  </Children>
+                </Panel>
+               </Children>
+            </Graphic>
+          </Children>
+        </Graphic>
+      </Content>
+    </UI>
+</Mcml>

@@ -1,0 +1,191 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System" 
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	    xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me">
+
+  
+
+  <UI Name="SpinImageButton">
+
+    <Properties>
+      <ICommand Name="Command" ICommand="$Required" />
+      <Font Name="Font" Font="$Required" />
+      
+      <cor:Boolean Name="IsNavigatingCommand" Boolean="false" />
+      <cor:Boolean Name="LeftAlign" Boolean="true" />
+      <cor:Boolean Name="DisplayText" Boolean="false" />
+      <cor:String Name="Text" String="" />
+      <Size Name="Size" Size="0,0" />
+      <Size Name="MinSize" Size="50,50" />      
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      <Image Name="Icon" Image="image://me:ButtonDormant" />
+      <Image Name="ImageFocus" Image="image://me:ButtonLeftFocus" />
+      <Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
+      <Image Name="ImageDormant" Image="image://me:ButtonDormant" />
+
+    </Properties>
+
+    <Locals>
+
+      <ClickHandler Name="Clicker" />
+
+    </Locals>
+
+    <Rules>
+
+      <Binding Source="[Command]" Target="[Clicker.Command]" />
+      <Binding Source="[Command.Available]" Target="[Input.KeyInteractive]" />
+      <Binding Source="[Font]" Target="[Label.Font]" />
+      <Binding Source="[Text]" Target="[Label.Content]" />
+      
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Changed Source="[Command.Available]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Alpha]" Value="1"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Command.Available]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Alpha]" Value=".5"/>
+        </Actions>
+      </Changed>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[Size]" Value="0,0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.MaximumSize]" Value="1000,1000"/>
+          <Set Target="[imgButton.SizingPolicy]"  Value="SizeToConstraint"/>
+        </Actions>
+      </Rule>
+      
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Select" />
+          <PlayAnimation Animation="animation://an:RotateRound" Target="[graphicBullet]"  />
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Miniselect" />
+          <PlayAnimation Animation="animation://an:RotateRound" Target="[graphicBullet]"  />
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+          <Set Target="[imgButton.MinimumSize]" Value="[Size]"/>
+          <Set Target="[imgButton.MaximumSize]" Value="[Size]"/>
+          <Set Target="[Label.Visible]" Value="true" />
+          <PlaySound Sound="sound://sd:Focus" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Input.MouseFocus]" SourceValue="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+          <Set Target="[Label.Visible]" Value="true" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="false">
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageDormant]" />
+        </Actions>
+      </Condition>
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Command.Available]" ConditionOp="Equals" Value="false" />
+          <Equality Source="[DisplayText]" ConditionOp="NotEquals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Label.Visible]" Value="false" />
+        </Actions>
+      </Rule>
+      
+
+      <Condition Source="[LeftAlign]" ConditionOp="Equals" SourceValue="true">
+        <Actions>
+          <Set Target="[imgButton.Layout]" Value="HorizontalFlow" />
+          <Set Target="[Label.HorizontalAlignment]" Value="Near" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+      <Panel>
+        <Children>
+          
+          <Graphic Name="imgButton" Content="[ImageNoFocus]" MinimumSize="[MinSize]"
+                   MaximumSize="[MinSize]">
+            <Layout>
+              <FlowLayout Orientation="Horizontal" ItemAlignment="Near" />
+            </Layout>
+            <Children>
+              <Graphic Name="graphicBullet" MaximumSize="25,25" MinimumSize="25,25" MaintainAspectRatio="true"
+                           Margins="7,10,3,0" Visible="true" Content="[Icon]">
+              </Graphic>
+              <!-- The label to display. -->
+              <Text Name="Label"  Color="[Color]" MinimumSize="0,30" Margins="4,3,0,0" Visible="[DisplayText]"
+                        FadeSize="5"  Font="[Font]" HorizontalAlignment="Center" MaximumSize="[Size]">
+                <Animations>
+                  <Animation Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" Value="-25,0,0"/>
+                      <PositionKeyframe Time="0.3" Value="0,0,0"/>
+                      <AlphaKeyframe Time="0" Value="0"/>
+                      <AlphaKeyframe Time="0.3" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Text>
+            </Children>
+          </Graphic>
+          
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <Image Name="ButtonDisabled"          Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDisabled"          NineGrid="7,7,7,7" />
+  <Image Name="ButtonDormant"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDormant"           NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNewFocus"          NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocusOverlay"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusOverlay"  NineGrid="7,7,7,7" />
+  <Image Name="ButtonNoFocus"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNoFocus"           NineGrid="7,7,7,7" />
+  <Image Name="ButtonPressedAfterGlow"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedAfterGlow"  NineGrid="7,7,7,7" />
+  <Image Name="ButtonPressedHighlight"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedHighlight"  NineGrid="7,7,7,7" />
+
+	
+	
+</Mcml>

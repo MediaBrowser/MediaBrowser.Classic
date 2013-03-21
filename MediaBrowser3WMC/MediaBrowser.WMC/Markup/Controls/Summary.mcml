@@ -1,0 +1,120 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/ScrollableText"
+	  xmlns:as="resx://MediaBrowser/MediaBrowser.Resources/AutoScroller"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  >
+
+	<UI Name="Summary">
+		<Properties>
+			<lib:Item Name="Model" Item="$Required"/>
+			<lib:Item Name="ModelFast" Item="$Required"/>
+			<Color Name="Color" Color="color://s:FontColorMedium" />
+			<Color Name="FocusColor" Color="color://s:FontColorLight"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Model.Overview]" Target="[Summary.Text]" />
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="false"/>
+				</Actions>
+			</Changed>
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="NotEquals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="true"/>
+				</Actions>
+			</Changed>
+		</Rules>
+		<Content>
+			<Panel >
+				<Children>
+					<st:ScrollableText Visible="false" Name="Summary" Font="[Font]" Color="[Color]" FocusColor="[FocusColor]">
+					</st:ScrollableText>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+	<UI Name="SummaryAS">
+		<Properties>
+			<lib:Item Name="Model" Item="$Required"/>
+			<lib:Item Name="ModelFast" Item="$Required"/>
+			<Color Name="Color" Color="color://s:FontColorMedium" />
+			<Color Name="FocusColor" Color="color://s:FontColorLight"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Model.Overview]" Target="[Summary.Text]" />
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="false"/>
+				</Actions>
+			</Changed>
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="NotEquals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="true"/>
+				</Actions>
+			</Changed>
+		</Rules>
+		<Content>
+			<Panel >
+				<Children>
+					<as:AutoScroller Name="Summary" Text="" Font="[Font]"/>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+	<UI Name="SummaryNonScrolling">
+		<Properties>
+			<lib:Item Name="Model" Item="$Required"/>
+			<lib:Item Name="ModelFast" Item="$Required"/>
+			<Color Name="Color" Color="color://s:FontColorMedium" />
+			<Color Name="FocusColor" Color="color://s:FontColorLight"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Model.Overview]" Target="[Summary.Content]" />
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="Equals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="false"/>
+				</Actions>
+			</Changed>
+			<Changed Source="[Model.Overview]">
+				<Conditions>
+					<Equality Source="[Model.Overview.Length]" ConditionOp="NotEquals" Value="0"/>
+				</Conditions>
+				<Actions>
+					<Set Target="[Summary.Visible]" Value="true"/>
+				</Actions>
+			</Changed>
+		</Rules>
+		<Content>
+			<Panel >
+				<Children>
+					<Text Visible="false" Name="Summary" Font="[Font]" Color="[Color]" WordWrap="true" FadeSize="100"  >
+					</Text>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+
+</Mcml>

@@ -1,0 +1,212 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://mscorlib/System"
+      xmlns:proxy ="assembly://ehiProxy/ehiProxy"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:me = "Me"
+      >
+
+  
+
+  <UI Name="DiamondPagination">
+    <Properties>
+      <cor:Single Name="Value" Single="0"/>
+      <cor:Single Name="MaxPages" Single="0"/>
+    </Properties>
+    <Locals>
+      <!--<Image Name="EmptyStar" Image="image://i:StarEmpty" />
+      <Image Name="FullStar"  Image="image://i:StarFull" />-->
+      <Color Name="EmptyStar" Color="Gray" />
+      <Color Name="FullStar"  Color="White" />
+    </Locals> 
+    <Rules>
+      <!--<Binding Source="[MaxPages!cor:String]" Target="[V.Content]" />-->
+      
+      
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="true"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Stars.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="0"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="2"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[FullStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="2"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="3"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[FullStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="3"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="4"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[FullStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="4"/>
+          <Equality Source="[Value]" ConditionOp="LessThanOrEquals" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[FullStar]"/>
+          <Set Target="[T5.Color]" Value="[EmptyStar]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Value]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[Value]" ConditionOp="GreaterThan" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T2.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T3.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T4.Color]" Value="[EmptyStar]"/>
+          <Set Target="[T5.Color]" Value="[FullStar]"/>
+        </Actions>
+      </Changed>
+
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="0"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="2"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="false"/>
+          <Set Target="[T3.Visible]" Value="false"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="2"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="3"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="false"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="3"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="4"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="false"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="4"/>
+          <Equality Source="[MaxPages]" ConditionOp="LessThanOrEquals" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[MaxPages]" InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[MaxPages]" ConditionOp="GreaterThan" Value="5"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[T1.Visible]" Value="true"/>
+          <Set Target="[T2.Visible]" Value="true"/>
+          <Set Target="[T3.Visible]" Value="true"/>
+          <Set Target="[T4.Visible]" Value="true"/>
+          <Set Target="[T5.Visible]" Value="true"/>
+        </Actions>
+      </Changed>
+     
+    </Rules>
+
+    <Content>
+      <Panel Layout="HorizontalFlow">
+        <Children>
+              <Panel Name="Stars" Visible="true">
+                <Layout>
+                  <FlowLayout Spacing="2,2" Orientation="Horizontal"/>
+                </Layout>
+                <Children>
+                  <Text Name="T1" Content="●" Font="Segoe UI SemiBold, 16" Color="Gray" />
+                  <Text Name="T2" Content="●" Font="Segoe UI SemiBold, 16" Color="Gray" />
+                  <Text Name="T3" Content="●" Font="Segoe UI SemiBold, 16" Color="Gray" />
+                  <Text Name="T4" Content="●" Font="Segoe UI SemiBold, 16" Color="Gray" />
+                  <Text Name="T5" Content="●" Font="Segoe UI SemiBold, 16" Color="Gray" />
+                  <!--<Text Name="V" Font="Segoe UI SemiBold, 10" Color="Gray" />-->
+
+                  <!--<Graphic Name="Star1" MaximumSize="[MaxSize]" />
+                  <Graphic Name="Star2"  MaximumSize="[MaxSize]" />
+                  <Graphic Name="Star3"  MaximumSize="[MaxSize]" />
+                  <Graphic Name="Star4"  MaximumSize="[MaxSize]" />
+                  <Graphic Name="Star5"  MaximumSize="[MaxSize]" />-->
+                </Children>
+          </Panel>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

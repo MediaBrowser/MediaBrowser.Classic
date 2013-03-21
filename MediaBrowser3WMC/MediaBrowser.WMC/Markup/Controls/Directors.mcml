@@ -1,0 +1,42 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  >
+
+  <UI Name="Directors">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+      <Font Name="TitleFont" Font="$Required"/>
+    </Properties>
+
+    <Rules>
+      <Rule ConditionLogicalOp ="Or">
+        <Conditions>
+          <Equality Source="[Item.ItemTypeString]" ConditionOp="Equals" Value="Song"/>
+          <Equality Source="[Item.ItemTypeString]" ConditionOp="Equals" Value="MusicAlbum"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[DirectorTxt.Content]" Value="[Application.LocalStrings.#ComposedByDetail!cor:String]"/>
+        </Actions>
+      </Rule>
+      <Binding Source="[Item.DirectorString]" Target="[Director.Content]"/>
+      <Condition Source="[Item.Directors.Count]" ConditionOp="GreaterThan" SourceValue="0" Target="[DirectedByPanel.Visible]" Value="true"  />
+    </Rules>
+
+    <Content>
+      <Panel Name="DirectedByPanel" Layout="HorizontalFlow" Visible="false">
+        <Children>
+          <Text Name="DirectorTxt" Content="[Application.LocalStrings.#DirectedByDetail!cor:String]" Font="[TitleFont]" Color="color://s:FontColorLight" />
+          <Text Name="Director" Font="[Font]" WordWrap="true" Color="color://s:FontColorLight" Content="[Item.DirectorString]"/>
+        </Children>
+      </Panel>
+    </Content>
+
+  </UI>
+
+</Mcml>

@@ -1,0 +1,121 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+      xmlns:me="Me"
+      >
+
+  
+
+  <UI Name="TabItem">
+
+    <Properties>
+      <cor:String Name="Label" cor:String="$Required"/>
+      <Choice Name="Model" Choice="$Required"/>
+      <Index Name="Index" Index="$Required"/>
+      <Color Name="FilterColor" Color="Black" />
+      <Image Name="Icon" Image="resx://MediaBrowser/MediaBrowser.Resources/IconActors" />
+		<Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true"/>
+
+      <Condition Source="[Icon]" ConditionOp="NotEquals" SourceValue="null">
+        <Actions>
+          <Set Target="[graphicBullet.Visible]" Value="true"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Label]" ConditionOp="Equals" SourceValue="General">
+        <Actions>
+          <Set Target="[graphicBullet.Content]" Value="resx://MediaBrowser/MediaBrowser.Resources/Lines"/>
+        </Actions>
+      </Condition>
+
+      <!-- Key Focus = true -->
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Name.Color]" Value="color://s:TabFontColorLight"/>
+          <Set Target="[FocusHighlight.Content]" Value="image://me:Tab_SelectedF" />
+          <Set Target="[FocusHighlight.Visible]" Value="true" />
+          <Set Target="[PivotBack.Alpha]" Value="global://s:FilterAlpha" />
+			    <Set Target="[FocusHighlight.Visible]" Value="true" />
+          <Set Target="[Model.ChosenIndex]" Value="[Index.Value]"/>
+        </Actions>
+      </Rule>
+
+      <!-- This is the selected Tab -->
+      <Condition Source="[Model.ChosenIndex]" SourceValue="[Index.Value]">
+        <Actions>
+          <Set Target="[FocusHighlight.Content]" Value="image://me:Tab_Selected" />
+          <Set Target="[FocusHighlight.Visible]" Value="true" />
+          <Set Target="[Name.Color]" Value="color://s:TabFontColorMedium"/>
+          <Set Target="[PivotBack.Alpha]" Value="global://s:FilterAlpha" />
+          <Set Target="[PivotPanel.Scale]" Value="1.2,1.2,1" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Model.ChosenIndex]" ConditionOp="NotEquals" SourceValue="[Index.Value]">
+        <Actions>
+          <Set Target="[FocusHighlight.Visible]" Value="false" />
+          <Set Target="[PivotBack.Alpha]" Value="global://s:FilterAlpha" />
+          <Set Target="[PivotPanel.Scale]" Value="1,1,1" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+		<Panel Layout="Anchor" Name="PivotPanel" MaximumSize="160,40" Margins="8,0,8,0" Scale="1,1,1" CenterPointPercent=".5,1,0.5">
+			<Children>
+        
+				<Graphic Name="FocusHighlight" Visible="false" Content="image://me:Tab_Selected" >
+					<LayoutInput>
+						<AnchorLayoutInput Horizontal="Fill" Vertical="Fill"/>
+					</LayoutInput>
+				</Graphic>
+
+
+        <Panel>
+          <Layout>
+            <FlowLayout Orientation="Horizontal" ItemAlignment="Near" />
+          </Layout>
+          <Children>
+            <Graphic Name="graphicBullet" MaximumSize="25,25" MinimumSize="25,25" MaintainAspectRatio="true"
+                         Margins="7,10,3,0" Visible="false" Content="[Icon]">
+            </Graphic>
+            <!-- The label to display. -->
+            <Text Name="Name" Font="[Font]" Color="color://s:TabFontColorMedium" Content="[Label]" Margins="5,5,5,-5" >
+              </Text>
+          </Children>
+        </Panel>
+        
+				<Graphic Name="PivotBack" ColorFilter="[FilterColor]" Alpha="1"  Content="image://me:Tab_Base" >					
+        </Graphic>
+        
+        
+			</Children>
+			<Animations>
+				<Animation Animation="animation://anim:RegularFastFade" />
+			</Animations>
+		</Panel>
+
+
+    </Content>
+
+  </UI>
+
+  <Image Name="PivotArrowLeft"          Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowLeft"/>
+  <Image Name="PivotArrowLeftNoFocus"   Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowLeftNoFocus"/>
+  <Image Name="PivotArrowRight"         Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowRight"/>
+  <Image Name="PivotArrowRightNoFocus"  Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowRightNoFocus"/>
+  <Image Name="Tab_Base"                Source="resx://MediaBrowser/MediaBrowser.Resources/Tab_Base" NineGrid="10,10,10,10" />
+  <Image Name="Tab_Selected"            Source="resx://MediaBrowser/MediaBrowser.Resources/Tab_Selected" NineGrid="10,10,10,10" />
+  <Image Name="Tab_SelectedF"           Source="resx://MediaBrowser/MediaBrowser.Resources/Tab_SelectedF" NineGrid="10,10,10,10" />
+</Mcml>

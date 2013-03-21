@@ -1,0 +1,145 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      >
+
+	<Image Name="Background" Source="resx://MediaBrowser/MediaBrowser.Resources/Background" />
+  <Image Name="MBLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/mblogo1000"/>
+
+	<Image Name="Star" Source="resx://MediaBrowser/MediaBrowser.Resources/star"/>
+	<Image Name="ButtonSelection" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonSelection" NineGrid="12,12,12,12"/>
+	<Image Name="ButtonSelection2" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonSelection2" NineGrid="12,12,12,12"/>
+	<Image Name="ZoomPane" Source="resx://MediaBrowser/MediaBrowser.Resources/ZoomPane" NineGrid="4,4,4,4"/>
+	<Image Name="TextEditBorder" Source="resx://MediaBrowser/MediaBrowser.Resources/ZoomPane" NineGrid="4,4,4,4"/>
+	<Image Name="Folder" Source="resx://MediaBrowser/MediaBrowser.Resources/folder" NineGrid="15,25,10,10"/>
+	<Image Name="Tick" Source="resx://MediaBrowser/MediaBrowser.Resources/Tick" />
+	<Image Name="TickPoster" Source="resx://MediaBrowser/MediaBrowser.Resources/TickPoster" />
+	<Image Name="TickPosterBase" Source="resx://MediaBrowser/MediaBrowser.Resources/TickPosterBase" />
+	<Image Name="Unwatched" Source="resx://MediaBrowser/MediaBrowser.Resources/Unwatched" />
+	<Image Name="UnwatchedBase" Source="resx://MediaBrowser/MediaBrowser.Resources/UnwatchedBase" />
+	<Image Name="Lines" Source="resx://MediaBrowser/MediaBrowser.Resources/Lines"/>
+	<Image Name="ConfigImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Config"/>
+	<Image Name="SortImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Sort"/>
+	<Image Name="IndexImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Index"/>
+  <Image Name="BackShadow" Source="resx://MediaBrowser/MediaBrowser.Resources/BackShadow" NineGrid="65,65,65,65"/>
+  <Image Name="Starburst" Source="resx://MediaBrowser/MediaBrowser.Resources/Starburst"/>
+  <Image Name="Locked" Source="resx://MediaBrowser/MediaBrowser.Resources/Locked"/>
+  <Image Name="UnLocked" Source="resx://MediaBrowser/MediaBrowser.Resources/UnLocked"/>
+  <Image Name="Search" Source="resx://MediaBrowser/MediaBrowser.Resources/IconSearch"/>
+  <Image Name="Key" Source="resx://MediaBrowser/MediaBrowser.Resources/IconKeyboard"/>
+  <Image Name="KeyFocus" Source="resx://MediaBrowser/MediaBrowser.Resources/IconKeyboardFocus"/>
+
+  <Image Name="HDLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/HD" />
+	<Image Name="HDLogo1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hd1080" />
+	<Image Name="HDLogo720" Source="resx://MediaBrowser/MediaBrowser.Resources/hd720" />
+	
+	<Image Name="StarEmpty" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Empty" />
+	<Image Name="StarFull" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Full" />
+	<Image Name="StarHalf" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Half" />
+	<Image Name="RatedG" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_g" />
+	<Image Name="RatedNC17" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_nc_17" />
+	<Image Name="RatedPG13" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_pg_13" />
+	<Image Name="RatedPG" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_pg" />
+	<Image Name="RatedR" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_r" />
+	<Image Name="Unrated" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_ur" />
+	<Image Name="RatedNR" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_nr" />
+	<Image Name="TV-G" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_g" />
+	<Image Name="TV-MA" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_ma" />
+	<Image Name="TV-Y7" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_y7" />
+	<Image Name="TV-Y" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_y" />
+	<Image Name="TV-14" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_14" />
+	<Image Name="TV-PG" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_pg" />
+	<Image Name="TV-Y7-FV" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_tv_y7_fv" />
+	
+	<Image Name="RadioButtonOn" Source="resx://MediaBrowser/MediaBrowser.Resources/RadioButtonOn" />
+	<Image Name="RadioButtonOff" Source="resx://MediaBrowser/MediaBrowser.Resources/RadioButtonOff" />
+	<Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus"         NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocusBlack"    Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusBlack"         NineGrid="7,7,7,7" />
+	<Image Name="BlankImage" Image="null"/>
+	
+	<Image Name="CheckBoxCheckedFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/CheckBoxCheckedFocus"  />
+	<Image Name="CheckBoxCheckedNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/CheckBoxCheckedNoFocus"  />
+	<Image Name="CheckBoxUncheckedFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/CheckBoxUncheckedFocus"  />
+	<Image Name="CheckBoxUncheckedNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/CheckBoxUncheckedNoFocus"  />
+
+	<Image Name="RadioFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/RadioFocus"  />
+	<Image Name="RadioNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/RadioNoFocus"  />
+	<Image Name="RadioSelectNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/RadioSelectNoFocus"  />
+	<Image Name="RadioSelectFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/RadioSelectFocus"  />
+
+	<Image Name="IncrementFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/IncrementFocused"  />
+	<Image Name="IncrementNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/IncrementNoFocus"  />
+	<Image Name="DecrementFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/DecrementFocused"  />
+	<Image Name="DecrementNoFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/DecrementNoFocus"  />
+
+	<Image Name="Underline" Source="resx://MediaBrowser/MediaBrowser.Resources/Underline" NineGrid="0,0,0,2"/>
+  <!--obsolete
+  <Image Name="Xvid" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_xvid" />
+  <Image Name="Divx" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_divx" />
+  <Image Name="Ac3" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_ac3" />
+  <Image Name="Aac" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_aac" />
+  <Image Name="MpegAudio" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_mpegaudio" />
+  <Image Name="Dts" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_dts" />
+  <Image Name="H264" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_h264" />
+  <Image Name="Vc1" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_vc1" />
+  <Image Name="Wmv" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_wmv" />
+  <Image Name="Wma" Source="resx://MediaBrowser/MediaBrowser.Resources/codec_wma" />
+
+  <Image Name="Aspect_43" Source="resx://MediaBrowser/MediaBrowser.Resources/aspect_43" />
+  <Image Name="Aspect_32" Source="resx://MediaBrowser/MediaBrowser.Resources/aspect_32" />
+  <Image Name="Aspect_169" Source="resx://MediaBrowser/MediaBrowser.Resources/aspect_169" />
+  <Image Name="Aspect_1851" Source="resx://MediaBrowser/MediaBrowser.Resources/aspect_1851" />
+  <Image Name="Aspect_2391" Source="resx://MediaBrowser/MediaBrowser.Resources/aspect_2391" />
+
+  <Image Name="Media_Bluray" Source="resx://MediaBrowser/MediaBrowser.Resources/media_bluray" />
+  <Image Name="Media_Hddvd" Source="resx://MediaBrowser/MediaBrowser.Resources/media_hddvd" />
+  <Image Name="Media_Dvd" Source="resx://MediaBrowser/MediaBrowser.Resources/media_dvd" />
+  <Image Name="Media_Avi" Source="resx://MediaBrowser/MediaBrowser.Resources/media_avi" />
+  <Image Name="Media_Mkv" Source="resx://MediaBrowser/MediaBrowser.Resources/media_mkv" />
+
+  <Image Name="HDType_1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hdtype_1080" />
+  <Image Name="HDType_720" Source="resx://MediaBrowser/MediaBrowser.Resources/hdtype_720" />-->
+  <!-- Diamond Media Info Images-->
+  <Image Name="d_Asf" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_asf" />
+  <Image Name="d_Xvid" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_xvid" />
+  <Image Name="d_Divx" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_divx" />
+  <Image Name="d_Ac3" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_ac3" />
+  <Image Name="d_Aac" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_aac" />
+  <Image Name="d_MpegAudio" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_mpegaudio" />
+  <Image Name="d_Dts" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_dts" />
+  <Image Name="d_H264" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_h264" />
+  <Image Name="d_Vc1" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_vc1" />
+  <Image Name="d_Wmv" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_wmv" />
+  <Image Name="d_Wma" Source="resx://MediaBrowser/MediaBrowser.Resources/d_codec_wma" />
+
+  <Image Name="d_Aspect_43" Source="resx://MediaBrowser/MediaBrowser.Resources/d_aspect_43" />
+  <Image Name="d_Aspect_32" Source="resx://MediaBrowser/MediaBrowser.Resources/d_aspect_32" />
+  <Image Name="d_Aspect_169" Source="resx://MediaBrowser/MediaBrowser.Resources/d_aspect_169" />
+  <Image Name="d_Aspect_1851" Source="resx://MediaBrowser/MediaBrowser.Resources/d_aspect_1851" />
+  <Image Name="d_Aspect_2391" Source="resx://MediaBrowser/MediaBrowser.Resources/d_aspect_2391" />
+
+  <Image Name="d_Media_Bluray" Source="resx://MediaBrowser/MediaBrowser.Resources/d_media_bluray" />
+  <Image Name="d_Media_Hddvd" Source="resx://MediaBrowser/MediaBrowser.Resources/d_media_hddvd" />
+  <Image Name="d_Media_Dvd" Source="resx://MediaBrowser/MediaBrowser.Resources/d_media_dvd" />
+  <Image Name="d_Media_Avi" Source="resx://MediaBrowser/MediaBrowser.Resources/d_media_avi" />
+  <Image Name="d_Media_Mkv" Source="resx://MediaBrowser/MediaBrowser.Resources/d_media_mkv" />
+
+  <Image Name="d_HDType_1080" Source="resx://MediaBrowser/MediaBrowser.Resources/d_hdtype_1080" />
+  <Image Name="d_HDType_720" Source="resx://MediaBrowser/MediaBrowser.Resources/d_hdtype_720" />
+  
+  <!-- Diamond Images -->
+  <Image Name="PosterFrame" Source="resx://MediaBrowser/MediaBrowser.Resources/poster_frame" NineGrid="10,10,10,10" />
+  <Image Name="DiamondOverlayWhiteAll" Source="resx://MediaBrowser/MediaBrowser.Resources/dia_overlay_all" />
+  <Image Name="DiamondOverlayDarkAll" Source="resx://MediaBrowser/MediaBrowser.Resources/dia_overlay_all_dark" />
+  <Image Name="DiamondOverlayDarkTop" Source="resx://MediaBrowser/MediaBrowser.Resources/dia_overlay_top_dark" />
+
+  <Image Name="DiamondListBg" Source="resx://MediaBrowser/MediaBrowser.Resources/dia_list_bg" NineGrid="20,20,20,20" />
+  <Image Name="DiamondListFocus" Source="resx://MediaBrowser/MediaBrowser.Resources/dia_list_focus" NineGrid="5,5,0,5" />
+  <!--PC images-->
+  <Image Name="Lock" Source="resx://MediaBrowser/MediaBrowser.Resources/Lock"/>
+  <Image Name="UnLock" Source="resx://MediaBrowser/MediaBrowser.Resources/UnLock1"/>
+  <Image Name="BlockedCover" Source="resx://MediaBrowser/MediaBrowser.Resources/BlockedCover"/>
+  <Image Name="RatedCustom" Source="resx://MediaBrowser/MediaBrowser.Resources/Rated_Custom" />
+  <Image Name="PlainBorder" Source="resx://MediaBrowser/MediaBrowser.Resources/plainborder" />
+
+
+
+</Mcml>

@@ -1,0 +1,194 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml">
+
+  <Animation Name="ScrollerMoveItemSmooth" Type="Move">
+    <Keyframes>
+      <PositionKeyframe Time="0.0" Value="0,0,0" RelativeTo="Current" Interpolation="EaseOut" />
+      <PositionKeyframe Time="0.2" Value="0,0,0" RelativeTo="Final" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="BackgroundFadeIn" >
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="2" Value="1" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="ButtonFocusOverlayIdle" Loop="-1" Type="Idle">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0.0" Interpolation="SCurve" />
+      <AlphaKeyframe Time="1.5" Value="1" Interpolation="SCurve" />
+      <AlphaKeyframe Time="3" Value="0.0" Interpolation="SCurve"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="EditboxCaretBlink" Type="Idle" Loop="-1">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="1.0"/>
+      <AlphaKeyframe Time="0.4" Value="1.0"/>
+      <AlphaKeyframe Time="0.5" Value="0.0"/>
+      <AlphaKeyframe Time="0.9" Value="0.0"/>
+      <AlphaKeyframe Time="1.0" Value="1.0"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="DelayFadeIn" Type="Show">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" RelativeTo="Absolute"/>
+      <AlphaKeyframe Time="0.4" Value="0" RelativeTo="Absolute"/>
+      <AlphaKeyframe Time="0.6" Value="1" RelativeTo="Absolute"  Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="SlideUpFade">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+      <PositionKeyframe Time="0.0" Value="0,50,0" />
+      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="SlideDownFade">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+      <PositionKeyframe Time="0.0" Value="0,-50,0" />
+      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="SlideRightFade">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+      <PositionKeyframe Time="0.0" Value="50,0,0" />
+      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="SlideLeftFade">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+      <PositionKeyframe Time="0.0" Value="-50,0,0" />
+      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="FadeFast">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="RegularFastFade" Type="Alpha">
+    <Keyframes>
+      <AlphaKeyframe Time="0" RelativeTo="Current" Value="1"/>
+      <AlphaKeyframe Time="0.5" RelativeTo="Final" Value="1"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="RegularFastScale" Type="Scale">
+    <Keyframes>
+      <ScaleKeyframe Time="0" RelativeTo="Current" Value="1,1,1"/>
+      <ScaleKeyframe Time="0.5" RelativeTo="Final" Value="1,1,1"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="PivotItemFocusOn">
+    <Keyframes>
+      <AlphaKeyframe Time="0" Value="0.75"/>
+      <ScaleKeyframe Time="0" Value="1,1,1"/>
+      <ScaleKeyframe Time="0.3" Value="1.1,1.1,1.1"/>
+      <AlphaKeyframe Time="0.3" Value="1"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="PivotItemFocusOff">
+    <Keyframes>
+      <AlphaKeyframe Time="0" Value="1"/>
+      <ScaleKeyframe Time="0" Value="1.1,1.1,1.1"/>
+      <ScaleKeyframe Time="0.3" Value="1,1,1"/>
+      <AlphaKeyframe Time="0.3" Value="0.75"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="Rotate_90" CenterPointPercent="0.5,0.5,0.5">
+    <Keyframes>
+      <RotateKeyframe Time="0" Value="0deg;0,1,0"/>
+      <RotateKeyframe Time="1" Value="90deg;0,1,0"/>
+    </Keyframes>
+  </Animation>
+  <Animation Name="Rotate_360" CenterPointPercent="0.5,0.5,0.5">
+    <Keyframes>
+      <RotateKeyframe Time="0" Value="0deg;0,1,0"/>
+      <RotateKeyframe Time=".4" Value="360deg;0,1,0"/>
+    </Keyframes>
+  </Animation>
+  <Animation Name="RotateRound" CenterPointPercent="0.5,0.5,0.5">
+    <Keyframes>
+      <RotateKeyframe Time="0.0" Value="0deg;0,0,0" Interpolation="Linear" RelativeTo="Current" />
+      <RotateKeyframe Time="0.6" Value="360deg;0,0,0" RelativeTo="Current" />
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="FilterMenu.Show" Type="Show">
+    <Keyframes>
+      <ScaleKeyframe Time="0.0" Value="1.0,0.0,1.0"/>
+      <ScaleKeyframe Time="0.4" Value="1.0,0.0,1.0"/>
+      <ScaleKeyframe Time="0.8" Value="1.0,1.0,1.0"/>
+    </Keyframes>
+  </Animation>
+  <Animation Name="FilterMenu.Hide" Type="Hide">
+    <Keyframes>
+      <ScaleKeyframe Time="0.0" Value="1.0,1.0,1.0"/>
+      <ScaleKeyframe Time="0.4" Value="1.0,0.0,1.0"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="PageHide" Type="Hide">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="1" RelativeTo="Current" Interpolation="EaseIn"/>
+      <AlphaKeyframe Time="0.2" Value=".7" RelativeTo="Current" Interpolation="EaseIn"/>
+      <AlphaKeyframe Time="0.5" Value="0" RelativeTo="Final" Interpolation="EaseIn"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="PageShow" Type="Show">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" RelativeTo="Current" Interpolation="EaseIn"/>
+      <AlphaKeyframe Time="0.3" Value="1" RelativeTo="Final"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="AlphaContentHide" Type="ContentChangeHide">
+    <Keyframes>
+      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+      <AlphaKeyframe RelativeTo="Current" Time="1.0" Value="0"/>
+    </Keyframes>
+  </Animation>
+
+  <Animation Name="AlphaContentShow" Type="ContentChangeShow">
+    <Keyframes>
+      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+      <AlphaKeyframe RelativeTo="Final" Time="1.0" Value="1"/>
+    </Keyframes>
+  </Animation>
+
+  <!-- Create an animation that will loop forever -->
+  <Animation Name="FloatAround" Loop="-1">
+    <Keyframes>
+      <!-- Move in a diamond pattern -->
+      <PositionKeyframe Time="0.0" Value="400,0,0" Interpolation="Log"/>
+      <PositionKeyframe Time="8.0" Value="0,400,0" Interpolation="Log"/>
+      <PositionKeyframe Time="16.0" Value="1000,0,0" Interpolation="Log"/>
+      <PositionKeyframe Time="24.0" Value="0,700,700" Interpolation="Log"/>
+      <PositionKeyframe Time="32.0" Value="1000,700,700" Interpolation="Log"/>
+      <PositionKeyframe Time="38.0" Value="400,0,0" Interpolation="Log"/>
+    </Keyframes>
+  </Animation>
+
+
+</Mcml>

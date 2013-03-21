@@ -1,0 +1,157 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:me="Me"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ItemButton"
+  >
+
+	<UI Name="ListButton" BaseUI="ib:ItemButton">
+
+		<Properties>			
+			<IntRangedValue Name="SelectedIndex" IntRangedValue="$Required"/>			
+			<cor:String Name="Text" String="" />
+			<Index Name="Index" Index="$Required"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+
+		<Locals>
+			<Image Name="Tick" Image="image://i:Tick"/>
+      <Image Name="Lock" Image="image://i:Lock"/>
+      <Size Name="MinSize" Size="300,48" />
+			<Size Name="Size" Size="625,48" />
+			<Image Name="ImageFocus" Image="image://me:ButtonLeftFocus" />
+			<Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
+			<Image Name="ImageDormant" Image="image://me:ButtonDormant" />
+
+			<Inset Name="TextMargins" Inset="8,-2,8,2"/>
+			<cor:Boolean Name="CenterText" Boolean="false"/>
+      <Color Name="WatchedTextColor" Color="color://s:ListViewWatchedTextColor"/>
+      
+		</Locals>
+
+		<Rules>    
+			<!-- Bind the button's label and command-->
+			<Binding Source="[Item.Name]" Target="[Label.Content]"/>
+			<Binding Source="[Item.HaveWatched]" Target="[TickIndicator.Visible]" />
+      <Binding Source="[Item.ParentalAllowed]" Target="[LockIndicator.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true"/>
+        </Transformer>
+      </Binding>
+
+      
+      <!-- Use WatchedTextColor if enabled. Each color scheme has a default color in the appropriate styles.mcml file
+           the user can override this color via the CustomStyles.mcml support mechanism.
+      -->
+      <Changed Source="[Item.HaveWatched]">
+        <Conditions>
+          <Equality Source="[Item.HaveWatched]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[Application.Config.EnableListViewWatchedColor]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Label.Color]" Value="[WatchedTextColor]" />
+        </Actions>
+      </Changed>
+
+      <!-- If color Transparent in Config, Default to color scheme specific WatchedTextColor -->
+      <Rule>
+        <Conditions>
+          <Equality Source="[Item.HaveWatched]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[Application.Config.EnableListViewWatchedColor]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Label.Color]" Value="[WatchedTextColor]" />
+        </Actions>
+      </Rule>      
+      
+
+			<Binding Source="[Input.KeyFocus]" Target="[imgFocusOverlay.Visible]" />
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Actions>
+					<Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+					<PlaySound Sound="sound://sd:Focus" />
+					<Set Target="[SelectedIndex.Value]" Value="[Index.Value]"/>
+				</Actions>
+			</Condition>
+		</Rules>
+
+		<Content>
+			<Panel>
+				<Children>
+					<Graphic Name="imgButton"
+							 Content="[ImageNoFocus]"
+							 Padding="12,7,12,7"
+							 MouseInteractive="true"
+							 MinimumSize="[MinSize]"
+							 MaximumSize="[Size]"
+							 SizingPolicy="SizeToConstraint"
+							 HorizontalAlignment="Fill"
+							 VerticalAlignment="Fill"
+                   >
+						<Children>
+							<Panel Layout="Dock">
+								<Children>
+                  <Panel Layout="Center" MaximumSize="30,25" MinimumSize="25,25" Visible="[Application.Config.ParentalControlEnabled]">
+                    <LayoutInput>
+                      <DockLayoutInput Alignment="Center" Position="Left" />
+                    </LayoutInput>
+                    <Children>
+                      <Graphic Name="LockIndicator" Visible="false" Content="[Lock]" Margins="0,0,5,0">
+
+                      </Graphic>
+                    </Children>
+                  </Panel>
+                  <Panel Layout="Center" MaximumSize="25,25" MinimumSize="25,25" Visible="[Application.Config.EnableListViewTicks]">
+										<LayoutInput>
+											<DockLayoutInput Alignment="Center" Position="Left" />
+										</LayoutInput>
+										<Children>
+											<Graphic Name="TickIndicator" Visible="false" Content="[Tick]" Margins="0,0,5,0">
+
+											</Graphic>
+										</Children>
+									</Panel>
+
+									<Text Name="Label" Color="color://s:FontColorLight" Margins="0,0,0,0" Font="[Font]">
+										<LayoutInput>
+											<DockLayoutInput Alignment="Near" Position="Client"/>
+										</LayoutInput>
+									</Text>
+								</Children>
+							</Panel>
+						</Children>
+					</Graphic>
+
+					<Graphic Name="imgFocusOverlay"
+							 Content="image://me:ButtonLeftFocusOverlay"
+							 MinimumSize="[MinSize]"
+							 MaximumSize="[Size]"
+							 SizingPolicy="SizeToConstraint"
+							 HorizontalAlignment="Fill"
+							 VerticalAlignment="Fill"
+                   >
+						<Animations>
+							<Animation Animation="animation://an:ButtonFocusOverlayIdle"/>
+						</Animations>
+					</Graphic>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+	<Image Name="ButtonDisabled"          Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDisabled"          NineGrid="7,7,7,7" />
+	<Image Name="ButtonDormant"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDormant"           NineGrid="7,7,7,7" />
+	<Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus"         NineGrid="7,7,7,7" />
+	<Image Name="ButtonLeftFocusOverlay"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusOverlay"  NineGrid="7,7,7,7" />
+	<Image Name="ButtonNoFocus"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNoFocus"           NineGrid="7,7,7,7" />
+	<Image Name="ButtonPressedAfterGlow"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedAfterGlow"  NineGrid="7,7,7,7" />
+	<Image Name="ButtonPressedHighlight"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedHighlight"  NineGrid="7,7,7,7" />
+
+</Mcml>

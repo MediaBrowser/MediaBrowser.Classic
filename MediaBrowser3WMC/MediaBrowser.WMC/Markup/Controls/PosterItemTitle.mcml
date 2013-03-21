@@ -1,0 +1,67 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  >
+
+	<UI Name="PosterItemTitle">
+		<Properties>
+			<lib:FolderModel Name="Folder" FolderModel="$Required"/>
+			<Font Name="Font" Font="$Required"/>
+			<Font Name="RuntimeFont" Font="$Required"/>
+		</Properties>
+
+		<Locals>
+			<lib:Item Name="SelectedItem" Item="[Folder.SelectedChild]"/>
+		</Locals>
+
+		<Rules>
+			<Binding Source="[Folder.SelectedChild]" Target="[SelectedItem]" />
+			<Binding Source="[SelectedItem.Name]" Target="[Name.Content]"/>
+			<Binding Source="[SelectedItem.ImdbRating]" Target="[StarRating.Value]"/>
+			<Condition Source="[SelectedItem.RunningTimeString]" ConditionOp="Equals" SourceValue="" Target="[Runtime.Visible]" Value="false"/>
+
+      <Binding Source="[SelectedItem.DynamicProperties.#PreciseRuntimeStr!cor:String]" Target="[Runtime.Content]">
+        <Conditions>
+          <Equality Source="[SelectedItem.ItemTypeString]" ConditionOp="Equals" Value="Song"/>
+        </Conditions>
+      </Binding>
+      <Binding Source="[SelectedItem.RunningTimeString]" Target="[Runtime.Content]"/>
+      
+		</Rules>
+
+    <Content>
+      <Panel Margins="0,0,15,0">
+        <Children>
+          <Panel>
+            <Layout>
+              <FlowLayout Orientation="Vertical" Spacing="0,0"/>
+            </Layout>
+            <Children>
+              <Panel>
+                <Layout>
+                  <ScaleLayout AllowScaleDown="true" AllowScaleUp="false" MaintainAspectRatio="true"/>
+                </Layout>
+                <Children>
+                  <Text Name="Name" Content="" Color="color://s:FontColorLight" Font="[Font]"/>
+                </Children>
+              </Panel>
+              <Panel>
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" Spacing="0,0"/>
+                </Layout>
+                <Children>
+                  <Text Name="Runtime" Content="[SelectedItem.RunningTimeString]" Color="color://s:FontColorLight" Font="[RuntimeFont]" Margins="0,3,15,0" Visible="true"/>
+                  <sr:StarRating Name="StarRating" Value="-1" Margins="0,3,0,0"/>
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>
+

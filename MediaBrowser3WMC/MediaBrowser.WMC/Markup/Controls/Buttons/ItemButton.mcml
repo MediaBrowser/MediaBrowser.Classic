@@ -1,0 +1,77 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  >
+
+  <UI Name="ItemButton">
+    <Properties>
+      <lib:Item Name="Item" Item="$Required"/>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker"/>
+      
+      <ShortcutHandler Name="ClearBtn" Handle="true" Shortcut="Clear" HandlerStage="Bubbled" />
+      <KeyHandler Name="WatchedShortcut" Handle="true" Key="W" Modifiers="Control" HandlerStage="Bubbled"/>
+      
+      <ShortcutHandler Name="PlayBtn" Handle="true" Shortcut="Play" HandlerStage="Bubbled"/>
+      <KeyHandler Name="PlayShortcut" Handle="true" HandlerStage="Bubbled" Key="P" Modifiers="Control"/>
+      <Command Name="PlayCommand"/>
+
+      <ShortcutHandler Name="RecordBtn" Handle="true" Shortcut="Record" HandlerStage="Bubbled"/>
+      <KeyHandler Name="RefreshShortcut" Handle="true" Key="R" Modifiers="Control" HandlerStage="Bubbled"/>
+
+    </Locals>
+
+    <Rules>
+      <!-- Watched Toggle Commands -->
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[ClearBtn.Invoked]"/>
+          <Modified Source="[WatchedShortcut.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.ToggleWatched]"/>
+        </Actions>
+      </Rule>
+
+      <!-- Refresh Toggle Commands -->
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[RecordBtn.Invoked]"/>
+          <Modified Source="[RefreshShortcut.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.RefreshMetadata]"/>
+        </Actions>
+      </Rule>
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <Invoke Target="[Item.SelectAction]"/>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <!-- Play Rules -->
+      <Rule ConditionLogicalOp ="Or">
+        <Conditions>
+          <Modified Source="[PlayBtn.Invoked]"/>
+          <Modified Source="[PlayShortcut.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.PlayAction]"  />          
+        </Actions>
+      </Rule>
+
+    </Rules>
+  
+  </UI>
+</Mcml>

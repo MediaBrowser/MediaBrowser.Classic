@@ -1,0 +1,326 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  >
+
+	<UI Name="Backdrop">
+		<Properties>
+			<Image Name="Image" Image="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Source="[Image]" Target="[MainBG.Content]" />
+		</Rules>
+		<Content>
+			<Panel Layout="Form">
+				<Children>
+					
+					<Clip Name="Clip" Orientation="Horizontal" FadeSize="150" FadeAmount="1" Layout="Anchor"  >
+						<LayoutInput>
+							<FormLayoutInput Vertical="Fill" Horizontal="Center"/>
+						</LayoutInput>
+
+						<Children>
+							<Graphic Name="MainBG" ColorFilter="color://s:BackdropFilter" Alpha="global://s:BackdropAlpha" Content="[Image]" MaintainAspectRatio="true" >
+							</Graphic>		
+						</Children>
+					</Clip>
+					
+					
+				</Children>
+			</Panel>
+
+		</Content>
+	</UI>
+
+	<UI Name="Backdrop2">
+		<Properties>
+			<Image Name="Image" Image="$Required"/>
+			<Color Name="ColorFilterForImage" Color="color://s:BackdropFilter"/>
+			<cor:Single Name="FadeSize" Single="200"  />
+			<cor:Single Name="FadeAmount" Single="1"  />
+		</Properties>
+		<Rules>
+			<Binding Source="[Image]" Target="[Backdrop.Content]" />
+		</Rules>
+		<Content>
+			<!--- Backdrop support -->
+			<Panel Layout="Anchor">
+				<Children>
+					<Clip Name="Clip" Orientation="Horizontal" FadeSize="[FadeSize]" ShowFar="false" Alpha="1" FadeAmount="1" Layout="Anchor"  >
+								<Children>
+							<Graphic Name="Backdrop" ColorFilter="[ColorFilterForImage]" Alpha="global://s:BackdropAlpha" Content="[Image]" MaintainAspectRatio="true" CenterPointPercent="1,0,1" />
+								</Children>
+							</Clip>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+
+  <UI Name="Backdrop3">
+    <Properties>
+      <Image Name="Image" Image="$Required"/>
+    </Properties>
+    <Rules>
+      <Binding Source="[Image]" Target="[Backdrop.Content]" />
+    </Rules>
+    <Content>
+      <!--- Backdrop support -->
+      <Panel Layout="Fill">
+        <Children>
+          <Clip Name="Clip" Orientation="Vertical" FadeSize="50" ShowNear="false" Alpha="1" FadeAmount="0.5" Layout="Anchor"  >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Fill" Horizontal="Fill" />
+            </LayoutInput>
+            <Children>
+              <Graphic Name="Backdrop" SizingPolicy="SizeToConstraint" Content="[Image]" CenterPointPercent="1,0,1" />
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+  <UI Name="Backdrop4">
+    <Properties>
+      <Image Name="Image" Image="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>      
+    </Properties>
+
+    <Locals>
+      <a:MultiBackdrop Name="MultiBackdrop"/>
+      <Timer Name="StartupTimer" Interval="300" AutoRepeat="false" Enabled="true"/>
+    </Locals>
+    
+    <Rules>
+      
+      <!--Restart Timer when Item changes. Needed for Next/Prev functionality.-->
+      <Changed Source="[Item]">
+        <Actions>
+          <Set Target="[StartupTimer.Enabled]" Value="true"/>         
+        </Actions>
+      </Changed>
+      
+      <Binding Source="[Item.BackdropImage]" Target="[Backdrop.Content]" />
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[StartupTimer.Tick]"  />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[MultiBackdrop.BeginRotation]" InvokePolicy="AsynchronousLowPri" >
+            <item>
+              <lib:Item Item="[Item]" />
+            </item> 
+          </Invoke>
+        </Actions>
+      </Rule>      
+    </Rules>
+    
+    <Content>
+      <!--- Backdrop support -->
+      <Panel Layout="Fill">
+        <Children>
+          <Clip Name="Clip" Orientation="Vertical" FadeSize="50" ShowNear="false" Alpha="1" FadeAmount="0.5" Layout="Anchor"  >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Fill" Horizontal="Fill" />
+            </LayoutInput>
+            <Children>
+              <Graphic Name="Backdrop" SizingPolicy="SizeToConstraint" Content="[Image]" CenterPointPercent="1,0,1" >
+                <Animations>
+                  <Animation Type="ContentChangeHide">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.5" Value="1"/>
+                      <AlphaKeyframe RelativeTo="Current" Time="1.5" Value="0"/>
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="ContentChangeShow">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+                      <AlphaKeyframe RelativeTo="Final" Time="1.5" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Graphic>
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+<!-- Fullscreen Backdrop with variable Fade control-->
+  <UI Name="BackdropFullScreen">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Image Name="Image" Image="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Locals>
+      <a:MultiBackdrop Name="MultiBackdrop"/>
+      <Timer Name="StartupTimer" Interval="[Application.Config.BackdropLoadDelay]" AutoRepeat="false" Enabled="true"/>
+    </Locals>
+
+    <Rules>
+
+      <!--Restart Timer when Item changes. Needed for Next/Prev functionality.-->
+      <Changed Source="[Item]">
+        <Actions>
+          <Invoke Target="[StartupTimer.Start]"/>
+        </Actions>
+      </Changed>
+
+      <!--When the Backdrop Rotates, kick off Timer to Set the new backdrop -->
+      <Changed Source="[Item.BackdropImage]">
+        <Actions>
+          <Invoke Target="[StartupTimer.Start]"/>
+        </Actions>
+      </Changed>
+      
+      <!-- When the Timer ticks, Set the Backdrop -->
+      <Rule>
+        <Conditions>
+          <Modified Source="[StartupTimer.Tick]" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Backdrop.Content]" Value="[Item.BackdropImage]"/>
+        </Actions>
+      </Rule>
+      
+      <!-- Start Backdrop Rotation, constrained by Timer for faster Scrolling in themes that show Backdrops while scrolling -->
+      <Rule>
+        <Conditions>
+          <Modified Source="[StartupTimer.Tick]"  />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[MultiBackdrop.BeginRotation]" InvokePolicy="AsynchronousLowPri" >
+            <item>
+              <lib:Item Item="[Item]" />
+            </item>
+          </Invoke>
+        </Actions>
+      </Rule>
+    </Rules>
+
+    <Content>
+      <!--- Backdrop support -->
+      <Panel Layout="Fill">
+        <Children>
+          <Clip Name="Clip" Orientation="Vertical" FadeSize="50" ShowNear="false" Alpha="1" FadeAmount="0.5" Layout="Anchor"  >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Fill" Horizontal="Fill" />
+            </LayoutInput>
+            <Children>
+              <Graphic Name="Backdrop" SizingPolicy="SizeToConstraint" Content="[Image]" CenterPointPercent="1,0,1" >
+                <Animations>
+                  <Animation Type="ContentChangeHide">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+                      <AlphaKeyframe RelativeTo="Current" Time="[Application.Config.BackdropTransitionInterval]" Value="0"/>
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="ContentChangeShow">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+                      <AlphaKeyframe RelativeTo="Final" Time="[Application.Config.BackdropTransitionInterval]" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Graphic>
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+  <UI Name="BackdropUnaltered">
+    <Properties>
+      <Image Name="Image" Image="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Locals>
+      <a:MultiBackdrop Name="MultiBackdrop"/>
+      <Timer Name="StartupTimer" Interval="300" AutoRepeat="false" Enabled="true"/>
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Item.BackdropImage]" Target="[Backdrop.Content]" />
+
+      <Changed Source="[Item]">
+        <Actions>
+          <Set Target="[StartupTimer.Enabled]" Value="true"/>
+        </Actions>
+      </Changed>
+      <Rule>
+        <Conditions>
+          <Modified Source="[StartupTimer.Tick]"  />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[MultiBackdrop.BeginRotation]" InvokePolicy="AsynchronousLowPri" >
+            <item>
+              <lib:Item Item="[Item]" />
+            </item>
+          </Invoke>
+        </Actions>
+      </Rule>
+    </Rules>
+
+    <Content>
+      <!--- Backdrop support -->
+      <Panel Layout="Fill">
+        <Children>
+          <Clip Name="Clip" Orientation="Vertical" FadeSize="0" ShowNear="false" Alpha="1" FadeAmount="0.5" Layout="Anchor"  >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Fill" Horizontal="Fill" />
+            </LayoutInput>
+            <Children>
+              <Graphic Name="Backdrop" SizingPolicy="SizeToConstraint" Content="[Image]" CenterPointPercent="1,0,1" >
+                <Animations>
+                  <Animation Type="ContentChangeHide">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.5" Value="1"/>
+                      <AlphaKeyframe RelativeTo="Current" Time="1.5" Value="0"/>
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="ContentChangeShow">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+                      <AlphaKeyframe RelativeTo="Final" Time="1.5" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </Graphic>
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+  
+  <UI Name="InitialFolderBackground">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Locals>
+      <cor:String Name="img" String="[Application.MainBackdrop]" />
+    </Locals>
+
+    <Rules>
+      <Binding Source="[img!Image]" Target="[bg.Content]" />
+    </Rules>
+
+    <Content>
+      <Graphic Name="bg" Content="null" />
+    </Content>
+  </UI>
+</Mcml>

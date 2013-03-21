@@ -1,0 +1,79 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:vd="resx://MediaBrowser/MediaBrowser.Resources/ViewMovieDefault"
+    xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMovieMinimal"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
+    xmlns:me="Me"
+    >
+
+  <!-- Movie Details Page -->
+  <UI Name="MovieDetailsPage">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Locals>
+      <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
+
+    </Locals>
+
+    <Rules>
+      <!--<Binding Source="[Application.Config.ShowThemeBackground]" Target="[MainBG.Visible]" />-->
+
+
+      <!-- Configuration Checks & Display Setup -->
+
+      <Default Target="[ViewClassic.Source]" Value="[Application.CurrentTheme.DetailArea]" />
+
+      <Default Target="[ScreenSaver.Source]" Value="[Application.CurrentScreenSaver]" >
+        <Conditions>
+          <Equality Source="[Application.CurrentScreenSaver]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+      </Default>
+
+      <!-- END Configuration Checks & Display Setup -->
+
+      <Changed Source="[TopShortcut.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.BackToRoot]"/>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form">
+        <Children>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </ss:DefaultScreenSaver>
+
+          <!--  View Details-->
+          <vd:ViewMovieDefault Name="ViewClassic" Item="[Item]" Application="[Application]" Visible="true"  >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+          </vd:ViewMovieDefault>
+
+          <!--<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>-->
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+
+
+</Mcml>
+

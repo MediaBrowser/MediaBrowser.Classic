@@ -1,0 +1,131 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System" 
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	    xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me">
+
+  <UI Name="PersonButton">
+
+    <Properties>
+
+      <ICommand Name="Command" ICommand="$Required" />
+      <cor:Boolean Name="IsNavigatingCommand" Boolean="false" />
+      <cor:Boolean Name="LeftAlign" Boolean="true" />
+      <lib:ActorItemWrapper Name="PersonItem" ActorItemWrapper="$Required" />
+      
+      <Image Name="PersonImage" Image="image://me:ButtonDormant" />
+      <cor:String Name="PersonName" String="" />
+      <cor:String Name="PersonRole" String="" />
+      
+      <Size Name="Size" Size="330,100" />
+      <Size Name="MinSize" Size="50,50" />
+      <Font Name="Font" Font="font://f:MM_SummaryFont" />
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      
+      <Image Name="ImageFocus" Image="image://me:ButtonLeftFocus" />
+      <Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
+      <Image Name="ImageDormant" Image="image://me:ButtonDormant" />
+
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      
+      <Binding Source="[Command]" Target="[Clicker.Command]" />
+      <Binding Source="[Command.Available]" Target="[Input.KeyInteractive]" />
+      <Binding Source="[Font]" Target="[PName.Font]" />
+      <Binding Source="[Font]" Target="[PRole.Font]" />
+      <Binding Source="[PersonItem.Actor.DisplayName]" Target="[PName.Content]" />
+      <Binding Source="[PersonItem.Actor.DisplayRole]" Target="[PRole.Content]" />
+      <Binding Source="[PersonItem.Item.PrimaryImage]" Target="[PImage.Content]" />     
+       
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Select" />
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Miniselect" />
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+          <PlaySound Sound="sound://sd:Focus" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Input.MouseFocus]" SourceValue="true">
+        <Conditions>
+          <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="false">
+        <Actions>
+          <Set Target="[imgButton.Content]" Value="[ImageDormant]" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+      <Graphic Name="imgButton" Content="[ImageNoFocus]" MinimumSize="[Size]" MaximumSize="[Size]" Padding="5,5,5,5">
+        <Layout>
+          <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+        </Layout>
+        <Children>
+          <Graphic Name="PImage" Content="resx://MediaBrowser/MediaBrowser.Resources/MissingPerson"
+                   SizingPolicy="SizeToConstraint" MaximumSize="90,90" MaintainAspectRatio="true"/>
+          <Panel Margins="5,0,0,0">
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+            </Layout>
+            <Children>
+              <Text Name="PName" Font="[Font]" Color="color://s:FontColorLight" />
+              <Text Name="PRole" Font="[Font]" Color="color://s:FontColorMedium" />
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+      
+    </Content>
+  </UI>
+
+  <Image Name="ButtonDisabled"          Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDisabled"          NineGrid="7,7,7,7" />
+  <Image Name="ButtonDormant"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDormant"           NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus"         NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocusOverlay"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusOverlay"  NineGrid="7,7,7,7" />
+  <Image Name="ButtonNoFocus"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNoFocus"           NineGrid="7,7,7,7" />
+  <Image Name="ButtonPressedAfterGlow"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedAfterGlow"  NineGrid="7,7,7,7" />
+  <Image Name="ButtonPressedHighlight"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedHighlight"  NineGrid="7,7,7,7" />
+
+	
+	
+</Mcml>

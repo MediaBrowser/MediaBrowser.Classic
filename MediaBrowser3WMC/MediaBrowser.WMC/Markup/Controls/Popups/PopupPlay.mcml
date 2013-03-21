@@ -1,0 +1,100 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"      
+		  xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu" 
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+
+	<UI Name="PopupPlay">
+      <Properties>        
+        <lib:Item Name="Item" Item="$Required" />
+        <Command Name="Close" Command="$Required"/>
+        <a:Application Name="Application" Application="$Required"/>
+      </Properties>
+    
+      <Locals>
+        <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+        <Command Name="CmdPlayAll" />
+        <Command Name="CmdPlayRandom"/>
+        <Command Name="CmdAddToQueue"/>
+      </Locals>
+    
+      <Rules>
+        <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+        <Default Target="[Input.KeyInteractive]" Value="true" />
+        <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+
+        <Changed Source="[CmdPlayAll.Invoked]">
+          <Actions>
+            <Invoke Target="[Close.Invoke]" InvokePolicy="AsynchronousNormal" />
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.Play]" item="[Item]" />            
+          </Actions>
+        </Changed>
+
+        <Changed Source="[CmdAddToQueue.Invoked]">
+          <Actions>
+            <Invoke Target="[Close.Invoke]" InvokePolicy="AsynchronousNormal" />
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.AddToQueue]" item="[Item]" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[CmdPlayRandom.Invoked]">
+          <Actions>
+            <Invoke Target="[Close.Invoke]" InvokePolicy="AsynchronousNormal" />
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.Shuffle]" item="[Item]" />
+          </Actions>
+        </Changed>
+      </Rules>
+    
+      <Content>
+        <ColorFill Name="Main" Content="color://s:PanelBackground"  Navigation="ContainAll,Group">
+          <Children>
+            <Graphic Content="image://i:ZoomPane"  SizingPolicy="SizeToChildren"
+                     MaintainAspectRatio="false" Padding="10,10,10,10" >
+              <Layout>
+                <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+              </Layout>
+              <Children>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                  </Layout>
+                  <Children>
+                    <Text Content="Folder Play Menu" Font="font://f:VM_ConfigItemFont" Color="color://s:FontColorLight"/>
+                    <ib:ImageButton Name="PlayMovieButton" Text="All" Command="[CmdPlayAll]" 
+                                    Icon="resx://MediaBrowser/MediaBrowser.Resources/IconPlay" Size="200,50" 
+                                    Font="font://f:MM_ButtonFont" DisplayText="true" MinSize="200,50" />
+                    <ib:ImageButton Name="AddToQueueButton" Text="Queue" Command="[CmdAddToQueue]" Visible ="[Item.IsNotVideo]"
+                                    Icon="resx://MediaBrowser/MediaBrowser.Resources/IconPlay" Size="200,50"
+                                    Font="font://f:MM_ButtonFont" DisplayText="true" MinSize="200,50" />
+                    <ib:ImageButton Text="Random" Command="[CmdPlayRandom]"
+                                    Icon="resx://MediaBrowser/MediaBrowser.Resources/IconShuffle" Size="200,50"
+                                    Font="font://f:MM_ButtonFont" DisplayText="true" MinSize="200,50" />                    
+                  </Children>
+                </Panel>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                  </Layout>
+                  <Children>
+                    <vm:BaseBtn LabelText="Close" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                  </Children>
+                </Panel>
+              </Children>
+            </Graphic>
+          </Children>
+        </ColorFill>
+      </Content>
+    </UI>
+</Mcml>

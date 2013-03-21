@@ -1,0 +1,137 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:col="assembly://MSCorLib/System.Collections"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:gl="resx://MediaBrowser/MediaBrowser.Resources/GenreList"
+	  xmlns:d="resx://MediaBrowser/MediaBrowser.Resources/Directors"
+	  xmlns:w="resx://MediaBrowser/MediaBrowser.Resources/Writers"
+	  xmlns:mp="resx://MediaBrowser/MediaBrowser.Resources/MPAARating"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:mip="resx://MediaBrowser/MediaBrowser.Resources/MediaInfoPanel"
+	  >
+
+  <UI Name="MovieInfo">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Model" Item="$Required"/>
+      <lib:Item Name="ModelFast" Item="$Required"/>
+      <cor:Boolean Name="DisplayGenres" Boolean="true" />
+      <cor:Boolean Name="DisplayDirector" Boolean="true" />
+      <cor:Boolean Name="DisplayWriter" Boolean="true" />
+      <cor:Boolean Name="DisplayMediaInfoPanel" Boolean="true" />
+      <cor:Boolean Name="DisplayMediaInfo" Boolean="true" />
+      <cor:Boolean Name="DisplayLastPlayedPanel" Boolean="false" />
+    </Properties>
+    <Rules>
+      <Binding Target="[StarRating.Value]" Source="[Model.ImdbRating]" />
+      <Binding Target="[Directors.Item]" Source="[Model]"/>
+      <Binding Target="[Writers.Item]" Source="[Model]"/>
+      <Binding Target="[MPAARating.Value]" Source="[Model.OfficialRating]"/>
+      
+      <Binding Source="[Model.DynamicProperties.#PreciseRuntimeStr!cor:String]" Target="[TxtRuntime.Content]">
+        <Conditions>
+          <Equality Source="[Model.ItemTypeString]" ConditionOp="Equals" Value="Song"/>
+        </Conditions>
+      </Binding>
+      <Binding Target="[TxtRuntime.Content]" Source="[Model.RunningTimeString]"/>
+
+      <Binding Source="[Model.DynamicProperties.#ProductionYear!cor:String]" Target="[ProductionYear.Content]">
+        <Conditions>
+          <Equality Source="[Model.ItemTypeString]" ConditionOp="Equals" Value="MusicAlbum"/>
+        </Conditions>
+        <Transformer>
+          <FormatTransformer Format="{0}" />
+        </Transformer>
+      </Binding>
+      <Binding Target="[ProductionYear.Content]" Source="[Model.ProductionYearString]"/>
+      
+      <Binding Source="[Model.DynamicProperties.#MusicGenres!col:IList]" Target="[Genres.SourceData]">
+        <Conditions>
+          <Equality Source="[Model.ItemTypeString]" ConditionOp="Equals" Value="MusicAlbum"/>
+        </Conditions>
+      </Binding>
+      <Binding Target="[Genres.SourceData]" Source="[Model.Genres]"/>
+      
+      <!--Get localized text for First Aired-->
+      <Binding Source="[Application.LocalStrings.#FirstAiredDetail!cor:String]" Target="[FirstAiredText.Content]"/>
+      <!-- Bind First Aired Date and check if it has a value.-->
+      <Binding   Source="[Model.FirstAired]" Target="[FirstAired.Content]"/>
+      <Condition Source="[Model.FirstAired]" ConditionOp="NotEquals" SourceValue="" Target="[FirstAiredPanel.Visible]" Value="true" />
+
+      <Binding Source="[Application.LocalStrings.#LastPlayedDetail!cor:String]" Target="[LastPlayedText.Content]"/>
+      <Binding Source="[Model.LastPlayedString]" Target="[LastPlayed.Content]"/>      
+      <Condition Source="[Model.LastPlayedString]" ConditionOp="Equals" SourceValue="" Target="[LastPlayedText.Visible]" Value="false" />
+      
+      <Changed Source="[Model.MediaInfo]" InitialEvaluate="true">
+        <Actions>
+          <Set Target="[MediaInfo.Content]" Value="[Model.MediaInfo.CombinedInfo]"/>
+        </Actions>
+      </Changed>
+      <Binding Target="[MediaInfoPanel.Item]" Source="[Model]"/>
+    </Rules>
+    <Content>
+      <Panel Name="MainPanel">
+        <Layout>
+          <FlowLayout Orientation="Vertical" Spacing="0,0" />
+        </Layout>
+        <Children>          
+          <Panel>
+            <Layout>
+              <FlowLayout Orientation="Horizontal" ItemAlignment="Center" Spacing="0,0"/>
+            </Layout>
+            <Children>
+              <sr:StarRating Name="StarRating" Margins="0,4,12,4"/>
+              <mp:MPAARating Name="MPAARating" Padding="0,1,0,1" Margins="3,0,0,0" MaximumSize="0,30"/>
+            </Children>
+          </Panel>
+          <Panel>
+            <Layout>
+              <FlowLayout Orientation="Horizontal" ItemAlignment="Far" Spacing="0,0"/>
+            </Layout>
+            <Children>
+              <Text Name="ProductionYear" Content="" Font="font://f:TD_MI_ProductionYearFont" Color="color://s:FontColorLight" Margins="0,0,10,0"/>
+              <Text Name="TxtRuntime" Color="color://s:FontColorLight" WordWrap="true" Font="font://f:TD_MI_RuntimeFont" Margins="0,0,0,0"/>
+            </Children>
+          </Panel>
+
+          <gl:GenreList Name="Genres" SourceData="[Model.Genres]" Font="font://f:TD_MI_GenreFont" Visible="[DisplayGenres]"/>
+          <d:Directors Name="Directors" Application="[Application]" Item="[Model]" TitleFont="font://f:TD_MI_DirectorTitleFont" Font="font://f:TD_MI_DirectorFont" Visible="[DisplayDirector]"/>
+          <w:Writers Name="Writers" Application="[Application]" Item="[Model]" TitleFont="font://f:TD_MI_WriterTitleFont" Font="font://f:TD_MI_WriterFont" Visible="[DisplayWriter]"/>
+          
+          <Panel>
+            <Layout>
+              <FlowLayout Orientation="Horizontal"/>
+            </Layout>
+            <Children>
+              <Panel Name="FirstAiredPanel" Visible="false" Margins="0,0,10,0">
+                <Layout>
+                  <FlowLayout Orientation="Horizontal"/>
+                </Layout>
+                <Children>
+                  <Text Name="FirstAiredText" Font="font://f:TD_MI_FirstAiredTitleFont" Color="color://s:FontColorLight"/>
+                  <Text Name="FirstAired" Content="[Model.FirstAired]" Font="font://f:TD_MI_FirstAiredFont" Color="color://s:FontColorLight" Margins="10,0,0,0"/>
+                </Children>
+              </Panel>
+              <Panel Name="LastPlayedPanel" Visible="[DisplayLastPlayedPanel]">
+                <Layout>
+                  <FlowLayout Orientation="Horizontal"/>
+                </Layout>
+                <Children>
+                  <Text Name="LastPlayedText" Font="font://f:TD_MI_FirstAiredTitleFont" Color="color://s:FontColorLight" Visible="true"/>
+                  <Text Name="LastPlayed" Content="[Model.LastPlayedString]" Font="font://f:TD_MI_FirstAiredFont" Color="color://s:FontColorLight" Margins="10,0,0,0"/>
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+          
+          <mip:MediaInfoPanel Name="MediaInfoPanel" Item="[Model]" Visible="[DisplayMediaInfoPanel]" MaxIconSize="0,48"/>
+          <Text Name="MediaInfo" Font="font://f:TD_MI_MediaInfoFont" Color="color://s:FontColorMedium" Visible="[DisplayMediaInfo]" />
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

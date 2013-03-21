@@ -1,0 +1,123 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  >
+
+
+  <UI Name="PINEdit">
+
+    <Properties>
+      <Size Name="LabelSize" Size="0,0"/>
+      <Size Name="EditSize" Size="200,0"/>
+      <cor:String Name="Label" String="$Required" />
+      <EditableText Name="EditableText" EditableText="$Required"/>
+      <Command Name="EndCommand" Command="$Required"/>
+      <Image Name="Border" Image="image://i:PlainBorder"/>
+      <!-- Label color. -->
+      <Color Name="LabelColor" Color="color://s:FontColorLight"/>
+      <Color Name="LabelFocusedColor" Color="color://s:FontColorLight"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Locals>
+      <TypingHandler Name="TypingHandler" EditableText="[EditableText]" PasswordMasked="true" HandlerStage="Bubbled"/>
+      <!-- PIN is 4 characters. -->
+      <cor:Int32 Name="MaxChars" Int32="4"/>
+      <cor:String Name="DotText" String="●●●●●"/>
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Binding Source="[Label]" Target="[Lbl.Content]"/>
+
+      <!-- The editable text value is bound to the label text value. -->
+      <Binding Source="[TypingHandler.DisplayValue]" Target="[DisplayText.Content]"/>
+
+       <!--Change color if in overtype mode.--> 
+      <Condition Source="[EditableText.Overtype]" SourceValue="true">
+        <Actions>
+          <Set Target="[Overtype.Visible]" Value="true"/>
+          <Set Target="[Caret.Visible]" Value="false"/>
+        </Actions>
+      </Condition>
+
+      <!-- Change color on key focus. -->
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[DisplayText.Color]" Value="[LabelFocusedColor]"/>
+          <Set Target="[Caret.Visible]" Value="true"/>
+          <Set Target="[Image.Content]" Value="[Border]" />
+          <Set Target="[DisplayText.HorizontalAlignment]" Value="Far" />
+        </Actions>
+      </Condition>
+
+
+      <!--Mask entry-->
+      <!--<Changed Source="[EditableText.Activity]">
+        <Actions>
+            <Invoke Target="[DotText.Substring]" ResultTarget="[DisplayText.Content]" startIndex="0" length="[EditableText.Value.Length]"/>
+        </Actions>
+      </Changed>-->
+      
+      <!-- We're done when the maximum number of characters has been reached. -->
+      <Changed Source="[EditableText.Value]">
+        <Conditions>
+          <Equality Source="[EditableText.Value.Length]" ConditionOp="Equals" Value="[MaxChars]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[EndCommand.Invoke]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[EditableText.Value]">
+        <Conditions>
+          <Equality Source="[EditableText.Value.Length]" ConditionOp="GreaterThan" Value="[MaxChars]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[EditableText.Value.Substring]" ResultTarget="[EditableText.Value]" startIndex="0" length="[MaxChars]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[EditableText.Value]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+
+      <Panel Margins="0,0,0,0" >
+        <Layout>
+          <FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
+        </Layout>
+        <Children>
+          <Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,5,0" ></Text>
+          <!-- Solid background color. -->
+          <Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="100,34">
+            <Children>
+              <!-- Display the current value. -->
+              <Text Name="DisplayText" Color="[LabelColor]" Font="[Font]" HorizontalAlignment="Center" Margins="0,0,10,-2" MinimumSize="0,34" />
+              <!-- Display the caret. -->
+              <ColorFill Name="Caret" Content="[LabelColor]" Visible="false" MinimumSize="12,4">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="DisplayText,1,-10" Top="DisplayText,0" Bottom="DisplayText,1,-3" Vertical="Far"/>
+                </LayoutInput>
+              </ColorFill>
+              <!-- Overtype fill. -->
+              <ColorFill Name="Overtype" Content="Black" Visible="false">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="DisplayText,0" Right="DisplayText,1" Top="DisplayText,0" Bottom="DisplayText,1"/>
+                </LayoutInput>
+              </ColorFill>
+            </Children>
+          </Graphic>
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+
+
+</Mcml>

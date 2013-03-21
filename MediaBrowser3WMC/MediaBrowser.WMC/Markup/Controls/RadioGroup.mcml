@@ -1,0 +1,201 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:me="Me"
+	  >
+
+	<UI Name="RadioGroupTest">
+		<Locals>
+			<Choice Name="choices">
+				<Options>
+					<cor:String String="Opt 1"/>
+					<cor:String String="Opt 2"/>
+					<cor:String String="Opt 3"/>
+				</Options>
+			</Choice>
+		</Locals>
+		<Rules>
+			<Default Target="[choices.ChosenIndex]" Value="2" />
+		</Rules>
+		<Content>
+			<Panel>
+				<Children>
+				<me:RadioGroup Model="[choices]" Font="Courier ,10" />
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+	
+	<UI Name="RadioGroup" >
+
+		<Properties>
+			<Choice Name="Model" Choice="$Required" />
+      <Size Name="BoxSize" Size="34,34"/>
+      <Font Name="Font" Font="$Required"/>
+		</Properties>
+
+		<Rules>
+			<Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+			<Binding Source="[Model.Options]" Target="[Repeater.Source]" />
+		</Rules>
+		<Content>
+			<Panel>
+						<Children>
+							<Repeater Name="Repeater" ContentName="RadioButton" Navigation="RememberFocus" DefaultFocusIndex="[Model.DefaultIndex]" >
+								<Layout>
+									<FlowLayout Orientation="Vertical" Spacing="5,0" ItemAlignment="Near" AllowWrap="true"/>
+								</Layout>
+							</Repeater>
+						</Children>
+				</Panel>
+		</Content>
+		<Content Name="RadioButton">
+			<me:SimpleRadioButton Model="[Model]" Option="[RepeatedItem!cor:String]" 
+                            BoxSize="[BoxSize]" Font="[Font]" />
+		</Content>
+	</UI>
+
+
+	<UI Name="SimpleRadioButton">
+		<Properties>
+			<Choice       Name="Model" Choice="$Required"/>
+			<cor:String   Name="Option" String="$Required"/>
+			<Size Name="BoxSize" Size="34,34"/>
+      <Font Name="Font" Font="$Required"/>
+		</Properties>
+		<Locals>
+			<ClickHandler Name="Clicker" HandleEnterSpaceKeys ="true" HandlePrimaryMouseButton ="true" HandlerStage="Bubbled"/>
+		</Locals>
+		<Rules>
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+
+			<Changed Source="[Clicker.Invoked]">
+				<Actions>
+					<Set Target="[Model.Chosen]" Value="[Option]"/>
+				</Actions>
+			</Changed>
+			
+			
+			<Changed Source="[Model.Chosen]">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" Value="[Option]" />
+					<Equality Source="[Input.KeyFocus]" Value="true" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioSelectFocus" />
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Model.Chosen]">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" Value="[Option]" />
+					<Equality Source="[Input.KeyFocus]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioSelectNoFocus" />
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Model.Chosen]">
+				<Conditions>
+					<Equality Source="[Model.Chosen]"  ConditionOp="NotEquals" Value="[Option]" />
+					<Equality Source="[Input.KeyFocus]" Value="true" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioFocus" />
+				</Actions>
+			</Changed>
+
+			<Changed Source="[Model.Chosen]">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" ConditionOp="NotEquals" Value="[Option]" />
+					<Equality Source="[Input.KeyFocus]" Value="false" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioNoFocus" />
+				</Actions>
+			</Changed>
+
+			<!--
+			<Condition Source="[Clicker.Clicking]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" ConditionOp="NotEquals" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioSelectFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Clicker.Clicking]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Model.Chosen]"  ConditionOp="NotEquals" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioFocus" />
+				</Actions>
+			</Condition>-->
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioSelectFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" ConditionOp="NotEquals" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="false">
+				<Conditions>
+					<Equality Source="[Model.Chosen]" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioSelectNoFocus" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.KeyFocus]" SourceValue="false">
+				<Conditions>
+					<Equality Source="[Model.Chosen]"  ConditionOp="NotEquals" Value="[Option]" />
+				</Conditions>
+				<Actions>
+					<Set Target="[BoxImage.Content]" Value="image://i:RadioNoFocus" />
+				</Actions>
+			</Condition>
+			
+			
+
+			<!-- Show the choice label. -->
+			<!--
+			<Binding Source="[Option]" Target="[OptionLabel.Content]"/>
+			-->
+		</Rules>
+
+		<Content>
+
+			<Panel Name="Root">
+				<Layout>
+					<FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+				</Layout>
+				<Children>
+
+					<Graphic Content="image://i:RadioNoFocus" Name="BoxImage" MinimumSize="[BoxSize]" MaximumSize="[BoxSize]" />
+					<Text Name="OptionLabel" Content="[Option]" Color="color://s:FontColorMedium" Font="[Font]"/>
+
+				</Children>
+			</Panel>
+		</Content>
+
+	</UI>
+
+</Mcml>

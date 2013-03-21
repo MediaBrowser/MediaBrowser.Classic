@@ -1,0 +1,46 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://mscorlib/System"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:me = "Me"
+      >
+
+  <UI Name="MediaInfoPanel">
+    <Properties>
+      <lib:Item Name="Item" Item="$Required"/>
+      <Size Name="MaxIconSize" Size="0,55"/>
+    </Properties>
+    
+    <Rules>      
+      <Changed Source="[Item.MediaInfo]" InitialEvaluate="true">
+        <Actions>
+          <Set Target="[VideoImage.Content]" Value="[Item.MediaInfo.VideoCodecImage]"/>
+          <Set Target="[AudioImage.Content]" Value="[Item.MediaInfo.AudioCodecImage]"/>
+          <Set Target="[ChannelImage.Content]" Value="[Item.MediaInfo.AudioChannelImage]"/>
+          <Set Target="[AspectImage.Content]" Value="[Item.AspectRatioImage]"/>
+          <Set Target="[HDImage.Content]" Value="[Item.HDTypeImage]"/>
+          <Set Target="[MediaImage.Content]" Value="[Item.MediaTypeImage]"/>
+        </Actions>
+      </Changed>      
+    </Rules>
+    
+    <Content>
+      <Panel>
+        <Layout>
+          <FlowLayout Orientation="Horizontal" Spacing="0,0" AllowWrap="true"/>
+        </Layout>
+        <Children>
+          <Graphic Name="MediaImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+          <Graphic Name="VideoImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+
+          <Graphic Name="HDImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+          <Graphic Name="AspectImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+
+          <Graphic Name="AudioImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+          <Graphic Name="ChannelImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+</Mcml>

@@ -1,0 +1,629 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:pc="resx://MediaBrowser/MediaBrowser.Resources/PCIndicatorButton"
+		xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+	  xmlns:np="resx://MediaBrowser/MediaBrowser.Resources/NowPlayingViewport"
+    xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
+	  xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  xmlns:pda="resx://MediaBrowser/MediaBrowser.Resources/PageDetailArea"
+    xmlns:edge="resx://MediaBrowser/MediaBrowser.Resources/EdgeDetection"
+    xmlns:ai="resx://MediaBrowser/MediaBrowser.Resources/ActivityIndicator"
+    xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+    xmlns:me="Me"
+      >
+
+
+  <UI Name="Page"> 
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:FolderModel Name="Folder" FolderModel="$Required"/>
+      <mcui:ModelItem Name="ThemeConfig" />
+      <IntRangedValue Name="SortOrderIndex" MinValue ="0" MaxValue="999"/>
+
+    </Properties>
+
+    <Locals>
+
+      <BooleanChoice Name="NowPlayingIsText" Value="false"/>
+
+      <TypingHandler Name="TypingHandler" HandlerStage="Bubbled" TypingPolicy="TripleTap" >
+        <EditableText>
+          <EditableText Value="" />
+        </EditableText>
+      </TypingHandler>
+
+      <cor:Boolean Name="CanPlay" Boolean="false" />
+
+      <BooleanChoice Name="LeftEdgeHasFocus"   Value="false"/>
+      <BooleanChoice Name="RightEdgeHasFocus"   Value="false"/>
+      <BooleanChoice Name="BottomEdgeHasFocus"   Value="false"/>
+      
+      <!-- Timers -->
+      
+      <Timer Name="HideFindAsYouType" Interval="3000" AutoRepeat="false"/>
+      <!-- Fix for View/PC button stealing focus -->
+      <Timer Name="RefocusItemListTimer" Interval="1000" AutoRepeat="false" Enabled="true"/> 
+      <!-- this timer is needed to ensure focus stays with the view properties when the viewType changes, doing it not via a timer doesn't always work-->
+      <Timer Name="RefocusViewTimer" AutoRepeat="false" Interval="250" />
+      <!--<Timer Name="NavTimer" Interval="150" AutoRepeat="false" Enabled="true"/>-->
+      <!--<Timer Name="BGTimer" Interval="100" Enabled="false"/>-->
+      
+      
+      <Command Name="Configure" />
+      <Command Name="ShowViewConfiguration" />
+      <Command Name="CloseViewConfiguration" />
+      <Command Name="ShowSortConfiguration" />
+      <Command Name="CloseSortConfiguration" />
+      <Command Name="ShowIndexConfiguration" />
+      <Command Name="CloseIndexConfiguration" />
+      <Command Name="ShowSearch" />
+      <Command Name="CloseContextMenu" />
+      <Command Name="ClosePopupPlay" />
+      <a:Clock Name="Clock"/>
+      <Command Name="Popup"/>
+      <!--<KeyHandler Name="SwitchKey" Key="D8" Handle="true" Modifiers="Shift" HandlerStage="Bubbled"/>-->
+      
+    </Locals>
+
+    <Rules>
+      <!--<Changed Source="[NavTimer.Tick]">
+        <Actions>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+          <Set Target="[NavTimer.Enabled]" Value="false" />
+        </Actions>
+      </Changed>-->
+
+      <Changed Source="[RefocusItemListTimer.Tick]">
+       
+        <Actions>
+          <Set Target="[RefocusItemListTimer.Enabled]" Value="false" />
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Rule ConditionLogicalOp ="And">
+        <Conditions >
+          <Equality Source="[Folder.IsRoot]" Value="true"/>
+          <Equality Source="[Application.Config.EnableRootPage]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[TimePanel.Visible]" Value="false"/>
+          <Set Target="[ConfigBtn.Visible]" Value="false"/>
+          <Set Target="[ViewsBtn.Visible]" Value="false"/>
+          <Set Target="[ViewConfig.Visible]" Value="false"/>
+          <Set Target="[SortOrdersBtn.Visible]" Value="false"/>
+          <Set Target="[SortConfig.Visible]" Value="false"/>
+          <Set Target="[SearchBtn.Visible]" Value="false"/>
+          <Set Target="[IndexesBtn.Visible]" Value="false"/>
+          <Set Target="[IndexConfig.Visible]" Value="false"/>
+          <Set Target="[Breadcrumbs.Visible]" Value="false"/>
+          <Set Target="[NowPlaying.Visible]" Value="false"/>
+          <Set Target="[LeftEdge.Visible]" Value="false"/>
+          <Set Target="[RightEdge.Visible]" Value="false"/>
+          <Set Target="[BottomEdge.Visible]" Value="false"/>
+          <Set Target="[PCIBtn.Visible]" Value="false"/>
+        </Actions>
+      </Rule>
+
+      <Binding Source="[Clock.Time]" Target="[TimeDate.Content]">
+        <Conditions>
+          <Equality Source="[Application.Config.ShowClock]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Popup.Invoked]" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Application.ResetContextMenu]" />
+          <Set Target="[ContextMenu.Visible]" Value="true"/>
+          <Invoke Target="[ContextMenu.NavigateInto]" />
+          <Set Target="[FindAsYouTypePanel.Visible]" Value="false" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[CloseContextMenu.Invoked]" >
+        <Actions>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+          <Set Target="[ContextMenu.Visible]" Value="false" />
+          <Invoke Target="[Application.ResetContextMenu]" />
+          <Set Target="[FindAsYouTypePanel.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowSearch.Invoked]" >
+        <Actions>
+          <Set Target="[Application.ShowSearchPanel]" Value="true" />
+        </Actions>
+      </Changed>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.DisplayPopupPlay]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[PopupPlay.Visible]" Value="true" />
+          <Invoke Target="[PopupPlay.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[ClosePopupPlay.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayPopupPlay]" Value="false" />
+          <!--<PlaySound Sound="sound://sd:Miniselect" />-->
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+          <Set Target="[PopupPlay.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+
+      <Changed Source="[RefocusViewTimer.Tick]">
+        <Actions>
+          <Invoke Target="[ViewConfig.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Configure.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.OpenConfiguration]" showFullOptions="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[ShowViewConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[ViewConfig.Visible]" Value="true"/>
+          <Set Target="[SortConfig.Visible]" Value="false"/>
+          <Set Target="[IndexConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewConfig.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[CloseViewConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[ViewConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Folder.DisplayPrefs.ViewType.Chosen]" >
+        <Conditions>
+          <Equality Source="[ViewConfig.Visible]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[RefocusViewTimer.Start]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowSortConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[SortConfig.Visible]" Value="true"/>
+          <Set Target="[ViewConfig.Visible]" Value="false"/>
+          <Set Target="[IndexConfig.Visible]" Value="false"/>
+          <Invoke Target="[SortConfig.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CloseSortConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[SortConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Folder.DisplayPrefs.SortOrders.Chosen]" >
+        <Actions>
+          <Set Target="[SortConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowIndexConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[IndexConfig.Visible]" Value="true"/>
+          <Set Target="[ViewConfig.Visible]" Value="false"/>
+          <Set Target="[SortConfig.Visible]" Value="false"/>
+          <Invoke Target="[IndexConfig.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CloseIndexConfiguration.Invoked]">
+        <Actions>
+          <Set Target="[IndexConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Folder.DisplayPrefs.IndexByChoice.Chosen]" >
+        <Actions>
+          <Set Target="[IndexConfig.Visible]" Value="false"/>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Folder.IsRoot]" Target="[ConfigBtn.Visible]"/>
+
+
+      <!--
+			<Rule>
+				<Actions>
+					<Set Target="[BGTimer.Enabled]" Value="true" />
+				</Actions>
+			</Rule>
+			-->
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[Folder.HasBannerImage]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[BreadCrumbs.Font]" Value="font://f:P_BreadcrumbFont" />
+          <Set Target="[BreadCrumbs.Margins]" Value="0,10,0,0" />
+        </Actions>
+      </Rule>
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Folder.HasBannerImage]" ConditionOp="Equals" Value="false" />
+          <Equality Source="[Application.BreadCrumbs]" ConditionOp="Equals" Value="" />
+        </Conditions>
+        <Actions>
+          <Set Target="[BreadCrumbs.Content]" Value="media library" />
+          <Set Target="[BreadCrumbs.Font]" Value="font://f:P_BreadcrumbFont" />
+        </Actions>
+      </Rule>
+
+      <Binding Source="[Folder.BannerImage]" Target="[BannerGraphic.Content]" />
+      <Binding Source="[Folder.DisplayPrefs.SortOrders.Chosen!cor:String]" Target="[SortOrdersBtn.Content]" />
+      <Binding Source="[Folder.DisplayPrefs.IndexByChoice.Chosen!cor:String]" Target="[IndexesBtn.Content]" />
+
+      <Binding Source="[FindAsYouType.Content]" Target="[ShadowLabel.Content]" />
+      <Binding Source="[TypingHandler.DisplayValue]" Target="[FindAsYouType.Content]" />
+      <Binding Source="[TypingHandler.DisplayValue]" Target="[Folder.TripleTapSelect]" />
+
+      <Changed Source="[TypingHandler.DisplayValue]">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[HideFindAsYouType.Start]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TypingHandler.DisplayValue]"  ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="Equals" Value="*" />
+          <Equality Source="[ContextMenu.Visible]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Popup.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TypingHandler.DisplayValue]"  ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="Equals" Value="***" />
+          <Equality Source="[ContextMenu.Visible]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Popup.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TypingHandler.DisplayValue]"  ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="Equals" Value="**" />
+          <Equality Source="[ContextMenu.Visible]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Popup.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TypingHandler.DisplayValue]"  ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="Equals" Value="*" />
+          <Equality Source="[ContextMenu.Visible]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[CloseContextMenu.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TypingHandler.DisplayValue]"  ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="Equals" Value="**" />
+          <Equality Source="[ContextMenu.Visible]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[CloseContextMenu.Invoke]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[HideFindAsYouType.Tick]">
+        <Actions>
+          <Set Target="[TypingHandler.EditableText.Value]" Value="" />
+        </Actions>
+      </Changed>
+      <Binding Source="[Application.Config.ShowThemeBackground]" Target="[MainBG.Visible]" />
+
+      <Binding Source="[Application.ShowNowPlaying]" Target="[NowPlaying.Visible]" />
+      <Condition Source="[Folder.DisplayPrefs.IndexByString]" ConditionOp="Equals" SourceValue="None" Target="[SortOrdersBtn.Enabled]" Value="true"/>
+      <Condition Source="[Folder.DisplayPrefs.IndexByString]" ConditionOp="NotEquals" SourceValue="None" Target="[SortOrdersBtn.Enabled]" Value="false"/>
+      <!--<Condition Source="[Folder.IsRoot]" ConditionOp="Equals" SourceValue="true" Target="[PCIBtn.Visible]" Value="false" />-->
+
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[NowPlayingIsText.Value]" Value="true" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[NowPlayingIsText.Value]" Value="false" />
+
+      <!-- Edge Redirect Logic -->
+
+      <!-- Left Edge - Send focus to Now Playing Only if NowPlaying is Visible -->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[LeftEdgeHasFocus.Value]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[NowPlaying.Visible]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[NowPlaying.NavigateInto]" />
+        </Actions>
+      </Rule>
+      
+      <!-- Send focus to View Panel but only if NowPlaying is not Visible 
+           The off screen control steals focus when the Now Playing View shuts down
+           after user stops the video. Need to send focus back to the View Panel.
+           Without this rule focus is off screen.
+      -->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[LeftEdgeHasFocus.Value]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[NowPlaying.Visible]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <!-- Bottom Edge - Send focus to Now Playing Only if NowPlaying is Visible -->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[BottomEdgeHasFocus.Value]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[NowPlaying.Visible]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[NowPlaying.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <!-- Send focus to View Panel but only if NowPlaying is not Visible 
+           The off screen control steals focus when the Now Playing View shuts down
+           after user stops the video. Need to send focus back to the View Panel.
+           Without this rule focus is off screen.
+      -->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[BottomEdgeHasFocus.Value]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[NowPlaying.Visible]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ViewPanel.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <!-- If user Presses Right Send focus to Views Button for quick access to the menu -->
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[RightEdgeHasFocus.Value]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ViewsBtn.NavigateInto]" />
+        </Actions>
+      </Rule>
+      
+      <!-- End Edge Redirect Logic -->
+          
+    </Rules>
+
+    <Content>
+      <Panel Layout="Center">
+        <Animations>
+          <Animation Animation="animation://an:PageHide" />
+        </Animations>
+        <Children>
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
+
+              <Panel Name="TimePanel">
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+                </Layout>
+                <LayoutInput>
+                  <AnchorLayoutInput Left="Parent,0,43" Bottom="ViewsBtn,1,-1" Right="Parent,0,155" Horizontal="Far"/>
+                </LayoutInput>
+                <Children>
+                  <Text Name="TimeDate" Font="font://f:P_ClockFont"  Color="White" Visible="[Application.Config.ShowClock]" />
+                </Children>
+              </Panel>
+
+              <pc:PCIndicatorButton Name="PCIBtn" Application="[Application]" Size="23,23">
+                <LayoutInput>
+                  <FormLayoutInput Left="SearchBtn,1,0"  Bottom="Parent,0,122"/>                  
+                </LayoutInput>
+              </pc:PCIndicatorButton>
+
+              <vm:CfgButton Name="ConfigBtn" Command="[Configure]" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,166" Bottom="Parent,0,122" />
+                </LayoutInput>
+              </vm:CfgButton>
+
+              <vm:ViewsButton Name="ViewsBtn" Application="[Application]" Command="[ShowViewConfiguration]" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,205" Bottom="Parent,0,120"/>
+                </LayoutInput>
+              </vm:ViewsButton>
+
+              <vm:ViewConfiguration Name="ViewConfig" Application="[Application]" Visible="false" Prefs="[Folder.DisplayPrefs]" Close="[CloseViewConfiguration]">
+                <LayoutInput>
+                  <FormLayoutInput Left="ViewsBtn,0,0" Top="ViewsBtn,1"/>
+                </LayoutInput>
+              </vm:ViewConfiguration>
+
+              <vm:ImgButton Name="SortOrdersBtn" Enabled="true" Command="[ShowSortConfiguration]" Image="image://i:SortImg" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="ViewsBtn,1,0" Bottom="ViewsBtn,1"/>
+                </LayoutInput>
+              </vm:ImgButton>
+
+              <vm:RadioConfiguration Name="SortConfig" Application="[Application]" Visible="false" Choice="[Folder.DisplayPrefs.SortOrders]" Close="[CloseSortConfiguration]">
+                <LayoutInput>
+                  <FormLayoutInput Left="SortOrdersBtn,0,0" Top="SortOrdersBtn,1"/>
+                </LayoutInput>
+              </vm:RadioConfiguration>
+
+              <vm:ImgButton Name="IndexesBtn" Command="[ShowIndexConfiguration]" Image="image://i:IndexImg" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="SortOrdersBtn,1" Bottom="ViewsBtn,1"/>
+                </LayoutInput>
+              </vm:ImgButton>
+
+              <vm:RadioConfiguration Name="IndexConfig" Application="[Application]" Visible="false" Choice="[Folder.DisplayPrefs.IndexByChoice]" Close="[CloseIndexConfiguration]">
+                <LayoutInput>
+                  <FormLayoutInput Left="IndexesBtn,0,0" Top="IndexesBtn,1"/>
+                </LayoutInput>
+              </vm:RadioConfiguration>
+
+              <vm:ImgButton Name="SearchBtn" Command="[ShowSearch]" Image="image://i:Search" Content="[Application.LocalStrings.#ViewSearch!cor:String]" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="IndexesBtn,1" Bottom="ViewsBtn,1"/>
+                </LayoutInput>
+              </vm:ImgButton>
+
+              <!-- find in list panel - highest Z-Order -->
+              <Panel Name="FindAsYouTypePanel" >
+                <LayoutInput>
+                  <FormLayoutInput Bottom="Parent,1,-30" Right="Parent,1,-30"/>
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout ItemAlignment="Center"/>
+                </Layout>
+                <Children>
+                  <ColorFill Content="Transparent" Padding="8,0,8,-3" Layout="Anchor">
+                    <Children>
+                      <Text Name="FindAsYouType" Font="font://f:P_FindAsYouTypeFont" Content="" Color="color://s:FontColorMedium"  />
+                      <Text Name="ShadowLabel" Content="" Color="255, 0, 0, 0" Font="font://f:P_FindAsYouTypeFont">
+                        <LayoutInput>
+                          <AnchorLayoutInput Top="FindAsYouType, 0, 2" Left="FindAsYouType, 0, 2"/>
+                        </LayoutInput>
+                      </Text>
+                    </Children>
+                  </ColorFill>
+                </Children>
+              </Panel>
+
+
+              <!--Banner / Breadcrumbs -->
+              <Panel Name="Breadcrumbs">
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+                </Layout>
+                <Children>
+                  <Graphic Name="BannerGraphic" Content="[Folder.BannerImage]" MaintainAspectRatio="true" MaximumSize="600,90">
+                  </Graphic>
+                  <Clip FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
+                    <Children>
+                      <Text Name="BreadCrumbs" Content="[Application.BreadCrumbs]" Font="font://f:P_BreadcrumbSmallFont" Color="color://s:FontColorLight">
+                      </Text>
+                    </Children>
+                  </Clip>
+                </Children>
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent,1,-40" Top="Parent,0,10"  />
+                </LayoutInput>
+              </Panel>
+
+              <!--  View Details-->
+              <pda:PageDetailArea Name="ViewPanel" Folder="[Folder]" Application="[Application]"  >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,.0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+                </LayoutInput>
+              </pda:PageDetailArea>
+
+              <!-- Now Playing View -->
+              <np:NowPlayingViewport Name="NowPlaying" Application="[Application]" TextMode="[Folder.ShowNowPlayingInText]">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,-10" Bottom="Parent,1,20" />
+                </LayoutInput>
+              </np:NowPlayingViewport>
+
+              <!-- Context Menu -->
+              <cm:ContextMenu Name="ContextMenu" Application="[Application]" Close="[CloseContextMenu]" Visible="false" />
+
+              <!-- Play Menu -->
+              <cm:PlayMenu Name="PopupPlay" Application="[Application]" Close="[ClosePopupPlay]" Visible="false" />
+
+              <!-- Activity Indicator -->
+              <ai:ActivityIndicator Name="ActivityInd" Application="[Application]">
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="Parent,1,-6" Left="Parent,0,6"/>
+                </LayoutInput>
+              </ai:ActivityIndicator>
+
+              <!-- Info Strip -->
+         <!-- <is:InfoStrip Name="InfoStrip" Application="[Application]">
+                <LayoutInput>
+                  <FormLayoutInput Top="Parent,1,-36" Bottom="Parent,1,-6" Left="Parent, 0,42" Right="Parent,0.65"/>
+                </LayoutInput>
+              </is:InfoStrip> -->
+
+              <!-- Edge Detection Left Side -->
+              <edge:EdgeDetect Name="LeftEdge" InFocus="[LeftEdgeHasFocus]">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="Parent,0,-120"/>
+                </LayoutInput>
+              </edge:EdgeDetect>
+
+              <!-- Edge Detection Right Side -->
+              <edge:EdgeDetect Name="RightEdge" InFocus="[RightEdgeHasFocus]">
+                <LayoutInput>
+                  <AnchorLayoutInput Right="Parent,1,120"/>
+                </LayoutInput>
+              </edge:EdgeDetect>
+
+              <!-- Edge Detection Bottom Side -->
+              <edge:EdgeDetect Name="BottomEdge" InFocus="[BottomEdgeHasFocus]">
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="Parent,1,120"/>
+                </LayoutInput>
+              </edge:EdgeDetect>
+
+
+              <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+                <Children>
+                  <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                    <Children>
+                      <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                    </Children>
+                  </Clip>
+                  <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+                </Children>
+              </Panel>
+
+            </Children>
+          </Clip>
+
+
+          <!--
+					<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>
+					-->
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+
+</Mcml>

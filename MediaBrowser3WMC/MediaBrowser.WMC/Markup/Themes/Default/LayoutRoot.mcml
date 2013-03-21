@@ -1,0 +1,1052 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:ps="resx://MediaBrowser/MediaBrowser.Resources/PosterScroller"
+	  xmlns:ip="resx://MediaBrowser/MediaBrowser.Resources/ItemPoster"
+	  xmlns:mi="resx://MediaBrowser/MediaBrowser.Resources/MovieInfo"
+	  xmlns:lw="resx://MediaBrowser/MediaBrowser.Resources/LastWatched"
+	  xmlns:ts="resx://MediaBrowser/MediaBrowser.Resources/TitleSet"
+	  xmlns:sy="resx://MediaBrowser/MediaBrowser.Resources/Summary"
+		xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+	  xmlns:np="resx://MediaBrowser/MediaBrowser.Resources/NowPlayingViewport"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+    xmlns:ep="resx://MediaBrowser/MediaBrowser.Resources/ExtendedPagination"
+    xmlns:pci="resx://MediaBrowser/MediaBrowser.Resources/PCIndicatorButton"
+    xmlns:pv="resx://MediaBrowser/MediaBrowser.Resources/Pivot"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:bd="resx://MediaBrowser/MediaBrowser.Resources/Backdrop"
+    xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
+    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ItemButton"
+    xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:hb="resx://MediaBrowser/MediaBrowser.Resources/HeaderButton"
+    xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip" 
+    xmlns:me="Me"
+	  >
+
+
+  <UI Name="LayoutRoot">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:FolderModel Name="Folder" FolderModel="$Required"/>
+      <cor:Boolean Name="UseCustomAnchor" Boolean="false" />
+      <BooleanChoice Name="NavInto" Value="false" />
+    </Properties>
+
+    <Locals>
+      <lib:Item Name="SelectedItem" Item="[Folder.SelectedChild]" />
+      <lib:Item Name="PreSelectedItem" Item="[Folder.SelectedChild]" />
+      <lib:Item Name="PreviousSelectedItem" Item="[Folder.SelectedChild]" />
+      <lib:Item Name="BlankItem"  Item="[Folder.BlankItem]"/>
+      <Timer Name="FullDetailsTimer" Interval="300" AutoRepeat="false"/>
+      <AnchorLayoutInput Name="AnchorNormal" Horizontal="Fill" Top="Parent, 0" Bottom="Parent, 1, 125" />
+      <AnchorLayoutInput Name="AnchorCustom" Horizontal="Fill" Top="Parent, 0" Bottom="Parent, 1, 200" />
+
+      <IntRangedValue Name="SortOrderIndex" MinValue ="0" MaxValue="999"/>
+      <Timer Name="InfoTimer" AutoRepeat="false" Interval="200" Enabled="false"/>
+      <ScrollingHandler Name="ScrollingHandler"  HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" />
+      <ScrollingData Name="ScrollingData" LockedAlignment="0.5" LockedPosition="0.36"  />
+
+      <cor:Boolean Name="CanPlay" Boolean="false" />
+      <Timer Name="HideFindAsYouType" Interval="3000" AutoRepeat="false"/>
+      <!--<Timer Name="BGTimer" Interval="100" Enabled="false"/>-->
+      <Command Name="Configure" />
+      <Command Name="CmdRecentItems" />
+
+      <!-- Item Panel Commands-->
+      <Command Name="CmdRecentlyAdded" />
+      <Command Name="CmdRecentlyWatched" />
+      <Command Name="CmdRecentlyAddedUnwatched" />
+
+      <ShortcutHandler Name="JumpForward" Shortcut="SkipForward" HandlerStage="Bubbled" Handle="true" />
+      <ShortcutHandler Name="JumpBack" Shortcut="SkipBack" HandlerStage="Bubbled" Handle="true"/>
+      <Timer Name="RefocusViewTimer" AutoRepeat="false" Interval="150" Enabled="true" />
+      <!-- this timer is needed to ensure focus stays with the view properties when the viewType changes, doing it not via a timer doesn't always work-->
+      <Timer Name="InitialFocusTimer" AutoRepeat="false" Interval="1500" Enabled="false" />
+
+      <a:Clock Name="Clock"/>
+
+      <lib:Item Name="SelectedItem" Item="[Folder.SelectedChild]" />
+      <IntRangedValue Name="SelectedIndex" Value="0"/>
+      
+      <cor:Int32 Name="backFocus" Int32="[Folder.SelectedChildIndex]" />
+
+      <IntRangedValue Name="NavCount" Value="0" />
+      <cor:Int32 Name="NormalKeyRepeat" Int32="250"/>
+      <!-- This must be less than anim delay -->
+      <cor:Int32 Name="FastKeyRepeat" Int32="150"/>
+      <cor:Int32 Name="AnimDelay" Int32="300" />
+      <!-- This must be greater than NormalKeyRepeat-->
+      <cor:Int32 Name="SpeedUpDelay" Int32="2"/>
+      
+      <Command Name="ClosePopupPlay"/>
+
+      <Choice Name="RecentItems">
+        <Options>
+          <cor:String String="[Application.LocalStrings.#RecentlyAddedEHS!cor:String]" />
+          <cor:String String="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+          <cor:String String="[Application.LocalStrings.#RecentlyAddedUnwatchedEHS!cor:String]" />
+        </Options>
+      </Choice>
+
+    </Locals>
+
+    <Rules>
+
+      <!-- Default Values-->
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]" />
+      <Default Target="[ScrollingData.Repeater]" Value="[Repeater]" />
+
+      <Changed Source="[Application]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.RecentItemOption]" Value="watched"/>
+        </Conditions>
+        <Actions>
+          <!--<Set Target="[RecentItems.ChosenIndex]" Value="1" />-->
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.RecentItemOption]" Value="unwatched"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyAddedUnwatchedEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyAddedUnwatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+
+      <!--Make sure initial focus is in the right place-->
+      <Changed Source="[InitialFocusTimer.Tick]" >
+        <Actions>
+          <Set Target="[InitialFocusTimer.Enabled]" Value="false" />
+          <Invoke Target="[ItemMenuPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <!-- Bindings -->
+      <Binding Source="[Folder.IsRoot]" Target="[ConfigBtn.Visible]"/>
+      <Binding Source="[SelectedIndex.Value]" Target="[Folder.SelectedChildIndex]" />
+      <Binding Source="[Application.CurrentItem.PreferredImage]" Target="[CurrentPoster.Content]"/>
+      <!--<Binding Target="[PopupPlay.Item]" Source="[Folder.SelectedChild]" />
+      <Binding Target="[PopupPlay.Visible]" Source="[Application.DisplayPopupPlay]" />-->
+      <Binding Target="[Repeater.Source]" Source="[Folder.Children]"/>
+
+      <Binding Source="[Clock.Time]" Target="[TimeDate.Content]">
+        <Conditions>
+          <Equality Source="[Application.Config.ShowClock]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <!-- Backdrop Visbile Bindings -->
+      <Binding Source="[Application.Config.ShowRootBackground]" Target="[BG_InitialFolder.Visible]" />
+      <Binding Source="[Application.Config.ShowThemeBackground]" Target="[MainBG.Visible]" />
+      <Binding Source="[Folder.BackdropImage]" Target="[MainBG.Image]" />
+
+
+      <Condition Source="[SelectedItem.ParentalAllowed]" ConditionOp="Equals" SourceValue="false" Target="[PCLock.Visible]" Value="true" />
+
+      <!--These rules allow the user to move over the posters with the mouse without them scrolling away under them-->
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.LockedPosition]" Value="-1" />
+          <Set Target="[ScrollingData.LockedAlignment]" Value="-1" />
+          <Set Target="[ScrollingData.BeginPadding]" Value="160" />
+          <Set Target="[ScrollingData.EndPadding]" Value="160" />
+        </Actions>
+      </Rule>
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.IsMouseActive]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollingData.LockedPosition]" Value=".36" />
+          <Set Target="[ScrollingData.LockedAlignment]" Value=".5" />
+        </Actions>
+      </Rule>
+      <!-- Commands -->
+      <!--<Condition Source="[RecentItems.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Application.RecentItemOption]" Value="added" />
+      <Condition Source="[RecentItems.ChosenIndex]" SourceValue="1" ConditionOp="Equals" Target="[Application.RecentItemOption]" Value="watched" />-->
+
+      <Changed Source="[CmdRecentlyAdded.Invoked]">
+        <Actions>
+          <Invoke Target="[SelectedItem.RecentItemsChanged]" />
+          <Set Target="[Application.RecentItemOption]" Value="added" />
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyAddedEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyAddedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[CmdRecentlyWatched.Invoked]">
+        <Actions>
+          <Set Target="[Application.RecentItemOption]" Value="watched" />
+          <Invoke Target="[SelectedItem.RecentItemsChanged]" />
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[CmdRecentlyAddedUnwatched.Invoked]">
+        <Actions>
+          <Set Target="[Application.RecentItemOption]" Value="unwatched" />
+          <Invoke Target="[SelectedItem.RecentItemsChanged]" />
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyAddedUnwatchedEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyAddedUnwatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[RecentItems.ChosenIndex]" >
+        <Actions>
+          <Invoke Target="[SelectedItem.RecentItemsChanged]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Configure.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.OpenConfiguration]" showFullOptions="true" />
+        </Actions>
+      </Changed>
+
+      <!--<Rule>
+        <Conditions>
+          <Equality Source="[Application.DisplayPopupPlay]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[PopupPlay.Visible]" Value="true" />
+          <Invoke Target="[PopupPlay.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[ClosePopupPlay.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayPopupPlay]" Value="false" />
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[PopupPlay.Visible]" Value="false"/>
+          <Invoke Target="[Scroller.NavigateInto]" />
+        </Actions>
+      </Changed>-->
+
+      <!-- Folder/Item Selection -->
+      <Changed Source="[Folder.SelectedChildIndex]">
+        <Conditions>
+          <Equality ConditionOp="NotEquals" Source="[Folder.SelectedChildIndex]" Value="-1"></Equality>
+        </Conditions>
+        <Actions>
+          <Set Target="[SelectedItem]" Value="[Folder.SelectedChild]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[SelectedItem]">
+        <Conditions>
+          <Equality Source="[SelectedItem.ShowNewestItems]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[RefocusViewTimer.Enabled]" Value="true" />
+          <Set Target="[RecentItemsPanel.Visible]" Value="true"/>
+          <Set Target="[NavInto.Value]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[SelectedItem]" >
+        <Conditions>
+          <Equality Source="[SelectedItem.ShowNewestItems]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[RecentItemsPanel.Visible]" Value="false"/>
+        </Actions>
+      </Changed>
+
+      <!-- Navigate back to correct folder from RAL-->
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.NavigatingForward]" Value="false"/>
+          <Equality Source="[Folder.Children.Count]" ConditionOp="GreaterThan" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Repeater.NavigateIntoIndex]"  index="[backFocus]" InvokePolicy="Synchronous"/>
+        </Actions>
+      </Rule>
+
+      <!-- Playback Control -->
+      <Changed Source="[Application.ShowNowPlaying]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.ShowNowPlaying]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[NowPlaying.Visible]" Value="[Application.ShowNowPlaying]" />
+          <Set Target="[PanelPoster.Visible]" Value="false" />
+          <Set Target="[RecentListPanel.Navigation]" Value="None" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.ShowNowPlaying]" >
+        <Conditions>
+          <Equality Source="[Application.ShowNowPlaying]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[NowPlaying.Visible]" Value="[Application.ShowNowPlaying]" />
+          <Set Target="[PanelPoster.Visible]" Value="true" />
+          <Set Target="[RecentListPanel.Navigation]" Value="ContainHorizontal" />
+        </Actions>
+      </Changed>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[RefocusViewTimer.Tick]"  />
+          <IsType Source="[SelectedItem]" Type="lib:FolderModel"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[RefocusViewTimer.Enabled]" Value="false" />
+          <Set Target="[RecentItemsPanel.Folder]" Value="[SelectedItem!lib:FolderModel]" />
+          <Invoke Target="[ItemMenuPanel.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <!--<Rule>
+        <Conditions>
+          <Equality Source="[HardNavigate]" Value="true"/>        
+        </Conditions>
+        <Actions>
+          <Set Target="[HardNavigate]" Value="false" />
+          <Invoke Target="[ItemMenuPanel.NavigateInto]" />
+        </Actions>
+      </Rule>-->
+
+      <Changed Source="[NavInto.Value]">
+        <Conditions>
+          <Equality Source="[NavInto.Value]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[NavInto.Value]" Value="false" />
+          <Invoke Target="[ItemMenuPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+
+      <!-- Typing Handler / Jump List -->
+      <Changed Source="[Application]" InitialEvaluate="true">
+        <Actions>
+          <Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[NormalKeyRepeat]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[NavCount.Value]">
+        <Conditions>
+          <Equality Source="[NavCount.Value]" ConditionOp="Equals" Value="[SpeedUpDelay]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[FastKeyRepeat]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[NavCount.Value]">
+        <Conditions>
+          <Equality Source="[NavCount.Value]" ConditionOp="Equals" Value="0"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Application.FixRepeatRate]" scroller="[Scroller]" val="[NormalKeyRepeat]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Folder.JILShift]">
+        <Actions>
+          <Invoke Target="[ScrollingData.Scroll]"  amount="[Folder.JILShift]"/>
+        </Actions>
+      </Changed>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[JumpForward.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScrollingData.PageDown]"/>
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[JumpBack.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScrollingData.PageUp]"/>
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[JumpForward.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScrollingData.PageDown]"/>
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[JumpBack.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ScrollingData.PageUp]"/>
+        </Actions>
+      </Rule>
+
+    </Rules>
+
+    <Content>
+      <Panel>
+        <Children>
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
+
+              <!-- Popup Play Panel -->
+              <!--<pp:PopupPlay Name="PopupPlay" Visible="false" Item="[Folder.SelectedChild]" Close="[ClosePopupPlay]"
+                        Application="[Application]" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0.3" Right="Parent,.7" Top="Parent,0.35" Bottom="Parent,.7" />
+                </LayoutInput>
+              </pp:PopupPlay>-->
+
+
+              <!-- Gradient Center Panel Borders -->
+              <Panel>
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="ItemMenuPanel,0" Horizontal="Fill"/>
+                </LayoutInput>
+                <Children>
+                  <Clip FadeSize="50" Orientation="Horizontal" FadeAmount="1" >
+                    <Children>
+                      <ColorFill Content="color://s:FontColorLight" Alpha="0.8" Layout="Fill" MaximumSize="0,2" />
+                    </Children>
+                  </Clip>
+                </Children>
+              </Panel>
+              <Panel>
+                <LayoutInput>
+                  <AnchorLayoutInput Top="ItemMenuPanel,1" Horizontal="Fill"/>
+                </LayoutInput>
+                <Children>
+                  <Clip FadeSize="50" Orientation="Horizontal" FadeAmount="1" >
+                    <Children>
+                      <ColorFill Content="color://s:FontColorLight" Alpha="0.8" Layout="Fill" MaximumSize="0,2" />
+                    </Children>
+                  </Clip>
+                </Children>
+              </Panel>
+
+              <!-- Center Scrolling Panel -->
+              <Graphic Name="ItemMenuPanel" Layout="Anchor" >
+                <LayoutInput>
+                  <AnchorLayoutInput Horizontal="Fill" Top="Parent,0.8" Bottom="Parent,0.8,65"/>
+                </LayoutInput>
+                <Children>
+                  <Scroller Orientation="Horizontal" FadeSize="5" Name="Scroller" Navigation="RememberFocus"
+                            ScrollingData="[ScrollingData]" Padding="50,0,50,0" >
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Fill" Vertical="Fill" />
+                    </LayoutInput>
+                    <Children>
+                      <Repeater Source="[Folder.Children]" Name="Repeater" ContentName="BaseItem" DiscardOffscreenVisuals="false"  >
+                        <Layout>
+                          <FlowLayout Orientation="Horizontal" Spacing="50,0" Repeat="WhenTooBig" RepeatGap="150,0"/>
+                        </Layout>
+                        <Animations>
+                          <Animation Type="Move">
+                            <Keyframes>
+                              <PositionKeyframe Time="0" RelativeTo="Current"/>
+                              <PositionKeyframe Time="0.3" RelativeTo="Final"/>
+                            </Keyframes>
+                          </Animation>
+                        </Animations>
+                      </Repeater>
+                    </Children>
+
+                  </Scroller>
+                  <ColorFill Content="color://s:FillColor" Alpha="0.65">
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Fill" Vertical="Fill" ContributesToHeight="false" ContributesToWidth="false"/>
+                    </LayoutInput>
+                  </ColorFill>
+                </Children>
+              </Graphic>
+
+              <!-- Media Browser Name Panel -->
+              <Graphic Name="TopMiniPanel" Content="resx://MediaBrowser/MediaBrowser.Resources/roottopw">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="ItemMenuPanel,0,-37" Bottom="ItemMenuPanel,0,-2" Left="Parent,0.85" Right="Parent,1"/>
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" StripAlignment="Far"/>
+                </Layout>
+                <Children>
+                  <ColorFill Content="Transparent" Layout="Anchor">
+                    <Children>
+                      <Text Name="logoName" Content="media browser " Color="White" Font="Segoe UI, 16" />
+                      <Text Content="media browser " Color="Black" Font="Segoe UI, 16" >
+                        <LayoutInput>
+                          <AnchorLayoutInput Top="logoName, 0, 2" Left="logoName, 0, 2"/>
+                        </LayoutInput>
+                      </Text>
+                    </Children>
+                  </ColorFill>
+                </Children>
+              </Graphic>
+
+              <!-- Right Bottom Main Menu Panel -->
+              <Panel>
+                <LayoutInput>
+                  <AnchorLayoutInput Top="ItemMenuPanel,1,2" Bottom="ItemMenuPanel,1,37" Left="Parent,0.65" Right="Parent,1"/>
+                </LayoutInput>
+                <Children>
+                  <Panel>
+                    <Layout>
+                      <FlowLayout Orientation="Horizontal" ItemAlignment="Near" StripAlignment="Far"/>
+                    </Layout>
+                    <Children>
+                      <Text Name="TimeDate" Font="font://f:P_ClockFont"  Color="White"
+                                Visible="[Application.Config.ShowClock]" />
+                      <Text Font="font://f:P_ClockFont"  Color="Gray" Content="  " />
+                      <vm:CfgButton Name="ConfigBtn" Command="[Configure]" />
+                      <pci:PCIndicatorButton Size="19,19" Application="[Application]" />
+                    </Children>
+                  </Panel>
+                  <ColorFill Layout="Fill" Content="Black" Alpha="0.15" />
+                </Children>
+              </Panel>
+
+              <!-- Left Bottom Main Menu Panel-->
+              <Panel>
+                <LayoutInput>
+                  <AnchorLayoutInput Top="ItemMenuPanel,1,2" Bottom="ItemMenuPanel,1,37" Left="Parent,0" Right="Parent,0.65"/>
+                </LayoutInput>
+                <Children>
+                  <is:InfoStrip Application="[Application]" Padding="6,0,0,0" />
+                  <ColorFill Layout="Fill" Content="Black" Alpha="0.15" />
+                </Children>
+              </Panel>
+
+              <!-- Now Playing Box -->
+              <np:NowPlayingViewportLarge Name="NowPlaying" Visible="false" Application="[Application]">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0.02" Right="Parent,0.28" Top="Parent,0.28" Bottom="Parent,0.63"/>
+                </LayoutInput>
+              </np:NowPlayingViewportLarge>
+
+              <!--Security Indicator-->
+              <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="PCLock">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="PanelPoster,0,15" Bottom="PanelPoster,1,-15"/>
+                </LayoutInput>
+                <Children>
+                  <Graphic Name="PCLockImage" Content="image://i:Lock" Margins="0,0,5,5" MaximumSize="35,35" MaintainAspectRatio="true">
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                    </LayoutInput>
+                  </Graphic>
+                </Children>
+              </Panel>
+
+              <!-- Poster Box -->
+              <Panel Name="PanelPoster" Layout="Center" Padding="0,0,0,0">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,20" Right="Parent,0.30,10" Top="Parent,0.15" Bottom="Parent,0.7,25"/>
+                </LayoutInput>
+                <Children>
+                  <Graphic Name="CurrentPoster" MaintainAspectRatio="true"  >
+                  </Graphic>
+                </Children>
+              </Panel>
+
+              <!-- Sorting Indicator -->
+              <Panel Name="recentlyAdded" Navigation="PreferFocusOrder">
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent,1,-125" Top="Parent,0, 10"  />
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Far" />
+                </Layout>
+                <Children>
+                  <Panel>
+                    <Layout>
+                      <FlowLayout Orientation="Horizontal" Spacing="10,0" />
+                    </Layout>
+                    <Children>
+                      <hb:HeaderButton Label="[Application.LocalStrings.#AddedEHS!cor:String]"
+                                       Command="[CmdRecentlyAdded]"
+                                       BulletImage="resx://MediaBrowser/MediaBrowser.Resources/IconAdded"
+                                  />
+                      <hb:HeaderButton Label="[Application.LocalStrings.#WatchedEHS!cor:String]"
+                                       Command="[CmdRecentlyWatched]"
+                                       BulletImage="resx://MediaBrowser/MediaBrowser.Resources/IconWatched"
+                                  />
+                      <hb:HeaderButton Label="[Application.LocalStrings.#UnwatchedEHS!cor:String]"
+                                       Command="[CmdRecentlyAddedUnwatched]"
+                                       BulletImage="resx://MediaBrowser/MediaBrowser.Resources/UnwatchedBase"
+                                       MaxSize="195,45"
+                                       InitialSize="75,45"
+                                  />                      
+                    </Children>
+                  </Panel>
+
+                </Children>
+              </Panel>
+
+              <Panel Name="RecentText" Padding="8,0,8,-3" Layout="Anchor" >
+                <LayoutInput>
+                  <AnchorLayoutInput Right="RecentListPanel,1,10" Bottom="RecentListPanel,0,-4"/>
+                </LayoutInput>
+                <Children>
+                  <Text Name="NPVTitle" Content="[Application.LocalStrings.#RecentlyAddedEHS!cor:String]" Color="color://s:FontColorMedium"
+                        Font="Segoe Media Center, 24" Margins="50,0,0,0" />
+                  <Text Name="NPVTitle2" Content="[Application.LocalStrings.#RecentlyAddedEHS!cor:String]" Color="Black"
+                        Font="Segoe Media Center, 24" Margins="50,0,0,0">
+                    <LayoutInput>
+                      <AnchorLayoutInput Top="NPVTitle, 0, 2" Left="NPVTitle, 0, 2"/>
+                    </LayoutInput>
+                  </Text>
+                </Children>
+              </Panel>
+              <!-- These two ColorFills on either side of the scroller distract the mouse so it won't scroll when you go across screen -->
+              <ColorFill MouseInteractive="true" Content="Transparent">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="Parent,0" Top="RecentListPanel,0" Right="RecentListPanel,0" Bottom="RecentListPanel,1"/>
+                </LayoutInput>
+              </ColorFill>
+              <ColorFill MouseInteractive="true" Content="Transparent">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="RecentListPanel,1" Top="RecentListPanel,0" Right="Parent,1" Bottom="RecentListPanel,1"/>
+                </LayoutInput>
+              </ColorFill>
+
+              <!-- Recent Items -->
+              <Clip Name="RecentListPanel" Navigation="ContainHorizontal,RememberFocus">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0.33" Top="recentlyAdded,1,65" Right="Parent,1,-30"
+                                   Bottom="Parent, 0.7,0"/>
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout Orientation="Vertical" Spacing="0,0"/>
+                </Layout>
+                <Children>
+                  <me:RecentItemList Name="RecentItemsPanel" Application="[Application]"  NavInto="[NavInto]" />
+                </Children>
+              </Clip>
+
+              <!-- Background Fade Object (hidden when no background image selected)-->
+              <Graphic Name="NPClipP" Content="image://me:50AlphaBgforTab" Visible="[Application.Config.ShowRootBackground]">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="recentlyAdded,1,60" Bottom="Parent,0.7,25" Left="RecentListPanel,0,-10" Right="RecentListPanel,1,10" />
+                </LayoutInput>
+              </Graphic>
+
+              <!-- Background For recent text (hidden when no background image selected)-->
+              <Graphic Name="RecentBack" Content="image://me:50AlphaTab" Visible="[Application.Config.ShowRootBackground]">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="RecentText,0,-5" Bottom="NPClipP,0" Left="RecentText,0,0" Right="RecentText,1,0" />
+                </LayoutInput>
+              </Graphic>
+              <!--<Clip Name="NPClipP" FadeSize="5" Orientation="Horizontal" FadeAmount="1" Visible="[Application.Config.ShowRootBackground]">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="recentlyAdded,1,5" Bottom="Parent,0.7,25" Left="Parent,0,-10" Right="Parent,1,10" />
+                </LayoutInput>
+                <Children>
+                  <ColorFill Content="color://s:FillColor" Alpha="0.55" Layout="Fill">
+                  </ColorFill>
+                </Children>
+              </Clip>-->
+
+              <!-- Main Background -->
+              <bd:BackdropFullScreen Application="[Application]" Name="MainBG" Visible="true" Image="[Folder.BackdropImage]" Item="[Folder]">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,-50" Top="Parent,0,-20" Bottom="Parent,1,20" Right="Parent,1,50"/>
+                </LayoutInput>
+              </bd:BackdropFullScreen>
+
+              <!-- Initial Folder Backdrop -->
+              <bd:InitialFolderBackground Name="BG_InitialFolder" Application="[Application]"
+                                          Visible="[Application.Config.ShowRootBackground]">
+                <LayoutInput>
+                  <FormLayoutInput Name="LI_Bg" Left="Parent,0,-50" Top="Parent,0,-20" Bottom="Parent,1,20" Right="Parent,1,50"/>
+                </LayoutInput>
+              </bd:InitialFolderBackground>
+
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+    <Content Name="BaseItem">
+      <me:RootScrollerItem Item="[RepeatedItem!lib:FolderModel]" ParentFolder="[Folder]" Application="[Application]"
+                           SelectedIndex="[SelectedIndex]" Index="[RepeatedItemIndex.SourceValue]" NavCount="[NavCount]" />
+    </Content>
+  </UI>
+
+  <UI Name="RootScrollerItem" BaseUI="ib:ItemButton">
+    <Properties>
+      <lib:FolderModel Name="ParentFolder" FolderModel="$Required" />
+      <IntRangedValue Name="SelectedIndex" IntRangedValue="$Required"/>
+      <cor:Int32 Name="Index" Int32="0"/>
+      <IntRangedValue Name="NavCount" IntRangedValue="$Required" />
+    </Properties>
+
+    <Locals>
+      <Color Name="FocusedColor" Color="color://s:FontColorLight" />
+      <Color Name="IdleColor" Color="color://s:FontColorMedium" />
+    </Locals>
+
+    <Rules>
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <!--recent list no longer has focus so set current item back to normal-->
+          <Set Target="[Application.CurrentItem]" Value="null" />
+          <Set Target="[SelectedIndex.Value]" Value="[Index]"/>
+          <Set Target="[Bg.Content]" Value="image://me:HiliteFocusBg" />
+          <Set Target="[FlashTop.Visible]" Value="true"/>
+          <Set Target="[FlashBottom.Visible]" Value="true"/>
+        </Actions>
+      </Condition>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[SelectedIndex.Value]" ConditionOp="NotEquals" Value="[Index]" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Title.Color]" Value="[IdleColor]"/>
+          <Set Target="[Bg.Content]" Value="image://i:BlankImage" />
+          <Set Target="[NavCount.Value]" Value="[NavCount.Value]" ExclusiveApply="false">
+            <Transformer>
+              <MathTransformer Add="1"/>
+            </Transformer>
+          </Set>
+        </Actions>
+      </Rule>
+      <Rule>
+        <Conditions>
+          <Equality Source="[SelectedIndex.Value]" ConditionOp="Equals" Value="[Index]" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Title.Color]" Value="[FocusedColor]"/>
+          <Set Target="[SelectedIndex.Value]" Value="[Index]"/>
+          <Set Target="[Bg.Content]" Value="image://me:HiliteBg" />
+        </Actions>
+      </Rule>
+    </Rules>
+
+    <Content>
+      <Graphic Name="Bg" MinimumSize="0,65" Content="image://i:BlankImage" SizingPolicy="SizeToChildren" Padding="25,0,25,0">
+        <Children>
+          <ColorFill Name="BoxItem" Content="Transparent" Layout="Anchor" Alpha="1" >
+            <Children>
+              <Text Name="Title" Content="[Item.Name]" Color="[IdleColor]" Margins="0,5,0,0" Font="Segoe Media Center Semibold,32" >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Parent, 0, 5" Left="Parent, 0" />
+                </LayoutInput>
+              </Text>
+              <Graphic Name="FlashTop" Content="image://me:FlashHorizontalT" Visible="false">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Parent, 0, 4" Left="Parent, 0, 0" ContributesToHeight="false" ContributesToWidth="false"/>
+                </LayoutInput>
+                <Animations>
+                  <TransformAnimation Delay="1">
+                    <Source>
+                      <Animation Loop="-1">
+                        <Keyframes>
+                          <PositionKeyframe Time="0" RelativeTo="Current"/>
+                          <PositionKeyframe Time="3" Value="100,0,0"/>
+                          <PositionKeyframe Time="11" Value="100,0,0"/>
+                          <AlphaKeyframe Time="0.0" Value="0"/>
+                          <AlphaKeyframe Time="1.0" Value="1"/>
+                          <AlphaKeyframe Time="2.0" Value="1"/>
+                          <AlphaKeyframe Time="3.0" Value="0"/>
+                          <AlphaKeyframe Time="11.0" Value="0"/>
+                        </Keyframes>
+                      </Animation>
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Graphic>
+
+              <Graphic Name="FlashBottom" Content="image://me:FlashHorizontalB" Visible="false">
+                <LayoutInput>
+                  <FormLayoutInput Bottom="Parent,1,6" Left="Title,1,24" ContributesToHeight="false" ContributesToWidth="false"/>
+                </LayoutInput>
+                <Animations>
+                  <TransformAnimation Delay="6">
+                    <Source>
+                      <Animation Loop="-1">
+                        <Keyframes>
+                          <PositionKeyframe Time="0" RelativeTo="Current"/>
+                          <PositionKeyframe Time="3" Value="-100,0,0"/>
+                          <PositionKeyframe Time="6" Value="-100,0,0"/>
+                          <AlphaKeyframe Time="0.0" Value="0"/>
+                          <AlphaKeyframe Time="1.0" Value="1"/>
+                          <AlphaKeyframe Time="2.0" Value="1"/>
+                          <AlphaKeyframe Time="3.0" Value="0"/>
+                          <AlphaKeyframe Time="6.0" Value="0"/>
+                        </Keyframes>
+                      </Animation>
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Graphic>
+            </Children>
+          </ColorFill>
+
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+  <UI Name="RecentItemList">
+    <Properties>
+      <lib:FolderModel Name="Folder"/>
+      <a:Application Name="Application" Application="$Required"/>
+      <BooleanChoice Name="NavInto" BooleanChoice="$Required" />
+    </Properties>
+    <Locals>
+      <Choice Name="PageChoice" Description="1"/>
+      <cor:Int32 Name="TotalPages" Int32="0" />
+      <cor:Int32 Name="GetTotalPages" Int32="0" />
+      <cor:Single Name="MaxPageCount" Single="25" />
+      <ScrollingHandler Name="ScrollingHandler"  HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" />
+      <ScrollingData Name="ScrollingData" LockedAlignment="0.0" LockedPosition="0.01"  />
+
+      <GridLayout Name="MyLayout" Orientation="Vertical" AllowWrap="true" Spacing="10,0" Repeat="Never"
+                  RepeatGap="0" Rows="4" />
+    </Locals>
+    <Rules>
+      <!-- Default Values-->
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]" />
+      <Default Target="[ScrollingData.Repeater]" Value="[Repeater]" />
+      <Condition Source="[Folder.QuickListItems.Count]" SourceValue="0" Target="[EmptyList.Visible]" Value="true" />
+      <!-- Binding for Newest Items-->
+      <Binding Source="[Folder.QuickListItems]" Target="[Repeater.Source]"/>
+      <!-- Pagination Rules-->
+      <Changed Source="[Folder.QuickListItems]">
+        <Actions>
+          <Invoke Target="[ScrollingData.Home]" InvokePolicy="Synchronous" />
+          <Set Target="[NavInto.Value]" Value="true" />
+        </Actions>
+      </Changed>
+      <Binding Source="[ScrollingData.CurrentPage]" Target="[Pagination.Value]" />
+      <Binding Source="[ScrollingData.TotalPages]" Target="[Pagination.MaxPages]" />
+      <Binding Source="[PageChoice.Description]" Target="[CurrentPageNumber.Content]"/>
+      <!--ScrollingData page counts skip some pages and ExtendedPagination allows for this-->
+      <!--Show ExtendedPagination until MaxPages > MaxPageCount then show Counter-->
+      <Rule>
+        <Conditions>
+          <Equality Source="[Pagination.MaxPages]" ConditionOp="GreaterThan" Value="[MaxPageCount]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Counter.Visible]" Value="true"/>
+          <Set Target="[Pagination.Visible]" Value="false"/>
+        </Actions>
+      </Rule>
+      <!--Get accurate TotalPages number from Index.Value-->
+      <Binding Source="[Folder.QuickListItems.Count]" Target="[GetTotalPages]">
+        <Transformer>
+          <MathTransformer AddInt="3"/>
+        </Transformer>
+      </Binding>
+      <Binding Source="[GetTotalPages]" Target="[TotalPages]">
+        <Transformer>
+          <MathTransformer DivideInt="4"/>
+        </Transformer>
+      </Binding>
+      <Binding Source="[TotalPages]" Target="[TotalPagesNumber.Content]">
+        <Transformer>
+          <FormatTransformer Format="{0:F0}"/>
+        </Transformer>
+      </Binding>
+    </Rules>
+    
+    <Content>
+      <Panel Layout ="VerticalFlow">
+        <Children>
+          <!-- Pagination -->
+          <Panel >
+            <Layout>
+              <FlowLayout Orientation="Horizontal" StripAlignment="Center"/>
+            </Layout>
+            <Children>
+              <ep:ExtendedPagination Name="Pagination" Value="3" Padding="0,-3,0,3" MinimumSize="0,31" Visible="true"/>
+              <Panel Name="Counter" Layout ="HorizontalFlow" Margins="0,0,0,3" Visible="false" >
+                <Children>
+                  <Text Name="CurrentPageNumber" Font="font://f:MM_ActorFont" Color="color://s:FontColorMedium"/>
+                  <Text Content="|" Font="font://f:MM_ActorFont" Color="color://s:FontColorMedium" />
+                  <Text Name="TotalPagesNumber" Font="font://f:MM_ActorFont" Color="color://s:FontColorMedium" />
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+          <!-- Poster Images-->
+          <Clip FadeSize="20" Orientation="Horizontal" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" >
+            <Children>
+              <Scroller Orientation="Horizontal" Margins="0,0,0,0" Name="Scroller" FadeSize="10" ScrollingData="[ScrollingData]">
+                <Children>
+                  <Repeater Name="Repeater" Layout="[MyLayout]" >
+                    <Content>
+                      <me:RecentItems Application="[Application]" Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" PageChoice="[PageChoice]"/>
+                    </Content>
+                    <Animations>
+                      <Animation Type="Move">
+                        <Keyframes>
+                          <PositionKeyframe Time="0" RelativeTo="Current"/>
+                          <PositionKeyframe Time="0.3" RelativeTo="Final"/>
+                        </Keyframes>
+                      </Animation>
+                    </Animations>
+                  </Repeater>
+                </Children>
+              </Scroller>
+            </Children>
+          </Clip>
+          <Text Name="EmptyList" Content="[Application.LocalStrings.#NoItemsEHS!cor:String]" Font="Segoe Media Center, 24" Color="color://s:FontColorDark" Visible="false" Margins="20,0,0,0">
+            <LayoutInput>
+              <AnchorLayoutInput Bottom="Parent,1,-5"/>
+            </LayoutInput>
+          </Text>
+
+
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <UI Name="RecentItems">
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:Item Name="Item" Item="$Required" />
+      <Index Name="Index" Index="$Required"/>
+      <Size Name="MinSize" Size="868,95"/>
+      <Choice Name="PageChoice" Choice="$Required"/>
+    </Properties>
+
+    <Locals>
+      <Image Name="Tick" Image="image://i:Tick"/>
+      <ClickHandler Name="Clicker"/>
+      <cor:Int32 Name="CurrentPage" Int32="0" />
+      <cor:Int32 Name="GetCurrentPage" Int32="0" />
+    </Locals>
+
+    <Rules>
+
+      <Rule>
+        <Actions>
+          <Invoke Target="[Item.SetPrimarySmallToTiny]"/>
+        </Actions>
+      </Rule>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Binding Source="[Item.PrimaryImageSmall]" Target="[ItemPoster.Content]" />
+      <Binding Source="[Item.LongName]" Target="[Txt1.Content]" />
+      <Binding Source="[Item.RecentDateString]" Target="[Txt2.Content]" />
+      <Binding Source="[Item.HaveWatched]" Target="[TickIndicator.Visible]" >
+        <Conditions>
+          <Equality Source="[Application.Config.ShowWatchTickInPosterView]" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <Condition Source="[Item.ParentalAllowed]" ConditionOp="Equals" SourceValue="false" Target="[PCLock.Visible]" Value="true" />
+
+      <Changed Source="[Input.KeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Bg.Content]" Value="image://i:BlankImage" />
+          <Set Target="[Txt1.Color]" Value="color://s:FontColorDark" />
+          <Set Target="[Txt2.Color]" Value="color://s:FontColorDark" />
+          <Set Target="[TickIndicator.ColorFilter]" Value="color://s:FontColorDark" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Input.KeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <!--Get CurrentPage number from Index.Value-->
+          <Set Target="[GetCurrentPage]" Value="[Index.Value]">
+            <Transformer>
+              <MathTransformer AddInt="4"/>
+            </Transformer>
+          </Set>
+          <Set Target="[CurrentPage]" Value="[GetCurrentPage]">
+            <Transformer>
+              <MathTransformer DivideInt="4"/>
+            </Transformer>
+          </Set>
+          <Set Target="[PageChoice.Description]" Value="[CurrentPage!cor:String]" />
+          <Set Target="[Application.CurrentItem]" Value="[Item]" />
+          <Set Target="[Bg.Content]" Value="image://me:HiliteBtn" />
+          <Set Target="[Txt1.Color]" Value="color://s:FontColorLight" />
+          <Set Target="[Txt2.Color]" Value="color://s:FontColorMedium" />
+          <Set Target="[TickIndicator.ColorFilter]" Value="color://s:FontColorMedium" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.SelectAction]"/>
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <Graphic Name="Bg" Content="image://i:BlankImage" Layout="Anchor" Padding="8,5,8,3"
+               MinimumSize="[MinSize]" MaximumSize="[MinSize]" Margins="0,0,0,0">
+        <Children>
+          <Graphic Name="PCLock" Layout="Form" Visible="false" Content="image://i:Lock" MaintainAspectRatio="true" MaximumSize="25,25" >
+            <LayoutInput>
+              <FormLayoutInput Left="DescPanel,0" Bottom="DescPanel,1,-5" />
+            </LayoutInput>
+          </Graphic>
+          <Graphic Name="ItemPoster"  Content="resx://MediaBrowser/Mediabrowser.Resources/MissingPerson"
+                   MaintainAspectRatio="true" SizingPolicy="SizeToConstraint" MaximumSize="155,0">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Parent,0" Top="Parent, 0" Vertical="Center"/>
+            </LayoutInput>
+          </Graphic>
+          <Panel Name="DescPanel">
+            <Layout>
+              <FlowLayout Orientation="Vertical" Spacing="-3,-3" />
+            </Layout>
+            <LayoutInput>
+              <AnchorLayoutInput Left="Parent,0,165" Top="Parent, 0"/>
+            </LayoutInput>
+            <Children>
+              <Text Name="Txt1" Color="color://s:FontColorDark" Content="Title of Item 1" Font="font://f:MM_ButtonFont" />
+              <Panel Layout="HorizontalFlow">
+                <Children>
+                  <Text Name="Txt2" Color="color://s:FontColorDark" Content="2-Mar-2009 | 14:34" Font="font://f:MM_SummaryFont" Margins="30,0,0,0" />
+                  <Graphic Name="TickIndicator" ColorFilter="color://s:FontColorDark" Visible="false" Content="[Tick]" Margins="20,0,0,0" />
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+
+  <Image Name="HiliteBtn" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusBlack" NineGrid="5,5,5,5" />
+  <Image Name="HiliteBg" Source="resx://MediaBrowser/MediaBrowser.Resources/rootscrollhilite" NineGrid="10,10,10,10" />
+  <Image Name="HiliteFocusBg" Source="resx://MediaBrowser/MediaBrowser.Resources/rootscrollhilitefocus" NineGrid="10,10,10,10" />
+  <Image Name="PosterFrame" Source="resx://MediaBrowser/MediaBrowser.Resources/poster_frame" NineGrid="10,10,10,10" />
+  <Image Name="50AlphaBg" Source="resx://MediaBrowser/MediaBrowser.Resources/BlackBtnAlpha50" NineGrid="10,10,10,10" />
+  <Image Name="50AlphaBgforTab" Source="resx://MediaBrowser/MediaBrowser.Resources/BlackBtnAlpha50forTabRt" NineGrid="10,10,10,10" />
+  <Image Name="50AlphaTab" Source="resx://MediaBrowser/MediaBrowser.Resources/BlackTabAlpha50" NineGrid="10,10,10,10" />
+
+  <Image Name="FlashHorizontalT" Source="resx://MediaBrowser/MediaBrowser.Resources/flashHorT" />
+  <Image Name="FlashHorizontalB" Source="resx://MediaBrowser/MediaBrowser.Resources/flashHorB" />
+
+</Mcml>

@@ -1,0 +1,103 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+      xmlns:me="Me"
+      >
+
+  
+
+  <UI Name="PivotItem">
+
+    <Properties>
+
+      <cor:String Name="Label" cor:String="$Required"/>
+      <Choice Name="Model" Choice="$Required"/>
+      <Index Name="Index" Index="$Required"/>
+
+    </Properties>
+
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true"/>
+      <Default Target="[Input.KeyFocusOnMouseEnter]" Value="false"/>
+
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Equality Source="[Input.MouseFocus]" Value="true"/>
+          <Equality Source="[Input.KeyFocus]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Name.Color]" Value="color://s:FontColorLight"/>
+          <!--<Set Target="[ArrowLeft.Content]" Value="image://me:PivotArrowLeft"/>
+          <Set Target="[ArrowRight.Content]" Value="image://me:PivotArrowRight"/>-->
+			<Set Target="[ArrowLeft.ColorFilter]" Value="255,255,255" />
+			<Set Target="[ArrowRight.ColorFilter]" Value="255,255,255" />
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[Model.ChosenIndex]" Value="[Index.Value]"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Model.ChosenIndex]" SourceValue="[Index.Value]">
+        <Actions>
+          <!--<Set Target="[ArrowLeft.Content]" Value="image://me:PivotArrowLeftNoFocus"/>
+          <Set Target="[ArrowRight.Content]" Value="image://me:PivotArrowRightNoFocus"/>-->
+			<Set Target="[ArrowLeft.ColorFilter]" Value="color://s:FontColorDark" />
+			<Set Target="[ArrowRight.ColorFilter]" Value="color://s:FontColorDark" />
+          <Set Target="[ArrowLeft.Visible]" Value="true" />
+          <Set Target="[ArrowRight.Visible]" Value="true" />
+          <Set Target="[Name.Font]" Value="font://f:PivotItemFocusFont" />
+          <Set Target="[Name.Color]" Value="color://s:FontColorDark"/>
+          <Set Target="[PivotPanel.Scale]" Value="1.1,1.1,1.1" />
+          <Set Target="[PivotPanel.Alpha]" Value="1" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Model.ChosenIndex]" ConditionOp="NotEquals" SourceValue="[Index.Value]">
+        <Actions>
+          <Set Target="[ArrowLeft.Visible]" Value="false" />
+          <Set Target="[ArrowRight.Visible]" Value="false" />
+          <Set Target="[PivotPanel.Scale]" Value="1,1,1" />
+          <Set Target="[PivotPanel.Alpha]" Value="0.75" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+      <Panel Name="PivotPanel" Alpha="0.75" CenterPointPercent="0.5,0.5,0.5">
+        <Layout>
+          <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+        </Layout>
+        
+        <Animations>
+          <Animation Animation="animation://anim:RegularFastScale" />
+          <Animation Animation="animation://anim:RegularFastFade" />
+        </Animations>
+        
+        <Children>
+          
+          <Graphic Name="ArrowLeft" Content="image://me:PivotArrowLeft" Margins="0,0,6,0" />
+          <Text Name="Name" Font="font://f:PivotItemFont" Color="color://s:FontColorDark" Content="[Label]" />
+          <Graphic Name="ArrowRight" Content="image://me:PivotArrowRight" Margins="6,0,0,0" />
+          
+        </Children>
+        
+      </Panel>
+
+    </Content>
+
+  </UI>
+
+  <Image Name="PivotArrowLeft"          Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowLeft"/>
+  <Image Name="PivotArrowLeftNoFocus"   Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowLeftNoFocus"/>
+  <Image Name="PivotArrowRight"         Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowRight"/>
+  <Image Name="PivotArrowRightNoFocus"  Source="resx://MediaBrowser/MediaBrowser.Resources/PivotArrowRightNoFocus"/>
+
+</Mcml>

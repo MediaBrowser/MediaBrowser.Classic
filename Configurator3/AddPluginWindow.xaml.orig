@@ -1,0 +1,69 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:f="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+    xmlns:code="clr-namespace:Configurator.Code"
+    x:Class="Configurator.AddPluginWindow"
+    Title="Add Plugin" Height="710" Width="968" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" IsEnabled="True">
+    <Window.Resources>
+        <DataTemplate x:Key="PluginListTemplate" >
+            <TextBlock Text="{Binding Path=ListDisplayString}" Style="{DynamicResource PluginListTriggers}" />
+
+        </DataTemplate>
+        <Style x:Key="PluginListTriggers" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Installed}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <!--<DataTrigger Binding="{Binding Path=UpdateAvail}" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="Red"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>-->
+            </Style.Triggers>
+        </Style>
+
+
+
+        <code:PluginManager x:Key="plugins" />
+        
+            <CollectionViewSource Source="{DynamicResource plugins.AvailablePlugins}" x:Key="cvs">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="Name"/>
+                </CollectionViewSource.SortDescriptions>
+                <CollectionViewSource.GroupDescriptions>
+                    <dat:PropertyGroupDescription PropertyName="Name"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+        </Window.Resources>
+    <Grid>
+        <Menu x:Name="menua" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" > 
+			<MenuItem Header="File">
+				<MenuItem Header="Sources..." Click="MenuItem_Click"/> 
+			</MenuItem>
+		</Menu>
+        <Label Height="28" Margin="0,0,20,60" Name="MessageLine" VerticalAlignment="Bottom" FontWeight="Bold" HorizontalAlignment="Right" Width="396">Select a Plug-in to Add</Label>
+		<Label Margin="20,35,0,0" VerticalAlignment="Top" Height="28" Content="Choose a Plug-in from the list below" HorizontalAlignment="Left" FontSize="12" />
+		<Button Margin="24,0,0,20" Content="Install" Height="32" VerticalAlignment="Bottom" Click="InstallClick" Name="InstallButton" HorizontalAlignment="Left" Width="90" />
+        <ListBox ItemTemplate="{DynamicResource PluginListTemplate}" IsSynchronizedWithCurrentItem="True" Margin="20,65,0,60" Width="224" HorizontalAlignment="Left" Name="pluginList"  ItemsSource="{Binding Source={StaticResource cvs}}" SelectionChanged="pluginList_SelectionChanged" FontSize="12" ToolTip="Items in bold are installed on your system." >
+           
+            <ListBox.GroupStyle>
+                <x:Static Member="GroupStyle.Default"/>
+            </ListBox.GroupStyle>
+
+        </ListBox>
+		<TextBlock Margin="279,98,40,126" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList, Mode=Default}" TextWrapping="Wrap" x:Name="pluginDescription" FontSize="14" />
+		<Label Margin="270,0,0,90" Content="Plug-in Version:" Height="28" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Width="160" />
+		<Label Margin="430,0,0,90" VerticalAlignment="Bottom" Height="28" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="latestPluginVersion" FontSize="14" HorizontalAlignment="Left" Width="80" />
+		<Label Margin="259,59,26,0" VerticalAlignment="Top" Height="30.62" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="18" FontFamily="Trebuchet MS" x:Name="pluginName"/>
+		<ProgressBar Margin="0,0,20,20" Height="32" VerticalAlignment="Bottom" x:Name="progress" Visibility="Hidden" HorizontalAlignment="Right" Width="656" />
+        <Button Height="32" HorizontalAlignment="Left" Margin="151,0,0,20" Name="btnDone" Click="btnDone_Click" IsCancel="True" VerticalAlignment="Bottom" Width="90">Done</Button>
+        <Label Margin="270,0,0,60" Height="28" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Width="160">Required MB Version:</Label>
+        <Label Content="{Binding Path=SelectedItem.RequiredMBVersion, ElementName=pluginList, Mode=Default}" Margin="430,0,0,60" Width="80" Name="reqdMBVersion" Height="28" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" />
+        <WebBrowser Name="RichDescFrame" Margin="259,35,20,120"  Navigating="RichDescFrame_Navigating" LoadCompleted="RichDescFrame_LoadCompleted"/>
+    </Grid>
+</Window>

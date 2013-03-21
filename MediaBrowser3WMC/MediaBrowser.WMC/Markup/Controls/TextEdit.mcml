@@ -1,0 +1,126 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
+	  >
+
+	
+	<UI Name="TextEdit">
+
+		<Properties>
+			<Size Name="LabelSize" Size="0,0"/>
+			<Size Name="EditSize" Size="100,34"/>
+			<cor:String Name="Label" String="$Required" />
+			<!-- EditableText is a required parameter. -->
+			<EditableText Name="EditableText" EditableText="$Required"/>
+
+			<!-- Limit the number of characters allowed. -->
+			<cor:Int32 Name="MaxChars" Int32="500"/>
+
+			
+			<!-- Label color. -->
+			<Color Name="LabelColor" Color="color://s:FontColorLight"/>
+			<Color Name="LabelFocusedColor" Color="color://s:FontColorLight"/>
+			<Font Name="Font" Font="$Required"/>
+		</Properties>
+
+		<Locals>
+			<TypingHandler Name="TypingHandler" EditableText="[EditableText]" TypingPolicy="TripleTap" HandlerStage="Bubbled"/>
+      <addin:AddInHost Name="AddInHost" />
+      <ClickHandler Name="Clicker"/>
+    </Locals>
+
+		<Rules>
+			<Default Target="[Input.KeyInteractive]" Value="true" />
+			<Binding Source="[Label]" Target="[Lbl.Content]"/>
+			
+			<!-- The editable text value is bound to the label text value. -->
+			<Binding Source="[TypingHandler.DisplayValue]" Target="[DisplayText.Content]"/>
+
+      <!--Bring up keyboard if clicked-->
+      <Changed Source="[Clicker.Invoked]" >
+        <Actions>
+          <Invoke
+                  Target="[AddInHost.MediaCenterEnvironment.ShowOnscreenKeyboard]"
+                  editableText="[TypingHandler.EditableText]"
+                  passwordMasked="[TypingHandler.PasswordMasked]"
+                  maxLength="[TypingHandler.MaxLength]"/>
+        </Actions>
+      </Changed>
+
+      <!-- Change color if in overtype mode. -->
+			<Condition Source="[EditableText.Overtype]" SourceValue="true">
+				<Actions>
+					<Set Target="[Overtype.Visible]" Value="true"/>
+					<Set Target="[Caret.Visible]" Value="false"/>
+				</Actions>
+			</Condition>
+
+			<!-- Change color on key focus. -->
+			<Condition Source="[Input.KeyFocus]" SourceValue="true">
+				<Actions>
+					<Set Target="[DisplayText.Color]" Value="[LabelFocusedColor]"/>
+					<Set Target="[Caret.Visible]" Value="true"/>
+					<Set Target="[Image.Content]" Value="image://i:TextEditBorder" />
+					<Set Target="[DisplayText.HorizontalAlignment]" Value="Far" />
+				</Actions>
+			</Condition>
+
+			<!-- Stop typing when the maximum number of characters has been reached. -->
+			<Changed Source="[EditableText.Value]">
+				<Conditions>
+					<Equality Source="[EditableText.Value.Length]" ConditionOp="GreaterThan" Value="[MaxChars]"/>
+				</Conditions>
+				<Actions>
+					<Invoke Target="[EditableText.Value.Substring]" ResultTarget="[EditableText.Value]" startIndex="0" length="[MaxChars]"/>
+				</Actions>
+			</Changed>
+		</Rules>
+
+		<Content>
+
+			<Panel Margins="0,0,0,0" >
+				<Layout>
+					<FlowLayout Orientation="Horizontal" FillStrip="true" ItemAlignment="Center" />
+				</Layout>
+				<Children>
+					<Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,0,0" ></Text>
+					<!-- Solid background color. -->
+					<Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="[EditSize]">
+						<Children>
+							<!-- Display the current value. -->
+							<Text Name="DisplayText" Color="[LabelColor]" Font="[Font]" HorizontalAlignment="Near" Margins="0,0,10,-2" MinimumSize="0,34" />
+							<!-- Display the caret. -->
+							<ColorFill Name="Caret" Content="[LabelColor]" Visible="false" MinimumSize="12,4">
+								<LayoutInput>
+									<AnchorLayoutInput Left="DisplayText,1,-10" Top="DisplayText,0" Bottom="DisplayText,1,-3" Vertical="Far"/>
+								</LayoutInput>
+                <Animations>
+                  <Animation Type="Idle" Loop="-1">
+                    <Keyframes>
+                      <AlphaKeyframe Time="0" Value="1"/>
+                      <AlphaKeyframe Time="1" Value="1"/>
+                      <AlphaKeyframe Time="1.5" Value="0"/>
+                      <AlphaKeyframe Time="2" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+							</ColorFill>
+							<!-- Overtype fill. -->
+							<ColorFill Name="Overtype" Content="Black" Visible="false">
+								<LayoutInput>
+									<AnchorLayoutInput Left="DisplayText,0" Right="DisplayText,1" Top="DisplayText,0" Bottom="DisplayText,1"/>
+								</LayoutInput>
+							</ColorFill>
+						</Children>
+					</Graphic>
+				</Children>
+			</Panel>
+			
+		</Content>
+	</UI>
+
+
+</Mcml>

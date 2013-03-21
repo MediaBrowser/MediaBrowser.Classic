@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
+
+namespace MediaBrowser.Library.Entities
+{
+    public class User : BaseItem
+    {
+        public UserDto Dto { get; set; }
+        public bool HasPassword { get { return Dto.HasPassword; }}
+
+        public override string PrimaryImagePath
+        {
+            get { return Kernel.ApiClient.GetUserImageUrl(Dto.Id, new ImageOptions {ImageType = ImageType.Primary}); }
+            set
+            {
+                base.PrimaryImagePath = value;
+            }
+        }
+
+        public override bool SelectAction(Item item)
+        {
+            Application.CurrentInstance.LoginUser(item);
+            return true;
+        }
+    }
+}

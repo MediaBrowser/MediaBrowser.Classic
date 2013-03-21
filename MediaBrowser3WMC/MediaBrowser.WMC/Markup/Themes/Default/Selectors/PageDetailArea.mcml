@@ -1,0 +1,140 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:lpo="resx://MediaBrowser/MediaBrowser.Resources/LayoutPoster"
+	  xmlns:lth="resx://MediaBrowser/MediaBrowser.Resources/LayoutThumb"
+	  xmlns:lde="resx://MediaBrowser/MediaBrowser.Resources/LayoutDetails"
+	  xmlns:lcf="resx://MediaBrowser/MediaBrowser.Resources/LayoutCoverflow"
+	  xmlns:lr="resx://MediaBrowser/MediaBrowser.Resources/LayoutRoot"
+	  xmlns:lts="resx://MediaBrowser/MediaBrowser.Resources/LayoutThumbStrip"
+    xmlns:bd="resx://MediaBrowser/MediaBrowser.Resources/Backdrop">
+
+	<UI Name="PageDetailArea">
+		<Properties>
+			<a:Application Name="Application" Application="$Required"/>
+			<lib:FolderModel Name="Folder" FolderModel="$Required"/>
+		</Properties>
+
+
+		<Rules>
+      <Rule ConditionLogicalOp ="And">
+        <Conditions >
+          <Equality Source="[Folder.IsRoot]" Value="true"/>
+          <Equality Source="[Application.Config.EnableRootPage]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[LayoutRoot.Visible]" Value="true"/>
+          <Set Target="[DetailsView.Visible]" Value="false"/>
+          <Set Target="[PosterView.Visible]" Value="false"/>
+          <Set Target="[ThumbView.Visible]" Value="false"/>
+          <Set Target="[ThumbStripView.Visible]" Value="false"/>
+          <Set Target="[CoverFlow.Visible]" Value="false"/>
+        </Actions>
+      </Rule>
+      
+			<Condition Source="[Input.DeepKeyFocus]" SourceValue="false" ConditionOp="Equals">
+				<Actions>
+					<Set Target="[MainPanel.Alpha]" Value="0.2" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Input.DeepKeyFocus]" SourceValue="true" ConditionOp="Equals">
+				<Actions>
+					<Set Target="[MainPanel.Alpha]" Value="1" />
+				</Actions>
+			</Condition>
+
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[DetailsView.Visible]" Value="true" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[DetailsView.Visible]" Value="false" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[ScrollBlockTop.Visible]" Value="true" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[ScrollBlockTop.Visible]" Value="false" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Detail" Target="[ScrollBlockBottom.Visible]" Value="true" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Detail" Target="[ScrollBlockBottom.Visible]" Value="false" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Poster" Target="[PosterView.Visible]" Value="true" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Poster" Target="[PosterView.Visible]" Value="false" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Poster" Target="[ScrollBlockTop.Visible]" Value="true" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Poster" Target="[ScrollBlockTop.Visible]" Value="false" />
+      <Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="Thumb" Target="[ThumbView.Visible]" Value="true" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="Thumb" Target="[ThumbView.Visible]" Value="false" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="ThumbStrip" Target="[ThumbStripView.Visible]" Value="true" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="ThumbStrip" Target="[ThumbStripView.Visible]" Value="false" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="Equals" SourceValue="CoverFlow" Target="[CoverFlow.Visible]" Value="true" />
+			<Condition Source="[Folder.DisplayPrefs.ViewTypeString]" ConditionOp="NotEquals" SourceValue="CoverFlow" Target="[CoverFlow.Visible]" Value="false" />
+
+		</Rules>
+
+		<Content>
+			<Panel Name="MainPanel" Layout="Form">
+				<Animations>
+					<Animation Name="AlphaAnimation" Type="Alpha">
+						<Keyframes>
+							<AlphaKeyframe Time="0.0"  RelativeTo="Current" Interpolation="EaseIn"/>
+							<AlphaKeyframe Time="0.1"  RelativeTo="Final"/>
+						</Keyframes>
+					</Animation>
+				</Animations>
+				<Children>
+
+          <!--  View Details-->
+          <lr:LayoutRoot Name="LayoutRoot" Folder="[Folder]" Application="[Application]" Visible="false"  >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+          </lr:LayoutRoot>
+
+          <!-- These two ColorFills on either side of the scroller distract the mouse so it won't scroll when you go across screen -->
+          <ColorFill Name="ScrollBlockTop" MouseInteractive="true" Content="Transparent" Visible="false">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Parent,0" Top="Parent,0" Right="Parent,1" Bottom="Parent,0,130"/>
+            </LayoutInput>
+          </ColorFill>
+          <ColorFill Name="ScrollBlockBottom" MouseInteractive="true" Content="Transparent" Visible="false">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Parent,0" Top="Parent,.9" Right="Parent,1" Bottom="Parent,1"/>
+            </LayoutInput>
+          </ColorFill>
+          <lde:LayoutDetails Name="DetailsView" Visible="false" Item="[Folder]" Application="[Application]" >
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Top="Parent,0,130" Bottom="Parent,0.9"/>
+						</LayoutInput>
+					</lde:LayoutDetails>
+
+					<lpo:LayoutPoster Name="PosterView" Visible="false" Application="[Application]" Folder="[Folder]">
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Top="Parent,0,130" Bottom="Parent,1" />
+						</LayoutInput>
+					</lpo:LayoutPoster>
+
+					<lth:LayoutThumb Name="ThumbView" Visible="false" Folder="[Folder]" Application="[Application]" >
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Top="Parent,0,130" Bottom="Parent,1"/>
+						</LayoutInput>
+					</lth:LayoutThumb>
+					
+					<lcf:LayoutCoverflow Name="CoverFlow" Visible="false" Folder="[Folder]" Application="[Application]"
+                               UseCustomAnchor="true">
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Top="Parent,0,130" Bottom="Parent,1"/>
+						</LayoutInput>
+					</lcf:LayoutCoverflow>
+
+					<lts:LayoutThumbStrip Name="ThumbStripView" Visible="false" Item="[Folder]" Application="[Application]" >
+						<LayoutInput>
+							<FormLayoutInput Horizontal="Fill" Top="Parent,0" Bottom="Parent,1"/>
+						</LayoutInput>
+					</lts:LayoutThumbStrip>
+
+          <!-- Initial Folder Backdrop -->
+          <bd:InitialFolderBackground Name="BG_InitialFolder" Application="[Application]" Visible="[Application.Config.ShowRootBackground]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0,-50" Top="Parent,0,-20" Bottom="Parent,1,10" Right="Parent,1,50"/>
+            </LayoutInput>
+          </bd:InitialFolderBackground>
+					
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+</Mcml>

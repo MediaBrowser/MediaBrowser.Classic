@@ -1,0 +1,108 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+	    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:me="Me">
+
+
+  <UI Name="HeaderButton">
+
+    <Properties>
+      <Command Name="Command" Command="$Required" />
+      <cor:String Name="Label" String="$Required" />
+      <Image Name="BulletImage" NineGrid="0,0,0,0" />
+      <Size Name="MaxSize" Size="175,45" />
+      <Size Name="InitialSize" Size="55,45" />
+      <Font Name="Font" Font="font://f:MM_ButtonFont" />
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker" />
+    </Locals>
+
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.KeyFocusOnMouseEnter]" Value="true" />
+      <Binding Source="[Command]" Target="[Clicker.Command]" />
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[Background.MaximumSize]" Value="[MaxSize]" />
+          <Set Target="[Background.Content]" Value="image://me:ButtonLeftFocus" />
+          <Set Target="[ButtonLabel.Visible]" Value="true" />
+          <Set Target="[Background.MinimumSize]" Value="[MaxSize]" />
+        </Actions>
+      </Condition>
+
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sd:Select" />
+        </Actions>
+      </Rule>
+    </Rules>
+
+    <Content>
+
+      <Graphic Name="Background"
+               Content="image://me:Blank"
+               MinimumSize="[InitialSize]"
+               MaximumSize="[InitialSize]"
+              >
+
+        <Animations>
+          <Animation Type="Size">
+            <Keyframes>
+              <SizeKeyframe Time="0.0" RelativeTo="Current" Interpolation="Log" />
+              <SizeKeyframe Time="0.2" RelativeTo="Final" />
+            </Keyframes>
+          </Animation>
+        </Animations>
+
+        <Children>
+
+          <Panel>
+
+            <Layout>
+              <FlowLayout Orientation="Horizontal" ItemAlignment="Near" />
+            </Layout>
+
+            <Children>
+
+              <Graphic Name="BulletGraphic"
+                       MaximumSize="25,25"
+                       MinimumSize="25,25"
+                       MaintainAspectRatio="true"
+                       Margins="13,10,0,0"
+                       Visible="true"
+                       Content="[BulletImage]"
+                      />
+
+              <Text Name="ButtonLabel"
+                    Color="White"
+                    Content="[Label]"
+                    Font="[Font]"
+                    Margins="4,4,0,0"
+                    FadeSize="5"
+                    Visible="false"
+                   />
+
+            </Children>
+          </Panel>
+
+        </Children>
+      </Graphic>
+
+    </Content>
+  </UI>
+
+  <Image Name="Blank"   Image="null"   NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocus"   Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus"   NineGrid="7,7,7,7" />
+
+</Mcml>

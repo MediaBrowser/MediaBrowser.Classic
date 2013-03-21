@@ -1,0 +1,26 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  >
+
+	<UI Name="TitleSet">
+		<Properties>
+			<lib:Item Name="Model" Item="$Required"/>
+			<lib:Item Name="ModelFast" Item="$Required"/>
+			<Font Name="Font" Font="$Required"/>
+			<Font Name="SubFont" Font="$Required"/>
+		</Properties>
+		<Rules>
+			<Binding Target="[Title1.Content]" Source="[ModelFast.Name]"/>
+		</Rules>
+		<Content>
+			<Panel Name="UpperSection" Layout="VerticalFlow">
+				<Children>
+					<Text Name="Title1" Color="color://s:FontColorLight" Font="[Font]"></Text>
+				</Children>
+			</Panel>
+		</Content>
+	</UI>
+
+</Mcml>

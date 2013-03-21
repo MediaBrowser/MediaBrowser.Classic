@@ -1,0 +1,523 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+    xmlns:liba="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+	  xmlns:vp="resx://MediaBrowser/MediaBrowser.Resources/NowPlayingViewport"
+	  xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+	  xmlns:mp="resx://MediaBrowser/MediaBrowser.Resources/MPAARating"
+	  xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/ScrollableText"
+	  xmlns:bd="resx://MediaBrowser/MediaBrowser.Resources/Backdrop"
+    xmlns:gb="resx://MediaBrowser/MediaBrowser.Resources/GenreButton"
+    xmlns:me="Me"
+    >
+
+  <!-- Movie Details Page -->
+  <UI Name="ViewMovieDefault">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+      <Image Name="UpButton" Image="resx://MediaBrowser/MediaBrowser.Resources/Up"/>
+      <Image Name="DownButton" Image="resx://MediaBrowser/MediaBrowser.Resources/Down"/>
+    </Properties>
+
+    <Locals>
+      <Command Name="PlayMovieCommand" />
+      <Command Name="ResumeMovieCommand" />
+      <Command Name="ActorCommand" />
+    </Locals>
+
+    <Rules>
+      <Changed Source="[PlayMovieCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.Play]" item="[Item]"/>
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Item.Actors.Count]" ConditionOp="LessThan" SourceValue="1" Target="[ActorScroller.Visible]" Value="false" />
+      <Condition Source="[Item.Actors.Count]" ConditionOp="LessThan" SourceValue="1" Target="[ActorDivider.Visible]" Value="false" />
+      <Condition Source="[Item.Overview.Length]" ConditionOp="LessThan" SourceValue="1" Target="[ActorDivider.Visible]" Value="false" />
+
+
+      <Changed Source="[ResumeMovieCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.Resume]" item="[Item]"/>
+        </Actions>
+      </Changed>
+      <Binding Source="[Application.Config.ShowThemeBackground]" Target="[MainBG.Visible]" />
+      <Condition Source="[Item.CanResume]" ConditionOp="Equals" SourceValue="false" Target="[ResumeMovieButton.Visible]" Value="false"/>
+      <Binding Source="[Item.Overview]" Target="[Overview.Text]" />
+      <Binding Source="[Item.Name]" Target="[TitleName.Content]" />
+      <Binding Source="[Item.BackdropImage]" Target="[Backdrop.Image]" />
+      <Binding Source="[Item.HasBackdropImage]" Target="[ActorDivider.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true"/>
+        </Transformer>
+      </Binding>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form">
+        <Children>
+
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
+
+              <!-- Gradiented movie title -->
+              <Clip Name="Title" FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent,1,-40" Top="Parent,0,25" Left="Parent,0,20" />
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout ItemAlignment="Far" Orientation="Horizontal" StripAlignment="Far"/>
+                </Layout>
+                <Children>
+                  <Panel Layout="Scale">
+                    <Children>
+                      <Text Name="TitleName" Content="" HorizontalAlignment="Far" Font="font://f:MD_TitleFont" Color="color://s:FontColorDark"></Text>
+                    </Children>
+                  </Panel>
+                </Children>
+              </Clip>
+
+              <!-- Poster (large movie pick) -->
+              <Panel Visible="true" Name="PosterPanel" Layout="VerticalFlow" MaximumSize="317,444">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,.035" Top="Parent,0.20" />
+                </LayoutInput>
+                <Children>
+                  <Graphic Name="Preview" MaintainAspectRatio="true" Content="[Item.PrimaryImage]" SizingPolicy="SizeToConstraint">
+                  </Graphic>
+                </Children>
+              </Panel>
+
+              <!-- play/resume buttons-->
+              <Panel>
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" Spacing="10,0" StripAlignment="Center"/>
+                </Layout>
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterPanel,0" Right="PosterPanel,1" Top="PosterPanel,1,15"/>
+                </LayoutInput>
+                <Children>
+                  <sb:SimpleButton Name="ResumeMovieButton" Text="Resume" Command="[ResumeMovieCommand]" Size="125,50" Font="font://f:MD_ButtonFont"/>
+                  <sb:SimpleButton Name="PlayMovieButton" Text="Play" Command="[PlayMovieCommand]" Size="125,50" Font="font://f:MD_ButtonFont" />
+                  <!-- <vm:ImgButton Name="PlayBtn" Command="[PlayMovieCommand]" Content="Play" Image="image://i:PlayImg" /> -->
+                </Children>
+              </Panel>
+
+              <!--
+					<vp:NowPlayingViewport>
+						<LayoutInput>
+							<FormLayoutInput Left="Parent,0,10" Bottom="Parent,1,-10" />
+						</LayoutInput>
+					</vp:NowPlayingViewport>
+					-->
+
+              <!-- Description field -->
+              <st:ScrollableText Name="Overview" Text="" Font="font://f:MD_SummaryFont" Color="color://s:FontColorMedium"
+                      FocusColor="color://s:FontColorLight" FocusImage="image://me:ButtonLeftFocus" ImagePadding="10,20,10,20" >
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterPanel,1,20" Top="TopBlock,1,5" Right="Parent,.715" Bottom="Parent,1,-83" />
+                </LayoutInput>
+              </st:ScrollableText>
+
+              <!-- Creates the vertical strip between plot/cast -->
+
+              <ColorFill Content="White" Alpha="0.1" Name="ActorDivider">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,.725" Top="TopBlock,1,10" Bottom="Parent,1,-83" Right="Parent,0.73"  />
+                </LayoutInput>
+              </ColorFill>
+
+
+              <me:ActorList Name="ActorScroller" Item="[Item]"  >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="TopBlock,1,5" Left="Parent,0.74" Right="Parent,0.97" Bottom="Parent,1,-83" />
+                </LayoutInput>
+              </me:ActorList>
+
+              <!-- Info Panel Block-->
+              <Panel Name="TopBlock" Layout="Anchor" MaximumSize="0,260">
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterPanel,1,20" Top="Parent,0,140" Right="Parent,.97" Bottom="Parent,.35"></FormLayoutInput>
+                </LayoutInput>
+                <Children>
+                  <me:InfoBlock Name="Info" Application="[Application]" Item="[Item]" >
+                    <LayoutInput>
+                      <AnchorLayoutInput Top="Parent,0" Left="Parent,0"  />
+                    </LayoutInput>
+                  </me:InfoBlock>
+
+                </Children>
+              </Panel>
+
+              <bd:Backdrop2 Name="Backdrop" Visible="[Application.Config.ShowBackdrop]" Image="[Item.BackdropImage]">
+                <LayoutInput>
+                  <FormLayoutInput Top="Parent,0,130" Bottom="Parent,1,-80" Right="Parent,1,0" />
+                </LayoutInput>
+              </bd:Backdrop2>
+
+
+
+
+              <!-- Background brightening (creates the darker strips on top/bottom -->
+              <ColorFill Content="White" Alpha="0.1">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,.0" Top="Parent,0,130" Bottom="Parent,1,-80" Right="Parent,1"/>
+                </LayoutInput>
+              </ColorFill>
+              <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+                <Children>
+                  <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                    <Children>
+                      <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                    </Children>
+                  </Clip>
+                  <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+                </Children>
+              </Panel>
+              <!--<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>-->
+
+            </Children>
+          </Clip>
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+  <!-- ActorList-->
+  <UI Name="ActorList">
+    <Properties>
+      <lib:Item Name="Item" Item="$Required"/>
+
+    </Properties>
+    <Locals>
+      <ScrollingHandler Name="ScrollingHandler" HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true" HandlePageKeys="true" HandlePageCommands="true"/>
+      <ScrollingData Name="ScrollingData" />
+      <Command Name="ScrollUpCommand" />
+      <Command Name="ScrollDownCommand" />
+    </Locals>
+    <Rules>
+      <Binding Source="[Item.Actors]" Target="[ListRepeater.Source]" />
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+      <Changed Source="[ScrollUpCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollUp]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollDownCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollDown]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollUpCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollUp]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollDownCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollDown]"/>
+        </Actions>
+      </Changed>
+
+      <Binding Source="[ScrollingData.CurrentPage]" Target="[CurrentPage.Content]">
+        <Transformer>
+          <FormatTransformer Format="{0:F0}"/>
+        </Transformer>
+      </Binding>
+
+      <Binding Source="[ScrollingData.TotalPages]" Target="[TotalPages.Content]">
+        <Transformer>
+          <FormatTransformer Format="{0:F0}"/>
+        </Transformer>
+      </Binding>
+
+      <!-- Hides the page info display if there is only 1 page.  We may what to remove this from the
+           Scoll area and actor list since the selectable areas line up a little nicer if we leave them -->
+      <Rule>
+        <Conditions>
+          <Equality Source="[ScrollingData.TotalPages]" ConditionOp="LessThanOrEquals" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollInfo.Visible]" Value="false" />
+          <Set Target="[Input.KeyInteractive]" Value="false" />
+          <Set Target ="[ImagePanel.MouseInteractive]" Value="false" />
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[ScrollingData.TotalPages]" ConditionOp="GreaterThan" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Input.KeyInteractive]" Value="true" />
+          <Set Target ="[ImagePanel.MouseInteractive]" Value="true" />
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[ImagePanel.Content]" Value="image://me:ButtonLeftFocus"/>
+    </Rules>
+    <Content>
+      <!-- Cast (Actors) -->
+      <Panel Name="MovieActors" Layout="Dock">
+        <Children>
+          <Graphic Content="image://i:BlankImage" Name="ImagePanel" MouseInteractive="true" Layout="Form" Padding="10,20,10,20" Margins="0,-4,0,0">
+            <LayoutInput>
+              <DockLayoutInput Position="Client"/>
+            </LayoutInput>
+            <Children>
+              <Scroller Name="ActorScroller" Orientation="Vertical" FadeSize="-5" Navigation="ContainVertical" ScrollingData="[ScrollingData]">
+                <LayoutInput>
+                  <AnchorLayoutInput Horizontal="Fill" Vertical="Near"/>
+                </LayoutInput>
+                <Children>
+                  <Repeater Name="ListRepeater" Source="[Item.Actors]">
+                    <Layout>
+                      <FlowLayout Orientation="Vertical"  />
+                    </Layout>
+                    <Content>
+                      <me:Actor wrapper="[RepeatedItem!lib:ActorItemWrapper]" Font="font://f:MD_ActorFont"/>
+                    </Content>
+                  </Repeater>
+                </Children>
+                <Animations>
+                  <TransformAnimation Delay="0.8">
+                    <Source>
+                      <Animation Animation="animation://an:SlideRightFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Scroller>
+            </Children>
+          </Graphic>
+
+          <!-- The pagination display at the bottom of the scroller-->
+          <Panel Name="ScrollInfo" Visible="true">
+            <LayoutInput>
+              <DockLayoutInput Position="Bottom" Alignment="Far"/>
+            </LayoutInput>
+            <Children>
+              <Panel Layout="HorizontalFlow" Margins="0,5,0,0">
+                <Children>
+                  <Text Content="˄" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                  <Text Content="˅" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                  <Text Name="CurrentPage" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                  <Text Content="|" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                  <Text Name="TotalPages"  Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                </Children>
+              </Panel>
+
+            </Children>
+          </Panel>
+
+
+
+        </Children>
+        <!--
+              <Animations>
+                  <TransformAnimation Delay="0.7">
+                      <Source>
+                          <Animation Animation="animation://me:ImageFadeIn" />
+                      </Source>
+                  </TransformAnimation>
+              </Animations>
+			  -->
+      </Panel>
+    </Content>
+  </UI>
+  <!--Actor-->
+  <UI Name="Actor">
+    <Properties>
+      <lib:ActorItemWrapper Name="wrapper" ActorItemWrapper="$Required" />
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+    <Rules>
+      <Rule>
+        <Conditions>
+          <Equality Source="[wrapper.Actor.HasRole]" ConditionOp="Equals" Value="False" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ActorRole.Visible]" Value="false" />
+        </Actions>
+      </Rule>
+    </Rules>
+    <Content>
+
+      <Panel Layout="VerticalFlow" Margins="0,5,0,0">
+        <Children>
+          <Text Font="[Font]" Color="color://s:FontColorLight" Content="[wrapper.Actor.DisplayName]"/>
+          <Text Name="ActorRole" Font="[Font]" Color="color://s:FontColorMedium" Content="[wrapper.Actor.DisplayRole]" Margins="10,-5,0,0"/>
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+  <!--InfoBlock-->
+  <UI Name="InfoBlock">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+    <Locals>
+      <Command Name="NullCommand"/>
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Item.ImdbRatingString]" Target="[IMDBRating.Content]" />
+      <Binding Source="[Item.ProductionYearString]" Target="[ProductionYear.Content]" />
+      <Binding Source="[Item.ImdbRating]" Target="[StarRating.Value]" />
+      <Binding Source="[Item.OfficialRating]" Target="[MPAARating.Value]" />
+      <Binding Source="[Item.RunningTimeString]" Target="[Runtime.Content]" />
+      <Binding Source="[Item.Genres]" Target="[GenreRepeater.Source]" />
+      <Binding Source="[Item.DirectorString]" Target="[Director.Content]"/>
+      <Condition Source="[Item.ImdbRating]" ConditionOp="GreaterThanOrEquals" SourceValue="0" Target="[IMDBRatingPanel.Visible]" Value="true"  />
+      <Condition Source="[Item.Directors.Count]" ConditionOp="GreaterThan" SourceValue="0" Target="[DirectedByPanel.Visible]" Value="true"  />
+      <Changed Source="[Item.MediaInfo]" InitialEvaluate="true">
+        <Actions>
+          <Set Target="[MediaInfo.Content]" Value="[Item.MediaInfo.CombinedInfo]"/>
+        </Actions>
+      </Changed>
+      <Binding Target="[MediaInfo.Visible]" Source="[Item.HasMediaInfo]" />
+      <Condition Source="[Item.ParentalAllowed]" ConditionOp="Equals" SourceValue="false" Target="[PCLock.Visible]" Value="true" />
+      <Changed Source="[Item.MediaInfo]" InitialEvaluate="true">
+			<Actions>
+				<Set Target="[MediaInfo.Content]" Value="[Item.MediaInfo.CombinedInfo]"/>
+			</Actions>
+		</Changed>
+		<Binding Target="[MediaInfo.Visible]" Source="[Item.HasMediaInfo]" />
+    </Rules>
+    <Content>
+      <Panel  Layout="Form" Margins="0,0,0,0">
+        <Children>
+          <!-- Column 1 (IMDB, Rating, Runtime)-->
+          <Panel Layout="VerticalFlow" Margins="10,0,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Right="Parent,0.49" Top="Parent,0"/>
+            </LayoutInput>
+            <Children>
+              <Panel>
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" Spacing="0,0"/>
+                </Layout>
+                <Children>
+                  <Text Name="ProductionYear" Content="" Font="Verdana,18,Bold" Color="color://s:FontColorLight" Margins="0,0,10,0"/>
+                  <sr:StarRating Name="StarRating" Value="[Item.ImdbRating]" Margins="0,4,15,4" />
+                  <mp:MPAARating Name="MPAARating" Value="[Item.MpaaRating]" Margins="0,0,10,0" MaximumSize="0,30"/>
+                  <Graphic Name="PCLock" Visible="false" Content="image://i:Lock" MaintainAspectRatio="true" MaximumSize="30,30" />
+                </Children>
+                <Animations>
+                  <TransformAnimation Delay="0.4">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Panel>
+
+              <Panel Margins="0,0,0,0" Name="IMDBRatingPanel" Visible="false">
+                <Layout>
+                  <FlowLayout Orientation="Horizontal"/>
+                </Layout>
+                <Children>
+                  <Text Font="font://f:MD_ImdbRatingFont" Color="color://s:FontColorLight" Content="IMDB Rating:  "/>
+                  <Text Name="IMDBRating" Content="" Color="color://s:FontColorLight" Font="font://f:MD_ImdbRatingFont"/>
+                  <Text Font="font://f:MD_ImdbRatingFont" Color="color://s:FontColorLight" Content=" out of 10 "/>
+                </Children>
+                <Animations>
+                  <TransformAnimation Delay="0.6">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Panel>
+
+              <Text Name="Runtime" Content="[Item.RunningTimeString]"  Font="font://f:MD_RuntimeFont" Color="color://s:FontColorLight">
+                <Animations>
+                  <TransformAnimation Delay="0.8">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Text>
+              <Text Name="MediaInfo" Font="font://f:MD_MediaInfoFont" Color="color://s:FontColorLight" >
+                <Animations>
+                  <TransformAnimation Delay="0.9">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Text>
+
+
+            </Children>
+          </Panel>
+
+          <!-- Column 2 (Genres, Director)-->
+          <Panel Layout="VerticalFlow" Margins="10,0,0,0">
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0.5" Right="Parent,1" Top="Parent,0"/>
+            </LayoutInput>
+            <Children>
+              <Panel Name="DirectedByPanel" Layout="HorizontalFlow" Margins="0,0,0,0" Visible="false">
+                <Children>
+                  <Text Font="font://f:MD_DirectorTitleFont" Color="color://s:FontColorLight" Content="Directed By: "/>
+                  <Text Name="Director" Font="font://f:MD_DirectorFont" WordWrap="true" Color="color://s:FontColorLight" Content="[Item.DirectorString]"/>
+                </Children>
+                <Animations>
+                  <TransformAnimation Delay="1.2">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Panel>
+
+              <Repeater Name="GenreRepeater" Source="[Item.Genres]" Margins="0,5,0,0" >
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" AllowWrap="true"/>
+                </Layout>
+                <Content>
+                  <gb:GenreButton Text="[RepeatedItem!cor:String]"
+                                  Application="[Application]" Item="[Item]"
+                                  GenreCategory="[RepeatedItem!cor:String]"
+                                  Font="font://f:MD_GenreFont" Color="color://s:FontColorMedium"
+                                  />
+                </Content>
+                <Animations>
+                  <TransformAnimation Delay="1">
+                    <Source>
+                      <Animation Animation="animation://an:SlideUpFade" />
+                    </Source>
+                  </TransformAnimation>
+                </Animations>
+              </Repeater>
+
+
+            </Children>
+          </Panel>
+        </Children>
+      </Panel>
+    </Content>
+    <Content Name="Divider">
+      <Text Content=", " Font="font://f:MD_GenreFont" WordWrap="false" Color="color://s:FontColorLight" Margins="5,0,5,0" Alpha="0.6" MinimumSize="25,0" />
+    </Content>
+
+  </UI>
+
+  <Image Name="ButtonLeftFocus" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus" NineGrid="7,7,7,7" />
+
+</Mcml>
+

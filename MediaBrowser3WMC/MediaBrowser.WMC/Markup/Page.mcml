@@ -1,0 +1,121 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+		xmlns:pd="resx://MediaBrowser/MediaBrowser.Resources/PageDefault"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
+    xmlns:ui="resx://MediaBrowser/MediaBrowser.Resources/UserIndicator"      
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
+    xmlns:me="Me"
+    >
+
+  <UI Name="Page">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:FolderModel Name="Folder" FolderModel="$Required"/>
+      <mcui:ModelItem Name="ThemeConfig" ModelItem="$Required" />
+    </Properties>
+
+    <Locals>
+      <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
+      <ShortcutHandler Name="SearchShortcut" Handle="true" HandlerStage="Bubbled" Shortcut="Yellow"/>
+      <KeyHandler Name="SearchKey" Handle="true" HandlerStage="Bubbled" Key="S" Modifiers="Control"/>
+
+      <Command Name="CloseSearch"/>
+    </Locals>
+
+    <Rules>
+
+      <!-- Configuration Checks & Display Setup -->
+
+
+      <Default Target="[ViewDefault.Source]" Value="[Application.CurrentTheme.PageArea]" />
+      <Default Target="[ScreenSaver.Source]" Value="[Application.CurrentScreenSaver]" >
+        <Conditions>
+          <Equality Source="[Application.CurrentScreenSaver]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+      </Default>
+
+      <!-- END Configuration Checks & Display Setup -->
+
+      <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
+
+      <Changed Source="[TopShortcut.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.BackToRoot]"/>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CloseSearch.Invoked]">
+        <Actions>
+          <Set Target="[SearchPanel.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Set Target="[Application.ShowSearchPanel]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[SearchShortcut.Invoked]" />
+          <Modified Source="[SearchKey.Invoked]" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.ShowSearchPanel]" Value="true" />
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Application.ShowSearchPanel]" SourceValue="true"  >
+        <Actions>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Set Target="[SearchPanel.Visible]" Value="true" />
+            <Set Target="[MouseBlocker.Visible]" Value="true" />
+            <Invoke Target="[SearchPanel.NavigateInto]" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form">
+        <Children>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Folder]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </ss:DefaultScreenSaver>
+          <search:SearchPane Name="SearchPanel" Application="[Application]" Close="[CloseSearch]" Visible="false" >
+            <Animations>
+              <Animation Animation="animation://an:SlideDownFade"/>
+            </Animations>
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Bottom="Parent,0,300" Top="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+          </search:SearchPane>
+          <ui:UserIndicator Name="UserButton" Application="[Application]">
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0,120" Top="Parent,0"/>
+            </LayoutInput>
+            
+          </ui:UserIndicator> 
+          <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+          <pd:Page Name="ViewDefault" Folder="[Folder]" Application="[Application]" ThemeConfig ="[ThemeConfig]" Visible="true" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+          </pd:Page>
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+
+
+
+</Mcml>
