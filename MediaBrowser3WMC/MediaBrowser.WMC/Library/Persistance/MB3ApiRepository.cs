@@ -296,7 +296,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime = Convert.ToInt32(mb3Item.RunTimeTicks/60000);
+                    show.RunningTime = Convert.ToInt32(mb3Item.RunTimeTicks/600000000);
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
