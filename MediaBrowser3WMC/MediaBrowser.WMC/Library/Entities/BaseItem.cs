@@ -296,7 +296,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public bool ParentalAllowed { get { return Kernel.Instance.ParentalControls.Allowed(this); } }
+        public bool ParentalAllowed { get { return true; } } // PC is handled by the server/user profile
         public virtual string ParentalRating
         {
             get
