@@ -541,7 +541,7 @@ namespace MediaBrowser.Library {
             kernel.AddConfigPanel(kernel.StringData.GetString("GeneralConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("MediaOptionsConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
-            kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
+            //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
 
             using (new Profiler("Plugin Loading and Init"))
             {
