@@ -178,7 +178,8 @@ namespace MediaBrowser.Library.Persistance
 
         public BaseItem RetrieveItem(Guid name)
         {
-            return null;
+            var dto = Kernel.ApiClient.GetItem(name.ToString());
+            return dto != null ? GetItem(dto, dto.Type) : null;
         }
 
         protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
@@ -203,26 +204,6 @@ namespace MediaBrowser.Library.Persistance
             }
             if (item != null)
             {
-                //SqliteItemRepository.SQLInfo itemSQL;
-                //lock (ClassInfo)
-                //{
-                //    if (!ClassInfo.TryGetValue(item.GetType(), out itemSQL))
-                //    {
-                //        itemSQL = new SqliteItemRepository.SQLInfo(item);
-                //        ClassInfo.Add(item.GetType(), itemSQL);
-                //    }
-                //}
-                //foreach (var col in itemSQL.AtomicColumns)
-                //{
-                //    var data = Mb3Translator.Translate(mb3Item, col);
-                //    if (data != null)
-                //        if (col.MemberType == MemberTypes.Property)
-                //            col.PropertyInfo.SetValue(item, data, null);
-                //        else
-                //            col.FieldInfo.SetValue(item, data);
-
-                //}
-
                 item.Name = mb3Item.Name;
                 item.Path = mb3Item.Path;
                 item.DateCreated = mb3Item.DateCreated ?? DateTime.MinValue;
@@ -277,6 +258,29 @@ namespace MediaBrowser.Library.Persistance
                 if (video != null && video.Path != null)
                 {
                     video.MediaType = MediaTypeResolver.DetermineType(video.Path);
+                    if (mb3Item.MediaStreams != null)
+                    {
+                        var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
+                        var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
+                        var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
+                        video.MediaInfo = new MediaInfoData
+                                              {
+                                                  OverrideData = new MediaInfoData.MIData
+                                                                     {
+                                                                         AudioStreamCount = mb3Item.MediaStreams.Count(s => s.Type == MediaStreamType.Audio),
+                                                                         AudioBitRate = audStream != null ? audStream.BitRate ?? 0 : 0,
+                                                                         AudioChannelCount = audStream != null ? TranslateAudioChannels(audStream.Channels ?? 0) : "",
+                                                                         AudioFormat = audStream != null ? audStream.Codec : "",
+                                                                         VideoBitRate = vidStream != null ? vidStream.BitRate ?? 0 : 0,
+                                                                         VideoCodec = vidStream != null ? vidStream.Codec : "",
+                                                                         VideoFPS = vidStream != null ? vidStream.AverageFrameRate.ToString() : "",
+                                                                         Width = vidStream != null ? vidStream.Width ?? 0 : 0,
+                                                                         Height = vidStream != null ? vidStream.Height ?? 0 : 0,
+                                                                         Subtitles = subtStream != null ? subtStream.Language : ""
+                                                                     }
+
+                                              };
+                    }
                     if (mb3Item.UserData != null)
                     {
                         video.PlaybackStatus = PlaybackStatusFactory.Instance.Create(video.Id);
@@ -292,6 +296,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
+                    show.RunningTime = Convert.ToInt32(mb3Item.RunTimeTicks/60000);
+                    show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
                     {
@@ -310,59 +316,27 @@ namespace MediaBrowser.Library.Persistance
                     }
                 }
 
-                // and our list columns
-                ////this is an optimization - we go get all the list values for this item in one statement
-                //var listCmd = connection.CreateCommand();
-                //listCmd.CommandText = "select property, value from list_items where guid = @guid and property != 'ActorName' order by property, sort_order";
-                //listCmd.AddParam("@guid", item.Id);
-                //string currentProperty = "";
-                //System.Collections.IList list = null;
-                //SqliteItemRepository.SQLInfo.ColDef column = new SqliteItemRepository.SQLInfo.ColDef();
-                //using (var listReader = listCmd.ExecuteReader())
-                //{
-                //    while (listReader.Read())
-                //    {
-                //        string property = listReader.GetString(0);
-                //        if (property != currentProperty)
-                //        {
-                //            //new column...
-                //            if (list != null)
-                //            {
-                //                //fill in the last one
-                //                if (column.MemberType == MemberTypes.Property)
-                //                    column.PropertyInfo.SetValue(item, list, null);
-                //                else
-                //                    column.FieldInfo.SetValue(item, list);
-                //            }
-                //            currentProperty = property;
-                //            column = itemSQL.Columns.Find(c => c.ColName == property);
-                //            list = (System.Collections.IList)column.ColType.GetConstructor(new Type[] { }).Invoke(null);
-                //            //Logger.ReportVerbose("Added list item '" + listReader[0] + "' to " + col.ColName);
-                //        }
-                //        try
-                //        {
-                //            list.Add(SqliteItemRepository.SQLizer.Extract(listReader, new SqliteItemRepository.SQLInfo.ColDef() { ColName = "value", ColType = column.InternalType }));
-                //        }
-                //        catch (Exception e)
-                //        {
-                //            Logger.ReportException("Error adding item to list " + column.ColName + " on item " + item.Name, e);
-                //        }
-                //    }
-                //    if (list != null)
-                //    {
-                //        //fill in the last one
-                //        if (column.MemberType == MemberTypes.Property)
-                //            column.PropertyInfo.SetValue(item, list, null);
-                //        else
-                //            column.FieldInfo.SetValue(item, list);
-                //    }
-                //}
             }
             else
             {
                 Logger.ReportWarning("Ignoring invalid item " + itemType + ".  Would not instantiate in current environment.");
             }
             return item;
+        }
+
+        protected string TranslateAudioChannels(int totalChannels)
+        {
+            switch (totalChannels)
+            {
+                case 5:
+                    return "5.1";
+                case 6:
+                    return "6.1";
+                case 7:
+                    return "7.1";
+                default:
+                    return totalChannels.ToString();
+            }
         }
 
         public void SaveChildren(Guid ownerName, IEnumerable<Guid> children)
@@ -376,7 +350,9 @@ namespace MediaBrowser.Library.Persistance
                                                      {
                                                          UserId = Kernel.CurrentUser.Id,
                                                          ParentId = id.ToString(),
-                                                         Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios, ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,  }
+                                                         Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
+                                                             ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
+                                                            ItemFields.MediaStreams, }
                                                      });
             if (dtos == null)
             {
