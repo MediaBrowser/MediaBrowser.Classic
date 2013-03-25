@@ -863,17 +863,31 @@ namespace MediaBrowser
             if (Kernel.CurrentUser.HasPassword)
             {
                 // show pw screen
+                OpenSecurityPage("Please Enter Password for " + CurrentUser.Name);
             }
             else
             {
                 // just log in as we don't have a pw
-                LoadUser(user.BaseItem as User);
+                LoadUser(user.BaseItem as User, "");
             }
         }
 
-        protected void LoadUser(User user)
+        protected void LoadUser(User user, string pw)
         {
-            Kernel.ApiClient.AuthenticateUser(user.Id, "");
+            try
+            {
+                Kernel.ApiClient.AuthenticateUser(user.Id, pw);
+            }
+            catch (MediaBrowser.Model.Net.HttpException e)
+            {
+                if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
+                {
+                    DisplayDialog("Please re-try.", "Incorrect Password");
+                    return;
+                }
+                throw;
+            }
+
             Kernel.ApiClient.CurrentUserId = user.Id;
 
             // load root
@@ -1693,7 +1707,7 @@ namespace MediaBrowser
         public void ParentalPINEntered()
         {
             RequestingPIN = false;
-            Kernel.Instance.ParentalControls.CustomPINEntered(CustomPINEntry);
+            LoadUser(CurrentUser.BaseItem as User, CustomPINEntry);
         }
         public void BackToRoot()
         {

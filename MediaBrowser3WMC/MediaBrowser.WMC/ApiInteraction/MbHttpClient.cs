@@ -105,7 +105,6 @@ namespace MediaBrowser.ApiInteraction
             {
                 Logger.ErrorException("Error getting response from " + url, ex);
 
-                return "";
                 throw new HttpException(ex.Message, ex);
             }
             catch (Exception ex)
