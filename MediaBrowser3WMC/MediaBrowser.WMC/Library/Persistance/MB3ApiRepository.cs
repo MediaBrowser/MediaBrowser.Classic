@@ -359,6 +359,18 @@ namespace MediaBrowser.Library.Persistance
                     }
                 }
 
+                var episode = item as Episode;
+                if (episode != null)
+                {
+                    episode.EpisodeNumber = (mb3Item.IndexNumber ?? 0).ToString("0000");
+                }
+
+                var season = item as Season;
+                if (season != null)
+                {
+                    season.SeasonNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
+                }
+
             }
             else
             {
@@ -395,7 +407,7 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id.ToString(),
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
                                                              ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
-                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType,  }
+                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
 
             return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
