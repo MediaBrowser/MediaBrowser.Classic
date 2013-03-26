@@ -649,29 +649,20 @@ namespace MediaBrowser.Library {
 
         public override void RefreshMetadata(bool displayMsg)
         {
-            bool includeChildren = folder.DefaultIncludeChildrenRefresh;
-            if (folder.PromptForChildRefresh)
-                includeChildren = Application.DisplayDialog(Localization.LocalizedStrings.Instance.GetString("RefreshFolderDial"), Localization.LocalizedStrings.Instance.GetString("RefreshFolderCapDial"), Microsoft.MediaCenter.DialogButtons.Yes | Microsoft.MediaCenter.DialogButtons.No, 10000) == Microsoft.MediaCenter.DialogResult.Yes;
-
             //first do us
             base.RefreshMetadata(false);
-            string msg = includeChildren ? "RefreshFolderProf" : "RefreshProf";
-            if (displayMsg) Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData(msg) + " " + this.Name);
+            if (displayMsg) Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshFolderProf") + " " + this.Name);
             Async.Queue("UI Forced Folder Metadata Loader", () =>
             {
                 using (new MediaBrowser.Util.Profiler("Refresh " + this.Name))
                 {
                     this.folder.RetrieveChildren(); // re-fetch from server
                     this.folder.ReCacheAllImages();
-                    if (includeChildren)
+                    //and now all our children
+                    foreach (BaseItem item in this.folder.RecursiveChildren)
                     {
-                        //and now all our children
-                        foreach (BaseItem item in this.folder.RecursiveChildren)
-                        {
-                            Logger.ReportInfo("refreshing " + item.Name);
-                            item.RefreshMetadata(MetadataRefreshOptions.Force);
-                            item.ReCacheAllImages();
-                        }
+                        Logger.ReportInfo("re-caching images for " + item.Name);
+                        item.ReCacheAllImages();
                     }
                 }
             });
