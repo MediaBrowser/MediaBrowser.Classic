@@ -186,10 +186,7 @@ namespace MediaBrowser
         {
             if (_PlaybackFinished != null)
             {
-                Async.Queue("OnPlaybackFinished", () =>
-                {
-                    _PlaybackFinished(this, new GenericEventArgs<PlayableItem>() { Item = playableItem });
-                }); 
+                Async.Queue("OnPlaybackFinished", () => _PlaybackFinished(this, new GenericEventArgs<PlayableItem>() { Item = playableItem })); 
             }
             FirePropertyChanged("IsPlayingVideo");
             FirePropertyChanged("IsPlaying");
@@ -1655,10 +1652,8 @@ namespace MediaBrowser
         {
             if (playableItem.EnablePlayStateSaving)
             {
-                Async.Queue("AddNewlyWatched", () =>
-                {
-                    AddNewlyWatched(playableItem);
-                });
+                Async.Queue("AddNewlyWatched", () => AddNewlyWatched(playableItem));
+                Async.Queue("Playbackstopped", () => Kernel.ApiClient.ReportPlaybackStopped(playableItem.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id, playableItem.CurrentMedia.PlaybackStatus.PositionTicks));
             }
 
             Logger.ReportVerbose("Firing Application.PlaybackFinished for: " + playableItem.DisplayName);
@@ -2020,7 +2015,7 @@ namespace MediaBrowser
 
             if (saveToDataStore)
             {
-                string sDuration = duration.HasValue ? (TimeSpan.FromTicks(duration.Value).ToString()) : "0";
+                //string sDuration = duration.HasValue ? (TimeSpan.FromTicks(duration.Value).ToString()) : "0";
 
                 //Logger.ReportVerbose("Playstate saved for {0} at {1}, duration: {2}, playlist position: {3}", media.Name, TimeSpan.FromTicks(positionTicks), sDuration, playlistPosition);
                 Kernel.Instance.SavePlayState(media, playstate);
