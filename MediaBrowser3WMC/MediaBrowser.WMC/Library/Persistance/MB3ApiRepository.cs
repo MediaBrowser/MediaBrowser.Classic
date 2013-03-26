@@ -330,7 +330,7 @@ namespace MediaBrowser.Library.Persistance
                         video.PlaybackStatus.PositionTicks = mb3Item.UserData.PlaybackPositionTicks;
                         video.PlaybackStatus.PlayCount = mb3Item.UserData.PlayCount;
                         video.PlaybackStatus.WasPlayed = mb3Item.UserData.Played;
-                        video.PlaybackStatus.LastPlayed = mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue;
+                        video.PlaybackStatus.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
                     }
                 }
 
@@ -431,11 +431,10 @@ namespace MediaBrowser.Library.Persistance
                 pb.PositionTicks = mb3Item.UserData.PlaybackPositionTicks;
                 pb.PlayCount = mb3Item.UserData.PlayCount;
                 pb.WasPlayed = mb3Item.UserData.Played;
-                pb.LastPlayed = mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue;
+                pb.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
                 Debugger.Break();
             }
             return pb;
-            //throw new NotImplementedException();
         }
 
         public DisplayPreferences RetrieveDisplayPreferences(DisplayPreferences dp)
@@ -465,7 +464,7 @@ namespace MediaBrowser.Library.Persistance
 
         public void SavePlayState(PlaybackStatus playState)
         {
-            //throw new NotImplementedException();
+            Kernel.ApiClient.ReportPlaybackProgress(playState.Id.ToString(), Kernel.CurrentUser.Id, playState.PositionTicks);
         }
 
         public void SaveDisplayPreferences(Guid itemId, DisplayPreferences prefs)
