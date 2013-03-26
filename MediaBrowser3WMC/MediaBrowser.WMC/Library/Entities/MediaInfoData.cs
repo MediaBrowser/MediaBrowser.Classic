@@ -267,6 +267,7 @@ namespace MediaBrowser.Library.Entities
             {"v_mpeg4/ms/v3","mpeg4visual"},
             {"mpeg-1 video","mpeg1video"},
             {"mpeg-2 video","H262"},
+            {"mpeg2video","H262"},
             {"on2 vp6","on2_vp6"},
             {"sorenson h263","sorenson_H263"},
         };
