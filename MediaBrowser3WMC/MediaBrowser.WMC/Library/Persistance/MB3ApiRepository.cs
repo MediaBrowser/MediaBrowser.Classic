@@ -249,7 +249,7 @@ namespace MediaBrowser.Library.Persistance
             {
                 item.Name = mb3Item.Name;
                 item.Path = mb3Item.Path;
-                item.DateCreated = mb3Item.DateCreated ?? DateTime.MinValue;
+                item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
                 item.DisplayMediaType = mb3Item.DisplayMediaType;
                 item.Id = new Guid(mb3Item.Id);
                 item.Overview = mb3Item.Overview;
