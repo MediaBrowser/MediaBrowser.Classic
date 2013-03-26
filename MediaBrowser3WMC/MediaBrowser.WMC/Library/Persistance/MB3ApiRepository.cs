@@ -31,6 +31,8 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"Episode", typeof (Episode)},
                                                                      {"Video", typeof (Movie)},
                                                                      {"BoxSet", typeof (BoxSet)},
+                                                                     {"Person", typeof (Person)},
+                                                                     {"Genre", typeof (Genre)},
                                                                      {"AggregateFolder", typeof (AggregateFolder)},
                                                                      {"CollectionFolder", typeof (Folder)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
@@ -176,25 +178,59 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
-        public BaseItem RetrieveItem(Guid name)
+        public BaseItem RetrieveItem(Guid id)
         {
-            var dto = Kernel.ApiClient.GetItem(name.ToString());
+            var dto = Kernel.ApiClient.GetItem(id.ToString());
             return dto != null ? GetItem(dto, dto.Type) : null;
         }
 
-        protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
+        public Genre RetrieveGenre(string name)
         {
-            BaseItem item = null;
+            var dto = Kernel.ApiClient.GetGenre(name);
+            return dto != null ? GetItem(dto, "Genre") as Genre : null;
+        }
+
+        public Person RetrievePerson(string name)
+        {
+            var dto = Kernel.ApiClient.GetPerson(name);
+            return dto != null ? GetIbnItem(dto, "Person") as Person : null;
+        }
+
+        protected BaseItem GetIbnItem(BaseItemDto mb3Item, string itemType)
+        {
+            var item = InstantiateItem(itemType);
+            if (item != null)
+            {
+                item.Name = mb3Item.Name;
+                item.Id = new Guid(mb3Item.Id);
+
+                switch (itemType)
+                {
+                    case "Person":
+                        item.PrimaryImagePath = Kernel.ApiClient.GetPersonImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                        break;
+                    case "Genre":
+                        item.PrimaryImagePath = Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                        break;
+
+                }
+            }
+
+            return item;
+        }
+
+        protected BaseItem InstantiateItem(string itemType)
+        {
             try
             {
                 Type typ;
                 if (Mb3Translator.TypeMap.TryGetValue(itemType, out typ))
                 {
-                    item = (BaseItem)Activator.CreateInstance(typ);
+                    return (BaseItem)Activator.CreateInstance(typ);
                 }
                 else
                 {
-                    item = Serializer.Instantiate<BaseItem>(itemType);
+                    return Serializer.Instantiate<BaseItem>(itemType);
                 }
             }
             catch (Exception e)
@@ -202,6 +238,13 @@ namespace MediaBrowser.Library.Persistance
                 Logger.ReportException("Error trying to create instance of type: " + itemType, e);
                 return null;
             }
+            
+        }
+
+        protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
+        {
+            var item = InstantiateItem(itemType);
+
             if (item != null)
             {
                 item.Name = mb3Item.Name;

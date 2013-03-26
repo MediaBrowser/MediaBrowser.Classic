@@ -14,11 +14,9 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public static Person GetPerson(string name) {
-            Guid id = GetPersonId(name);
-            var person = Kernel.Instance.ItemRepository.RetrieveItem(id) as Person;
+            var person = Kernel.Instance.ItemRepository.RetrievePerson(name);
                 if (person == null || person.Name == null) {
-                    person = new Person(id, name.Trim());
-                    Kernel.Instance.ItemRepository.SaveItem(person);
+                    person = new Person(GetPersonId(name), name.Trim());
                 }
                 return person;
         }

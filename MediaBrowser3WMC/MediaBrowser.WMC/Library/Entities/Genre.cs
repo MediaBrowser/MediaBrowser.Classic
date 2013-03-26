@@ -14,11 +14,9 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public static Genre GetGenre(string name) {
-            Guid id = GetGenreId(name);
-            var genre = Kernel.Instance.ItemRepository.RetrieveItem(id) as Genre;
+            var genre = Kernel.Instance.ItemRepository.RetrieveGenre(name);
             if (genre == null || genre.Name == null) {
-                genre = new Genre(id, name.Trim());
-                Kernel.Instance.ItemRepository.SaveItem(genre);
+                genre = new Genre(GetGenreId(name), name.Trim());
             }
             return genre;
         }
