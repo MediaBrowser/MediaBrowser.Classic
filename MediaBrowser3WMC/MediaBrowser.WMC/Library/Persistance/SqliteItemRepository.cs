@@ -604,9 +604,9 @@ namespace MediaBrowser.Library.Persistance {
             }
         }
 
-        public IEnumerable<Guid> RetrieveChildrenOld(Guid id) {
+        public IEnumerable<string> RetrieveChildList(Guid id) {
 
-            List<Guid> children = new List<Guid>();
+            var children = new List<string>();
             var cmd = connection.CreateCommand();
             cmd.CommandText = "select child from children where guid = @guid";
             var guidParam = cmd.Parameters.Add("@guid", System.Data.DbType.Guid);
@@ -614,11 +614,11 @@ namespace MediaBrowser.Library.Persistance {
 
             using (var reader = cmd.ExecuteReader()) {
                 while (reader.Read()) {
-                    children.Add(reader.GetGuid(0));
+                    children.Add(reader.GetGuid(0).ToString());
                 }
             }
 
-            return children.Count == 0 ? null : children;
+            return children;
         }
 
         // used to track series objects during indexing so we can group episodes in their series
@@ -814,22 +814,6 @@ namespace MediaBrowser.Library.Persistance {
 
             List<BaseItem> children = new List<BaseItem>();
 
-            //if (!Kernel.UseNewSQLRepo)
-            //{
-            //    var cached = RetrieveChildrenOld(id);
-            //    if (cached != null)
-            //    {
-            //        foreach (var guid in cached)
-            //        {
-            //            var item = RetrieveItem(guid);
-            //            if (item != null)
-            //            {
-            //                children.Add(item);
-            //            }
-            //        }
-            //    }
-            //}
-            //else
             {
                 var cmd = connection.CreateCommand();
                 cmd.CommandText = "select * from items where guid in (select child from children where guid = @guid)";

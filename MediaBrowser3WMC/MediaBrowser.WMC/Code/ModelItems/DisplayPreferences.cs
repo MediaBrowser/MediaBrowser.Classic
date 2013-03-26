@@ -346,7 +346,7 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.SortBy = this.SortOrder;
             Folder.DisplayPreferences.RememberIndexing = Kernel.Instance.ConfigData.RememberIndexing;
 
-            Kernel.Instance.ItemRepository.SaveDisplayPreferences(Folder.Id, this);
+            Folder.SaveDisplayPrefs(this);
         }
 
         public void ToggleViewTypes()

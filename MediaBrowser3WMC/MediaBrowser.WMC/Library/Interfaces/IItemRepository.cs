@@ -16,6 +16,7 @@ namespace MediaBrowser.Library
         void SaveChildren(Guid ownerName, IEnumerable<Guid> children);
         IEnumerable<BaseItem> RetrieveChildren(Guid id);
         IList<Index> RetrieveIndex(Folder folder, string property, Func<string, BaseItem> constructor);
+        IEnumerable<string> RetrieveChildList(Guid id);
         List<BaseItem> RetrieveSubIndex(string childTable, string property, object value);
         bool BackupDatabase();
 

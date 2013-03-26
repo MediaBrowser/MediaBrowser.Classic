@@ -1069,19 +1069,9 @@ namespace MediaBrowser.Library {
         protected virtual void LoadDisplayPreferences() {
             Logger.ReportVerbose("Loading display prefs for " + this.Path);
 
-            Guid id = Id;
+            this.Folder.LoadDisplayPreferences();
 
-            if (Config.Instance.EnableSyncViews) {
-                if (baseItem is Folder && baseItem.GetType() != typeof(Folder)) {
-                    id = baseItem.GetType().FullName.GetMD5();
-                }
-            }
-
-            DisplayPreferences dp = new DisplayPreferences(id, this.Folder);
-            //dp = Kernel.Instance.ItemRepository.RetrieveDisplayPreferences(dp);
-            //if (dp == null) {
-            //    LoadDefaultDisplayPreferences(ref id, ref dp);
-            //}
+            var dp = new DisplayPreferences((Folder.DisplayMediaType + Kernel.CurrentUser.Name).GetMD5(), this.Folder);
 
             this.DisplayPrefs = dp;
         }

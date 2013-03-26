@@ -395,18 +395,32 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id.ToString(),
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
                                                              ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
+                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType,  }
+                                                     });
+
+            return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        }
+
+        public IEnumerable<BaseItem> RetrieveSpecificItems(string[] ids)
+        {
+            var dtos = Kernel.ApiClient.GetItems(new ItemQuery
+                                                     {
+                                                         UserId = Kernel.CurrentUser.Id,
+                                                         Ids = ids,
+                                                         Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
+                                                             ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
                                                             ItemFields.MediaStreams, }
                                                      });
-            if (dtos == null)
-            {
-                //if (Debugger.IsAttached) Debugger.Break();
-                return null;
-            }
 
-            return dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
         public IList<Index> RetrieveIndex(Folder folder, string property, Func<string, BaseItem> constructor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> RetrieveChildList(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -467,11 +481,9 @@ namespace MediaBrowser.Library.Persistance
             Kernel.ApiClient.ReportPlaybackProgress(playState.Id.ToString(), Kernel.CurrentUser.Id, playState.PositionTicks);
         }
 
-        public void SaveDisplayPreferences(Guid itemId, DisplayPreferences prefs)
+        public void SaveDisplayPreferences(Guid itemId, Model.Entities.DisplayPreferences prefs)
         {
-            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, itemId.ToString(), new Model.Entities.DisplayPreferences 
-            {IndexBy = prefs.IndexBy, SortBy = prefs.SortOrder, RememberIndexing = Kernel.Instance.ConfigData.RememberIndexing, 
-                ViewType = prefs.ViewType.Chosen.ToString(), UserId = Kernel.CurrentUser.Id});
+            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, itemId.ToString(), prefs);
         }
 
         public void SaveDisplayPreferences(DisplayPreferences prefs)

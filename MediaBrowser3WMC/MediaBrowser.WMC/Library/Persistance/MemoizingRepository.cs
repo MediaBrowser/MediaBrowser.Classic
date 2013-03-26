@@ -80,6 +80,11 @@ namespace MediaBrowser.Library.Persistance {
             return repository.RetrieveIndex(folder, property, constructor);
         }
 
+        public IEnumerable<string> RetrieveChildList(Guid id)
+        {
+            return repository.RetrieveChildList(id);
+        }
+
         public List<BaseItem> RetrieveSubIndex(string childTable, string property, object value)
         {
             return repository.RetrieveSubIndex(childTable, property, value);

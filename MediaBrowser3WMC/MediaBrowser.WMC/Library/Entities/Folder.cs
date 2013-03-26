@@ -322,9 +322,10 @@ namespace MediaBrowser.Library.Entities {
                     }
                     else
                     {
-                        var currentContainer = container.Key as IContainer ?? new IndexFolder() { Name = "<Unknown>"};
+                        var currentContainer = container.Key ?? new LocalCacheFolder() { Name = "<Unknown>"};
+                        var currentSeries = currentContainer as Series;
                         containerNo++;
-                        IndexFolder aContainer = new IndexFolder(new List<BaseItem>())
+                        var aContainer = new LocalCacheFolder(new List<BaseItem>())
                             {
                                 Id = ("container"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
                                 Name = currentContainer.Name + " ("+container.Count()+" Items)",
@@ -337,10 +338,10 @@ namespace MediaBrowser.Library.Entities {
                                 SecondaryImagePath = currentContainer.SecondaryImagePath,
                                 BannerImagePath = currentContainer.BannerImagePath,
                                 BackdropImagePaths = currentContainer.BackdropImagePaths,
-                                TVDBSeriesId = currentContainer is Series ? (currentContainer as Series).TVDBSeriesId : null,
-                                LogoImagePath = currentContainer is Media ? (currentContainer as Media).LogoImagePath : null,
-                                ArtImagePath = currentContainer is Media ? (currentContainer as Media).ArtImagePath : null,
-                                ThumbnailImagePath = currentContainer is Media ? (currentContainer as Media).ThumbnailImagePath : null,
+                                TVDBSeriesId = currentSeries != null ? currentSeries.TVDBSeriesId : null,
+                                LogoImagePath = currentSeries != null ? currentSeries.LogoImagePath : null,
+                                ArtImagePath = currentSeries != null ? currentSeries.ArtImagePath : null,
+                                ThumbnailImagePath = currentSeries != null ? currentSeries.ThumbnailImagePath : null,
                                 DisplayMediaType = currentContainer.DisplayMediaType,
                                 DateCreated = container.First().DateCreated,
                                 Parent = this
@@ -355,7 +356,7 @@ namespace MediaBrowser.Library.Entities {
                             {
                                 var currentSeason = season.Key as Series ?? new Season() { Name = "<Unknown>" };
                                 containerNo++;
-                                IndexFolder aSeason = new IndexFolder(season.ToList())
+                                var aSeason = new LocalCacheFolder(season.ToList())
                                 {
                                     Id = ("season"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
                                     Name = currentSeason.Name + " ("+season.Count()+" Items)",
@@ -902,6 +903,16 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public virtual void LoadDisplayPreferences()
+        {
+            //Our display prefs are loaded with us - nothing to do
+        }
+
+        public virtual void SaveDisplayPrefs(DisplayPreferences prefs)
+        {
+            Kernel.Instance.ItemRepository.SaveDisplayPreferences(Id, DisplayPreferences);
+        }
+
         void SetParent(List<BaseItem> items) {
             foreach (var item in items) {
                 item.Parent = this;
@@ -956,7 +967,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual List<BaseItem> GetCachedChildren() {
             List<BaseItem> items = null;
-            using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
+            //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
                 var children = Kernel.Instance.ItemRepository.RetrieveChildren(Id);

@@ -70,6 +70,11 @@ namespace MediaBrowser.Library.Persistance {
             return SafeFunc(() =>repository.RetrieveIndex(folder, property, constructor));
         }
 
+        public IEnumerable<string> RetrieveChildList(Guid id)
+        {
+            return SafeFunc(() => repository.RetrieveChildList(id));
+        }
+
         public List<BaseItem> RetrieveSubIndex(string childTable, string property, object value)
         {
             return SafeFunc(() =>repository.RetrieveSubIndex(childTable, property, value));

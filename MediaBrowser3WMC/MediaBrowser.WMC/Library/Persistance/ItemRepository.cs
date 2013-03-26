@@ -185,6 +185,11 @@ namespace MediaBrowser.Library {
             return null;
         }
 
+        public IEnumerable<string> RetrieveChildList(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<BaseItem> RetrieveSubIndex(string childTable, string property, object value)
         {
             return null;
