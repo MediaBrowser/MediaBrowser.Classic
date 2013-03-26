@@ -661,10 +661,7 @@ namespace MediaBrowser.Library {
             {
                 using (new MediaBrowser.Util.Profiler("Refresh " + this.Name))
                 {
-                    if (!Config.Instance.AutoValidate)
-                    {
-                        this.folder.ValidateChildren(); //need to look for new/deleted items if not auto
-                    }
+                    this.folder.RetrieveChildren(); // re-fetch from server
                     this.folder.ReCacheAllImages();
                     if (includeChildren)
                     {
@@ -674,7 +671,6 @@ namespace MediaBrowser.Library {
                             Logger.ReportInfo("refreshing " + item.Name);
                             item.RefreshMetadata(MetadataRefreshOptions.Force);
                             item.ReCacheAllImages();
-                            this.FireAllPropertiesChanged();
                         }
                     }
                 }

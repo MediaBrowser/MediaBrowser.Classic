@@ -656,7 +656,8 @@ namespace MediaBrowser.Library
                 Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshProf") + " " + this.Name);
             Async.Queue("UI Triggered Metadata Loader", () =>
             {
-                baseItem.RefreshMetadata(MetadataRefreshOptions.Force);
+                // Just re-load ourselves from the server
+                this.baseItem = Kernel.Instance.ItemRepository.RetrieveItem(this.Id);
                 // force images to reload
                 primaryImage = null;
                 bannerImage = null;

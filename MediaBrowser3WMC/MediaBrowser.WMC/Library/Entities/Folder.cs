@@ -35,7 +35,7 @@ namespace MediaBrowser.Library.Entities {
 
         public Folder()
             : base() {
-            children = new MediaBrowser.Library.Util.Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
+            RetrieveChildren();
         }
 
         public IComparer<BaseItem> SortFunction
@@ -121,6 +121,11 @@ namespace MediaBrowser.Library.Entities {
         {
             //set our flag to show the popup menu
             return Application.CurrentInstance.DisplayPopupPlay = true;
+        }
+
+        public void RetrieveChildren()
+        {
+            children = new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
         }
 
         private List<BaseItem> parentalAllowedChildren
@@ -213,7 +218,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected Guid QuickListID(string option)
         {
-            return ("quicklist" + option + this.Name + this.Path).GetMD5();
+            return ("quicklist" + option + this.Name + this.Path +Kernel.CurrentUser.Name).GetMD5();
         }
 
         protected bool reBuildQuickList = false;
@@ -231,7 +236,7 @@ namespace MediaBrowser.Library.Entities {
 
                         Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
                         if (!reBuildQuickList) quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                        if (quickListFolder == null || quickListFolder.Name != "User:" + Kernel.CurrentUser.Name || quickListFolder.Children.Count == 0)
+                        if (quickListFolder == null || quickListFolder.Children.Count == 0)
                         {
                             //re-build
                             using (new MediaBrowser.Util.Profiler("RAL Load for " + this.Name)) UpdateQuickList(recentItemOption);
@@ -951,7 +956,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual List<BaseItem> GetCachedChildren() {
             List<BaseItem> items = null;
-            //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
+            using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
                 var children = Kernel.Instance.ItemRepository.RetrieveChildren(Id);
