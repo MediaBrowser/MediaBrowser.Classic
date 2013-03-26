@@ -399,7 +399,7 @@ namespace MediaBrowser.Library.Entities {
 
                 //and create our quicklist folder
                 //we save it with the current state of parental controls so we know when we re-load if it is valid
-                var quickList = new LocalCacheFolder(folderChildren) { Id = QuickListID(recentItemOption), Name = "User:" + Kernel.CurrentUser.Name };
+                var quickList = new LocalCacheFolder(folderChildren) { Id = QuickListID(recentItemOption), Name = "User:" + Kernel.CurrentUser.Name, DateCreated = DateTime.UtcNow };
                 Logger.ReportVerbose(this.Name + " folderChildren: " + folderChildren.Count + " listfolder.children: " + quickList.Children.Count());
                 Kernel.Instance.LocalRepo.SaveItem(quickList);
                 Kernel.Instance.LocalRepo.SaveChildren(QuickListID(recentItemOption), folderChildren.Select(i => i.Id));

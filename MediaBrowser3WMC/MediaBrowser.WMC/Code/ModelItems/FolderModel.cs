@@ -333,15 +333,11 @@ namespace MediaBrowser.Library {
                                 {
                                     validated = true;
                                     var changed = false;
+                                    var lastDate = folder.QuickList.DateCreated.ToLocalTime();
                                     using (new MediaBrowser.Util.Profiler(this.Name + " Initial validate"))
                                     {
-                                        folder.ValidateChildren();
-                                        changed = folder.FolderChildrenChanged;
-                                        foreach (var subFolder in folder.RecursiveFolders)
-                                        {
-                                            subFolder.ValidateChildren();
-                                            changed |= subFolder.FolderChildrenChanged;
-                                        }
+                                        changed = folder.DateCreated > lastDate || folder.DateModified > lastDate;
+                                        changed = folder.RecursiveChildren.Aggregate(changed, (current, subItem) => current | (subItem.DateCreated > lastDate || subItem.DateModified > lastDate));
                                     }
                                     if (changed)
                                     {
