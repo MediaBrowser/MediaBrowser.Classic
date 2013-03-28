@@ -50,7 +50,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 var ms = new MemoryStream();
-                req.Timeout = 10000;
+                req.Timeout = 20000;
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     var r = resp.GetResponseStream();
