@@ -401,6 +401,8 @@ namespace MediaBrowser.Library.Persistance
 
         public IEnumerable<BaseItem> RetrieveChildren(Guid id)
         {
+            if (id == Guid.Empty) return null;  //some dummy items have blank ids
+
             var dtos = Kernel.ApiClient.GetItems(new ItemQuery
                                                      {
                                                          UserId = Kernel.CurrentUser.Id,
