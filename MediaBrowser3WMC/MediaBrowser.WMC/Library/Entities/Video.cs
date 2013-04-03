@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
-using MediaBrowser.Library.EntityDiscovery;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Library.Extensions;
-using System.IO;
-using MediaBrowser.Library.Factories;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
     public class Video : Media {
@@ -39,18 +35,6 @@ namespace MediaBrowser.Library.Entities {
 
         [Persist]
         public string VideoFormat { get; set; }
-
-        public override void Assign(IMediaLocation location, IEnumerable<InitializationParameter> parameters, Guid id) {
-            base.Assign(location, parameters, id);
-            if (parameters != null) {
-                foreach (var parameter in parameters) {
-                    var mediaTypeParam = parameter as MediaTypeInitializationParameter; 
-                    if (mediaTypeParam != null ) {
-                        MediaType = mediaTypeParam.MediaType;
-                    }
-                }
-            }
-        }
 
         public override bool AssignFromItem(BaseItem item) {
             bool changed = this.MediaType != ((Video)item).MediaType;
@@ -89,16 +73,11 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public List<MediaStream> MediaStreams { get; set; } 
+
         public virtual IEnumerable<string> VideoFiles {
             get {
-
-                if (!ContainsRippedMedia && MediaLocation is IFolderMediaLocation) {
-                    foreach (var path in GetChildVideos((IFolderMediaLocation)MediaLocation, null)) {
-                        yield return path;
-                    }
-                } else {
-                    yield return Path;
-                }
+                return !ContainsRippedMedia ? MediaStreams.Where(s => s.Type == MediaStreamType.Video).Select(s => s.Path) : new[] { Path };
             }
         }
 

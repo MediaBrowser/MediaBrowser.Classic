@@ -139,7 +139,6 @@
     <Compile Include="Library\Entities\IGroupInIndex.cs" />
     <Compile Include="Library\Entities\IMovie.cs" />
     <Compile Include="Library\Entities\SearchResultFolder.cs" />
-    <Compile Include="Library\EntityDiscovery\BoxSetResolver.cs" />
     <Compile Include="Library\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Library\Factories\Kernel.cs" />
     <Compile Include="Library\Filesystem\AttributedContents.cs" />
@@ -210,17 +209,6 @@
     <Compile Include="Library\Entities\Video.cs" />
     <Compile Include="Library\Entities\VodCast.cs" />
     <Compile Include="Library\Entities\VodCastVideo.cs" />
-    <Compile Include="Library\EntityDiscovery\ChainedEntityResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\EntityResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\EpisodeResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\FolderResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\Parameters\InitializationParameter.cs" />
-    <Compile Include="Library\EntityDiscovery\Parameters\MediaTypeInitializationParameter.cs" />
-    <Compile Include="Library\EntityDiscovery\MovieResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\Parameters\MovieVolumeInitializationParameter.cs" />
-    <Compile Include="Library\EntityDiscovery\SeasonResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\SeriesResolver.cs" />
-    <Compile Include="Library\EntityDiscovery\VodCastResolver.cs" />
     <Compile Include="Library\Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Library\Extensions\DirectoryInfoExtensions.cs" />
     <Compile Include="Library\Extensions\DistinctExtensions.cs" />
@@ -966,10 +954,6 @@
     <Compile Include="Library\Plugins\Configuration\LabelAttribute.cs" />
     <Compile Include="Library\Entities\Genre.cs" />
     <Compile Include="Library\Entities\Year.cs" />
-    <Compile Include="Library\Factories\BaseItemFactoryGeneric.cs">
-      <DependentUpon>BaseItemFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Library\Factories\BaseItemFactory.cs" />
     <None Include="Library\ImageManagement\ProxyCachedRemoteImage.cs" />
     <Compile Include="Library\Localization\LocalizedStringData.cs" />
     <Compile Include="Library\Logging\Logger.cs" />
@@ -980,7 +964,6 @@
     <Compile Include="Library\Plugins\PluginSourceCollection.cs" />
     <Compile Include="Library\Plugins\RemotePlugin.cs" />
     <Compile Include="Library\Providers\FolderProviderFromXml.cs" />
-    <Compile Include="Library\Providers\LocalTrailerProvider.cs" />
     <Compile Include="Library\Providers\TVDB\LocalSeasonProvider.cs" />
     <Compile Include="Library\Ratings.cs" />
     <Compile Include="Library\ServiceInteraction\MBServiceController.cs" />

@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MediaBrowser.Library.Filesystem;
-using MediaBrowser.Library.EntityDiscovery;
 using MediaBrowser.Library.Persistance;
-using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
-using System.Xml;
-using System.ServiceModel.Syndication;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using MediaBrowser.Library.Network;
 using System.IO;
 using MediaBrowser.Library.Logging;
@@ -47,20 +40,15 @@ namespace MediaBrowser.Library.Entities {
                     System.IO.Path.GetFileNameWithoutExtension(Path)
                     );
 
-                lock (this) {
-                    if (!Directory.Exists(downloadPath)) {
-                        Directory.CreateDirectory(downloadPath);
-                        File.WriteAllText(System.IO.Path.Combine(downloadPath, FolderResolver.IGNORE_FOLDER), ""); 
-                    }
-                }
+                //lock (this) {
+                //    if (!Directory.Exists(downloadPath)) {
+                //        Directory.CreateDirectory(downloadPath);
+                //        File.WriteAllText(System.IO.Path.Combine(downloadPath, FolderResolver.IGNORE_FOLDER), ""); 
+                //    }
+                //}
 
                 return downloadPath;
             } 
-        }
-
-        public override void Assign(IMediaLocation location, IEnumerable<InitializationParameter> parameters, Guid id) {
-            RefreshUserSettings(location);
-            base.Assign(location, parameters, id);
         }
 
         private void RefreshUserSettings(IMediaLocation location) {

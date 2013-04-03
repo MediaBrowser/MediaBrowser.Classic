@@ -306,6 +306,8 @@ namespace MediaBrowser.Library.Persistance
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
                         var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
                         var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
+                        video.MediaStreams = mb3Item.MediaStreams;
+
                         video.MediaInfo = new MediaInfoData
                                               {
                                                   OverrideData = new MediaInfoData.MIData

@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Library.Util;
 using MediaBrowser.Library.Filesystem;
-using MediaBrowser.Library.EntityDiscovery;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
-using MediaBrowser.LibraryManagement;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Persistance;
-using System.Collections;
-using System.Diagnostics;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -96,11 +92,6 @@ namespace MediaBrowser.Library.Entities {
                 }
                 return location;
             }
-        }
-
-        public override void Assign(IMediaLocation location, IEnumerable<InitializationParameter> parameters, Guid id) {
-            base.Assign(location, parameters, id);
-            this.location = location as IFolderMediaLocation;
         }
 
         public Type ChildType
@@ -847,13 +838,6 @@ namespace MediaBrowser.Library.Entities {
                 items = GetCachedChildren();
             }
 
-            if (items == null) {
-                items = GetNonCachedChildren();
-
-                if (allowCache) {
-                    SaveChildren(items, true);
-                }
-            }
 
             SetParent(items);
             return items;
@@ -861,29 +845,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual List<BaseItem> GetNonCachedChildren() {
 
-            List<BaseItem> items = new List<BaseItem>();
-
-            // don't bomb out on invalid folders - its correct to say we have no children
-            if (this.FolderMediaLocation != null) {
-                foreach (var location in this.FolderMediaLocation.Children) {
-                    if (location != null) {
-                        try
-                        {
-                            var item = Kernel.Instance.GetItem(location);
-                            if (item != null) {
-                                items.Add(item);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.ReportException("Error trying to load item from file system: " + location.Path, e);
-                        }
-
-                    }
-                }
-            }
-            return items;
-           
+            return new List<BaseItem>();
         }
 
         protected void SaveChildren(IList<BaseItem> items)

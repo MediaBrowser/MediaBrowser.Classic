@@ -4,12 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
-using MediaBrowser.Library.EntityDiscovery;
 using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Factories;
 using MediaBrowser.Library.Filesystem;
@@ -21,7 +19,6 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Plugins;
-using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
@@ -360,21 +357,21 @@ namespace MediaBrowser.Library {
             return start;
         }
 
-        private static ChainedEntityResolver DefaultResolver(ConfigData config) {
-            return
-                new ChainedEntityResolver() { 
-                new VodCastResolver(),
-                new EpisodeResolver(), 
-                new SeasonResolver(), 
-                new SeriesResolver(),
-                new BoxSetResolver(),
-                new MovieResolver(
-                        config.EnableMoviePlaylists?config.PlaylistLimit:1, 
-                        config.EnableNestedMovieFolders, 
-                        config.EnableLocalTrailerSupport), 
-                new FolderResolver(),
-            };
-        }
+        //private static ChainedEntityResolver DefaultResolver(ConfigData config) {
+        //    return
+        //        new ChainedEntityResolver() { 
+        //        new VodCastResolver(),
+        //        new EpisodeResolver(), 
+        //        new SeasonResolver(), 
+        //        new SeriesResolver(),
+        //        new BoxSetResolver(),
+        //        new MovieResolver(
+        //                config.EnableMoviePlaylists?config.PlaylistLimit:1, 
+        //                config.EnableNestedMovieFolders, 
+        //                config.EnableLocalTrailerSupport), 
+        //        new FolderResolver(),
+        //    };
+        //}
 
         private static List<ImageResolver> DefaultImageResolvers(bool enableProxyLikeCaching) {
             return new List<ImageResolver>() {
@@ -518,7 +515,6 @@ namespace MediaBrowser.Library {
              ServerConnected = connected,
              LocalRepo = localRepo,
              MediaLocationFactory = new MediaBrowser.Library.Factories.MediaLocationFactory(),
-             TrailerProviders = new List<ITrailerProvider>() { new LocalTrailerProvider()}
              };
 
             if (!connected) return kernel;
@@ -531,7 +527,7 @@ namespace MediaBrowser.Library {
                 kernel.PlaybackControllers.Add(new PlaybackController());
             }
        
-            kernel.EntityResolver = DefaultResolver(kernel.ConfigData);
+            //kernel.EntityResolver = DefaultResolver(kernel.ConfigData);
 
             //need a blank root in case plug-ins will add virtual items
             kernel.RootFolder = new AggregateFolder {Name = "My Media", Id = new Guid("{F6109BAE-CA26-4746-9EBC-1CD233A7B56F}")};
@@ -693,7 +689,6 @@ namespace MediaBrowser.Library {
         public List<BasePlaybackController> PlaybackControllers { get; set; }
         public List<MetadataProviderFactory> MetadataProviderFactories { get; set; }
         public List<ImageResolver> ImageResolvers { get; set; }
-        public ChainedEntityResolver EntityResolver { get; set; }
         public ConfigData ConfigData { get; set; }
         public ServiceConfigData ServiceConfigData { get; set; }
         public LocalizedStrings StringData { get; set; }
@@ -852,28 +847,6 @@ namespace MediaBrowser.Library {
         public void AddExternalPlayableFolder(Type aType)
         {
             externalPlayableFolders.Add(aType);
-        }
-
-        public T GetItem<T>(string path) where T : BaseItem
-        {
-            return GetItem<T>(GetLocation<IMediaLocation>(path));
-        }
-
-        public T GetItem<T>(IMediaLocation location) where T : BaseItem {
-            BaseItem item = null;
-
-            BaseItemFactory factory;
-            IEnumerable<InitializationParameter> setup;
-
-            EntityResolver.ResolveEntity(location, out factory, out setup);
-            if (factory != null) {
-                item = factory.CreateInstance(location, setup);
-            }
-            return item as T;
-        }
-
-        public BaseItem GetItem(IMediaLocation location) {
-            return GetItem<BaseItem>(location);
         }
 
         public T GetLocation<T>(string path) where T : class, IMediaLocation {

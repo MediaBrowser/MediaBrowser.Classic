@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MediaBrowser.Library.Filesystem;
-using MediaBrowser.Library.EntityDiscovery;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Factories;
-using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Entities.Attributes;
 using System.Diagnostics;
 using MediaBrowser.Library.ImageManagement;
 using MediaBrowser.Library.Sorting;
 using MediaBrowser.Library.Metadata;
-using System.ComponentModel;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.LibraryManagement;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -375,20 +368,6 @@ namespace MediaBrowser.Library.Entities {
                     isTrailer = DisplayMediaType != null && DisplayMediaType.ToLower() == "trailer";
                 }
                 return isTrailer.Value;
-            }
-        }
-
-        public virtual void Assign(IMediaLocation location, IEnumerable<InitializationParameter> parameters, Guid id)
-        {
-            this.Id = id;
-            this.Path = location.Path;
-            this.DateModified = location.DateModified;
-            this.DateCreated = location.DateCreated;
-
-            if (location is IFolderMediaLocation) {
-                defaultName = location.Name;
-            } else {
-                defaultName = Helper.GetNameFromFile(location.Path);
             }
         }
 

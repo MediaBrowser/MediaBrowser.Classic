@@ -31,9 +31,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected override List<BaseItem> GetNonCachedChildren()
         {
-            var list =  base.GetNonCachedChildren();
-            list.AddRange(virtualChildren);
-            return list;
+            return virtualChildren;
         }
 
         public BaseItem FindVirtualChild(Guid id)
