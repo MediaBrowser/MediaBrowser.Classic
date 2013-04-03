@@ -19,10 +19,5 @@ namespace MediaBrowser.Library.Entities {
 
         [Persist]
         public string TmdbID { get; set; }
-
-        public bool ContainsTrailers { get; set; }
-
-        public IEnumerable<string> TrailerFiles { get; set; }
-
     }
 }

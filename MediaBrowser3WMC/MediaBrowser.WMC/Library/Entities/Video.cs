@@ -103,6 +103,15 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public bool ContainsTrailers { get; set; }
+        private IEnumerable<string> _trailerFiles;
+
+        public IEnumerable<string> TrailerFiles
+        {
+            get { return _trailerFiles ?? (_trailerFiles = Kernel.ApiClient.GetLocalTrailers(Kernel.CurrentUser.Id, this.Id.ToString()).Select(t => t.Path)); }
+            set { _trailerFiles = value; }
+        }
+
         public static bool IsRippedMedia(MediaType type)
         {
             return type == MediaType.BluRay ||

@@ -301,6 +301,8 @@ namespace MediaBrowser.Library.Persistance
                 if (video != null && video.Path != null)
                 {
                     video.MediaType = MediaTypeResolver.DetermineType(video.Path);
+                    video.ContainsTrailers = mb3Item.HasTrailer;
+
                     if (mb3Item.MediaStreams != null)
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
