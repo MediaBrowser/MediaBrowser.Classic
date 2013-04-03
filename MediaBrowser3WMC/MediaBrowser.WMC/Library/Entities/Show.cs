@@ -16,20 +16,90 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string ImdbID { get; set; }
 
-        [Persist]
-        public List<Actor> Actors { get; set; }
+        private List<Actor> _actors;
 
         [Persist]
-        public List<string> Directors { get; set; }
+        public List<Actor> Actors
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _actors;
+            }
+
+            set { _actors = value; }
+        }
+
+        private List<string> _directors;
 
         [Persist]
-        public List<string> Genres { get; set; }
+        public List<string> Directors
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _directors;
+            }
+
+            set { _directors = value; }
+        }
+
+        private List<string> _genres;
 
         [Persist]
-        public virtual List<string> Studios { get; set; }
+        public List<string> Genres
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _genres;
+            }
+
+            set { _genres = value; }
+        }
+
+        private List<string> _studios;
 
         [Persist]
-        public List<string> Writers { get; set; }
+        public virtual List<string> Studios
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _studios;
+            }
+
+            set { _studios = value; }
+        }
+
+        private List<string> _writers;
+
+        [Persist]
+        public List<string> Writers
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _writers;
+            }
+
+            set { _writers = value; }
+        }
 
         [Persist]
         public int? ProductionYear { get; set; }
@@ -50,5 +120,21 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public override string OfficialRating { get { return MpaaRating ?? ""; }}
+
+        protected void LoadFullDetails()
+        {
+            var temp = Kernel.Instance.ItemRepository.RetrieveItem(this.Id) as Show;
+            if (temp != null)
+            {
+                temp.FullDetailsLoaded = true;
+                Actors = temp.Actors;
+                Directors = temp.Directors;
+                Writers = temp.Writers;
+                Genres = temp.Genres;
+                Studios = temp.Studios;
+            }
+
+            FullDetailsLoaded = true;
+        }
     }
 }

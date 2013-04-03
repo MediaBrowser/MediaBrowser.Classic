@@ -407,8 +407,8 @@ namespace MediaBrowser.Library.Persistance
                                                      {
                                                          UserId = Kernel.CurrentUser.Id,
                                                          ParentId = id.ToString(),
-                                                         Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
-                                                             ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
+                                                         Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferences, 
+                                                            ItemFields.UserData, ItemFields.DateCreated,
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
 

@@ -21,7 +21,10 @@ namespace MediaBrowser.Library.Entities {
 
     public class MetadataChangedEventArgs : EventArgs { }
 
-    public class BaseItem {
+    public class BaseItem
+    {
+
+        protected bool FullDetailsLoaded = false;
 
         public EventHandler<MetadataChangedEventArgs> MetadataChanged;
 
