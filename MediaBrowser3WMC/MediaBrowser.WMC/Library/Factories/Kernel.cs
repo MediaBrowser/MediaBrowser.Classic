@@ -506,7 +506,7 @@ namespace MediaBrowser.Library {
             var kernel = new Kernel()
             {
              PlaybackControllers = new List<BasePlaybackController>(),
-             MetadataProviderFactories = MetadataProviderHelper.DefaultProviders(),
+             //MetadataProviderFactories = MetadataProviderHelper.DefaultProviders(),
              ConfigData = config,
              ServiceConfigData = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile),
              StringData = LocalizedStrings.Instance,

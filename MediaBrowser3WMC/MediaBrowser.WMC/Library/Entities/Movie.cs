@@ -20,17 +20,9 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string TmdbID { get; set; }
 
-        public bool ContainsTrailers {
-            get {
-                return TrailerFiles.Any();
-            }
-        }
+        public bool ContainsTrailers { get; set; }
 
-        public IEnumerable<string> TrailerFiles { 
-            get {
-                return Kernel.Instance.GetTrailers(this);
-            }
-        }
+        public IEnumerable<string> TrailerFiles { get; set; }
 
     }
 }
