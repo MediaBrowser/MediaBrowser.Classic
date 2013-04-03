@@ -534,8 +534,7 @@ namespace MediaBrowser.Library {
             kernel.EntityResolver = DefaultResolver(kernel.ConfigData);
 
             //need a blank root in case plug-ins will add virtual items
-            var root = kernel.GetLocation(ResolveInitialFolder(kernel.ConfigData.InitialFolder));
-            kernel.RootFolder = (AggregateFolder)BaseItemFactory<AggregateFolder>.Instance.CreateInstance(root, null);
+            kernel.RootFolder = new AggregateFolder {Name = "My Media", Id = new Guid("{F6109BAE-CA26-4746-9EBC-1CD233A7B56F}")};
 
             //create our default config panels with localized names
             kernel.AddConfigPanel(kernel.StringData.GetString("GeneralConfig"), "");
