@@ -17,7 +17,7 @@ namespace MediaBrowser.Library.Entities {
     public class BaseItem
     {
 
-        protected bool FullDetailsLoaded = false;
+        public bool FullDetailsLoaded = false;
 
         public EventHandler<MetadataChangedEventArgs> MetadataChanged;
 

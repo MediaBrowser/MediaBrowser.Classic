@@ -15,16 +15,73 @@ namespace MediaBrowser.Library.Entities {
         public Single? ImdbRating { get; set; }
 
         [Persist]
-        public List<Actor> Actors { get; set; }
+        private List<Actor> _actors;
 
         [Persist]
-        public List<string> Directors { get; set; }
+        public List<Actor> Actors
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _actors;
+            }
+
+            set { _actors = value; }
+        }
+
+        private List<string> _directors;
 
         [Persist]
-        public List<string> Genres { get; set; }
+        public List<string> Directors
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _directors;
+            }
+
+            set { _directors = value; }
+        }
+
+        private List<string> _genres;
 
         [Persist]
-        public List<string> Studios { get; set; }
+        public List<string> Genres
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _genres;
+            }
+
+            set { _genres = value; }
+        }
+
+        private List<string> _studios;
+
+        [Persist]
+        public virtual List<string> Studios
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+                return _studios;
+            }
+
+            set { _studios = value; }
+        }
 
         [Persist]
         public int? RunningTime { get; set; }
@@ -71,6 +128,21 @@ namespace MediaBrowser.Library.Entities {
             {
                 return MpaaRating ?? "None";
             }
+        }
+
+        protected void LoadFullDetails()
+        {
+            var temp = Kernel.Instance.ItemRepository.RetrieveItem(this.Id) as Series;
+            if (temp != null)
+            {
+                temp.FullDetailsLoaded = true;
+                Actors = temp.Actors;
+                Directors = temp.Directors;
+                Genres = temp.Genres;
+                Studios = temp.Studios;
+            }
+
+            FullDetailsLoaded = true;
         }
 
         //used as a valid blank item so MCML won't blow chow
