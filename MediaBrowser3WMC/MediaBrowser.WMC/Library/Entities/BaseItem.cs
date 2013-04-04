@@ -19,6 +19,8 @@ namespace MediaBrowser.Library.Entities {
 
         public bool FullDetailsLoaded = false;
 
+        public virtual string ApiId { get { return Id.ToString(); } }
+
         public EventHandler<MetadataChangedEventArgs> MetadataChanged;
 
         public Folder Parent { get; set; }

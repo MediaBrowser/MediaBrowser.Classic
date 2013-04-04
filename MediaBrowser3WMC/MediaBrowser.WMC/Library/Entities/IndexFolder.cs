@@ -18,6 +18,16 @@ namespace MediaBrowser.Library.Entities
             this.AddChildren(children);
         }
 
+        public string IndexId { get; set; }
+
+        public override string ApiId
+        {
+            get
+            {
+                return IndexId;
+            }
+        }
+
         public override void ValidateChildren()
         {
             return; //never validate as they don't actually exist in the file system in this way

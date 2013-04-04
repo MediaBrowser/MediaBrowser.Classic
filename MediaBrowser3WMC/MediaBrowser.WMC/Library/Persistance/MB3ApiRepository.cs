@@ -16,7 +16,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Persistance
 {
-    public class MB3ApiRepository: IItemRepository
+    public class MB3ApiRepository
     {
         protected static class Mb3Translator
         {
@@ -33,6 +33,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"BoxSet", typeof (BoxSet)},
                                                                      {"Person", typeof (Person)},
                                                                      {"Genre", typeof (Genre)},
+                                                                     {"IndexFolder", typeof(IndexFolder)},
                                                                      {"AggregateFolder", typeof (AggregateFolder)},
                                                                      {"CollectionFolder", typeof (Folder)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
@@ -251,10 +252,20 @@ namespace MediaBrowser.Library.Persistance
                 item.Path = mb3Item.Path;
                 item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
                 item.DisplayMediaType = mb3Item.DisplayMediaType;
-                item.Id = new Guid(mb3Item.Id);
                 item.Overview = mb3Item.Overview;
                 item.SortName = mb3Item.SortName;
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
+
+                var index = item as IndexFolder;
+                if (index != null)
+                {
+                    index.Id = mb3Item.Id.GetMD5();
+                    index.IndexId = mb3Item.Id;
+                }
+                else
+                {
+                    item.Id = new Guid(mb3Item.Id);
+                }
 
                 if (mb3Item.ImageTags != null)
                 {
@@ -293,8 +304,9 @@ namespace MediaBrowser.Library.Persistance
                 var folder = item as Folder;
                 if (folder != null)
                 {
-                    // Fill in display prefs
+                    // Fill in display prefs and indexby options
                     folder.DisplayPreferences = mb3Item.DisplayPreferences;
+                    folder.IndexByOptions = mb3Item.IndexOptions.ToDictionary(o => o);
                 }
 
                 var video = item as Video;
@@ -403,16 +415,22 @@ namespace MediaBrowser.Library.Persistance
             //throw new NotImplementedException();
         }
 
-        public IEnumerable<BaseItem> RetrieveChildren(Guid id)
+        public IEnumerable<BaseItem> RetrieveChildren(string id)
         {
-            if (id == Guid.Empty) return null;  //some dummy items have blank ids
+            return RetrieveChildren(id, null);
+        }
+
+        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy)
+        {
+            if (id == Guid.Empty.ToString()) return null;  //some dummy items have blank ids
 
             var dtos = Kernel.ApiClient.GetItems(new ItemQuery
                                                      {
                                                          UserId = Kernel.CurrentUser.Id,
-                                                         ParentId = id.ToString(),
+                                                         ParentId = id,
+                                                         IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferences, 
-                                                            ItemFields.UserData, ItemFields.DateCreated, 
+                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, 
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
 
@@ -499,9 +517,9 @@ namespace MediaBrowser.Library.Persistance
             Kernel.ApiClient.ReportPlaybackProgress(playState.Id.ToString(), Kernel.CurrentUser.Id, playState.PositionTicks);
         }
 
-        public void SaveDisplayPreferences(Guid itemId, Model.Entities.DisplayPreferences prefs)
+        public void SaveDisplayPreferences(string itemId, Model.Entities.DisplayPreferences prefs)
         {
-            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, itemId.ToString(), prefs);
+            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, itemId, prefs);
         }
 
         public void SaveDisplayPreferences(DisplayPreferences prefs)

@@ -5,7 +5,7 @@ namespace MediaBrowser.Library.Entities {
         IList<BaseItem> Children { get; }
         event EventHandler<ChildrenChangedEventArgs> ChildrenChanged;
         void EnsureChildrenLoaded();
-        IList<Index> IndexBy(string indexType);
+        IEnumerable<BaseItem> IndexBy(string indexType);
         IEnumerable<BaseItem> RecursiveChildren { get; }
         Index Search(Func<BaseItem, bool> searchFunction, string name);
         void Sort(IComparer<BaseItem> sortFunction);

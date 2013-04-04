@@ -554,20 +554,20 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public virtual IList<Index> IndexBy(string property)
+        public virtual IEnumerable<BaseItem> IndexBy(string property)
         {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
-            var index = Kernel.Instance.ItemRepository.RetrieveIndex(this, property, GetConstructor(property));
+            var index = Kernel.Instance.ItemRepository.RetrieveChildren(this.ApiId, property);
             //build in images
-            Async.Queue("Index image builder", () =>
-            {
-                foreach (var item in index)
-                {
-                    if (item.PrimaryImage == null) //this will keep us from blanking out images that are already there and the source is not available
-                        item.RefreshMetadata();
-                }
-            });
+            //Async.Queue("Index image builder", () =>
+            //{
+            //    foreach (var item in index)
+            //    {
+            //        if (item.PrimaryImage == null) //this will keep us from blanking out images that are already there and the source is not available
+            //            item.RefreshMetadata();
+            //    }
+            //});
 
             return index;
         }
@@ -872,10 +872,17 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void SaveDisplayPrefs(DisplayPreferences prefs)
         {
-            Kernel.Instance.ItemRepository.SaveDisplayPreferences(Id, DisplayPreferences);
+            try
+            {
+                Kernel.Instance.ItemRepository.SaveDisplayPreferences(ApiId, DisplayPreferences);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Unable to save display prefs for {0}",e,Name);
+            }
         }
 
-        void SetParent(List<BaseItem> items) {
+        void SetParent(IEnumerable<BaseItem> items) {
             foreach (var item in items) {
                 item.Parent = this;
             }
@@ -932,7 +939,7 @@ namespace MediaBrowser.Library.Entities {
             //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
-                var children = Kernel.Instance.ItemRepository.RetrieveChildren(Id);
+                var children = Kernel.Instance.ItemRepository.RetrieveChildren(ApiId);
                 items = children != null ? children.ToList() : null;
             }
             return items;
@@ -940,7 +947,7 @@ namespace MediaBrowser.Library.Entities {
 
         public bool HasVideoChildren {
             get {
-                return this.RecursiveChildren.Select(i => i as Video).Where(v => v != null).Count() > 0;
+                return this.RecursiveChildren.OfType<Video>().Any();
             }
         }
 
