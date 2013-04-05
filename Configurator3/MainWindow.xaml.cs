@@ -105,7 +105,7 @@ namespace Configurator
             //Logger.ReportVerbose("======= Refreshing Items...");
             RefreshItems();
             //Logger.ReportVerbose("======= Refreshing Podcasts...");
-            RefreshPodcasts();
+            //RefreshPodcasts();
             //Logger.ReportVerbose("======= Refreshing Ext Players...");
             RefreshPlayers();
 
@@ -400,33 +400,33 @@ namespace Configurator
 
 
 
-        private void RefreshPodcasts() {
-            var podcasts = Kernel.Instance.GetItem<Folder>(config.PodcastHome);
-            podcastList.Items.Clear();
+        //private void RefreshPodcasts() {
+        //    var podcasts = Kernel.Instance.GetItem<Folder>(config.PodcastHome);
+        //    podcastList.Items.Clear();
 
-            if (podcasts != null) {
+        //    if (podcasts != null) {
 
-                RefreshPodcasts(podcasts);
+        //        RefreshPodcasts(podcasts);
 
-                Async.Queue("Podcast Refresher", () =>
-                {
-                    podcasts.ValidateChildren();
+        //        Async.Queue("Podcast Refresher", () =>
+        //        {
+        //            podcasts.ValidateChildren();
 
-                    foreach (var item in podcasts.Children) {
-                        if (item is VodCast) {
-                            (item as VodCast).ValidateChildren();
-                        }
-                    }
+        //            foreach (var item in podcasts.Children) {
+        //                if (item is VodCast) {
+        //                    (item as VodCast).ValidateChildren();
+        //                }
+        //            }
 
-                }, () =>
-                {
-                    Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() =>
-                    {
-                        RefreshPodcasts(podcasts);
-                    }));
-                });
-            } 
-        }
+        //        }, () =>
+        //        {
+        //            Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() =>
+        //            {
+        //                RefreshPodcasts(podcasts);
+        //            }));
+        //        });
+        //    } 
+        //}
 
         private void RefreshPodcasts(Folder podcasts) {
             podcastList.Items.Clear();
@@ -469,7 +469,7 @@ namespace Configurator
             cbxOptionAutoEnter.IsChecked = config.AutoEnterSingleDirs;
             cbxScreenSaver.IsChecked = config.EnableScreenSaver;
             lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString()+" Mins";
-            cbxSendStats.IsChecked = config.SendStats;
+            //cbxSendStats.IsChecked = config.SendStats;
 
             cbxOptionUnwatchedCount.IsChecked      = config.ShowUnwatchedCount;
             cbxOptionUnwatchedOnFolder.IsChecked   = config.ShowWatchedTickOnFolders;
@@ -511,7 +511,7 @@ namespace Configurator
             txtPCPIN.Password = config.ParentalPIN;
 
             //supporter key
-            tbxSupporterKey.Text = Config.Instance.SupporterKey;
+            //tbxSupporterKey.Text = Config.Instance.SupporterKey;
 
             //logging
             cbxEnableLogging.IsChecked = config.EnableTraceLogging;
@@ -1525,12 +1525,12 @@ sortorder: {2}
             SaveConfig();
         }
 
-        private void cbxSendStats_Click(object sender, RoutedEventArgs e)
-        {
-            config.SendStats = (bool)cbxSendStats.IsChecked;
-            if (config.SendStats) config.EnableUpdates = true; //need this on too
-            SaveConfig();
-        }
+        //private void cbxSendStats_Click(object sender, RoutedEventArgs e)
+        //{
+        //    config.SendStats = (bool)cbxSendStats.IsChecked;
+        //    if (config.SendStats) config.EnableUpdates = true; //need this on too
+        //    SaveConfig();
+        //}
 
         private void cbxInetProviders_Checked(object sender, RoutedEventArgs e)
         {
@@ -1632,42 +1632,42 @@ sortorder: {2}
             }
         }
 
-        private void hdrBasic_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            SetHeader(hdrBasic);
-            externalPlayersTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = helpTab.Visibility = Visibility.Collapsed;
-            mediacollectionTab.Visibility = podcastsTab.Visibility = displayTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Visible;
-        }
+        //private void hdrBasic_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    SetHeader(hdrBasic);
+        //    externalPlayersTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = helpTab.Visibility = Visibility.Collapsed;
+        //    mediacollectionTab.Visibility = podcastsTab.Visibility = displayTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Visible;
+        //}
 
-        private void hdrAdvanced_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            SetHeader(hdrAdvanced);
-            externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = metadataTab.Visibility = parentalControlTab.Visibility = Visibility.Visible;
-            mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = Visibility.Visible;
-            helpTab.Visibility = Visibility.Collapsed;
-        }
+        //private void hdrAdvanced_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    SetHeader(hdrAdvanced);
+        //    externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = metadataTab.Visibility = parentalControlTab.Visibility = Visibility.Visible;
+        //    mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = Visibility.Visible;
+        //    helpTab.Visibility = Visibility.Collapsed;
+        //}
 
-        private void hdrHelpAbout_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            SetHeader(hdrHelpAbout);
-            externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = Visibility.Collapsed;
-            mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Collapsed;
-            helpTab.Visibility = Visibility.Visible;
-            helpTab.IsSelected = true;
-        }
+        //private void hdrHelpAbout_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    SetHeader(hdrHelpAbout);
+        //    externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = Visibility.Collapsed;
+        //    mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Collapsed;
+        //    helpTab.Visibility = Visibility.Visible;
+        //    helpTab.IsSelected = true;
+        //}
 
-        private void ClearHeaders()
-        {
-            hdrAdvanced.Foreground = hdrBasic.Foreground = hdrHelpAbout.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Gray);
-            hdrAdvanced.FontWeight = hdrBasic.FontWeight = hdrHelpAbout.FontWeight = FontWeights.Normal;
-            tabMain.SelectedIndex = 0;
-        }
-        private void SetHeader(System.Windows.Controls.Label label)
-        {
-            ClearHeaders();
-            label.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Black);
-            label.FontWeight = FontWeights.Bold;
-        }
+        //private void ClearHeaders()
+        //{
+        //    hdrAdvanced.Foreground = hdrBasic.Foreground = hdrHelpAbout.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Gray);
+        //    hdrAdvanced.FontWeight = hdrBasic.FontWeight = hdrHelpAbout.FontWeight = FontWeights.Normal;
+        //    tabMain.SelectedIndex = 0;
+        //}
+        //private void SetHeader(System.Windows.Controls.Label label)
+        //{
+        //    ClearHeaders();
+        //    label.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Black);
+        //    label.FontWeight = FontWeights.Bold;
+        //}
         #endregion
 
         private void btnWeatherID_Click(object sender, RoutedEventArgs e)
@@ -1681,65 +1681,65 @@ sortorder: {2}
         }
 
         private void addPodcast_Click(object sender, RoutedEventArgs e) {
-            var form = new AddPodcastForm();
-            form.Owner = this;
-            var result = form.ShowDialog();
-            if (result == true) {
-                form.RSSFeed.Save(config.PodcastHome);
-                RefreshPodcasts();
-                RefreshEntryPoints(false);
-            } 
+            //var form = new AddPodcastForm();
+            //form.Owner = this;
+            //var result = form.ShowDialog();
+            //if (result == true) {
+            //    form.RSSFeed.Save(config.PodcastHome);
+            //    RefreshPodcasts();
+            //    RefreshEntryPoints(false);
+            //} 
 
         }
 
         private void podcastList_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            VodCast vodcast = podcastList.SelectedItem as VodCast;
-            if (vodcast != null) {
-                podcastDetails(true);
-                podcastUrl.Text = vodcast.Url;
-                podcastName.Content = vodcast.Name;
-                podcastDescription.Text = vodcast.Overview;
+            //VodCast vodcast = podcastList.SelectedItem as VodCast;
+            //if (vodcast != null) {
+            //    podcastDetails(true);
+            //    podcastUrl.Text = vodcast.Url;
+            //    podcastName.Content = vodcast.Name;
+            //    podcastDescription.Text = vodcast.Overview;
 
-                //enable the rename and delete buttons if a podcast is selected.
-                renamePodcast.IsEnabled = removePodcast.IsEnabled = true;
-            }
+            //    //enable the rename and delete buttons if a podcast is selected.
+            //    renamePodcast.IsEnabled = removePodcast.IsEnabled = true;
+            //}
         }
 
         private void removePodcast_Click(object sender, RoutedEventArgs e) {
-            VodCast vodcast = podcastList.SelectedItem as VodCast;
-            if (vodcast != null) {
-                var message = "Remove \"" + vodcast.Name + "\"?";
-                if (
-                  MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes) {
-                    File.Delete(vodcast.Path);
-                    vodcast.Parent.ValidateChildren();
-                    podcastDetails(false);
-                    RefreshPodcasts();
-                    RefreshEntryPoints(false);
-                }
-            }
+            //VodCast vodcast = podcastList.SelectedItem as VodCast;
+            //if (vodcast != null) {
+            //    var message = "Remove \"" + vodcast.Name + "\"?";
+            //    if (
+            //      MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes) {
+            //        File.Delete(vodcast.Path);
+            //        vodcast.Parent.ValidateChildren();
+            //        podcastDetails(false);
+            //        RefreshPodcasts();
+            //        RefreshEntryPoints(false);
+            //    }
+            //}
         }
 
         private void renamePodcast_Click(object sender, RoutedEventArgs e) {
-            VodCast vodcast = podcastList.SelectedItem as VodCast;
-            if (vodcast != null) {
-                var form = new RenameForm(vodcast.Name);
-                form.Owner = this;
-                var result = form.ShowDialog();
-                if (result == true) {
-                    vodcast.Name = form.tbxName.Text;
-                    Kernel.Instance.ItemRepository.SaveItem(vodcast);
+            //VodCast vodcast = podcastList.SelectedItem as VodCast;
+            //if (vodcast != null) {
+            //    var form = new RenameForm(vodcast.Name);
+            //    form.Owner = this;
+            //    var result = form.ShowDialog();
+            //    if (result == true) {
+            //        vodcast.Name = form.tbxName.Text;
+            //        Kernel.Instance.ItemRepository.SaveItem(vodcast);
 
-                    RefreshPodcasts();
+            //        RefreshPodcasts();
 
-                    foreach (VodCast item in podcastList.Items) {
-                        if (item.Name == vodcast.Name) {
-                            podcastList.SelectedItem = item;
-                            break;
-                        }
-                    }
-                }
-            }
+            //        foreach (VodCast item in podcastList.Items) {
+            //            if (item.Name == vodcast.Name) {
+            //                podcastList.SelectedItem = item;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void removePlugin_Click(object sender, RoutedEventArgs e) {
@@ -1968,7 +1968,7 @@ sortorder: {2}
 
         private void btnValidateKey_Click(object sender, RoutedEventArgs e)
         {
-            Config.Instance.SupporterKey = tbxSupporterKey.Text.Trim();
+            //Config.Instance.SupporterKey = tbxSupporterKey.Text.Trim();
             //with new store there is no one item we can validate.  Just save the key
             //if (ValidateKey("trailers")) //use trailers because it is the lowest level
             //{

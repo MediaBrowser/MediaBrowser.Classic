@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="Configurator.MainWindow"
-    Title="Media Browser Configurator" Height="600" Width="800" MinWidth="800" MinHeight="600" Icon="/Configurator;component/Images/configurator.ico" 
+    Title="Media Browser Classic Configurator" Height="600" Width="800" MinWidth="800" MinHeight="600" Icon="/Configurator;component/Images/configurator.ico" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" 
@@ -113,7 +113,7 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="tabGrid1">
             <TabControl Margin="10,90,10,10" x:Name="tabMain" Background="{x:Null}" SelectionChanged="tabControl1_SelectionChanged">
-            <TabItem Header="media" x:Name="mediacollectionTab" FontSize="14" FontWeight="Normal" Foreground="#FF323232" IsSelected="True">
+            <TabItem Header="media" x:Name="mediacollectionTab" FontSize="14" FontWeight="Normal" Foreground="#FF323232" Visibility="Collapsed">
                 <Grid>
                     <ListBox HorizontalAlignment="Left" Margin="20,45,0,60" x:Name="folderList" Width="260" SelectionChanged="folderList_SelectionChanged" FontSize="14" ItemTemplate="{StaticResource folderListTemplate}" SelectedIndex="0" ToolTip="These are the items that define your media library.  They will appear as the top-level options in MB." />
                         <Button Height="32" HorizontalAlignment="Left" Margin="20,0,0,20" x:Name="btnAddFolder" VerticalAlignment="Bottom" Width="80" Click="btnAddFolder_Click" FontSize="14" ToolTip="Add a new media collection" Content="Add"/>
@@ -132,7 +132,7 @@
                         <Label Height="34" HorizontalAlignment="Left" Margin="23,5,0,0" x:Name="lblStep1b" VerticalAlignment="Top" Width="226" Foreground="#FF030303" Content="Media Collections"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="podcasts" x:Name="podcastsTab" FontSize="14" IsSelected="True">
+            <TabItem Header="podcasts" x:Name="podcastsTab" FontSize="14" Visibility="Collapsed">
                 <Grid>
                         <Label Height="34" HorizontalAlignment="Left" Margin="23,5,0,0" x:Name="lblPodcastStep1b" VerticalAlignment="Top" Width="226" Foreground="#FF030303" Content="Podcasts"/>
                     <ListBox IsSynchronizedWithCurrentItem="True" Margin="20,45,0,60" x:Name="podcastList" DisplayMemberPath="Name" HorizontalAlignment="Left" Width="260" SelectionChanged="podcastList_SelectionChanged"/>
@@ -274,7 +274,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="metadata" Name="metadataTab" FontSize="14">
+                <TabItem Header="metadata" Name="metadataTab" FontSize="14" Visibility="Collapsed">
                     <Grid>
                         <TextBlock Height="27" HorizontalAlignment="Left" Margin="23,17,0,0" Name="textBlock2" Text="These options govern how the internal metadata fetchers behave" VerticalAlignment="Top" Width="491" />
                         <CheckBox Content="Allow Internet Providers" Height="25" HorizontalAlignment="Left" Margin="43,51,0,0" Name="cbxInetProviders" VerticalAlignment="Top" Width="189" ToolTip="This must be enabled for the internal fetchers to operate" Checked="cbxInetProviders_Checked" Unchecked="cbxInetProviders_Checked" />
@@ -357,7 +357,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="extenders + iso" x:Name="extendersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Collapsed" IsSelected="True">
+                <TabItem Header="extenders + iso" x:Name="extendersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" >
                 <Grid >
                     <GroupBox Header="Extender Settings" Margin="20,35,0,20" Name="groupBox6" HorizontalAlignment="Left" Width="270">
                         <Grid>
@@ -408,7 +408,7 @@
                         </ListView>
                     </DockPanel>
                 </TabItem>
-            <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Collapsed" IsSelected="True">
+            <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Visible">
                 <Grid>
                         <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="143" Height="25">Version 0.0.0.0</Label>
                         <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
@@ -419,8 +419,6 @@
                             <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find information on best practices to organize your media for maximum compatibility...</TextBlock>
                             <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community Tracker</Hyperlink></TextBlock>
                             <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
-                                <CheckBox Content="Participate in the User Support Enhancement Program" Height="20" HorizontalAlignment="Left" Margin="10,163,0,0" Name="cbxSendStats" Click="cbxSendStats_Click" VerticalAlignment="Top" Width="359" />
-                                <TextBlock Height="25" Margin="10,183,10,0" VerticalAlignment="Top" Text="Only the OS version and memory size are collected for your machine.  Please help us make MB better!"></TextBlock>
                             </Grid>
                     </GroupBox>
                     <GroupBox Header="Logging" Margin="20,265,0,20" Height="142" Width="175" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -434,17 +432,17 @@
 
                     <GroupBox Header="About Media Browser" Margin="220,265,20,20" Height="142" FontSize="14" VerticalAlignment="Top">
                     <Grid>
-                        <TextBlock Margin="10,29,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser.tv</Hyperlink></TextBlock>
-                        <TextBlock Margin="6,10,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
-                                <TextBlock Margin="10,0,0,6" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">A Supporter Key is obtained via the 
-                                    <Hyperlink NavigateUri="http://www.mediabrowser.tv/store" RequestNavigate="HandleRequestNavigate">
-                                        MB Store
+                        <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser.tv</Hyperlink></TextBlock>
+                        <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
+                                <TextBlock Margin="301.045,0,0,37.38" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">Most configuration is done via the  
+                                    <Hyperlink NavigateUri="http://localhost:8096/Dashboard/dashboard.html" RequestNavigate="HandleRequestNavigate">
+                                        Server Dashboard
                                     </Hyperlink>
                                 </TextBlock>
-                                <Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
+                                <!--<Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
                                 <TextBox Margin="0,31,31,0" Name="tbxSupporterKey" ToolTip="Paste the key from the email you received when you donated" Height="22.38" VerticalAlignment="Top" HorizontalAlignment="Right" Width="254" />
                                 <Button Margin="0,59,31,0" Name="btnValidateKey" HorizontalAlignment="Right" Width="75" Height="22.38" VerticalAlignment="Top" Click="btnValidateKey_Click">Save</Button>
-                                <TextBlock Margin="216,0,134,31" Height="25.38" VerticalAlignment="Bottom"><Hyperlink Name="lostKey" NavigateUri="http://www.mediabrowser.tv/lost-key" RequestNavigate="HandleRequestNavigate">Retrieve My Key</Hyperlink></TextBlock>
+                                <TextBlock Margin="216,0,134,31" Height="25.38" VerticalAlignment="Bottom"><Hyperlink Name="lostKey" NavigateUri="http://www.mediabrowser.tv/lost-key" RequestNavigate="HandleRequestNavigate">Retrieve My Key</Hyperlink></TextBlock>-->
                             </Grid>
                     </GroupBox>
                         <TextBlock Margin="20,10,327,0" VerticalAlignment="Top" Height="25" Width="401">If you need any help, have a look at these resources:</TextBlock>
@@ -522,29 +520,6 @@
             </TabControl>
             <TextBlock Height="25" Margin="15,54,318,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
         </Grid>
-        
-        
-        <Rectangle Height="25.989" Margin="15,19.343,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="7" StrokeThickness="0">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF234502" Offset="1"/>
-                    <GradientStop Color="#FF77CA29" Offset="0.518"/>
-                    <GradientStop Color="#FFA0F54F" Offset="0"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Label Height="33" HorizontalAlignment="Left" Margin="38,15,0,0" Name="hdrBasic" VerticalAlignment="Top" Width="68" FontSize="18" MouseDown="hdrBasic_MouseDown" FontWeight="Bold" ToolTip="Click to display basic configuration options" Foreground="Black">basic</Label>
-        <Label FontSize="18" Height="33" HorizontalAlignment="Left" Margin="108,15,0,0" Name="hdrAdvanced" VerticalAlignment="Top" Width="91" Foreground="Gray" MouseDown="hdrAdvanced_MouseDown" ToolTip="Click to display advanced configuration options">advanced</Label>
-        <Rectangle Height="25.989" Margin="220,19.343,0,0" Name="rectangle2" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="7" StrokeThickness="0">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF234502" Offset="1"/>
-                    <GradientStop Color="#FF77CA29" Offset="0.518"/>
-                    <GradientStop Color="#FFA0F54F" Offset="0"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Label Height="33" HorizontalAlignment="Left" Margin="240,15,302,0" Name="hdrHelpAbout" VerticalAlignment="Top" Width="140" Foreground="Gray" FontSize="18" MouseDown="hdrHelpAbout_MouseDown" ToolTip="Click to show support information">help and about</Label>
         <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="/Configurator;component/Images/mb_configurator.png" MouseLeftButtonUp="eggExpert_Click" />
         <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="112">Version 0.0.0.0</Label>
     </Grid>

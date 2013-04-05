@@ -28,7 +28,7 @@ namespace Configurator
         {
             Kernel.Instance.ConfigData.SendStats = true;
             Kernel.Instance.ConfigData.Save();
-            MainWindow.Instance.cbxSendStats.IsChecked = true;
+            //MainWindow.Instance.cbxSendStats.IsChecked = true;
             this.Close();
         }
 
