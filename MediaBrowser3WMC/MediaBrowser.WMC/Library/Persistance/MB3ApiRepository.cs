@@ -519,7 +519,7 @@ namespace MediaBrowser.Library.Persistance
 
         public void SaveDisplayPreferences(string prefsId, Model.Entities.DisplayPreferences prefs)
         {
-            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, prefsId, prefs);
+            Kernel.ApiClient.UpdateDisplayPreferences(prefsId, prefs);
         }
 
         public void SaveDisplayPreferences(DisplayPreferences prefs)

@@ -28,11 +28,11 @@ namespace MediaBrowser.Model.Entities
         }
 
         /// <summary>
-        /// Gets or sets the user id.
+        /// Gets or sets the id.
         /// </summary>
-        /// <value>The user id.</value>
+        /// <value>The id.</value>
         [ProtoMember(1)]
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the type of the view.
         /// </summary>

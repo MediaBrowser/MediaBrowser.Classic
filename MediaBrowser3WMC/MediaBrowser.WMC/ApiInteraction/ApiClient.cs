@@ -180,14 +180,14 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="prefsId">The prefs id</param>
         /// <returns>DisplayPreferences.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public DisplayPreferences GetDisplayPrefs(Guid userId, string prefsId)
+        public DisplayPreferences GetDisplayPrefs(string prefsId)
         {
-            if (userId == Guid.Empty)
+            if (string.IsNullOrEmpty(prefsId))
             {
-                throw new ArgumentNullException("userId");
+                throw new ArgumentNullException("prefsId");
             }
 
-            var url = GetApiUrl("Users/" + userId + "/DisplayPreferences/" + prefsId);
+            var url = GetApiUrl("DisplayPreferences/" + prefsId);
 
             using (var stream = GetSerializedStream(url))
             {
@@ -855,13 +855,8 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="displayPreferences">The display preferences.</param>
         /// <returns>Task{DisplayPreferences}.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public void UpdateDisplayPreferences(Guid userId, string prefsId, DisplayPreferences displayPreferences)
+        public void UpdateDisplayPreferences(string prefsId, DisplayPreferences displayPreferences)
         {
-            if (userId == Guid.Empty)
-            {
-                throw new ArgumentNullException("userId");
-            }
-
             if (string.IsNullOrEmpty(prefsId))
             {
                 throw new ArgumentNullException("prefsId");
@@ -872,7 +867,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("displayPreferences");
             }
 
-            var url = GetApiUrl("Users/" + userId + "/DisplayPreferences/" + prefsId);
+            var url = GetApiUrl("DisplayPreferences/" + prefsId);
 
             Post<DisplayPreferences, EmptyRequestResult>(url, displayPreferences);
         }

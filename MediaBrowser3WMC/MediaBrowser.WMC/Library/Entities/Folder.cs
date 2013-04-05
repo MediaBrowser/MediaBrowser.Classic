@@ -869,7 +869,7 @@ namespace MediaBrowser.Library.Entities {
         public virtual void LoadDisplayPreferences()
         {
             // Load from api
-            DisplayPreferences = Kernel.ApiClient.GetDisplayPrefs(Kernel.CurrentUser.Id, DisplayPreferencesId);
+            DisplayPreferences = Kernel.ApiClient.GetDisplayPrefs(DisplayPreferencesId);
         }
 
         public virtual void SaveDisplayPrefs(DisplayPreferences prefs)
