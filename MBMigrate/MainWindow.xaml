@@ -1,0 +1,12 @@
+﻿<Window x:Class="MBMigrate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Media Browser Migration" Height="212" Width="532" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="#FF2B54B1" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Rectangle Height="156" HorizontalAlignment="Left" Name="rectangle1" Stroke="#FF1C4BB7" VerticalAlignment="Top" Width="504" StrokeThickness="2" />
+        <Label FontWeight="Bold" Height="35.38" HorizontalContentAlignment="Left" Margin="23,43,27,0" Name="lblCurrent" VerticalAlignment="Top" Foreground="White" />
+        <ProgressBar Height="23" Margin="23,76,27,0" Maximum="1" Name="progress" VerticalAlignment="Top" Visibility="Visible" />
+        <Label Content="Migrating Library..." FontWeight="Bold" Height="34" HorizontalContentAlignment="Left" Margin="23,12,27,0" Name="label1" VerticalAlignment="Top" FontSize="16" Foreground="White" />
+
+    </Grid>
+</Window>
