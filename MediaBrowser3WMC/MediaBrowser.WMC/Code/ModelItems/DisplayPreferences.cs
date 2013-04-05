@@ -34,9 +34,9 @@ namespace MediaBrowser.Library
         public Guid Id { get; set; }
         protected Folder Folder { get; set; }
 
-        public DisplayPreferences(Guid id, Folder folder)
+        public DisplayPreferences(string id, Folder folder)
         {
-            this.Id = id;
+            this.Id = new Guid(id);
             Folder = folder;
 
             ArrayList list = new ArrayList();

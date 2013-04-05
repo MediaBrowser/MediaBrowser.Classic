@@ -1058,14 +1058,14 @@ namespace MediaBrowser.Library {
 
             this.Folder.LoadDisplayPreferences();
 
-            var dp = new DisplayPreferences((Folder.DisplayMediaType + Kernel.CurrentUser.Name).GetMD5(), this.Folder);
+            var dp = new DisplayPreferences(this.Folder.DisplayPreferencesId, this.Folder);
 
             this.DisplayPrefs = dp;
         }
 
         protected void LoadDefaultDisplayPreferences(ref Guid id, ref DisplayPreferences dp)
         {
-            dp = new DisplayPreferences(id, this.Folder);
+            dp = new DisplayPreferences(this.Folder.DisplayPreferencesId, this.Folder);
             dp.LoadDefaults();
             if ((this.PhysicalParent != null) && (Config.Instance.InheritDefaultView))
             {

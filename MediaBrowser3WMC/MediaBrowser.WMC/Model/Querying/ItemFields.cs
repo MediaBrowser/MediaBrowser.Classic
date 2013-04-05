@@ -27,9 +27,9 @@ namespace MediaBrowser.Model.Querying
         DisplayMediaType,
 
         /// <summary>
-        /// Item display preferences
+        /// Item display preferences Id
         /// </summary>
-        DisplayPreferences,
+        DisplayPreferencesId,
 
         /// <summary>
         /// Genres

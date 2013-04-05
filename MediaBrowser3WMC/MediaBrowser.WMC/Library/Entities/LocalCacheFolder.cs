@@ -54,7 +54,7 @@ namespace MediaBrowser.Library.Entities
 
             var id = (this.DisplayMediaType + Kernel.CurrentUser.Name).GetMD5();
 
-            var dp = new DisplayPreferences(id, this);
+            var dp = new DisplayPreferences(DisplayPreferencesId, this);
             dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp);
             if (dp == null)
             {
@@ -66,7 +66,7 @@ namespace MediaBrowser.Library.Entities
 
         protected void LoadDefaultDisplayPreferences(ref Guid id, ref DisplayPreferences dp)
         {
-            dp = new DisplayPreferences(id, this);
+            dp = new DisplayPreferences(DisplayPreferencesId, this);
             dp.LoadDefaults();
         }
     }

@@ -305,7 +305,7 @@ namespace MediaBrowser.Library.Persistance
                 if (folder != null)
                 {
                     // Fill in display prefs and indexby options
-                    folder.DisplayPreferences = mb3Item.DisplayPreferences;
+                    folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
                     folder.IndexByOptions = mb3Item.IndexOptions.ToDictionary(o => o);
                 }
 
@@ -429,7 +429,7 @@ namespace MediaBrowser.Library.Persistance
                                                          UserId = Kernel.CurrentUser.Id,
                                                          ParentId = id,
                                                          IndexBy = indexBy,
-                                                         Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferences, 
+                                                         Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, 
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
@@ -444,7 +444,7 @@ namespace MediaBrowser.Library.Persistance
                                                          UserId = Kernel.CurrentUser.Id,
                                                          Ids = ids,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
-                                                             ItemFields.Path, ItemFields.DisplayPreferences, ItemFields.UserData, ItemFields.DateCreated,
+                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
                                                             ItemFields.MediaStreams, }
                                                      });
 
@@ -517,9 +517,9 @@ namespace MediaBrowser.Library.Persistance
             Kernel.ApiClient.ReportPlaybackProgress(playState.Id.ToString(), Kernel.CurrentUser.Id, playState.PositionTicks);
         }
 
-        public void SaveDisplayPreferences(string itemId, Model.Entities.DisplayPreferences prefs)
+        public void SaveDisplayPreferences(string prefsId, Model.Entities.DisplayPreferences prefs)
         {
-            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, itemId, prefs);
+            Kernel.ApiClient.UpdateDisplayPreferences(Kernel.CurrentUser.Id, prefsId, prefs);
         }
 
         public void SaveDisplayPreferences(DisplayPreferences prefs)

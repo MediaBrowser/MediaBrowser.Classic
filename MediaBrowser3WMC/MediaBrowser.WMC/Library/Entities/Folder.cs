@@ -28,6 +28,7 @@ namespace MediaBrowser.Library.Entities {
         protected LocalCacheFolder quickListFolder;
 
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
+        public string DisplayPreferencesId { get; set; }
 
         public Folder()
             : base() {
@@ -867,14 +868,15 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void LoadDisplayPreferences()
         {
-            //Our display prefs are loaded with us - nothing to do
+            // Load from api
+            DisplayPreferences = Kernel.ApiClient.GetDisplayPrefs(Kernel.CurrentUser.Id, DisplayPreferencesId);
         }
 
         public virtual void SaveDisplayPrefs(DisplayPreferences prefs)
         {
             try
             {
-                Kernel.Instance.ItemRepository.SaveDisplayPreferences(ApiId, DisplayPreferences);
+                Kernel.Instance.ItemRepository.SaveDisplayPreferences(DisplayPreferencesId, DisplayPreferences);
             }
             catch (Exception e)
             {
