@@ -315,11 +315,6 @@ namespace MediaBrowser.LibraryManagement
             return false;
         }
 
-        internal static bool IsRoot(string path)
-        {
-            return (Config.Instance.InitialFolder==path) || (Config.Instance.InitialFolder == Helper.MY_VIDEOS && path == Helper.MyVideosPath);
-        }
-
         public static bool IsAlphaNumeric(string str)
         {
             return (str.ToCharArray().All(c => Char.IsLetter(c) || Char.IsNumber(c)));

@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -48,10 +49,14 @@ namespace Configurator
 
         public MainWindow()
         { 
-            try {        
+            try 
+            {        
                 Initialize();
-            } catch (Exception ex) {
-                MessageBox.Show("Failed to start up, please post this contents on http://community.mediabrowser.tv " + ex.ToString());
+            } 
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Failed to start up, please post this on http://community.mediabrowser.tv \n\n" + ex, "Error",MessageBoxButton.OK);
+                Logger.ReportException("Error Starting up",ex);
             }
 
         }
@@ -59,30 +64,11 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
-            ratings = new Ratings();
-            //Logger.ReportVerbose("======= Kernel intialized. Building window...");
+            Logger.ReportVerbose("======= Kernel intialized. Building window...");
             InitializeComponent();
             pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
             config = Kernel.Instance.ConfigData;
-            //put this check here because it will run before the first run of MB and we need it now
-            if (config.MBVersion != Kernel.Instance.Version.ToString() && Kernel.Instance.Version.ToString() == "2.3.0.0")
-            {
-                try
-                {
-                    config.PluginSources.RemoveAt(config.PluginSources.FindIndex(s => s.ToLower() == "http://www.mediabrowser.tv/plugins/plugin_info.xml"));
-                }
-                catch
-                {
-                    //wasn't there - no biggie
-                }
-                if (config.PluginSources.Find(s => s == "http://www.mediabrowser.tv/plugins/multi/plugin_info.xml") == null)
-                {
-                    config.PluginSources.Add("http://www.mediabrowser.tv/plugins/multi/plugin_info.xml");
-                    Logger.ReportInfo("Plug-in Source migrated to multi-version source");
-                }
-                //not going to re-set version in case there is something we want to do in MB itself
-            }
 
             //Logger.ReportVerbose("======= Loading combo boxes...");
             LoadComboBoxes();
@@ -580,9 +566,9 @@ namespace Configurator
             ddlWeatherUnits.Items.Add("Celsius");
             ddlWeatherUnits.Items.Add("Fahrenheit");
             // Parental Ratings
-            ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
+            //ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
             //create a set of ratings strings that makes more sense for the folder list
-            folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
+            //folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
             ddlFolderRating.ItemsSource = folderSettings;
             //meta
             AllLanguages = GetLanguages(CultureInfo.GetCultures(CultureTypes.NeutralCultures));
@@ -2228,13 +2214,13 @@ sortorder: {2}
             {
                 config.MetadataCountryCode = country.TwoLetterISORegionName;
                 //also need to re-init our ratings
-                ratings = new Ratings();
+                //ratings = new Ratings();
                 // and the options
-                ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
+                //ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
                 ddlOptionMaxAllowedRating.Items.Refresh();
                 ddlOptionMaxAllowedRating.SelectedItem = Ratings.ToString(config.MaxParentalLevel);
                 //create a set of ratings strings that makes more sense for the folder list
-                folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
+                //folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
                 ddlFolderRating.ItemsSource = folderSettings;
                 ddlFolderRating.Items.Refresh();
                 config.Save();

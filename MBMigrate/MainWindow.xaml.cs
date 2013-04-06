@@ -26,16 +26,23 @@ namespace MBMigrate
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
             Async.Queue("Migration", () =>
             {
-                _config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
-                Migrate300();
+                if (File.Exists(ApplicationPaths.ConfigFile)) _config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+                try
+                {
+                    Migrate300();
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Error during migration",e);
+                }
 
-                Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() => this.Close()));
+                Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(Close));
             });
         }
 
         static Dictionary<string, string> oldPathMap;
 
-        static string[,] oldTree = { 
+        static readonly string[,] oldTree = { 
                     { "AppConfigPath",       "app_data",         "MediaBrowser"  }, 
                     { "AppCachePath",        "AppConfigPath",    "Cache"         },
                     { "AppUserSettingsPath", "AppConfigPath",    "Cache"           },
@@ -103,7 +110,7 @@ namespace MBMigrate
 
             };
 
-            var current = new Version(_config.MBVersion);
+            var current = new Version(_config != null ? _config.MBVersion : "2.6.2.0");
             if (current < new Version(3, 0, 0))
             {
                 //Get our old directory structure
