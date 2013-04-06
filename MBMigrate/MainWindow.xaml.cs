@@ -27,15 +27,18 @@ namespace MBMigrate
             Async.Queue("Migration", () =>
             {
                 if (File.Exists(ApplicationPaths.ConfigFile)) _config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
-                try
+                if (_config == null) // only do this if a fresh install
                 {
-                    Migrate300();
+                    try
+                    {
+                        Migrate300();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error during migration",e);
+                    }
+                    
                 }
-                catch (Exception e)
-                {
-                    Logger.ReportException("Error during migration",e);
-                }
-
                 Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(Close));
             });
         }

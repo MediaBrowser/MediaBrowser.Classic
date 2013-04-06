@@ -606,11 +606,11 @@ namespace MediaBrowser.Library {
                 case MBLoadContext.Other:
                 case MBLoadContext.Configurator:
                     //tell the service to re-load the config
-                    MBServiceController.SendCommandToService(IPCCommands.ReloadConfig);
+                    //MBServiceController.SendCommandToService(IPCCommands.ReloadConfig);
                     break;
                 case MBLoadContext.Service:
                     //tell the core to re-load the config
-                    MBServiceController.SendCommandToCore(IPCCommands.ReloadConfig);
+                    //MBServiceController.SendCommandToCore(IPCCommands.ReloadConfig);
                     break;
             }
         }

@@ -1625,14 +1625,6 @@ namespace MediaBrowser
 
                 playable.Play();
 
-                if (!playable.QueueItem)
-                {
-                    //async this so it doesn't slow us down if the service isn't responding for some reason
-                    Async.Queue("Cancel Svc Refresh", () =>
-                    {
-                        MBServiceController.SendCommandToService(IPCCommands.CancelRefresh); //tell service to stop
-                    });
-                }
             });
         }
 

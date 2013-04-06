@@ -203,9 +203,6 @@ namespace MediaBrowser.Util
             DialogResult reply = Application.DisplayDialog(Application.CurrentInstance.StringData("UpdateSuccessDial"),
                 Application.CurrentInstance.StringData("UpdateSuccessCapDial"), DialogButtons.Ok, 10);
 
-            //shut down the service
-            MBServiceController.SendCommandToService(IPCCommands.Shutdown);
-
             // put together a batch file to execute the installer in silent mode and restart VB.
             string updateBat = "msiexec.exe /qb /i \"" + localFile + "\"\n";
             string windir = Environment.GetEnvironmentVariable("windir");
