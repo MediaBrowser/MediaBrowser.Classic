@@ -92,7 +92,7 @@ namespace Configurator.Code {
             availablePlugins.Clear();
             latestVersions.Clear();
 
-            foreach (var plugin in sources.AvailablePlugins.OrderBy(p => p.Name))
+            foreach (var plugin in sources.AvailablePlugins.Where(p => p.PluginClass == PluginClasses.ScreenSavers || p.PluginClass == PluginClasses.Themes).OrderBy(p => p.Name))
             {
                 IPlugin ip = this.InstalledPlugins.Find(plugin);
                 if (ip != null)
