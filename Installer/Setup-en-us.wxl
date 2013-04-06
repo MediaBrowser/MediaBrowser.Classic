@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+	<String Id="LaunchCondition_AdminPrivs">You must have Administrative rights on this machine to install [ProductName].</String>
+	<String Id="LaunchCondition_NewerVersion">A newer version of [ProductName] is already installed.</String>
+	<String Id="LaunchCondition_WrongOSVersion">[ProductName] can only be installed on Microsoft Windows 7 or 8 with Media Center also installed.</String>
+  <String Id="LaunchCondition_WrongDotNetFramework">[ProductName] requires that .NET Framework version 3.5 or above is installed.</String>
+
+	<String Id="Property_ArpHelpLink">http://community.mediabrowser.tv/topics?category_id=5</String>
+	<String Id="Property_ArpUrlInfoAbout">http://community.mediabrowser.tv</String>
+  <String Id="Property_ArpUrlUpdateInfo">http://www.mediabrowser.tv/download</String>
+	<String Id="Property_ProductLanguage">1033</String>
+	<String Id="Property_ProductName">Media Browser Classic</String>
+	<String Id="Property_CompanyName">Media Browser Team</String>
+
+	<String Id="Package_Description">Media Browser 3 Client for Windows Media Center</String>
+	<String Id="Package_Comments">This Installer database contains the logic and data required to install Media Browser Classic. Please close the Media Browser Service if it is running before continuing.</String>
+
+  <String Id="Dialog_CreateDesktopShortcut">Create a shortcut for Media Browser Classic on the desktop.</String>
+  <String Id="Dialog_CreateStartMenuShortcut">Create a shortcut for Media Browser Classic in the start menu.</String>
+  <String Id="Dialog_OptionalLaunchAtStartup">Optionally, you can automatically launch the applications at logon:</String>
+  <String Id="Dialog_CreateMediaBrowserStartupShortcut">Launch Media Browser Classic automatically at log on.</String>
+  <String Id="Dialog_MakeDonation">Be sure to check out the new Media Browser Website!</String>
+  <String Id="Dialog_DonationUrl">http://www.mediabrowser3.com</String>
+</WixLocalization>

@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- These variables define the Windows Installer product version, product code and upgrade code. They   -->
+<!-- will be used later on in this file.                                                                 -->
+
+<!-- We change the ProductVersion and ProductCode with each release                                      -->
+
+<?define Property_ProductVersion = "3.0.0.0" ?>
+<?define Property_ProductCode = "D33F732F-B748-49C0-AFAD-A44980AC2147" ?>
+
+<!-- The UpgradeCode always stays the same                                                               -->
+<?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="$(var.Property_ProductCode)" UpgradeCode="$(var.Property_UpgradeCode)" Name="!(loc.Property_ProductName)" Language="!(loc.Property_ProductLanguage)" Version="$(var.Property_ProductVersion)" Manufacturer="!(loc.Property_CompanyName)">
+
+		<Package Description="!(loc.Package_Description)" Comments="!(loc.Package_Comments)" InstallerVersion="200" Compressed="yes" />
+
+		<!-- This information enables Windows Installer major upgrade functionality so users can seamlessly  -->
+		<!-- install a new version of the product and have the old version automatically uninstall behind    -->
+		<!-- the scenes. See the following topic in the MSDN Library for additional information:             -->
+		<!-- http://msdn.microsoft.com/library/default.asp?url=/library/en-us/msi/setup/major_upgrades.asp   -->
+		<Upgrade Id="$(var.Property_UpgradeCode)">
+      <!--this will allow the current installer to upgrade an older version-->
+      <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Minimum="1.0.0.0" IncludeMinimum="yes" Maximum="$(var.Property_ProductVersion)" IncludeMaximum="yes"/>
+      <!--this will prevent out-of-order installations-->
+      <UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.Property_ProductVersion)" OnlyDetect="yes"/>
+		</Upgrade>
+
+		<!-- This custom action prevents users from installing if a newer version of this product is already -->
+		<!-- installed on the system. This is a part of Windows Installer major upgrade functionality.       -->
+		<CustomAction Id="CA_BlockOlderVersionInstall" Error="!(loc.LaunchCondition_NewerVersion)" />
+
+		<!-- This custom action prevents users from installing this product on unsupported operating system  -->
+		<!-- versions. The conditions that are checked for operating system version are defined below.       -->
+		<CustomAction Id="CA_ErrWrongWindowsVersion" Error="!(loc.LaunchCondition_WrongOSVersion)" />
+    
+		<!-- This condition adds an item to the LaunchCondition table of the MSI to block a user from        -->
+		<!-- installing this product unless they have administrative privileges on the system.               -->
+		<Condition Message="!(loc.LaunchCondition_AdminPrivs)">
+			<![CDATA[Privileged]]>
+		</Condition>
+
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message="!(loc.LaunchCondition_WrongDotNetFramework)">
+      <![CDATA[Installed OR NETFRAMEWORK35]]>
+    </Condition>
+
+		<!-- This is a list of directories that are used by this product as installation locations or custom -->
+		<!-- action file search locations.                                                                   -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="WindowsFolder" Name="WINDOWS">
+        <Directory Id="EhomeFolder" Name="eHome"/>
+      </Directory>
+      <Directory Id="ProgramFilesFolder" Name="Program Files">
+        <Directory Id="MyCompany" Name="MediaBrowser">
+          <Directory Id="APPROOTDIRECTORY" Name="MediaBrowser"/>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Media Browser">
+          <Directory Id="ApplicationHelpAndSupportFolder" Name="Help and Support"/>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"/>
+      <Directory Id="StartupFolder" Name="Startup"/>
+      <Directory Id="AppDataFolder" />
+      <Directory Id="TEMPDIR" Name="TempFolder"/>
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="MBFolder" Name="MediaBrowser">
+          <Directory Id="PluginsFolder" Name="Plugins"/>
+          <Directory Id="CacheFolder" Name="cache">
+              <!--<Directory Id="CacheItemsFolder" Name="items" />-->
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <!-- For some reason we need to set the Icon Id to an exe, otherwise the .ico file cannot be used for shortcuts. -->
+    <Icon Id="MediaBrowserIcon.exe" SourceFile="MediaBrowserIcon.ico"/>
+
+    <!-- These are the default shortcuts that will be created in the Start Menu during installation-->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="DefaultShortcuts" Guid="C68522A1-03ED-4416-8326-F1375212ACB0">
+        <!-- Create the Help & Support startmenu subfolder-->
+        <CreateFolder Directory="ApplicationHelpAndSupportFolder"/>
+        <!-- Create the default startmenu shortcuts-->
+        <Shortcut Id="Configurator"
+                  Name="Media Browser Classic Configurator"
+                  Description="Configuration for MB Classic"
+                  Target="[APPROOTDIRECTORY]Configurator.exe"
+                  WorkingDirectory="APPROOTDIRECTORY"/>
+        <util:InternetShortcut Id="OfficialWebsite"
+                  Name="Media Browser Official Website"
+                  Target="http://www.mediabrowser3.com"
+                  Type="url"/>
+        <util:InternetShortcut Id="CommunityTracker"
+                  Name="Media Browser Community Tracker"
+                  Target="http://community.mediabrowser.tv"
+                  Directory="ApplicationHelpAndSupportFolder"
+                  Type="url"/>
+        <util:InternetShortcut Id="CommunityTrackerKnowledgebase"
+                  Name="Knowledge Base"
+                  Target="http://community.mediabrowser.tv/topics?category_id=5&amp;status=published"
+                  Directory="ApplicationHelpAndSupportFolder"
+                  Type="url"/>
+        <RemoveFolder Id="RemoveApplicationHelpAndSupportFolder" Directory="ApplicationHelpAndSupportFolder" On="uninstall"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\GPL\MediaBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- Conditionally create a shortcut to Media Browser in the start menu folder-->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="OptionalStartmenuFolderShortcut" Guid="BE717AEA-F75B-43c7-9C94-510CA3F0F77E">
+        <Condition>OPTIONALSTARTMENUSHORTCUT</Condition>
+        <Shortcut Id="MediaBrowerStartmenu"
+                  Name="Media Browser Classic"
+                  Description="Media Browser 3 WMC Client"
+                  Target="[EhomeFolder]ehshell.exe"
+                  Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
+                  WorkingDirectory="EhomeFolder"
+                  Icon="MediaBrowserIcon.exe"
+                  IconIndex="0"/>
+        <RegistryValue Root="HKCU" Key="Software\GPL\MediaBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- Conditionally create a shortcut to Media Browser on the desktop-->
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="OptionalDesktopFolderShortcut" Guid="F2BBDA11-689A-41BA-B58B-8AEA48A572BF">
+        <Condition>OPTIONALDESKTOPSHORTCUT</Condition>
+        <Shortcut Id="MediaBrowerDesktop"
+                  Name="Media Browser Classic"
+                  Description="Media Browser 3 WMC Client"
+                  Target="[EhomeFolder]ehshell.exe"
+                  Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
+                  WorkingDirectory="EhomeFolder"
+                  Icon="MediaBrowserIcon.exe"
+                  IconIndex="0"/>
+        <RegistryValue Root="HKCU" Key="Software\GPL\MediaBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+    </DirectoryRef>
+    
+    <!-- Conditionally create a shortcut to Media Browser in the start menu > startup folder (current user only)-->
+    <DirectoryRef Id="StartupFolder">
+      <Component Id="OptionalMediaBrowserStartupFolderShortcut" Guid="987A0CDA-87F1-455e-9BE3-59AFE185D8DD">
+        <Condition>OPTIONALMBSTARTUPSHORTCUT</Condition>
+        <Shortcut Id="MediaBrowerStartup"
+                  Name="Media Browser Classic"
+                  Description="Media Browser 3 WMC Client"
+                  Target="[EhomeFolder]ehshell.exe"
+                  Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
+                  WorkingDirectory="EhomeFolder"
+                  Icon="MediaBrowserIcon.exe"
+                  IconIndex="0"/>
+        <RegistryValue Root="HKCU" Key="Software\GPL\MediaBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+		<!-- This is a list of all components installed as a part of this product. A component is the        -->
+		<!-- smallest atomic unit of installation in Windows Installer. Each component must have a unique    -->
+		<!-- GUID. In general, it is recommended that each file be installed by a separate component in      -->
+		<!-- order to avoid reference counting problems and make future servicing of this product easier.    -->
+		<!-- Each component is listed as a child of the DirectoryRef that represents the directory that      -->
+		<!-- the file it contains will install to.                                                           -->
+    
+    <DirectoryRef Id="APPROOTDIRECTORY">
+      <Component Id="Configurator.exe" Guid="3186FBE0-641C-45f9-AA16-7EAA85B7405C" DiskId="1">
+        <File Id="Configurator.exe" Name="Configurator.exe" KeyPath="yes" Source="..\Configurator3\bin\$(var.BuildType)\Configurator.exe" Checksum="yes" Vital="yes"/>
+      </Component>
+      <Component Id="Configurator.exe.config" Guid="5041AA87-37FD-4D9B-BBC4-71DDAEF6EE96" DiskId="1">
+        <Condition>VersionNT = 602</Condition>
+        <File Id="Configurator.exe.config" Name="Configurator.exe.config" Source="..\Windows 8.config" CompanionFile="Configurator.exe" Checksum="yes" Vital="yes"/>
+      </Component>
+      <Component Id="MediaBrowser.dll" Guid="3D581843-2412-458d-AF79-29845B277677" DiskId="1">
+				<File Id="MediaBrowser.dll" Name="MediaBrowser.dll" KeyPath="yes" Source="..\MediaBrowser3WMC\Mediabrowser.WMC\bin\$(var.BuildType)\MediaBrowser.dll" Checksum="yes" Vital="yes" Assembly=".net"/>
+			</Component>
+      <Component Id="Registration7.xml" Guid="C079A9EC-299A-4b0b-B5F3-9661E3A32AD0" DiskId="1">
+        <File Id="Registration7.xml" Name="Registration7.xml" Source="..\MediaBrowser3WMC\Mediabrowser.WMC\Registration7.xml" Checksum="no" />
+      </Component>
+			<Component Id="Application.png" Guid="85297F6D-29E5-4288-83EB-FBF9C2D70FE2" DiskId="1">
+				<File Id="Application.png" Name="Application.png" Source="..\MediaBrowser3WMC\Mediabrowser.WMC\Images\Application.png" Checksum="no" />
+			</Component>
+      <Component Id="ApplicationInactive.png" Guid="B555C4A3-415F-47a7-8565-C994A03F49C6" DiskId="1">
+        <File Id="ApplicationInactive.png" Name="ApplicationInactive.png" Source="..\MediaBrowser3WMC\Mediabrowser.WMC\Images\ApplicationInactive.png" Checksum="no" />
+      </Component>
+      <Component Id="MediaBrowserIcon.ico" Guid="25C6DD59-8881-42b4-B302-A616F747C99E" DiskId="1">
+        <File Id="MediaBrowserIcon.ico" Name="MediaBrowserIcon.ico" Source="MediaBrowserIcon.ico" Checksum="no" />
+      </Component>
+      <Component Id="MBMigrate.exe" Guid="D66E860A-24F2-44A5-B9E1-BD24BF3D7146" DiskId="1">
+        <File Id="MBMigrate.exe" Name="MBMigrate.exe" Source="..\MBMigrate\bin\$(var.BuildType)\MBMigrate.exe" Checksum="no"/>
+      </Component>
+      <Component Id="MBMigrate.exe.config" Guid="46359E77-B137-4DB2-B2CB-E38CF5F9447F" DiskId="1">
+        <Condition>VersionNT = 602</Condition>
+        <File Id="MBMigrate.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- This component is installed so the default ProgramData\MediaBrowser is created during installerion -->
+    <!-- together with the correct permissions (Users group with full control)                              -->
+    <!-- As long as there is content in the folder, it will not be removed during uninstallation            -->
+    <PropertyRef Id="WIX_ACCOUNT_USERS" />
+    <DirectoryRef Id="MBFolder">
+      <Component Id="MBProgramDataFolder" Guid="43D322E8-ABF5-48ee-B37E-C12CA86603E7">
+        <CreateFolder>
+          <!--Using PermissionEx we keep the current permissions and give additional permissions to the group-->
+          <!--Using WIX_ACCOUNT_USERS to handle localized qualified name of the Users group.                 -->
+           <util:PermissionEx User="[WIX_ACCOUNT_USERS]" GenericAll="yes"/>
+        </CreateFolder>
+      </Component>
+      
+      <!-- Install the proper SQLite package -->
+      <Component Id="SQLite32" Guid="77801CA1-BE8B-4A96-83C7-A364694A9362" DiskId="1">
+        <File Id="System.Data.SQLite.32" Name="System.Data.SQLite.dll" Source="..\SQLite\System.Data.SQLite.dll" Checksum="no" />
+        <Condition>Not VersionNT64</Condition>
+      </Component>
+      <Component Id="SQLite64" Guid="EAFE88A3-6ED1-4F65-8AB1-980D42FCCD82" DiskId="1">
+        <File Id="System.Data.SQLite.64" Name="System.Data.SQLite.dll" Source="..\SQLite\x64\System.Data.SQLite.dll" Checksum="no" />
+        <Condition>VersionNT64</Condition>
+      </Component>
+    </DirectoryRef>
+    
+
+    <!-- This is a list of features that are installed as a part of this product. In this case, there is -->
+		<!-- only one feature. Each feature contains a list of components that it will install. Features can -->
+		<!-- can be displayed and allow user selection in setup UI if desired.                               -->
+		<Feature Id="APPROOTFEATURE" Title="MediaBrowser" Level="1">
+      <ComponentRef Id="Configurator.exe" />
+      <ComponentRef Id="Configurator.exe.config" />
+      <ComponentRef Id="MediaBrowser.dll" />
+      <ComponentRef Id="MBMigrate.exe" />
+      <ComponentRef Id="MBMigrate.exe.config" />
+      <ComponentRef Id="Application.png" />
+      <ComponentRef Id="ApplicationInactive.png" />
+      <ComponentRef Id="Registration7.xml" />
+      <ComponentRef Id="MediaBrowserIcon.ico" />
+      <ComponentRef Id="MBProgramDataFolder" />
+      <ComponentRef Id="SQLite32" />
+      <ComponentRef Id="SQLite64" />
+      <ComponentRef Id="DefaultShortcuts" />
+      <ComponentRef Id="OptionalStartmenuFolderShortcut" />
+      <ComponentRef Id="OptionalDesktopFolderShortcut" />
+      <ComponentRef Id="OptionalMediaBrowserStartupFolderShortcut" />
+    </Feature>
+    
+
+		<!-- The media table defines the location that the MSI will look to find source files during         -->
+		<!-- installation or repair scenarios. In this case, the source files are in a cab file that will be -->
+		<!-- embedded directly into the MSI at build time.                                                   -->
+		<Media Id="1" Cabinet="Application.cab" EmbedCab="yes" />
+
+		<!-- These custom actions are used to register the application with Media Center using the utility   -->
+		<!-- RegisterMceApp.exe that is installed as a part of the Windows Media Center feature. Each custom -->
+		<!-- action is defined as a pair in order to leverage the WiX QtExec custom action to suppress the   -->
+		<!-- pop-up UI that would ordinarily appear when running RegisterMceApp.exe. Registering a Windows   -->
+		<!-- Media Center application will fail if it is already registered, so this setup will first        -->
+		<!-- unregister the application and then attempt to re-register it. This setup ignores the return    -->
+		<!-- code from the unregistration custom action but checks the return code of the registration       -->
+		<!-- action. If registration fails, setup will fail and roll back. These custom actions use the      -->
+		<!-- REGISTERMCEAPP property that is defined below in order to find the exact location of the file   -->
+		<!-- RegisterMceApp.exe on the system.                                                               -->
+
+    <!-- Windows Vista -->
+		<!--<CustomAction Id="CA_RegisterMceApp_Unregister_Install_Cmd" Property="CA_RegisterMceApp_Unregister_Install" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#RegistrationVista.xml]&quot;"/>
+		<CustomAction Id="CA_RegisterMceApp_Unregister_Uninstall_Cmd" Property="CA_RegisterMceApp_Unregister_Uninstall" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#RegistrationVista.xml]&quot;"/>
+		<CustomAction Id="CA_RegisterMceApp_Register_Cmd" Property="CA_RegisterMceApp_Register" Value="&quot;[REGISTERMCEAPP]&quot; /allusers &quot;[#RegistrationVista.xml]&quot;"/>
+		<CustomAction Id="CA_RegisterMceApp_Rollback_Cmd" Property="CA_RegisterMceApp_Rollback" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#RegistrationVista.xml]&quot;"/>-->
+
+    <!-- Windows 7 -->
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Install_Cmd7" Property="CA_RegisterMceApp_Unregister_Install" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration7.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Uninstall_Cmd7" Property="CA_RegisterMceApp_Unregister_Uninstall" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration7.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Register_Cmd7" Property="CA_RegisterMceApp_Register" Value="&quot;[REGISTERMCEAPP]&quot; /allusers &quot;[#Registration7.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Rollback_Cmd7" Property="CA_RegisterMceApp_Rollback" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration7.xml]&quot;"/>
+
+
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Install" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
+		<CustomAction Id="CA_RegisterMceApp_Unregister_Uninstall" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
+		<CustomAction Id="CA_RegisterMceApp_Register" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="check" Impersonate="no"/>
+		<CustomAction Id="CA_RegisterMceApp_Rollback" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="rollback" Return="ignore" Impersonate="no"/>
+
+    <CustomAction Id="CA_CheckDotNetFramework" BinaryKey="WixCA" ExeCommand="" />
+    <!-- Kill the service action -->
+    <CustomAction Id="KillSvc" Directory="APPROOTDIRECTORY" ExeCommand="taskkill /F /im MediaBrowserService*" Execute="immediate" Return="ignore"/>
+
+
+    <!--
+    
+    <CustomAction Id="CA_StartService_Cmd"
+                  Directory="APPROOTDIRECTORY"
+                  ExeCommand="&quot;[SystemFolder]Net.exe&quot; start MediaBrowserService"
+                  Return="asyncNoWait" />
+    
+    
+ 
+    <CustomAction Id="CA_StartService_Cmd" Property="CA_StartService" Value="&quot;[SystemFolder]Net.exe&quot; start MediaBrowserService" />
+    <CustomAction Id="CA_StartService" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="check"/>
+    -->
+
+    <!-- The InstallExecuteSequence table describes the order that actions will be executed during       -->
+		<!-- installation, repair and uninstall of this product.                                             -->
+		<InstallExecuteSequence>
+      <Custom Action="KillSvc" Before="InstallValidate">Installed</Custom>
+      <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
+				<![CDATA[NEWERVERSIONDETECTED]]>
+			</Custom>
+      <!-- Save the current installation path -->
+      <Custom Action="SaveInstallLocation" After="InstallValidate"></Custom>
+      <RemoveExistingProducts After="InstallValidate" />
+      <LaunchConditions After="AppSearch"/>
+
+			<!-- This custom action searches for Windows version 6.0.1, the Windows Media Center Ident registry  -->
+			<!-- value 5.0 and the presence of the file %windir%\eHome\RegisterMceApp.exe. If all of these     -->
+			<!-- conditions are met, the system is a Windows 7 Premium or Ultimate Edition operating  -->
+			<!-- system and the product will be allowed to install.                                            -->
+      <Custom Action="CA_ErrWrongWindowsVersion" Before="CostInitialize"><![CDATA[(NOT VersionNT >= 601 OR NOT REGISTERMCEAPP) AND NOT Installed]]></Custom>
+
+      <!-- Windows 7 and above -->
+      <Custom Action="CA_RegisterMceApp_Unregister_Install_Cmd7" After="CostFinalize">
+        <![CDATA[(NOT REMOVE) AND (VersionNT >= 601)]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Unregister_Uninstall_Cmd7" After="CA_RegisterMceApp_Unregister_Install_Cmd7" >
+        <![CDATA[(REMOVE) AND (NOT UPGRADINGPRODUCTCODE) AND (VersionNT >= 601)]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Register_Cmd7" After="CA_RegisterMceApp_Unregister_Uninstall_Cmd7">
+        <![CDATA[NOT REMOVE AND (VersionNT >= 601)]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Rollback_Cmd7" After="CA_RegisterMceApp_Register_Cmd7">
+        <![CDATA[NOT REMOVE AND (VersionNT >= 601)]]>
+      </Custom>
+
+			<!-- This unregistration custom action must occur before files are removed during uninstall of the -->
+			<!-- product because the custom action requires the registration XML file in order to run          -->
+			<!-- correctly. It is conditioned to only run during uninstall using the REMOVE condition.         -->
+			<Custom Action="CA_RegisterMceApp_Unregister_Uninstall" Before="RemoveFiles">
+				<![CDATA[REMOVE]]>
+			</Custom>
+
+			<!-- This sequence of actions is important. In order to allow the roll back custom action to run   -->
+			<!-- at the correct time in case the setup fails, it must be scheduled before the other actions    -->
+			<!-- because Windows Installer pushes each action onto a stack and then pops them off of the stack -->
+			<!-- in case of any failure in order to accomplish the roll back.                                  -->
+			<Custom Action="CA_RegisterMceApp_Rollback" After="InstallFiles">
+				<![CDATA[NOT REMOVE]]>
+			</Custom>
+      
+			<Custom Action="CA_RegisterMceApp_Unregister_Install" After="CA_RegisterMceApp_Rollback">
+				<![CDATA[NOT REMOVE]]>
+			</Custom>
+			<Custom Action="CA_RegisterMceApp_Register" After="CA_RegisterMceApp_Unregister_Install">
+				<![CDATA[NOT REMOVE]]>
+			</Custom>
+
+      <Custom Action="CA_Migrate" After="InstallFinalize">
+         <![CDATA[NOT REMOVE]]>
+      </Custom>
+
+		</InstallExecuteSequence>
+
+		<!-- The InstallUISequence table describes the order that actions will be executed when the user     -->
+		<!-- runs setup in full UI mode. Some actions must be scheduled in the UI and the execute sequence   -->
+		<!-- tables to ensure that they will run regardless of whether the user runs setup in full UI mode   -->
+		<!-- or in reduced UI or silent modes.                                                               -->
+		<InstallUISequence>
+      <FindRelatedProducts Before="AppSearch"/>
+      <!--<AppSearch After="FindRelatedProducts"/>-->
+      <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
+				<![CDATA[NEWERVERSIONDETECTED]]>
+			</Custom>
+      <Custom Action="CA_ErrWrongWindowsVersion" Before="CostInitialize"><![CDATA[(NOT VersionNT >= 600 OR NOT REGISTERMCEAPP) AND NOT Installed]]></Custom>
+		</InstallUISequence>
+
+
+    <!-- These properties define links that will appear in the Add/Remove Programs control panel when    -->
+		<!-- this product is installed on the system.                                                        -->
+		<Property Id="ARPHELPLINK" Value="!(loc.Property_ArpHelpLink)" />
+		<Property Id="ARPURLINFOABOUT" Value="!(loc.Property_ArpUrlInfoAbout)" />
+    <Property Id="ARPURLUPDATEINFO" Value="!(loc.Property_ArpUrlUpdateInfo)"/>
+    <Property Id="ARPPRODUCTICON" Value="MediaBrowserIcon.exe" />
+    <!-- This custom action will save the installation path so we can retrieve it later                  -->
+    <CustomAction Id="SaveInstallLocation" Property="ARPINSTALLLOCATION" Value="[APPROOTDIRECTORY]" />
+
+    <!-- This property defines the ALLUSERS property to be 1, which indicates that this product will be  -->
+		<!-- installed per-machine instead of per-user.                                                      -->
+		<Property Id="ALLUSERS">
+			<![CDATA[1]]>
+		</Property>
+
+		<!-- This property uses a registry locator to determine the version of Windows Media Center present  -->
+		<!-- on the system (if any). This registry-based version detection algorithm is documented in the    -->
+		<!-- Windows Media Center SDK for Windows.                                                     -->
+		<Property Id="MCEINSTALLVERSION" Secure="yes">
+			<RegistrySearch Id="MceInstallRegKey" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Media Center" Name="Ident" Type="raw"/>
+		</Property>
+
+		<!-- This property uses an AppSearch to attempt to locate the file %windir\eHome\ehShell.exe  on the -->
+		<!-- system. If it is found, the property is set to the fully qualified path to this file, and this  -->
+		<!-- path is used to create a desktop shortcut to launch the application in Windows Media Center.    -->
+		<Property Id="EHSHELLEXE" Secure="yes">
+			<DirectorySearch Id="EhomeDirectory2" Path="[WindowsFolder]\ehome">
+				<FileSearch Id="EhShellExe" Name="ehShell.exe" MinVersion="6.0.0.0" />
+			</DirectorySearch>
+		</Property>
+		<!-- This property uses an AppSearch to attempt to locate the file %windir\eHome\RegisterMceApp.exe  -->
+		<!-- on the system. If it is found, the property is set to the fully qualified path to this file,    -->
+		<!-- and this path is used to call RegisterMceApp.exe in several custom actions listed above to      -->
+		<!-- register this application with Windows Media Center.                                            -->
+		<Property Id="REGISTERMCEAPP" Secure="yes">
+			<DirectorySearch Id="EhomeDirectory" Path="[WindowsFolder]\ehome">
+				<FileSearch Id="RegisterMceAppExe" Name="RegisterMceApp.exe" />
+			</DirectorySearch>
+		</Property>
+
+		<!-- This property is used as the default installation directory, and the user can change this path  -->
+		<!-- during setup. The Id must be set to WIXUI_INSTALLDIR and the value must match the directory Id  -->
+		<!-- defined above that represents the root installation directory.                                  -->
+    
+    <!-- We retrieve the previous install location so a newer version defaults to that installation path -->
+    <Property Id="APPROOTDIRECTORY" Secure="yes">
+      <RegistrySearch Id="FindInstallLocation"
+          Root="HKLM"
+          Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\[OLDERVERSIONBEINGUPGRADED]"
+          Name="InstallLocation"
+          Type="raw" />
+    </Property>
+    
+    <Property Id="WIXUI_INSTALLDIR" Value="APPROOTDIRECTORY" />
+
+		<!-- This UIRef element specifies what WiXUI dialog set to use for the setup UI. This package uses   -->
+		<!-- the WixUI_InstallDir dialog set, which provides a welcome page, a license agreement page, a     -->
+		<!-- page to allow changing the installation path, an installation confirmation page, a progress     -->
+		<!-- page and a completion page. Other dialog sets are available in the WiX toolset and are          -->
+		<!-- described in more detail in the WiX documentation.                                              -->
+    <!-- We're using our own custom installation dialogs-->
+    <UIRef Id="MediaBrowserWixUI_InstallDir"/>
+    
+		<!-- In WiX v3.0, this variable is used to override the default license agreement text that is       -->
+		<!-- included in the WixUIExtension with a custom file.                                              -->
+		<WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    
+    <!-- we have some custom images-->
+    <WixVariable Id="WixUIBannerBmp" Value="Images\header.bmp"/>
+    <WixVariable Id="WixUIDialogBmp" Value="Images\dialog.bmp"/>
+
+    <!-- These properties may be modified in the user interface -->
+     <Property Id="OPTIONALDESKTOPSHORTCUT">1</Property>
+     <Property Id="OPTIONALSTARTMENUSHORTCUT">1</Property>  
+     <!--<Property Id="OPTIONALMBSTARTUPSHORTCUT">1</Property>-->
+     <Property Id="OPTIONALMBSERVICESTARTUPSHORTCUT">1</Property>
+    <Property Id="LAUNCHAPPONEXIT">1</Property>
+
+    <!-- CustomAction to run migration after the setup finishes -->
+    <CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>
+    
+    <!-- CustomAction to condtionally launch the configurator after the setup finishes -->
+    <CustomAction Id="StartAppOnExit" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="check" Impersonate="yes"/>
+    <Property Id="WixShellExecTarget" Value="[#Configurator.exe]"/>
+    
+    <!-- Custom Installation dialogs start here -->
+    <UIRef Id="WixUI_Common" />
+    <UI Id="MediaBrowserWixUI_InstallDir">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="InstallDir" />
+      <Property Id="ARPNOMODIFY" Value="1" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+
+      <Publish Dialog="MediaBrowserExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+      <Publish Dialog="MediaBrowserExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">LAUNCHAPPONEXIT</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="MediaBrowserInstallDirDlg">LicenseAccepted = "1"</Publish>
+
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="MediaBrowserInstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MediaBrowserInstallDirDlg" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Dialog Id="MediaBrowserInstallDirDlg" Width="370" Height="270" Title="!(loc.InstallDirDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.InstallDirDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.InstallDirDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="FolderLabel" Type="Text" X="20" Y="60" Width="290" Height="20" NoPrefix="yes" Text="!(loc.InstallDirDlgFolderLabel)" />
+        <Control Id="Folder" Type="PathEdit" X="20" Y="80" Width="260" Height="18" Property="WIXUI_INSTALLDIR" Indirect="yes" />
+        <Control Id="ChangeFolder" Type="PushButton" X="284" Y="80" Width="56" Height="17" Text="!(loc.InstallDirDlgChange)" />
+
+        <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="40" Y="110" Width="290" Height="17" Property="OPTIONALDESKTOPSHORTCUT" CheckBoxValue="0" Text="!(loc.Dialog_CreateDesktopShortcut)" />
+        <Control Id="StartmenuShortcutCheckBox" Type="CheckBox" X="40" Y="130" Width="290" Height="17" Property="OPTIONALSTARTMENUSHORTCUT" CheckBoxValue="0" Text="!(loc.Dialog_CreateStartMenuShortcut)" />
+        <!--<Control Id="UserText1" Type="Text" X="20" Y="160" Width="330" Height="20" Text="!(loc.Dialog_OptionalLaunchAtStartup)" />-->
+        <Control Id="MediaBrowserStartupShortcutCheckBox" Type="CheckBox" X="40" Y="150" Width="290" Height="17" Property="OPTIONALMBSTARTUPSHORTCUT" CheckBoxValue="0" Text="!(loc.Dialog_CreateMediaBrowserStartupShortcut)" />
+      </Dialog>
+
+      <Dialog Id="MediaBrowserExitDialog" Width="370" Height="270" Title="!(loc.ExitDialog_Title)">
+        <Control Id="Finish" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)" />
+        <Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="!(loc.ExitDialogBitmap)" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Description" Type="Text" X="135" Y="70" Width="225" Height="40" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogDescription)" />
+        <Control Id="UserText2" Type="Text" X="135" Y="90" Width="225" Height="60" Transparent="yes" Text="!(loc.Dialog_MakeDonation)" />
+        <Control Id="UserText3" Type="Text" X="135" Y="110" Width="225" Height="60" Transparent="yes" Text="!(loc.Dialog_DonationUrl)" />
+        <Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogTitle)" />
+        <Control Id="LaunchCheckBox" Type="CheckBox" X="190" Y="243" Width="100" Height="17" Property="LAUNCHAPPONEXIT" Hidden="yes" CheckBoxValue="1" Text="Configure initial settings">
+          <Condition Action="show">NOT Installed</Condition>
+        </Control>
+      </Dialog>
+
+      <InstallUISequence>
+        <Show Dialog="MediaBrowserExitDialog" OnExit="success" />
+      </InstallUISequence>
+
+      <AdminUISequence>
+        <Show Dialog="MediaBrowserExitDialog" OnExit="success" />
+      </AdminUISequence>
+    </UI>
+  </Product>
+</Wix>
