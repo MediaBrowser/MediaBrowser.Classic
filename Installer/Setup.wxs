@@ -68,7 +68,7 @@
       <Directory Id="AppDataFolder" />
       <Directory Id="TEMPDIR" Name="TempFolder"/>
       <Directory Id="CommonAppDataFolder">
-        <Directory Id="MBFolder" Name="MediaBrowser">
+        <Directory Id="MBFolder" Name="MediaBrowser-WMC">
           <Directory Id="PluginsFolder" Name="Plugins"/>
           <Directory Id="CacheFolder" Name="cache">
               <!--<Directory Id="CacheItemsFolder" Name="items" />-->
@@ -198,7 +198,7 @@
       </Component>
     </DirectoryRef>
 
-    <!-- This component is installed so the default ProgramData\MediaBrowser is created during installerion -->
+    <!-- This component is installed so the default ProgramData\MediaBrowser-WMC is created during installerion -->
     <!-- together with the correct permissions (Users group with full control)                              -->
     <!-- As long as there is content in the folder, it will not be removed during uninstallation            -->
     <PropertyRef Id="WIX_ACCOUNT_USERS" />
@@ -220,6 +220,14 @@
         <File Id="System.Data.SQLite.64" Name="System.Data.SQLite.dll" Source="..\SQLite\x64\System.Data.SQLite.dll" Checksum="no" />
         <Condition>VersionNT64</Condition>
       </Component>
+      
+      <!-- Install json.net and protobuf -->
+      <Component Id="JsonNet" Guid="67A3FC10-E6F2-4547-9BE8-E8E732FACED3" DiskId="1">
+        <File Id="Json.Net" Name="Newtonsoft.Json.dll" Source="..\3rdParty\Newtonsoft.Json.dll" Checksum="no" />
+      </Component>
+      <Component Id="Protobuf" Guid="C6E52F3D-03E0-4E01-991E-1AF6219F2C7B" DiskId="1">
+        <File Id="Protobuf" Name="protobuf-net.dll" Source="..\3rdParty\protobuf-net.dll" Checksum="no" />
+      </Component>
     </DirectoryRef>
     
 
@@ -239,6 +247,8 @@
       <ComponentRef Id="MBProgramDataFolder" />
       <ComponentRef Id="SQLite32" />
       <ComponentRef Id="SQLite64" />
+      <ComponentRef Id="JsonNet" />
+      <ComponentRef Id="Protobuf" />
       <ComponentRef Id="DefaultShortcuts" />
       <ComponentRef Id="OptionalStartmenuFolderShortcut" />
       <ComponentRef Id="OptionalDesktopFolderShortcut" />

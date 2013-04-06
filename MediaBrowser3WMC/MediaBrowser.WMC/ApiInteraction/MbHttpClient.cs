@@ -44,7 +44,7 @@ namespace MediaBrowser.ApiInteraction
         public Stream Get(string url)
         {
 
-            //MediaBrowser.Library.Logging.Logger.ReportInfo("Sending Http Get to {0}", url);
+            Library.Logging.Logger.ReportInfo("Sending Http Get to {0}", url);
 
             try
             {
