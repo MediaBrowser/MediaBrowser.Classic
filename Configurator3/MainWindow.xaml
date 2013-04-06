@@ -382,7 +382,7 @@
                 </Grid>
             </TabItem>
 
-                <TabItem Header="external players" x:Name="externalPlayersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Collapsed" IsSelected="True">
+                <TabItem Header="external players" x:Name="externalPlayersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" >
                     <DockPanel Margin="20 20 20 20" LastChildFill="True">
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0 20 0 0" VerticalAlignment="Bottom" >
                             <StackPanel.Resources>
@@ -435,7 +435,7 @@
                         <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser.tv</Hyperlink></TextBlock>
                         <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
                                 <TextBlock Margin="301.045,0,0,37.38" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">Most configuration is done via the  
-                                    <Hyperlink NavigateUri="http://localhost:8096/Dashboard/dashboard.html" RequestNavigate="HandleRequestNavigate">
+                                    <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleRequestNavigate">
                                         Server Dashboard
                                     </Hyperlink>
                                 </TextBlock>
