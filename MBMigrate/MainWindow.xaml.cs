@@ -125,11 +125,14 @@ namespace MBMigrate
                 //Move over config file
                 CopyFile(Path.Combine(oldPathMap["AppConfigPath"], "MediaBrowserXml.config"), Path.Combine(ApplicationPaths.AppConfigPath,"MediaBrowserXml.config"));
 
+                //Move over licence file
+                CopyFile(Path.Combine(oldPathMap["AppConfigPath"], "MB.lic"), Path.Combine(ApplicationPaths.AppConfigPath,"MB.lic"));
+
                 //And Plugins that work
-                foreach (var dll in knownCompatibleDlls)
-                {
-                    CopyFile(Path.Combine(oldPathMap["AppPluginPath"], dll), Path.Combine(ApplicationPaths.AppPluginPath, dll));
-                }
+                //foreach (var dll in knownCompatibleDlls)
+                //{
+                //    CopyFile(Path.Combine(oldPathMap["AppPluginPath"], dll), Path.Combine(ApplicationPaths.AppPluginPath, dll));
+                //}
 
                 //And the Localization folder
                 foreach (var file in Directory.GetFiles(oldPathMap["AppLocalizationPath"]))
