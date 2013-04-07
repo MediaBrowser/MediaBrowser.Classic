@@ -193,6 +193,114 @@ namespace MediaBrowser
         }
         #endregion
 
+        #region CustomDialogs
+        private bool showMessage = false;
+        public bool ShowMessage
+        {
+            get { return showMessage; }
+            set
+            {
+                if (showMessage != value)
+                {
+                    showMessage = value;
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowMessage"));
+                }
+            }
+        }
+
+        public string MessageResponse { get; set; }
+        private string messageText = "";
+        public string MessageText
+        {
+            get
+            {
+                return messageText;
+            }
+            set
+            {
+                if (messageText != value)
+                {
+                    messageText = value;
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageText"));
+                }
+            }
+        }
+
+        private string messageUI = "resx://MediaBrowser/MediaBrowser.Resources/Message#MessageBox";
+        public string MessageUI
+        {
+            get { return messageUI; }
+            set
+            {
+                if (messageUI != value)
+                {
+                    messageUI = value;
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageUI"));
+                }
+            }
+        }
+
+        protected string MessageBox(string msg, bool modal, int timeout, string ui)
+        {
+            MessageUI = !string.IsNullOrEmpty(ui) ? ui : "resx://MediaBrowser/MediaBrowser.Resources/Message#MessageBox";
+            MessageResponse = "";
+            MessageText = msg;
+            ShowMessage = true;
+            if (timeout > 0)  //0 will leave it up
+            {
+                if (modal)
+                {
+                    //wait for response or timeout
+                    WaitForMessage(timeout);
+                }
+                else
+                {
+                    //async the timeout
+                    Async.Queue("Custom Msg", () => WaitForMessage(timeout));
+                }
+            }
+
+            return MessageResponse;
+        }
+
+        protected void WaitForMessage(int timeout)
+        {
+            DateTime start = DateTime.Now;
+            while (showMessage && (DateTime.Now - start).TotalMilliseconds < timeout)
+            {
+                System.Threading.Thread.Sleep(250);
+            }
+
+            ShowMessage = false;
+        }
+
+        public string MessageBox(string msg)
+        {
+            return MessageBox(msg, true, Config.DefaultMessageTimeout * 1000, null);
+        }
+
+        public string MessageBox(string msg, bool modal)
+        {
+            return MessageBox(msg, modal, Config.DefaultMessageTimeout * 1000, null);
+        }
+
+        public string MessageBox(string msg, bool modal, int timeout)
+        {
+            return MessageBox(msg, modal, timeout, null);
+        }
+
+        public string YesNoBox(string msg)
+        {
+            return MessageBox(msg, true, Config.DefaultMessageTimeout * 1000, "resx://MediaBrowser/MediaBrowser.Resources/Message#YesNoBox");
+        }
+
+        public void ProgressBox(string msg)
+        {
+            MessageBox(msg, false, 0, "resx://MediaBrowser/MediaBrowser.Resources/Message#ProgressBox");
+        }
+
+        #endregion
+
         public bool PluginUpdatesAvailable
         {
             get
@@ -828,10 +936,9 @@ namespace MediaBrowser
         /// </summary>
         public void Logout()
         {
-            MediaCenterEnvironment mce = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-
-            // Present dialog
-            DialogResult dr = mce.Dialog("Logout", "Logout?", DialogButtons.No | DialogButtons.Yes, 0, true);
+            // Present dialog - must be asynced to get off the UI thread
+            Async.Queue("Logout", () => {var dr = YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name));});
+            
 
         }
 

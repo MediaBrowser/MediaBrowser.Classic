@@ -16,6 +16,10 @@
 	<Font Name="CP_ButtonFont" Font="Segoe Media Center, 20" />
 	<Font Name="CP_ColorSpinnerValueFont" Font="Segoe Media Center,10"/>
 	<Font Name="CP_VersionFont" Font="Segoe Media Center, 10"/>
+  
+  <!-- Message -->
+	<Font Name="MS_MainMessageFont" Font="Segoe, 48"/>
+  
 
 	<!-- Movie Minimal -->
 	<Font Name="MM_TitleFont" Font="Segoe Media Center Light, 36"/>

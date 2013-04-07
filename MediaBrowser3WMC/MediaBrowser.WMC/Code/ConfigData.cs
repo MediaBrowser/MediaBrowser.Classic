@@ -253,6 +253,9 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"The number of history items to show in the 'breadcrumbs' (how deep in the structure you are) .")]
         public int BreadcrumbCountLimit = 2;
+        [Group("Display")]
+        [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
+        public int DefaultMessageTimeout = 8;
         [Dangerous]
         [Group("Display")]
         [Comment(@"Characters to be ignored in sorting.")]

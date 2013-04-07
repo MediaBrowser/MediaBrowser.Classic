@@ -17,7 +17,10 @@
 	<Font Name="CP_ColorSpinnerValueFont" Font="Segoe Media Center,7"/>
 	<Font Name="CP_VersionFont" Font="Segoe Media Center, 10"/>
 
-	<!-- Movie Minimal -->
+  <!-- Message -->
+  <Font Name="MS_MainMessageFont" Font="Segoe Media Center Semibold, 24"/>
+
+  <!-- Movie Minimal -->
 	<Font Name="MM_TitleFont" Font="Segoe Media Center Light, 25"/>
 	<Font Name="MM_ClockFont" Font="Segoe Media Center Light, 25"/>
   <Font Name="MM_ArtistFont" Font="Segoe Media Center Light, 25"/>

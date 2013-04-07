@@ -512,6 +512,11 @@ namespace MediaBrowser
             get { return this.data.BreadcrumbCountLimit; }
             set { if (this.data.BreadcrumbCountLimit != value) { this.data.BreadcrumbCountLimit = value; Save(); FirePropertyChanged("BreadcrumbCountLimit"); } }
         }
+        public int DefaultMessageTimeout
+        {
+            get { return this.data.DefaultMessageTimeout; }
+            set { if (this.data.DefaultMessageTimeout != value) { this.data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
+        }
         public bool AllowInternetMetadataProviders
         {
             get { return this.data.AllowInternetMetadataProviders; }

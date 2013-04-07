@@ -1,0 +1,187 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+		  xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	    xmlns:me="Me"
+	  >
+
+  <UI Name="MessageBoxBase">
+
+    <Properties>
+      <cor:String Name="Msg" String="$Required" />
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled"/>
+    </Locals>
+
+    <Rules>
+      <Rule>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Focus" />
+        </Actions>
+      </Rule>
+      <Rule>
+        <Conditions>
+          <Modified Source="[BackHandler.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Rule>
+    </Rules>
+  </UI>
+
+  <UI Name="MessageBox" BaseUI="me:MessageBoxBase" >
+
+    <Locals>
+      <Command Name="OK"/>
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Msg]" Target="[Message.Content]" />
+      <Changed Source="[OK.Invoked]">
+        <Actions>
+          <Set Target="[Application.MessageResponse]" Value="OK" />
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="10,10,80" Padding="2,0,0,0" Navigation="ContainAll,Group" Layout="Form"  >
+        <Children>
+          <Text Name="Message"
+                Content="[Msg]"
+                Margins="20,40,0,0"
+                Color="color://s:FontColorLight"
+                Font="font://f:MS_MainMessageFont"
+                WordWrap="true"
+                MaximumSize="1000,0">
+            
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Near" />
+            </LayoutInput>
+          </Text>
+          <sb:SimpleButton Text="OK" Command="[OK]" Margins="0,10,20,20" Size="240,50" Visible="true" Color="color://s:FontColorLight" Font="font://f:CP_ButtonFont">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Far" />
+            </LayoutInput>
+            
+          </sb:SimpleButton>
+        </Children>
+      </ColorFill>
+    </Content>
+
+  </UI>
+  
+  <UI Name="ProgressBox" BaseUI="me:MessageBoxBase" >
+
+    <Rules>
+      <Binding  Source="[Msg]" Target="[Message.Content]" />
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="80,10,10" Padding="2,0,0,0" Navigation="ContainAll,Group" Layout="Form" >
+        <Children>
+          <Text Name="Message"
+                Content="[Msg]"
+                Margins="20,40,0,0"
+                Color="color://s:FontColorLight"
+                Font="font://f:MS_MainMessageFont"
+                WordWrap="true"
+                MaximumSize="1000,0">
+
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Near" />
+            </LayoutInput>
+          </Text>
+          <ColorFill Content="Gray" MinimumSize="40,20"  >
+              <LayoutInput>
+                <FormLayoutInput Left="Parent,0" Top="Parent,.65" />
+              </LayoutInput>
+            <Animations>
+              <Animation Loop="-1">
+                <Keyframes>
+                  <PositionKeyframe Time="0.0" Value="0,0,0" Interpolation="Linear" RelativeTo="Current" />
+                  <PositionKeyframe Time="3.0" Value="1260,0,0" RelativeTo="Current" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </ColorFill>
+          <ColorFill Content="DarkGray" MinimumSize="0,20"  >
+              <LayoutInput>
+                <FormLayoutInput Left="Parent,0" Top="Parent,.65" Horizontal="Fill" />
+              </LayoutInput>
+           </ColorFill>
+        </Children>
+      </ColorFill>
+    </Content>
+
+  </UI>
+  
+  <UI Name="YesNoBox" BaseUI="me:MessageBoxBase" >
+
+    <Locals>
+      <Command Name="Yes"/>
+      <Command Name="No"/>
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Msg]" Target="[Message.Content]" />
+      <Changed Source="[Yes.Invoked]">
+        <Actions>
+          <Set Target="[Application.MessageResponse]" Value="Y" />
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[No.Invoked]">
+        <Actions>
+          <Set Target="[Application.MessageResponse]" Value="N" />
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="10,50,10" Padding="2,0,0,0" Navigation="ContainAll,Group" Layout="Form" >
+        <Children>
+          <Text Name="Message"
+                Content="[Msg]"
+                Margins="20,40,0,0"
+                Color="color://s:FontColorLight"
+                Font="font://f:MS_MainMessageFont"
+                WordWrap="true"
+                MaximumSize="1000,0">
+
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Near" />
+            </LayoutInput>
+          </Text>
+          <Panel Layout="HorizontalFlow" Padding="0,0,10,20" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Far" />
+            </LayoutInput>
+            <Children>
+              <sb:SimpleButton Text="Yes" Command="[Yes]" Margins="0,10,0,0" Size="240,50" Visible="true" Color="color://s:FontColorLight" Font="font://f:CP_ButtonFont"/>
+              <sb:SimpleButton Text="No" Command="[No]" Margins="10,10,0,0" Size="240,50" Visible="true" Color="color://s:FontColorLight" Font="font://f:CP_ButtonFont"/>
+            </Children>
+          </Panel>
+
+        </Children>
+      </ColorFill>
+    </Content>
+
+  </UI>
+</Mcml>

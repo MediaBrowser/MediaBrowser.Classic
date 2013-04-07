@@ -906,11 +906,16 @@ namespace MediaBrowser.Library {
         }
 
         protected void IndexByChoice_ChosenChanged(object sender, EventArgs e) {
-
-            folderChildren.IndexBy(displayPrefs.IndexBy);
-            selectedchildIndex = -1;
-            if (folderChildren.Count > 0)
-                SelectedChildIndex = 0;
+            Async.Queue("Index By", () =>
+            {
+                Application.CurrentInstance.ProgressBox(string.Format("Building index on {0}. Please wait...", displayPrefs.IndexBy));
+                folderChildren.IndexBy(displayPrefs.IndexBy);
+                Application.CurrentInstance.ShowMessage = false;
+                selectedchildIndex = -1;
+                if (folderChildren.Count > 0)
+                    SelectedChildIndex = 0;
+                                            
+            });
         }
 
         public int JILShift {

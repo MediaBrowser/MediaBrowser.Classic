@@ -1062,6 +1062,7 @@
     <Content Include="Markup\DefaultSS.mcml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Markup\Message.mcml" />
     <Content Include="Markup\Themes\Default\ConfigPage.mcml">
       <SubType>Designer</SubType>
     </Content>
