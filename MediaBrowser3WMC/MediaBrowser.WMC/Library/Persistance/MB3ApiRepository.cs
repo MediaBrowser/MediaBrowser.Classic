@@ -9,6 +9,7 @@ using System.Text;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Interfaces;
+using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -306,7 +307,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     // Fill in display prefs and indexby options
                     folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
-                    folder.IndexByOptions = mb3Item.IndexOptions.ToDictionary(o => o);
+                    folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
+                        new Dictionary<string, string> {{LocalizedStrings.Instance.GetString("NoneDispPref"), ""}};
                 }
 
                 var video = item as Video;
