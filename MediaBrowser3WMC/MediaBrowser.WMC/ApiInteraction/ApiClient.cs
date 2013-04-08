@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Web;
 using MediaBrowser.Library;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Mediabrowser.Model.Entities;
 using DisplayPreferences = MediaBrowser.Model.Entities.DisplayPreferences;
 
 namespace MediaBrowser.ApiInteraction
@@ -502,6 +504,33 @@ namespace MediaBrowser.ApiInteraction
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<WeatherInfo>(stream);
+            }
+        }
+
+        /// <summary>
+        /// Gets registration status for a specific feature
+        /// with an MB2 equivalent
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="Mb2Equivalent"></param>
+        /// <returns>MBRegistrationRecord.</returns>
+        /// <exception cref="System.ArgumentNullException">feature</exception>
+        public MBRegistrationRecord GetRegistrationStatus(string feature, string Mb2Equivalent = null)
+        {
+            if (string.IsNullOrEmpty(feature))
+            {
+                throw new ArgumentNullException("feature");
+            }
+
+            var dict = new QueryStringDictionary();
+
+            if (Mb2Equivalent != null) dict.Add("Mb2Equivalent", Mb2Equivalent);
+
+            var url = GetApiUrl("Plugins/RegistrationRecords/"+ HttpUtility.UrlEncode(feature), dict);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<MBRegistrationRecord>(stream);
             }
         }
 

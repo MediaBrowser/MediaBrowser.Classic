@@ -54,13 +54,15 @@ namespace MediaBrowser.Library.Registration
         /// <returns>A MBRegistrationRecord (filled in asynchronously)</returns>
         public static MBRegistrationRecord GetRegistrationStatus(string feature, System.Version version)
         {
-            MBRegistrationRecord rec = new MBRegistrationRecord();
+            
+            var rec = new MBRegistrationRecord();
             Async.Queue(feature + " registration check", () =>
             {
                 try
                 {
-                    rec.ExpirationDate = GetExpirationDate(feature, version);
-                    rec.IsRegistered = Validate(feature);
+                    var mb3Rec = Kernel.ApiClient.GetRegistrationStatus(feature, feature); // pass our feature as the MB2 Equiv
+                    rec.ExpirationDate = mb3Rec.ExpirationDate;
+                    rec.IsRegistered = mb3Rec.IsRegistered;
                 }
                 catch
                 {
