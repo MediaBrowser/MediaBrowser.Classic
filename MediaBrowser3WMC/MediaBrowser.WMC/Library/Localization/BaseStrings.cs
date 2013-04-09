@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0054";
+        const string VERSION = "1.0055";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -87,7 +87,7 @@ namespace MediaBrowser.Library.Localization
         public string SortYearsAscConfigDesc = "When sorting by 'year' order from lowest to highest (default is highest to lowest).";
         public string AutoValidateConfigDesc = "Automatically validate and refresh while navigating. WARNING. Turning this off may cause the library to be inaccurate and you may need to manually refresh.";
         public string SaveLocalMetaConfigDesc = "Save images and xml data locally with the media.  Prevents having to re-retrieve from internet providers on refresh.  Delete files to re-fetch.";
-        public string HideEmptyFoldersConfigDesc = "Hide TV items with no media in them in the interface.";
+        public string HideEmptyFoldersConfigDesc = "Hide items with no media in them in the interface.";
 
 
         //Config Panel
@@ -172,7 +172,7 @@ namespace MediaBrowser.Library.Localization
         public string SortYearsAscConfig = "Sort by Year in Ascending Order";
         public string AutoValidateConfig = "Automatically Validate Items";
         public string SaveLocalMetaConfig = "Save Locally";
-        public string HideEmptyFoldersConfig = "Hide Empty TV Folders";
+        public string HideEmptyFoldersConfig = "Hide Empty Folders";
 
 
         //EHS        

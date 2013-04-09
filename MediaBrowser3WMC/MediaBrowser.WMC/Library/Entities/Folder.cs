@@ -154,7 +154,7 @@ namespace MediaBrowser.Library.Entities {
                 IList<BaseItem> visibleChildren;
                 lock (ActualChildren) {
                     visibleChildren = ActualChildren;
-                    //return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).Children.Count > 0).ToList() : visibleChildren.ToList();
+                    //return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).Children.Any()).ToList() : visibleChildren.ToList();
                     //removed for now because hid things that shouldn't be -ebr
                     return visibleChildren.ToList();
                 }
