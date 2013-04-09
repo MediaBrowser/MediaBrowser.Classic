@@ -176,7 +176,7 @@ namespace MediaBrowser.Library.Persistance
         {
             // Retrieve the root for current user
             var root = Kernel.ApiClient.GetRootFolder(Kernel.CurrentUser.Id);
-            return (AggregateFolder)GetItem(root, "AggregateFolder");
+            return root != null ? (AggregateFolder)GetItem(root, "AggregateFolder") : null;
             
         }
 

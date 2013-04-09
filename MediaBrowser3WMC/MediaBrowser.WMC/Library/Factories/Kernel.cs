@@ -577,7 +577,7 @@ namespace MediaBrowser.Library {
             kernel.RootFolder = kernel.ItemRepository.RetrieveRoot();
 
             //now add back the plug-in children
-            if (virtualItems.Any())
+            if (virtualItems.Any() && kernel.RootFolder != null)
             {
                 foreach (var item in virtualItems)
                 {

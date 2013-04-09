@@ -997,8 +997,20 @@ namespace MediaBrowser
             // load root
             Kernel.Instance.ReLoadRoot();
 
-            //Launch into our entrypoint
-            LaunchEntryPoint(EntryPointResolver.EntryPointPath);
+            if (Kernel.Instance.RootFolder == null)
+            {
+                Async.Queue("Launch Error", () =>
+                                                {
+                                                    MessageBox("Unable to retrieve root folder.  Application will exit.");
+                                                    Close();
+                                                });
+            }
+            else
+            {
+                //Launch into our entrypoint
+                LaunchEntryPoint(EntryPointResolver.EntryPointPath);
+            }
+
             
         }
 
