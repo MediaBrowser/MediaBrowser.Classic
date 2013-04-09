@@ -33,20 +33,20 @@ namespace MediaBrowser.Library.Metadata {
         public static List<MetadataProviderFactory> DefaultProviders() {
 
             return new Type[] { 
-                typeof(VirtualFolderProvider),
-                typeof(ImageFromMediaLocationProvider),
-                typeof(ImageByNameProvider),
-                typeof(VideoFormatProvider),
-                typeof(MBMovieProviderFromJson),
-                typeof(MovieProviderFromXml),
-                typeof(FolderProviderFromXml),
-                typeof(LocalEpisodeProvider), 
-                typeof(LocalSeriesProvider),
-                typeof(LocalSeasonProvider),
-                typeof(RemoteEpisodeProvider),
-                typeof(RemoteSeasonProvider), 
-                typeof(RemoteSeriesProvider),
-                typeof(MovieDbProvider),
+                //typeof(VirtualFolderProvider),
+                //typeof(ImageFromMediaLocationProvider),
+                //typeof(ImageByNameProvider),
+                //typeof(VideoFormatProvider),
+                //typeof(MBMovieProviderFromJson),
+                //typeof(MovieProviderFromXml),
+                //typeof(FolderProviderFromXml),
+                //typeof(LocalEpisodeProvider), 
+                //typeof(LocalSeriesProvider),
+                //typeof(LocalSeasonProvider),
+                //typeof(RemoteEpisodeProvider),
+                //typeof(RemoteSeasonProvider), 
+                //typeof(RemoteSeriesProvider),
+                //typeof(MovieDbProvider),
                 typeof(MBDefaultImageProvider)
             }.Select(t => new MetadataProviderFactory(t)).ToList(); 
             

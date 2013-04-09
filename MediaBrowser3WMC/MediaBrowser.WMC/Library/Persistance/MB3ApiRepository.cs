@@ -206,15 +206,18 @@ namespace MediaBrowser.Library.Persistance
                 item.Name = mb3Item.Name;
                 item.Id = new Guid(mb3Item.Id);
 
-                switch (itemType)
+                if (mb3Item.HasPrimaryImage)
                 {
-                    case "Person":
-                        item.PrimaryImagePath = Kernel.ApiClient.GetPersonImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
-                        break;
-                    case "Genre":
-                        item.PrimaryImagePath = Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
-                        break;
+                    switch (itemType)
+                    {
+                        case "Person":
+                            item.PrimaryImagePath = Kernel.ApiClient.GetPersonImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                            break;
+                        case "Genre":
+                            item.PrimaryImagePath = Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                            break;
 
+                    }
                 }
             }
 
