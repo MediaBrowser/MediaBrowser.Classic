@@ -61,7 +61,7 @@ namespace MediaBrowser
                         var config = GetConfig();
                         if (config == null)
                         {
-                            Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                            AddInHost.Current.ApplicationContext.CloseApplication();
                             return;
                         }
 
@@ -74,22 +74,22 @@ namespace MediaBrowser
                         catch (Exception ex)
                         {
                             host.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
-                            Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                            AddInHost.Current.ApplicationContext.CloseApplication();
                             return;
                         }
-                        using (new MediaBrowser.Util.Profiler("Total Kernel Init"))
+                        using (new Util.Profiler("Total Kernel Init"))
                         {
                             Kernel.Init(config);
                             if (!Kernel.Instance.ServerConnected)
                             {
                                 host.MediaCenterEnvironment.Dialog("Could not connect to Media Browser 3 Server.  Please be sure it is running on the local network.", "Error", DialogButtons.Ok, 100, true);
-                                Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                                AddInHost.Current.ApplicationContext.CloseApplication();
                                 return;
                             }
                         }
-                        using (new MediaBrowser.Util.Profiler("Application Init"))
+                        using (new Util.Profiler("Application Init"))
                         {
-                            Application app = new Application(new MyHistoryOrientedPageSession(), host);
+                            var app = new Application(new MyHistoryOrientedPageSession(), host);
 
                             app.Init();
                         }

@@ -514,7 +514,7 @@ namespace MediaBrowser.Library {
              ItemRepository = repository,
              ServerConnected = connected,
              LocalRepo = localRepo,
-             MediaLocationFactory = new MediaBrowser.Library.Factories.MediaLocationFactory(),
+             MediaLocationFactory = new MediaLocationFactory(),
              };
 
             if (!connected) return kernel;

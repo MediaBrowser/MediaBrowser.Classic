@@ -864,7 +864,7 @@ namespace MediaBrowser
             if (Config.ParentalControlEnabled)
                 Logger.ReportInfo("*** Parental Controls are ON with a max rating of "+Config.ParentalMaxAllowedString+".  Block Unrated is "+Config.ParentalBlockUnrated+" and Hide Content is "+Config.HideParentalDisAllowed);
             Logger.ReportInfo("*** Internet Providers are "+(Config.AllowInternetMetadataProviders ? "ON." : "OFF."));
-            if (Config.AllowInternetMetadataProviders) Logger.ReportInfo("*** Save Locally is "+(Config.SaveLocalMeta ? "ON." : "OFF."));
+            //if (Config.AllowInternetMetadataProviders) Logger.ReportInfo("*** Save Locally is "+(Config.SaveLocalMeta ? "ON." : "OFF."));
             Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
             // Now let's put a diagnostic ping in here for the beta cycle so we can see how much testing we're getting
             //string info = "IP=" + Config.AllowInternetMetadataProviders + " EXTP=" + Config.ExternalPlayers.Count + " EXT=" + RunningOnExtender;
@@ -1047,19 +1047,19 @@ namespace MediaBrowser
             {
                 try
                 {
-                    this.RootFolderModel = (MediaBrowser.Library.FolderModel)ItemFactory.Instance.Create(EntryPointResolver.EntryPoint(this.EntryPointPath));
-                    if (!IsInEntryPoint)
-                    {
-                        Async.Queue("Top Level Refresher", () =>
-                        {
-                            foreach (var item in RootFolderModel.Children)
-                            {
-                                if (item.BaseItem.RefreshMetadata(MetadataRefreshOptions.FastOnly))
-                                    item.ClearImages(); // refresh all the top-level folders to pick up any changes
-                            }
-                            RootFolderModel.Children.Sort(); //make sure sort is right
-                        }, 2000);
-                    }
+                    this.RootFolderModel = (FolderModel)ItemFactory.Instance.Create(EntryPointResolver.EntryPoint(this.EntryPointPath));
+                    //if (!IsInEntryPoint)
+                    //{
+                    //    Async.Queue("Top Level Refresher", () =>
+                    //    {
+                    //        foreach (var item in RootFolderModel.Children)
+                    //        {
+                    //            if (item.BaseItem.RefreshMetadata(MetadataRefreshOptions.FastOnly))
+                    //                item.ClearImages(); // refresh all the top-level folders to pick up any changes
+                    //        }
+                    //        RootFolderModel.Children.Sort(); //make sure sort is right
+                    //    }, 2000);
+                    //}
 
                     Navigate(this.RootFolderModel);
                 }
