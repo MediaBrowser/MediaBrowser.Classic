@@ -48,26 +48,33 @@ namespace MediaBrowser.Library.Entities
             Kernel.Instance.LocalRepo.SaveDisplayPreferences(prefs);
         }
 
+        public override string DisplayPreferencesId
+        {
+            get
+            {
+                return (DisplayMediaType + Kernel.CurrentUser.Name).GetMD5().ToString();
+            }
+            set
+            {
+                base.DisplayPreferencesId = value;
+            }
+        }
+
         public override void LoadDisplayPreferences()
         {
             Logger.ReportVerbose("Loading display prefs from local repo for " + this.Name + "/"+DisplayMediaType);
 
-            var id = (this.DisplayMediaType + Kernel.CurrentUser.Name).GetMD5();
-
             var dp = new DisplayPreferences(DisplayPreferencesId, this);
-            dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp);
-            if (dp == null)
-            {
-                LoadDefaultDisplayPreferences(ref id, ref dp);
-            }
+            dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp) ?? LoadDefaultDisplayPreferences();
 
             this.DisplayPreferences = new Model.Entities.DisplayPreferences {ViewType = dp.ViewType.Chosen.ToString(), SortBy = dp.SortOrder};
         }
 
-        protected void LoadDefaultDisplayPreferences(ref Guid id, ref DisplayPreferences dp)
+        protected DisplayPreferences LoadDefaultDisplayPreferences()
         {
-            dp = new DisplayPreferences(DisplayPreferencesId, this);
+            var dp = new DisplayPreferences(DisplayPreferencesId, this);
             dp.LoadDefaults();
+            return dp;
         }
     }
 }
