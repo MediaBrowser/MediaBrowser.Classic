@@ -465,11 +465,9 @@ namespace MediaBrowser.Library {
         {
             get
             {
-                //only want items from non-protected folders
-                if (folder != null && folder.ParentalAllowed)
+                if (folder != null)
                 {
                     return QuickListItems;
-                    //return GetRecentWatchedItems(Config.Instance.RecentItemCount);
                 } else {
                     return new List<Item>(); //return empty list if folder is protected
                 }
@@ -482,7 +480,7 @@ namespace MediaBrowser.Library {
             get {
                 if (newestItems == null)
                 {
-                    if (folder != null && folder.ParentalAllowed)
+                    if (folder != null)
                     {
                         newestItems = folder.NewestItems.Select(i => ItemFactory.Instance.Create(i)).ToList();
                         foreach (var item in newestItems) item.PhysicalParent = this;
@@ -496,11 +494,9 @@ namespace MediaBrowser.Library {
         {
             get
             {
-                //only want items from non-protected folders
-                if (folder != null && folder.ParentalAllowed)
+                if (folder != null)
                 {
                     return QuickListItems;
-                    //return GetRecentUnwatchedItems(Config.Instance.RecentItemCount);
                 }
                 else
                 {
@@ -509,29 +505,26 @@ namespace MediaBrowser.Library {
 
             }
         }
-        
+
 
         public void AddNewlyWatched(Item item)
         {
             //called when we watch something so add to top of list (this way we don't have to re-build whole thing)
-            if (item.ParentalAllowed || !Config.Instance.HideParentalDisAllowed)
+            folder.LastWatchedItem = item.BaseItem;
+            this.lastWatched = null;
+            FirePropertyChanged("LastWatchedItem");
+            if (Config.Instance.RecentItemOption == "watched" && quickListItems != null) //already have a list
             {
-                folder.LastWatchedItem = item.BaseItem;
-                this.lastWatched = null;
-                FirePropertyChanged("LastWatchedItem");
-                if (Config.Instance.RecentItemOption == "watched" && quickListItems != null) //already have a list
+                //first we need to remove ourselves if we're already in the list (can't search with item cuz we were cloned)
+                Item us = quickListItems.Find(i => i.Id == item.Id);
+                if (us != null)
                 {
-                    //first we need to remove ourselves if we're already in the list (can't search with item cuz we were cloned)
-                    Item us = quickListItems.Find(i => i.Id == item.Id);
-                    if (us != null)
-                    {
-                        quickListItems.Remove(us);
-                    }
-                    //then add at the top and tell the UI to update
-                    quickListItems.Insert(0, item);
-                    FirePropertyChanged("RecentItems");
-                    FirePropertyChanged("QuickListItems");
+                    quickListItems.Remove(us);
                 }
+                //then add at the top and tell the UI to update
+                quickListItems.Insert(0, item);
+                FirePropertyChanged("RecentItems");
+                FirePropertyChanged("QuickListItems");
             }
         }
 

@@ -755,7 +755,7 @@ namespace MediaBrowser.Library {
 
         public bool ParentalAllowed(Item item)
         {
-            return this.ParentalControls.Allowed(item);
+            return true;
         }
         public bool ProtectedFolderAllowed(Folder folder)
         {

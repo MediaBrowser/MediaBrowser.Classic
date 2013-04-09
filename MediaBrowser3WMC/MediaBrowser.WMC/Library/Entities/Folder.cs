@@ -153,10 +153,7 @@ namespace MediaBrowser.Library.Entities {
                 // return a clone
                 IList<BaseItem> visibleChildren;
                 lock (ActualChildren) {
-                    if (Config.Instance.ParentalControlEnabled && Config.Instance.HideParentalDisAllowed)
-                        visibleChildren = parentalAllowedChildren;
-                    else
-                        visibleChildren = ActualChildren;
+                    visibleChildren = ActualChildren;
                     //return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).Children.Count > 0).ToList() : visibleChildren.ToList();
                     //removed for now because hid things that shouldn't be -ebr
                     return visibleChildren.ToList();
@@ -220,21 +217,18 @@ namespace MediaBrowser.Library.Entities {
             {
                 if (quickListFolder == null)
                 {
-                    if (this.ParentalAllowed)
-                    {
-                        string recentItemOption = Kernel.Instance.ConfigData.RecentItemOption;
-                        if (recentItemOption == "watched")
-                            reBuildQuickList = true;  //have to re-build these each time
+                    string recentItemOption = Kernel.Instance.ConfigData.RecentItemOption;
+                    if (recentItemOption == "watched")
+                        reBuildQuickList = true; //have to re-build these each time
 
-                        Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
-                        if (!reBuildQuickList) quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                        if (quickListFolder == null || quickListFolder.Children.Count == 0)
-                        {
-                            //re-build
-                            using (new MediaBrowser.Util.Profiler("RAL Load for " + this.Name)) UpdateQuickList(recentItemOption);
-                            //and then try and load again
-                            quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                        }
+                    Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
+                    if (!reBuildQuickList) quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
+                    if (quickListFolder == null || quickListFolder.Children.Count == 0)
+                    {
+                        //re-build
+                        using (new MediaBrowser.Util.Profiler("RAL Load for " + this.Name)) UpdateQuickList(recentItemOption);
+                        //and then try and load again
+                        quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
                     }
 
                 }
@@ -599,15 +593,11 @@ namespace MediaBrowser.Library.Entities {
         public virtual IEnumerable<BaseItem> RecursiveChildren {
             get {
                 foreach (var item in Children) {
-                    if (item.ParentalAllowed || !Config.Instance.HideParentalDisAllowed)
-                        yield return item;
+                    yield return item;
                     var folder = item as Folder;
                     if (folder != null) {
-                        //leave out protected folders (except the ones we have entered)
-                        if (folder.ParentalAllowed || Kernel.Instance.ProtectedFolderAllowed(folder)) {
-                            foreach (var subitem in folder.RecursiveChildren) {
-                                yield return subitem;
-                            }
+                        foreach (var subitem in folder.RecursiveChildren) {
+                            yield return subitem;
                         }
                     }
                 }
@@ -654,7 +644,7 @@ namespace MediaBrowser.Library.Entities {
                 {
                     Folder folder = item as Folder;
 
-                    if (folder != null && (item.ParentalAllowed || !Config.Instance.HideParentalDisAllowed))
+                    if (folder != null)
                     {
                         yield return folder;
                         foreach (var subitem in folder.RecursiveFolders)

@@ -1642,7 +1642,7 @@ namespace MediaBrowser
         {
             Folder folder = item.BaseItem as Folder;
 
-            Media firstUnwatched = folder.RecursiveMedia.Where(v => v != null && v.ParentalAllowed && !v.PlaybackStatus.WasPlayed).OrderBy(v => v.Path).FirstOrDefault();
+            Media firstUnwatched = folder.RecursiveMedia.Where(v => v != null && !v.PlaybackStatus.WasPlayed).OrderBy(v => v.Path).FirstOrDefault();
 
             if (firstUnwatched != null)
             {
@@ -1723,14 +1723,14 @@ namespace MediaBrowser
 
         public void Play(PlayableItem playable)
         {
-            if (Config.Instance.ParentalControlEnabled && !playable.ParentalAllowed)
-            {
-                //PIN screen mucks with turning this off
-                Application.CurrentInstance.DisplayPopupPlay = false; 
+            //if (Config.Instance.ParentalControlEnabled && !playable.ParentalAllowed)
+            //{
+            //    //PIN screen mucks with turning this off
+            //    Application.CurrentInstance.DisplayPopupPlay = false; 
                 
-                Kernel.Instance.ParentalControls.PlayProtected(playable);
-            }
-            else
+            //    Kernel.Instance.ParentalControls.PlayProtected(playable);
+            //}
+            //else
             {
                 PlaySecure(playable);
             }
