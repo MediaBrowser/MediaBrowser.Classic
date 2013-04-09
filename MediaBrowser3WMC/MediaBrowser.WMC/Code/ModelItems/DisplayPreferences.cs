@@ -44,7 +44,15 @@ namespace MediaBrowser.Library
                 list.Add(ViewTypeNames.GetName(v));
             viewType.Options = list;
 
-            this.viewType.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.ViewType ?? "Poster" : "Poster";
+            try
+            {
+                this.viewType.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.ViewType ?? "Poster" : "Poster";
+            }
+            catch (ArgumentException)
+            {
+                Logging.Logger.ReportError("Invalid view type {0} stored for {1}.  Setting to Poster.",folder.DisplayPreferences.ViewType, folder.Name);
+                viewType.Chosen = "Poster";
+            }
 
             //set our dynamic choice options
             this.sortDict = folder.SortOrderOptions;
@@ -67,7 +75,15 @@ namespace MediaBrowser.Library
             useBackdrop = new BooleanChoice();
             useBackdrop.Value = Config.Instance.ShowBackdrop;
 
-            sortOrders.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.SortBy ?? "Name" : "Name";
+            try
+            {
+                sortOrders.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.SortBy ?? "Name" : "Name";
+            }
+            catch (ArgumentException)
+            {
+                Logging.Logger.ReportError("Invalid sort by {0} stored for {1}.  Setting to Name.", folder.DisplayPreferences.SortBy, folder.Name);
+                sortOrders.Chosen = "Name";
+            }
 
             customParms = new Dictionary<string, string>();
             ListenForChanges();
