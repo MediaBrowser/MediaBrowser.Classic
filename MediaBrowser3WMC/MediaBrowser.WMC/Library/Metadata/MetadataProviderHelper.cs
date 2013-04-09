@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Persistance;
-using MediaBrowser.Library.Providers.Attributes;
-using System.Collections;
-using MediaBrowser.Library.Util;
 using System.Diagnostics;
 using MediaBrowser.Library.Entities.Attributes;
-using System.Threading;
-using MediaBrowser.Library.Plugins;
-using MediaBrowser.Library.Providers.TVDB;
 using MediaBrowser.Library.Providers;
-using MediaBrowser.Library.Factories;
 using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser.Library.Metadata {
@@ -33,20 +25,6 @@ namespace MediaBrowser.Library.Metadata {
         public static List<MetadataProviderFactory> DefaultProviders() {
 
             return new Type[] { 
-                //typeof(VirtualFolderProvider),
-                //typeof(ImageFromMediaLocationProvider),
-                //typeof(ImageByNameProvider),
-                //typeof(VideoFormatProvider),
-                //typeof(MBMovieProviderFromJson),
-                //typeof(MovieProviderFromXml),
-                //typeof(FolderProviderFromXml),
-                //typeof(LocalEpisodeProvider), 
-                //typeof(LocalSeriesProvider),
-                //typeof(LocalSeasonProvider),
-                //typeof(RemoteEpisodeProvider),
-                //typeof(RemoteSeasonProvider), 
-                //typeof(RemoteSeriesProvider),
-                //typeof(MovieDbProvider),
                 typeof(MBDefaultImageProvider)
             }.Select(t => new MetadataProviderFactory(t)).ToList(); 
             

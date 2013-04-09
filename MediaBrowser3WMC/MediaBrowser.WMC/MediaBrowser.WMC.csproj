@@ -184,10 +184,9 @@
     <Compile Include="Library\Playables\VLC2\PlayableVLC2.cs" />
     <Compile Include="Library\Playables\VLC2\VLC2Configurator.cs" />
     <Compile Include="Library\Playables\VLC2\VLC2PlaybackController.cs" />
-    <Compile Include="Library\Providers\LegacyMovieProviderFromXml.cs" />
-    <Compile Include="Library\Providers\MBDefaultImageProvider.cs" />
-    <Compile Include="Library\Providers\MBMovieProviderFromJson.cs" />
-    <Compile Include="Library\Providers\VideoFormatProvider.cs" />
+    <Compile Include="Library\Providers\TVDB\TVUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\Entities\Actor.cs" />
     <Compile Include="Library\Entities\Attributes\NotSourcedFromProvider.cs" />
     <Compile Include="Library\Entities\IFolder.cs" />
@@ -246,12 +245,6 @@
     <Compile Include="Library\Threading\Async.cs" />
     <Compile Include="Library\Threading\BackgroundProcessor.cs" />
     <Compile Include="Library\Providers\Attributes\SupportedTypeAttribute.cs" />
-    <Compile Include="Library\Providers\TVDB\RemoteEpisodeProvider.cs" />
-    <Compile Include="Library\Providers\TVDB\LocalEpisodeProvider.cs" />
-    <Compile Include="Library\Providers\TVDB\LocalSeriesProvider.cs" />
-    <Compile Include="Library\Providers\TVDB\RemoteSeasonProvider.cs" />
-    <Compile Include="Library\Providers\TVDB\RemoteSeriesProvider.cs" />
-    <Compile Include="Library\Providers\TVDB\TVUtils.cs" />
     <Compile Include="Library\Sorting\BaseItemComparer.cs" />
     <Compile Include="Library\ItemNameComparer.cs" />
     <Compile Include="Library\Extensions\DiffAction.cs" />
@@ -271,8 +264,6 @@
     </Compile>
     <Compile Include="Library\Providers\Attributes\RequiresInternetAttribute.cs" />
     <Compile Include="Library\Providers\Attributes\SlowProviderAttribute.cs" />
-    <Compile Include="Library\Providers\BaseMetadataProvider.cs" />
-    <Compile Include="Library\Metadata\MetadataProviderHelper.cs" />
     <Compile Include="Library\Providers\Attributes\ProviderPriorityAttribute.cs" />
     <Compile Include="Library\Sorting\IndexType.cs" />
     <Compile Include="Library\Sorting\SortOrder.cs" />
@@ -289,11 +280,6 @@
     <Compile Include="Library\Interfaces\IItemRepository.cs" />
     <Compile Include="Library\Playables\PlayableItem.cs" />
     <Compile Include="Library\Factories\PlaybackStatusFactory.cs" />
-    <Compile Include="Library\Providers\ImageFromMediaLocationProvider.cs" />
-    <Compile Include="Library\Providers\ImageByNameProvider.cs" />
-    <Compile Include="Library\Providers\MovieDbProvider.cs" />
-    <Compile Include="Library\Providers\MovieProviderFromXml.cs" />
-    <Compile Include="Library\Providers\VirtualFolderProvider.cs" />
     <Compile Include="Library\ThreadPoolSizes.cs" />
     <Compile Include="Library\Transcode.cs" />
     <Compile Include="Library\Extensions\XmlExtensions.cs" />
@@ -963,8 +949,6 @@
     <Compile Include="Library\Plugins\PluginConfigurationOptions.cs" />
     <Compile Include="Library\Plugins\PluginSourceCollection.cs" />
     <Compile Include="Library\Plugins\RemotePlugin.cs" />
-    <Compile Include="Library\Providers\FolderProviderFromXml.cs" />
-    <Compile Include="Library\Providers\TVDB\LocalSeasonProvider.cs" />
     <Compile Include="Library\Ratings.cs" />
     <Compile Include="Library\ServiceInteraction\MBServiceController.cs" />
     <Compile Include="Library\Threading\DelayedWeakReference.cs" />

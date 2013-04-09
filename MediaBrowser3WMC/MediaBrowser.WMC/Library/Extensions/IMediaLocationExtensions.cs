@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MediaBrowser.Library.Filesystem;
-using MediaBrowser.LibraryManagement;
+﻿using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Providers.TVDB;
+using MediaBrowser.LibraryManagement;
 using System.IO;
 
 namespace MediaBrowser.Library.Extensions {

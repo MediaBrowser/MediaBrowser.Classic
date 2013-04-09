@@ -427,45 +427,6 @@ namespace MediaBrowser.Library.Entities {
         public virtual bool RefreshMetadata(MetadataRefreshOptions options)
         {
             return false;
-            if (!Kernel.isVista) Kernel.Instance.MajorActivity = true; //this borks the UI on vista
-            if ((options & MetadataRefreshOptions.Force) == MetadataRefreshOptions.Force) {
-                var images = new List<LibraryImage>();
-                images.Add(PrimaryImage);
-                images.Add(SecondaryImage);
-                images.Add(BannerImage);
-                images.Add(LogoImage);
-                images.Add(ArtImage);
-                images.Add(ThumbnailImage);
-                images.Add(DiscImage);
-                images.AddRange(BackdropImages);
-
-                foreach (var image in images) {
-                    try {
-                        if (image != null) {
-                            image.ClearLocalImages();
-                            LibraryImageFactory.Instance.ClearCache(image.Path);
-                        }
-                    } catch (Exception ex) {
-                        Logger.ReportException("Failed to clear local image (its probably in use)", ex);
-                    }
-                }
-                //if we're forcing via UI - clear out our meta file too and force a download
-                if (this.Path != null)
-                {
-                    string metaFile = System.IO.Path.Combine(this.Path, MovieDbProvider.LOCAL_META_FILE_NAME);
-                    if (System.IO.File.Exists(metaFile))
-                        try { System.IO.File.Delete(metaFile); }
-                        catch { }
-                }
-            }
-
-            bool changed = MetadataProviderHelper.UpdateMetadata(this, options);
-            if (changed) {
-                OnMetadataChanged(null);
-            }
-            if (!Kernel.isVista) Kernel.Instance.MajorActivity = false;
-
-            return changed;
         }
 
         public void ReCacheAllImages()

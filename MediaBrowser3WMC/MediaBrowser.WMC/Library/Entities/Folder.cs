@@ -28,7 +28,7 @@ namespace MediaBrowser.Library.Entities {
         protected LocalCacheFolder quickListFolder;
 
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
-        public string DisplayPreferencesId { get; set; }
+        public virtual string DisplayPreferencesId { get; set; }
 
         public Folder()
             : base() {
