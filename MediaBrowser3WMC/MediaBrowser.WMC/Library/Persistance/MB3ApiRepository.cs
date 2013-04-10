@@ -445,18 +445,29 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
-        public IEnumerable<BaseItem> RetrieveSpecificItems(string[] ids)
+        public static ItemFields[] StandardFields = new[]
+                                                        {
+                                                            ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
+                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
+                                                            ItemFields.MediaStreams,
+                                                        };
+
+        public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)
         {
-            var dtos = Kernel.ApiClient.GetItems(new ItemQuery
-                                                     {
-                                                         UserId = Kernel.CurrentUser.Id,
-                                                         Ids = ids,
-                                                         Fields = new[] {ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
-                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
-                                                            ItemFields.MediaStreams, }
-                                                     });
+            var dtos = Kernel.ApiClient.GetItems(query);
 
             return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
+        public IEnumerable<BaseItem> RetrieveSpecificItems(string[] ids)
+        {
+            return RetrieveItems(new ItemQuery
+                                     {
+                                         UserId = Kernel.CurrentUser.Id,
+                                         Ids = ids,
+                                         Fields = StandardFields
+                                     });
         }
 
         public IList<Index> RetrieveIndex(Folder folder, string property, Func<string, BaseItem> constructor)

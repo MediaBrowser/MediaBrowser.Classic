@@ -43,9 +43,10 @@ namespace MediaBrowser.Library.Entities {
             {
                 Async.Queue("studio image load", () =>
                                                      {
-                                                         var ignore = studio.PrimaryImage.GetLocalImagePath();
                                                          studio.ImageLoaded = true;
-                                                         if (studio.PrimaryImage.Corrupt)
+                                                         // force the primary image to load if there is one
+                                                         if (studio.PrimaryImage != null) {var ignore = studio.PrimaryImage.GetLocalImagePath();}
+                                                         if (studio.PrimaryImage == null || studio.PrimaryImage.Corrupt)
                                                          {
                                                              // didn't have an image - blank out the reference
                                                              Logger.ReportVerbose("No image for studio {0}",name);

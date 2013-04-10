@@ -7,7 +7,7 @@ namespace MediaBrowser.Library.Entities {
         void EnsureChildrenLoaded();
         IEnumerable<BaseItem> IndexBy(string indexType);
         IEnumerable<BaseItem> RecursiveChildren { get; }
-        Index Search(Func<BaseItem, bool> searchFunction, string name);
+        LocalCacheFolder Search(Func<BaseItem, bool> searchFunction, string name);
         void Sort(IComparer<BaseItem> sortFunction);
         void ValidateChildren();
         int UnwatchedCount { get; }

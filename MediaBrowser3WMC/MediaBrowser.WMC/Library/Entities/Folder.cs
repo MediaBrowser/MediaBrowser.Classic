@@ -497,7 +497,7 @@ namespace MediaBrowser.Library.Entities {
         /// </summary>
         /// <param name="searchFunction"></param>
         /// <returns></returns>
-        public Index Search(Func<BaseItem, bool> searchFunction, string name) {
+        public LocalCacheFolder Search(Func<BaseItem, bool> searchFunction, string name) {
             var items = new Dictionary<Guid,BaseItem>();
 
             foreach (var item in RecursiveChildren) {
@@ -506,7 +506,7 @@ namespace MediaBrowser.Library.Entities {
                     items[item.Id] = item;
                 }
             }
-            return new Index(this, items.Values.ToList());
+            return new LocalCacheFolder(items.Values.ToList());
         }
 
         class BaseItemIndexComparer : IEqualityComparer<BaseItem> {

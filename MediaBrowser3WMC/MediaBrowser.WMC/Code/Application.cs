@@ -17,12 +17,14 @@ using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Metadata;
+using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Querying;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
@@ -1451,15 +1453,23 @@ namespace MediaBrowser
 
         void NavigateToActor(Item item)
         {
-            var person = item.BaseItem as Person;
+            var person = (Person)item.BaseItem;
             Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
 
-            var index = searchStart.Search(
-                ShowFinder(show => show.Actors == null ? false :
-                    show.Actors.Exists(a => a.Name == person.Name)),
-                    person.Name);
-
-            index.Name = item.Name;
+            var query = new ItemQuery
+                            {
+                                UserId = Kernel.CurrentUser.Id,
+                                Fields = MB3ApiRepository.StandardFields,
+                                ParentId = searchStart.ApiId,
+                                Person = person.Name,
+                                PersonType = "Actor",
+                                Recursive = true
+                            };
+            var index = new SearchResultFolder(Kernel.Instance.ItemRepository.RetrieveItems(query).ToList()) {Name = item.Name};
+            //var index = searchStart.Search(
+            //    ShowFinder(show => show.Actors == null ? false :
+            //        show.Actors.Exists(a => a.Name == person.Name)),
+            //        person.Name);
 
             Navigate(ItemFactory.Instance.Create(index));
         }

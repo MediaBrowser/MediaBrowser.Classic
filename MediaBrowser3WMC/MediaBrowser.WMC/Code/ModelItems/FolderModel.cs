@@ -64,28 +64,40 @@ namespace MediaBrowser.Library {
         public int Search(string searchValue, bool includeSubs, bool unwatchedOnly, int rating, int ratingFactor)
         {
             if (searchValue == null) searchValue = "";
-            searchValue = searchValue.ToLower();
-            IEnumerable<BaseItem> results = includeSubs ?
-                this.folder.RecursiveChildren.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList() :
-                this.folder.Children.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList();
+            var searchText = (searchValue != "" ? "Items containing: '" + searchValue + "' " : "All Items ")
+                             + (unwatchedOnly ? "Unwatched and " : "and ") + "Rated " + Ratings.ToString(rating)
+                             + (ratingFactor > 0 ? " and below..." : " and above...");
+            Async.Queue("Search", () =>
+            {
+                Application.CurrentInstance.ProgressBox(string.Format("Searching {0} for {1} ", Name == "Default" ? "Library" : Name , searchText));
+                searchValue = searchValue.ToLower();
+                IEnumerable<BaseItem> results = includeSubs ?
+                    this.folder.RecursiveChildren.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList() :
+                    this.folder.Children.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList();
 
-            if (results.Count() > 0)
-            {
-                Application.CurrentInstance.Navigate(ItemFactory.Instance.Create(new SearchResultFolder(GroupResults(results)) 
-                    { Name = this.Name + " - Search Results (" + searchValue + (unwatchedOnly ? "/unwatched":"") 
-                        + (rating > 0 ? "/"+Ratings.ToString(rating) + (ratingFactor > 0 ? "-" : "+") : "") + ")" }));
-                return results.Count();
-            }
-            else
-            {
-                Application.CurrentInstance.Information.AddInformationString("No Search Results Found");
-            }
+                Application.CurrentInstance.ShowMessage = false;
+
+                if (results.Any())
+                {
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Application.CurrentInstance.Navigate(ItemFactory.Instance.Create(new SearchResultFolder(GroupResults(results.ToList()))
+                        {
+                            Name = this.Name + " - Search Results (" + searchValue + (unwatchedOnly ? "/unwatched" : "")
+                                + (rating > 0 ? "/" + Ratings.ToString(rating) + (ratingFactor > 0 ? "-" : "+") : "") + ")"
+                        })));
+                }
+                else
+                {
+                    Application.CurrentInstance.Information.AddInformationString("No Search Results Found");
+                }
+
+            });
+
             return 0;
         }
 
-        private List<BaseItem> GroupResults(IEnumerable<BaseItem> items)
+        private List<BaseItem> GroupResults(List<BaseItem> items)
         {
-            List<BaseItem> folderChildren = new List<BaseItem>();
+            var newChildren = new List<BaseItem>();
             int containerNo = 0;
             //now collapse anything that needs to be and create the child list for the list folder
             var containers = from item in items
@@ -106,14 +118,14 @@ namespace MediaBrowser.Library {
                         var ignore2 = i.LogoImage;
                         ignore2 = i.ArtImage;
 
-                        folderChildren.Add(i);
+                        newChildren.Add(i);
                     }
                 }
                 else
                 {
                     var currentContainer = container.Key as IContainer ?? new IndexFolder() { Name = "<Unknown>" };
                     containerNo++;
-                    IndexFolder aContainer = new IndexFolder(new List<BaseItem>())
+                    var aContainer = new LocalCacheFolder(new List<BaseItem>())
                     {
                         Id = ("searchcontainer" + this.Name + this.Path + containerNo).GetMD5(),
                         Name = currentContainer.Name + " (" + container.Count() + " Items)",
@@ -144,7 +156,7 @@ namespace MediaBrowser.Library {
                         {
                             var currentSeason = season.Key as Series ?? new Season() { Name = "<Unknown>" };
                             containerNo++;
-                            IndexFolder aSeason = new IndexFolder(season.ToList())
+                            var aSeason = new LocalCacheFolder(season.ToList())
                             {
                                 Id = ("searchseason" + this.Name + this.Path + containerNo).GetMD5(),
                                 Name = currentSeason.Name + " (" + season.Count() + " Items)",
@@ -174,14 +186,14 @@ namespace MediaBrowser.Library {
                         aContainer.AddChildren(container.ToList());
                     }
                     //and container to children
-                    folderChildren.Add(aContainer);
+                    newChildren.Add(aContainer);
                 }
             }
 
             //finally add all the items that don't go in containers
-            folderChildren.AddRange(items.Where(i => (!(i is IGroupInIndex))));
+            newChildren.AddRange(items.Where(i => (!(i is IGroupInIndex))));
 
-            return folderChildren;
+            return newChildren;
         }
 
         private bool MatchesCriteria(BaseItem item, string value, bool unwatchedOnly, int rating, int ratingFactor)
