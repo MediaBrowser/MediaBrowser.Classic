@@ -75,6 +75,8 @@ namespace MediaBrowser.Library
             useBackdrop = new BooleanChoice();
             useBackdrop.Value = Config.Instance.ShowBackdrop;
 
+            thumbConstraint = new SizeRef(new Size(folder.DisplayPreferences.PrimaryImageWidth, folder.DisplayPreferences.PrimaryImageHeight));
+
             try
             {
                 sortOrders.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.SortBy ?? "Name" : "Name";
@@ -361,6 +363,8 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.ViewType = this.viewType.Chosen.ToString();
             Folder.DisplayPreferences.SortBy = this.SortOrder;
             Folder.DisplayPreferences.RememberIndexing = Kernel.Instance.ConfigData.RememberIndexing;
+            Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
+            Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
 
             Folder.SaveDisplayPrefs(this);
         }
