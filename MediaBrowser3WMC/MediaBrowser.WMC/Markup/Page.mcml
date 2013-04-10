@@ -156,12 +156,12 @@
             </LayoutInput>
           </search:SearchPane>
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
-          <ui:UserIndicator Name="UserButton" Application="[Application]" Margins="90,35,10,10">
+          <!--<ui:UserIndicator Name="UserButton" Application="[Application]" Margins="100,15,10,10">
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Vertical="Near"/>
             </LayoutInput>
             
-          </ui:UserIndicator> 
+          </ui:UserIndicator>--> 
           <pd:Page Name="ViewDefault" Folder="[Folder]" Application="[Application]" ThemeConfig ="[ThemeConfig]" Visible="true" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
