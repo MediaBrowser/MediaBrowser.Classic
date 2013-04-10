@@ -7,7 +7,7 @@ namespace MediaBrowser.Library.Entities
     /// <summary>
     /// Class Audio
     /// </summary>
-    public class Song : Show, IHasMediaStreams
+    public class Song : Show, IHasMediaStreams, IGroupInIndex
     {
         
         /// <summary>
@@ -31,5 +31,14 @@ namespace MediaBrowser.Library.Entities
         /// <value>The album artist.</value>
         public string AlbumArtist { get; set; }
 
+        public override int RunTime
+        {
+            get
+            {
+                return RunningTime ?? 0;
+            }
+        }
+
+        public IContainer MainContainer { get { return (Parent as MusicAlbum) ?? UnknownAlbum; } }
     }
 }

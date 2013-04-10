@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Entities
     /// <summary>
     /// Class MusicAlbum
     /// </summary>
-    public class MusicAlbum : Folder, IShow
+    public class MusicAlbum : Folder, IShow, IContainer
     {
 
         public string AspectRatio { get; set; }
