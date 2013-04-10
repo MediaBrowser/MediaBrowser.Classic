@@ -29,7 +29,7 @@ namespace MediaBrowser.Library.Logging {
                             case MBLoadContext.Service:
                                 return "MBService-";
                             case MBLoadContext.Core:
-                                return "MBCore-";
+                                return "MBClassic-";
                             default:
                                 return "Unknown-";
                         }
