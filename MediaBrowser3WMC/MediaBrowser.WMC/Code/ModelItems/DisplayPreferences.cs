@@ -60,22 +60,23 @@ namespace MediaBrowser.Library
             this.indexDict = folder.IndexByOptions;
             this.indexBy.Options = folder.IndexByOptions.Keys.ToArray();
  
-            showLabels = new BooleanChoice();
-            showLabels.Value = Config.Instance.DefaultShowLabels;
+            showLabels = new BooleanChoice {Value = Config.Instance.DefaultShowLabels};
 
-            verticalScroll = new BooleanChoice();
-            verticalScroll.Value = folder.DisplayPreferences != null && folder.DisplayPreferences.ScrollDirection == ScrollDirection.Vertical;
+            verticalScroll = new BooleanChoice {Value = folder.DisplayPreferences != null && folder.DisplayPreferences.ScrollDirection == ScrollDirection.Vertical};
 
-            useBanner = new BooleanChoice();
-            useBanner.Value = false;
+            useBanner = new BooleanChoice {Value = false};
 
-            useCoverflow = new BooleanChoice();
-            useCoverflow.Value = false;
+            useCoverflow = new BooleanChoice {Value = false};
 
-            useBackdrop = new BooleanChoice();
-            useBackdrop.Value = Config.Instance.ShowBackdrop;
+            useBackdrop = new BooleanChoice {Value = Config.Instance.ShowBackdrop};
 
-            thumbConstraint = new SizeRef(new Size(folder.DisplayPreferences.PrimaryImageWidth, folder.DisplayPreferences.PrimaryImageHeight));
+            if (folder.DisplayPreferences != null)
+            {
+                var width = folder.DisplayPreferences.PrimaryImageWidth > 0 ? folder.DisplayPreferences.PrimaryImageWidth : Config.Instance.DefaultPosterSize.Width;
+                var height = folder.DisplayPreferences.PrimaryImageHeight > 0 ? folder.DisplayPreferences.PrimaryImageHeight : Config.Instance.DefaultPosterSize.Height;
+            
+                thumbConstraint = new SizeRef(new Size(width, height));
+            }
 
             try
             {
@@ -83,7 +84,7 @@ namespace MediaBrowser.Library
             }
             catch (ArgumentException)
             {
-                Logging.Logger.ReportError("Invalid sort by {0} stored for {1}.  Setting to Name.", folder.DisplayPreferences.SortBy, folder.Name);
+                Logging.Logger.ReportError("Invalid sort by stored for {1}.  Setting to Name.", folder.Name);
                 sortOrders.Chosen = "Name";
             }
 
