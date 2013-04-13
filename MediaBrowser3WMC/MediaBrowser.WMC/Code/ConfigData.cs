@@ -10,6 +10,7 @@ using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Model.Updates;
 
 namespace MediaBrowser
 {
@@ -197,6 +198,12 @@ namespace MediaBrowser
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
         public bool EnableUpdates = true;
         [Group("Updates")]
+        [Comment(@"The class of updates to check (Dev/Beta/Release).")]
+        public PackageVersionClass SystemUpdateClass = PackageVersionClass.Dev;
+        [Group("Updates")]
+        [Comment(@"The class of updates to check (Dev/Beta/Release).")]
+        public PackageVersionClass PluginUpdateClass = PackageVersionClass.Beta;
+        [Group("Updates")]
         [Comment(@"Look for beta versions of MB in the auto update check.")]
         public bool EnableBetas = false;
         [Dangerous]
@@ -255,7 +262,7 @@ namespace MediaBrowser
         public int BreadcrumbCountLimit = 2;
         [Group("Display")]
         [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
-        public int DefaultMessageTimeout = 8;
+        public int DefaultMessageTimeout = 15;
         [Dangerous]
         [Group("Display")]
         [Comment(@"Characters to be ignored in sorting.")]

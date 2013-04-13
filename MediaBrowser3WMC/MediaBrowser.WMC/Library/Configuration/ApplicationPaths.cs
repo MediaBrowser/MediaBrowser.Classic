@@ -172,6 +172,16 @@ namespace MediaBrowser.Library.Configuration {
             }
         }
 
+        public static string UpdaterExecutableFile
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
+                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowser.Installer.exe") : 
+                Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowser.Installer.exe");
+            }
+        }
+
         public static string ConfiguratorExecutableFile
         {
             get

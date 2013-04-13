@@ -8,6 +8,7 @@ using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.MBSystem;
 using MediaBrowser.Model.Tasks;
+using MediaBrowser.Model.Updates;
 using MediaBrowser.Model.Weather;
 using MediaBrowser.Model.Web;
 using System;
@@ -339,6 +340,27 @@ namespace MediaBrowser.ApiInteraction
             {
                 return DeserializeFromStream<SystemInfo>(stream);
             }
+        }
+
+        /// <summary>
+        /// Gets information on the given package
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public PackageInfo GetPackageInfo(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = GetApiUrl("Packages/" + HttpUtility.UrlEncode(name));
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<PackageInfo>(stream);
+            }
+
         }
 
         /// <summary>
