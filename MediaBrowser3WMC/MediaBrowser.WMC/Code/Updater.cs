@@ -75,13 +75,13 @@ namespace MediaBrowser.Util
                         && new System.Version(v.requiredVersionStr ?? "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
                     if (newVersion != null)
                     {
-                        if (Application.CurrentInstance.YesNoBox(string.Format("Version {0} of MB Classic available.  Update now?", newVersion.versionStr)) == "Y")
+                        if (Application.CurrentInstance.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
                             Application.CurrentInstance.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
                             //Kick off the installer and shut us down
                             try
                             {
-                                Process.Start(ApplicationPaths.UpdaterExecutableFile);
+                                Process.Start(ApplicationPaths.UpdaterExecutableFile, "product=mbc class="+Kernel.Instance.ConfigData.SystemUpdateClass);
                                 Application.CurrentInstance.Close();
                             }
                             catch (Exception e)
