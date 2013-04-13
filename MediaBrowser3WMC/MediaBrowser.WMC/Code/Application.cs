@@ -1139,7 +1139,7 @@ namespace MediaBrowser
                         //upgrading from 2.3.2 - item migration should have already occurred...
                         Config.EnableTraceLogging = true; //turn this on by default since we now have levels and retention/clearing
                         var oldRepo = new ItemRepository();
-                        Kernel.Instance.ItemRepository.MigrateDisplayPrefs(oldRepo);
+                        Kernel.Instance.MB3ApiRepository.MigrateDisplayPrefs(oldRepo);
                         //Async.Queue("Playstate Migration",() => Kernel.Instance.ItemRepository.MigratePlayState(oldRepo),15000); //delay to allow repo to load
                     }
                     break;
@@ -1346,7 +1346,7 @@ namespace MediaBrowser
             DialogResult r = ev.Dialog(CurrentInstance.StringData("ClearCacheDial"), CurrentInstance.StringData("ClearCacheCapDial"), DialogButtons.Yes | DialogButtons.No, 60, true);
             if (r == DialogResult.Yes)
             {
-                bool ok = Kernel.Instance.ItemRepository.ClearEntireCache();
+                bool ok = Kernel.Instance.MB3ApiRepository.ClearEntireCache();
                 if (!ok)
                 {
                     ev.Dialog(string.Format(CurrentInstance.StringData("ClearCacheErrorDial"), ApplicationPaths.AppCachePath), CurrentInstance.StringData("Errorstr"), DialogButtons.Ok, 60, true);
@@ -1465,7 +1465,7 @@ namespace MediaBrowser
                                 PersonType = "Actor",
                                 Recursive = true
                             };
-            var index = new SearchResultFolder(Kernel.Instance.ItemRepository.RetrieveItems(query).ToList()) {Name = item.Name};
+            var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};
             //var index = searchStart.Search(
             //    ShowFinder(show => show.Actors == null ? false :
             //        show.Actors.Exists(a => a.Name == person.Name)),

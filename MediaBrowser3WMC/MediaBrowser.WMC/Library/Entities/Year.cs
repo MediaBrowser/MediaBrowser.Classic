@@ -15,10 +15,10 @@ namespace MediaBrowser.Library.Entities {
 
         public static Year GetYear(string name) {
             Guid id = GetYearId(name);
-            var year = Kernel.Instance.ItemRepository.RetrieveItem(id) as Year;
+            var year = Kernel.Instance.MB3ApiRepository.RetrieveItem(id) as Year;
             if (year == null || year.Name == null) {
                 year = new Year(id, name.Trim());
-                Kernel.Instance.ItemRepository.SaveItem(year);
+                Kernel.Instance.MB3ApiRepository.SaveItem(year);
             }
             return year;
         }

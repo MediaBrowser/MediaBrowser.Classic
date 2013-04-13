@@ -449,7 +449,7 @@ namespace MediaBrowser.Library.Entities {
                 if (mediaCount == null)
                 {
                     mediaCount = this.RecursiveMedia.Distinct(i => i.Id).Count();
-                    Kernel.Instance.ItemRepository.SaveItem(this);
+                    Kernel.Instance.MB3ApiRepository.SaveItem(this);
                 }
                 return mediaCount == null ? 0 : mediaCount.Value;
             }
@@ -553,7 +553,7 @@ namespace MediaBrowser.Library.Entities {
         {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
-            var index = Kernel.Instance.ItemRepository.RetrieveChildren(this.ApiId, property);
+            var index = Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);
             //build in images
             //Async.Queue("Index image builder", () =>
             //{
@@ -736,7 +736,7 @@ namespace MediaBrowser.Library.Entities {
                         if (thisItemChanged)
                         {
                             item.RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions.Default);
-                            Kernel.Instance.ItemRepository.SaveItem(item);
+                            Kernel.Instance.MB3ApiRepository.SaveItem(item);
                         }
                         
                         currentChildren[item.Id] = null;
@@ -748,7 +748,7 @@ namespace MediaBrowser.Library.Entities {
                         item.Parent = this;
                         ActualChildren.Add(item);
                         item.RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions.Force); //necessary to get it to show up without user intervention
-                        Kernel.Instance.ItemRepository.SaveItem(item);
+                        Kernel.Instance.MB3ApiRepository.SaveItem(item);
                         
                         // Notify the kernel that a new item was added
                         Kernel.Instance.OnItemAddedToLibrary(item);
@@ -846,12 +846,12 @@ namespace MediaBrowser.Library.Entities {
 
         protected void SaveChildren(IList<BaseItem> items, bool saveIndvidualChidren) {
             //Logger.ReportVerbose("Saving " + items.Count + " children for " + this.Name);
-            Kernel.Instance.ItemRepository.SaveChildren(Id, items.Select(i => i.Id));
+            Kernel.Instance.MB3ApiRepository.SaveChildren(Id, items.Select(i => i.Id));
             if (saveIndvidualChidren)
             {
                 foreach (var item in items)
                 {
-                    Kernel.Instance.ItemRepository.SaveItem(item); 
+                    Kernel.Instance.MB3ApiRepository.SaveItem(item); 
                 }
             }
         }
@@ -866,7 +866,7 @@ namespace MediaBrowser.Library.Entities {
         {
             try
             {
-                Kernel.Instance.ItemRepository.SaveDisplayPreferences(DisplayPreferencesId, DisplayPreferences);
+                Kernel.Instance.MB3ApiRepository.SaveDisplayPreferences(DisplayPreferencesId, DisplayPreferences);
             }
             catch (Exception e)
             {
@@ -931,7 +931,7 @@ namespace MediaBrowser.Library.Entities {
             //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
-                var children = Kernel.Instance.ItemRepository.RetrieveChildren(ApiId);
+                var children = Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId);
                 items = children != null ? children.ToList() : null;
             }
             return items;
@@ -958,7 +958,7 @@ namespace MediaBrowser.Library.Entities {
                         }
                     }
 
-                    ThumbSize s = Kernel.Instance.ItemRepository.RetrieveThumbSize(id) ?? new ThumbSize(Kernel.Instance.ConfigData.DefaultPosterSize.Width, Kernel.Instance.ConfigData.DefaultPosterSize.Height);
+                    ThumbSize s = Kernel.Instance.MB3ApiRepository.RetrieveThumbSize(id) ?? new ThumbSize(Kernel.Instance.ConfigData.DefaultPosterSize.Width, Kernel.Instance.ConfigData.DefaultPosterSize.Height);
                     float f = this.ActualChildren[0].PrimaryImage != null ? this.ActualChildren[0].PrimaryImage.Aspect : 1; //just use the first child as our guide
                     if (f == 0)
                         f = 1;

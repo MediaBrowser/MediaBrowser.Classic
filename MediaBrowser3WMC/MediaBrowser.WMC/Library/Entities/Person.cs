@@ -14,7 +14,7 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public static Person GetPerson(string name) {
-            var person = Kernel.Instance.ItemRepository.RetrievePerson(name);
+            var person = Kernel.Instance.MB3ApiRepository.RetrievePerson(name);
                 if (person == null || person.Name == null) {
                     person = new Person(GetPersonId(name), name.Trim());
                 }

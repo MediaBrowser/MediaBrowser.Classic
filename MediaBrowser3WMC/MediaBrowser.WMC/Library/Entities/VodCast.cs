@@ -64,7 +64,7 @@ namespace MediaBrowser.Library.Entities {
             generator.FilesToRetain = FilesToRetain;
             generator.Url = Url;
             Kernel.Instance.GetLocation(Path).Contents = generator.Contents;
-            Kernel.Instance.ItemRepository.SaveItem(this);
+            Kernel.Instance.MB3ApiRepository.SaveItem(this);
         } 
 
         public override void ValidateChildren() {
@@ -87,7 +87,7 @@ namespace MediaBrowser.Library.Entities {
 
                 this.FolderChildrenChanged = true;
                 this.OnChildrenChanged(null);
-                Kernel.Instance.ItemRepository.SaveItem(this);
+                Kernel.Instance.MB3ApiRepository.SaveItem(this);
             } catch (Exception e) {
                 Logger.ReportException("Failed to update podcast!", e);
             }

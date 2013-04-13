@@ -391,7 +391,7 @@ namespace MediaBrowser.Library {
                                 {
                                     if (actor.Person.RefreshMetadata(MetadataRefreshOptions.FastOnly))
                                     {
-                                        Kernel.Instance.ItemRepository.SaveItem(actor.Person);
+                                        Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
                                     }
                                 }
 
@@ -399,7 +399,7 @@ namespace MediaBrowser.Library {
                                 {
                                     if (actor.Person.RefreshMetadata())
                                     {
-                                        Kernel.Instance.ItemRepository.SaveItem(actor.Person);
+                                        Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
                                     }
                                 }
                             });
@@ -510,13 +510,13 @@ namespace MediaBrowser.Library {
                     {
                         foreach (var studio in items.Distinct()) {
                             if (studio.RefreshMetadata(MetadataRefreshOptions.FastOnly)) {
-                                Kernel.Instance.ItemRepository.SaveItem(studio);
+                                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
                             }
                         }
 
                         foreach (var studio in items.Distinct()) {
                             if (studio.RefreshMetadata()) {
-                                Kernel.Instance.ItemRepository.SaveItem(studio);
+                                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
                             }
                         }
                     });

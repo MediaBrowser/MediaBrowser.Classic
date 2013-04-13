@@ -19,11 +19,11 @@ namespace MediaBrowser.Library.Entities
         public static GenericItem GetItem(string name)
         {
             Guid id = GetItemId(name);
-            var item = Kernel.Instance.ItemRepository.RetrieveItem(id) as GenericItem;
+            var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(id) as GenericItem;
             if (item == null || item.Name == null)
             {
                 item = new GenericItem(id, name.Trim());
-                Kernel.Instance.ItemRepository.SaveItem(item);
+                Kernel.Instance.MB3ApiRepository.SaveItem(item);
             }
             return item;
         }

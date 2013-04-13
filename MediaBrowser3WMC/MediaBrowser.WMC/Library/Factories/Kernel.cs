@@ -450,7 +450,7 @@ namespace MediaBrowser.Library {
         static IItemRepository GetLocalRepository(ConfigData config)
         {
             IItemRepository repository = null;
-            if (kernel != null && kernel.ItemRepository != null) kernel.ItemRepository.ShutdownDatabase(); //we need to do this for SQLite
+            if (kernel != null && kernel.MB3ApiRepository != null) kernel.MB3ApiRepository.ShutdownDatabase(); //we need to do this for SQLite
             string sqliteDb = Path.Combine(ApplicationPaths.AppCachePath, "localcache.db");
             string sqliteDll = Path.Combine(ApplicationPaths.AppConfigPath, "system.data.sqlite.dll");
             if (File.Exists(sqliteDll))
@@ -511,7 +511,7 @@ namespace MediaBrowser.Library {
              ServiceConfigData = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile),
              StringData = LocalizedStrings.Instance,
              ImageResolvers = DefaultImageResolvers(config.EnableProxyLikeCaching),
-             ItemRepository = repository,
+             MB3ApiRepository = repository,
              ServerConnected = connected,
              LocalRepo = localRepo,
              MediaLocationFactory = new MediaLocationFactory(),
@@ -571,10 +571,10 @@ namespace MediaBrowser.Library {
             virtualItems.AddRange(kernel.RootFolder.VirtualChildren);
 
             //and re-load the repo
-            ItemRepository = new MB3ApiRepository();
+            MB3ApiRepository = new MB3ApiRepository();
 
             // our root folder needs metadata
-            kernel.RootFolder = kernel.ItemRepository.RetrieveRoot();
+            kernel.RootFolder = kernel.MB3ApiRepository.RetrieveRoot();
 
             //now add back the plug-in children
             if (virtualItems.Any() && kernel.RootFolder != null)
@@ -692,7 +692,8 @@ namespace MediaBrowser.Library {
         public ConfigData ConfigData { get; set; }
         public ServiceConfigData ServiceConfigData { get; set; }
         public LocalizedStrings StringData { get; set; }
-        public MB3ApiRepository ItemRepository { get; set; }
+        public MB3ApiRepository MB3ApiRepository { get; set; }
+        public IItemRepository ItemRepository { get { return LocalRepo; }}
         public IItemRepository LocalRepo { get; set; }
         public IMediaLocationFactory MediaLocationFactory { get; set; }
         public delegate System.Drawing.Image ImageProcessorRoutine(System.Drawing.Image image, BaseItem item);
@@ -1054,7 +1055,7 @@ namespace MediaBrowser.Library {
         /// <param name="media">The item it belongs to. This can be null, but it's used to notify listeners of PlayStateSaved which item it belongs to.</param>
         public void SavePlayState(BaseItem media, PlaybackStatus playstate)
         {
-            Kernel.Instance.ItemRepository.SavePlayState(playstate);
+            Kernel.Instance.MB3ApiRepository.SavePlayState(playstate);
             OnPlayStateSaved(media, playstate);
         }
 

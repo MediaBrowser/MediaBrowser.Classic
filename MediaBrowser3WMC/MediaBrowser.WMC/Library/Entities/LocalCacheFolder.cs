@@ -36,7 +36,7 @@ namespace MediaBrowser.Library.Entities
         protected List<BaseItem> GetRemoteChildren()
         {
             Logging.Logger.ReportVerbose("Getting children remotely for {0}", Name);
-            return Kernel.Instance.ItemRepository.RetrieveSpecificItems(Kernel.Instance.LocalRepo.RetrieveChildList(Id).ToArray()).ToList();
+            return Kernel.Instance.MB3ApiRepository.RetrieveSpecificItems(Kernel.Instance.LocalRepo.RetrieveChildList(Id).ToArray()).ToList();
         }
 
         /// <summary>

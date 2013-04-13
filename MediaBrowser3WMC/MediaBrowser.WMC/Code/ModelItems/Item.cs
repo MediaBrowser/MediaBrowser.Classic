@@ -657,7 +657,7 @@ namespace MediaBrowser.Library
             Async.Queue("UI Triggered Metadata Loader", () =>
             {
                 // Just re-load ourselves from the server
-                this.baseItem = Kernel.Instance.ItemRepository.RetrieveItem(this.Id);
+                this.baseItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id);
                 // force images to reload
                 primaryImage = null;
                 bannerImage = null;

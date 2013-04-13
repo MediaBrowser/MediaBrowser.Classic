@@ -115,7 +115,7 @@ namespace MediaBrowser.Library.Entities {
             {
                 if (children == null)
                 {
-                    children = Kernel.Instance.ItemRepository.RetrieveSubIndex(childTableName, indexProperty, propertyValue);
+                    children = Kernel.Instance.MB3ApiRepository.RetrieveSubIndex(childTableName, indexProperty, propertyValue);
                 }
 
                 return children;

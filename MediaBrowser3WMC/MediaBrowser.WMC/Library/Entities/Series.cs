@@ -132,7 +132,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected void LoadFullDetails()
         {
-            var temp = Kernel.Instance.ItemRepository.RetrieveItem(this.Id) as Series;
+            var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Series;
             if (temp != null)
             {
                 temp.FullDetailsLoaded = true;

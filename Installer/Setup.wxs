@@ -196,6 +196,12 @@
         <Condition>VersionNT = 602</Condition>
         <File Id="MBMigrate.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
       </Component>
+      <Component Id="MediaBrowser.Installer.exe" Guid="2FA65C5D-8CBA-428E-953B-082871924BEA" DiskId="1">
+        <File Id="MediaBrowser.Installer.exe" Name="MediaBrowser.Installer.exe" Source="..\..\MediaBrowser\MediaBrowser.Installer\bin\release\MediaBrowser.Installer.exe" Checksum="no"/>
+      </Component>
+      <Component Id="MediaBrowser.Installer.exe.config" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
+        <File Id="MediaBrowser.Installer.exe.config" Name="MediaBrowser.Installer.exe.config" Source="..\..\MediaBrowser\MediaBrowser.Installer\bin\release\MediaBrowser.Installer.exe.config" CompanionFile="MediaBrowser.Installer.exe" Checksum="yes" Vital="yes"/>
+      </Component>
     </DirectoryRef>
 
     <!-- This component is installed so the default ProgramData\MediaBrowser-WMC is created during installerion -->
@@ -240,6 +246,8 @@
       <ComponentRef Id="MediaBrowser.dll" />
       <ComponentRef Id="MBMigrate.exe" />
       <ComponentRef Id="MBMigrate.exe.config" />
+      <ComponentRef Id="MediaBrowser.Installer.exe" />
+      <ComponentRef Id="MediaBrowser.Installer.exe.config" />
       <ComponentRef Id="Application.png" />
       <ComponentRef Id="ApplicationInactive.png" />
       <ComponentRef Id="Registration7.xml" />

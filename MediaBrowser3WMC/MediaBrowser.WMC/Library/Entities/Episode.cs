@@ -112,7 +112,7 @@ namespace MediaBrowser.Library.Entities {
                 //derive id of what would be our season - hate this but don't have to store and maintain pointers this way
                 string parentPath = System.IO.Path.GetDirectoryName(this.Path);
                 Guid seasonId = (typeof(Season).FullName + parentPath.ToLower()).GetMD5();
-                seasonItem = Kernel.Instance.ItemRepository.RetrieveItem(seasonId) as Season;
+                seasonItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seasonId) as Season;
             }
             return seasonItem;
         }
@@ -125,7 +125,7 @@ namespace MediaBrowser.Library.Entities {
                 string parentPath = System.IO.Path.GetDirectoryName(this.Path);
                 string grandparentPath = System.IO.Path.GetDirectoryName(parentPath); //parent of parent is series
                 Guid seriesId = (typeof(Series).FullName + (grandparentPath != null ? grandparentPath : parentPath).ToLower()).GetMD5();
-                seriesItem = Kernel.Instance.ItemRepository.RetrieveItem(seriesId) as Series;
+                seriesItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seriesId) as Series;
             }
             return seriesItem;
         }

@@ -14,7 +14,7 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public static Genre GetGenre(string name) {
-            var genre = Kernel.Instance.ItemRepository.RetrieveGenre(name);
+            var genre = Kernel.Instance.MB3ApiRepository.RetrieveGenre(name);
             if (genre == null || genre.Name == null) {
                 genre = new Genre(GetGenreId(name), name.Trim());
             }
