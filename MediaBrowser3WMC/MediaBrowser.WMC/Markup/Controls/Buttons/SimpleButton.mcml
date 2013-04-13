@@ -3,6 +3,7 @@
       xmlns:a="assembly://MediaBrowser/MediaBrowser"
       xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
       xmlns:s="file://Styles_DoNotEdit.mcml"
       xmlns:me="Me">
 
@@ -19,7 +20,7 @@
       <Size Name="Size" Size="0,0" />
       <Font Name="Font" Font="$Required" />
       <Color Name="Color" Color="color://s:FontColorLight"/>
-      <Image Name="ImageFocus" Image="image://me:ButtonLeftFocus" />
+      <Image Name="ImageFocus" Image="image://i:ZoomPane" />
       <Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
       <Image Name="ImageDormant" Image="image://me:ButtonDormant" />
       <EditableText Name="FocusItem" />
@@ -36,7 +37,7 @@
 
       <Binding Source="[Command]" Target="[Clicker.Command]" />
       <Binding Source="[Command.Available]" Target="[Input.KeyInteractive]" />
-      <Binding Source="[Input.KeyFocus]" Target="[imgFocusOverlay.Visible]" />
+      <!--<Binding Source="[Input.KeyFocus]" Target="[imgFocusOverlay.Visible]" />-->
       <Binding Source="[Font]" Target="[Label.Font]" />
       <Binding Source="[Text]" Target="[Label.Content]" />
       <Default Target="[Input.KeyInteractive]" Value="true" />
@@ -47,9 +48,9 @@
         </Conditions>
         <Actions>
           <Set Target="[imgButton.MaximumSize]" Value="1000,1000"/>
-          <Set Target="[imgFocusOverlay.MaximumSize]" Value="1000,1000"/>
+          <!--<Set Target="[imgFocusOverlay.MaximumSize]" Value="1000,1000"/>-->
           <Set Target="[imgButton.SizingPolicy]"  Value="SizeToConstraint"/>
-          <Set Target="[imgFocusOverlay.SizingPolicy]"  Value="SizeToConstraint"/>
+          <!--<Set Target="[imgFocusOverlay.SizingPolicy]"  Value="SizeToConstraint"/>-->
         </Actions>
       </Rule>
       
@@ -133,7 +134,7 @@
             </Children>
           </Graphic>
 
-          <Graphic Name="imgFocusOverlay"
+          <!--<Graphic Name="imgFocusOverlay"
                    Content="image://me:ButtonLeftFocusOverlay"
                    MinimumSize="[Size]"
                    MaximumSize="[Size]"
@@ -143,7 +144,7 @@
             <Animations>
               <Animation Animation="animation://an:ButtonFocusOverlayIdle"/>
             </Animations>
-          </Graphic>
+          </Graphic>-->
 
         </Children>
       </Panel>
