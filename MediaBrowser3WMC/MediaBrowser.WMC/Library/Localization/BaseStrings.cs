@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0055";
+        const string VERSION = "1.0056";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -88,6 +88,8 @@ namespace MediaBrowser.Library.Localization
         public string AutoValidateConfigDesc = "Automatically validate and refresh while navigating. WARNING. Turning this off may cause the library to be inaccurate and you may need to manually refresh.";
         public string SaveLocalMetaConfigDesc = "Save images and xml data locally with the media.  Prevents having to re-retrieve from internet providers on refresh.  Delete files to re-fetch.";
         public string HideEmptyFoldersConfigDesc = "Hide items with no media in them in the interface.";
+        public string SystemClassConfigDesc = "Level at which to subscribe to system updates.";
+        public string PluginClassConfigDesc = "Level at which to subscribe to plug-in updates.";
 
 
         //Config Panel
@@ -173,6 +175,8 @@ namespace MediaBrowser.Library.Localization
         public string AutoValidateConfig = "Automatically Validate Items";
         public string SaveLocalMetaConfig = "Save Locally";
         public string HideEmptyFoldersConfig = "Hide Empty Folders";
+        public string PluginClassConfig = "Plugin Update Level";
+        public string SystemClassConfig = "System Update Level";
 
 
         //EHS        

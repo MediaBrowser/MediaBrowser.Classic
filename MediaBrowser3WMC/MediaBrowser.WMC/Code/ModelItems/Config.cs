@@ -5,7 +5,7 @@ using System.IO;
 using System.Configuration;
 using System.Reflection;
 using System.Xml;
-
+using MediaBrowser.Model.Updates;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
@@ -352,6 +352,16 @@ namespace MediaBrowser
         {
             get { return this.data.EnableBetas; }
             set { if (this.data.EnableBetas != value) { this.data.EnableBetas = value; Save(); FirePropertyChanged("EnableBetas"); } }
+        }
+        public string SystemUpdateClass
+        {
+            get { return this.data.SystemUpdateClass.ToString(); }
+            set { if (this.data.SystemUpdateClass.ToString() != value) { this.data.SystemUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), value); Save(); FirePropertyChanged("SystemUpdateClass"); } }
+        }
+        public string PluginUpdateClass
+        {
+            get { return this.data.PluginUpdateClass.ToString(); }
+            set { if (this.data.PluginUpdateClass.ToString() != value) { this.data.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass),value); Save(); FirePropertyChanged("PluginUpdateClass"); } }
         }
         [Comment(@"Set the location of the Daemon Tools binary..")]
         public string DaemonToolsLocation
