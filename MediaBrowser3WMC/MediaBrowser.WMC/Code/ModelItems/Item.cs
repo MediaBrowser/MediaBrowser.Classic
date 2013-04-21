@@ -666,7 +666,7 @@ namespace MediaBrowser.Library
                 artImage = null;
                 thumbnailImage = null;
                 backdropImages = null;
-                //baseItem.ReCacheAllImages();
+                baseItem.ReCacheAllImages();
                 Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => this.FireAllPropertiesChanged());
             });
         }
