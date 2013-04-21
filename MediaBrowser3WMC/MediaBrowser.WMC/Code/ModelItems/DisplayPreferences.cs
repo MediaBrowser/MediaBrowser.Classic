@@ -366,6 +366,7 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.RememberIndexing = Kernel.Instance.ConfigData.RememberIndexing;
             Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
             Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
+            Folder.DisplayPreferences.ScrollDirection = this.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
 
             Folder.SaveDisplayPrefs(this);
         }
