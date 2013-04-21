@@ -81,7 +81,14 @@ namespace MediaBrowser.Util
                             //Kick off the installer and shut us down
                             try
                             {
-                                Process.Start(ApplicationPaths.UpdaterExecutableFile, "product=mbc class="+Kernel.Instance.ConfigData.SystemUpdateClass);
+                                var info = new ProcessStartInfo
+                                               {
+                                                   FileName = ApplicationPaths.UpdaterExecutableFile,
+                                                   Arguments = "product=mbc class=" + Kernel.Instance.ConfigData.SystemUpdateClass,
+                                                   Verb = "runas"
+                                               };
+
+                                Process.Start(info);
                                 Application.CurrentInstance.Close();
                             }
                             catch (Exception e)
