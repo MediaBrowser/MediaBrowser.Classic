@@ -517,8 +517,6 @@ namespace MediaBrowser.Library {
              MediaLocationFactory = new MediaLocationFactory(),
              };
 
-            if (!connected) return kernel;
-
             //Kernel.UseNewSQLRepo = config.UseNewSQLRepo;
 
             // kernel.StringData.Save(); //save this in case we made mods (no other routine saves this data)

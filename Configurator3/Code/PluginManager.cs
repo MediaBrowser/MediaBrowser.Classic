@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Configuration;
+using Version = System.Version;
 
 namespace Configurator.Code {
     public class PluginManager {
@@ -92,7 +93,7 @@ namespace Configurator.Code {
             availablePlugins.Clear();
             latestVersions.Clear();
 
-            foreach (var plugin in sources.AvailablePlugins.Where(p => p.PluginClass == PluginClasses.ScreenSavers || p.PluginClass == PluginClasses.Themes).OrderBy(p => p.Name))
+            foreach (var plugin in GetAvailablePlugins())
             {
                 IPlugin ip = this.InstalledPlugins.Find(plugin);
                 if (ip != null)
@@ -137,6 +138,29 @@ namespace Configurator.Code {
             }
         }
 
+        private IEnumerable<IPlugin> GetAvailablePlugins()
+        {
+            foreach (var package in Kernel.ApiClient.GetPackages())
+            {
+                foreach (var ver in package.versions.Where( v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version))
+                {
+                    yield return (new RemotePlugin()
+                                   {
+                                       Description = package.overview,
+                                       RichDescURL = package.richDescUrl,
+                                       Filename = package.targetFilename,
+                                       SourceFilename = ver.sourceUrl,
+                                       Version = ver.version,
+                                       RequiredMBVersion = new System.Version((string.IsNullOrEmpty(ver.requiredVersionStr) ? "3.0" : ver.requiredVersionStr)),
+                                       Name = package.name,
+                                       PluginClass = package.category,
+                                       UpgradeInfo = ver.description,
+                                       IsPremium = package.isPremium
+                                   });
+                }
+            }
+        }
+
         private void RefreshBackedUpPlugins()
         {
             backedUpPlugins.Clear();
@@ -163,20 +187,12 @@ namespace Configurator.Code {
           MediaBrowser.Library.Network.WebDownload.PluginInstallUpdateCB updateCB,
           MediaBrowser.Library.Network.WebDownload.PluginInstallFinishCB doneCB,
           MediaBrowser.Library.Network.WebDownload.PluginInstallErrorCB errorCB) {
-            //taking this check out for now - it's just too cumbersome to have to re-compile all plug-ins to change this -ebr
-            //if (plugin.TestedMBVersion < Kernel.Instance.Version) {
-            //    var dlgResult = MessageBox.Show("Warning - " + plugin.Name + " has not been tested with your version of MediaBrowser. \n\nInstall anyway?", "Version not Tested", MessageBoxButton.YesNo);
-            //    if (dlgResult == MessageBoxResult.No) {
-            //        doneCB();
-            //        return;
-            //    }
-            //}
 
             if (BackupPlugin(plugin)) Logger.ReportInfo("Plugin "+plugin.Name+" v"+plugin.Version+" backed up.");
 
             if (plugin is RemotePlugin) {
                 try {
-                    Kernel.Instance.InstallPlugin((plugin as RemotePlugin).BaseUrl + "\\" + (plugin as RemotePlugin).SourceFilename, plugin.Filename, updateCB, doneCB, errorCB);
+                    Kernel.Instance.InstallPlugin((plugin as RemotePlugin).SourceFilename, plugin.Filename, updateCB, doneCB, errorCB);
                 }
                 catch (Exception ex) {
                     MessageBox.Show("Cannot Install Plugin.  If MediaBrowser is running, please close it and try again.\n" + ex.Message, "Install Error");

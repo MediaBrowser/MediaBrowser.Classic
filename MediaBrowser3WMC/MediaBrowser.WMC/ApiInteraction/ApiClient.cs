@@ -364,6 +364,34 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets a list of available packages meeting the supplied criteria
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="packageType"></param>
+        /// <param name="targetSystem"></param>
+        /// <param name="isPremium"></param>
+        /// <returns></returns>
+        public List<PackageInfo> GetPackages(string packageType = "UserInstalled", string targetSystem = "MBClassic", bool? isPremium = null)
+        {
+            var dict = new QueryStringDictionary()
+                           {
+                               {"packagetype", packageType},
+                               {"targetsystems", targetSystem},
+
+                           };
+
+            dict.AddIfNotNull("ispremium",isPremium);
+            
+            var url = GetApiUrl("Packages", dict);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<List<PackageInfo>>(stream);
+            }
+
+        }
+
+        /// <summary>
         /// Gets a person
         /// </summary>
         /// <param name="name">The name.</param>
