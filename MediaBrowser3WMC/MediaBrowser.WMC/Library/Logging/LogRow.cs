@@ -6,7 +6,7 @@ using System.Text;
 namespace MediaBrowser.Library.Logging {
     public struct LogRow {
 
-        const string TimePattern = "h:mm:ss.fff tt d/M/yyyy";
+        const string TimePattern = "yyy-MM-dd hh:mm:ss.ffff";
 
 
         public LogSeverity Severity { get; set; }
@@ -41,15 +41,15 @@ namespace MediaBrowser.Library.Logging {
         public override string ToString() {
             StringBuilder builder = new StringBuilder();
             builder.Append(Time.ToString(TimePattern))
-                .Append(" , ")
+                .Append(",")
                 .Append(Enum.GetName(typeof(LogSeverity), Severity))
-                .Append(" , ")
-                .Append(Encode(Message))
-                .Append(" , ")
+                .Append(",")
                 .Append(Encode(Category))
-                .Append(" , ")
+                .Append(",")
+                .Append(Encode(Message))
+                .Append(",")
                 .Append(ThreadId)
-                .Append(" , ")
+                .Append(",")
                 .Append(Encode(ThreadName));
             return builder.ToString();
         }
