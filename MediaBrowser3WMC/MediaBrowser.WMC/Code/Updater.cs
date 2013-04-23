@@ -119,13 +119,13 @@ namespace MediaBrowser.Util
         /// </summary>
         public bool PluginUpdatesAvailable()
         {
-            List<IPlugin> availablePlugins = (List<IPlugin>)PluginSourceCollection.Instance.AvailablePlugins;
+            var availablePlugins = Kernel.Instance.GetAvailablePlugins().ToList();
             bool updatesAvailable = false;
             Logger.ReportInfo("Checking for Plugin Updates...");
 
-            foreach (IPlugin plugin in Kernel.Instance.Plugins)
+            foreach (var plugin in Kernel.Instance.Plugins)
             {
-                IPlugin found = availablePlugins.Find(remote => remote.Name == plugin.Name);
+                var found = availablePlugins.Find(remote => remote.Name == plugin.Name);
                 if (found != null)
                 {
                     if (found.Version > plugin.Version && found.RequiredMBVersion <= Kernel.Instance.Version)

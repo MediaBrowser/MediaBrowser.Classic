@@ -93,7 +93,7 @@ namespace Configurator.Code {
             availablePlugins.Clear();
             latestVersions.Clear();
 
-            foreach (var plugin in GetAvailablePlugins())
+            foreach (var plugin in Kernel.Instance.GetAvailablePlugins())
             {
                 IPlugin ip = this.InstalledPlugins.Find(plugin);
                 if (ip != null)
@@ -134,29 +134,6 @@ namespace Configurator.Code {
                 if (latestVersions.TryGetValue(key, out v))
                 {
                     plugin.IsLatestVersion = (plugin.Version == v) ? true : false;
-                }
-            }
-        }
-
-        private IEnumerable<IPlugin> GetAvailablePlugins()
-        {
-            foreach (var package in Kernel.ApiClient.GetPackages())
-            {
-                foreach (var ver in package.versions.Where( v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version))
-                {
-                    yield return (new RemotePlugin()
-                                   {
-                                       Description = package.overview,
-                                       RichDescURL = package.previewImage,
-                                       Filename = package.targetFilename,
-                                       SourceFilename = ver.sourceUrl,
-                                       Version = ver.version,
-                                       RequiredMBVersion = new System.Version((string.IsNullOrEmpty(ver.requiredVersionStr) ? "3.0" : ver.requiredVersionStr)),
-                                       Name = package.name,
-                                       PluginClass = package.category,
-                                       UpgradeInfo = ver.description,
-                                       IsPremium = package.isPremium
-                                   });
                 }
             }
         }

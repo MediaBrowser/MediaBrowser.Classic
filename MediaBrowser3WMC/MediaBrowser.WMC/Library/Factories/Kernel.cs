@@ -447,6 +447,29 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public IEnumerable<IPlugin> GetAvailablePlugins()
+        {
+            foreach (var package in ApiClient.GetPackages())
+            {
+                foreach (var ver in package.versions.Where(v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version))
+                {
+                    yield return (new RemotePlugin()
+                    {
+                        Description = package.overview,
+                        RichDescURL = package.previewImage,
+                        Filename = package.targetFilename,
+                        SourceFilename = ver.sourceUrl,
+                        Version = ver.version,
+                        RequiredMBVersion = new System.Version((string.IsNullOrEmpty(ver.requiredVersionStr) ? "3.0" : ver.requiredVersionStr)),
+                        Name = package.name,
+                        PluginClass = package.category,
+                        UpgradeInfo = ver.description,
+                        IsPremium = package.isPremium
+                    });
+                }
+            }
+        }
+
         static IItemRepository GetLocalRepository(ConfigData config)
         {
             IItemRepository repository = null;
