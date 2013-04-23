@@ -49,11 +49,11 @@
 
     </Window.Resources>
     <Grid>
-        <Menu x:Name="menua" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" > 
+        <!--<Menu x:Name="menua" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" > 
 			<MenuItem Header="File">
 				<MenuItem Header="Sources..." Click="MenuItem_Click"/> 
 			</MenuItem>
-		</Menu>
+		</Menu>-->
         <Label Height="28" Margin="359,0,12,22" Name="MessageLine" VerticalAlignment="Bottom" FontWeight="Bold">Select a Plug-in to Add</Label>
 		<Label Margin="20,24,0,0" VerticalAlignment="Top" Height="33" Content="Choose a Plug-in from the list below" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
 		<Button Margin="150,0,0,22" Content="Install" Height="32" VerticalAlignment="Bottom" Click="InstallClick" Name="InstallButton" HorizontalAlignment="Left" Width="90" />
@@ -109,17 +109,17 @@
                 </GroupStyle>
             </ListBox.GroupStyle>
         </ListBox>
-		<TextBlock Margin="359,98,40,126" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList, Mode=Default}" TextWrapping="Wrap" x:Name="pluginDescription" FontSize="14" />
-		<Label Margin="359,0,0,86" Content="Plug-in Version:" Height="28" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Width="160" Name="lblVer" />
+        <Label Margin="359,0,0,86" Content="Plug-in Version:" Height="28" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Width="160" Name="lblVer" />
 		<Label Margin="516,0,384,88" VerticalAlignment="Bottom" Height="28" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="latestPluginVersion" FontSize="14" />
-		<Label Margin="359,59,66,0" VerticalAlignment="Top" Height="30.62" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="18" FontFamily="Trebuchet MS" x:Name="pluginName"/>
+		<Label Margin="379.507,41.084,34,0" VerticalAlignment="Top" Height="30.62" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="18" FontFamily="Trebuchet MS" x:Name="pluginName" HorizontalAlignment="Center"/>
 		<ProgressBar Margin="359,0,20,20" Height="32" VerticalAlignment="Bottom" x:Name="progress" Visibility="Hidden" />
         <Button Height="32" HorizontalAlignment="Left" Margin="246,0,0,22" Name="btnDone" Click="btnDone_Click" IsCancel="True" VerticalAlignment="Bottom" Width="90">Done</Button>
         <Label Margin="359,0,0,56" Height="28" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Width="160" Name="lblReq">Required MB Version:</Label>
         <Label Content="{Binding Path=SelectedItem.RequiredMBVersion, ElementName=pluginList, Mode=Default}" Margin="516,0,384,56" Name="reqdMBVersion" Height="28" VerticalAlignment="Bottom" FontSize="14" />
         <TextBlock Height="107" Margin="439,250,0,0" Name="txtNoSelection" VerticalAlignment="Top" Text="Please Select a Plug-in" FontSize="22" Foreground="LightGray" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Left" Width="300" />
-        <WebBrowser Name="RichDescFrame" Margin="359,35,20,120"  Navigating="RichDescFrame_Navigating" LoadCompleted="RichDescFrame_LoadCompleted" Visibility="Hidden"/>
+        <WebBrowser Name="RichDescFrame" Margin="359,0,20,120" Height="162.701" VerticalAlignment="Bottom"   />
         <CheckBox Height="16" HorizontalAlignment="Left" Margin="37,63,0,0" Name="cbxShowAll" VerticalAlignment="Top" Width="124" ToolTip="If not checked, only the latest version of each plugin will appear in the list." Checked="cbxShowAll_Checked" Unchecked="cbxShowAll_Checked">Show All Versions</CheckBox>
+        <Image x:Name="imgPlugin" Height="297.679" Margin="359,0,20,287.701" VerticalAlignment="Bottom"/>
         <Label Content="This Plug-in requires paid registration" FontSize="14" FontWeight="Bold" Height="28" HorizontalAlignment="Left" Margin="773,0,0,60" Name="lblRegRequired" VerticalAlignment="Bottom" Width="272" Foreground="Red" Visibility="Hidden" />
         <CheckBox Content="Show Free Only " Height="16" HorizontalAlignment="Left" Margin="212,63,0,0" Name="cbxFreeOnly" ToolTip="Checking this will filter out plugins that require registration." VerticalAlignment="Top" Width="124" Checked="cbxFreeOnly_Checked" Unchecked="cbxFreeOnly_Checked" />
     </Grid>

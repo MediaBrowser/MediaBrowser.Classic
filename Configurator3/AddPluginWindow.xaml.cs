@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows.Media.Imaging;
 using Configurator.Code;
 using MediaBrowser.Library.Plugins;
-using MediaBrowser.Library.Threading;
 using MediaBrowser.Library;
-using System.Windows.Forms;
-using System.Threading;
-using System.Windows.Threading;
 using MediaBrowser.Library.Logging;
 
 namespace Configurator {
@@ -30,6 +19,7 @@ namespace Configurator {
             progress.Minimum = 0;
             progress.Maximum = 100;
             FilterPluginList();
+            pluginList.SelectedItem = null;
         }
 
         private void PluginFilter(object sender, FilterEventArgs e)
@@ -52,11 +42,6 @@ namespace Configurator {
             src.Filter += PluginFilter;
             pluginList.ItemsSource = src.View;
             pluginList.SelectedItem = null; //since we're collapsed, come up with no selection
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e) {
-            PluginSourcesWindow window = new PluginSourcesWindow();
-            window.ShowDialog();
         }
 
         private void InstallClick(object sender, RoutedEventArgs e) {
@@ -124,11 +109,15 @@ namespace Configurator {
                     InstallButton.IsEnabled = true;
                     MessageLine.Content = "";
                 }
+
+                imgPlugin.Source = new BitmapImage(new Uri(plugin.RichDescURL));
+
                 if (RichDescFrame != null)
                 {
-                    if (!String.IsNullOrEmpty(plugin.RichDescURL))
+                    if (!String.IsNullOrEmpty(plugin.Description))
                     {
-                        RichDescFrame.Navigate(new Uri(plugin.RichDescURL, UriKind.Absolute));
+                        RichDescFrame.NavigateToString(plugin.Description);
+                        RichDescFrame.Visibility = Visibility.Visible;
                     }
                     else
                     {
@@ -168,20 +157,20 @@ namespace Configurator {
             }
         }
 
-        private void RichDescFrame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-            mshtml.HTMLDocumentClass doc = (mshtml.HTMLDocumentClass)RichDescFrame.Document;
-            if (doc.body.innerHTML.Contains("404:"))
-            {
-                Logger.ReportError("Rich Description Not Found.");
-                RichDescFrame.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                if (pluginList.SelectedItem != null)
-                    RichDescFrame.Visibility = Visibility.Visible;
-            }
-        }
+        //private void RichDescFrame_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        //{
+        //    mshtml.HTMLDocumentClass doc = (mshtml.HTMLDocumentClass)RichDescFrame.Document;
+        //    if (doc.body.innerHTML.Contains("404:"))
+        //    {
+        //        Logger.ReportError("Rich Description Not Found.");
+        //        RichDescFrame.Visibility = Visibility.Hidden;
+        //    }
+        //    else
+        //    {
+        //        if (pluginList.SelectedItem != null)
+        //            RichDescFrame.Visibility = Visibility.Visible;
+        //    }
+        //}
 
         private void pluginList_Collapse(object sender, RoutedEventArgs e)
         {

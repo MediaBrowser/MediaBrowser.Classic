@@ -147,7 +147,7 @@ namespace Configurator.Code {
                     yield return (new RemotePlugin()
                                    {
                                        Description = package.overview,
-                                       RichDescURL = package.richDescUrl,
+                                       RichDescURL = package.previewImage,
                                        Filename = package.targetFilename,
                                        SourceFilename = ver.sourceUrl,
                                        Version = ver.version,
