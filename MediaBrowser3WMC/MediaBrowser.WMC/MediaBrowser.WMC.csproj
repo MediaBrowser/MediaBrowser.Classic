@@ -187,6 +187,7 @@
     <Compile Include="Library\Playables\VLC2\PlayableVLC2.cs" />
     <Compile Include="Library\Playables\VLC2\VLC2Configurator.cs" />
     <Compile Include="Library\Playables\VLC2\VLC2PlaybackController.cs" />
+    <Compile Include="Library\Providers\BaseMetadataProvider.cs" />
     <Compile Include="Library\Providers\TVDB\TVUtils.cs">
       <SubType>Code</SubType>
     </Compile>
