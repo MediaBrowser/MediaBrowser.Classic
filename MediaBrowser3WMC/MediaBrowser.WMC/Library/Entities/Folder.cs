@@ -830,7 +830,7 @@ namespace MediaBrowser.Library.Entities {
             }
 
 
-            SetParent(items);
+            if (items != null) SetParent(items);
             return items;
         }
 
