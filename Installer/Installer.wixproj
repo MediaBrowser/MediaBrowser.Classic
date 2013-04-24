@@ -6,7 +6,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{0b434a26-16fd-4d77-8302-e8105e018d3a}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>MediaBrowserClassic</OutputName>
+    <OutputName>MediaBrowser</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
