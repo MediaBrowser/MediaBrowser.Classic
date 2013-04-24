@@ -434,7 +434,7 @@ namespace MediaBrowser.Library.Persistance
 
             var dtos = Kernel.ApiClient.GetItems(new ItemQuery
                                                      {
-                                                         UserId = Kernel.CurrentUser.Id,
+                                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                                          ParentId = id,
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferencesId, 
@@ -464,7 +464,7 @@ namespace MediaBrowser.Library.Persistance
         {
             return RetrieveItems(new ItemQuery
                                      {
-                                         UserId = Kernel.CurrentUser.Id,
+                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                          Ids = ids,
                                          Fields = StandardFields
                                      });

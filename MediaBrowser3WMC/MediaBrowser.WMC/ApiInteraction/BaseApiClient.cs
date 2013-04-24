@@ -239,12 +239,14 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
 
             dict.AddIfNotNullOrEmpty("person", query.Person);
-            dict.AddIfNotNullOrEmpty("personType", query.PersonType);
+            dict.AddIfNotNull("personTypes", query.PersonTypes);
 
             dict.AddIfNotNull("years", query.Years);
 
             dict.AddIfNotNullOrEmpty("indexBy", query.IndexBy);
             dict.AddIfNotNullOrEmpty("SearchTerm", query.SearchTerm);
+            dict.AddIfNotNullOrEmpty("MaxOfficialRating", query.MaxOfficialRating);
+            dict.AddIfNotNullOrEmpty("MinOfficialRating", query.MinOfficialRating);
 
             return GetApiUrl("Users/" + query.UserId + "/Items", dict);
         }

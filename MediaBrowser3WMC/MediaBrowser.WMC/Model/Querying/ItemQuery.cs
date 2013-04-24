@@ -13,7 +13,7 @@ namespace MediaBrowser.Model.Querying
         /// The user to localize search results for
         /// </summary>
         /// <value>The user id.</value>
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Specify this to localize the search to a specific item or folder. Omit to use the root.
@@ -40,6 +40,12 @@ namespace MediaBrowser.Model.Querying
         public string[] SortBy { get; set; }
 
         /// <summary>
+        /// Filter by artists
+        /// </summary>
+        /// <value>The artists.</value>
+        public string[] Artists { get; set; }
+
+        /// <summary>
         /// The sort order to return results with
         /// </summary>
         /// <value>The sort order.</value>
@@ -56,6 +62,24 @@ namespace MediaBrowser.Model.Querying
         /// </summary>
         /// <value>The fields.</value>
         public ItemFields[] Fields { get; set; }
+
+        /// <summary>
+        /// Gets or sets the media types.
+        /// </summary>
+        /// <value>The media types.</value>
+        public string[] MediaTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the video formats.
+        /// </summary>
+        /// <value>The video formats.</value>
+        public VideoFormat[] VideoFormats { get; set; }
+
+        /// <summary>
+        /// Gets or sets the video types.
+        /// </summary>
+        /// <value>The video types.</value>
+        public VideoType[] VideoTypes { get; set; }
 
         /// <summary>
         /// Whether or not to perform the query recursively
@@ -86,7 +110,7 @@ namespace MediaBrowser.Model.Querying
         /// </summary>
         /// <value>The include item types.</value>
         public string[] IncludeItemTypes { get; set; }
-        
+
         /// <summary>
         /// Limit results to items containing specific years
         /// </summary>
@@ -103,14 +127,14 @@ namespace MediaBrowser.Model.Querying
         /// If the Person filter is used, this can also be used to restrict to a specific person type
         /// </summary>
         /// <value>The type of the person.</value>
-        public string PersonType { get; set; }
+        public string[] PersonTypes { get; set; }
 
         /// <summary>
         /// Search characters used to find items
         /// </summary>
         /// <value>The index by.</value>
         public string SearchTerm { get; set; }
-        
+
         /// <summary>
         /// The dynamic, localized index function name
         /// </summary>
@@ -124,9 +148,64 @@ namespace MediaBrowser.Model.Querying
         public ImageType[] ImageTypes { get; set; }
 
         /// <summary>
+        /// Gets or sets the air days.
+        /// </summary>
+        /// <value>The air days.</value>
+        public DayOfWeek[] AirDays { get; set; }
+
+        /// <summary>
+        /// Gets or sets the series status.
+        /// </summary>
+        /// <value>The series status.</value>
+        public SeriesStatus[] SeriesStatuses { get; set; }
+
+        /// <summary>
         /// Gets or sets the ids, which are specific items to retrieve
         /// </summary>
         /// <value>The ids.</value>
         public string[] Ids { get; set; }
+
+        /// <summary>
+        /// Gets or sets the min official rating.
+        /// </summary>
+        /// <value>The min official rating.</value>
+        public string MinOfficialRating { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max official rating.
+        /// </summary>
+        /// <value>The max official rating.</value>
+        public string MaxOfficialRating { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemQuery"/> class.
+        /// </summary>
+        public ItemQuery()
+        {
+            SortBy = new string[] { };
+
+            Filters = new ItemFilter[] { };
+
+            Fields = new ItemFields[] { };
+
+            MediaTypes = new string[] { };
+
+            VideoFormats = new VideoFormat[] { };
+
+            VideoTypes = new VideoType[] { };
+
+            Genres = new string[] { };
+            Studios = new string[] { };
+            IncludeItemTypes = new string[] { };
+            ExcludeItemTypes = new string[] { };
+            Years = new int[] { };
+            PersonTypes = new string[] { };
+            Ids = new string[] { };
+            Artists = new string[] { };
+
+            ImageTypes = new ImageType[] { };
+            AirDays = new DayOfWeek[] { };
+            SeriesStatuses = new SeriesStatus[] { };
+        }
     }
 }

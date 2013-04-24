@@ -1458,11 +1458,11 @@ namespace MediaBrowser
 
             var query = new ItemQuery
                             {
-                                UserId = Kernel.CurrentUser.Id,
+                                UserId = Kernel.CurrentUser.Id.ToString(),
                                 Fields = MB3ApiRepository.StandardFields,
                                 ParentId = searchStart.ApiId,
                                 Person = person.Name,
-                                PersonType = "Actor",
+                                PersonTypes = new[] {"Actor"},
                                 Recursive = true
                             };
             var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};

@@ -127,7 +127,7 @@ namespace MediaBrowser.Model.Web
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="MediaBrowser.Model.MBSystem.ArgumentNullException">value</exception>
+        /// <exception cref="System.ArgumentNullException">value</exception>
         public void Add(string name, Guid value)
         {
             if (value == Guid.Empty)
@@ -171,7 +171,7 @@ namespace MediaBrowser.Model.Web
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="MediaBrowser.Model.MBSystem.ArgumentNullException">value</exception>
+        /// <exception cref="System.ArgumentNullException">value</exception>
         public void Add(string name, IEnumerable<int> value)
         {
             if (value == null)
@@ -200,7 +200,7 @@ namespace MediaBrowser.Model.Web
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="MediaBrowser.Model.MBSystem.ArgumentNullException">value</exception>
+        /// <exception cref="System.ArgumentNullException">value</exception>
         public void Add(string name, IEnumerable<string> value)
         {
             if (value == null)
