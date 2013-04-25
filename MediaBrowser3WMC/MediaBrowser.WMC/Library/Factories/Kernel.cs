@@ -131,9 +131,9 @@ namespace MediaBrowser.Library {
             lock (sync) {
 
                 // we must set up some paths as well as a side effect (should be refactored) 
-                if (!string.IsNullOrEmpty(config.UserSettingsPath) && Directory.Exists(config.UserSettingsPath)) {
-                    ApplicationPaths.SetUserSettingsPath(config.UserSettingsPath.Trim());
-                }
+                //if (!string.IsNullOrEmpty(config.UserSettingsPath) && Directory.Exists(config.UserSettingsPath)) {
+                //    ApplicationPaths.SetUserSettingsPath(config.UserSettingsPath.Trim());
+                //}
 
                 // Its critical to have the logger initialized early so initialization 
                 //   routines can use the right logger.
@@ -533,7 +533,7 @@ namespace MediaBrowser.Library {
              ConfigData = config,
              ServiceConfigData = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile),
              StringData = LocalizedStrings.Instance,
-             ImageResolvers = DefaultImageResolvers(config.EnableProxyLikeCaching),
+             ImageResolvers = DefaultImageResolvers(false),
              MB3ApiRepository = repository,
              ServerConnected = connected,
              LocalRepo = localRepo,
@@ -738,17 +738,17 @@ namespace MediaBrowser.Library {
         }
         
         
-        private ParentalControl parentalControls;
-        public ParentalControl ParentalControls
-        {
-            get
-            {
-                if (this.parentalControls == null)
-                    this.parentalControls = new ParentalControl();
-                return this.parentalControls;
-            }
+        //private ParentalControl parentalControls;
+        //public ParentalControl ParentalControls
+        //{
+        //    get
+        //    {
+        //        if (this.parentalControls == null)
+        //            this.parentalControls = new ParentalControl();
+        //        return this.parentalControls;
+        //    }
 
-        }
+        //}
         public MBPropertySet LocalStrings
         {
             get
@@ -779,16 +779,7 @@ namespace MediaBrowser.Library {
         {
             return true;
         }
-        public bool ProtectedFolderAllowed(Folder folder)
-        {
-            return this.ParentalControls.ProtectedFolderEntered(folder);
-        }
 
-        public void ClearProtectedAllowedList()
-        {
-
-            this.ParentalControls.ClearEnteredList();
-        }
         public Dictionary<string, ConfigPanel> ConfigPanels = new Dictionary<string, ConfigPanel>();
 
         //method for external entities (plug-ins) to add a new config panels

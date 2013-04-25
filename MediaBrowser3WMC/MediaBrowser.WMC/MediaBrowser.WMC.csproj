@@ -149,11 +149,6 @@
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
     <Compile Include="Library\Interfaces\ISupportsTrailers.cs" />
-    <Compile Include="Library\Localization\AURatingsDictionary.cs" />
-    <Compile Include="Library\Localization\NLRatingsDictionary.cs" />
-    <Compile Include="Library\Localization\GBRatingsDictionary.cs" />
-    <Compile Include="Library\Localization\RatingsDefinition.cs" />
-    <Compile Include="Library\Localization\USRatingsDictionary.cs" />
     <Compile Include="Library\Logging\FileLogger.cs" />
     <Compile Include="Library\Logging\ILogger.cs" />
     <Compile Include="Library\Logging\LoggerBase.cs" />
@@ -947,7 +942,6 @@
     <None Include="Library\ImageManagement\ProxyCachedRemoteImage.cs" />
     <Compile Include="Library\Localization\LocalizedStringData.cs" />
     <Compile Include="Library\Logging\Logger.cs" />
-    <Compile Include="Library\ParentalControl.cs" />
     <Compile Include="Library\Plugins\BasePlugin.cs" />
     <Compile Include="Library\Plugins\IPluginConfiguration.cs" />
     <Compile Include="Library\Plugins\PluginConfigurationOptions.cs" />

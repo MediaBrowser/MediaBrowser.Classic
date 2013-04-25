@@ -74,22 +74,6 @@ namespace Configurator
             LoadComboBoxes();
             lblVersion.Content = lblVersion2.Content = "Version " + Kernel.Instance.VersionStr;
 
-            //we're showing, but disabling the media collection detail panel until the user selects one
-            infoPanel.IsEnabled = false;
-
-            // first time the wizard has run 
-            if (config.InitialFolder != ApplicationPaths.AppInitialDirPath) {
-                try {
-                    MigrateOldInitialFolder();
-                } catch {
-                    MessageBox.Show("For some reason we were not able to migrate your old initial path, you are going to have to start from scratch.");
-                }
-            }
-
-
-            config.InitialFolder = ApplicationPaths.AppInitialDirPath;
-            //Logger.ReportVerbose("======= Refreshing Items...");
-            RefreshItems();
             //Logger.ReportVerbose("======= Refreshing Podcasts...");
             //RefreshPodcasts();
             //Logger.ReportVerbose("======= Refreshing Ext Players...");
@@ -117,21 +101,17 @@ namespace Configurator
             RefreshExtenderFormats();
             //Logger.ReportVerbose("======= Refreshing Display Settings...");
             RefreshDisplaySettings();
-            //Logger.ReportVerbose("======= Podcast Details...");
-            podcastDetails(false);
             //Logger.ReportVerbose("======= Saving Config...");
             SaveConfig();
 
             //Logger.ReportVerbose("======= Initializing Plugin Manager...");
             PluginManager.Instance.Init();
             //Logger.ReportVerbose("======= Loading Plugin List...");
-            CollectionViewSource src = new CollectionViewSource();
+            var src = new CollectionViewSource();
             src.Source = PluginManager.Instance.InstalledPlugins;
             src.GroupDescriptions.Add(new PropertyGroupDescription("PluginClass"));
 
             pluginList.ItemsSource = src.View;
-
-            //pluginList.Items.Refresh();
 
             //Logger.ReportVerbose("======= Kicking off plugin update check thread...");
             Async.Queue("Plugin Update Check", () =>
@@ -139,83 +119,26 @@ namespace Configurator
                 using (new MediaBrowser.Util.Profiler("Plugin update check"))
                 {
                     while (!PluginManager.Instance.PluginsLoaded) { } //wait for plugins to load
-                    ForceUpgradeCheck(); //remove incompatable plug-ins
                     if (PluginManager.Instance.UpgradesAvailable())
-                        Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() =>
-                        {
-                            PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.");
-                        }));
+                        Dispatcher.Invoke(DispatcherPriority.Background, 
+                            (System.Windows.Forms.MethodInvoker)(() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
                 }
             });
-
-            SupportImprovementNag();
 
             //Logger.ReportVerbose("======= Kicking off validations thread...");
             Async.Queue("Startup Validations", () =>
             {
-                RefreshEntryPoints(false);
+                //RefreshEntryPoints(false);
                 ValidateMBAppDataFolderPermissions();
             });
             //Logger.ReportVerbose("======= Initialize Finised.");
         }
 
-        private void SupportImprovementNag()
-        {
-            if (!config.SuppressStatsNag && !config.SendStats)
-            {
-                config.SuppressStatsNag = SuppImproveDialog.Show("Please consider participating in our User Support Enhancement Program.  Only OS version and memory size are collected and only used to help target our future efforts.  Thank you for your support.");
-                config.Save();
-            }
-        }
-
-        private void ForceUpgradeCheck()
-        {
-            List<IPlugin> foundPlugins = new List<IPlugin>();
-
-            foreach (var entry in PluginManager.RequiredVersions)
-            {
-                foreach (var plugin in PluginManager.Instance.InstalledPlugins)
-                {
-                    if (plugin.Name.ToLower() == entry.Key && plugin.Version < entry.Value)
-                    {
-                        foundPlugins.Add(plugin);
-                    }
-                }
-            }
-            if (foundPlugins.Count > 0)
-            {
-                string plugins = "";
-                foreach (var plugin in foundPlugins)
-                {
-                    plugins += plugin.Name + " version " + plugin.Version + "\n";
-                }
-                Dispatcher.Invoke(DispatcherPriority.Normal, (System.Windows.Forms.MethodInvoker)(() =>
-                {
-                    MessageBox.Show("The following plugin versions are not compatible with this version of MB." +
-                        "They will be un-installed.\n\nYou can re-install compatible versions through the plug-ins tab.\n\n" +
-                        plugins, "Incompatible Plug-ins");
-                    foreach (var plugin in foundPlugins)
-                    {
-                        try
-                        {
-                            Logger.ReportInfo("Removing incompatable plug-in " + plugin.Name + " version " + plugin.Version);
-                            PluginManager.Instance.RemovePlugin(plugin);
-                        }
-                        catch (Exception e)
-                        {
-                            MessageBox.Show("Error removing plugin " + plugin.Name + ".  Please remove manually.", "Error");
-                            Logger.ReportException("Error force removing plugin " + plugin.Name, e);
-                        }
-                    }
-                }));
-            }
-        }
-
         public void ValidateMBAppDataFolderPermissions()
         {
-            String windowsAccount = "Users"; 
-            FileSystemRights fileSystemRights = FileSystemRights.FullControl;
-            DirectoryInfo folder = new DirectoryInfo(ApplicationPaths.AppConfigPath);
+            const string windowsAccount = "Users"; 
+            const FileSystemRights fileSystemRights = FileSystemRights.FullControl;
+            var folder = new DirectoryInfo(ApplicationPaths.AppConfigPath);
 
             if(!folder.Exists)
             {
@@ -228,26 +151,26 @@ namespace Configurator
             {
                 // removed popup question - just going to confuse the user and we *have* to do this if its not right -ebr
                 {
-                    object[] args = new object[3] {folder, windowsAccount, fileSystemRights };
-                    this.Dispatcher.Invoke(new SetAccessProcess(setAccess),args);
+                    var args = new object[3] {folder, windowsAccount, fileSystemRights };
+                    this.Dispatcher.Invoke(new SetAccessProcess(SetAccess),args);
                 }
             }
         }
 
         public delegate void SetAccessProcess(DirectoryInfo folder, string account,FileSystemRights fsRights);
-        public void setAccess(DirectoryInfo folder, string account, FileSystemRights fsRights)
+        public void SetAccess(DirectoryInfo folder, string account, FileSystemRights fsRights)
         {
             //hide our main window and throw up a quick dialog to tell user what is going on
             this.Visibility = Visibility.Hidden;
             waitWin = new PermissionDialog();
             waitWin.Show();
-            Async.Queue("Set Directory Permissions", () => {
-                SetDirectoryAccess(folder, account, fsRights, AccessControlType.Allow);
-            }, () => { this.Dispatcher.Invoke(new doneProcess(permissionsDone)); });
+            Async.Queue("Set Directory Permissions", 
+                () => SetDirectoryAccess(folder, account, fsRights, AccessControlType.Allow), 
+                () => this.Dispatcher.Invoke(new DoneProcess(PermissionsDone)));
         }
 
-        public delegate void doneProcess();
-        public void permissionsDone()
+        public delegate void DoneProcess();
+        public void PermissionsDone()
         {
             //close window and make us visible
             waitWin.Close();
@@ -260,18 +183,15 @@ namespace Configurator
         { 
             try
             {                              
-                DirectorySecurity dSecurity = folder.GetAccessControl();
+                var dSecurity = folder.GetAccessControl();
 
                 foreach (FileSystemAccessRule rule in dSecurity.GetAccessRules(true, false, typeof(SecurityIdentifier)))
                 {
-                    //NTAccount account = new NTAccount(windowsAccount);
-                    //SecurityIdentifier sID = account.Translate(typeof(SecurityIdentifier)) as SecurityIdentifier;
-                    SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null); 
+                    var sid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null); 
                     if (sid.CompareTo(rule.IdentityReference as SecurityIdentifier) == 0)
                     {
                         if (fileSystemRights == rule.FileSystemRights)
                             return true; // Validation complete 
-                            //return false; //test
                     }
                 }
 
@@ -290,136 +210,19 @@ namespace Configurator
         {
             try
             {
-                DirectorySecurity dSecurity = folder.GetAccessControl();
-                SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
+                var dSecurity = folder.GetAccessControl();
+                var sid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
                 dSecurity.AddAccessRule(new FileSystemAccessRule(sid, rights, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, controlType));                
                 folder.SetAccessControl(dSecurity);
             }
             catch (Exception ex)
             {
-                string msg = "Error applying permissions to " + folder.FullName + " for the Account \"" + windowsAccount + "\"";
+                var msg = "Error applying permissions to " + folder.FullName + " for the Account \"" + windowsAccount + "\"";
                 Logger.ReportException(msg, ex);
                 MessageBox.Show(msg);
             }
         }
 
-        public void InitFolderTree()
-        {
-            tvwLibraryFolders.BeginInit();
-            tvwLibraryFolders.Items.Clear();
-            tabMain.Cursor = Cursors.Wait;
-            string[] vfs = Directory.GetFiles(ApplicationPaths.AppInitialDirPath,"*.vf");
-            foreach (string vfName in vfs)
-            {
-                TreeViewItem dummyNode = new TreeViewItem();
-                dummyNode.Header = new DummyTreeItem();
-
-                TreeViewItem aNode = new TreeViewItem();
-                LibraryFolder aFolder = new LibraryFolder(vfName);
-                aNode.Header = aFolder;
-                aNode.Items.Add(dummyNode);
-                
-                tvwLibraryFolders.Items.Add(aNode);
-            }
-            tvwLibraryFolders.EndInit();
-            tabMain.Cursor = Cursors.Arrow;
-        }
-
-        private void getLibrarySubDirectories(string dir, TreeViewItem parent)
-        {
-            string[] dirs;
-            try
-            {
-                dirs = Directory.GetDirectories(dir);
-            }
-            catch (Exception ex)
-            {
-                //something wrong - can't access the directory try to move on
-                Logger.ReportException("Couldn't access directory " + dir, ex);
-                return;
-            }
-            foreach (string subdir in dirs)
-            {
-                //only want directories that don't directly contain movies and are not boxsets in our tree...
-                if (!containsMedia(subdir) && !subdir.ToLower().Contains("[boxset]"))
-                {
-                    TreeViewItem aNode; // = new TreeViewItem();
-                    //LibraryFolder aFolder = new LibraryFolder(subdir);
-                    //aNode.Header = aFolder;
-                    
-                    // Throw back up to main thread to add to TreeView
-                    // (System.Windows.Forms.MethodInvoker)(() => { aNode = addLibraryFolderNode(parent, subdir); }));
-                    AddLibraryFolderCB addNode = new AddLibraryFolderCB(addLibraryFolderNode);
-
-                    Object returnType;
-                    returnType = Dispatcher.Invoke(addNode, DispatcherPriority.Background, parent, subdir);
-
-                    aNode = (TreeViewItem)returnType;
-
-                    getLibrarySubDirectories(subdir, aNode);
-                }
-            }
-        }
-
-        private bool containsMedia(string path)
-        {
-            if (!File.Exists(path + "\\series.xml")
-                && !Directory.Exists(path + "\\VIDEO_TS")
-                && !Directory.Exists(path + "\\BDMV")
-                && !Directory.Exists(path + "\\HVDVD_TS")
-                && Directory.GetFiles(path, "*.iso").Length == 0
-                && Directory.GetFiles(path, "*.IFO").Length == 0
-                && Directory.GetFiles(path, "*.VOB").Length == 0
-                && Directory.GetFiles(path, "*.avi").Length == 0
-                && Directory.GetFiles(path, "*.mpg").Length == 0
-                && Directory.GetFiles(path, "*.mpeg").Length == 0
-                && Directory.GetFiles(path, "*.mp3").Length == 0
-                && Directory.GetFiles(path, "*.mp4").Length == 0
-                && Directory.GetFiles(path, "*.mkv").Length == 0
-                && Directory.GetFiles(path, "*.m4v").Length == 0
-                && Directory.GetFiles(path, "*.mov").Length == 0
-                && Directory.GetFiles(path, "*.m2ts").Length == 0
-                && Directory.GetFiles(path, "*.wmv").Length == 0 )
-                return false;
-            else return true;
-        }
-
-
-
-        //private void RefreshPodcasts() {
-        //    var podcasts = Kernel.Instance.GetItem<Folder>(config.PodcastHome);
-        //    podcastList.Items.Clear();
-
-        //    if (podcasts != null) {
-
-        //        RefreshPodcasts(podcasts);
-
-        //        Async.Queue("Podcast Refresher", () =>
-        //        {
-        //            podcasts.ValidateChildren();
-
-        //            foreach (var item in podcasts.Children) {
-        //                if (item is VodCast) {
-        //                    (item as VodCast).ValidateChildren();
-        //                }
-        //            }
-
-        //        }, () =>
-        //        {
-        //            Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() =>
-        //            {
-        //                RefreshPodcasts(podcasts);
-        //            }));
-        //        });
-        //    } 
-        //}
-
-        private void RefreshPodcasts(Folder podcasts) {
-            podcastList.Items.Clear();
-            foreach (var item in podcasts.Children) {
-                podcastList.Items.Add(item);
-            }
-        }
 
         private void InitExpertMode()
         {
@@ -432,7 +235,7 @@ namespace Configurator
                         configMembers.Add(new ConfigMember(member, config));
                 }
 
-                CollectionViewSource src = new CollectionViewSource();
+                var src = new CollectionViewSource();
                 src.Source = configMembers;
                 src.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
                 configMemberList.ItemsSource = src.View;
@@ -479,25 +282,9 @@ namespace Configurator
             else
                 ddlWeatherUnits.SelectedItem = "Celsius";
 
-            tbxMinResumeDuration.Text = config.MinResumeDuration.ToString();
             lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
-            sldrMinResumePct.Value = config.MinResumePct;
-            sldrMaxResumePct.Value = config.MaxResumePct;
 
             ddlLoglevel.SelectedItem = config.MinLoggingSeverity;
-
-            //Parental Control
-            cbxEnableParentalControl.IsChecked = config.ParentalControlEnabled;
-            cbxOptionBlockUnrated.IsChecked = config.ParentalBlockUnrated;
-            cbxOptionHideProtected.IsChecked = config.HideParentalDisAllowed;
-            cbxOptionAutoUnlock.IsChecked = config.UnlockOnPinEntry;
-            gbPCGeneral.IsEnabled = gbPCPIN.IsEnabled = gbPCFolderSecurity.IsEnabled = config.ParentalControlEnabled;
-            ddlOptionMaxAllowedRating.SelectedItem = Ratings.ToString(config.MaxParentalLevel);
-            slUnlockPeriod.Value = config.ParentalUnlockPeriod;
-            txtPCPIN.Password = config.ParentalPIN;
-
-            //supporter key
-            //tbxSupporterKey.Text = Config.Instance.SupporterKey;
 
             //logging
             cbxEnableLogging.IsChecked = config.EnableTraceLogging;
@@ -505,14 +292,6 @@ namespace Configurator
             //library validation
             cbxAutoValidate.IsChecked = config.AutoValidate;
 
-            //metadata
-            cbxInetProviders.IsChecked = gbTmdb.IsEnabled = config.AllowInternetMetadataProviders;
-            cbxSaveMetaLocally.IsChecked = config.SaveLocalMeta;
-            cbxDownloadPeople.IsChecked = config.DownloadPeopleImages;
-            cbxSaveSeasonBD.IsChecked = config.SaveSeasonBackdrops;
-            cbxRefreshImages.IsChecked = config.RefreshItemImages;
-            tbxMaxBackdrops.Text = config.MaxBackdrops.ToString();
-            tbxMetadataUpdateAge.Text = config.MetadataCheckForUpdateAge.ToString();
         }
 
         private void SaveConfig()
@@ -565,60 +344,11 @@ namespace Configurator
             // Weather Units
             ddlWeatherUnits.Items.Add("Celsius");
             ddlWeatherUnits.Items.Add("Fahrenheit");
-            // Parental Ratings
-            //ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
-            //create a set of ratings strings that makes more sense for the folder list
-            //folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
-            ddlFolderRating.ItemsSource = folderSettings;
-            //meta
-            AllLanguages = GetLanguages(CultureInfo.GetCultures(CultureTypes.NeutralCultures));
-            ddlMetadataLanguage.ItemsSource = AllLanguages;
-            AllRegions = GetRegions(AllCultures);
-            ddlMetadataCountry.ItemsSource = AllRegions;
-            ddlMetadataLanguage.SelectedItem = AllLanguages.FirstOrDefault(c => c.LanguageCode == config.PreferredMetaDataLanguage);
-            ddlMetadataCountry.SelectedItem = AllRegions.FirstOrDefault(r => r.TwoLetterISORegionName == config.MetadataCountryCode);
-            ddlPosterSize.ItemsSource = new List<string>() { "w500", "w342", "w185", "original" };
-            ddlPosterSize.SelectedItem = config.FetchedPosterSize;
-            ddlBackdropSize.ItemsSource = new List<string>() { "w1280", "w780", "original" };
-            ddlBackdropSize.SelectedItem = config.FetchedBackdropSize;
-            ddlPersonImageSize.ItemsSource = new List<string>() { "w185", "w45", "h632", "original" };
-            ddlPersonImageSize.SelectedItem = config.FetchedProfileSize;
-
 
             ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
 
         }
 
-        private List<RegionInfo> GetRegions(IEnumerable<CultureInfo> cultures)
-        {
-            List<RegionInfo> regions = new List<RegionInfo>();
-            foreach (var culture in cultures)
-            {
-                try
-                {
-                    RegionInfo region = new RegionInfo(culture.LCID);
-                    if (!regions.Contains(region))
-                    {
-                        regions.Add(region);
-                    }
-                }
-                catch { } //some don't have regions
-            }
-            return regions.OrderBy(i => i.Name).ToList();
-        }
-
-        private List<Language> GetLanguages(IEnumerable<CultureInfo> cultures)
-        {
-            List<Language> languages = new List<Language>();
-            foreach (var culture in cultures)
-            {
-                
-                {
-                    languages.Add(new Language() {Name = culture.DisplayName, LanguageCode = culture.TwoLetterISOLanguageName});
-                }
-            }
-            return languages;
-        }
         #endregion
 
         private void RefreshExtenderFormats()
@@ -639,53 +369,6 @@ namespace Configurator
             }
         }
 
-        private void RefreshItems()
-        {
-
-            folderList.Items.Clear();
-
-            List<VirtualFolder> vfs = new List<VirtualFolder>();
-            int i = 0; //use this to fill in sortorder if not there
-
-            foreach (var filename in Directory.GetFiles(config.InitialFolder))
-            {
-                try
-                {
-                    if (filename.ToLowerInvariant().EndsWith(".vf") ||
-                        filename.ToLowerInvariant().EndsWith(".lnk"))
-                    {
-                        //add to our sorted list
-                        VirtualFolder vf = new VirtualFolder(filename);
-                        if (vf.SortName == null)
-                        {
-                            //give it a sortorder if its not there
-                            vf.SortName = i.ToString("D3");
-                            vf.Save();
-                        }
-                        vfs.Add(vf);
-                        i = i + 10;
-                    }
-                    //else
-                    //    throw new ArgumentException("Invalid virtual folder file extension: " + filename);
-                }
-                catch (ArgumentException)
-                {
-                    Logger.ReportWarning("Ignored file: " + filename);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Invalid file detected in the initial folder!" + e.ToString());
-                    // TODO : alert about dodgy VFs and delete them
-                }
-            }
-
-            vfs.Sort((a,b) => a.SortName.CompareTo(b.SortName));
-
-            //now add our items in sorted order
-            foreach (VirtualFolder v in vfs)
-                folderList.Items.Add(v);
-        }
-
         private void RefreshPlayers()
         {
             lstExternalPlayers.Items.Clear();
@@ -694,113 +377,6 @@ namespace Configurator
                 if (!String.IsNullOrEmpty(item.ExternalPlayerName))
                     lstExternalPlayers.Items.Add(item);
             }
-        }
-
-        #region Media Collection methods
-
-        private void MigrateOldInitialFolder()
-        {
-            var path = config.InitialFolder;
-            if (config.InitialFolder == Helper.MY_VIDEOS)
-            {
-                path = Helper.MyVideosPath;
-            }
-
-            foreach (var file in Directory.GetFiles(path))
-            {
-                if (file.ToLower().EndsWith(".vf"))
-                {
-                    File.Copy(file, System.IO.Path.Combine(ApplicationPaths.AppInitialDirPath, System.IO.Path.GetFileName(file)), true);
-                }
-                else if (file.ToLower().EndsWith(".lnk"))
-                {
-                    WriteVirtualFolder(Helper.ResolveShortcut(file));
-                }
-            }
-
-            foreach (var dir in Directory.GetDirectories(path))
-            {
-
-                WriteVirtualFolder(dir);
-            }
-        }
-
-        private void WriteVirtualFolder(string dir)
-        {
-            int sortorder = 0;
-            if (folderList.Items != null)
-                sortorder = folderList.Items.Count*10;
-            var imagePath = FindImage(dir);
-            string vf = string.Format(
-@"
-folder: {0}
-sortorder: {2}
-{1}
-", dir, imagePath,sortorder.ToString("D3"));
-
-            string name = System.IO.Path.GetFileName(dir);
-            // workaround for adding c:\
-            if (name.Length == 0) {
-                name = dir;
-                foreach (var chr in System.IO.Path.GetInvalidFileNameChars()) {
-                    name = name.Replace(chr.ToString(), "");
-                }
-            }
-            var destination = System.IO.Path.Combine(ApplicationPaths.AppInitialDirPath, name + ".vf");
-
-     
-            for (int i = 1; i < 999; i++) {
-                if (!File.Exists(destination)) break;
-                destination = System.IO.Path.Combine(ApplicationPaths.AppInitialDirPath, name  + i.ToString() + ".vf");
-            }
-
-            File.WriteAllText(destination,
-                vf.Trim());
-        }
-
-        private void updateFolderSort(int start)
-        {
-            if (folderList.Items != null && (folderList.Items.Count*10) > start)
-            {
-                //update the sortorder in the list starting with the specified index (we just removed or moved something)
-                for (int i = start; i < folderList.Items.Count*10; i = i + 10)
-                {
-                    VirtualFolder vf = (VirtualFolder)folderList.Items[i/10];
-                    vf.SortName = i.ToString("D3");
-                    vf.Save();
-                }
-            }
-        }
-
-        private static string FindImage(string dir)
-        {
-            string imagePath = "";
-            foreach (var file in new string[] { "folder.png", "folder.jpeg", "folder.jpg" })
-                if (File.Exists(System.IO.Path.Combine(dir, file)))
-                {
-                    imagePath = "image: " + System.IO.Path.Combine(dir, file);
-                }
-            return imagePath;
-        }
-
-        #endregion
-
-        #region events
-        private void btnAddFolder_Click(object sender, RoutedEventArgs e)
-        {
-            BrowseForFolderDialog dlg = new BrowseForFolderDialog();
-
-            if (true == dlg.ShowDialog(this))
-            {
-                WriteVirtualFolder(dlg.SelectedFolder);
-                RefreshItems();
-                RefreshEntryPoints(false);
-            }
-        }
-
-        private void btnFolderTree_Click(object sender, RoutedEventArgs e)
-        {
-            InitFolderTree();
         }
 
         private void RefreshEntryPoints()
@@ -881,183 +457,8 @@ sortorder: {2}
             });
         }
 
-        private void btnRename_Click(object sender, RoutedEventArgs e)
-        {
-            String CurrentName = String.Empty;
-            String NewName = String.Empty;
-            String CurrentContext = String.Empty;
-            String NewContext = String.Empty;
+        #region events
 
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder != null)
-            {
-                CurrentName = virtualFolder.Name;
-                CurrentContext = virtualFolder.Path;
-
-                var form = new RenameForm(virtualFolder.Name);
-                form.Owner = this;
-                form.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                var result = form.ShowDialog();
-                if (result == true)
-                {
-                    virtualFolder.Name = form.tbxName.Text;
-                    NewName = virtualFolder.Name;
-                    NewContext = virtualFolder.Path;
-                    this.RenameVirtualFolderEntryPoint(CurrentName, NewName, CurrentContext, NewContext);
-
-                    RefreshItems();
-                    RefreshEntryPoints(false);
-
-                    foreach (VirtualFolder item in folderList.Items)
-                    {
-                        if (item.Name == virtualFolder.Name)
-                        {
-                            folderList.SelectedItem = item;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void RenameVirtualFolderEntryPoint(String OldName, String NewName, String OldContext, String NewContext)
-        {
-            EntryPointManager epm = null;
-
-            try
-            {
-                epm = new EntryPointManager();
-            }
-            catch (Exception ex)
-            {
-                //Write to error log, don't prompt user.
-                Logger.ReportError("Error starting Entry Point Manager in RenameVirtualFolderEntryPoint(). " + ex.Message);
-                return;
-            }
-
-            try
-            {
-                epm.RenameEntryPointTitle(OldName, NewName, OldContext, NewContext);
-            }
-            catch (Exception ex)
-            {
-                String msg = "Error renaming Entry Points. " + ex.Message;
-                Logger.ReportError(msg);
-                MessageBox.Show(msg);
-            }
-        }
-
-        private void btnRemoveFolder_Click(object sender, RoutedEventArgs e)
-        {
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder != null)
-            {
-                int current = folderList.SelectedIndex*10;
-
-                var message = "About to remove the folder \"" + virtualFolder.Name + "\" from the menu.\nAre you sure?";
-                if (
-                   MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
-                {
-
-                    File.Delete(virtualFolder.Path);
-                    folderList.Items.Remove(virtualFolder);
-                    updateFolderSort(current);
-                    infoPanel.IsEnabled = false;
-                    RefreshEntryPoints(false);
-                }
-            }
-        }
-
-        private void btnChangeImage_Click(object sender, RoutedEventArgs e)
-        {
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder == null) return;
-
-            var dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Title = "Select your image";
-            dialog.Filter = "Image files (*.png;*.jpg;)|*.png;*.jpg;";
-            dialog.FilterIndex = 1;
-            dialog.RestoreDirectory = true;
-            //var result = dialog.ShowDialog();
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                virtualFolder.ImagePath = dialog.FileName;
-                folderImage.Source = new BitmapImage(new Uri(virtualFolder.ImagePath));
-            }
-        }
-
-        private void btnRemoveImage_Click(object sender, RoutedEventArgs e)
-        {
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder == null) return;
-            if (MessageBox.Show("Remove association to this image.  Are you sure? \n\n(The image itself will not be deleted)", "Remove Image", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                virtualFolder.ImagePath = "";
-                folderImage.Source = null;
-            }
-        }
-
-        private void btnAddSubFolder_Click(object sender, RoutedEventArgs e)
-        {
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder == null) return;
-
-            BrowseForFolderDialog dlg = new BrowseForFolderDialog();
-            
-            if (true == dlg.ShowDialog(this))
-            {
-                virtualFolder.AddFolder(dlg.SelectedFolder);
-                folderList_SelectionChanged(this, null);
-            }
-        }
-
-        private void btnRemoveSubFolder_Click(object sender, RoutedEventArgs e)
-        {
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder == null) return;
-
-            var path = internalFolder.SelectedItem as string;
-            if (path != null)
-            {
-                var message = "Remove \"" + path + "\"?";
-                if (
-                  MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
-                {
-                    virtualFolder.RemoveFolder(path);
-                    folderList_SelectionChanged(this, null);
-                }
-            }
-        }
-
-        private void folderList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            internalFolder.Items.Clear();
-
-            var virtualFolder = folderList.SelectedItem as VirtualFolder;
-            if (virtualFolder != null)
-            {
-                foreach (var folder in virtualFolder.Folders)
-                {
-                    internalFolder.Items.Add(folder);
-                }
-
-                if (!string.IsNullOrEmpty(virtualFolder.ImagePath))
-                {
-                    if (File.Exists(virtualFolder.ImagePath)) {
-                        folderImage.Source = new BitmapImage(new Uri(virtualFolder.ImagePath));
-                    }
-                }
-                else
-                {
-                    folderImage.Source = null;
-                }
-                //enable the rename, delete, up and down buttons if a media collection is selected.
-                btnRename.IsEnabled = btnRemoveFolder.IsEnabled = true;
-
-                //enable the infoPanel
-                infoPanel.IsEnabled = true;
-            }
-        }
 
         private void pluginList_DoubleClicked(object sender, RoutedEventArgs e)
         {
@@ -1068,11 +469,11 @@ sortorder: {2}
         {
             if (pluginList.SelectedItem != null)
             {
-                IPlugin plugin = pluginList.SelectedItem as IPlugin;
-                System.Version v = PluginManager.Instance.GetLatestVersion(plugin);
+                var plugin = (IPlugin)pluginList.SelectedItem;
+                var v = PluginManager.Instance.GetLatestVersion(plugin);
                 var latest = PluginManager.Instance.AvailablePlugins.Find(plugin, v);
-                System.Version rv = latest != null ? latest.RequiredMBVersion : plugin.RequiredMBVersion;
-                System.Version bv = PluginManager.Instance.GetBackedUpVersion(plugin);
+                var rv = latest != null ? latest.RequiredMBVersion : plugin.RequiredMBVersion;
+                var bv = PluginManager.Instance.GetBackedUpVersion(plugin);
                 //enable the remove button if a plugin is selected.
                 removePlugin.IsEnabled = true;
 
@@ -1117,9 +518,9 @@ sortorder: {2}
         private void upgradePlugin_Click(object sender, RoutedEventArgs e) {
             if (pluginList.SelectedItem != null)
             {
-                IPlugin plugin = pluginList.SelectedItem as IPlugin;
+                var plugin = pluginList.SelectedItem as IPlugin;
                 //get our latest version so we can upgrade...
-                IPlugin newPlugin = PluginManager.Instance.AvailablePlugins.Find(plugin, PluginManager.Instance.GetLatestVersion(plugin));
+                var newPlugin = PluginManager.Instance.AvailablePlugins.Find(plugin, PluginManager.Instance.GetLatestVersion(plugin));
                 if (newPlugin != null)
                 {
                     if (!string.IsNullOrEmpty(newPlugin.UpgradeInfo))
@@ -1131,8 +532,8 @@ sortorder: {2}
                             return;
                         }
                     }
-                    PluginInstaller p = new PluginInstaller();
-                    callBack done = new callBack(UpgradeFinished);
+                    var p = new PluginInstaller();
+                    var done = new CallBack(UpgradeFinished);
                     this.IsEnabled = false;
                     p.InstallPlugin(newPlugin, progress, this, done);
                     KernelModified = true;
@@ -1140,50 +541,14 @@ sortorder: {2}
             }
         }
 
-        private void btnUp_Click(object sender, RoutedEventArgs e)
-        {
-            //move the current item up in the list
-            VirtualFolder vf = (VirtualFolder)folderList.SelectedItem;
-            int current = folderList.SelectedIndex*10;
-            if (vf != null && current > 0)
-            {
-                //remove from current location
-                folderList.Items.RemoveAt(current/10);
-                //add back above item above us
-                folderList.Items.Insert((current/10) - 1, vf);
-                //and re-index the items below us
-                updateFolderSort(current - 10);
-                //finally, re-select this item
-                folderList.SelectedItem = vf;
-            }
-        }
 
-        private void btnDn_Click(object sender, RoutedEventArgs e)
-        {
-            //move the current item down in the list
-            VirtualFolder vf = (VirtualFolder)folderList.SelectedItem;
-            int current = folderList.SelectedIndex*10;
-            if (vf != null && folderList.SelectedIndex < folderList.Items.Count-1)
-            {
-                //remove from current location
-                folderList.Items.RemoveAt(current/10);
-                //add back below item below us
-                folderList.Items.Insert((current/10) + 1, vf);
-                //and re-index the items below us
-                updateFolderSort(current);
-                //finally, re-select this item
-                folderList.SelectedItem = vf;
-            }
-
-        }
-
-        private delegate void callBack();
+        private delegate void CallBack();
 
         public void UpgradeFinished()
         {
             //called when the upgrade process finishes - we just hide progress bar and re-enable
             this.IsEnabled = true;
-            IPlugin plugin = pluginList.SelectedItem as IPlugin;
+            var plugin = pluginList.SelectedItem as IPlugin;
             try
             {
                 PluginManager.Instance.RefreshInstalledPlugins(); //refresh list
@@ -1202,9 +567,7 @@ sortorder: {2}
 
         private void addExtenderFormat_Click(object sender, RoutedEventArgs e)
         {
-            var form = new AddExtenderFormat();
-            form.Owner = this;
-            form.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            var form = new AddExtenderFormat {Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner};
             var result = form.ShowDialog();
             if (result == true)
             {
@@ -1237,7 +600,7 @@ sortorder: {2}
         private void changeDaemonToolsLocation_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Filter = "*.exe|*.exe";
+            dialog.Filter = "Executable Files (*.exe)|*.exe";
             var result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
@@ -1260,7 +623,7 @@ sortorder: {2}
         private void btnRemovePlayer_Click(object sender, RoutedEventArgs e)
         {
             string message;
-            string title = "Remove External Player Confirmation";
+            const string title = "Remove External Player Confirmation";
 
             if (lstExternalPlayers.SelectedItems.Count > 1)
             {
@@ -1268,7 +631,7 @@ sortorder: {2}
             }
             else
             {
-                var mediaPlayer = lstExternalPlayers.SelectedItem as ConfigData.ExternalPlayer;
+                var mediaPlayer = (ConfigData.ExternalPlayer)lstExternalPlayers.SelectedItem;
 
                 message = "About to remove " + mediaPlayer.ExternalPlayerName + ". Are you sure?";                             
             }
@@ -1309,10 +672,7 @@ sortorder: {2}
 
         private void EditExternalPlayer(ConfigData.ExternalPlayer externalPlayer, bool isNew)
         {
-            var form = new ExternalPlayerForm(isNew);
-            form.Owner = this;
-
-            form.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            var form = new ExternalPlayerForm(isNew) {Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner};
 
             form.FillControlsFromObject(externalPlayer);
 
@@ -1335,9 +695,9 @@ sortorder: {2}
 
         private void lstExternalPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int selectedIndex = lstExternalPlayers.SelectedIndex;
-            bool hasSelection = selectedIndex >= 0;
-            bool hasMultiSelection = lstExternalPlayers.SelectedItems.Count > 1;
+            var selectedIndex = lstExternalPlayers.SelectedIndex;
+            var hasSelection = selectedIndex >= 0;
+            var hasMultiSelection = lstExternalPlayers.SelectedItems.Count > 1;
 
             btnRemovePlayer.IsEnabled = hasSelection;
             btnEditPlayer.IsEnabled = hasSelection && !hasMultiSelection;
@@ -1473,31 +833,6 @@ sortorder: {2}
             config.EnableRootPage = (bool)cbxRootPage.IsChecked;
             SaveConfig();
         }
-        private void cbxOptionBlockUnrated_Click(object sender, RoutedEventArgs e)
-        {
-            config.ParentalBlockUnrated = (bool)cbxOptionBlockUnrated.IsChecked;
-            SaveConfig();
-        }
-        private void cbxEnableParentalControl_Click(object sender, RoutedEventArgs e)
-        {
-            //enable/disable other controls on screen
-            gbPCGeneral.IsEnabled = gbPCPIN.IsEnabled = gbPCFolderSecurity.IsEnabled = (bool)cbxEnableParentalControl.IsChecked;
-
-            config.ParentalControlEnabled = (bool)cbxEnableParentalControl.IsChecked;
-            SaveConfig();
-
-        }
-
-        private void cbxOptionHideProtected_Click(object sender, RoutedEventArgs e)
-        {
-            config.HideParentalDisAllowed = (bool)cbxOptionHideProtected.IsChecked;
-            SaveConfig();
-        }
-        private void cbxOptionAutoUnlock_Click(object sender, RoutedEventArgs e)
-        {
-            config.UnlockOnPinEntry = (bool)cbxOptionAutoUnlock.IsChecked;
-            SaveConfig();
-        }
         private void cbxOptionAutoEnter_Click(object sender, RoutedEventArgs e)
         {
             config.AutoEnterSingleDirs = (bool)cbxOptionAutoEnter.IsChecked;
@@ -1511,45 +846,11 @@ sortorder: {2}
             SaveConfig();
         }
 
-        //private void cbxSendStats_Click(object sender, RoutedEventArgs e)
-        //{
-        //    config.SendStats = (bool)cbxSendStats.IsChecked;
-        //    if (config.SendStats) config.EnableUpdates = true; //need this on too
-        //    SaveConfig();
-        //}
-
-        private void cbxInetProviders_Checked(object sender, RoutedEventArgs e)
+        private void enableLogging_Click(object sender, RoutedEventArgs e)
         {
-            config.AllowInternetMetadataProviders = gbTmdb.IsEnabled = cbxInetProviders.IsChecked.Value;
-            config.Save();
-
+            config.EnableTraceLogging = (bool)cbxEnableLogging.IsChecked;
+            SaveConfig();
         }
-
-        private void cbxSaveMetaLocally_Checked(object sender, RoutedEventArgs e)
-        {
-            config.SaveLocalMeta = gbSaveMeta.IsEnabled = cbxSaveMetaLocally.IsChecked.Value;
-            config.Save();
-        }
-
-        private void cbxDownloadPeople_Checked(object sender, RoutedEventArgs e)
-        {
-            config.DownloadPeopleImages = cbxDownloadPeople.IsChecked.Value;
-            config.Save();
-        }
-
-        private void cbxSaveSeasonBD_Checked(object sender, RoutedEventArgs e)
-        {
-            config.SaveSeasonBackdrops = cbxSaveSeasonBD.IsChecked.Value;
-            config.Save();
-        }
-
-        private void cbxRefreshImages_Checked(object sender, RoutedEventArgs e)
-        {
-            config.RefreshItemImages = cbxRefreshImages.IsChecked.Value;
-            config.Save();
-        }
-
-
 
         #endregion
 
@@ -1580,30 +881,6 @@ sortorder: {2}
             }
             SaveConfig();
         }
-        private void ddlOptionMaxAllowedRating_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlOptionMaxAllowedRating.SelectedItem != null)
-            {
-                config.MaxParentalLevel = Ratings.Level((string)ddlOptionMaxAllowedRating.SelectedItem);
-                SaveConfig();
-            }
-        }
-
-        private void slUnlockPeriod_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            try
-            {
-
-                if (config != null && slUnlockPeriod != null)
-                {
-                    config.ParentalUnlockPeriod = (int)slUnlockPeriod.Value;
-                    SaveConfig();
-                }
-            }
-            catch (Exception ex){
-                Logger.ReportException("Recovered from crash in slUnlockPeriod", ex);
-            }
-        }
         #endregion
 
         #region Header Selection Methods
@@ -1618,42 +895,6 @@ sortorder: {2}
             }
         }
 
-        //private void hdrBasic_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    SetHeader(hdrBasic);
-        //    externalPlayersTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = helpTab.Visibility = Visibility.Collapsed;
-        //    mediacollectionTab.Visibility = podcastsTab.Visibility = displayTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Visible;
-        //}
-
-        //private void hdrAdvanced_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    SetHeader(hdrAdvanced);
-        //    externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = metadataTab.Visibility = parentalControlTab.Visibility = Visibility.Visible;
-        //    mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = Visibility.Visible;
-        //    helpTab.Visibility = Visibility.Collapsed;
-        //}
-
-        //private void hdrHelpAbout_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    SetHeader(hdrHelpAbout);
-        //    externalPlayersTab.Visibility = displayTab.Visibility = extendersTab.Visibility = parentalControlTab.Visibility = Visibility.Collapsed;
-        //    mediacollectionTab.Visibility = podcastsTab.Visibility = plugins.Visibility = metadataTab.Visibility = Visibility.Collapsed;
-        //    helpTab.Visibility = Visibility.Visible;
-        //    helpTab.IsSelected = true;
-        //}
-
-        //private void ClearHeaders()
-        //{
-        //    hdrAdvanced.Foreground = hdrBasic.Foreground = hdrHelpAbout.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Gray);
-        //    hdrAdvanced.FontWeight = hdrBasic.FontWeight = hdrHelpAbout.FontWeight = FontWeights.Normal;
-        //    tabMain.SelectedIndex = 0;
-        //}
-        //private void SetHeader(System.Windows.Controls.Label label)
-        //{
-        //    ClearHeaders();
-        //    label.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Black);
-        //    label.FontWeight = FontWeights.Bold;
-        //}
         #endregion
 
         private void btnWeatherID_Click(object sender, RoutedEventArgs e)
@@ -1666,67 +907,6 @@ sortorder: {2}
             SaveConfig();
         }
 
-        private void addPodcast_Click(object sender, RoutedEventArgs e) {
-            //var form = new AddPodcastForm();
-            //form.Owner = this;
-            //var result = form.ShowDialog();
-            //if (result == true) {
-            //    form.RSSFeed.Save(config.PodcastHome);
-            //    RefreshPodcasts();
-            //    RefreshEntryPoints(false);
-            //} 
-
-        }
-
-        private void podcastList_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            //VodCast vodcast = podcastList.SelectedItem as VodCast;
-            //if (vodcast != null) {
-            //    podcastDetails(true);
-            //    podcastUrl.Text = vodcast.Url;
-            //    podcastName.Content = vodcast.Name;
-            //    podcastDescription.Text = vodcast.Overview;
-
-            //    //enable the rename and delete buttons if a podcast is selected.
-            //    renamePodcast.IsEnabled = removePodcast.IsEnabled = true;
-            //}
-        }
-
-        private void removePodcast_Click(object sender, RoutedEventArgs e) {
-            //VodCast vodcast = podcastList.SelectedItem as VodCast;
-            //if (vodcast != null) {
-            //    var message = "Remove \"" + vodcast.Name + "\"?";
-            //    if (
-            //      MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes) {
-            //        File.Delete(vodcast.Path);
-            //        vodcast.Parent.ValidateChildren();
-            //        podcastDetails(false);
-            //        RefreshPodcasts();
-            //        RefreshEntryPoints(false);
-            //    }
-            //}
-        }
-
-        private void renamePodcast_Click(object sender, RoutedEventArgs e) {
-            //VodCast vodcast = podcastList.SelectedItem as VodCast;
-            //if (vodcast != null) {
-            //    var form = new RenameForm(vodcast.Name);
-            //    form.Owner = this;
-            //    var result = form.ShowDialog();
-            //    if (result == true) {
-            //        vodcast.Name = form.tbxName.Text;
-            //        Kernel.Instance.ItemRepository.SaveItem(vodcast);
-
-            //        RefreshPodcasts();
-
-            //        foreach (VodCast item in podcastList.Items) {
-            //            if (item.Name == vodcast.Name) {
-            //                podcastList.SelectedItem = item;
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-        }
 
         private void removePlugin_Click(object sender, RoutedEventArgs e) {
             var plugin = pluginList.SelectedItem as IPlugin;
@@ -1745,7 +925,7 @@ sortorder: {2}
         }
 
         private void addPlugin_Click(object sender, RoutedEventArgs e) {
-            AddPluginWindow window = new AddPluginWindow();
+            var window = new AddPluginWindow();
             window.Owner = this;
             window.Top = 10;
             window.Left = this.Left + 50;
@@ -1753,11 +933,8 @@ sortorder: {2}
             if (window.Left < 0) window.Left = 5;
             if (SystemParameters.WorkArea.Height - 10 < (window.Height)) window.Height = SystemParameters.WorkArea.Height - 10;
             window.ShowDialog();
-            Async.Queue("Refresh after plugin add", () =>
-            {
-                RefreshEntryPoints(true);
-            });
-            int current = pluginList.SelectedIndex;
+            Async.Queue("Refresh after plugin add", () => RefreshEntryPoints(true));
+            var current = pluginList.SelectedIndex;
             PluginManager.Instance.RefreshInstalledPlugins(); //refresh list
             if (current > pluginList.Items.Count) current = pluginList.Items.Count;
             pluginList.SelectedIndex = current;
@@ -1775,18 +952,6 @@ sortorder: {2}
             }
         }
 
-        private void podcastDetails(bool display)
-        {
-            if (display)
-            {
-                podcastName.Visibility = podcastDescription.Visibility = podcastUrl.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                podcastName.Visibility = podcastDescription.Visibility = podcastUrl.Visibility = Visibility.Hidden;
-            }
-        }
-
         void HandleRequestNavigate(object sender, RoutedEventArgs e)
         {
             Hyperlink hl = (Hyperlink)sender;
@@ -1798,145 +963,10 @@ sortorder: {2}
             e.Handled = true;
         }
 
-                
-
-
-
-        private void savePCPIN(object sender, RoutedEventArgs e)
+        void HandleDashboardNavigate(object sender, RoutedEventArgs e)
         {
-            //first be sure its valid
-            if (txtPCPIN.Password.Length != 4)
-            {
-                MessageBox.Show("PIN Must be EXACTLY FOUR digits.", "Invalid PIN");
-                return;
-            }
-            else try
-                {
-                    //try and convert to a number - it should convert to an integer
-                    int test = Convert.ToInt16(txtPCPIN.Password);
-                }
-                catch
-                {
-                    MessageBox.Show("PIN Must be four DIGITS (that can be typed on a remote)", "Invalid PIN");
-                    return;
-                }
-            //appears to be valid - save it
-            config.ParentalPIN = txtPCPIN.Password;
-            SaveConfig();
-        }
-
-        private void tvwLibraryFolders_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            TreeViewItem curItem = (TreeViewItem)tvwLibraryFolders.SelectedItem;
-            LibraryFolder curFolder = (LibraryFolder)curItem.Header;
-            if (curFolder != null)
-            {
-                ddlFolderRating.IsEnabled = true;
-                ddlFolderRating.SelectedItem = curFolder.CustomRating;
-                if (!String.IsNullOrEmpty(curFolder.CustomRating))
-                    btnDelFolderRating.IsEnabled = true;
-                else
-                    btnDelFolderRating.IsEnabled = false;
-
-            }
-        }
-
-        private void ddlFolderRating_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!tvwLibraryFolders.Items.IsEmpty && ddlFolderRating.SelectedItem != null)
-            {
-                TreeViewItem curItem = (TreeViewItem)tvwLibraryFolders.SelectedItem;
-                if (curItem != null)
-                {
-                    LibraryFolder curFolder = (LibraryFolder)curItem.Header;
-                    if (curFolder != null && ddlFolderRating.SelectedValue != null)
-                    {
-                        curFolder.CustomRating = ddlFolderRating.SelectedValue.ToString().Replace("Any","None");
-                        if (curFolder.CustomRating != null)
-                        {
-                            curFolder.SaveXML();
-                            btnDelFolderRating.IsEnabled = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void btnDelFolderRating_Click(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem curItem = (TreeViewItem)tvwLibraryFolders.SelectedItem;
-            LibraryFolder curFolder = (LibraryFolder)curItem.Header;
-            if (curFolder != null)
-            {
-                curFolder.CustomRating = null;
-                ddlFolderRating.SelectedItem = null;
-                curFolder.DeleteXML();
-                btnDelFolderRating.IsEnabled = false;
-            }
-        }
-
-        private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            // Any SelectionChanged event from any controls contained in the TabControl will bubble up and be handled by this event.
-            // We are only interested in events related to the Tab selection changing so ignore everything else.
-            if (e.OriginalSource.ToString().Contains("Controls.Tab")) {
-                TabControl tabControl = (sender as TabControl);
-
-                if (tabControl.SelectedItem != null) {
-                    TabItem tab = (tabControl.SelectedItem as TabItem);
-                    if (tab.Name == "parentalControlTab") {
-                        // Initialise the Folder list by populating the top level items based on the .vf files
-                        InitFolderTree();
-                    }
-                }
-            }
-        }
-
-        private void tvwLibraryFolders_ItemExpanded(object sender, RoutedEventArgs e) {
-            TreeViewItem item = e.OriginalSource as TreeViewItem;
-            if (item != null) {
-                if ((item.Items.Count == 1) && (((TreeViewItem)item.Items[0]).Header is DummyTreeItem)) {
-                    tvwLibraryFolders.Cursor = Cursors.Wait;
-                    item.Items.Clear();
-
-                    LibraryFolder aFolder = item.Header as LibraryFolder;
-                    VirtualFolder vf = new VirtualFolder(aFolder.FullPath);
-
-                    Async.Queue("LibraryFoldersExpand", () => {
-                        foreach (string folder in vf.Folders) {
-                            getLibrarySubDirectories(folder, item);
-                        }
-                    }, () => {
-                        Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(() => {
-                            tvwLibraryFolders.Cursor = Cursors.Hand;
-                        }));
-                    });
-                    }
-                }
-        }
-
-        TreeViewItem addLibraryFolderNode(TreeViewItem parent, string dir) {
-            if (parent.Dispatcher.CheckAccess()) {
-
-                TreeViewItem aNode = new TreeViewItem();
-                LibraryFolder aFolder = new LibraryFolder(dir);
-                aNode.Header = aFolder;
-
-                parent.Items.Add(aNode);
-
-                return aNode;
-            }
-            else {
-                parent.Dispatcher.Invoke(new AddLibraryFolderCB(this.addLibraryFolderNode), parent, dir);
-                return null;
-            }
-        }
-
-        private delegate TreeViewItem AddLibraryFolderCB(TreeViewItem parent, string dir);
-
-        private void enableLogging_Click(object sender, RoutedEventArgs e)
-        {
-            config.EnableTraceLogging = (bool)cbxEnableLogging.IsChecked;
-            SaveConfig();
+            Process.Start(new ProcessStartInfo(Kernel.ApiClient.DashboardUrl));
+            e.Handled = true;
         }
 
 
@@ -1944,7 +974,7 @@ sortorder: {2}
         {
             try
             {
-                System.Diagnostics.Process.Start("" + ApplicationPaths.AppLogPath + "");
+                Process.Start("" + ApplicationPaths.AppLogPath + "");
             }
             catch
             {
@@ -1952,65 +982,7 @@ sortorder: {2}
             }
         }
 
-        private void btnValidateKey_Click(object sender, RoutedEventArgs e)
-        {
-            //Config.Instance.SupporterKey = tbxSupporterKey.Text.Trim();
-            //with new store there is no one item we can validate.  Just save the key
-            //if (ValidateKey("trailers")) //use trailers because it is the lowest level
-            //{
-                MessageBox.Show("Supporter key saved.  Thank you for your support.", "Save Key");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Supporter key does not appear to be valid.  Please double check. Copy and paste from the email for best results.", "Supporter Key Invalid");
-            //}
-        }
-
-        private bool ValidateKey(string feature)
-        {
-            this.Cursor = Cursors.Wait;
-            bool valid = false;
-            string path = "http://www.mediabrowser.tv/registration/registrations?feature=" + feature + "&key=" + Config.Instance.SupporterKey;
-            WebRequest request = WebRequest.Create(path);
-
-            using (var response = request.GetResponse()) using (Stream stream = response.GetResponseStream())
-            {
-                byte[] buffer = new byte[5];
-                stream.Read(buffer, 0, 5);
-                string res = System.Text.Encoding.ASCII.GetString(buffer).Trim();
-                valid = res.StartsWith("true");
-            }
-            this.Cursor = Cursors.Arrow;
-            return valid;
-        }
-
-        private void sldrMinResumePct_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            lblMinResumePct.Content = ((int)e.NewValue).ToString() + "%";
-            config.MinResumePct = (int)e.NewValue;
-            SaveConfig();
-        }
-
-        private void sldrMaxResumePct_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            lblMaxResumePct.Content = ((int)e.NewValue).ToString() + "%";
-            config.MaxResumePct = (int)e.NewValue;
-            SaveConfig();
-        }
-
-        private void tbxMinResumeDuration_LostFocus(object sender, RoutedEventArgs e)
-        {
-            Int32.TryParse(tbxMinResumeDuration.Text, out config.MinResumeDuration);
-            SaveConfig();
-        }
-
         private void tbxNumericOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !Char.IsDigit(e.Text[0]);
-            base.OnPreviewTextInput(e);
-        }
-
-        private void tbxSSTimeout_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !Char.IsDigit(e.Text[0]);
             base.OnPreviewTextInput(e);
@@ -2049,7 +1021,7 @@ sortorder: {2}
 
         private void btnRollback_Click(object sender, RoutedEventArgs e)
         {
-            IPlugin plugin = pluginList.SelectedItem as IPlugin;
+            var plugin = pluginList.SelectedItem as IPlugin;
             if (plugin == null) return;
             if (MessageBox.Show("Are you sure you want to overwrite your current version of "+plugin.Name, "Rollback Plug-in", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
@@ -2183,66 +1155,6 @@ sortorder: {2}
                 currentConfigMember.Value = tbxString.Text =  dlg.SelectedFolder;
             }
 
-        }
-
-        private void tbxMaxBackdrops_LostFocus(object sender, RoutedEventArgs e)
-        {
-            config.MaxBackdrops = Convert.ToInt32(tbxMaxBackdrops.Text);
-            config.Save();
-        }
-
-        private void tbxMetadataUpdateAge_LostFocus(object sender, RoutedEventArgs e)
-        {
-            config.MetadataCheckForUpdateAge = Convert.ToInt32(tbxMetadataUpdateAge.Text);
-            config.Save();
-        }
-
-        private void ddlMetadataLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var language = ddlMetadataLanguage.SelectedItem as Language;
-            if (language != null)
-            {
-                config.PreferredMetaDataLanguage = language.LanguageCode;
-                config.Save();
-            }
-        }
-
-        private void ddlMetadataCountry_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var country = ddlMetadataCountry.SelectedItem as RegionInfo;
-            if (country != null)
-            {
-                config.MetadataCountryCode = country.TwoLetterISORegionName;
-                //also need to re-init our ratings
-                //ratings = new Ratings();
-                // and the options
-                //ddlOptionMaxAllowedRating.ItemsSource = ratings.ToStrings();
-                ddlOptionMaxAllowedRating.Items.Refresh();
-                ddlOptionMaxAllowedRating.SelectedItem = Ratings.ToString(config.MaxParentalLevel);
-                //create a set of ratings strings that makes more sense for the folder list
-                //folderSettings = ratings.ToStrings().Select(r => r != "Any" ? r : "None").ToList();
-                ddlFolderRating.ItemsSource = folderSettings;
-                ddlFolderRating.Items.Refresh();
-                config.Save();
-            }
-        }
-
-        private void ddlPosterSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            config.FetchedPosterSize = ddlPosterSize.SelectedItem.ToString();
-            config.Save();
-        }
-
-        private void ddlBackdropSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            config.FetchedBackdropSize = ddlBackdropSize.SelectedItem.ToString();
-            config.Save();
-        }
-
-        private void ddlPersonImageSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            config.FetchedProfileSize = ddlPersonImageSize.SelectedItem.ToString();
-            config.Save();
         }
 
     }

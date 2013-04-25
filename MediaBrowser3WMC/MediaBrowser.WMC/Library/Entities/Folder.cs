@@ -120,15 +120,6 @@ namespace MediaBrowser.Library.Entities {
             children = new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
         }
 
-        private List<BaseItem> parentalAllowedChildren
-        {
-            get
-            {
-                // return only the children not protected
-                return Kernel.Instance.ParentalControls.RemoveDisallowed(ActualChildren);
-            }
-        }
-
         public virtual bool PromptForChildRefresh
         {
             get

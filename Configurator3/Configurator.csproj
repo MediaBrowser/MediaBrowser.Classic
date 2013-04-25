@@ -63,16 +63,9 @@
     <Compile Include="ExternalPlayerForm.xaml.cs">
       <DependentUpon>ExternalPlayerForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SuppImproveDialog.xaml.cs">
-      <DependentUpon>SuppImproveDialog.xaml</DependentUpon>
-    </Compile>
     <Page Include="ExternalPlayerForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SuppImproveDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Reference Include="Microsoft.MediaCenter, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -304,9 +297,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\mb_configurator.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\btn_donate.png" />
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +315,9 @@
       <Project>{C6B27E5F-3D83-4D71-85B9-AF83C8392721}</Project>
       <Name>MediaBrowser.WMC</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mbclogo400.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

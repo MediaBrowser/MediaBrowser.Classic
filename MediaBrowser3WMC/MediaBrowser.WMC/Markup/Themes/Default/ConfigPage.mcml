@@ -39,30 +39,6 @@
       <Command Name="Back"/>
       <Command Name="FullRefresh" />
       <Command Name="ResetConfig" />
-      <Command Name="EnterPIN" />
-      <Command Name="UnlockPC" />
-      <Command Name="RelockPC" />
-      <Command Name="PINEntered"/>
-      <BooleanChoice Name="BlockUnrated" Value="[Application.Config.ParentalBlockUnrated]" />
-      <BooleanChoice Name="Enabled" Value="[Application.Config.ParentalControlEnabled]" />
-      <BooleanChoice Name="HideProtected" Value="[Application.Config.HideParentalDisAllowed]" />
-      <BooleanChoice Name="AutoUnlock" Value="[Application.Config.UnlockOnPinEntry]" />
-      <IntRangedValue Name="UnlockPeriod" Value="[Application.Config.ParentalUnlockPeriod]" MaxValue="100" MinValue="1" Step="1"/>
-      <cor:String Name="InitialRating" String="[Application.Config.ParentalMaxAllowedString]" />
-      <EditableText Name="PIN" Value="" />
-      <Choice Name="RatingsStrings" Options="[Ratings.ToStrings]" />
-      <Choice Name="RatingsValues" Options="[Ratings.ToValues]" />
-      <!--<Choice Name="RatingsDescs">
-        <Options>
-          <cor:String String="Block All Content." />
-          <cor:String String="General Audiences - Appropriate for all.  Also Includes E, EC, TV-Y and TV-Y7." />
-          <cor:String String="Parental Guidance Suggested.  Also Includes 10+ and TV-PG." />
-          <cor:String String="Parental Guidance Suggested - Some content may not be appropriate for children under 13.  Also Includes T and TV-14." />
-          <cor:String String="Restricted. Under 17 should have parent or guardian approval. Also Includes M and TV-MA" />
-          <cor:String String="Not appropriate for anyone under 17. Also Includes AO and Unrated (explicit rating of Unrated)" />
-          <cor:String String="Custom Security Level. Use for securing folders only." />
-        </Options>
-      </Choice>-->
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
@@ -71,7 +47,6 @@
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
-      <BooleanChoice Name="EnableBetas" Value="[Application.Config.EnableBetas]" />
       <cor:String Name="SystemUpdateClass" String="[Application.Config.SystemUpdateClass]" />
       <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
       <BooleanChoice Name="EnableAlphanumericSorting" Value="[Application.Config.EnableAlphanumericSorting]" />
@@ -103,7 +78,6 @@
       <BooleanChoice Name="DefaultVerticalScroll" Value="[Application.Config.DefaultVerticalScroll]" />
       <BooleanChoice Name="UseAutoPlayForIso" Value="[Application.Config.UseAutoPlayForIso]" />
       <BooleanChoice Name="YearSortAsc" Value="[Application.Config.YearSortAsc]" />
-      <BooleanChoice Name="SaveLocalMeta" Value="[Application.Config.SaveLocalMeta]" />
       <BooleanChoice Name="HideEmptyFolders" Value="[Application.Config.HideEmptyFolders]" />
       <EditableText Name="InitialFolder" Value="[Application.Config.InitialFolder]" />
       <EditableText Name="ImageByNameLocation" Value="[Application.Config.ImageByNameLocation]" />
@@ -321,20 +295,6 @@
           <Set Target="[UnlockPCBtn.Visible]" Value="[Application.Config.ParentalControlEnabled]" />
         </Actions>
       </Changed>-->
-      <Changed Source="[RatingsStrings.Chosen]">
-        <Actions>
-          <Set Target="[RatingsValues.ChosenIndex]" Value="[RatingsStrings.ChosenIndex]" />
-          <!--<Set Target="[RatingsDescs.ChosenIndex]" Value="[RatingsStrings.ChosenIndex]" />-->
-          <!--<Set Target="[RatingsDesc.Content]" Value="[RatingsDescs.Chosen!cor:String]"/>-->
-        </Actions>
-      </Changed>
-      <Binding Source="[UnlockPeriod.Value]" Target="[Config.ParentalUnlockPeriod]" />
-      <Binding Source="[Enabled.Value]" Target="[Config.ParentalControlEnabled]" />
-      <Binding Source="[HideProtected.Value]" Target="[Config.HideParentalDisAllowed]" />
-      <Binding Source="[BlockUnrated.Value]" Target="[Config.ParentalBlockUnrated]" />
-      <Binding Source="[AutoUnlock.Value]" Target="[Config.UnlockOnPinEntry]" />
-      <Binding Source="[RatingsValues.Chosen!cor:Int32]" Target="[Config.MaxParentalLevel]" />
-
 
       <Condition Source="[Config.IsFirstRun]" SourceValue="true">
         <Actions>
@@ -354,7 +314,6 @@
       <Binding Source="[EnableNestedMovieFolders.Value]" Target="[Config.EnableNestedMovieFolders]" />
       <Binding Source="[EnableMoviePlaylists.Value]" Target="[Config.EnableMoviePlaylists]" />
       <Binding Source="[EnableUpdates.Value]" Target="[Config.EnableUpdates]" />
-      <Binding Source="[EnableBetas.Value]" Target="[Config.EnableBetas]" />
       <Binding Source="[SystemUpdateClass]" Target="[Config.SystemUpdateClass]" />
       <Binding Source="[PluginUpdateClass]" Target="[Config.PluginUpdateClass]" />
       <Binding Source="[EnableAlphanumericSorting.Value]" Target="[Config.EnableAlphanumericSorting]" />
@@ -406,7 +365,6 @@
       <Binding Source="[SortReplaceCharacters.Value]" Target="[Config.SortReplaceCharacters]" />
       <Binding Source="[SortReplaceWords.Value]" Target="[Config.SortReplaceWords]" />
       <Binding Source="[YearSortAsc.Value]" Target="[Config.YearSortAsc]" />
-      <Binding Source="[SaveLocalMeta.Value]" Target="[Config.SaveLocalMeta]" />
 
       <Binding Source="[PlaylistLimit.Value]" Target="[Config.PlaylistLimit]" />
       <Binding Source="[BreadcrumbCount.Value]" Target="[Config.BreadcrumbCountLimit]" />
@@ -536,7 +494,7 @@
                   <sb:SimpleButton FocusOrder="1" Name="BackBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Back]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton Name="ResetConfigBtn" Text="[Application.LocalStrings.#ResetDefaultsConfig!cor:String]" FocusItem="[FocusItem]"  Command="[ResetConfig]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <!--<sb:SimpleButton Name="UpdateLibraryBtn" Text="[Application.LocalStrings.#UpdateLibraryConfig!cor:String]" FocusItem="[FocusItem]"  Command="[FullRefresh]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>-->
-                  <sb:SimpleButton Name="UnlockPCBtn" Text="[Application.LocalStrings.#UnlockConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UnlockPC]" Size="200,50" Font="font://f:CP_ButtonFont" Visible="[Application.Config.ParentalControlEnabled]"/>
+                  <!--<sb:SimpleButton Name="UnlockPCBtn" Text="[Application.LocalStrings.#UnlockConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UnlockPC]" Size="200,50" Font="font://f:CP_ButtonFont" Visible="[Application.Config.ParentalControlEnabled]"/>-->
 
                 </Children>
               </Panel>

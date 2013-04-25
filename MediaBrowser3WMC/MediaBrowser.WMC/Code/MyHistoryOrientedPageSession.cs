@@ -64,11 +64,6 @@ namespace MediaBrowser
                     //keep track of current folder on back
                     Application.CurrentInstance.CurrentFolder = folder; 
                     
-                    if (folder.IsRoot)
-                    {
-                        //we're backing into the root folder - clear the protected folder list
-                        Kernel.Instance.ClearProtectedAllowedList();
-                    }
                 }
             }
             

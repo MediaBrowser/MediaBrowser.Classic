@@ -12,7 +12,6 @@ namespace MediaBrowser.Library
 {
     public class Ratings
     {
-        private static RatingsDefinition ratingsDef;
         private static Dictionary<string, int> ratings;
         private static Dictionary<int, string> ratingsStrings = new Dictionary<int, string>();
         private static ConfigData config;
@@ -50,38 +49,12 @@ namespace MediaBrowser.Library
 
         public void Initialize(bool blockUnrated)
         {
-            //build our ratings dictionary from the combined local one and us one
-            ratingsDef = RatingsDefinition.FromFile(Path.Combine(ApplicationPaths.AppLocalizationPath, "Ratings-" + Config.MetadataCountryCode+".xml"));
+            //We get our ratings from the server
             ratings = new Dictionary<string, int>();
-            //global value of None
-            ratings.Add("None", -1);
-            foreach (var pair in ratingsDef.RatingsDict)
-                try
-                {
-                    ratings.Add(pair.Key, pair.Value);
-                }
-                catch (Exception e)
-                {
-                    Logging.Logger.ReportException("Error adding " + pair.Key + " to ratings", e);
-                }
-            if (Config.MetadataCountryCode.ToUpper() != "US")
-                foreach (var pair in new USRatingsDictionary()) 
-                    try 
-                    {
-                        ratings.Add(pair.Key, pair.Value);
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.Logger.ReportException("Error adding " + pair.Key + " to ratings", e);
-                    }
-            //global values of CS
-            try
+
+            foreach (var rating in Kernel.ApiClient.GetParentalRatings())
             {
-                ratings.Add("CS", 1000);
-            }
-            catch (Exception e)
-            {
-                Logging.Logger.ReportException("Error adding CS to ratings", e);
+                ratings.Add(rating.Name, rating.Value);
             }
 
             try
@@ -103,7 +76,7 @@ namespace MediaBrowser.Library
             ratingsStrings.Clear();
             int lastLevel = -10;
             ratingsStrings.Add(-1,LocalizedStrings.Instance.GetString("Any"));
-            foreach (var pair in ratingsDef.RatingsDict.OrderBy(p => p.Value))
+            foreach (var pair in ratings.OrderBy(p => p.Value))
             {
                 if (pair.Value > lastLevel)
                 {
@@ -118,16 +91,7 @@ namespace MediaBrowser.Library
                     }
                 }
             }
-            try
-            {
-                ratingsStrings.Add(999, "CS"); //this is different because we want Custom to be protected, not allowed
-            }
-            catch (Exception e)
-            {
-                Logging.Logger.ReportException("Error adding CS to ratings strings", e);
-            }
 
-            return;
         }
 
         public void SwitchUnrated(bool block)

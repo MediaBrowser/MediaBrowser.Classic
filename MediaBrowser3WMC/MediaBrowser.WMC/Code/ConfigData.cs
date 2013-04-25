@@ -123,9 +123,9 @@ namespace MediaBrowser
         public bool EnableResumeSupport = true; 
         [Comment(@"Any folder named trailers will be ignored and treated as a folder containing trailers")]
         public bool EnableLocalTrailerSupport = true; 
-        [Group("Updates")]
-        [Comment(@"If you enable this MB will watch for changes in your file system and update the UI as it happens, may not work properly with SMB shares")]
-        public bool EnableDirectoryWatchers = true;
+        //[Group("Updates")]
+        //[Comment(@"If you enable this MB will watch for changes in your file system and update the UI as it happens, may not work properly with SMB shares")]
+        //public bool EnableDirectoryWatchers = true;
 
         [Group("Display")]
         [Comment(@"If set to true when sorting by unwatched the unwatched folders will be sorted by name")]
@@ -151,9 +151,9 @@ namespace MediaBrowser
         [Dangerous]
         [Comment(@"Identifies if this is the very first time MB has been run.  Causes an initial setup routine to be performed.")]
         public bool IsFirstRun = true;
-        [Comment(@"Identifies where MB will look for the special 'IBN' items.  You can change this to point to a location that is shared by multiple machines.")]
-        [PresentationStyle("BrowseFolder")]
-        public string ImageByNameLocation = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
+        //[Comment(@"Identifies where MB will look for the special 'IBN' items.  You can change this to point to a location that is shared by multiple machines.")]
+        //[PresentationStyle("BrowseFolder")]
+        //public string ImageByNameLocation = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
         [Group("Display")]
         [Comment(@"Scale factor to account for monitor over/underscan. Format: 0,0,0.")]
         public Vector3 OverScanScaling = new Vector3() {X=1, Y=1, Z=1};
@@ -203,9 +203,9 @@ namespace MediaBrowser
         [Group("Updates")]
         [Comment(@"The class of updates to check (Dev/Beta/Release).")]
         public PackageVersionClass PluginUpdateClass = PackageVersionClass.Beta;
-        [Group("Updates")]
-        [Comment(@"Look for beta versions of MB in the auto update check.")]
-        public bool EnableBetas = false;
+        //[Group("Updates")]
+        //[Comment(@"Look for beta versions of MB in the auto update check.")]
+        //public bool EnableBetas = false;
         [Dangerous]
         [PresentationStyle("BrowseFolder")]
         [Group("Playback")]
@@ -287,8 +287,8 @@ namespace MediaBrowser
         public bool RememberIndexing = false;
         public bool ShowIndexWarning = true;
         public double IndexWarningThreshold = 0.1;
-        [Comment(@"The two-character language code to use when retrieving metadata (en,fr,it, etc.).")]
-        public string PreferredMetaDataLanguage = "en";
+        //[Comment(@"The two-character language code to use when retrieving metadata (en,fr,it, etc.).")]
+        //public string PreferredMetaDataLanguage = "en";
         [Hidden]
         public List<ExternalPlayer> ExternalPlayers = new List<ExternalPlayer>();
         [Dangerous]
@@ -321,10 +321,10 @@ namespace MediaBrowser
         [Comment(@"The name of your top level item that will show in the 'breadcrumbs'.")]
         public string InitialBreadcrumbName = "Media";
 
-        [PresentationStyle("BrowseFolder")]
-        [Comment(@"Path to save display preferences and playstate information.  Change this to use a shared location for multiple machines.")]
-        public string UserSettingsPath = null;
-        [Group("Display")]
+        //[PresentationStyle("BrowseFolder")]
+        //[Comment(@"Path to save display preferences and playstate information.  Change this to use a shared location for multiple machines.")]
+        //public string UserSettingsPath = null;
+        //[Group("Display")]
         [Dangerous]
         public string ViewTheme = "Default";
         [Group("Display")]
@@ -344,31 +344,31 @@ namespace MediaBrowser
         [Comment(@"The directory where MB was installed. Filled in at install time and used to call components.")]
         public string MBInstallDir = "";
 
-        [PresentationStyle("BrowseFolder")]
-        public string PodcastHome = ApplicationPaths.DefaultPodcastPath;
+        //[PresentationStyle("BrowseFolder")]
+        //public string PodcastHome = ApplicationPaths.DefaultPodcastPath;
         [Group("Display")]
         public bool HideFocusFrame = false;
 
-        [Group("Depricated")]
-        [Hidden]
-        public bool EnableProxyLikeCaching = false;
-        public int MetadataCheckForUpdateAge = 14;
+        //[Group("Depricated")]
+        //[Hidden]
+        //public bool EnableProxyLikeCaching = false;
+        //public int MetadataCheckForUpdateAge = 14;
 
-        [Group("Parental Control")]
-        public int ParentalUnlockPeriod = 3;
-        [Group("Parental Control")]
-        public bool HideParentalDisAllowed = true; 
-        [Group("Parental Control")]
-        public bool ParentalBlockUnrated = false;
-        [Group("Parental Control")]
-        public bool UnlockOnPinEntry = true;
-        [Group("Parental Control")]
-        public bool ParentalControlEnabled = false;
-        [Group("Parental Control")]
-        [Hidden]
-        public string ParentalPIN = "0000";
-        [Group("Parental Control")]
-        public int MaxParentalLevel = 3;
+        //[Group("Parental Control")]
+        //public int ParentalUnlockPeriod = 3;
+        //[Group("Parental Control")]
+        //public bool HideParentalDisAllowed = true; 
+        //[Group("Parental Control")]
+        //public bool ParentalBlockUnrated = false;
+        //[Group("Parental Control")]
+        //public bool UnlockOnPinEntry = true;
+        //[Group("Parental Control")]
+        //public bool ParentalControlEnabled = false;
+        //[Group("Parental Control")]
+        //[Hidden]
+        //public string ParentalPIN = "0000";
+        //[Group("Parental Control")]
+        //public int MaxParentalLevel = 3;
 
         public bool EnableMouseHook = false;
 
@@ -389,7 +389,7 @@ namespace MediaBrowser
         public bool ExcludeRemoteContentInSearch = true;
 
         public bool ShowUnwatchedIndicator = false;
-        public bool PNGTakesPrecedence = false;
+        //public bool PNGTakesPrecedence = false;
 
         public bool RandomizeBackdrops = false;
         public bool RotateBackdrops = true;
@@ -401,9 +401,9 @@ namespace MediaBrowser
         [Hidden]
         public bool ProcessBackdrops = false; //hook to allow future processing of backdrops
 
-        public int MinResumeDuration = 0; //minimum duration of video to have resume functionality
-        public int MinResumePct = 1; //if this far or less into video, don't resume
-        public int MaxResumePct = 95; //if this far or more into video, don't resume
+        //public int MinResumeDuration = 0; //minimum duration of video to have resume functionality
+        //public int MinResumePct = 1; //if this far or less into video, don't resume
+        //public int MaxResumePct = 95; //if this far or more into video, don't resume
 
         public bool YearSortAsc = false; //true to sort years in ascending order
 
@@ -422,7 +422,7 @@ namespace MediaBrowser
         public bool DefaultIncludeChildrenRefresh = true; //if we don't prompt, are children included?
         
         [Hidden]
-        public int NetworkAvailableTimeOut = 5000; //milliseconds to wait for network to be available on validations
+        //public int NetworkAvailableTimeOut = 5000; //milliseconds to wait for network to be available on validations
 
         //public bool UseSQLImageCache = false; //switch to use the new SQLite image cache
 
@@ -432,11 +432,11 @@ namespace MediaBrowser
         [Comment("The number of days to retain log files.  Files older than this will be deleted periodically")]
         public int LogFileRetentionDays = 30;
 
-        [Comment("Whether to send os and memory stats during update check")]
-        public bool SendStats = false;
+        //[Comment("Whether to send os and memory stats during update check")]
+        //public bool SendStats = false;
 
-        [Comment("Suppress the statistics nag msg")]
-        public bool SuppressStatsNag = false;
+        //[Comment("Suppress the statistics nag msg")]
+        //public bool SuppressStatsNag = false;
 
         [Comment("This is a hack until I can rewrite some file date processing")]
         public bool EnableShortcutDateHack = true;
@@ -446,35 +446,35 @@ namespace MediaBrowser
         [Comment("Hide empty folders (and series and seasons)")]
         public bool HideEmptyFolders = false;
 
-        [Comment("Save metadata locally so it doesn't have to be re-fetched from the inet")]
-        public bool SaveLocalMeta = false;
+        //[Comment("Save metadata locally so it doesn't have to be re-fetched from the inet")]
+        //public bool SaveLocalMeta = false;
 
-        [Comment("Save backdrops at the season level (if false will inherit from series)")]
-        public bool SaveSeasonBackdrops = false;
+        //[Comment("Save backdrops at the season level (if false will inherit from series)")]
+        //public bool SaveSeasonBackdrops = false;
 
-        [Comment("Maximum number of backdrops to download from internet provider")]
-        public int MaxBackdrops = 4; //maximum number of backdrops to be saved by the inet providers
+        //[Comment("Maximum number of backdrops to download from internet provider")]
+        //public int MaxBackdrops = 4; //maximum number of backdrops to be saved by the inet providers
 
-        [Comment("Download people images to IBN")]
-        public bool DownloadPeopleImages = true;
+        //[Comment("Download people images to IBN")]
+        //public bool DownloadPeopleImages = true;
 
-        [Comment("Refresh the images from TMDB when we fetch other meta.  This will replace local versions.")]
-        public bool RefreshItemImages = true;
+        //[Comment("Refresh the images from TMDB when we fetch other meta.  This will replace local versions.")]
+        //public bool RefreshItemImages = true;
 
-        [Comment("The size of posters to fetch from tmdb")]
-        public string FetchedPosterSize = "w500"; //w500, w342, w185 or original
+        //[Comment("The size of posters to fetch from tmdb")]
+        //public string FetchedPosterSize = "w500"; //w500, w342, w185 or original
 
-        [Comment("The size of backdrops to fetch from tmdb")]
-        public string FetchedBackdropSize = "w1280"; //w1280, w780 or original
+        //[Comment("The size of backdrops to fetch from tmdb")]
+        //public string FetchedBackdropSize = "w1280"; //w1280, w780 or original
 
-        [Comment("The size of people profile images to fetch from tmdb")]
-        public string FetchedProfileSize = "w185"; //w185 w45 h632 or original
+        //[Comment("The size of people profile images to fetch from tmdb")]
+        //public string FetchedProfileSize = "w185"; //w185 w45 h632 or original
 
-        [Comment("The country to fetch release date and certification for (ISO 3166.1 code - US, DE, GB, etc.)")]
-        public string MetadataCountryCode = "US"; //ISO 3166.1 code
+        //[Comment("The country to fetch release date and certification for (ISO 3166.1 code - US, DE, GB, etc.)")]
+        //public string MetadataCountryCode = "US"; //ISO 3166.1 code
 
-        [Comment("The base url for tmdb images")]
-        public string TmdbImageUrl = "http://cf2.imgobject.com/t/p/"; 
+        //[Comment("The base url for tmdb images")]
+        //public string TmdbImageUrl = "http://cf2.imgobject.com/t/p/"; 
 
         [Dangerous]
         public List<string> PluginSources = new List<string>() { "http://www.mediabrowser.tv/plugins/multi/plugin_info.xml" };

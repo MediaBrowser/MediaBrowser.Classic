@@ -43,9 +43,7 @@ namespace MediaBrowser.Library.Events
                 // If we know the duration, use it to make a guess whether playback was forcefully stopped by the user, as opposed to allowing it to finish
                 if (DurationFromPlayer > 0)
                 {
-                    decimal pctIn = Decimal.Divide(Position, DurationFromPlayer) * 100;
-
-                    return pctIn < Config.Instance.MaxResumePct;
+                    return Position < (DurationFromPlayer*.95);
                 }
 
                 // Fallback to this if no duration was reported

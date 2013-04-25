@@ -863,8 +863,6 @@ namespace MediaBrowser
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
-            if (Config.ParentalControlEnabled)
-                Logger.ReportInfo("*** Parental Controls are ON with a max rating of "+Config.ParentalMaxAllowedString+".  Block Unrated is "+Config.ParentalBlockUnrated+" and Hide Content is "+Config.HideParentalDisAllowed);
             Logger.ReportInfo("*** Internet Providers are "+(Config.AllowInternetMetadataProviders ? "ON." : "OFF."));
             //if (Config.AllowInternetMetadataProviders) Logger.ReportInfo("*** Save Locally is "+(Config.SaveLocalMeta ? "ON." : "OFF."));
             Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
@@ -1110,8 +1108,6 @@ namespace MediaBrowser
                 case "2.6.2.0":
                     Config.EnableNestedMovieFolders = false;  //turn this off - it is what causes all the "small library" issues
                     Config.EnableTranscode360 = false; //no longer need transcoding and it just causes problems
-                    if (!Kernel.Instance.ConfigData.FetchedPosterSize.StartsWith("w")) Kernel.Instance.ConfigData.FetchedPosterSize = "w500"; //reset to new api
-                    if (!Kernel.Instance.ConfigData.FetchedBackdropSize.StartsWith("w")) Kernel.Instance.ConfigData.FetchedBackdropSize = "w1280"; //reset to new api
                     Kernel.Instance.ConfigData.Save();
                     if (oldVersion <= new System.Version(2, 3, 0, 0))
                     {
@@ -1120,18 +1116,6 @@ namespace MediaBrowser
                     if (oldVersion <= new System.Version(2, 3, 1, 0))
                     {
                         Config.EnableTraceLogging = true; //turn this on by default since we now have levels and retention/clearing
-                        if (Config.MetadataCheckForUpdateAge < 30) Config.MetadataCheckForUpdateAge = 30; //bump this up
-                        //we need to do a cache clear and full re-build (item guids may have changed)
-                        if (MBServiceController.SendCommandToService(IPCCommands.ForceRebuild))
-                        {
-                            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-                            ev.Dialog(CurrentInstance.StringData("RebuildNecDial"), CurrentInstance.StringData("ForcedRebuildCapDial"), DialogButtons.Ok, 30, true);
-                        }
-                        else
-                        {
-                            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-                            ev.Dialog(CurrentInstance.StringData("RebuildFailedDial"), CurrentInstance.StringData("ForcedRebuildCapDial"), DialogButtons.Ok, 30, true);
-                        }
                     }
                     else
                     if (oldVersion < new System.Version(2,5,0,0))
@@ -1538,7 +1522,7 @@ namespace MediaBrowser
             }
 
 
-            MediaBrowser.Library.FolderModel folder = item as MediaBrowser.Library.FolderModel;
+            var folder = item as MediaBrowser.Library.FolderModel;
             if (folder != null)
             {
                 if (!Config.Instance.RememberIndexing)
@@ -1556,11 +1540,7 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    //call secured method if folder is protected
-                    if (!folder.ParentalAllowed)
-                        NavigateSecure(folder);
-                    else
-                        OpenFolderPage(folder);
+                    OpenFolderPage(folder);
                 }
             }
             else
@@ -1569,21 +1549,9 @@ namespace MediaBrowser
             }
         }
 
-        public void NavigateSecure(FolderModel folder)
-        {
-            //just call method on parentalControls - it will callback if secure
-            Kernel.Instance.ParentalControls.NavigateProtected(folder);
-        }
-
-        public void OpenSecure(FolderModel folder)
-        {
-            //called if passed security
-            OpenFolderPage(folder);
-        }
-
         public void OpenSecurityPage(object prompt)
         {
-            Dictionary<string, object> properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, object>();
             properties["Application"] = this;
             properties["PromptString"] = prompt;
             this.RequestingPIN = true; //tell page we are calling it (not a back action)
@@ -1595,6 +1563,18 @@ namespace MediaBrowser
             currentContextMenu = null; //good chance this has happened as a result of a menu item selection so be sure this is reset
             Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => session.GoToPage(page, properties));
         }
+
+        /// <summary>
+        /// Backward compatiblity only
+        /// </summary>
+        public void UnlockPC()
+        {}
+
+        /// <summary>
+        /// Backward compatiblity only
+        /// </summary>
+        public void RelockPC()
+        {}
 
         /// <summary>
         /// Themes can use this to disable playback in expired mode.
@@ -1803,21 +1783,8 @@ namespace MediaBrowser
             }
         }
 
-        public void UnlockPC()
-        {
-            Kernel.Instance.ParentalControls.Unlock();
-        }
-        public void RelockPC()
-        {
-            Kernel.Instance.ParentalControls.Relock();
-        }
-
         public bool RequestingPIN { get; set; } //used to signal the app that we are asking for PIN entry
 
-        public void EnterNewParentalPIN()
-        {
-            Kernel.Instance.ParentalControls.EnterNewPIN();
-        }
         public string CustomPINEntry { get; set; } //holds the entry for a custom pin (entered by user to compare to pin)
 
         public void ParentalPINEntered()
@@ -2055,90 +2022,12 @@ namespace MediaBrowser
         }
 
         /// <summary>
-        /// This is a helper to update Playstate for an item.
-        /// It honors all of the various resume options within configuration.
-        /// Play count will be incremented if the last played date doesn't match what's currently in the object
+        /// All we do now is check in with the server and let it figure everything else out
         /// </summary>
         public void UpdatePlayState(Media media, PlaybackStatus playstate, int playlistPosition, long positionTicks, long? duration, DateTime datePlayed, bool saveToDataStore)
         {
-            // Increment play count if dates don't match
-            bool incrementPlayCount = !playstate.LastPlayed.Equals(datePlayed);
-
-            // The player didn't report the duration, see if we have it in metadata
-            if ((!duration.HasValue || duration == 0) && media.Files.Count() == 1)
-            {
-                // We need duration to pertain only to one file
-                // So if there are multiple files don't bother with this
-                // since we have no way of breaking it down
-
-                duration = TimeSpan.FromMinutes(media.RunTime).Ticks;
-            }
-
-            // If we know the duration then enforce MinResumePct, MaxResumePct and MinResumeDuration
-            if (duration.HasValue && duration > 0)
-            {
-                // Enforce MinResumePct/MaxResumePct
-                if (positionTicks > 0)
-                {
-                    decimal pctIn = Decimal.Divide(positionTicks, duration.Value) * 100;
-
-                    // Don't track in very beginning
-                    if (pctIn < Config.Instance.MinResumePct)
-                    {
-                        positionTicks = 0;
-
-                        if (playlistPosition == 0)
-                        {
-                            // Assume we're at the very beginning so don't even mark it watched.
-                            incrementPlayCount = false;
-                        }
-                    }
-
-                    // If we're at the end, assume completed
-                    if (pctIn > Config.Instance.MaxResumePct || positionTicks >= duration)
-                    {
-                        positionTicks = 0;
-
-                        // Either advance to the next playlist position, or reset it back to 0
-                        if (playlistPosition < (media.Files.Count() - 1))
-                        {
-                            playlistPosition++;
-                        }
-                        else
-                        {
-                            playlistPosition = 0;
-                        }
-                    }
-                }
-
-                // Enforce MinResumeDuration
-                if ((duration / TimeSpan.TicksPerMinute) < Config.Instance.MinResumeDuration)
-                {
-                    positionTicks = 0;
-                }
-            }
-
-            // If resume is disabled reset positions to 0
-            if (!MediaBrowser.Library.Kernel.Instance.ConfigData.EnableResumeSupport)
-            {
-                positionTicks = 0;
-                playlistPosition = 0;
-            }
-            
-            playstate.PositionTicks = positionTicks;
-            playstate.PlaylistPosition = playlistPosition;
-
-            if (incrementPlayCount)
-            {
-                playstate.LastPlayed = datePlayed;
-                playstate.PlayCount++;
-            }
-
             if (saveToDataStore)
             {
-                //string sDuration = duration.HasValue ? (TimeSpan.FromTicks(duration.Value).ToString()) : "0";
-
-                //Logger.ReportVerbose("Playstate saved for {0} at {1}, duration: {2}, playlist position: {3}", media.Name, TimeSpan.FromTicks(positionTicks), sDuration, playlistPosition);
                 Kernel.Instance.SavePlayState(media, playstate);
             }
         }

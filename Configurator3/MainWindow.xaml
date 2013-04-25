@@ -12,45 +12,8 @@
     
     >
     <Window.Resources>
-        <Storyboard x:Key="Default">
-            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="lblVersion" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-41"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="-41"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>-->
-        </Storyboard>
         
-        <!-- DataTemplate used for Media Collection ListBox-->
-        <DataTemplate x:Key="folderListTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="215" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!-- This is displayed whether the ListBoxItem is selected or not. -->
-                <TextBlock Grid.Row="0" Text="{Binding Path=Name}" FontSize="14"/>
-
-                <!-- This Grid is only displayed when the ListBoxItem is selected. -->
-                <Grid Grid.Column="1">
-                    <StackPanel Orientation="Horizontal">
-                          <Button HorizontalAlignment="Right" Margin="0,0,2,0" Name="btnUp" Click="btnUp_Click" ToolTip="move media collection up" Height="18" Width="18"><Image Source="/Configurator;component/Images/btn_up.png"/></Button>
-                          <!--<Button Background="WhiteSmoke" HorizontalAlignment="Right" Name="btnDn" Click="btnDn_Click" ToolTip="move media collection down" Height="18" Width="18"><Image Source="/Configurator;component/Images/arrow_down_silk.png"/></Button>-->
-                        <Button HorizontalAlignment="Right" Name="btnDn" Click="btnDn_Click" ToolTip="move media collection down" Height="18" Width="18"><Image Source="/Configurator;component/Images/btn_down.png"/></Button>
-                    </StackPanel>
-                  <!-- This style is applied to the Grid which contains the controls only displayed by the ListBox's selected item. -->
-                  <Grid.Style>
-                    <Style>
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="False">
-                          <Setter Property="Grid.Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                      </Style.Triggers>
-                    </Style>
-                  </Grid.Style>
-                </Grid>
-              </Grid>
-        </DataTemplate>
+        <!-- DataTemplate used for plugin ListBox-->
         <DataTemplate x:Key="PluginListTemplate" >
             <TextBlock Text="{Binding Path=Name}" Style="{DynamicResource PluginListTriggers}" />
             
@@ -96,11 +59,6 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Window.Triggers>
-        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-            <BeginStoryboard Storyboard="{StaticResource Default}"/>
-        </EventTrigger>
-    </Window.Triggers>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFFFFFFF" Offset="0.853"/>
@@ -112,39 +70,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid x:Name="tabGrid1">
-            <TabControl Margin="10,90,10,10" x:Name="tabMain" Background="{x:Null}" SelectionChanged="tabControl1_SelectionChanged">
-            <TabItem Header="media" x:Name="mediacollectionTab" FontSize="14" FontWeight="Normal" Foreground="#FF323232" Visibility="Collapsed">
-                <Grid>
-                    <ListBox HorizontalAlignment="Left" Margin="20,45,0,60" x:Name="folderList" Width="260" SelectionChanged="folderList_SelectionChanged" FontSize="14" ItemTemplate="{StaticResource folderListTemplate}" SelectedIndex="0" ToolTip="These are the items that define your media library.  They will appear as the top-level options in MB." />
-                        <Button Height="32" HorizontalAlignment="Left" Margin="20,0,0,20" x:Name="btnAddFolder" VerticalAlignment="Bottom" Width="80" Click="btnAddFolder_Click" FontSize="14" ToolTip="Add a new media collection" Content="Add"/>
-                        <Button Height="32" HorizontalAlignment="Left" Margin="110,0,0,20" x:Name="btnRename" VerticalAlignment="Bottom" Width="80" Click="btnRename_Click" ToolTip="Rename media collection" Content="Rename" FontSize="14" IsEnabled="False" />
-                        <Button Height="32" HorizontalAlignment="Left" Margin="200,0,0,20" x:Name="btnRemoveFolder" VerticalAlignment="Bottom" Width="80" Click="btnRemoveFolder_Click" FontSize="14" ToolTip="Remove media collection" Content="Remove" IsEnabled="False"/>
-                        <Grid Margin="300,0,20,20" x:Name="infoPanel">
-                            <ListBox Height="96" x:Name="internalFolder" FontSize="14" Margin="0,0,0,40" VerticalAlignment="Bottom" ToolTip="Media items from these physical folders will make up this Media Collection.  It can span multiple folders on multiple drives or servers.  Use UNC paths for best results." />
-                            <Button Height="32" x:Name="btnAddSubFolder" Click="btnAddSubFolder_Click" FontSize="14" ToolTip="Add another folder inside your media collection" Content="Add" Margin="0,0,90,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" />
-                            <Button Height="32" x:Name="btnRemoveSubFolder" Width="80" Click="btnRemoveSubFolder_Click" FontSize="14" ToolTip="Remove folder from your media collection" Content="Remove" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Bottom" />
-                            <Button x:Name="btnChangeImage" Height="32" Margin="0,200,90,0" Click="btnChangeImage_Click" FontSize="14" Content="Change..." ToolTip="Change the default image for the media collection" HorizontalAlignment="Right" Width="80" VerticalAlignment="Top" />
-                            <Image x:Name="folderImage" HorizontalAlignment="Right" Margin="0,12,6,0" VerticalAlignment="Top" Height="182.38" Width="182.38" />
-                            <Label Height="34" x:Name="lblStep2b" Foreground="#FF000000" Content="Collection Image" Margin="110,12,195,0" VerticalAlignment="Top" />
-                            <Label Height="28" x:Name="label1" FontSize="14" Content="Physical folders that make up this collection" Margin="0,0,0,140" VerticalAlignment="Bottom"/>
-                            <Button FontSize="14" Height="32" Margin="0,201,0,0" Name="btnRemoveImage" ToolTip="Remove the image for the collection" Click="btnRemoveImage_Click" HorizontalAlignment="Right" Width="80" VerticalAlignment="Top">Remove</Button>
-                        </Grid>
-                        <Label Height="34" HorizontalAlignment="Left" Margin="23,5,0,0" x:Name="lblStep1b" VerticalAlignment="Top" Width="226" Foreground="#FF030303" Content="Media Collections"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="podcasts" x:Name="podcastsTab" FontSize="14" Visibility="Collapsed">
-                <Grid>
-                        <Label Height="34" HorizontalAlignment="Left" Margin="23,5,0,0" x:Name="lblPodcastStep1b" VerticalAlignment="Top" Width="226" Foreground="#FF030303" Content="Podcasts"/>
-                    <ListBox IsSynchronizedWithCurrentItem="True" Margin="20,45,0,60" x:Name="podcastList" DisplayMemberPath="Name" HorizontalAlignment="Left" Width="260" SelectionChanged="podcastList_SelectionChanged"/>
-                    <Button HorizontalAlignment="Left" Margin="20,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Add" x:Name="addPodcast" Click="addPodcast_Click" ToolTip="Add a video RSS feed" />
-                    <Button HorizontalAlignment="Left" Margin="200,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Remove" x:Name="removePodcast" Click="removePodcast_Click" ToolTip="Remove selected video RSS feed" IsEnabled="False" />
-                    <Button Margin="110,0,0,20" VerticalAlignment="Bottom" Height="32" Content="Rename" x:Name="renamePodcast" HorizontalAlignment="Left" Width="80" Click="renamePodcast_Click" ToolTip="Rename video RSS feed display name" IsEnabled="False" />
-                    <TextBlock Text="http://somepodcast.com/podcast.rss" d:LayoutOverrides="HorizontalAlignment, Height" x:Name="podcastUrl" VerticalAlignment="Bottom" Margin="300,0,20,57.76" FontSize="12" Height="52.24" TextWrapping="Wrap" />
-                    <Label Margin="300,10,20,0" Height="35" Name="podcastName" VerticalAlignment="Top" FontWeight="Normal" FontSize="20" FontFamily="Trebuchet MS">The Cook and the Chef</Label>
-                    <TextBlock Text="This is the podcast description..." Margin="300,45,20,130" Name="podcastDescription" TextWrapping="Wrap" />
-                </Grid>
-            </TabItem>
-
+            <TabControl Margin="10,90,10,10" x:Name="tabMain" Background="{x:Null}" >
 
                 <TabItem Header="display/playback" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True">
                     <Grid>
@@ -205,155 +131,60 @@
                                 
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="Resume" Height="100" Margin="301,289.76,0,0" Name="groupBox7" VerticalAlignment="Top" HorizontalAlignment="Left" Width="430">
-                            <Grid>
-                                <Label HorizontalAlignment="Left" Margin="8,9.24,0,36.76" Name="label10" Width="155">Min Resumable Length</Label>
-                                <Label Margin="183,9.24,188,36.76" Name="label11">Start</Label>
-                                <Label HorizontalAlignment="Right" Margin="0,9.24,47,36.76" Name="label12" Width="56.88">End</Label>
-                                <TextBox HorizontalAlignment="Left" Margin="23,34,0,17" Name="tbxMinResumeDuration" Width="33" PreviewTextInput="tbxNumericOnly_PreviewTextInput" LostFocus="tbxMinResumeDuration_LostFocus"  ToolTip="Any media less than this length will not save resume status" HorizontalContentAlignment="Right" />
-                                <Label Margin="62,32,0,14.38" Name="label13" HorizontalAlignment="Left" Width="47">Mins</Label>
-                                <Slider Margin="169,35.38,147,17" Name="sldrMinResumePct" Maximum="100" TickFrequency="5" TickPlacement="TopLeft" SmallChange="1" LargeChange="10" ToolTip="If you haven't watched this far into a video, it won't save resume status" ValueChanged="sldrMinResumePct_ValueChanged" />
-                                <Slider HorizontalAlignment="Right" LargeChange="10" Margin="0,35.38,13,17" Maximum="100" Name="sldrMaxResumePct" SmallChange="1" TickFrequency="5" TickPlacement="TopLeft" Width="100" ToolTip="If you have watched this much or more of a video, it will no longer save resume status" ValueChanged="sldrMaxResumePct_ValueChanged" />
-                                <Label HorizontalAlignment="Right" Margin="0,9.24,147,36.76" Name="lblMinResumePct" Width="43" HorizontalContentAlignment="Right">5%</Label>
-                                <Label HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,9.24,13,36.76" Name="lblMaxResumePct" Width="43">5%</Label>
-                            </Grid>
-                        </GroupBox>
                         <CheckBox Height="22" Margin="306,0,0,12" Name="cbxAutoValidate" VerticalAlignment="Bottom" Click="cbxAutoValidate_Click" ToolTip="WARNING! Turning this option off may mean you will have to manually refresh for changes to appear." Visibility="Hidden" HorizontalAlignment="Left" Width="224">Validate Items Automatically</CheckBox>
                     </Grid>
                 </TabItem>
 
-            <TabItem Header="plug-ins" x:Name="plugins" Foreground="#FF323232" FontSize="14" FontWeight="Normal" IsSelected="True">
-                <Grid DataContext="{DynamicResource PluginManager}" >
-                    <Label Height="34" HorizontalAlignment="Left" Margin="20,6,0,0" Name="label6" VerticalAlignment="Top" Width="260">Installed Plug-ins:</Label>
-                        <ListView IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="20,45,0,60" Width="260" ItemTemplate="{DynamicResource PluginListTemplate}" SelectionChanged="pluginList_SelectionChanged" x:Name="pluginList" OverridesDefaultStyle="False" ToolTip="Items shown in red have updates available" >
-                            <ListView.GroupStyle>
-                                <GroupStyle>
-                                    <GroupStyle.ContainerStyle>
-                                        <Style TargetType="{x:Type GroupItem}">
-                                            <Setter Property="Margin" Value="0,0,0,5"/>
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                        <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
-                                                            <Expander.Header>
-                                                                <DockPanel>
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                                </DockPanel>
-                                                            </Expander.Header>
-                                                            <Expander.Content>
-                                                                <ItemsPresenter />
-                                                            </Expander.Content>
-                                                        </Expander>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </GroupStyle.ContainerStyle>
-                                </GroupStyle>
-                            </ListView.GroupStyle>
+                <TabItem Header="plug-ins" x:Name="plugins" Foreground="#FF323232" FontSize="14" FontWeight="Normal" IsSelected="True">
+                    <Grid DataContext="{DynamicResource PluginManager}" >
+                        <Label Height="34" HorizontalAlignment="Left" Margin="20,6,0,0" Name="label6" VerticalAlignment="Top" Width="260">Installed Plug-ins:</Label>
+                            <ListView IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="20,45,0,60" Width="260" ItemTemplate="{DynamicResource PluginListTemplate}" SelectionChanged="pluginList_SelectionChanged" x:Name="pluginList" OverridesDefaultStyle="False" ToolTip="Items shown in red have updates available" >
+                                <ListView.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.ContainerStyle>
+                                            <Style TargetType="{x:Type GroupItem}">
+                                                <Setter Property="Margin" Value="0,0,0,5"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                            <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
+                                                                <Expander.Header>
+                                                                    <DockPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                                    </DockPanel>
+                                                                </Expander.Header>
+                                                                <Expander.Content>
+                                                                    <ItemsPresenter />
+                                                                </Expander.Content>
+                                                            </Expander>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </GroupStyle.ContainerStyle>
+                                    </GroupStyle>
+                                </ListView.GroupStyle>
 
-                        </ListView>
-                            <Button HorizontalAlignment="Left" Margin="20,0,0,20" VerticalAlignment="Bottom" Width="125" Height="32" Content="More Plug-ins..." x:Name="addPlugin" Click="addPlugin_Click" />
-                    <Button HorizontalAlignment="Left" Margin="200,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Remove" x:Name="removePlugin" Click="removePlugin_Click" Visibility="Visible" IsEnabled="False" />
-                    <Grid Margin="300,0,20,20" x:Name="pluginPanel">
-                            <Label Margin="0,10,0,0" VerticalAlignment="Top" Height="35" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="20" FontFamily="Trebuchet MS" x:Name="pluginName"/>
-                        <TextBlock Margin="0,45,0,166" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList}" TextWrapping="Wrap" x:Name="pluginDescription" />
-                        <Label Margin="0,0,210,40" Content="Latest Version:" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="32" HorizontalContentAlignment="Right" />
-                        <Label HorizontalAlignment="Right" Margin="0,0,113,40" Width="90" Height="32" VerticalAlignment="Bottom" x:Name="latestPluginVersion" Content="{Binding Path=SelectedItem.LatestVersion}"/>
-                        <Label Margin="102.99,0,210,77" VerticalAlignment="Bottom" Height="32" Content="Installed Version:" HorizontalContentAlignment="Right" />
-                        <Label HorizontalAlignment="Right" Margin="0,0,114,77" VerticalAlignment="Bottom" Width="90" Height="32" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="installedPluginVersion"/>
-                        <Button Margin="0,0,00,40" VerticalAlignment="Bottom" Height="32" Content="Upgrade" Width="80" HorizontalAlignment="Right" Click="upgradePlugin_Click" x:Name="upgradePlugin" Visibility="Visible"/>
-                        <Button Margin="0,0,0,77" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" IsEnabled="{Binding Path=SelectedItem.IsConfigurable, ElementName=pluginList, Mode=Default}" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
-					    <ProgressBar VerticalAlignment="Bottom" Margin="0,0,0,0" x:Name="progress" Visibility="Hidden" Height="32"/>
-                            <Grid Height="45" Margin="0,0,0,115" Name="rollbackPanel" VerticalAlignment="Bottom">
-                                <Button Name="btnRollback" Visibility="Visible" Width="80" HorizontalAlignment="Right" Margin="0,13,0,0" Height="32" VerticalAlignment="Top" Click="btnRollback_Click">Rollback</Button>
-                                <Label Content="1.2.3.3" Margin="0,13,114,0" Name="lblBackedUpVersion" HorizontalAlignment="Right" Width="90" />
-                                <Label HorizontalContentAlignment="Right" Margin="59,13,210,0">Backed Up Version:</Label>
+                            </ListView>
+                                <Button HorizontalAlignment="Left" Margin="20,0,0,20" VerticalAlignment="Bottom" Width="125" Height="32" Content="More Plug-ins..." x:Name="addPlugin" Click="addPlugin_Click" />
+                        <Button HorizontalAlignment="Left" Margin="200,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Remove" x:Name="removePlugin" Click="removePlugin_Click" Visibility="Visible" IsEnabled="False" />
+                        <Grid Margin="300,0,20,20" x:Name="pluginPanel">
+                                <Label Margin="0,10,0,0" VerticalAlignment="Top" Height="35" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="20" FontFamily="Trebuchet MS" x:Name="pluginName"/>
+                            <TextBlock Margin="0,45,0,166" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList}" TextWrapping="Wrap" x:Name="pluginDescription" />
+                            <Label Margin="0,0,210,40" Content="Latest Version:" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="32" HorizontalContentAlignment="Right" />
+                            <Label HorizontalAlignment="Right" Margin="0,0,113,40" Width="90" Height="32" VerticalAlignment="Bottom" x:Name="latestPluginVersion" Content="{Binding Path=SelectedItem.LatestVersion}"/>
+                            <Label Margin="102.99,0,210,77" VerticalAlignment="Bottom" Height="32" Content="Installed Version:" HorizontalContentAlignment="Right" />
+                            <Label HorizontalAlignment="Right" Margin="0,0,114,77" VerticalAlignment="Bottom" Width="90" Height="32" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="installedPluginVersion"/>
+                            <Button Margin="0,0,00,40" VerticalAlignment="Bottom" Height="32" Content="Upgrade" Width="80" HorizontalAlignment="Right" Click="upgradePlugin_Click" x:Name="upgradePlugin" Visibility="Visible"/>
+                            <Button Margin="0,0,0,77" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" IsEnabled="{Binding Path=SelectedItem.IsConfigurable, ElementName=pluginList, Mode=Default}" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
+					        <ProgressBar VerticalAlignment="Bottom" Margin="0,0,0,0" x:Name="progress" Visibility="Hidden" Height="32"/>
+                                <Grid Height="45" Margin="0,0,0,115" Name="rollbackPanel" VerticalAlignment="Bottom">
+                                    <Button Name="btnRollback" Visibility="Visible" Width="80" HorizontalAlignment="Right" Margin="0,13,0,0" Height="32" VerticalAlignment="Top" Click="btnRollback_Click">Rollback</Button>
+                                    <Label Content="1.2.3.3" Margin="0,13,114,0" Name="lblBackedUpVersion" HorizontalAlignment="Right" Width="90" />
+                                    <Label HorizontalContentAlignment="Right" Margin="59,13,210,0">Backed Up Version:</Label>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                </Grid>
-            </TabItem>
-                <TabItem Header="metadata" Name="metadataTab" FontSize="14" Visibility="Collapsed">
-                    <Grid>
-                        <TextBlock Height="27" HorizontalAlignment="Left" Margin="23,17,0,0" Name="textBlock2" Text="These options govern how the internal metadata fetchers behave" VerticalAlignment="Top" Width="491" />
-                        <CheckBox Content="Allow Internet Providers" Height="25" HorizontalAlignment="Left" Margin="43,51,0,0" Name="cbxInetProviders" VerticalAlignment="Top" Width="189" ToolTip="This must be enabled for the internal fetchers to operate" Checked="cbxInetProviders_Checked" Unchecked="cbxInetProviders_Checked" />
-                        <GroupBox Height="296" HorizontalAlignment="Left" Margin="23,73,0,0" Name="gbTmdb" VerticalAlignment="Top" Width="705">
-                            <GroupBox.BorderBrush>
-                                <SolidColorBrush />
-                            </GroupBox.BorderBrush>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="693*" />
-                                </Grid.ColumnDefinitions>
-                                <CheckBox Content="Save Locally" Height="25" Name="cbxSaveMetaLocally" ToolTip="Enabling this will speed up refreshes and reduce the load on your bandwidth.  HIGHLY recommended." Width="189" Margin="14,57,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Checked="cbxSaveMetaLocally_Checked" Unchecked="cbxSaveMetaLocally_Checked" />
-                                <Label Content="Will save meta and images in the same folder as the video " Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="249,52,0,0" Name="label17" VerticalAlignment="Top" Width="423" />
-                                <GroupBox Grid.Column="1" Height="214" HorizontalAlignment="Left" Margin="6,72,0,0" Name="gbSaveMeta" VerticalAlignment="Top" Width="687">
-                                    <GroupBox.BorderBrush>
-                                        <SolidColorBrush />
-                                    </GroupBox.BorderBrush>
-                                    <Grid Grid.ColumnSpan="2" Margin="2,2,2,6" Width="673" Grid.Column="1" Height="196">
-                                        <CheckBox Content="Download People Images" Height="25" HorizontalAlignment="Left" Margin="24,32,0,0" Name="cbxDownloadPeople" ToolTip="This will download actor and director images from tmdb to your IBN folders" VerticalAlignment="Top" Width="189" Checked="cbxDownloadPeople_Checked" Unchecked="cbxDownloadPeople_Checked" />
-                                        <Label Content="Will download actor/director images to IBN" Height="28" HorizontalAlignment="Left" Margin="236,27,0,0" Name="label18" VerticalAlignment="Top" Width="423" />
-                                        <CheckBox Content="Save TV Season Backdrops" Height="25" HorizontalAlignment="Left" Margin="24,55,0,0" Name="cbxSaveSeasonBD" ToolTip="This isn't really necessary since backdrops will be inherited from the Series" VerticalAlignment="Top" Width="189" Checked="cbxSaveSeasonBD_Checked" />
-                                        <Label Content="Will download and save separate backdrops for seasons if available" Height="28" HorizontalAlignment="Left" Margin="236,50,0,0" Name="label19" VerticalAlignment="Top" Width="423" />
-                                        <TextBox HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="30,104,0,0" Name="tbxMaxBackdrops" PreviewTextInput="tbxNumericOnly_PreviewTextInput" LostFocus="tbxMaxBackdrops_LostFocus" ToolTip="Most themes support multiple rotating backdrops but limiting the number downloaded can help save space and increase performance." Width="33" Height="25" VerticalAlignment="Top" />
-                                        <Label Content="Backdrops to Download" Height="28" HorizontalAlignment="Left" Margin="20,73,0,0" Name="label20" VerticalAlignment="Top" />
-                                        <Label Content="The maximum number of backdrops to download" Height="28" HorizontalAlignment="Left" Margin="236,71,0,0" Name="label21" VerticalAlignment="Top" Width="423" />
-                                        <Label Content="Backdrop Size" Height="28" HorizontalAlignment="Left" Margin="235,138,0,0" Name="label24" VerticalAlignment="Top" Width="145" />
-                                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="245,164,0,0" Name="ddlBackdropSize" VerticalAlignment="Top" Width="139" ToolTip="The size of backdrops to download from tmdb" SelectionChanged="ddlBackdropSize_SelectionChanged" />
-                                        <Label Content="Person Image Size" Height="28" HorizontalAlignment="Left" Margin="455,138,0,0" Name="label25" VerticalAlignment="Top" Width="145" ToolTip="The size of the person image to download from tmdb" />
-                                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="465,164,0,0" Name="ddlPersonImageSize" ToolTip="The size of person images to download from tmdb" VerticalAlignment="Top" Width="139" SelectionChanged="ddlPersonImageSize_SelectionChanged" />
-                                        <Label Content="Poster Size" Height="28" HorizontalAlignment="Left" Margin="20,138,0,0" Name="label26" VerticalAlignment="Top" Width="145" />
-                                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="30,164,0,0" Name="ddlPosterSize" ToolTip="The size of posters to download from tmdb" VerticalAlignment="Top" Width="139" SelectionChanged="ddlPosterSize_SelectionChanged" />
-                                        <CheckBox Content="Refresh Posters" HorizontalAlignment="Left" Margin="23,9,0,0" Name="cbxRefreshImages" ToolTip="This will potentially cause any local poster image to be replaced with a fresh one from the provider.  Turn this off if you have specific posters and don't want them overwritten." Width="189" Checked="cbxRefreshImages_Checked" Height="25" VerticalAlignment="Top" Unchecked="cbxRefreshImages_Checked" />
-                                        <Label Content="Will periodically refresh poster from TMdb" Height="28" HorizontalAlignment="Left" Margin="235,4,0,0" Name="label8" VerticalAlignment="Top" Width="423" />
-                                    </Grid>
-                                </GroupBox>
-                                <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="38,23,0,0" Name="ddlMetadataLanguage" VerticalAlignment="Top" Width="100" SelectionChanged="ddlMetadataLanguage_SelectionChanged" ToolTip="The fetcher will attempt to retrieve metadata in this language but not all languages will have data" />
-                                <Label Content="Metadata Language" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="13,-3,0,0" Name="label22" VerticalAlignment="Top" />
-                                <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Right" Margin="0,23,324,0" Name="ddlMetadataCountry" VerticalAlignment="Top" Width="100" ToolTip="This will determine the release date and certification ratings" SelectionChanged="ddlMetadataCountry_SelectionChanged" />
-                                <Label Content="Release Country Code" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="249,-3,0,0" Name="label23" VerticalAlignment="Top" />
-                                <TextBox Height="25" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="479,23,0,0" Name="tbxMetadataUpdateAge" LostFocus="tbxMetadataUpdateAge_LostFocus" PreviewTextInput="tbxNumericOnly_PreviewTextInput" ToolTip="Metadata will be re-fetched after this number of days until the item is 6 months old. Enter 200 if you never want to re-fetch." VerticalAlignment="Top" Width="33" Grid.Column="1" />
-                                <Label Content="Days between refreshes " Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="457,-3,0,0" Name="label27" VerticalAlignment="Top" />
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="parental control" Name="parentalControlTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Collapsed" IsSelected="True">
-                    <Grid>
-                        <GroupBox Header="PIN" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,35,00,0" Name="gbPCPIN" Width="270" Height="120" IsEnabled="False">
-                            <Grid>
-                                <PasswordBox Margin="10,50,0,0" Name="txtPCPIN" MaxLength="4" HorizontalAlignment="Left" Width="78" Height="28" VerticalAlignment="Top" />
-                                <Label Height="30" Margin="10,10,0,0" Name="label3" VerticalAlignment="Top">Enter EXACTLY 4 digits (numbers only)</Label>
-                                <Button HorizontalAlignment="Left" Margin="98,50,40,0" Name="btnPINSave" Click="savePCPIN" Width="78" Height="28" VerticalAlignment="Top">Save</Button>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="General" HorizontalAlignment="Left" Margin="20,160,0,20" Name="gbPCGeneral" Width="270" IsEnabled="False">
-                            <Grid>
-                                <CheckBox Height="22" Margin="10,10,80,0" Click="cbxOptionBlockUnrated_Click" Name="cbxOptionBlockUnrated" VerticalAlignment="Top" IsEnabled="True">Block Unrated Content</CheckBox>
-                                <CheckBox Height="22" Margin="10,32,80,0" Name="cbxOptionHideProtected" Click="cbxOptionHideProtected_Click" VerticalAlignment="Top">Hide Blocked Content</CheckBox>
-                                <CheckBox Height="22" Margin="10,54,80,0" Name="cbxOptionAutoUnlock" Click="cbxOptionAutoUnlock_Click" VerticalAlignment="Top">Unlock On PIN Entry</CheckBox>
-                                <ComboBox Width="100" Margin="0,90,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="28" Name="ddlOptionMaxAllowedRating" SelectionChanged="ddlOptionMaxAllowedRating_SelectionChanged" />
-                                <Label Margin="10,90,110,79" VerticalAlignment="Top" Name="label2" Height="28">Max Allowed Rating</Label>
-                                <Label Height="28" Margin="10,140,10,0" Name="label7" VerticalAlignment="Top">Unlock Period (hours)</Label>
-                                <Slider Height="22" Margin="10,170,0,10" Name="slUnlockPeriod" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Minimum="1" Maximum="24" IsSnapToTickEnabled="True" TickPlacement="BottomRight" ValueChanged="slUnlockPeriod_ValueChanged" />
-                                <TextBlock Height="22" Margin="220,170,10,0" Name="txtOptionUnlockPeriod" VerticalAlignment="Top" Width="25" Text="{Binding ElementName=slUnlockPeriod,Path=Value}" />
-                        </Grid>
-                        </GroupBox>
-                        <GroupBox Header="Folder Security" Margin="300,35,20,20" Name="gbPCFolderSecurity" IsEnabled="False">
-                            <Grid>
-                                <Label Height="28" HorizontalAlignment="Left" Margin="10,10,0,0" Name="label4" VerticalAlignment="Top" Width="120">Library Folders</Label>
-                                <TextBlock FontSize="12" Margin="10,41,11.86,0" Text="To set up folders to respond to Parental Controls, select a folder in the list and give it a valid rating.  A Rating of 'CS' will always require a PIN if Parental Control is enabled." Name="textBlock1" TextWrapping="WrapWithOverflow" Height="53.38" VerticalAlignment="Top" />
-                                <TreeView Margin="10,100,10,50" Name="tvwLibraryFolders" SelectedValuePath="MPAARating" SelectedItemChanged="tvwLibraryFolders_SelectedItemChanged" TreeViewItem.Expanded="tvwLibraryFolders_ItemExpanded"/>
-                                <Button Height="28" HorizontalAlignment="Right" Margin="0,5,10,0" Click="btnFolderTree_Click" Name="btnFolderTree" VerticalAlignment="Top" Width="112">Refresh Folders</Button>
-                                <ComboBox Height="28" HorizontalAlignment="Right" Margin="0,0,130,10" IsEnabled="False" SelectionChanged="ddlFolderRating_SelectionChanged" Name="ddlFolderRating" VerticalAlignment="Bottom" Width="112" />
-                                <Label Height="28" HorizontalAlignment="Right" Margin="0,0,240,10" Name="label5" VerticalAlignment="Bottom" Width="100">Folder Rating:</Label>
-                                <Button Height="28" Margin="0,0,10,10" Name="btnDelFolderRating" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="112" IsEnabled="False" Click="btnDelFolderRating_Click" >Clear Rating</Button>
-                            </Grid>
-                        </GroupBox>
-                        <CheckBox Height="23" Margin="20,6,0,0" Name="cbxEnableParentalControl" VerticalAlignment="Top" HorizontalAlignment="Left" Width="181" Click="cbxEnableParentalControl_Click">Enable Parental Control</CheckBox>
                     </Grid>
                 </TabItem>
 
@@ -408,46 +239,46 @@
                         </ListView>
                     </DockPanel>
                 </TabItem>
-            <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Visible">
-                <Grid>
-                        <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="143" Height="25">Version 0.0.0.0</Label>
-                        <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
-                        <Grid>
-                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1303/media-browser-quickstart-guide" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Quickstart Guide</Hyperlink></TextBlock>
-                            <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to quickly setup Media Browser for the first time...</TextBlock>
-                            <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/topics?category_id=5&amp;status=published" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
-                            <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find information on best practices to organize your media for maximum compatibility...</TextBlock>
-                            <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community Tracker</Hyperlink></TextBlock>
-                            <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
-                            </Grid>
-                    </GroupBox>
-                    <GroupBox Header="Logging" Margin="20,265,0,20" Height="142" Width="175" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Grid>
-                            <CheckBox Margin="10,10,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
-                            <Button Margin="10,0,13,16" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="28.38" VerticalAlignment="Bottom" />
-                                <ComboBox Margin="57,38,13,0" Name="ddlLoglevel" Height="22.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
-                                <Label Margin="8,35,0,0" Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top">Level</Label>
-                            </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="About Media Browser" Margin="220,265,20,20" Height="142" FontSize="14" VerticalAlignment="Top">
+                <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Visible">
                     <Grid>
-                        <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser.tv</Hyperlink></TextBlock>
-                        <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
-                                <TextBlock Margin="301.045,0,0,37.38" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">Most configuration is done via the  
-                                    <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleRequestNavigate">
-                                        Server Dashboard
-                                    </Hyperlink>
-                                </TextBlock>
-                                <!--<Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
-                                <TextBox Margin="0,31,31,0" Name="tbxSupporterKey" ToolTip="Paste the key from the email you received when you donated" Height="22.38" VerticalAlignment="Top" HorizontalAlignment="Right" Width="254" />
-                                <Button Margin="0,59,31,0" Name="btnValidateKey" HorizontalAlignment="Right" Width="75" Height="22.38" VerticalAlignment="Top" Click="btnValidateKey_Click">Save</Button>
-                                <TextBlock Margin="216,0,134,31" Height="25.38" VerticalAlignment="Bottom"><Hyperlink Name="lostKey" NavigateUri="http://www.mediabrowser.tv/lost-key" RequestNavigate="HandleRequestNavigate">Retrieve My Key</Hyperlink></TextBlock>-->
-                            </Grid>
-                    </GroupBox>
-                        <TextBlock Margin="20,10,327,0" VerticalAlignment="Top" Height="25" Width="401">If you need any help, have a look at these resources:</TextBlock>
-                    </Grid>
-            </TabItem>
+                            <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="143" Height="25">Version 0.0.0.0</Label>
+                            <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
+                            <Grid>
+                                    <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1303/media-browser-quickstart-guide" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Quickstart Guide</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to quickly setup Media Browser for the first time...</TextBlock>
+                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/topics?category_id=5&amp;status=published" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find information on best practices to organize your media for maximum compatibility...</TextBlock>
+                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community Tracker</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
+                                </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Logging" Margin="20,265,0,20" Height="142" Width="175" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Grid>
+                                <CheckBox Margin="10,10,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
+                                <Button Margin="10,0,13,16" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="28.38" VerticalAlignment="Bottom" />
+                                    <ComboBox Margin="57,38,13,0" Name="ddlLoglevel" Height="22.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
+                                    <Label Margin="8,35,0,0" Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top">Level</Label>
+                                </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="About Media Browser" Margin="220,265,20,20" Height="142" FontSize="14" VerticalAlignment="Top">
+                        <Grid>
+                            <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser3.com</Hyperlink></TextBlock>
+                            <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
+                                    <TextBlock Margin="301.045,0,0,37.38" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">Server side configuration is done via the  
+                                        <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleDashboardNavigate">
+                                            Server Dashboard
+                                        </Hyperlink>
+                                    </TextBlock>
+                                    <!--<Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
+                                    <TextBox Margin="0,31,31,0" Name="tbxSupporterKey" ToolTip="Paste the key from the email you received when you donated" Height="22.38" VerticalAlignment="Top" HorizontalAlignment="Right" Width="254" />
+                                    <Button Margin="0,59,31,0" Name="btnValidateKey" HorizontalAlignment="Right" Width="75" Height="22.38" VerticalAlignment="Top" Click="btnValidateKey_Click">Save</Button>
+                                    <TextBlock Margin="216,0,134,31" Height="25.38" VerticalAlignment="Bottom"><Hyperlink Name="lostKey" NavigateUri="http://www.mediabrowser.tv/lost-key" RequestNavigate="HandleRequestNavigate">Retrieve My Key</Hyperlink></TextBlock>-->
+                                </Grid>
+                        </GroupBox>
+                            <TextBlock Margin="20,10,327,0" VerticalAlignment="Top" Height="25" Width="401">If you need any help, have a look at these resources:</TextBlock>
+                        </Grid>
+                </TabItem>
                 <TabItem Header="config explorer" Name="expertTab" Visibility="Collapsed" FontSize="14">
                     <Grid>
                         <Label Content="W A R N I N G  - Making changes in this area could create an unstable system.  Modify at your own risk." Height="28" HorizontalAlignment="Left" Margin="23,6,0,0" Name="label16" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="Red" />
@@ -520,7 +351,7 @@
             </TabControl>
             <TextBlock Height="25" Margin="15,54,318,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
         </Grid>
-        <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="/Configurator;component/Images/mb_configurator.png" MouseLeftButtonUp="eggExpert_Click" />
+        <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="Images/mbclogo400.png" MouseLeftButtonUp="eggExpert_Click" />
         <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="112">Version 0.0.0.0</Label>
     </Grid>
 </Window>

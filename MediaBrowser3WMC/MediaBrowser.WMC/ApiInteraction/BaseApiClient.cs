@@ -120,6 +120,18 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets the current url to the dashboard.
+        /// </summary>
+        /// <value>The API URL.</value>
+        public string DashboardUrl
+        {
+            get
+            {
+                return string.Format("http://{0}:{1}/mediabrowser/dashboard/dashboard.html", ServerHostName, ServerApiPort);
+            }
+        }
+
+        /// <summary>
         /// Gets the default data format to request from the server
         /// </summary>
         /// <value>The serialization format.</value>

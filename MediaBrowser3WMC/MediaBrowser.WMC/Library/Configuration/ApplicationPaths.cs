@@ -212,9 +212,7 @@ namespace MediaBrowser.Library.Configuration {
             get {
                 if (_ibnPath == null)
                 {
-                    _ibnPath = Config.Instance.ImageByNameLocation;
-                    if (string.IsNullOrEmpty(_ibnPath))
-                        _ibnPath = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
+                    _ibnPath = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
                 }
                 return _ibnPath;
             }
