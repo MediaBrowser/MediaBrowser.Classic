@@ -452,7 +452,7 @@ namespace MediaBrowser.Library.Entities {
                     var media = item as Media;
                     if (media != null) {
                         media.PlaybackStatus.WasPlayed = value;
-                        Kernel.Instance.SavePlayState(media, media.PlaybackStatus);
+                        Kernel.ApiClient.UpdatePlayedStatus(media.ApiId, Kernel.CurrentUser.Id, value);
                     }
                     var folder = item as Folder;
                     if (folder != null) {
