@@ -75,6 +75,7 @@ namespace MediaBrowser.Library
                 var width = folder.DisplayPreferences.PrimaryImageWidth > 0 ? folder.DisplayPreferences.PrimaryImageWidth : Config.Instance.DefaultPosterSize.Width;
                 var height = folder.DisplayPreferences.PrimaryImageHeight > 0 ? folder.DisplayPreferences.PrimaryImageHeight : Config.Instance.DefaultPosterSize.Height;
             
+                customParms = folder.DisplayPreferences.CustomPrefs ?? new Dictionary<string, string>();
                 thumbConstraint = new SizeRef(new Size(width, height));
             }
 
@@ -88,7 +89,6 @@ namespace MediaBrowser.Library
                 sortOrders.Chosen = "Name";
             }
 
-            customParms = new Dictionary<string, string>();
             ListenForChanges();
         }
 
@@ -367,6 +367,7 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
             Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
             Folder.DisplayPreferences.ScrollDirection = this.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+            Folder.DisplayPreferences.CustomPrefs = this.CustomParms;
 
             Folder.SaveDisplayPrefs(this);
         }
