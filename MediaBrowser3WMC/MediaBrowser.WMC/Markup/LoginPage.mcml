@@ -8,6 +8,7 @@
     xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
       xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
     xmlns:me="Me"
@@ -20,7 +21,10 @@
 
     <Rules>
 
-      <!-- Configuration Checks & Display Setup -->
+      <!-- END Configuration Checks & Display Setup -->
+
+      <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
+
       <Binding Source="[Application.AvailableUsers]" Target="[Repeater.Source]" />
 
 
@@ -30,6 +34,12 @@
     <Content>
       <ColorFill Content="Transparent" Layout="Form">
         <Children>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </ss:DefaultScreenSaver>
           <Text Name="Title" Content="Please Select a User Profile >" Font="Segoe UI, 28" Color="color://s:FontColorLight" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,.2" Top="Parent,.1"/>
