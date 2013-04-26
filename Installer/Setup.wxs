@@ -196,8 +196,8 @@
         <Condition>VersionNT = 602</Condition>
         <File Id="MBMigrate.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
       </Component>
-      <Component Id="MediaBrowser.Installer.exe" Guid="2FA65C5D-8CBA-428E-953B-082871924BEA" DiskId="1">
-        <File Id="MediaBrowser.Installer.exe" Name="MediaBrowser.Installer.exe" Source="..\..\MediaBrowser\Installation\MediaBrowser.Installer.exe" Checksum="no"/>
+      <Component Id="MediaBrowser.Classic.Installer.exe" Guid="2FA65C5D-8CBA-428E-953B-082871924BEA" DiskId="1">
+        <File Id="MediaBrowser.Classic.Installer.exe" Name="MediaBrowser.Classic.Installer.exe" Source="..\..\MediaBrowser\Installation\MediaBrowser.Classic.Installer.exe" Checksum="no"/>
       </Component>
       <Component Id="MediaBrowser.InstallUtil.dll" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
         <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\..\MediaBrowser\Installation\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
@@ -246,7 +246,7 @@
       <ComponentRef Id="MediaBrowser.dll" />
       <ComponentRef Id="MBMigrate.exe" />
       <ComponentRef Id="MBMigrate.exe.config" />
-      <ComponentRef Id="MediaBrowser.Installer.exe" />
+      <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
       <ComponentRef Id="Application.png" />
       <ComponentRef Id="ApplicationInactive.png" />

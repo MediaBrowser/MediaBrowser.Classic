@@ -177,8 +177,8 @@ namespace MediaBrowser.Library.Configuration {
             get
             {
                 return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
-                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowser.Installer.exe") : 
-                Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowser.Installer.exe");
+                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowser.Classic.Installer.exe") : 
+                Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowser.Classic.Installer.exe");
             }
         }
 
