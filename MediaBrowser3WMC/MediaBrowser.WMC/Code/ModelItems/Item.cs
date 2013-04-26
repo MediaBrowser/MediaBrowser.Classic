@@ -497,6 +497,12 @@ namespace MediaBrowser.Library
             }
         }
 
+        public void ResetPlayState()
+        {
+            //this will force it to re-load
+            playstate = null;
+        }
+
         internal void EnsurePlayStateChangesBoundToUI()
         {
             if (playstate == null)

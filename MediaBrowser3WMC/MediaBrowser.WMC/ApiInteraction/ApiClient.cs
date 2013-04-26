@@ -791,7 +791,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="positionTicks">The position ticks.</param>
         /// <returns>Task{UserItemDataDto}.</returns>
         /// <exception cref="System.ArgumentNullException">itemId</exception>
-        public void ReportPlaybackStopped(string itemId, Guid userId, long? positionTicks)
+        public Library.Entities.PlaybackStatus ReportPlaybackStopped(string itemId, Guid userId, long? positionTicks)
         {
             if (string.IsNullOrEmpty(itemId))
             {
@@ -809,6 +809,10 @@ namespace MediaBrowser.ApiInteraction
             var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId, dict);
 
             HttpClient.Delete(url);
+
+            //Now we have to get the updated playstate from the server.  The only way to do this now is re-retrieve the whole item and grab the playstate
+            var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Library.Entities.Video;
+            return updated != null ? updated.PlaybackStatus : null;
         }
 
         /// <summary>
