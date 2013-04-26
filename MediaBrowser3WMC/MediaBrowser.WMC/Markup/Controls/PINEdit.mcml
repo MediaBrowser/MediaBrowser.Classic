@@ -25,8 +25,9 @@
     <Locals>
       <TypingHandler Name="TypingHandler" EditableText="[EditableText]" PasswordMasked="true" HandlerStage="Bubbled"/>
       <!-- PIN is 4 characters. -->
-      <cor:Int32 Name="MaxChars" Int32="4"/>
-      <cor:String Name="DotText" String="●●●●●"/>
+      <!--<cor:Int32 Name="MaxChars" Int32="4"/>
+      <cor:String Name="DotText" String="●●●●●"/>-->
+      <ClickHandler Name="Clicker" />
     </Locals>
 
     <Rules>
@@ -54,6 +55,16 @@
         </Actions>
       </Condition>
 
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[EndCommand.Invoke]" />
+        </Actions>
+      </Rule>
+
 
       <!--Mask entry-->
       <!--<Changed Source="[EditableText.Activity]">
@@ -63,7 +74,7 @@
       </Changed>-->
       
       <!-- We're done when the maximum number of characters has been reached. -->
-      <Changed Source="[EditableText.Value]">
+      <!--<Changed Source="[EditableText.Value]">
         <Conditions>
           <Equality Source="[EditableText.Value.Length]" ConditionOp="Equals" Value="[MaxChars]"/>
         </Conditions>
@@ -78,7 +89,7 @@
         <Actions>
           <Invoke Target="[EditableText.Value.Substring]" ResultTarget="[EditableText.Value]" startIndex="0" length="[MaxChars]"/>
         </Actions>
-      </Changed>
+      </Changed>-->
       <Changed Source="[EditableText.Value]">
         <Actions>
           <PlaySound Sound="sound://sounds:Miniselect" />

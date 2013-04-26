@@ -338,7 +338,7 @@ namespace MediaBrowser.Library
             }
         }
 
-        public bool ParentalAllowed { get { return true; } }
+        public bool ParentalAllowed { get { return baseItem.ParentalAllowed; } }
         public string ParentalRating
         {
             get

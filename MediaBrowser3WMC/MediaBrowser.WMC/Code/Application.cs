@@ -331,7 +331,7 @@ namespace MediaBrowser
 
         public Item CurrentUser { get; set; }
 
-        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = u.Id, Dto = u})).ToList(); } } 
+        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = u.Id, Dto = u, ParentalAllowed = !u.HasPassword})).ToList(); } } 
 
         public List<string> ConfigPanelNames
         {
@@ -967,7 +967,7 @@ namespace MediaBrowser
             if (Kernel.CurrentUser.HasPassword)
             {
                 // show pw screen
-                OpenSecurityPage("Please Enter Password for " + CurrentUser.Name);
+                OpenSecurityPage("Please Enter Password for " + CurrentUser.Name + " (select or enter when done)");
             }
             else
             {
@@ -986,7 +986,7 @@ namespace MediaBrowser
             {
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
-                    DisplayDialog("Please re-try.", "Incorrect Password");
+                    Async.Queue("pw", () => MessageBox("Incorrect Password. Please re-try."));
                     return;
                 }
                 throw;

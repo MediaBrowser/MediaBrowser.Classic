@@ -126,6 +126,8 @@
         </Transformer>
       </Default>
 
+      <Condition Source="[Item.ParentalAllowed]" ConditionOp="Equals" SourceValue="false" Target="[PCLock.Visible]" Value="true" />
+
       <Changed Source="[Input.KeyFocus]">
         <Conditions>
           <Equality Source="[Input.KeyFocus]" Value="true" />
@@ -177,6 +179,18 @@
               <ColorFill ColorFilter="70,70,100" Layout="Fill" />
             </Children>
           </Clip>
+          <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="PCLock">
+            <LayoutInput>
+              <AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
+            </LayoutInput>
+            <Children>
+              <Graphic Name="PCLockImage" Content="image://i:Lock" Margins="5,5,5,5" MaximumSize="25,25" MaintainAspectRatio="true">
+                <LayoutInput>
+                  <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                </LayoutInput>
+              </Graphic>
+            </Children>
+          </Panel>
           <Graphic Name="ItemPoster" Content="image://i:BlankImage"  MaintainAspectRatio="true" MaximumSize="[IconSize]">
             <LayoutInput>
               <AnchorLayoutInput Top="Parent, 0"/>

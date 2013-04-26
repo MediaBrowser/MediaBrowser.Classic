@@ -294,7 +294,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public bool ParentalAllowed { get { return true; } } // PC is handled by the server/user profile
+        private bool _parentalAllowed = true;
+        public bool ParentalAllowed { get { return _parentalAllowed; } set { _parentalAllowed = value; } } 
         public virtual string ParentalRating
         {
             get
