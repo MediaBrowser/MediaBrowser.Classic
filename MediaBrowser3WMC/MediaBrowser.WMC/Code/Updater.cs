@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Xml;
 using System.Diagnostics;
 using MediaBrowser.Library.Configuration;
+using MediaBrowser.Library.Threading;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter.UI;
@@ -33,6 +35,9 @@ namespace MediaBrowser.Util
     // Updater class deals with checking for updates and downloading/installing them.
     public class Updater
     {
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);        
+        
         // Reference back to the application for displaying dialog (thread safe).
         private Application appRef;
 
@@ -81,10 +86,17 @@ namespace MediaBrowser.Util
                             //Kick off the installer and shut us down
                             try
                             {
+                                //Minimize WMC
+                                var wmc = Process.GetProcessesByName("ehshell.exe").FirstOrDefault();
+                                if (wmc != null)
+                                {
+                                    ShowWindow(wmc.MainWindowHandle, 2);
+                                }
+
                                 var info = new ProcessStartInfo
                                                {
                                                    FileName = ApplicationPaths.UpdaterExecutableFile,
-                                                   Arguments = "product=mbc class=" + Kernel.Instance.ConfigData.SystemUpdateClass,
+                                                   Arguments = "product=mbc class=" + Kernel.Instance.ConfigData.SystemUpdateClass + " admin=true",
                                                    Verb = "runas"
                                                };
 
@@ -93,7 +105,7 @@ namespace MediaBrowser.Util
                             }
                             catch (Exception e)
                             {
-                                Application.CurrentInstance.MessageBox("Error attempting to update.  Please update manually.");
+                                Async.Queue("error", () => Application.CurrentInstance.MessageBox("Error attempting to update.  Please update manually."));
                             }
                         }
 
