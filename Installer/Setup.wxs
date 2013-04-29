@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.3.0" ?>
-<?define Property_ProductCode = "A3172586-4F14-464A-9EE8-BBCF2300140A" ?>
+<?define Property_ProductVersion = "3.0.5.0" ?>
+<?define Property_ProductCode = "1A433EC4-2478-420F-A0A8-3BED00AB060B" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -202,6 +202,9 @@
       <Component Id="MediaBrowser.InstallUtil.dll" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
         <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\..\MediaBrowser\Installation\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
       </Component>
+      <Component Id="ServiceStack.Text.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
+        <File Id="ServiceStack.Text.dll" Name="ServiceStack.Text.dll" Source="..\3rdParty\ServiceStack.Text.dll" Checksum="no" Vital="yes"/>
+      </Component>
     </DirectoryRef>
 
     <!-- This component is installed so the default ProgramData\MediaBrowser-WMC is created during installerion -->
@@ -248,6 +251,7 @@
       <ComponentRef Id="MBMigrate.exe.config" />
       <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
+      <ComponentRef Id="ServiceStack.Text.dll" />
       <ComponentRef Id="Application.png" />
       <ComponentRef Id="ApplicationInactive.png" />
       <ComponentRef Id="Registration7.xml" />
