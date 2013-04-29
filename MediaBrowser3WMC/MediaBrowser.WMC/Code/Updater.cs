@@ -77,7 +77,7 @@ namespace MediaBrowser.Util
                 if (mbClassic != null)
                 {
                     var newVersion = mbClassic.versions.FirstOrDefault(v => v.classification <= Kernel.Instance.ConfigData.SystemUpdateClass 
-                        && new System.Version(v.requiredVersionStr ?? "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
+                        && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
                     if (newVersion != null)
                     {
                         if (Application.CurrentInstance.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
