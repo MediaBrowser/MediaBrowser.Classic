@@ -406,7 +406,7 @@ namespace MediaBrowser
             // Only fire the progress handler while playback is still active, because once playback stops position will be reset to 0
             OnProgress(eventArgs);
 
-            Application.CurrentInstance.ShowNowPlaying = eventArgs.Item == null ? true : eventArgs.Item.ShowNowPlayingView;
+            Application.CurrentInstance.ShowNowPlaying = eventArgs.Item == null || eventArgs.Item.ShowNowPlayingView;
 
             if (playstateChanged)
             {
@@ -416,10 +416,12 @@ namespace MediaBrowser
                 Logger.ReportVerbose("Playstate changed to {0} for {1}, PositionTicks:{2}, Playlist Index:{3}", state, title, positionTicks, eventArgs.CurrentFileIndex);
 
                 PlayStateChanged();
+                Logger.ReportVerbose("Back from PlayStateChanged");
             }
 
             if (isStopped)
             {
+                Logger.ReportVerbose("Calling HandleStopedState");
                 HandleStoppedState(env, exp, transport, eventArgs);
             }
         }
@@ -429,9 +431,12 @@ namespace MediaBrowser
         /// </summary>
         private void HandleStoppedState(MediaCenterEnvironment env, MediaExperience exp, MediaTransport transport, PlaybackStateEventArgs e)
         {
+            Logger.ReportVerbose("In HandleStoppedState");
             // Stop listening to the events
             env.PropertyChanged -= MediaCenterEnvironment_PropertyChanged;
             transport.PropertyChanged -= MediaTransport_PropertyChanged;
+
+            Logger.ReportVerbose("Events unhooked");
 
             // This will prevent us from getting in here twice after playback stops and calling post-play processes more than once.
             _HasStartedPlaying = false;
@@ -440,11 +445,13 @@ namespace MediaBrowser
 
             var mediaType = exp.MediaType;
 
+            Logger.ReportVerbose("Reporting stopped to server");
             var newStatus = Kernel.ApiClient.ReportPlaybackStopped(Playable.CurrentMedia.ApiId, Kernel.CurrentUser.Id, transport.Position.Ticks);
 
             // Update our status with what was returned from server if valid
             if (newStatus != null)
             {
+                Logger.ReportVerbose("Setting new status");
                 Playable.CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                 Playable.CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
             }
@@ -452,6 +459,7 @@ namespace MediaBrowser
             // Check if internal wmc player is still playing, which could happen if the user launches live tv while playing something
             if (mediaType != Microsoft.MediaCenter.Extensibility.MediaType.TV)
             {
+                Logger.ReportVerbose("Turning off NPV");
                 Application.CurrentInstance.ShowNowPlaying = false;
 
                 if (mediaType == Microsoft.MediaCenter.Extensibility.MediaType.Audio || mediaType == Microsoft.MediaCenter.Extensibility.MediaType.DVD)
