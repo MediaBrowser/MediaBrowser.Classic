@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
@@ -13,11 +15,23 @@ namespace MediaBrowser.ApiInteraction
     /// </summary>
     public class MbHttpClient : IHttpClient
     {
+        private List<WebClient> clients = new List<WebClient>();
+        private string AuthHeader;
+
         /// <summary>
         /// Gets or sets the HTTP client.
         /// </summary>
         /// <value>The HTTP client.</value>
-        private WebClient HttpClient { get; set; }
+        private WebClient HttpClient
+        {
+            get { WebClient client = null;
+                while (client == null)
+                {
+                    client = clients.FirstOrDefault(c => !c.IsBusy);
+                }
+                return client;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -32,7 +46,12 @@ namespace MediaBrowser.ApiInteraction
         public MbHttpClient(ILogger logger)
         {
             Logger = logger;
-            HttpClient = new WebClient();
+            clients = new List<WebClient>
+                          {
+                              new WebClient(),
+                              new WebClient(),
+                              new WebClient()
+                          };
         }
 
         /// <summary>
@@ -123,11 +142,19 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="MediaBrowser.Model.Net.HttpException"></exception>
         public void Delete(string url)
         {
-            Logger.Debug("Sending Http Delete to {0}", url);
+            Library.Logging.Logger.ReportVerbose("Sending Http Delete to {0}", url);
 
             try
             {
-                HttpClient.UploadString(url, "DELETE", "");
+                var request = WebRequest.Create(url);
+                request.Method = "DELETE";
+                request.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
+                request.ContentType = "application/x-www-form-urlencoded";
+                var resp = (HttpWebResponse)request.GetResponse();
+                if (resp.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new ApplicationException(string.Format("Delete returned bad response: {0} {1}", resp.StatusCode, resp.StatusDescription));
+                }
             }
             catch (WebException ex)
             {
@@ -174,11 +201,13 @@ namespace MediaBrowser.ApiInteraction
         {
             if (string.IsNullOrEmpty(header))
             {
-                HttpClient.Headers.Remove("Authorization");
+                foreach (var client in clients) client.Headers.Remove("Authorization");
+                AuthHeader = "";
             }
             else
             {
-                HttpClient.Headers["Authorization"] =  "MediaBrowser " + header;
+                foreach(var client in clients) client.Headers["Authorization"] =  "MediaBrowser " + header;
+                AuthHeader = "MediaBrowser " + header;
             }
         }
     }
