@@ -455,6 +455,10 @@ namespace MediaBrowser
                 Playable.CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                 Playable.CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
             }
+            else
+            {
+                Logger.ReportVerbose("New status was null");
+            }
 
             // Check if internal wmc player is still playing, which could happen if the user launches live tv while playing something
             if (mediaType != Microsoft.MediaCenter.Extensibility.MediaType.TV)
@@ -466,6 +470,10 @@ namespace MediaBrowser
                 {
                     PlaybackControllerHelper.ReturnToApplication(true);
                 }
+            }
+            else
+            {
+                Logger.ReportVerbose("Not turning off NPV because Live TV is playing.");
             }
 
             // Fire the OnFinished event for each item
