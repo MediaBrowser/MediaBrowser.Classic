@@ -249,10 +249,19 @@ namespace MediaBrowser.Code.ModelItems {
                 }
                 else
                 {
-                    folderIsIndexed = true;
                     lock (this)
                     {
-                        currentChildren = folder.IndexBy(property).Select(i => (BaseItem)i).OrderBy(i => i.SortName).ToList();
+                        try
+                        {
+                            currentChildren = folder.IndexBy(property).Select(i => (BaseItem) i).OrderBy(i => i.SortName).ToList();
+                            folderIsIndexed = true;
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.ReportException("Error building index on {0}", e, folder.Name);
+                            Application.CurrentInstance.MessageBox("Error Building Index");
+                            return;
+                        }
                     }
                 }
 
