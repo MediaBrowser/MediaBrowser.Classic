@@ -262,6 +262,7 @@ namespace MediaBrowser.Library.Persistance
                 item.Overview = mb3Item.Overview;
                 item.SortName = mb3Item.SortName;
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
+                item.UserData = mb3Item.UserData;
 
                 var index = item as IndexFolder;
                 if (index != null)

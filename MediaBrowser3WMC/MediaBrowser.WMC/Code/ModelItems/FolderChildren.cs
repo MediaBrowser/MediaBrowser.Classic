@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Query;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library.Entities;
 using System.Collections;
@@ -38,6 +39,7 @@ namespace MediaBrowser.Code.ModelItems {
         IList<BaseItem> currentChildren = new List<BaseItem> ();
         Action onChildrenChanged;
         bool folderIsIndexed = false;
+        public bool IsFiltered { get; set; }
         float childImageAspect = 1;
         IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
 
@@ -95,19 +97,6 @@ namespace MediaBrowser.Code.ModelItems {
                 //  by design .... 
                 if (!changed) { return; }
 
-                //I don't understand why we refresh the entire folder if one item changed - I put the refresh in the validate to see what happens -ebr
-
-                //// we may want to consider some pause APIs on the queues so we can ensure the correct ordering
-                //// its not a big fuss, cause it will be picked up next time around anyway
-
-                //// the reverse isn't really needed, but it means that metadata is acquired in the order the children are in. 
-                //foreach (var item in children.folder.Children.Reverse())
-                //{
-                //    fastMetadataRefresher.Inject(item);
-                //    // this ensures images are cached earlier 
-                //    var ignore = item.PrimaryImage;
-                //}
-
                 fastMetadataRefresher.Inject(children.folder);
                 bool isSeason = children.folder.GetType() == typeof(Season) && children.folder.Parent != null;
                 if (isSeason)
@@ -119,7 +108,7 @@ namespace MediaBrowser.Code.ModelItems {
 
 
         public static void FastMetadataRefresh(BaseItem item) {
-            using (var profiler = new Profiler("Fast Metadata Refresh (UI Triggered)" + item.Name))
+            using (new Profiler("Fast Metadata Refresh (UI Triggered)" + item.Name))
             {
                 item.RefreshMetadata(MetadataRefreshOptions.FastOnly);
                 slowMetadataRefresher.Inject(item);
@@ -127,7 +116,7 @@ namespace MediaBrowser.Code.ModelItems {
         }
 
         public static void SlowMetadataRefresh(BaseItem item) {
-            using (var profiler = new Profiler("Slow Metadata Refresh (UI Triggered)" + item.Name))
+            using (new Profiler("Slow Metadata Refresh (UI Triggered)" + item.Name))
             {
                 item.RefreshMetadata(MetadataRefreshOptions.Default);
             }
@@ -141,7 +130,6 @@ namespace MediaBrowser.Code.ModelItems {
                 childVerifier.Inject(this);
             }
 
-            //Sort();
         }
 
         public void ListenForChanges() {
@@ -231,6 +219,27 @@ namespace MediaBrowser.Code.ModelItems {
                 items[guid] = item;
             }
             return item;
+        }
+
+        /// <summary>
+        /// Filter ourselves against the supplied filter functions
+        /// </summary>
+        /// <param name="filters"></param>
+        public void Filter(FilterProperties filters)
+        {
+            IEnumerable<BaseItem> filteredChildren = folder.Children;
+            if (filters == null)
+            {
+                // un-filter
+                IsFiltered = false;
+            }
+            else
+            {
+                filteredChildren = folder.Children.Where(c => c.PassesFilter(filters));
+                IsFiltered = true;
+            }
+
+            currentChildren = filteredChildren.ToList();
         }
 
         public void IndexBy(string property)

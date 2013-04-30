@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Factories;
 using MediaBrowser.Library.Providers;
 using MediaBrowser.Library.Entities.Attributes;
 using System.Diagnostics;
 using MediaBrowser.Library.ImageManagement;
+using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Sorting;
 using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Model.Dto;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -259,6 +262,8 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string CustomPIN { get; set; }
 
+        public UserItemDataDto UserData { get; set; }
+
         public virtual string OfficialRating
         {
             get
@@ -316,6 +321,17 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public virtual bool PassesFilter(FilterProperties filters)
+        {
+            if (filters == null) return true;
+
+            if (Ratings.Level(ParentalRating) > filters.RatedLessThan) return false;
+            if (Ratings.Level(ParentalRating) < filters.RatedGreaterThan) return false;
+            if (filters.IsFavorite != null && UserData != null && UserData.IsFavorite != filters.IsFavorite) return false;
+            if (!filters.OfTypes.Contains(DisplayMediaType)) return false;
+
+            return true;
+        }
         public virtual bool PlayAction(Item item)
         {
             //this will be overridden by sub-classes to perform the proper action for that item type

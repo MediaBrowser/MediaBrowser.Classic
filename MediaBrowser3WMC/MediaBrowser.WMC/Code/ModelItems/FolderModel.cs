@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using MediaBrowser.Library.Query;
 using Microsoft.MediaCenter.UI;
 using System.Diagnostics;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace MediaBrowser.Library {
         DisplayPreferences displayPrefs;
         SizeRef actualThumbSize = new SizeRef(new Size(1, 1));
         FolderChildren folderChildren = new FolderChildren();
+        FilterProperties filters; 
         Folder folder;
 
         #region Folder construction 
@@ -45,6 +47,8 @@ namespace MediaBrowser.Library {
                 return folder;
             }
         }
+
+        public bool IsFiltered { get { return folderChildren.IsFiltered; } }
 
         public override void NavigatingInto() {
             // force display prefs to reload.

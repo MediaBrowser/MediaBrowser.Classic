@@ -239,6 +239,7 @@
     <Compile Include="Library\Metadata\MetadataRefreshOptions.cs" />
     <Compile Include="Library\Plugins\IPlugin.cs" />
     <Compile Include="Library\Plugins\Plugin.cs" />
+    <Compile Include="Library\Query\FilterProperties.cs" />
     <Compile Include="Library\Sorting\BaseItemEqualityComparer.cs" />
     <Compile Include="Library\Sorting\SortHelper.cs" />
     <Compile Include="Library\Threading\Async.cs" />
