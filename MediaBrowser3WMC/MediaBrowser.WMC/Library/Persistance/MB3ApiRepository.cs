@@ -431,7 +431,7 @@ namespace MediaBrowser.Library.Persistance
 
         public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy)
         {
-            if (id == Guid.Empty.ToString()) return null;  //some dummy items have blank ids
+            if (id == Guid.Empty.ToString() || string.IsNullOrEmpty(id)) return null;  //some dummy items have blank ids
 
             var dtos = Kernel.ApiClient.GetItems(new ItemQuery
                                                      {

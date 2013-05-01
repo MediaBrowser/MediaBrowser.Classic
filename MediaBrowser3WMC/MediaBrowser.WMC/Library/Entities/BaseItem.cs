@@ -332,6 +332,12 @@ namespace MediaBrowser.Library.Entities {
 
             return true;
         }
+
+        public virtual bool IsFavorite
+        {
+            get { return UserData.IsFavorite; }
+        }
+
         public virtual bool PlayAction(Item item)
         {
             //this will be overridden by sub-classes to perform the proper action for that item type
@@ -344,6 +350,15 @@ namespace MediaBrowser.Library.Entities {
             //this can be overridden by sub-classes to perform the proper action for that item type
             Application.CurrentInstance.Navigate(item);  //default is open the item
             return true;
+        }
+
+        /// <summary>
+        /// Reload ourselves from the proper place
+        /// </summary>
+        /// <returns></returns>
+        public virtual BaseItem ReLoad()
+        {
+            return Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id);
         }
 
         public virtual string CustomUI { get; set; }

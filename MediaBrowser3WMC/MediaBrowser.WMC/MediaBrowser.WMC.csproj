@@ -126,6 +126,8 @@
     <Compile Include="ApiInteraction\SerializationFormats.cs" />
     <Compile Include="ApiInteraction\ServerLocator.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
+    <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
+    <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\Song.cs" />
     <Compile Include="Library\Entities\LocalCacheFolder.cs" />
     <Compile Include="Library\Entities\MusicAlbum.cs" />

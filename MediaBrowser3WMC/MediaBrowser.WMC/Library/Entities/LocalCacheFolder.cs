@@ -9,12 +9,19 @@ namespace MediaBrowser.Library.Entities
 {
     public class LocalCacheFolder : IndexFolder
     {
+        public virtual bool AllowRemoteChildren { get { return true; } }
+
         public LocalCacheFolder() : base()
         {
         }
 
         public LocalCacheFolder(List<BaseItem> list) : base(list)
         {
+        }
+
+        public override BaseItem ReLoad()
+        {
+            return Kernel.Instance.ItemRepository.RetrieveItem(Id);
         }
 
         protected override List<BaseItem> GetCachedChildren()
@@ -24,7 +31,7 @@ namespace MediaBrowser.Library.Entities
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
                 var children = Kernel.Instance.LocalRepo.RetrieveChildren(Id);
-                items = children != null ? children.ToList() : GetRemoteChildren();
+                items = children != null ? children.ToList() : AllowRemoteChildren ? GetRemoteChildren() : new List<BaseItem>();
             }
             return items;
         }

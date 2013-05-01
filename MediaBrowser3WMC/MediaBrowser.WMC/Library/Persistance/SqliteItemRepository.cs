@@ -604,17 +604,22 @@ namespace MediaBrowser.Library.Persistance {
             }
         }
 
-        public IEnumerable<string> RetrieveChildList(Guid id) {
+        public IEnumerable<string> RetrieveChildList(Guid id)
+        {
 
             var children = new List<string>();
-            var cmd = connection.CreateCommand();
-            cmd.CommandText = "select child from children where guid = @guid";
-            var guidParam = cmd.Parameters.Add("@guid", System.Data.DbType.Guid);
-            guidParam.Value = id;
 
-            using (var reader = cmd.ExecuteReader()) {
-                while (reader.Read()) {
-                    children.Add(reader.GetGuid(0).ToString());
+            if (id != Guid.Empty)
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = "select child from children where guid = @guid";
+                var guidParam = cmd.Parameters.Add("@guid", DbType.Guid);
+                guidParam.Value = id;
+
+                using (var reader = cmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        children.Add(reader.GetGuid(0).ToString());
+                    }
                 }
             }
 

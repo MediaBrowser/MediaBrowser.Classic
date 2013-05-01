@@ -39,5 +39,6 @@ namespace MediaBrowser.Library.Entities {
                 return this.Parent as Series ?? Series.BlankSeries;
             }
         }
+
     }
 }

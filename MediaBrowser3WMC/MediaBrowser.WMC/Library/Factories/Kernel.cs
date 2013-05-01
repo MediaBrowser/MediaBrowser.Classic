@@ -610,6 +610,13 @@ namespace MediaBrowser.Library {
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();
 
+            if (kernel.RootFolder != null)
+            {
+                //Create Favorites
+                var favFolder = new FavoritesCollectionFolder();
+                favFolder.AddChildren(new List<BaseItem> {new FavoritesTypeFolder(new string[] {"Movie"}, "Movies" ), new FavoritesTypeFolder(new[] {"Series", "Season", "Episode"}, "TV"), new FavoritesTypeFolder(new[] {"Audio", "MusicAlbum", "MusicArtist"}, "Music")});
+                kernel.RootFolder.AddVirtualChild(favFolder);
+            }
         }
 
         public void ReLoadConfig()
