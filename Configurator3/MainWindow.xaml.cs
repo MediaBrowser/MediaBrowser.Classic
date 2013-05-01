@@ -852,6 +852,12 @@ namespace Configurator
             SaveConfig();
         }
 
+        private void CbxOptionShowFavorites_OnClick(object sender, RoutedEventArgs e)
+        {
+            config.ShowFavoritesCollection = (bool)cbxOptionShowFavorites.IsChecked;
+            SaveConfig();
+        }
+
         #endregion
 
         #region ComboBox Events

@@ -74,8 +74,8 @@
 
                 <TabItem Header="display/playback" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True">
                     <Grid>
-                        <GroupBox Header="General Display Settings" HorizontalAlignment="Left" Margin="20,35,0,189" Name="groupBox1" Width="270">
-                            <Grid>
+                        <GroupBox Header="General Display Settings" HorizontalAlignment="Left" Margin="20,35,0,204" Name="groupBox1" Width="270">
+                            <Grid Height="177.76" VerticalAlignment="Top">
                                 <CheckBox Height="22" Margin="10,10,10,0" Name="cbxOptionClock" ToolTip="Display time clock within Media Browser" VerticalAlignment="Top" Click="cbxOptionClock_Click">Show Clock</CheckBox>
                                 <CheckBox Margin="10,32,10,0" Name="cbxOptionDimPoster" ToolTip="Dim unselected items" Click="cbxOptionDimPoster_Click" Height="22" VerticalAlignment="Top">Dim Unselected Posters</CheckBox>
                                 <CheckBox Margin="10,54,10,0" Name="cbxOptionIndexing" ToolTip="Remember indexed filter settings for each folder" Click="cbxOptionIndexing_Click" Height="22" VerticalAlignment="Top">Remember Folder Indexing</CheckBox>
@@ -88,17 +88,18 @@
                                 <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Left" Margin="179,142,0,0" Name="btnSSTimeDn" VerticalAlignment="Top" Width="18" Click="btnSSTimeDn_Click" />
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,0,0,6" Name="groupBox2" Width="270" Height="183" VerticalAlignment="Bottom">
+                        <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,238.38,0,0" Name="groupBox2" Width="270" Height="197" VerticalAlignment="Top">
                             <Grid>
-                                <CheckBox Margin="10,0,10,128" Name="cbxOptionUnwatchedCount" Content="Show Unplayed Count" Height="22" VerticalAlignment="Bottom" Click="cbxOptionUnwatchedCount_Click" ToolTip="Show unplayed counter on top of poster art" />
-                                <CheckBox Margin="10,0,10,108" Name="cbxOptionUnwatchedOnFolder" Content="Played Indicator on Folders" Click="cbxOptionUnwatchedOnFolder_Click" ToolTip="Display indicator for previously played folders" Height="20.38" VerticalAlignment="Bottom" />
-                                <CheckBox Margin="10,0,10,84" Name="cbxOptionUnwatchedOnVideo" Content="Played Indicator on Items" Click="cbxOptionUnwatchedOnVideo_Click" ToolTip="Display indicator for previously played items" Height="22.38" VerticalAlignment="Bottom" />
-                                <CheckBox Margin="10,0,10,64" Name="cbxOptionUnwatchedDetailView" Content="Played Indicator in Detail View" Height="22" VerticalAlignment="Bottom" Click="cbxOptionUnwatchedDetailView_Click" ToolTip="Display indicator in detail view for previously played items" />
-                                <CheckBox Margin="10,0,10,43" Name="cbxOptionDefaultToUnwatched" Content="Default to First Unplayed Item" Click="cbxOptionDefaultToUnwatched_Click" Height="22" VerticalAlignment="Bottom" ToolTip="Automatically highlight the first unplayed item" />
-                                <Label Content="Recent Item Group Min" Height="28" HorizontalAlignment="Left" Margin="10,114,0,0" Name="label15" VerticalAlignment="Top" Width="163" ToolTip="The number of like items in a recent list to cause these items to be grouped into a parent folder (e.g. Episodes into Series)" />
-                                <Label Content="2" Height="28" HorizontalAlignment="Right" Margin="0,0,52,16" Name="lblRecentItemCollapse" VerticalAlignment="Bottom" Width="35" />
-                                <Button Content="+" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" Margin="0,0,16,18" Name="btnRICUp" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="18" Click="btnRICUp_Click" />
-                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Right" Margin="0,119,35,0" Name="btnRICDn" VerticalAlignment="Top" Width="18" Click="btnRICDn_Click" />
+                                <CheckBox Margin="10,7.38,10,0" Name="cbxOptionUnwatchedCount" Content="Show Unplayed Count" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedCount_Click" ToolTip="Show unplayed counter on top of poster art" />
+                                <CheckBox Margin="10,29,10,0" Name="cbxOptionUnwatchedOnFolder" Content="Played Indicator on Folders" Click="cbxOptionUnwatchedOnFolder_Click" ToolTip="Display indicator for previously played folders" Height="20.38" VerticalAlignment="Top" />
+                                <CheckBox Margin="10,51,10,0" Name="cbxOptionUnwatchedOnVideo" Content="Played Indicator on Items" Click="cbxOptionUnwatchedOnVideo_Click" ToolTip="Display indicator for previously played items" Height="22.38" VerticalAlignment="Top" />
+                                <CheckBox Margin="10,71.38,10,0" Name="cbxOptionUnwatchedDetailView" Content="Played Indicator in Detail View" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedDetailView_Click" ToolTip="Display indicator in detail view for previously played items" />
+                                <CheckBox Margin="10,92.38,10,0" Name="cbxOptionDefaultToUnwatched" Content="Default to First Unplayed Item" Click="cbxOptionDefaultToUnwatched_Click" Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
+                                <Label Content="Recent Item Group Min" Height="28" HorizontalAlignment="Left" Margin="10,141,0,0" Name="label15" VerticalAlignment="Top" Width="163" ToolTip="The number of like items in a recent list to cause these items to be grouped into a parent folder (e.g. Episodes into Series)" />
+                                <Label Content="2" Height="28" HorizontalAlignment="Right" Margin="0,0,52,2" Name="lblRecentItemCollapse" VerticalAlignment="Bottom" Width="35" />
+                                <Button Content="+" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" Margin="0,0,16,5" Name="btnRICUp" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="18" Click="btnRICUp_Click" />
+                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Right" Margin="0,146,35,0" Name="btnRICDn" VerticalAlignment="Top" Width="18" Click="btnRICDn_Click" />
+                                <CheckBox Margin="10,113.38,10,0" x:Name="cbxOptionShowFavorites" Content="Show Favorites Collection" Click="CbxOptionShowFavorites_OnClick"  Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Theme Settings" Margin="300,35,0,0" HorizontalAlignment="Left" Name="groupBox3" Height="125" Width="430" VerticalAlignment="Top">

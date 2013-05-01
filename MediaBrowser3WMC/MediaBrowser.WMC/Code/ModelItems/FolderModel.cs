@@ -679,7 +679,7 @@ namespace MediaBrowser.Library {
         {
             Async.Queue("Child Refresh", () =>
             {
-                this.folder.ValidateChildren();
+                this.folder.RetrieveChildren();
                 this.folderChildren.RefreshChildren();
                 this.folderChildren.Sort();
                 this.RefreshUI();

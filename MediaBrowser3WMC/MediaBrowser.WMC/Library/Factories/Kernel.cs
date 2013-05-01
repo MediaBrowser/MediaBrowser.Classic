@@ -618,7 +618,7 @@ namespace MediaBrowser.Library {
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();
 
-            if (kernel.RootFolder != null)
+            if (ConfigData.ShowFavoritesCollection && kernel.RootFolder != null)
             {
                 //Create Favorites
                 var favFolder = new FavoritesCollectionFolder();

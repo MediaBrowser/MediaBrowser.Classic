@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0057";
+        const string VERSION = "1.0059";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -90,6 +90,7 @@ namespace MediaBrowser.Library.Localization
         public string HideEmptyFoldersConfigDesc = "Hide items with no media in them in the interface.";
         public string SystemClassConfigDesc = "Level at which to subscribe to system updates.";
         public string PluginClassConfigDesc = "Level at which to subscribe to plug-in updates.";
+        public string ShowFavoritesCollectionConfigDesc = "Show a top level collection with all your items marked as Favorite in it. Restart MBC to see changes.";
 
 
         //Config Panel
@@ -121,6 +122,7 @@ namespace MediaBrowser.Library.Localization
         public string AlwaysShowDetailsConfig = "Always Show Details";
         public string ExcludeRemoteContentInSearchesConfig = "Exclude Remote Content In Searches";
         public string EnhancedMouseSupportConfig = "Enhanced Mouse Support";
+        public string ShowFavoritesCollectionConfig = "Show Favorites Collection";
         public string ViewsConfig = "Views";
         public string PosterGridSpacingConfig = "Poster Grid Spacing";
         public string ThumbWidthSplitConfig = "Thumb Width Split";

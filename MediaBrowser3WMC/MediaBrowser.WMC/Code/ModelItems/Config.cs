@@ -158,6 +158,12 @@ namespace MediaBrowser
 
         }
 
+        public bool ShowFavoritesCollection
+        {
+            get { return this.data.ShowFavoritesCollection; }
+            set { if (this.data.ShowFavoritesCollection != value) { this.data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); Application.CurrentInstance.ReLoad(); } }
+        }
+
 
         [Comment("Dim all unselected posters in poster and thumbstrib views")]
         public bool DimUnselectedPosters

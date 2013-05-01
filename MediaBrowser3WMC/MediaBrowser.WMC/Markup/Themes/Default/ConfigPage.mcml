@@ -44,6 +44,7 @@
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
       <BooleanChoice Name="EnableTranscode360" Value="[Application.Config.EnableTranscode360]" />
       <BooleanChoice Name="ShowThemeBackground" Value="[Application.Config.ShowThemeBackground]" />
+      <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
@@ -324,6 +325,7 @@
       <Binding Source="[ShowWatchTickInPosterView.Value]" Target="[Config.ShowWatchTickInPosterView]" />
       <Binding Source="[ShowHDIndicatorOnPosters.Value]" Target="[Config.ShowHDIndicatorOnPosters]" />
       <Binding Source="[ShowRemoteIndicatorOnPosters.Value]" Target="[Config.ShowRemoteIndicatorOnPosters]" />
+      <Binding Source="[ShowFavoritesCollection.Value]" Target="[Config.ShowFavoritesCollection]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
       <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
@@ -581,6 +583,7 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronVideosConfig!cor:String]" Checked="[ShowWatchTickInPosterView]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatorinDetailViewConfig!cor:String]" Checked="[EnableListViewTicks]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                     </Children>
                   </Panel>
