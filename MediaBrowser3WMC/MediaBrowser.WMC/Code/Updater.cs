@@ -1,34 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Xml;
 using System.Diagnostics;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Threading;
-using Microsoft.MediaCenter;
-using Microsoft.MediaCenter.Hosting;
-using Microsoft.MediaCenter.UI;
-using MediaBrowser;
 using System.Reflection;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library;
-using MediaBrowser.LibraryManagement;
 
-
-// XML File structure
-/*
- 
- <Config> 
-    <Beta url="" version=""/> 
-    <Release url="" version="">
- </Config>
- 
- 
- */
 
 namespace MediaBrowser.Util
 {
@@ -36,7 +15,38 @@ namespace MediaBrowser.Util
     public class Updater
     {
         [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);        
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        static extern bool SetWindowPlacement(IntPtr hWnd,
+                           ref WINDOWPLACEMENT lpwndpl);
+        private struct POINTAPI
+        {
+            public int x;
+            public int y;
+        }
+
+        private struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        private struct WINDOWPLACEMENT
+        {
+            public int length;
+            public int flags;
+            public int showCmd;
+            public POINTAPI ptMinPosition;
+            public POINTAPI ptMaxPosition;
+            public RECT rcNormalPosition;
+        }
         
         // Reference back to the application for displaying dialog (thread safe).
         private Application appRef;
@@ -87,11 +97,11 @@ namespace MediaBrowser.Util
                             try
                             {
                                 //Minimize WMC
-                                var wmc = Process.GetProcessesByName("ehshell.exe").FirstOrDefault();
-                                if (wmc != null)
-                                {
-                                    ShowWindow(wmc.MainWindowHandle, 2);
-                                }
+                                var mceWnd = FindWindow(null, "Windows Media Center");
+                                var wp = new WINDOWPLACEMENT();
+                                GetWindowPlacement(mceWnd, ref wp);
+                                wp.showCmd = 2; // 1 - Normal; 2 - Minimize; 3 - Maximize;
+                                SetWindowPlacement(mceWnd, ref wp);
 
                                 var info = new ProcessStartInfo
                                                {
