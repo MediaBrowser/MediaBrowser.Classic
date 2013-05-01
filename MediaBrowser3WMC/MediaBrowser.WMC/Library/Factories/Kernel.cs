@@ -380,6 +380,14 @@ namespace MediaBrowser.Library {
                         return new RemoteImage();
                     }
                     return null;
+                },
+                (path, canBeProcessed, item) =>
+                {
+                    if (path != null && path.ToLower().StartsWith("resx:"))
+                    {
+                        return new ResxImage();
+                    }
+                    return null;
                 }
             };
         }
