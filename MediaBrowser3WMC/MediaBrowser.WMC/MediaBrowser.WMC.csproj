@@ -150,6 +150,7 @@
     <Compile Include="Library\Filesystem\VirtualFolder.cs" />
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
+    <Compile Include="Library\ImageManagement\ResxImage.cs" />
     <Compile Include="Library\Interfaces\ISupportsTrailers.cs" />
     <Compile Include="Library\Logging\FileLogger.cs" />
     <Compile Include="Library\Logging\ILogger.cs" />
@@ -432,6 +433,10 @@
     <None Include="Images\Icons\IconShuffle.png" />
     <None Include="Images\Root\roottopw.png" />
     <None Include="Images\Root\rootscrollhilite.png" />
+    <Content Include="Images\FavMovies.png" />
+    <Content Include="Images\FavMusic.png" />
+    <Content Include="Images\Favorites.png" />
+    <Content Include="Images\FavTV.png" />
     <Content Include="Images\heart.png" />
     <Content Include="Images\Icons\IconAdded.png" />
     <None Include="Images\Icons\IconNext.png" />

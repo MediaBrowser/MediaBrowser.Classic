@@ -36,6 +36,15 @@ namespace MediaBrowser.Library.Entities
             OnChildrenChanged(null);
         }
 
+        public override string PrimaryImagePath
+        {
+            get { return base.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/Fav" + DisplayType; }
+            set
+            {
+                base.PrimaryImagePath = value;
+            }
+        }
+
         public override bool IsFavorite
         {
             get

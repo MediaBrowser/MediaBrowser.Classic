@@ -27,6 +27,15 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override string PrimaryImagePath
+        {
+            get { return base.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/Favorites"; }
+            set
+            {
+                base.PrimaryImagePath = value;
+            }
+        }
+
         public void Clear()
         {
             foreach (var child in Children.OfType<FavoritesTypeFolder>())
