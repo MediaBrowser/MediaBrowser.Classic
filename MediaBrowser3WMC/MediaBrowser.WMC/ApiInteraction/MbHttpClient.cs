@@ -15,23 +15,7 @@ namespace MediaBrowser.ApiInteraction
     /// </summary>
     public class MbHttpClient : IHttpClient
     {
-        private List<WebClient> clients = new List<WebClient>();
         private string AuthHeader;
-
-        /// <summary>
-        /// Gets or sets the HTTP client.
-        /// </summary>
-        /// <value>The HTTP client.</value>
-        private WebClient HttpClient
-        {
-            get { WebClient client = null;
-                while (client == null)
-                {
-                    client = clients.FirstOrDefault(c => !c.IsBusy);
-                }
-                return client;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -46,12 +30,6 @@ namespace MediaBrowser.ApiInteraction
         public MbHttpClient(ILogger logger)
         {
             Logger = logger;
-            clients = new List<WebClient>
-                          {
-                              new WebClient(),
-                              new WebClient(),
-                              new WebClient()
-                          };
         }
 
         /// <summary>
@@ -111,27 +89,28 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="MediaBrowser.Model.Net.HttpException"></exception>
         public string Post(string url, string contentType, string postContent)
         {
-            Logger.Info("Sending Http Post to {0}", url);
+            Library.Logging.Logger.ReportVerbose("Sending Http Post to {0}", url);
 
-            HttpClient.Encoding = Encoding.UTF8;
-            HttpClient.Headers["Content-type"] = contentType;
-
-            try
+            using (var httpClient = new WebClient {Encoding = Encoding.UTF8})
             {
-                return HttpClient.UploadString(url, postContent);
-            }
-            catch (WebException ex)
-            {
-                Logger.ErrorException("Error getting response from " + url, ex);
+                httpClient.Headers["Content-type"] = contentType;
 
-                throw new HttpException(ex.Message, ex);
-            }
-            catch (Exception ex)
-            {
-                Logger.ErrorException("Error posting {0}", ex, url);
+                try
+                {
+                    return httpClient.UploadString(url, postContent);
+                }
+                catch (WebException ex)
+                {
+                    Logger.ErrorException("Error getting response from " + url, ex);
 
-                return "";
-                throw;
+                    throw new HttpException(ex.Message, ex);
+                }
+                catch (Exception ex)
+                {
+                    Logger.ErrorException("Error posting {0}", ex, url);
+
+                    return "";
+                }
             }
         }
 
@@ -188,7 +167,6 @@ namespace MediaBrowser.ApiInteraction
         {
             if (disposing)
             {
-                HttpClient.Dispose();
             }
         }
 
@@ -201,12 +179,10 @@ namespace MediaBrowser.ApiInteraction
         {
             if (string.IsNullOrEmpty(header))
             {
-                foreach (var client in clients) client.Headers.Remove("Authorization");
                 AuthHeader = "";
             }
             else
             {
-                foreach(var client in clients) client.Headers["Authorization"] =  "MediaBrowser " + header;
                 AuthHeader = "MediaBrowser " + header;
             }
         }
