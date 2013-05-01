@@ -432,9 +432,11 @@
     <None Include="Images\Icons\IconShuffle.png" />
     <None Include="Images\Root\roottopw.png" />
     <None Include="Images\Root\rootscrollhilite.png" />
+    <Content Include="Images\heart.png" />
     <Content Include="Images\Icons\IconAdded.png" />
     <None Include="Images\Icons\IconNext.png" />
     <None Include="Images\Icons\IconPrevious.png" />
+    <Content Include="Images\Icons\IconFavorite.png" />
     <Content Include="Images\Icons\IconKeyboard.png" />
     <Content Include="Images\Icons\IconKeyboardFocus.png" />
     <Content Include="Images\Icons\IconRemote.png" />

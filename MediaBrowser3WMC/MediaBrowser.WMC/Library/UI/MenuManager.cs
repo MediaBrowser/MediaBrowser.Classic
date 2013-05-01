@@ -24,11 +24,23 @@ namespace MediaBrowser.Library
             item.ToggleWatched();
         }
 
+        private void toggleFavorite(Item item)
+        {
+            item.ToggleFavorite();
+        }
+
         private string watchedText(Item item)
         {
             if (item.HaveWatched)
                 return Kernel.Instance.StringData.GetString("MarkUnwatchedCMenu");
             else return Kernel.Instance.StringData.GetString("MarkWatchedCMenu");
+        }
+
+        private string favoriteText(Item item)
+        {
+            if (!item.IsFavorite)
+                return Kernel.Instance.StringData.GetString("AddFavoriteCMenu");
+            else return Kernel.Instance.StringData.GetString("RemoveFavoriteCMenu");
         }
 
         private string playText(Item item)
@@ -54,6 +66,7 @@ namespace MediaBrowser.Library
             Kernel.Instance.AddMenuItem(new MenuItem(playText, "resx://MediaBrowser/MediaBrowser.Resources/IconPlay", Application.CurrentInstance.Play, allPlayables, new List<MenuType>() { MenuType.Item, MenuType.Play }), 1);
             Kernel.Instance.AddMenuItem(new MenuItem(Kernel.Instance.StringData.GetString("ShufflePlayCMenu"), "resx://MediaBrowser/MediaBrowser.Resources/IconShuffle", Application.CurrentInstance.Shuffle, playableFolders, new List<MenuType>() { MenuType.Item, MenuType.Play }), 2);
             Kernel.Instance.AddMenuItem(new MenuItem(watchedText, "resx://MediaBrowser/MediaBrowser.Resources/Tick", toggleWatched, allPlayables, new List<MenuType>() { MenuType.Item }), 3);
+            Kernel.Instance.AddMenuItem(new MenuItem(favoriteText, "resx://MediaBrowser/MediaBrowser.Resources/IconFavorite", toggleFavorite), 4);
 
             Kernel.Instance.AddMenuItem(new MenuItem(Kernel.Instance.StringData.GetString("PlayAllFromHereCMenu"), "resx://MediaBrowser/MediaBrowser.Resources/IconPlay", Application.CurrentInstance.PlayFolderBeginningWithItem, new List<Type>() { typeof(Episode) }, new List<MenuType>() { MenuType.Item, MenuType.Play }), 2);
         }

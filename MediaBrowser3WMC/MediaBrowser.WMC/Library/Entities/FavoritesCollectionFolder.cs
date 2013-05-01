@@ -26,5 +26,13 @@ namespace MediaBrowser.Library.Entities
                 base.Name = value;
             }
         }
+
+        public void Clear()
+        {
+            foreach (var child in Children.OfType<FavoritesTypeFolder>())
+            {
+                child.Clear();
+            }
+        }
     }
 }

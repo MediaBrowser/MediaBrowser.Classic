@@ -5,6 +5,7 @@
   <Image Name="MBLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/mblogo1000"/>
 
 	<Image Name="Star" Source="resx://MediaBrowser/MediaBrowser.Resources/star"/>
+	<Image Name="Heart" Source="resx://MediaBrowser/MediaBrowser.Resources/heart"/>
 	<Image Name="ButtonSelection" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonSelection" NineGrid="12,12,12,12"/>
 	<Image Name="ButtonSelection2" Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonSelection2" NineGrid="12,12,12,12"/>
 	<Image Name="ZoomPane" Source="resx://MediaBrowser/MediaBrowser.Resources/ZoomPane" NineGrid="4,4,4,4"/>

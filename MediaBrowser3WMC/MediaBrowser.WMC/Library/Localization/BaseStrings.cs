@@ -201,6 +201,8 @@ namespace MediaBrowser.Library.Localization
         public string ResumeCMenu = "Resume";
         public string MarkUnwatchedCMenu = "Mark Unplayed";
         public string MarkWatchedCMenu = "Mark Played";
+        public string AddFavoriteCMenu = "Add To Favorites";
+        public string RemoveFavoriteCMenu = "Remove From Favorites";
         public string ShufflePlayCMenu = "Shuffle Play";
 
         //Media Detail Page

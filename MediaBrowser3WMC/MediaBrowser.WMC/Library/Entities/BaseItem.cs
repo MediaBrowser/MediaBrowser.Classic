@@ -335,7 +335,23 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual bool IsFavorite
         {
-            get { return UserData.IsFavorite; }
+            get { return UserData != null && UserData.IsFavorite; }
+            set
+            {
+                if (UserData != null)
+                {
+                    if (UserData.IsFavorite != value)
+                    {
+                        UserData.IsFavorite = value;
+                        Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value);
+                    }
+                }
+                else
+                {
+                    UserData = new UserItemDataDto {IsFavorite = value};
+                    Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value);
+                }
+            }
         }
 
         public virtual bool PlayAction(Item item)

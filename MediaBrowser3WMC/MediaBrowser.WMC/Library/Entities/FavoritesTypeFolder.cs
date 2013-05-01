@@ -30,6 +30,12 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public void Clear()
+        {
+            OurChildren = null;
+            OnChildrenChanged(null);
+        }
+
         public override BaseItem ReLoad()
         {
             return new FavoritesTypeFolder(OurTypes, DisplayType);

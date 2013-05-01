@@ -98,6 +98,20 @@ namespace MediaBrowser.Library
             }
         }
 
+        public bool IsFavorite
+        {
+            get { return baseItem.IsFavorite; }
+            set
+            {
+                if (baseItem.IsFavorite != value)
+                {
+                    baseItem.IsFavorite = value;
+                    Application.CurrentInstance.ClearFavorites();
+                    FirePropertyChanged("IsFavorite");
+                }
+            }
+        }
+
         // having this in Item and not in Folder helps us avoid lots of messy mcml 
         public virtual bool ShowNewestItems
         {
@@ -587,6 +601,11 @@ namespace MediaBrowser.Library
                 }
                 return count;
             }
+        }
+
+        public void ToggleFavorite()
+        {
+            IsFavorite = !IsFavorite;
         }
 
         public void ToggleWatched()

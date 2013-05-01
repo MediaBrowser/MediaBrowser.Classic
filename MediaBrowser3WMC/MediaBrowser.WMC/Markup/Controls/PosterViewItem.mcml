@@ -209,6 +209,7 @@
 			<Binding Source="[ImageSize.Value]" Target="[ConstraintPanel.MaximumSize]" />
 			<Binding Source="[ImageSize.Value]" Target="[BelowLabelPanel.MaximumSize]" />
 			<Binding Source="[ImageSize.Value]" Target="[ConstraintPanel.MinimumSize]" />
+      <Binding Source="[Item.IsFavorite]" Target="[FavIndicator.Visible]" />
       <Binding Source="[Item.IsHD]" Target="[HDIndicator.Visible]"  ConditionLogicalOp="And"  >
         <Conditions>
           <Equality Source="[Application.Config.ShowHDIndicatorOnPosters]" Value="true" />
@@ -308,6 +309,18 @@
 												</LayoutInput>
 												<Children>
 													<Graphic Name="HDImage" Content="image://i:HDLogo" Margins="0,0,5,5" MaximumSize="48,35" MaintainAspectRatio="true">
+														<LayoutInput>
+															<AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+														</LayoutInput>
+													</Graphic>
+												</Children>
+											</Panel>
+                      <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="FavIndicator">
+												<LayoutInput>
+													<AnchorLayoutInput Horizontal="Near" Vertical="Far"/>
+												</LayoutInput>
+												<Children>
+													<Graphic Name="FavImage" Content="image://i:Heart" Margins="0,0,5,5" MaximumSize="48,35" MaintainAspectRatio="true">
 														<LayoutInput>
 															<AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
 														</LayoutInput>

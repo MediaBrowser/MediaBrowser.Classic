@@ -424,6 +424,20 @@ namespace MediaBrowser
             }
         }
 
+        public FavoritesCollectionFolder FavoritesFolder
+        {
+            get { return Kernel.Instance.RootFolder.Children.OfType<FavoritesCollectionFolder>().FirstOrDefault(); }
+        }
+
+        public void ClearFavorites()
+        {
+            if (FavoritesFolder != null)
+            {
+                FavoritesFolder.Clear();
+            }
+            
+        }
+
         private Item currentItem;
 
         public Item CurrentItem
