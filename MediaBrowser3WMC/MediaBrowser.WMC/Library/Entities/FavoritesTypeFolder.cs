@@ -36,6 +36,18 @@ namespace MediaBrowser.Library.Entities
             OnChildrenChanged(null);
         }
 
+        public override bool IsFavorite
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                // do nothing
+            }
+        }
+
         public override BaseItem ReLoad()
         {
             return new FavoritesTypeFolder(OurTypes, DisplayType);
