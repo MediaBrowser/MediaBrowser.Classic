@@ -33,7 +33,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return base.ActualChildren.Concat(virtualChildren).ToList();
+                return base.ActualChildren.Concat(virtualChildren).OrderBy(i => i.SortName).ToList();
             }
         }
 
