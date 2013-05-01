@@ -68,7 +68,7 @@ namespace MediaBrowser.Library {
          * This should be set to "R" (or "SPn") with each official release and then immediately changed back to "R+" (or "SPn+")
          * so future trunk builds will indicate properly.
          * */
-        private const string versionExtension = "A4-30.3";
+        private const string versionExtension = "A5-1.1";
 
         public const string MBSERVICE_MUTEX_ID = "Global\\{E155D5F4-0DDA-47bb-9392-D407018D24B1}";
         public const string MBCLIENT_MUTEX_ID = "Global\\{9F043CB3-EC8E-41bf-9579-81D5F6E641B9}";
