@@ -158,6 +158,9 @@ namespace MediaBrowser
         [Comment(@"Show collection of items marked as favorites.")]
         public bool ShowFavoritesCollection = true;
         [Group("Display")]
+        [Comment(@"Name of favorite collection folder.")]
+        public string FavoriteFolderName = "Favorites";
+        [Group("Display")]
         [Comment(@"Scale factor to account for monitor over/underscan. Format: 0,0,0.")]
         public Vector3 OverScanScaling = new Vector3() {X=1, Y=1, Z=1};
         [Group("Display")]

@@ -19,7 +19,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return "Favorites";
+                return Kernel.Instance.ConfigData.FavoriteFolderName;
             }
             set
             {

@@ -88,18 +88,17 @@
                                 <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Left" Margin="179,142,0,0" Name="btnSSTimeDn" VerticalAlignment="Top" Width="18" Click="btnSSTimeDn_Click" />
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,238.38,0,0" Name="groupBox2" Width="270" Height="197" VerticalAlignment="Top">
+                        <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,238.38,0,0" Name="groupBox2" Width="270" Height="187" VerticalAlignment="Top">
                             <Grid>
                                 <CheckBox Margin="10,7.38,10,0" Name="cbxOptionUnwatchedCount" Content="Show Unplayed Count" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedCount_Click" ToolTip="Show unplayed counter on top of poster art" />
                                 <CheckBox Margin="10,29,10,0" Name="cbxOptionUnwatchedOnFolder" Content="Played Indicator on Folders" Click="cbxOptionUnwatchedOnFolder_Click" ToolTip="Display indicator for previously played folders" Height="20.38" VerticalAlignment="Top" />
                                 <CheckBox Margin="10,51,10,0" Name="cbxOptionUnwatchedOnVideo" Content="Played Indicator on Items" Click="cbxOptionUnwatchedOnVideo_Click" ToolTip="Display indicator for previously played items" Height="22.38" VerticalAlignment="Top" />
                                 <CheckBox Margin="10,71.38,10,0" Name="cbxOptionUnwatchedDetailView" Content="Played Indicator in Detail View" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedDetailView_Click" ToolTip="Display indicator in detail view for previously played items" />
                                 <CheckBox Margin="10,92.38,10,0" Name="cbxOptionDefaultToUnwatched" Content="Default to First Unplayed Item" Click="cbxOptionDefaultToUnwatched_Click" Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
-                                <Label Content="Recent Item Group Min" Height="28" HorizontalAlignment="Left" Margin="10,141,0,0" Name="label15" VerticalAlignment="Top" Width="163" ToolTip="The number of like items in a recent list to cause these items to be grouped into a parent folder (e.g. Episodes into Series)" />
-                                <Label Content="2" Height="28" HorizontalAlignment="Right" Margin="0,0,52,2" Name="lblRecentItemCollapse" VerticalAlignment="Bottom" Width="35" />
-                                <Button Content="+" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" Margin="0,0,16,5" Name="btnRICUp" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="18" Click="btnRICUp_Click" />
-                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Right" Margin="0,146,35,0" Name="btnRICDn" VerticalAlignment="Top" Width="18" Click="btnRICDn_Click" />
-                                <CheckBox Margin="10,113.38,10,0" x:Name="cbxOptionShowFavorites" Content="Show Favorites Collection" Click="CbxOptionShowFavorites_OnClick"  Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
+                                <Label Content="Recent Item Group Min" Height="28" HorizontalAlignment="Left" Margin="10,126,0,0" Name="label15" VerticalAlignment="Top" Width="163" ToolTip="The number of like items in a recent list to cause these items to be grouped into a parent folder (e.g. Episodes into Series)" />
+                                <Label Content="2" Height="28" HorizontalAlignment="Right" Margin="0,0,52,7" Name="lblRecentItemCollapse" VerticalAlignment="Bottom" Width="35" />
+                                <Button Content="+" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" Margin="0,0,16,10" Name="btnRICUp" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="18" Click="btnRICUp_Click" />
+                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Right" Margin="0,131,35,0" Name="btnRICDn" VerticalAlignment="Top" Width="18" Click="btnRICDn_Click" />
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Theme Settings" Margin="300,35,0,0" HorizontalAlignment="Left" Name="groupBox3" Height="125" Width="430" VerticalAlignment="Top">
@@ -113,7 +112,7 @@
                                 <CheckBox Margin="10,76,10,0" Name="cbxOptionTransparent" ToolTip="Enable transparent background" Click="cbxOptionTransparent_Click" Height="22" VerticalAlignment="Top">Show Theme Background</CheckBox>
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="Enhanced Home Screen" HorizontalAlignment="Left" Margin="300,165,0,0" VerticalAlignment="Top" Height="125" Name="groupBox4" Width="430">
+                        <GroupBox Header="Enhanced Home Screen" HorizontalAlignment="Left" Margin="300,165,0,0" VerticalAlignment="Top" Height="202" Name="groupBox4" Width="430">
                             <Grid>
                                 <CheckBox Height="22" Margin="10,10,0,0" Name="cbxRootPage" ToolTip="Enable the enhanced home screen" VerticalAlignment="Top" Click="cbxRootPage_Click">Enable Enhanced Home Screen</CheckBox>
                                 <Grid Name="WeatherGrid">
@@ -125,6 +124,9 @@
                                     <TextBox Margin="10,60,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Width="130" Name="tbxWeatherID" />
                                     <ComboBox Margin="150,60,0,0" Name="ddlWeatherUnits" ToolTip="Change the color scheme of a theme" Height="28" Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" />
                                     <Button Height="28" Margin="290,60,10,10" Name="btnWeatherID" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnWeatherID_Click" Width="55">Save</Button>
+                                    <CheckBox Margin="10,108,196,0" x:Name="cbxOptionShowFavorites" Content="Show Favorites Collection As" Click="CbxOptionShowFavorites_OnClick"  Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
+                                    <TextBox Margin="10,135,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Width="270" x:Name="tbxFavoriteName" />
+                                    <Button Height="28" Margin="290,135,0,0" x:Name="btnFavoritesName" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnFavoritesName_OnClick"  Width="55" Content="Save"/>
                                 </Grid>
                                 <TextBlock Margin="350,60,0,0" TextAlignment="Right" Padding="5,5,5,5" Height="28" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="55">
                                     <Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1368/how-do-i-show-the-weather-on-supported-themes" RequestNavigate="HandleRequestNavigate">Help?</Hyperlink>

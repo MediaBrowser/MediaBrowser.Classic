@@ -257,6 +257,8 @@ namespace Configurator
             cbxOptionHideFrame.IsChecked = config.HideFocusFrame;
             cbxOptionAutoEnter.IsChecked = config.AutoEnterSingleDirs;
             cbxScreenSaver.IsChecked = config.EnableScreenSaver;
+            cbxOptionShowFavorites.IsChecked = config.ShowFavoritesCollection;
+            tbxFavoriteName.Text = config.FavoriteFolderName;
             lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString()+" Mins";
             //cbxSendStats.IsChecked = config.SendStats;
 
@@ -1163,6 +1165,11 @@ namespace Configurator
 
         }
 
+        private void BtnFavoritesName_OnClick(object sender, RoutedEventArgs e)
+        {
+            config.FavoriteFolderName = tbxFavoriteName.Text;
+            config.Save();
+        }
     }
 
     #region FormatParser Class
