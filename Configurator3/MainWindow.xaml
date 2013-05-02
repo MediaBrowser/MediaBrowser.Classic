@@ -266,9 +266,9 @@
 
                         <GroupBox Header="About Media Browser" Margin="220,265,20,20" Height="142" FontSize="14" VerticalAlignment="Top">
                         <Grid>
-                            <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="146" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser3.com</Hyperlink></TextBlock>
+                            <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser3.com</Hyperlink></TextBlock>
                             <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
-                                    <TextBlock Margin="301.045,0,0,37.38" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Left" Width="173" TextWrapping="Wrap">Server side configuration is done via the  
+                                    <TextBlock Margin="282.045,0,0,42.591" VerticalAlignment="Bottom" Height="44.789" HorizontalAlignment="Left" Width="198.955" TextWrapping="Wrap">Server side configuration is done via the  
                                         <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleDashboardNavigate">
                                             Server Dashboard
                                         </Hyperlink>
