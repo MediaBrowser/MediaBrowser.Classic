@@ -30,8 +30,11 @@ namespace MediaBrowser.Library.Entities
             //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
             {
                 //Logger.ReportInfo("Getting Children for: "+this.Name);
-                var children = Kernel.Instance.LocalRepo.RetrieveChildren(Id);
-                items = children != null ? children.ToList() : AllowRemoteChildren ? GetRemoteChildren() : new List<BaseItem>();
+                var children = (Kernel.Instance.LocalRepo.RetrieveChildren(Id) ?? new List<BaseItem>()).ToList();
+                var currentChildIds = children.Select(i => i.Id.ToString());
+                var allChildIds = Kernel.Instance.LocalRepo.RetrieveChildList(Id);
+                var neededIds = allChildIds.Except(currentChildIds);
+                items = AllowRemoteChildren ? children.Concat(GetRemoteChildren(neededIds.ToArray())).ToList() : children;
             }
             return items;
         }
@@ -40,10 +43,14 @@ namespace MediaBrowser.Library.Entities
         /// Get the list of children locally but then the items themselves from the server
         /// </summary>
         /// <returns></returns>
-        protected List<BaseItem> GetRemoteChildren()
+        protected List<BaseItem> GetRemoteChildren(string[] ids)
         {
-            Logging.Logger.ReportVerbose("Getting children remotely for {0}", Name);
-            return Kernel.Instance.MB3ApiRepository.RetrieveSpecificItems(Kernel.Instance.LocalRepo.RetrieveChildList(Id).ToArray()).ToList();
+            if (ids.Any())
+            {
+                Logger.ReportVerbose("Getting children remotely for {0}", Name);
+                return Kernel.Instance.MB3ApiRepository.RetrieveSpecificItems(ids).ToList();
+            }
+            return new List<BaseItem>();
         }
 
         /// <summary>

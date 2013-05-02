@@ -23,12 +23,18 @@ namespace MediaBrowser
     public class MyAddIn : IAddInModule, IAddInEntryPoint
     {
 
+        protected Application App;
+
         public void Initialize(Dictionary<string, object> appInfo, Dictionary<string, object> entryPointInfo)
         {
         }
 
         public void Uninitialize()
         {
+            if (App != null)
+            {
+                App.Dispose();
+            }
         }
 
         public void Launch(AddInHost host)
@@ -89,9 +95,9 @@ namespace MediaBrowser
                         }
                         using (new Util.Profiler("Application Init"))
                         {
-                            var app = new Application(new MyHistoryOrientedPageSession(), host);
+                            App = new Application(new MyHistoryOrientedPageSession(), host);
 
-                            app.Init();
+                            App.Init();
                         }
 
                         Kernel.Instance.OnApplicationInitialized();
@@ -141,7 +147,7 @@ namespace MediaBrowser
             return config;
         }
 
-
+        
 
     }
 }

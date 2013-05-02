@@ -33,8 +33,19 @@ using Microsoft.MediaCenter.UI;
 namespace MediaBrowser
 {
 
-    public class Application : ModelItem, IDisposable
+    public class Application : ModelItem
     {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // reset config stuff
+                Kernel.Instance.ConfigData.InvalidateRecentLists = false;
+                Kernel.Instance.ConfigData.Save();
+            }
+            base.Dispose(disposing);
+        }
+
         public Config Config
         {
             get

@@ -209,7 +209,7 @@ namespace MediaBrowser.Library.Entities {
                 if (quickListFolder == null)
                 {
                     string recentItemOption = Kernel.Instance.ConfigData.RecentItemOption;
-                    if (recentItemOption == "watched")
+                    if (recentItemOption == "watched" || Kernel.Instance.ConfigData.InvalidateRecentLists)
                         reBuildQuickList = true; //have to re-build these each time
 
                     Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));

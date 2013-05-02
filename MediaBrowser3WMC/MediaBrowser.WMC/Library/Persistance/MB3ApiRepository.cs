@@ -388,6 +388,7 @@ namespace MediaBrowser.Library.Persistance
                 if (episode != null)
                 {
                     episode.EpisodeNumber = (mb3Item.IndexNumber ?? 0).ToString("0000");
+                    episode.SeriesId = mb3Item.SeriesId;
                 }
 
                 var season = item as Season;
@@ -450,7 +451,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
-                                                            ItemFields.MediaStreams,
+                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)

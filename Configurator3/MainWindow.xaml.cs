@@ -1014,6 +1014,7 @@ namespace Configurator
         private void btnRICUp_Click(object sender, RoutedEventArgs e)
         {
             config.RecentItemCollapseThresh++;
+            config.InvalidateRecentLists = true;
             config.Save();
             lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
         }
@@ -1022,6 +1023,7 @@ namespace Configurator
         {
             config.RecentItemCollapseThresh--;
             if (config.RecentItemCollapseThresh < 1) config.RecentItemCollapseThresh = 1;
+            config.InvalidateRecentLists = true;
             config.Save();
             lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
         }

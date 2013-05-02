@@ -115,6 +115,8 @@ namespace MediaBrowser
             set { if (this.keyFile.SupporterKey != value) { this.keyFile.SupporterKey = value; this.keyFile.Save(); } }
         }
 
+        [Hidden] 
+        public bool InvalidateRecentLists = false;
         [Dangerous]
         [Comment(@"The version is used to determine if this is the first time a particular version has been run")]
         public string MBVersion = "1.0.0.0"; //default value will tell us if it is a brand new install

@@ -18,6 +18,8 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string FirstAired { get; set; }
 
+        public string SeriesId { get; set; }
+
         public override string SortName {
             get {
                 if (EpisodeNumber != null && EpisodeNumber.Length < 3) {
@@ -120,12 +122,9 @@ namespace MediaBrowser.Library.Entities {
         Series seriesItem;
         public Series RetrieveSeries()
         {
-            if (seriesItem == null && !string.IsNullOrEmpty(this.Path))
+            if (seriesItem == null && !string.IsNullOrEmpty(this.SeriesId))
             {
-                string parentPath = System.IO.Path.GetDirectoryName(this.Path);
-                string grandparentPath = System.IO.Path.GetDirectoryName(parentPath); //parent of parent is series
-                Guid seriesId = (typeof(Series).FullName + (grandparentPath != null ? grandparentPath : parentPath).ToLower()).GetMD5();
-                seriesItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seriesId) as Series;
+                seriesItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(SeriesId)) as Series;
             }
             return seriesItem;
         }
