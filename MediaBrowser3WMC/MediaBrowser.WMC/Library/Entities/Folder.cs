@@ -115,7 +115,7 @@ namespace MediaBrowser.Library.Entities {
             return Application.CurrentInstance.DisplayPopupPlay = true;
         }
 
-        public void RetrieveChildren()
+        public virtual void RetrieveChildren()
         {
             children = new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
         }
