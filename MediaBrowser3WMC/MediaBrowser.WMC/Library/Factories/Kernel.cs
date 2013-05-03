@@ -597,7 +597,7 @@ namespace MediaBrowser.Library {
         {
             //save the items added by plugins before we re-load
             var virtualItems = new List<BaseItem>();
-            virtualItems.AddRange(kernel.RootFolder.VirtualChildren);
+            virtualItems.AddRange(kernel.RootFolder.VirtualChildren.Where(i => !(i is FavoritesCollectionFolder)));
 
             //and re-load the repo
             MB3ApiRepository = new MB3ApiRepository();
