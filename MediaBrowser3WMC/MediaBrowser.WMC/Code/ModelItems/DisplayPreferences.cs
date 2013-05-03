@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Extensions;
 
 namespace MediaBrowser.Library
 {
@@ -64,7 +65,6 @@ namespace MediaBrowser.Library
 
             verticalScroll = new BooleanChoice {Value = folder.DisplayPreferences != null && folder.DisplayPreferences.ScrollDirection == ScrollDirection.Vertical};
 
-            useBanner = new BooleanChoice {Value = false};
 
             useCoverflow = new BooleanChoice {Value = false};
 
@@ -77,6 +77,7 @@ namespace MediaBrowser.Library
             
                 customParms = folder.DisplayPreferences.CustomPrefs ?? new Dictionary<string, string>();
                 thumbConstraint = new SizeRef(new Size(width, height));
+                useBanner = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBUseBanner", "false") == "true")};
             }
 
             try
@@ -367,6 +368,7 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
             Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
             Folder.DisplayPreferences.ScrollDirection = this.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+            this.CustomParms["MBUseBanner"] = UseBanner.Value ? "true" : "false";
             Folder.DisplayPreferences.CustomPrefs = this.CustomParms;
 
             Folder.SaveDisplayPrefs(this);

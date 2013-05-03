@@ -294,6 +294,14 @@ namespace MediaBrowser.Library.Persistance
                                 item.ArtImagePath = url;
                                 break;
 
+                            case ImageType.Banner:
+                                item.BannerImagePath = url;
+                                break;
+
+                            case ImageType.Thumb:
+                                item.ThumbnailImagePath = url;
+                                break;
+
                         }
                     }
                 }
