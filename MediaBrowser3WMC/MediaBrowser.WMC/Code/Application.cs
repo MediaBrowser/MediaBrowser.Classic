@@ -897,57 +897,35 @@ namespace MediaBrowser
             //Helper.Ping("http://www.ebrsoft.com/software/mb/plugins/ping.php?product=MBBeta&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress() + "&key=" + info);
             try
             {
-                if (Config.IsFirstRun)
+                //Check to see if this is the first time this version is run
+                string currentVersion = Kernel.Instance.Version.ToString();
+                if (Config.MBVersion != currentVersion)
                 {
-                    OpenConfiguration(false);
-                    MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-                    ev.Dialog(CurrentInstance.StringData("FirstTimeDial"), CurrentInstance.StringData("FirstTimeCapDial"), DialogButtons.Ok, 60, true);
+                    //first time with this version - run routine
+                    Logger.ReportInfo("First run for version " + currentVersion);
+                    bool okToRun = FirstRunForVersion(currentVersion);
+                    //and update
+                    Config.MBVersion = currentVersion;
+                    if (!okToRun)
+                    {
+                        Logger.ReportInfo("Closing MB to allow new version migration...");
+                        this.Close();
+                    }
+                }
+                ShowNowPlaying = IsPlaying || IsExternalWmcApplicationPlaying;
+
+                // setup image to use in external splash screen
+                string splashFilename = Path.Combine(Path.Combine(ApplicationPaths.AppIBNPath, "General"), "splash.png");
+                if (File.Exists(splashFilename))
+                {
+                    ExtSplashBmp = new System.Drawing.Bitmap(splashFilename);
                 }
                 else
                 {
-                    //Check to see if this is the first time this version is run
-                    string currentVersion = Kernel.Instance.Version.ToString();
-                    if (Config.MBVersion != currentVersion)
-                    {
-                        //first time with this version - run routine
-                        Logger.ReportInfo("First run for version " + currentVersion);
-                        bool okToRun = FirstRunForVersion(currentVersion);
-                        //and update
-                        Config.MBVersion = currentVersion;
-                        if (!okToRun)
-                        {
-                            Logger.ReportInfo("Closing MB to allow new version migration...");
-                            this.Close();
-                        }
-                    }
-                    // We check config here instead of in the Updater class because the Config class 
-                    // CANNOT be instantiated outside of the application thread.
-                    if (Config.EnableUpdates)
-                    {
-                        Updater update = new Updater(this);
-                        
-                        Async.Queue(Async.STARTUP_QUEUE, update.CheckForUpdate, 40000);
-                        Async.Queue(Async.STARTUP_QUEUE, () =>
-                        {
-                            PluginUpdatesAvailable = update.PluginUpdatesAvailable();
-                        }, 60000);
-                    }
-
-                    ShowNowPlaying = IsPlaying || IsExternalWmcApplicationPlaying;
-
-                    // setup image to use in external splash screen
-                    string splashFilename = Path.Combine(Path.Combine(ApplicationPaths.AppIBNPath,"General"),"splash.png");
-                    if (File.Exists(splashFilename))
-                    {
-                        ExtSplashBmp = new System.Drawing.Bitmap(splashFilename);
-                    }
-                    else
-                    {
-                        ExtSplashBmp = new System.Drawing.Bitmap(Resources.mblogo1000);
-                    }
-
-                    Login();
+                    ExtSplashBmp = new System.Drawing.Bitmap(Resources.mblogo1000);
                 }
+
+                Login();
             }
             catch (Exception e)
             {
@@ -1086,6 +1064,19 @@ namespace MediaBrowser
                     //        RootFolderModel.Children.Sort(); //make sure sort is right
                     //    }, 2000);
                     //}
+
+                    // We check config here instead of in the Updater class because the Config class 
+                    // CANNOT be instantiated outside of the application thread.
+                    if (Config.EnableUpdates)
+                    {
+                        var update = new Updater(this);
+
+                        Async.Queue(Async.STARTUP_QUEUE, update.CheckForUpdate, 10000);
+                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                        {
+                            PluginUpdatesAvailable = update.PluginUpdatesAvailable();
+                        }, 60000);
+                    }
 
                     Navigate(this.RootFolderModel);
                 }

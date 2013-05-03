@@ -90,12 +90,14 @@ namespace MediaBrowser.Util
                         && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
                     if (newVersion != null)
                     {
+                        Logger.ReportVerbose("New version {0} found.",newVersion.versionStr);
                         if (Application.CurrentInstance.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
                             Application.CurrentInstance.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
                             //Kick off the installer and shut us down
                             try
                             {
+                                Logger.ReportVerbose("Updating to version {0}.",newVersion.versionStr);
                                 //Minimize WMC
                                 var mceWnd = FindWindow(null, "Windows Media Center");
                                 var wp = new WINDOWPLACEMENT();
@@ -115,8 +117,13 @@ namespace MediaBrowser.Util
                             }
                             catch (Exception e)
                             {
+                                Logger.ReportException("Error attempting to update.",e);
                                 Async.Queue("error", () => Application.CurrentInstance.MessageBox("Error attempting to update.  Please update manually."));
                             }
+                        }
+                        else
+                        {
+                            Logger.ReportVerbose("Not updating.  User refused or timed out.");
                         }
 
                     }
