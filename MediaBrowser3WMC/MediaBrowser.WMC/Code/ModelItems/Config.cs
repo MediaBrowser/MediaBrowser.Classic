@@ -762,20 +762,17 @@ namespace MediaBrowser
         
         public int FullRefreshInterval
         {
-            get { return Kernel.Instance.ServiceConfigData.FullRefreshInterval; }
-            //set { if (this.data.FullRefreshInterval != value) { this.data.FullRefreshInterval = value; Save(); FirePropertyChanged("FullRefreshInterval"); } }
+            get { return 100; }
         }
 
         public bool ServiceRefreshFailed
         {
-            get { return Kernel.Instance.ServiceConfigData.RefreshFailed; }
-            //set { if (this.data.FullRefreshInterval != value) { this.data.FullRefreshInterval = value; Save(); FirePropertyChanged("FullRefreshInterval"); } }
+            get { return false; }
         }
 
         public DateTime LastFullRefresh
         {
-            get { return Kernel.Instance.ServiceConfigData.LastFullRefresh;  }
-            //set { if (this.data.LastFullRefresh != value) { this.data.LastFullRefresh = value; Save(); FirePropertyChanged("LastFullRefresh"); } }
+            get { return DateTime.MaxValue;  }
         }
 
         //public int MinResumeDuration

@@ -36,11 +36,9 @@ namespace MediaBrowser.Library.Configuration {
                     { "AppUserSettingsPath", "AppConfigPath",    "Cache"           },
                     { "AutoPlaylistPath",    "AppCachePath",     "autoPlaylists" }, 
                     { "AppImagePath",        "AppConfigPath",    "ImageCache"},
-                    { "AppInitialDirPath",   "AppConfigPath",    "StartupFolder" },
                     { "AppPluginPath",       "AppConfigPath",    "Plugins" },
                     { "AppRSSPath",          "AppConfigPath",    "RSS"},
                     { "AppLogPath",          "AppConfigPath",    "Logs"},
-                    { "DefaultPodcastPath", "AppConfigPath", "Podcasts"    },
                     { "AppLocalizationPath","AppConfigPath", "Localization" },
                     { "PluginConfigPath", "AppPluginPath", "Configurations"},
                     { "CustomImagePath", "AppImagePath", "Custom"}
@@ -73,7 +71,7 @@ namespace MediaBrowser.Library.Configuration {
 
         public static string DefaultPodcastPath {
             get {
-                return pathMap["DefaultPodcastPath"];
+                return "";
             } 
         } 
 
@@ -97,7 +95,7 @@ namespace MediaBrowser.Library.Configuration {
 
         public static string AppInitialDirPath {
             get {
-                return pathMap["AppInitialDirPath"];
+                return "";
             }
         }
 
@@ -206,15 +204,10 @@ namespace MediaBrowser.Library.Configuration {
             }
         }
 
-        private static string _ibnPath;
         public static string AppIBNPath
         {
             get {
-                if (_ibnPath == null)
-                {
-                    _ibnPath = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
-                }
-                return _ibnPath;
+                return "";
             }
         }
 

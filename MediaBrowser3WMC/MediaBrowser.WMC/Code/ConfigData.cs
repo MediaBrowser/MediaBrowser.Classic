@@ -92,27 +92,12 @@ namespace MediaBrowser
     [Serializable]
     public class ConfigData
     {
-        //moved keyfile re-routing to here so can be accessed from service (outside MC) -ebr
-        [SkipField]
-        private KeyFile _keyFile;
-        private KeyFile keyFile //only want to create this file if we try to access it
-        {
-            get
-            {
-                if (_keyFile == null)
-                {
-                    _keyFile = new KeyFile(Path.Combine(ApplicationPaths.AppConfigPath, "MB.lic"));
-                }
-                return _keyFile;
-            }
-        }
-
-        //this is re-routed to a separate file
+        //this is now on server
         [SkipField]
         public string SupporterKey
         {
-            get { return this.keyFile.SupporterKey; }
-            set { if (this.keyFile.SupporterKey != value) { this.keyFile.SupporterKey = value; this.keyFile.Save(); } }
+            get { return ""; }
+            set {  }
         }
 
         [Hidden] 
