@@ -8,7 +8,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class FavoritesTypeFolder : LocalCacheFolder
+    public class FavoritesTypeFolder : LocalIbnSourcedCacheFolder
     {
         protected List<BaseItem> OurChildren;
         protected string[] OurTypes = new string[] {};
@@ -36,12 +36,11 @@ namespace MediaBrowser.Library.Entities
             OnChildrenChanged(null);
         }
 
-        public override string PrimaryImagePath
+        protected override string DefaultPrimaryImagePath
         {
-            get { return base.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/Fav" + DisplayType; }
-            set
+            get
             {
-                base.PrimaryImagePath = value;
+                return "resx://MediaBrowser/MediaBrowser.Resources/Fav" + DisplayType;
             }
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class FavoritesCollectionFolder : LocalCacheFolder
+    public class FavoritesCollectionFolder : LocalIbnSourcedCacheFolder
     {
         public override bool AllowRemoteChildren
         {
@@ -27,12 +27,11 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        public override string PrimaryImagePath
+        protected override string DefaultPrimaryImagePath
         {
-            get { return base.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/Favorites"; }
-            set
+            get
             {
-                base.PrimaryImagePath = value;
+                return "resx://MediaBrowser/MediaBrowser.Resources/Favorites";
             }
         }
 
