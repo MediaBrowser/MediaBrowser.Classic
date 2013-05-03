@@ -61,8 +61,6 @@ namespace MediaBrowser.Library
             this.indexDict = folder.IndexByOptions;
             this.indexBy.Options = folder.IndexByOptions.Keys.ToArray();
  
-            showLabels = new BooleanChoice {Value = Config.Instance.DefaultShowLabels};
-
             verticalScroll = new BooleanChoice {Value = folder.DisplayPreferences != null && folder.DisplayPreferences.ScrollDirection == ScrollDirection.Vertical};
 
 
@@ -77,7 +75,8 @@ namespace MediaBrowser.Library
             
                 customParms = folder.DisplayPreferences.CustomPrefs ?? new Dictionary<string, string>();
                 thumbConstraint = new SizeRef(new Size(width, height));
-                useBanner = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBUseBanner", "false") == "true")};
+                useBanner = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBCUseBanner", "false") == "true")};
+                showLabels = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBCShowLabels", "false") == "true")};
             }
 
             try
@@ -368,7 +367,8 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
             Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
             Folder.DisplayPreferences.ScrollDirection = this.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
-            this.CustomParms["MBUseBanner"] = UseBanner.Value ? "true" : "false";
+            this.CustomParms["MBCUseBanner"] = UseBanner.Value ? "true" : "false";
+            this.CustomParms["MBCShowLabels"] = ShowLabels.Value ? "true" : "false";
             Folder.DisplayPreferences.CustomPrefs = this.CustomParms;
 
             Folder.SaveDisplayPrefs(this);
