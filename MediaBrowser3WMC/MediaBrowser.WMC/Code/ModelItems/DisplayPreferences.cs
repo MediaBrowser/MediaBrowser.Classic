@@ -63,6 +63,9 @@ namespace MediaBrowser.Library
  
             verticalScroll = new BooleanChoice {Value = folder.DisplayPreferences != null && folder.DisplayPreferences.ScrollDirection == ScrollDirection.Vertical};
 
+            useBanner = new BooleanChoice();
+
+            showLabels = new BooleanChoice();
 
             useCoverflow = new BooleanChoice {Value = false};
 
@@ -75,8 +78,8 @@ namespace MediaBrowser.Library
             
                 customParms = folder.DisplayPreferences.CustomPrefs ?? new Dictionary<string, string>();
                 thumbConstraint = new SizeRef(new Size(width, height));
-                useBanner = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBCUseBanner", "false") == "true")};
-                showLabels = new BooleanChoice {Value = (customParms.GetValueOrDefault("MBCShowLabels", "false") == "true")};
+                useBanner.Value = (customParms.GetValueOrDefault("MBCUseBanner", "false") == "true");
+                showLabels.Value = (customParms.GetValueOrDefault("MBCShowLabels", "false") == "true");
             }
 
             try
