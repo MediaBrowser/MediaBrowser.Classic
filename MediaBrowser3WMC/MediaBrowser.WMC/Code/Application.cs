@@ -39,9 +39,10 @@ namespace MediaBrowser
         {
             if (disposing)
             {
-                // reset config stuff
-                Kernel.Instance.ConfigData.InvalidateRecentLists = false;
-                Kernel.Instance.ConfigData.Save();
+                // reset config stuff - be sure and grab the current config file
+                var config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+                config.InvalidateRecentLists = false;
+                config.Save();
             }
             base.Dispose(disposing);
         }
