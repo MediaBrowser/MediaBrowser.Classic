@@ -589,6 +589,73 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetGeneralIbnImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "Images/General/" + name + "/" + options.ImageType;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="theme"></param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetMediaInfoImageUrl(string name, string theme, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            if (string.IsNullOrEmpty(theme))
+            {
+                throw new ArgumentNullException("theme");
+            }
+
+            var url = "Images/MediaInfo/" + theme + "/" + name;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="theme"></param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetRatingsImageUrl(string name, string theme, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            if (string.IsNullOrEmpty(theme))
+            {
+                throw new ArgumentNullException("theme");
+            }
+
+            var url = "Images/Ratings/" + theme + "/" + name;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
         /// This is a helper to get a list of backdrop url's from a given ApiBaseItemWrapper. If the actual item does not have any backdrops it will return backdrops from the first parent that does.
         /// </summary>
         /// <param name="item">A given item.</param>

@@ -11,6 +11,7 @@ using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.ImageManagement;
+using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter.UI;
 using Microsoft.Win32;
 
@@ -535,22 +536,18 @@ namespace MediaBrowser.LibraryManagement
             string path = CustomImageCache.Instance.GetImagePath(id);
             if (path != null) return new Image(path); //was already cached
 
-            //not cached - look in IBN - this is inefficient but only the first time as we will pull from cache next
-            string baseLocation = ApplicationPaths.AppIBNPath + "\\MediaInfo";
+            //not cached - get it from the server
+            path = Kernel.ApiClient.GetMediaInfoImageUrl(name, Config.Instance.ViewTheme, new ImageOptions());
+            var serverImage = new RemoteImage { Path = path};
 
-            //we'll look first in a theme-specific folder if it exists
-            string ibnLocation = Path.Combine(baseLocation, Config.Instance.ViewTheme);
-            if (!Directory.Exists(ibnLocation)) //no theme-specific one - use default
-                ibnLocation = Path.Combine(baseLocation, "all"); //don't use 'default' cuz that's the name of a theme...
-
-            string fileName = Path.Combine(ibnLocation, RemoveInvalidFileChars(name) + ".png");
-            if (File.Exists(fileName))
+            try
             {
-                Logger.ReportVerbose("===CustomImage " + fileName + " being cached on first access.  Shouldn't have to do this again...");
+                var image = serverImage.DownloadImage();
+                Logger.ReportVerbose("===CustomImage " + path + " being cached on first access.  Shouldn't have to do this again...");
                 //cache it and return resulting cached image
-                return new Image("file://" + CustomImageCache.Instance.CacheImage(id, System.Drawing.Image.FromFile(fileName)));
+                return new Image("file://" + CustomImageCache.Instance.CacheImage(id, image));
             }
-            else
+            catch (WebException)
             {
                 //not there, get it from resources in default or the current theme if it exists
                 string resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
