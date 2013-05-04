@@ -217,6 +217,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     video.MediaType = MediaTypeResolver.DetermineType(video.Path);
                     video.ContainsTrailers = mb3Item.HasTrailer;
+                    video.VideoFormat = mb3Item.VideoFormat.ToString();
 
                     if (mb3Item.MediaStreams != null)
                     {
