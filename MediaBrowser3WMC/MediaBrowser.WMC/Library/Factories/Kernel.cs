@@ -130,11 +130,6 @@ namespace MediaBrowser.Library {
         public static void Init(KernelLoadDirective directives, ConfigData config) {
             lock (sync) {
 
-                // we must set up some paths as well as a side effect (should be refactored) 
-                //if (!string.IsNullOrEmpty(config.UserSettingsPath) && Directory.Exists(config.UserSettingsPath)) {
-                //    ApplicationPaths.SetUserSettingsPath(config.UserSettingsPath.Trim());
-                //}
-
                 // Its critical to have the logger initialized early so initialization 
                 //   routines can use the right logger.
                 if (Logger.LoggerInstance != null) {
@@ -143,93 +138,10 @@ namespace MediaBrowser.Library {
                     
                 Logger.LoggerInstance = GetDefaultLogger(config);
                 
-                var kernel = GetDefaultKernel(config, directives);
-                Kernel.Instance = kernel;
+                var defaultKernel = GetDefaultKernel(config, directives);
+                Instance = defaultKernel;
 
-                // setup IBN if not there
-                string ibnLocation = ApplicationPaths.AppIBNPath;
-                if (!Directory.Exists(ibnLocation))
-                {
-                    try
-                    {
-                        Logger.ReportInfo("****Creating IBN...");
-                        Directory.CreateDirectory(ibnLocation);
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Genre"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "People"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Studio"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Year"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "General"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "MediaInfo"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Video"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Movie"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Episode"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Series"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Season"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Folder"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\BoxSet"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Actor"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Genre"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Year"));
-                        Directory.CreateDirectory(Path.Combine(ibnLocation, "Default\\Studio"));
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.ReportException("Unable to create IBN location.", e);
-                    }
-                }
                 
-                //if (LoadContext == MBLoadContext.Core || LoadContext == MBLoadContext.Configurator)
-                //{
-                //    Async.Queue("Start Service", () =>
-                //    {
-                //        //start our service if its not already going
-                //        if (!MBServiceController.IsRunning)
-                //        {
-                //            Logger.ReportInfo("Starting MB Service...");
-                //            MBServiceController.StartService();
-                //        }
-                //    });
-                //}
-                //if (LoadContext == MBLoadContext.Core)
-                //{
-                //    //listen for commands 
-                //    if (!MBClientConnector.StartListening())
-                //    { 
-                //        //we couldn't start our listener - probably another instance going so we shut down
-                //        Logger.ReportInfo("Could not start listener - assuming another instance of MB.  Closing...");
-                //        Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
-                //        return;
-                //    }
-                //    MBServiceController.ConnectToService(); //set up for service to tell us to do things
-                //}
-
-                // create filewatchers for each of our top-level folders (only if we are in MediaCenter, though)
-                bool isMC = AppDomain.CurrentDomain.FriendlyName.Contains("ehExtHost");
-                //if (isMC && config.EnableDirectoryWatchers) //only do this inside of MediaCenter as we don't want to be trying to refresh things if MB isn't actually running
-                //{
-                //    Async.Queue("Create Filewatchers", () =>
-                //    {
-                //        foreach (BaseItem item in kernel.RootFolder.Children)
-                //        {
-                //            Folder folder = item as Folder;
-                //            if (folder != null)
-                //            {
-                //                folder.directoryWatcher = new MBDirectoryWatcher(folder, false);
-                //            }
-                //        }
-
-                //        // create a watcher for the startup folder too - and watch all changes there
-                //        kernel.RootFolder.directoryWatcher = new MBDirectoryWatcher(kernel.RootFolder, true);
-                //    });
-                //}
-
-
-                // add the podcast home
-                //var podcastHome = kernel.GetItem<Folder>(kernel.ConfigData.PodcastHome);
-                //if (podcastHome != null && podcastHome.Children.Count > 0) {
-                //    kernel.RootFolder.AddVirtualChild(podcastHome);
-                //}
             }
         }
 
