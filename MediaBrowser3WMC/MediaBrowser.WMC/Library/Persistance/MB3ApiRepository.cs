@@ -238,7 +238,8 @@ namespace MediaBrowser.Library.Persistance
                                                                          VideoFPS = vidStream != null ? vidStream.AverageFrameRate.ToString() : "",
                                                                          Width = vidStream != null ? vidStream.Width ?? 0 : 0,
                                                                          Height = vidStream != null ? vidStream.Height ?? 0 : 0,
-                                                                         Subtitles = subtStream != null ? subtStream.Language : ""
+                                                                         Subtitles = subtStream != null ? subtStream.Language : "",
+                                                                         RunTime = mb3Item.RunTimeTicks != null ? Convert.ToInt32(mb3Item.RunTimeTicks / 600000000) : 0
                                                                      }
 
                                               };
@@ -258,7 +259,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime = Convert.ToInt32(mb3Item.RunTimeTicks/600000000);
+                    show.RunningTime =  mb3Item.RunTimeTicks != null ? Convert.ToInt32(mb3Item.RunTimeTicks/600000000) : 0;
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
