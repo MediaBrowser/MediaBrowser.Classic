@@ -141,10 +141,15 @@ namespace MediaBrowser.Library.Entities {
         /// </summary>
         public IList<BaseItem> Children {
             get {
+                if (ActualChildren == null)
+                {
+                    Logger.ReportWarning("Actual Children NULL for "+ Name + "/" + Path);
+                    return new List<BaseItem>();
+                }
                 // return a clone
-                IList<BaseItem> visibleChildren;
-                lock (ActualChildren) {
-                    visibleChildren = ActualChildren;
+                lock (ActualChildren)
+                {
+                    IList<BaseItem> visibleChildren = ActualChildren;
                     //return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).Children.Any()).ToList() : visibleChildren.ToList();
                     //removed for now because hid things that shouldn't be -ebr
                     return visibleChildren.ToList();
