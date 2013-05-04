@@ -277,7 +277,7 @@ namespace MediaBrowser.Library.Persistance
                     if (mb3Item.Studios != null)
                     {
                         show.Studios = new List<string>(mb3Item.Studios.Select(s => s.Name));
-                        foreach (var studio in mb3Item.Studios) Studio.AddToCache(studio);
+                        foreach (var studio in mb3Item.Studios.Where(s => s != null)) Studio.AddToCache(studio);
                     }
                 }
 

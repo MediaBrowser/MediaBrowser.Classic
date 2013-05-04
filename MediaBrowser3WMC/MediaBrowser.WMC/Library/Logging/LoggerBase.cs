@@ -32,7 +32,7 @@ namespace MediaBrowser.Library.Logging
 
         public void ReportVerbose(string message, string category)
         {
-            LogMessage(LogSeverity.Verbose, message, category);
+            LogMessage(LogSeverity.Debug, message, category);
         }
 
         public void ReportInfo(string message)
