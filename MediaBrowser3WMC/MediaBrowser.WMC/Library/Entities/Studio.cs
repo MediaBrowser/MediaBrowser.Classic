@@ -13,14 +13,14 @@ using MediaBrowser.Model.Web;
 namespace MediaBrowser.Library.Entities {
     public class Studio : BaseItem {
         protected static Dictionary<string, Studio> StudioCache = new Dictionary<string, Studio>(StringComparer.OrdinalIgnoreCase);
+        protected string ImageTag { get; set; }
 
           public static Guid GetStudioId(string name) {
             return ("studio" + name.Trim()).GetMD5();
         }
 
         public static Studio GetStudio(string name) {
-            //Guid id = GetStudioId(name);
-            return GetOrAdd(name);
+            return StudioCache.GetValueOrDefault(name, new Studio {Name = name});
         }
 
         public Studio() {
@@ -28,34 +28,33 @@ namespace MediaBrowser.Library.Entities {
 
         protected bool ImageLoaded = false;
 
-        protected static Studio GetOrAdd(string name)
+        public static void AddToCache(StudioDto dto)
         {
-            var studio = StudioCache.GetValueOrDefault(name, null) ?? 
-                new Studio
-                    {
-                        Name = name, 
-                        PrimaryImagePath = Kernel.ApiClient.GetImageUrl("/Studios/" + name + "/Images/Primary", new ImageOptions(), new QueryStringDictionary())
-                    };
-
-            StudioCache[name] = studio;
-
-            if (!studio.ImageLoaded)
+            if (!StudioCache.ContainsKey(dto.Name))
             {
-                Async.Queue("studio image load", () =>
-                                                     {
-                                                         studio.ImageLoaded = true;
-                                                         // force the primary image to load if there is one
-                                                         if (studio.PrimaryImage != null) {var ignore = studio.PrimaryImage.GetLocalImagePath();}
-                                                         if (studio.PrimaryImage == null || studio.PrimaryImage.Corrupt)
-                                                         {
-                                                             // didn't have an image - blank out the reference
-                                                             Logger.ReportVerbose("No image for studio {0}",name);
-                                                             studio.PrimaryImagePath = null;
-                                                         }
-                                                     });
+                StudioCache[dto.Name] = new Studio
+                                            {
+                                                Name = dto.Name,
+                                                PrimaryImagePath = dto.HasPrimaryImage ? Kernel.ApiClient.GetImageUrl("/Studios/" + dto.Name + "/Images/Primary", new ImageOptions { Tag = dto.PrimaryImageTag }, new QueryStringDictionary()) : null
+                                            };
             }
+            //if (!studio.ImageLoaded)
+            //{
+            //    Async.Queue("studio image load", () =>
+            //                                         {
+            //                                             studio.ImageLoaded = true;
+            //                                             // force the primary image to load if there is one
+            //                                             if (studio.PrimaryImage != null) {studio.PrimaryImage.GetLocalImagePath();}
+            //                                             if (studio.PrimaryImage == null || studio.PrimaryImage.Corrupt)
+            //                                             {
+            //                                                 // didn't have an image - blank out the reference
+            //                                                 Logger.ReportVerbose("No image for studio {0}",name);
+            //                                                 studio.PrimaryImagePath = null;
+            //                                             }
+            //                                         });
+            //}
 
-            return studio;
+            //return studio;
         }
 
         [Persist]

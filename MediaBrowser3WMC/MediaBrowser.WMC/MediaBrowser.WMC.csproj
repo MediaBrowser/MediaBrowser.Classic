@@ -302,6 +302,7 @@
     <Compile Include="Model\DTO\IItemDto.cs" />
     <Compile Include="Model\DTO\ImageOptions.cs" />
     <Compile Include="Model\DTO\StreamOptions.cs" />
+    <Compile Include="Model\DTO\StudioDto.cs" />
     <Compile Include="Model\DTO\UserDto.cs" />
     <Compile Include="Model\DTO\UserItemDataDto.cs" />
     <Compile Include="Model\Entities\BaseItemInfo.cs" />

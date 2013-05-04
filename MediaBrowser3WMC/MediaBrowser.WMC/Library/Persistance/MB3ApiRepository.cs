@@ -21,7 +21,6 @@ namespace MediaBrowser.Library.Persistance
     {
         protected static class Mb3Translator
         {
-
             public static Dictionary<string, Type> TypeMap = new Dictionary<string, Type>
                                                                  {
                                                                      {"Folder", typeof (Folder)},
@@ -45,120 +44,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"TrailerCollectionFolder", typeof (Folder)},
                                                                  };
 
-            public static object Translate(BaseItemDto mb3Item, SqliteItemRepository.SQLInfo.ColDef col)
-            {
-                object data = null;
-                try
-                {
-                    data = typeof (BaseItemDto).GetProperty(col.ColName).GetValue(mb3Item, BindingFlags.Public | BindingFlags.Instance, null, null, null);
-                }
-                catch (Exception e)
-                {
-                    try
-                    {
-                        data = typeof (BaseItemDto).GetProperty(Char.ToUpperInvariant(col.ColName[0]) + col.ColName.Substring(1)).GetValue(mb3Item, BindingFlags.Public | BindingFlags.Instance, null, null, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.ReportException("Error reading data for col: " + col.ColName + " type is: " + col.ColType.Name, ex);
-                        return null;
-                    }
-                }
-                if (data is DBNull || data == null) return null;
-                var typ = data.GetType();
-
-                //Logger.ReportVerbose("Extracting: " + col.ColName + " Defined Type: "+col.ColType+"/"+col.NullableType + " Actual Type: "+typ.Name+" Value: "+data);
-
-                if (typ == typeof(string))
-                {
-                    if (col.ColType == typeof(MediaType))
-                        return Enum.Parse(typeof(MediaType), (string)data);
-                    else
-                        if (col.ColType == typeof(MediaBrowser.Library.Network.DownloadPolicy))
-                            return Enum.Parse(typeof(MediaBrowser.Library.Network.DownloadPolicy), (string)data);
-                        else
-                            if (col.ColType == typeof(VideoFormat))
-                                return Enum.Parse(typeof(VideoFormat), (string)data);
-                            else
-                                if (col.ColType == typeof(Guid))
-                                {
-                                    return new Guid((string)data);
-                                }
-                                else
-                                    return data;
-                }
-                else if (typ == typeof(DateTime) || typ == typeof(Int32)) return data;
-                else if (typ == typeof (Model.Entities.VideoFormat)) return data.ToString();
-                else
-                    if (typ == typeof(Int64))
-                    {
-                        if (col.ColType == typeof(DateTime))
-                            return new DateTime((Int64)data);
-                        else if (col.InternalType == typeof(int) || col.ColType == typeof(int))
-                            return Convert.ToInt32(data);
-                        else
-                            return data;
-                    }
-                    else
-                        if (typ == typeof(Double))
-                        {
-                            if (col.ColType == typeof(Single) || col.InternalType == typeof(Single))
-                                return Convert.ToSingle(data);
-                            else
-                                return data;
-                        }
-                        else
-                        {
-                            var ms = new MemoryStream((byte[])data);
-                            return Serializer.Deserialize<object>(ms);
-                            //return JsonSerializer.DeserializeFromString((string)reader[col.ColName], col.ColType);
-                        }
-
-
-            }
-
-            public static object Encode(SqliteItemRepository.SQLInfo.ColDef col, object data)
-            {
-                if (data == null) return null;
-
-                //Logger.ReportVerbose("Encoding " + col.ColName + " as " + col.ColType.Name.ToLower());
-                switch (col.ColType.Name.ToLower())
-                {
-                    case "guid":
-                        return data.ToString();
-                    case "string":
-                        return data;
-
-                    case "datetime":
-                        return ((DateTime)data).Ticks;
-
-                    case "mediatype":
-                        return ((MediaType)data).ToString();
-
-                    case "videoformat":
-                        return ((VideoFormat)data).ToString();
-
-                    case "downloadpolicy":
-                        return ((MediaBrowser.Library.Network.DownloadPolicy)data).ToString();
-
-                    case "int":
-                    case "int16":
-                    case "int32":
-                    case "int64":
-                    case "long":
-                    case "double":
-                    case "nullable`1":
-                        return data;
-                    default:
-                        var ms = new MemoryStream();
-                        Serializer.Serialize<object>(ms, data);
-                        ms.Seek(0, 0);
-                        return ms.ReadAllBytes();
-
-                }
-            }
         }
-        private Dictionary<Type, SqliteItemRepository.SQLInfo> ClassInfo = new Dictionary<Type, SqliteItemRepository.SQLInfo>();
 
         public IEnumerable<IMetadataProvider> RetrieveProviders(Guid guid)
         {
@@ -388,7 +274,8 @@ namespace MediaBrowser.Library.Persistance
 
                     if (mb3Item.Studios != null)
                     {
-                        show.Studios = new List<string>(mb3Item.Studios);
+                        show.Studios = new List<string>(mb3Item.Studios.Select(s => s.Name));
+                        foreach (var studio in mb3Item.Studios) Studio.AddToCache(studio);
                     }
                 }
 

@@ -14,7 +14,7 @@ namespace MediaBrowser.Library.Entities
 
         public override string PrimaryImagePath
         {
-            get { return Kernel.ApiClient.GetUserImageUrl(Dto.Id, new ImageOptions {ImageType = ImageType.Primary}); }
+            get { return Dto.HasPrimaryImage ? Kernel.ApiClient.GetUserImageUrl(Dto.Id, new ImageOptions {ImageType = ImageType.Primary}) : base.PrimaryImagePath; }
             set
             {
                 base.PrimaryImagePath = value;
