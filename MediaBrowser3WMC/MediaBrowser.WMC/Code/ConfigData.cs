@@ -406,7 +406,7 @@ namespace MediaBrowser
 
         public bool AutoValidate = true; //automatically validate and refresh items as we access them
 
-        public LogSeverity MinLoggingSeverity = LogSeverity.Info;
+        public LogSeverity MinLoggingSeverity = LogSeverity.Debug;
 
         public bool EnableScreenSaver = true; //enable default screen saver functionality
         public int ScreenSaverTimeOut = 10; //minutes of inactivity for screen saver to kick in
