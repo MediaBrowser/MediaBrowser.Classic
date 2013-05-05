@@ -255,7 +255,7 @@ namespace MediaBrowser
         public int BreadcrumbCountLimit = 2;
         [Group("Display")]
         [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
-        public int DefaultMessageTimeout = 15;
+        public int DefaultMessageTimeout = 30;
         [Dangerous]
         [Group("Display")]
         [Comment(@"Characters to be ignored in sorting.")]
