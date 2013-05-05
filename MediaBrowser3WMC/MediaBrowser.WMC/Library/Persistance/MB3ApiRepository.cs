@@ -265,7 +265,7 @@ namespace MediaBrowser.Library.Persistance
 
                     if (mb3Item.Genres != null)
                     {
-                    show.Genres = new List<string>(mb3Item.Genres);
+                        show.Genres = new List<string>(mb3Item.Genres);
                     }
 
                     if (mb3Item.People != null)

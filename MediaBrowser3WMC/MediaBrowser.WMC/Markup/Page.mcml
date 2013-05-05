@@ -130,7 +130,7 @@
           </ss:DefaultScreenSaver>
           
           <!--MessageBox-->
-          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="1300,400" MaximumSize="1300,400" >
+          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="1200,400" MaximumSize="1200,400" >
             <Animations>
               <Animation Type="Show" >
                 <Keyframes>

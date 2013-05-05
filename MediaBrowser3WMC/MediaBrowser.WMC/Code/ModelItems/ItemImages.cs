@@ -775,13 +775,13 @@ namespace MediaBrowser.Library
             {
                 Image image = DefaultFolderImage;
 
-                if (baseItem is Song)
-                {
-                    image = DefaultSongImage;
-                }
                 if (baseItem is Video)
                 {
                     image = DefaultVideoImage;
+                }
+                else if (baseItem is Song)
+                {
+                    image = DefaultSongImage;
                 }
                 else if (baseItem is Person)
                 {
