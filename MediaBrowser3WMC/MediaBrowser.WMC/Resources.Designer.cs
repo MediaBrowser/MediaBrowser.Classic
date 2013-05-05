@@ -1711,12 +1711,42 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DefaultAlbum {
+            get {
+                object obj = ResourceManager.GetObject("DefaultAlbum", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DefaultSong {
+            get {
+                object obj = ResourceManager.GetObject("DefaultSong", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] DefaultSS {
             get {
                 object obj = ResourceManager.GetObject("DefaultSS", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DefaultVideo {
+            get {
+                object obj = ResourceManager.GetObject("DefaultVideo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

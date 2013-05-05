@@ -1255,4 +1255,13 @@
   <data name="IconFavorite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>images\icons\iconfavorite.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DefaultAlbum" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\defaultalbum.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DefaultSong" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\defaultsong.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DefaultVideo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\defaultvideo.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

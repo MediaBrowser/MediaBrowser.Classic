@@ -435,6 +435,8 @@
     <None Include="Images\Icons\IconShuffle.png" />
     <None Include="Images\Root\roottopw.png" />
     <None Include="Images\Root\rootscrollhilite.png" />
+    <Content Include="Images\DefaultSong.png" />
+    <Content Include="Images\DefaultVideo.jpg" />
     <Content Include="Images\FavMovies.png" />
     <Content Include="Images\FavMusic.png" />
     <Content Include="Images\Favorites.png" />
@@ -589,6 +591,7 @@
     <Content Include="Images\MediaInfo\media_ts.png" />
     <Content Include="Images\MediaInfo\media_wmv.png" />
     <Content Include="Images\MediaInfo\media_wtv.png" />
+    <Content Include="Images\DefaultAlbum.png" />
     <Content Include="Images\plainborder.png" />
     <None Include="Images\Ratings\rated-gb-12.png" />
     <None Include="Images\Ratings\rated-gb-18.png" />

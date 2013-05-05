@@ -760,11 +760,13 @@ namespace MediaBrowser.Library
 
 
 
-        static Image DefaultVideoImage = new Image("res://ehres!MOVIE.ICON.DEFAULT.PNG");
-        static Image DefaultActorImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/MissingPerson");
-        static Image DefaultStudioImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/BlankGraphic");
-        static Image DefaultFolderImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/folder");
-        static Image DefaultUserImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/UserLoginDefault");
+        static readonly Image DefaultVideoImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultVideo");
+        static readonly Image DefaultActorImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/MissingPerson");
+        static readonly Image DefaultStudioImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/BlankGraphic");
+        static readonly Image DefaultFolderImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/folder");
+        static readonly Image DefaultUserImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/UserLoginDefault");
+        static readonly Image DefaultAlbumImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultAlbum");
+        static readonly Image DefaultSongImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultSong");
  
         
         public Image DefaultImage
@@ -773,6 +775,10 @@ namespace MediaBrowser.Library
             {
                 Image image = DefaultFolderImage;
 
+                if (baseItem is Song)
+                {
+                    image = DefaultSongImage;
+                }
                 if (baseItem is Video)
                 {
                     image = DefaultVideoImage;
@@ -788,6 +794,14 @@ namespace MediaBrowser.Library
                 else if (baseItem is User)
                 {
                     image = DefaultUserImage;
+                }
+                else if (baseItem is MusicArtist)
+                {
+                    image = DefaultActorImage;
+                }
+                else if (baseItem is MusicAlbum)
+                {
+                    image = DefaultAlbumImage;
                 }
 
                 return image;
