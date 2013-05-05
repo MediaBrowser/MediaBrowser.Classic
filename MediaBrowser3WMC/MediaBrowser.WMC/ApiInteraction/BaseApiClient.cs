@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Model.Connectivity;
+﻿using System.Web;
+using MediaBrowser.Model.Connectivity;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;
@@ -583,7 +584,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
-            var url = "Studios/" + name + "/Images/" + options.ImageType;
+            var url = "Studios/" + HttpUtility.UrlEncode(name) + "/Images/" + options.ImageType;
 
             return GetImageUrl(url, options, new QueryStringDictionary());
         }
@@ -602,7 +603,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
-            var url = "Images/General/" + name + "/" + options.ImageType;
+            var url = "Images/General/" + HttpUtility.UrlEncode(name) + "/" + options.ImageType;
 
             return GetImageUrl(url, options, new QueryStringDictionary());
         }
@@ -626,7 +627,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("theme");
             }
 
-            var url = "Images/MediaInfo/" + theme + "/" + name;
+            var url = "Images/MediaInfo/" + HttpUtility.UrlEncode(theme + "/" + name);
 
             return GetImageUrl(url, options, new QueryStringDictionary());
         }
@@ -650,7 +651,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("theme");
             }
 
-            var url = "Images/Ratings/" + theme + "/" + name;
+            var url = "Images/Ratings/" + HttpUtility.UrlEncode(theme + "/" + name);
 
             return GetImageUrl(url, options, new QueryStringDictionary());
         }
