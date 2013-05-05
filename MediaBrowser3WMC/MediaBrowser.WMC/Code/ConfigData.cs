@@ -600,10 +600,10 @@ namespace MediaBrowser
         /// </summary>
         public static bool CanPlay(ConfigData.ExternalPlayer player, IEnumerable<Media> mediaList)
         {
-            List<MediaType> types = new List<MediaType>();
-            List<VideoFormat> formats = new List<VideoFormat>();
+            var types = new List<MediaType>();
+            var formats = new List<VideoFormat>();
 
-            foreach (Media media in mediaList)
+            foreach (var media in mediaList)
             {
                 var video = media as Video;
 
@@ -611,12 +611,13 @@ namespace MediaBrowser
                 {
                     if (!string.IsNullOrEmpty(video.VideoFormat))
                     {
-                        VideoFormat format = (VideoFormat)Enum.Parse(typeof(VideoFormat), video.VideoFormat);
+                        var format = (VideoFormat)Enum.Parse(typeof(VideoFormat), video.VideoFormat);
                         formats.Add(format);
                     }
 
-                    types.Add(video.MediaType);
                 }
+
+                types.Add(media.MediaType);
             }
 
             bool isMultiFile = mediaList.Count() == 1 ? (mediaList.First().Files.Count() > 1) : (mediaList.Count() > 1);

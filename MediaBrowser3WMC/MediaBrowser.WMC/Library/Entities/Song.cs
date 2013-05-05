@@ -7,7 +7,7 @@ namespace MediaBrowser.Library.Entities
     /// <summary>
     /// Class Audio
     /// </summary>
-    public class Song : BaseItem, IShow, IHasMediaStreams, IGroupInIndex
+    public class Song : Media, IShow, IGroupInIndex
     {
         
         /// <summary>
@@ -41,6 +41,10 @@ namespace MediaBrowser.Library.Entities
         public List<string> Studios { get; set; }
         public string AspectRatio { get; set; }
         public int? ProductionYear { get; set; }
-        public List<MediaStream> MediaStreams { get; set; }
+
+        public override IEnumerable<string> Files
+        {
+            get { return new[] {Path}; }
+        }
     }
 }

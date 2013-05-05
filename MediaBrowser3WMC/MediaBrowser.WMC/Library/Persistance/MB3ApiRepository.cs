@@ -215,18 +215,22 @@ namespace MediaBrowser.Library.Persistance
                 var video = item as Video;
                 if (video != null && video.Path != null)
                 {
-                    video.MediaType = MediaTypeResolver.DetermineType(video.Path);
                     video.ContainsTrailers = mb3Item.HasTrailer;
                     video.VideoFormat = mb3Item.VideoFormat.ToString();
+                }
 
+                var media = item as Media;
+                if (media != null)
+                {
+                    media.MediaType = MediaTypeResolver.DetermineType(media.Path);
                     if (mb3Item.MediaStreams != null)
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
                         var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
                         var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
-                        video.MediaStreams = mb3Item.MediaStreams;
+                        media.MediaStreams = mb3Item.MediaStreams;
 
-                        video.MediaInfo = new MediaInfoData
+                        media.MediaInfo = new MediaInfoData
                                               {
                                                   OverrideData = new MediaInfoData.MIData
                                                                      {
@@ -247,11 +251,11 @@ namespace MediaBrowser.Library.Persistance
                     }
                     if (mb3Item.UserData != null)
                     {
-                        video.PlaybackStatus = PlaybackStatusFactory.Instance.Create(video.Id);
-                        video.PlaybackStatus.PositionTicks = mb3Item.UserData.PlaybackPositionTicks;
-                        video.PlaybackStatus.PlayCount = mb3Item.UserData.PlayCount;
-                        video.PlaybackStatus.WasPlayed = mb3Item.UserData.Played;
-                        video.PlaybackStatus.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
+                        media.PlaybackStatus = PlaybackStatusFactory.Instance.Create(media.Id);
+                        media.PlaybackStatus.PositionTicks = mb3Item.UserData.PlaybackPositionTicks;
+                        media.PlaybackStatus.PlayCount = mb3Item.UserData.PlayCount;
+                        media.PlaybackStatus.WasPlayed = mb3Item.UserData.Played;
+                        media.PlaybackStatus.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
                     }
                 }
 

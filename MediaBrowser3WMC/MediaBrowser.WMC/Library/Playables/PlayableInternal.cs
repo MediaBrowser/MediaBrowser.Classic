@@ -30,15 +30,9 @@ namespace MediaBrowser.Library.Playables
         /// </summary>
         public override bool CanPlay(Media media)
         {
-            // can play DVDs and normal videos
-            Video video = media as Video;
+            // can play DVDs, music and normal videos
 
-            if (video == null)
-            {
-                return false;
-            }
-
-            return CanPlay(video.MediaType);
+            return CanPlay(media.MediaType);
         }
 
         /// <summary>

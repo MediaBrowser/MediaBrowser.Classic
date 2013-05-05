@@ -54,6 +54,8 @@ namespace MediaBrowser.Library {
                     return MediaType.M4v;
                 if (path.EndsWith(".asf"))
                     return MediaType.Asf;
+                if (path.EndsWith(".mp3",StringComparison.OrdinalIgnoreCase))
+                    return MediaType.Mp3;
                 if (path.EndsWith(".3gp"))
                     return MediaType.Threegp;
             }

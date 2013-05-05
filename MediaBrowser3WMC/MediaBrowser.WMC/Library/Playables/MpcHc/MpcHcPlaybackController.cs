@@ -197,7 +197,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
 
                 Video video = media as Video;
 
-                if (video != null & video.MediaType == MediaType.DVD)
+                if (video != null && video.MediaType == MediaType.DVD)
                 {
                     // Point directly to the video_ts path
                     // Otherwise mpc will play any other media files that might exist in the dvd top folder (e.g. video backdrops).

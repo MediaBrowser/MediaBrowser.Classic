@@ -10,29 +10,6 @@ using MediaBrowser.Model.Entities;
 namespace MediaBrowser.Library.Entities {
     public class Video : Media {
 
-        protected IMediaLocation location;
-
-        public IMediaLocation MediaLocation {
-            get {
-                if (location == null) {
-
-                    location = Kernel.Instance.GetLocation<IMediaLocation>(Path);
-                }
-                return location;
-            }
-        }
-
-
-        [NotSourcedFromProvider]
-        [Persist]
-        public MediaType MediaType { get; set; }
-
-        [Persist]
-        public int? RunningTime { get; set; }
-
-        [Persist]
-        public MediaInfoData MediaInfo { get; set; }
-
         [Persist]
         public string VideoFormat { get; set; }
 
@@ -77,8 +54,6 @@ namespace MediaBrowser.Library.Entities {
                 return RunningTime ?? 0;
             }
         }
-
-        public List<MediaStream> MediaStreams { get; set; } 
 
         public virtual IEnumerable<string> VideoFiles {
             get {

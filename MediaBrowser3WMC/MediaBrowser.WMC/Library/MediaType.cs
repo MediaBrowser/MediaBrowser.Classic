@@ -29,6 +29,8 @@ namespace MediaBrowser.Library {
         Wmv,
         Wtv,
         Mk3d,
-        Video
+        Video,
+        Mp3,
+
     }
 }

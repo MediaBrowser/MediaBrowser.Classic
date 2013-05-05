@@ -628,7 +628,7 @@ namespace MediaBrowser.Code.ModelItems
         /// </summary>
         internal virtual IEnumerable<string> GetPlayableFiles(Media media)
         {
-            Video video = media as Video;
+            var video = media as Video;
 
             if (video != null && video.MediaType == MediaType.ISO)
             {
