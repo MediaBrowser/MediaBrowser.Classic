@@ -846,6 +846,9 @@ namespace MediaBrowser.ApiInteraction
             queryParams.AddIfNotNull("VideoStreamIndex", options.VideoStreamIndex);
             queryParams.AddIfNotNull("SubtitleStreamIndex", options.SubtitleStreamIndex);
 
+            queryParams.AddIfNotNullOrEmpty("Profile", options.Profile);
+            queryParams.AddIfNotNullOrEmpty("Level", options.Level);
+
             return GetMediaStreamUrl(handler, options, queryParams);
         }
 

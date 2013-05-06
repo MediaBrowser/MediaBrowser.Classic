@@ -756,7 +756,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                Episode episode = baseItem as Episode;
+                var episode = baseItem as Episode;
                 if (episode != null)
                 {
                     if (episode.SeasonNumber != null)
@@ -773,7 +773,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                Episode episode = baseItem as Episode;
+                var episode = baseItem as Episode;
                 if (episode != null)
                 {
                     if (episode.EpisodeNumber != null)

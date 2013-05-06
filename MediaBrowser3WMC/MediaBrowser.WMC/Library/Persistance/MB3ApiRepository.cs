@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Persistance
                                                                  {
                                                                      {"Folder", typeof (Folder)},
                                                                      {"Movie", typeof (Movie)},
-                                                                     {"Trailer", typeof (Movie)},
+                                                                     {"Trailer", typeof (RemoteTrailer)},
                                                                      {"Series", typeof (Series)},
                                                                      {"Season", typeof (Season)},
                                                                      {"Episode", typeof (Episode)},
@@ -264,7 +264,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime =  mb3Item.RunTimeTicks != null ? Convert.ToInt32(mb3Item.RunTimeTicks/600000000) : 0;
+                    show.RunningTime =  mb3Item.RunTimeTicks != null ? (int?)Convert.ToInt32(mb3Item.RunTimeTicks/600000000) : null;
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
@@ -289,6 +289,7 @@ namespace MediaBrowser.Library.Persistance
                 if (episode != null)
                 {
                     episode.EpisodeNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
+                    episode.SeasonNumber = mb3Item.ParentIndexNumber != null ? mb3Item.ParentIndexNumber.Value.ToString("#00") : null;
                     episode.SeriesId = mb3Item.SeriesId;
                     episode.FirstAired = mb3Item.PremiereDate.ToString();
                 }

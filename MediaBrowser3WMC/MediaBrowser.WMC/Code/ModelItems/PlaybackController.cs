@@ -7,6 +7,7 @@ using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
+using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter.UI;

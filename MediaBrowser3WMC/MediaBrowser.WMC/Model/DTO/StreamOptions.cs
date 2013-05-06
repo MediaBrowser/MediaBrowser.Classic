@@ -65,12 +65,24 @@
         /// </summary>
         /// <value>The index of the subtitle stream.</value>
         public int? SubtitleStreamIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets the profile.
+        /// </summary>
+        /// <value>The profile.</value>
+        public string Profile { get; set; }
+
+        /// <summary>
+        /// Gets or sets the level.
+        /// </summary>
+        /// <value>The level.</value>
+        public string Level { get; set; }
     }
 
     /// <summary>
     /// Class StreamOptions
     /// </summary>
-    public abstract class StreamOptions
+    public class StreamOptions
     {
         /// <summary>
         /// Gets or sets the audio bit rate.
@@ -132,14 +144,17 @@
         /// The aac
         /// </summary>
         Aac,
+
         /// <summary>
         /// The MP3
         /// </summary>
         Mp3,
+
         /// <summary>
         /// The vorbis
         /// </summary>
         Vorbis,
+
         /// <summary>
         /// The wma
         /// </summary>
@@ -151,10 +166,17 @@
     /// </summary>
     public enum VideoCodecs
     {
+        H263,
+
         /// <summary>
         /// The H264
         /// </summary>
         H264,
+
+        /// <summary>
+        /// The mpeg4
+        /// </summary>
+        Mpeg4,
 
         /// <summary>
         /// The theora
