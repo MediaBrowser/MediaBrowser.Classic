@@ -73,8 +73,8 @@ namespace MediaBrowser.Library.Entities {
         public override string LongName {
             get {
                 string longName = base.LongName;
-                if (Season != null) {
-                    longName = Season.Name + " - " + longName;
+                if (SeasonNumber != null) {
+                    longName = Localization.LocalizedStrings.Instance.GetString("Season") + " " + SeasonNumber + " - " + longName;
                 }
                 if (Series != null) {
                     longName = Series.Name + " - " + longName;
