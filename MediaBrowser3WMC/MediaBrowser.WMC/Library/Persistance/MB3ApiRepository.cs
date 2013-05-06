@@ -237,7 +237,7 @@ namespace MediaBrowser.Library.Persistance
                                                                          AudioStreamCount = mb3Item.MediaStreams.Count(s => s.Type == MediaStreamType.Audio),
                                                                          AudioBitRate = audStream != null ? audStream.BitRate ?? 0 : 0,
                                                                          AudioChannelCount = audStream != null ? TranslateAudioChannels(audStream.Channels ?? 0) : "",
-                                                                         AudioFormat = audStream != null ? audStream.Codec : "",
+                                                                         AudioFormat = audStream != null ? audStream.Codec == "dca" ? audStream.Profile : audStream.Codec : "",
                                                                          VideoBitRate = vidStream != null ? vidStream.BitRate ?? 0 : 0,
                                                                          VideoCodec = vidStream != null ? vidStream.Codec : "",
                                                                          VideoFPS = vidStream != null ? vidStream.AverageFrameRate.ToString() : "",
@@ -313,11 +313,11 @@ namespace MediaBrowser.Library.Persistance
             switch (totalChannels)
             {
                 case 5:
-                    return "5.1";
+                    return "6";
                 case 6:
-                    return "6.1";
+                    return "6";
                 case 7:
-                    return "7.1";
+                    return "8";
                 default:
                     return totalChannels.ToString();
             }

@@ -246,6 +246,7 @@ namespace MediaBrowser.Library.Entities
         protected static Dictionary<string, string> VideoImageNames = new Dictionary<string, string>()
         {
             {"divx 5","divx"},
+            {"divx","divx"},
             {"divx 4","divx"},
             {"divx 3 low","divx"},
             {"avc","H264"},
@@ -427,6 +428,7 @@ namespace MediaBrowser.Library.Entities
         {
             {"aac","Aac"},
             {"ac-3","Ac3"},
+            {"ac3","Ac3"},
             {"ac-3 dolby digital","Ac3"},     		
             {"e-ac-3","DDPlus"},
             {"ac-3 truehd","DDTrueHD"},
@@ -436,6 +438,7 @@ namespace MediaBrowser.Library.Entities
             {"dts es","DTS_ES"},
             {"dts hra","DTS_HD_HRA"},
             {"dts ma","DTS_HD_MA"},
+            {"dts-hd ma","DTS_HD_MA"},
             {"flac","Flac"},
             {"mpeg audio","MpegAudio"},
             {"mpeg audio layer 1","MpegAudio"},
