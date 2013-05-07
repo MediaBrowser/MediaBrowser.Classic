@@ -16,7 +16,9 @@ namespace MediaBrowser.Library.Playables.MpcHc
     /// </summary>
     public class MpcHcPlaybackController : ConfigurableExternalPlaybackController
     {
-        private const int ProgressInterval = 10000;
+        private const int ProgressInterval = 1000;
+        private const long ReportInterval = TimeSpan.TicksPerSecond * 10;
+        private DateTime _lastReport = DateTime.MinValue;
 
         // All of these hold state about what's being played. They're all reset when playback starts
         private bool _MonitorPlayback = false;
@@ -82,8 +84,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
                 {
                     try
                     {
-                        if (!_StatusRequestClient.IsBusy)
-                            _StatusRequestClient.DownloadStringAsync(statusUri);
+                        _StatusRequestClient.DownloadStringAsync(statusUri);
                     }
                     catch (Exception ex)
                     {
@@ -107,16 +108,17 @@ namespace MediaBrowser.Library.Playables.MpcHc
         void statusRequestCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             // If playback just finished, or if there was some type of error, skip it
-            if (!_MonitorPlayback || e.Cancelled || e.Error != null || string.IsNullOrEmpty(e.Result))
+            if (!_MonitorPlayback || e.Cancelled || e.Error != null || string.IsNullOrEmpty(e.Result) || (DateTime.Now - _lastReport).Ticks < ReportInterval)
             {
                 return;
             }
 
+            _lastReport = DateTime.Now;
             _ConsecutiveFailedHttpRequests = 0;
 
             string result = e.Result;
 
-            // Logger.ReportVerbose("Response received from MPC-HC web interface: " + result);
+            Logger.ReportVerbose("Response received from MPC-HC web interface: " + result);
 
             try
             {
@@ -149,8 +151,10 @@ namespace MediaBrowser.Library.Playables.MpcHc
 
                 long currentPositionTicks = TimeSpan.FromMilliseconds(double.Parse(values.ElementAt(1))).Ticks;
                 long currentDurationTicks = TimeSpan.FromMilliseconds(double.Parse(values.ElementAt(3))).Ticks;
-
                 string playstate = values.ElementAt(0).ToLower();
+
+                Logger.ReportVerbose("File: {0} Position {1} Status {2}", currentPlayingFile, currentPositionTicks, playstate);
+
                 _CurrentPlayState = playstate;
 
                 if (playstate == "stopped")
@@ -169,7 +173,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
 
                     if (_HasStartedPlaying)
                     {
-                        OnProgress(GetPlaybackState(currentPositionTicks, currentDurationTicks, currentPlayingFile));
+                        OnProgress(GetPlaybackState(currentPositionTicks, currentDurationTicks));
                     }
                 }
             }
@@ -260,28 +264,10 @@ namespace MediaBrowser.Library.Playables.MpcHc
         /// <summary>
         /// Constructs a PlaybackStateEventArgs based on current playback properties
         /// </summary>
-        private PlaybackStateEventArgs GetPlaybackState(long positionTicks, long durationTicks, string currentFilename)
+        private PlaybackStateEventArgs GetPlaybackState(long positionTicks, long durationTicks)
         {
-            PlaybackStateEventArgs args = new PlaybackStateEventArgs() { Item = GetCurrentPlayableItem() };
+            return new PlaybackStateEventArgs {Item = GetCurrentPlayableItem(), DurationFromPlayer = durationTicks, Position = positionTicks};
 
-            args.DurationFromPlayer = durationTicks;
-            args.Position = positionTicks;
-
-            if (args.Item != null)
-            {
-                if (args.Item.HasMediaItems)
-                {
-                    int currentFileIndex;
-                    args.CurrentMediaIndex = GetCurrentPlayingMediaIndex(args.Item, currentFilename, out currentFileIndex);
-                    args.CurrentFileIndex = currentFileIndex;
-                }
-                else
-                {
-                    args.CurrentFileIndex = GetCurrentPlayingFileIndex(args.Item, currentFilename);
-                }
-            }
-
-            return args;
         }
 
         private int GetCurrentPlayingFileIndex(PlayableItem playable, string currentFilename)

@@ -446,27 +446,6 @@ namespace MediaBrowser
 
             var mediaType = exp.MediaType;
 
-            try
-            {
-                Logger.ReportVerbose("Reporting stopped to server");
-                var newStatus = Kernel.ApiClient.ReportPlaybackStopped(Playable.CurrentMedia.ApiId, Kernel.CurrentUser.Id, transport.Position.Ticks);
-
-                // Update our status with what was returned from server if valid
-                if (newStatus != null)
-                {
-                    Logger.ReportVerbose("Setting new status");
-                    Playable.CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
-                    Playable.CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
-                }
-                else
-                {
-                    Logger.ReportVerbose("New status was null");
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.ReportException("Error attempting to update status on server", ex);
-            }
 
             // Check if internal wmc player is still playing, which could happen if the user launches live tv while playing something
             if (mediaType != Microsoft.MediaCenter.Extensibility.MediaType.TV)

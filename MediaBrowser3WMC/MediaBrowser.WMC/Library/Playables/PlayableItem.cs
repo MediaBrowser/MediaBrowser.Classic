@@ -83,9 +83,31 @@ namespace MediaBrowser.Library.Playables
                     OnProgress(controller, args);
                 }
 
+                try
+                {
+                    Logger.ReportVerbose("Reporting stopped to server");
+                    var newStatus = Kernel.ApiClient.ReportPlaybackStopped(args.Item.CurrentMedia.ApiId, Kernel.CurrentUser.Id, args.Position);
+
+                    // Update our status with what was returned from server if valid
+                    if (newStatus != null)
+                    {
+                        Logger.ReportVerbose("Setting new status");
+                        args.Item.CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
+                        args.Item.CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
+                    }
+                    else
+                    {
+                        Logger.ReportVerbose("New status was null");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.ReportException("Error attempting to update status on server", ex);
+                }
+
                 PlaybackStoppedByUser = args.StoppedByUser;
 
-                MarkWatchedIfNeeded();
+                //MarkWatchedIfNeeded();
             }
 
             PlayState = PlayableItemPlayState.Stopped;
@@ -707,7 +729,7 @@ namespace MediaBrowser.Library.Playables
                 {
                     // If this is where playback is, update position and playlist
                     currentPlaylistPosition = controller.GetPlayableFiles(media).ToList().IndexOf(currentFile);
-                    currentPositionTicks = args.Position;
+                    media.PlaybackStatus.PositionTicks = currentPositionTicks = args.Position;
                 }
 
                 Application.CurrentInstance.UpdatePlayState(media, media.PlaybackStatus, currentPlaylistPosition, currentPositionTicks, args.DurationFromPlayer, PlaybackStartTime, EnablePlayStateSaving);
