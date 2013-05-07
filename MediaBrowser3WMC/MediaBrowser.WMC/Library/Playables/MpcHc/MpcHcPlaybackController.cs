@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
     /// </summary>
     public class MpcHcPlaybackController : ConfigurableExternalPlaybackController
     {
-        private const int ProgressInterval = 1000;
+        private const int ProgressInterval = 10000;
 
         // All of these hold state about what's being played. They're all reset when playback starts
         private bool _MonitorPlayback = false;
