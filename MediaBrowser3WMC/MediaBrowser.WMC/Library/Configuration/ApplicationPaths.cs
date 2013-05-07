@@ -31,7 +31,7 @@ namespace MediaBrowser.Library.Configuration {
         static Dictionary<string, string> pathMap;
 
         static string[,] tree = { 
-                    { "AppConfigPath",       "app_data",         "MediaBrowser-WMC"  }, 
+                    { "AppConfigPath",       "app_data",         "MediaBrowser-Classic"  }, 
                     { "AppCachePath",        "AppConfigPath",    "Cache"         },
                     { "AppUserSettingsPath", "AppConfigPath",    "Cache"           },
                     { "AutoPlaylistPath",    "AppCachePath",     "autoPlaylists" }, 
@@ -47,7 +47,7 @@ namespace MediaBrowser.Library.Configuration {
 
         static ApplicationPaths() {
             pathMap = new Dictionary<string, string>();
-            pathMap["app_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+            pathMap["app_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
             
             BuildTree();
         }
