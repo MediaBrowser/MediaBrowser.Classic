@@ -82,8 +82,10 @@ namespace MediaBrowser
         //tracks whether to show recently added or watched items
         public string RecentItemOption { get { return Config.Instance.RecentItemOption; } set { Config.Instance.RecentItemOption = value; Kernel.Instance.ConfigData.RecentItemOption = value; } }
         private bool pluginUpdatesAvailable = false;
+        private bool systemUpdateCheckInProgress = false;
         public System.Drawing.Bitmap ExtSplashBmp;
         private Item lastPlayed;
+        private Updater Updater;
 
         #region CurrentItemChanged EventHandler
         volatile EventHandler<GenericEventArgs<Item>> _CurrentItemChanged;
@@ -325,6 +327,22 @@ namespace MediaBrowser
             {
                 pluginUpdatesAvailable = value;
                 FirePropertyChanged("PluginUpdatesAvailable");
+            }
+        }
+
+        public bool SystemUpdateCheckInProgress
+        {
+            get
+            {
+                return systemUpdateCheckInProgress;
+            }
+            set
+            {
+                if (systemUpdateCheckInProgress != value)
+                {
+                    systemUpdateCheckInProgress = value;
+                    FirePropertyChanged("SystemUpdateCheckInProgress");
+                }
             }
         }
 
@@ -1067,14 +1085,13 @@ namespace MediaBrowser
 
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.
+                    Updater = new Updater(this);
                     if (Config.EnableUpdates)
                     {
-                        var update = new Updater(this);
-
-                        Async.Queue(Async.STARTUP_QUEUE, update.CheckForUpdate, 10000);
+                        Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
                         Async.Queue(Async.STARTUP_QUEUE, () =>
                         {
-                            PluginUpdatesAvailable = update.PluginUpdatesAvailable();
+                            PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
                         }, 60000);
                     }
 
@@ -1085,6 +1102,19 @@ namespace MediaBrowser
                     Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("EntryPointErrorDial") + this.EntryPointPath + ". " + ex.ToString() + " " + ex.StackTrace.ToString(), CurrentInstance.StringData("EntryPointErrorCapDial"), DialogButtons.Ok, 30, true);
                     Close();
                 }
+            }
+        }
+
+        public void CheckForSystemUpdate()
+        {
+            if (!systemUpdateCheckInProgress)
+            {
+                Async.Queue("UPDATE CHECK", () =>
+                                                {
+                                                    SystemUpdateCheckInProgress = true;
+                                                    Updater.CheckForUpdate();
+                                                    SystemUpdateCheckInProgress = false;
+                                                });
             }
         }
 

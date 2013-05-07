@@ -91,6 +91,7 @@ namespace MediaBrowser.Library.Localization
         public string SystemClassConfigDesc = "Level at which to subscribe to system updates.";
         public string PluginClassConfigDesc = "Level at which to subscribe to plug-in updates.";
         public string ShowFavoritesCollectionConfigDesc = "Show a top level collection with all your items marked as Favorite in it. Restart MBC to see changes.";
+        public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
 
 
         //Config Panel
@@ -179,6 +180,7 @@ namespace MediaBrowser.Library.Localization
         public string HideEmptyFoldersConfig = "Hide Empty Folders";
         public string PluginClassConfig = "Plugin Update Level";
         public string SystemClassConfig = "System Update Level";
+        public string CheckForUpdateConfig = "Check for Update";
 
 
         //EHS        

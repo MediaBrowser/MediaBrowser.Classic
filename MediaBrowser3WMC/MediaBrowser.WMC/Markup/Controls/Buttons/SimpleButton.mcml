@@ -102,6 +102,13 @@
       <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="false">
         <Actions>
           <Set Target="[imgButton.Content]" Value="[ImageDormant]" />
+          <Set Target="[imgButton.Alpha]" Value=".5" />
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="true">
+        <Actions>
+          <Set Target="[imgButton.Alpha]" Value="1" />
         </Actions>
       </Condition>
 

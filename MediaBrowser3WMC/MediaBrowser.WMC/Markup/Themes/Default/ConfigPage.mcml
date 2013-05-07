@@ -19,6 +19,8 @@
     xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
     xmlns:bd="resx://MediaBrowser/MediaBrowser.Resources/Backdrop"
     xmlns:pu="resx://MediaBrowser/MediaBrowser.Resources/PluginUpdateButton"
+    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
+    xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip"
 	  xmlns:me="Me"
 	  >
 
@@ -39,6 +41,8 @@
       <Command Name="Back"/>
       <Command Name="FullRefresh" />
       <Command Name="ResetConfig" />
+      <Command Name="UpdateCheck" />
+      <Command Name="CloseMessage"/>
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
@@ -197,6 +201,17 @@
         </Actions>
       </Changed>
 
+      <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
+      <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
+      <Changed Source="[CloseMessage.Invoked]">
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Set Target="[Application.ShowMessage]" Value="false" />
+          <Invoke Target="[MainPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Panel1.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="1" ConditionOp="Equals" Target="[Panel2.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="2" ConditionOp="Equals" Target="[Panel3.Visible]" Value="true" />
@@ -244,68 +259,18 @@
           <Invoke Target="[Application.ResetConfig]" />
         </Actions>
       </Changed>
+      <Changed Source="[UpdateCheck.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.CheckForSystemUpdate]" />
+        </Actions>
+      </Changed>
 
-      <!--<Changed Source="[EnterPIN.Invoked]">
-        <Actions>
-          <Invoke Target="[Application.EnterNewParentalPIN]" />
-        </Actions>
-      </Changed>
-      <Changed Source="[PINEntered.Invoked]">
-        <Conditions>
-          <Equality Source="[PIN.Value]" ConditionOp="Equals" Value="[Application.Config.ParentalPIN]"/>
-          <Equality Source="[Application.Config.ParentalControlUnlocked]" ConditionOp="Equals" Value="false" />
-        </Conditions>
-        <Actions>
-          <Set Target="[ParentalPanel.Visible]" Value="true" />
-        </Actions>
-      </Changed>
-      <Changed Source="[PINEntered.Invoked]">
-        <Conditions>
-          <Equality Source="[PIN.Value]" ConditionOp="Equals" Value="[Application.Config.ParentalPIN]"/>
-          <Equality Source="[Application.Config.ParentalControlUnlocked]" ConditionOp="Equals" Value="true" />
-        </Conditions>
-        <Actions>
-          <Set Target="[ParentalUnlockedPanel.Visible]" Value="true" />
-        </Actions>
-      </Changed>
-      <Changed Source="[PINEntered.Invoked]">
-        <Conditions>
-          <Equality Source="[PIN.Value]" ConditionOp="NotEquals" Value="[Application.Config.ParentalPIN]"/>
-        </Conditions>
-        <Actions>
-          <Set Target="[ParentalPanel.Visible]" Value="false" />
-        </Actions>
-      </Changed>
-      <Changed Source="[UnlockPC.Invoked]">
-        <Actions>
-          <Invoke Target="[Application.UnlockPC]" />
-        </Actions>
-      </Changed>
-      <Changed Source="[RelockPC.Invoked]">
-        <Actions>
-          <Invoke Target="[Application.RelockPC]" />
-          --><!--need to refresh enabled so interface will update - has to be true if we got here--><!--
-          <Set Target="[Enabled.Value]" Value="true"/>
-          <Set Target="[ParentalUnlockedPanel.Visible]" Value="false" />
-          <Set Target="[ParentalPanel.Visible]" Value="true" />
-          <Invoke Target="[ParentalPanel.NavigateInto]"/>
-        </Actions>
-      </Changed>
-      <Changed Source="[Application.Config.ParentalControlEnabled]">
-        <Actions>
-          <Set Target="[UnlockPCBtn.Visible]" Value="[Application.Config.ParentalControlEnabled]" />
-        </Actions>
-      </Changed>-->
 
-      <Condition Source="[Config.IsFirstRun]" SourceValue="true">
-        <Actions>
-          <Set Target="[ContinueBtn.Visible]" Value="true"/>
-          <Set Target="[BackBtn.Visible]" Value="false"/>
-          <Set Target="[Config.IsFirstRun]" Value="false" />
-          <!--<Set Target="[ClearCacheBtn.Visible]" Value="false"/>-->
-          <Set Target="[ResetConfigBtn.Visible]" Value="false"/>
-        </Actions>
-      </Condition>
+      <Binding Source="[Application.SystemUpdateCheckInProgress]" Target="[UpdateCheck.Available]">
+        <Transformer>
+          <BooleanTransformer Inverse="true"/>
+        </Transformer>
+      </Binding>
       <Binding Source="[EnableScreenSaver.Value]" Target="[Config.EnableScreenSaver]" />
       <Binding Source="[SSTimeout.Value]" Target="[Config.ScreenSaverTimeOut]" />
       <Binding Source="[EnableRootPage.Value]" Target="[Config.EnableRootPage]" />
@@ -427,6 +392,29 @@
         <Children>
           <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
             <Children>
+              <!--MessageBox-->
+              <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
+                </LayoutInput>
+                <Animations>
+                  <Animation Type="Show" >
+                    <Keyframes>
+                      <AlphaKeyframe Time="0.0" Value="0" />
+                      <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="Hide" >
+                    <Keyframes>
+                      <AlphaKeyframe Time="0.0" Value="1" />
+                      <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </msg:MessageBox>
+
+              <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
               <Clip Name="Title" FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
                 <LayoutInput>
                   <FormLayoutInput Right="Parent,1,-40" Top="Parent,0,10"  />
@@ -453,6 +441,13 @@
                   <pu:PluginUpdateButton />
                 </Children>
               </Panel>
+
+              <!-- Info Strip -->
+              <is:InfoStrip Name="InfoStrip" Application="[Application]">
+                <LayoutInput>
+                  <FormLayoutInput Top="Parent,1,-66" Bottom="Parent,1,-6" Left="Parent, 0,20" Right="Parent,0.65"/>
+                </LayoutInput>
+              </is:InfoStrip>
 
               <Panel Name="MainPanel" Layout="Center">
                 <LayoutInput>
@@ -495,6 +490,7 @@
                   <sb:SimpleButton  Name="ContinueBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Close]" Visible="false" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton FocusOrder="1" Name="BackBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Back]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton Name="ResetConfigBtn" Text="[Application.LocalStrings.#ResetDefaultsConfig!cor:String]" FocusItem="[FocusItem]"  Command="[ResetConfig]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
+                  <sb:SimpleButton Name="UpdateConfigBtn" Text="[Application.LocalStrings.#CheckForUpdateConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UpdateCheck]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
                   <!--<sb:SimpleButton Name="UpdateLibraryBtn" Text="[Application.LocalStrings.#UpdateLibraryConfig!cor:String]" FocusItem="[FocusItem]"  Command="[FullRefresh]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>-->
                   <!--<sb:SimpleButton Name="UnlockPCBtn" Text="[Application.LocalStrings.#UnlockConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UnlockPC]" Size="200,50" Font="font://f:CP_ButtonFont" Visible="[Application.Config.ParentalControlEnabled]"/>-->
 

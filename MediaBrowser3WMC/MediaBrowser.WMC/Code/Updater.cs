@@ -129,6 +129,7 @@ namespace MediaBrowser.Util
                     }
                     else
                     {
+                        appRef.Information.AddInformationString("MB Classic is up to date");
                         Logger.ReportInfo("==== MB Classic is up to date.");
                     }
                 }
