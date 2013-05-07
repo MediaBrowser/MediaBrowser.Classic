@@ -82,7 +82,8 @@ namespace MediaBrowser.Library.Playables.MpcHc
                 {
                     try
                     {
-                        _StatusRequestClient.DownloadStringAsync(statusUri);
+                        if (!_StatusRequestClient.IsBusy)
+                            _StatusRequestClient.DownloadStringAsync(statusUri);
                     }
                     catch (Exception ex)
                     {
