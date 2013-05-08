@@ -222,7 +222,25 @@ namespace MediaBrowser.Library.Persistance
                 var media = item as Media;
                 if (media != null)
                 {
-                    media.MediaType = MediaTypeResolver.DetermineType(media.Path);
+                    if (mb3Item.VideoType == VideoType.VideoFile)
+                    {
+                        media.MediaType = MediaTypeResolver.DetermineType(media.Path);
+                    }
+                    else
+                    {
+                        switch (mb3Item.VideoType)
+                        {
+                            case VideoType.BluRay:
+                                media.MediaType = MediaType.BluRay;
+                                break;
+                            case VideoType.Dvd:
+                                media.MediaType = MediaType.DVD;
+                                break;
+                            default:
+                                media.MediaType = MediaType.Unknown;
+                                break;
+                        }
+                    }
                     if (mb3Item.MediaStreams != null)
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);

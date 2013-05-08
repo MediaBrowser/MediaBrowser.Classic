@@ -450,43 +450,6 @@ namespace MediaBrowser.Library.Entities
             {"vorbis","Vorbis"},
             {"pcm","PCM"},
 			
-            //Legacy values not needed with change to seperate channel icons 
-            {"ac-3 1","DD_10"},
-            {"ac-3 2","DD_20"},
-            {"ac-3 3","DD_30"},
-            {"ac-3 6","DD_51"},
-            {"ac-3 dolby digital 1","DD_10"},
-            {"ac-3 dolby digital 2","DD_20"},
-            {"ac-3 dolby digital 3","DD_30"},
-            {"ac-3 dolby digital 6","DD_51"},
-            {"e-ac-3 5","DDPlus_50"},
-            {"e-ac-3 6","DDPlus_51"},
-            {"e-ac-3 7","DDPlus_61"},
-            {"e-ac-3 8","DDPlus_71"},
-            {"truehd 5","DDTrueHD_50"},
-            {"truehd 6","DDTrueHD_51"},
-            {"truehd 7","DDTrueHD_61"},
-            {"truehd 8","DDTrueHD_71"},
-            {"ac-3 truehd 5","DDTrueHD_50"},
-            {"ac-3 truehd 6","DDTrueHD_51"},
-            {"ac-3 truehd 7","DDTrueHD_61"},
-            {"ac-3 truehd 8","DDTrueHD_71"},            
-            {"dts 1","DTS_DS_10"},
-            {"dts 2","DTS_DS_20"},
-            {"dts 6","DTS_DS_51"},
-            {"dts 96/24 6","DTS_9624_51"},
-            {"dts es 6","DTS_ES_51"},
-            {"dts es 7","DTS_ES_61"},
-            {"dts hra 6","DTS_HD_HRA_51"},
-            {"dts hra 7","DTS_HD_HRA_61"},
-            {"dts hra 8","DTS_HD_HRA_71"},
-            {"dts ma 3","DTS_HD_MA_30"},
-            {"dts ma 4","DTS_HD_MA_40"},
-            {"dts ma 5","DTS_HD_MA_50"},
-            {"dts ma 6","DTS_HD_MA_51"},
-            {"dts ma 7","DTS_HD_MA_61"},
-            {"dts ma 8","DTS_HD_MA_71"}
-
         };
         protected string AudioImageName {
             get {
@@ -494,9 +457,8 @@ namespace MediaBrowser.Library.Entities
                 //Removed to allow change to seperate channel icons
                 var profile = AudioProfileString;
                 if (AudioImageNames.ContainsKey(profile)) return "codec_" + AudioImageNames[profile];
-                profile = profile.Substring(0, Math.Min(profile.Length, 3));
-                if (AudioImageNames.ContainsKey(profile)) return "codec_" + AudioImageNames[profile];
-                return "codec_"+AudioProfileString.ToLower(); //not found...
+                if (profile.StartsWith("pcm", StringComparison.OrdinalIgnoreCase)) return "codec_pcm";
+                return "codec_"+profile.ToLower(); //not found...
             }
         }
 
