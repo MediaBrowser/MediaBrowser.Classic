@@ -30,31 +30,17 @@ namespace MediaBrowser.Library.Entities {
 
         public static void AddToCache(StudioDto dto)
         {
-            if (!StudioCache.ContainsKey(dto.Name))
+            lock(StudioCache)
             {
-                StudioCache[dto.Name] = new Studio
-                                            {
-                                                Name = dto.Name,
-                                                PrimaryImagePath = dto.HasPrimaryImage ? Kernel.ApiClient.GetImageUrl("/Studios/" + dto.Name + "/Images/Primary", new ImageOptions { Tag = dto.PrimaryImageTag }, new QueryStringDictionary()) : null
-                                            };
+                if (!StudioCache.ContainsKey(dto.Name))
+                {
+                    StudioCache[dto.Name] = new Studio
+                                                {
+                                                    Name = dto.Name,
+                                                    PrimaryImagePath = dto.HasPrimaryImage ? Kernel.ApiClient.GetImageUrl("/Studios/" + dto.Name + "/Images/Primary", new ImageOptions { Tag = dto.PrimaryImageTag }, new QueryStringDictionary()) : null
+                                                };
+                }
             }
-            //if (!studio.ImageLoaded)
-            //{
-            //    Async.Queue("studio image load", () =>
-            //                                         {
-            //                                             studio.ImageLoaded = true;
-            //                                             // force the primary image to load if there is one
-            //                                             if (studio.PrimaryImage != null) {studio.PrimaryImage.GetLocalImagePath();}
-            //                                             if (studio.PrimaryImage == null || studio.PrimaryImage.Corrupt)
-            //                                             {
-            //                                                 // didn't have an image - blank out the reference
-            //                                                 Logger.ReportVerbose("No image for studio {0}",name);
-            //                                                 studio.PrimaryImagePath = null;
-            //                                             }
-            //                                         });
-            //}
-
-            //return studio;
         }
 
         [Persist]
