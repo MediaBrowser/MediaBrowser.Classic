@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System.IO;
+using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Attributes;
 using System.Windows;
@@ -42,7 +43,7 @@ namespace MediaBrowser.Library.Plugins
         public PluginConfiguration(Kernel kernel, Assembly assembly)
         {
 
-            this.initialPath = Path.Combine(kernel.ConfigData.InitialFolder, @"..\Plugins\Configurations");
+            this.initialPath = ApplicationPaths.PluginConfigPath;
             this.pluginID = assembly.GetName().Name;
             this.configFile = Path.Combine(initialPath, string.Format("{0}.xml", pluginID));
             
