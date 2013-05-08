@@ -40,7 +40,6 @@ namespace MediaBrowser.ApiInteraction
         /// Initializes a new instance of the <see cref="BaseApiClient" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="jsonSerializer">The json serializer.</param>
         /// <exception cref="System.ArgumentNullException">logger</exception>
         protected BaseApiClient(ILogger logger)
         {

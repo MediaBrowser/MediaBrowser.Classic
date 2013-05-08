@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Model.Dto;
+﻿using MediaBrowser.Library.Logging;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
@@ -15,10 +16,6 @@ namespace MediaBrowser.ApiInteraction.WebSocket
     /// </summary>
     public abstract class BaseApiWebSocket
     {
-        /// <summary>
-        /// The _logger
-        /// </summary>
-        protected readonly ILogger Logger;
         /// <summary>
         /// The _json serializer
         /// </summary>
@@ -73,12 +70,9 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiWebSocket" /> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="jsonSerializer">The json serializer.</param>
-        protected BaseApiWebSocket(ILogger logger, IJsonSerializer jsonSerializer)
+        protected BaseApiWebSocket()
         {
-            Logger = logger;
-            _jsonSerializer = jsonSerializer;
+            _jsonSerializer = new NewtonsoftJsonSerializer();
         }
 
         /// <summary>
@@ -100,15 +94,15 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         {
             var json = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 
-            var message = _jsonSerializer.DeserializeFromString<WebSocketMessage<string>>(json);
+            var message = _jsonSerializer.DeserializeFromString<WebSocketMessage<object>>(json);
 
-            Logger.Info("Received web socket message: {0}", message.MessageType);
+            Logger.ReportInfo("Received web socket message: {0}", message.MessageType);
 
             if (string.Equals(message.MessageType, "LibraryChanged"))
             {
                 FireEvent(LibraryChanged, this, new LibraryChangedEventArgs
                 {
-                    UpdateInfo = _jsonSerializer.DeserializeFromString<LibraryUpdateInfo>(message.Data)
+                    UpdateInfo = _jsonSerializer.DeserializeFromString<LibraryUpdateInfo>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "RestartRequired"))
@@ -119,56 +113,56 @@ namespace MediaBrowser.ApiInteraction.WebSocket
             {
                 FireEvent(UserDeleted, this, new UserDeletedEventArgs
                 {
-                    Id = message.Data
+                    Id = message.Data.ToString()
                 });
             }
             else if (string.Equals(message.MessageType, "ScheduledTaskStarted"))
             {
                 FireEvent(ScheduledTaskStarted, this, new ScheduledTaskStartedEventArgs
                 {
-                    Name = message.Data
+                    Name = message.Data.ToString()
                 });
             }
             else if (string.Equals(message.MessageType, "ScheduledTaskEnded"))
             {
                 FireEvent(ScheduledTaskEnded, this, new ScheduledTaskEndedEventArgs
                 {
-                    Result = _jsonSerializer.DeserializeFromString<TaskResult>(message.Data)
+                    Result = _jsonSerializer.DeserializeFromString<TaskResult>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "PackageInstalling"))
             {
                 FireEvent(PackageInstalling, this, new PackageInstallationEventArgs
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data)
+                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "PackageInstallationFailed"))
             {
                 FireEvent(PackageInstallationFailed, this, new PackageInstallationEventArgs
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data)
+                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "PackageInstallationCompleted"))
             {
                 FireEvent(PackageInstallationCompleted, this, new PackageInstallationEventArgs
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data)
+                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "PackageInstallationCancelled"))
             {
                 FireEvent(PackageInstallationCancelled, this, new PackageInstallationEventArgs
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data)
+                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
                 });
             }
             else if (string.Equals(message.MessageType, "UserUpdated"))
             {
                 FireEvent(UserUpdated, this, new UserUpdatedEventArgs
                 {
-                    User = _jsonSerializer.DeserializeFromString<UserDto>(message.Data)
+                    User = _jsonSerializer.DeserializeFromString<UserDto>(message.Data.ToString())
                 });
             }
         }
@@ -191,7 +185,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorException("Error in event handler", ex);
+                    Logger.ReportException("Error in event handler", ex);
                 }
             }
         }

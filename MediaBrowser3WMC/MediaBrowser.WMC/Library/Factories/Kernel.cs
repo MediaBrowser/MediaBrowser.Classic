@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using MediaBrowser.ApiInteraction;
+using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
@@ -23,6 +24,7 @@ using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.MBSystem;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter.UI;
 
@@ -420,6 +422,8 @@ namespace MediaBrowser.Library {
         public static User CurrentUser;
         public static List<UserDto> AvailableUsers; 
         public bool ServerConnected { get; set; }
+        public static ApiWebSocket WebSocket { get; private set; }
+        public static SystemInfo ServerInfo { get; set; } 
 
         static Kernel GetDefaultKernel(ConfigData config, KernelLoadDirective loadDirective) {
 
@@ -441,6 +445,9 @@ namespace MediaBrowser.Library {
                 };
                 connected = true;
                 AvailableUsers = ApiClient.GetAllUsers().ToList();
+                ServerInfo = ApiClient.GetSystemInfo();
+                WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
+                WebSocket.Connect(ApiClient.ServerHostName, ServerInfo.WebSocketPortNumber, "MBClassic", ApiClient.DeviceName);
             }
 
             var repository = new MB3ApiRepository();
@@ -459,6 +466,8 @@ namespace MediaBrowser.Library {
              LocalRepo = localRepo,
              MediaLocationFactory = new MediaLocationFactory(),
              };
+
+             WebSocket.LibraryChanged += kernel.LibraryChanged;
 
             //Kernel.UseNewSQLRepo = config.UseNewSQLRepo;
 
@@ -539,6 +548,12 @@ namespace MediaBrowser.Library {
             }
         }
 
+        private void LibraryChanged(object sender, LibraryChangedEventArgs args)
+        {
+            Logger.ReportVerbose("Library Changed...");
+            Logger.ReportVerbose("Folder: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.Folders[0], args.UpdateInfo.ItemsAdded.Count(), args.UpdateInfo.ItemsRemoved.Count(), args.UpdateInfo.ItemsUpdated.Count());
+        }
+
         public void ReLoadConfig()
         {
             Logger.ReportVerbose("Reloading config file (probably due to change in other process).");
@@ -565,6 +580,7 @@ namespace MediaBrowser.Library {
 
         private static System.Reflection.Assembly _jsonAssembly;
         private static System.Reflection.Assembly _protoAssembly;
+        private static System.Reflection.Assembly _websocketAssembly;
 
         static System.Reflection.Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
             Logger.ReportVerbose("=========System looking for assembly: " + args.Name);
@@ -584,6 +600,12 @@ namespace MediaBrowser.Library {
             {
                 Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppConfigPath, "protobuf-net.dll"));
                 return _protoAssembly ?? (_protoAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "protobuf-net.dll")));
+            }
+            else
+            if (args.Name.StartsWith("websocket4net,", StringComparison.OrdinalIgnoreCase))
+            {
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppConfigPath, "websocket4net.dll"));
+                return _websocketAssembly ?? (_websocketAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "websocket4net.dll")));
             }
 
             else

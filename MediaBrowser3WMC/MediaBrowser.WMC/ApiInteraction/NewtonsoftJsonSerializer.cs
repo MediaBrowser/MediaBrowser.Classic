@@ -1,7 +1,7 @@
 ﻿using MediaBrowser.Model.Serialization;
-using Newtonsoft.Json;
 using System;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -10,16 +10,33 @@ namespace MediaBrowser.ApiInteraction
     /// </summary>
     public class NewtonsoftJsonSerializer : IJsonSerializer
     {
+        private readonly JsonSerializer _serializer = JsonSerializer.Create(new JsonSerializerSettings());
+
         /// <summary>
         /// Serializes to stream.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="stream">The stream.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         /// <exception cref="System.ArgumentNullException">obj</exception>
         public void SerializeToStream(object obj, Stream stream)
         {
-            throw new NotImplementedException();
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            using (var writer = new StreamWriter(stream))
+            {
+                using (var jsonWriter = new JsonTextWriter(writer))
+                {
+                    _serializer.Serialize(jsonWriter, obj);
+                }
+            }
         }
 
         /// <summary>
@@ -34,7 +51,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 using (var jsonReader = new JsonTextReader(streamReader))
                 {
-                    return JsonSerializer.Create(new JsonSerializerSettings()).Deserialize(jsonReader, type);
+                    return _serializer.Deserialize(jsonReader, type);
                 }
             }
         }
@@ -59,7 +76,7 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="System.NotImplementedException"></exception>
         public T DeserializeFromString<T>(string text)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<T>(text);
         }
 
         /// <summary>
@@ -85,7 +102,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 using (var jsonWriter = new JsonTextWriter((streamWriter)))
                 {
-                    JsonSerializer.Create(new JsonSerializerSettings()).Serialize(jsonWriter, obj);
+                    _serializer.Serialize(jsonWriter, obj);
                 }
                 return streamWriter.ToString();
             }
@@ -96,10 +113,19 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns>System.Byte[][].</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.ArgumentNullException">obj</exception>
         public byte[] SerializeToBytes(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                SerializeToStream(obj, stream);
+                return stream.ToArray();
+            }
         }
 
         /// <summary>

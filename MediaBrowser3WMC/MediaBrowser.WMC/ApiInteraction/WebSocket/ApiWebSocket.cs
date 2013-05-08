@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Model.Logging;
+﻿using MediaBrowser.Library.Logging;
+using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Serialization;
 using System;
 
@@ -14,8 +15,8 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// </summary>
         private readonly IClientWebSocket _webSocket;
 
-        public ApiWebSocket(IClientWebSocket webSocket, ILogger logger, IJsonSerializer jsonSerializer)
-            : base(logger, jsonSerializer)
+        public ApiWebSocket(IClientWebSocket webSocket)
+            : base()
         {
             _webSocket = webSocket;
         }
@@ -43,7 +44,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error connecting to {0}", ex, url);
+                Logger.ReportException("Error connecting to {0}", ex, url);
             }
         }
 
@@ -64,7 +65,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
             }
             catch (Exception ex)
             {
-                Library.Logging.Logger.ReportException("Error sending web socket message", ex);
+                Logger.ReportException("Error sending web socket message", ex);
 
                 throw;
             }
