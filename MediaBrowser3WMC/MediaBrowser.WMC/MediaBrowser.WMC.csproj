@@ -111,6 +111,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\packages\WebSocket4Net.0.8\lib\net35\WebSocket4Net.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -125,6 +128,12 @@
     <Compile Include="ApiInteraction\NullLogger.cs" />
     <Compile Include="ApiInteraction\SerializationFormats.cs" />
     <Compile Include="ApiInteraction\ServerLocator.cs" />
+    <Compile Include="ApiInteraction\WebSocket\ApiWebSocket.cs" />
+    <Compile Include="ApiInteraction\WebSocket\BaseApiWebSocket.cs" />
+    <Compile Include="ApiInteraction\WebSocket\ClientWebSocketFactory.cs" />
+    <Compile Include="ApiInteraction\WebSocket\EventArgs.cs" />
+    <Compile Include="ApiInteraction\WebSocket\IClientWebSocket.cs" />
+    <Compile Include="ApiInteraction\WebSocket\WebSocket4NetClientWebSocket.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
@@ -341,6 +350,9 @@
     <Compile Include="Model\Net\HttpException.cs" />
     <Compile Include="Model\Net\NetworkShare.cs" />
     <Compile Include="Model\Net\NetworkShareType.cs" />
+    <Compile Include="Model\Net\WebSocketMessage.cs" />
+    <Compile Include="Model\Net\WebSocketMessageType.cs" />
+    <Compile Include="Model\Net\WebSocketState.cs" />
     <Compile Include="Model\Querying\ItemFields.cs" />
     <Compile Include="Model\Querying\ItemFilter.cs" />
     <Compile Include="Model\Querying\ItemQuery.cs" />
