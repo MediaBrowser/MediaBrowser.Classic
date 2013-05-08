@@ -243,7 +243,7 @@ namespace MediaBrowser.Library.Entities
 
         #region Properties Video
 
-        protected static Dictionary<string, string> VideoImageNames = new Dictionary<string, string>()
+        protected static Dictionary<string, string> VideoImageNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {"divx 5","divx"},
             {"divx","divx"},
@@ -277,10 +277,10 @@ namespace MediaBrowser.Library.Entities
             get {
                 //first look for hd value if we are hd
                 if (Width >= 1280 || Height >= 700) {
-                    if (VideoImageNames.ContainsKey(VideoCodecString.ToLower()+"hd")) return "codec_" + VideoImageNames[VideoCodecString.ToLower()+"hd"];
+                    if (VideoImageNames.ContainsKey(VideoCodecString+"hd")) return "codec_" + VideoImageNames[VideoCodecString+"hd"];
                 }
                 //next see if there is a translation for our codec
-                if (VideoImageNames.ContainsKey(VideoCodecString.ToLower())) return "codec_" + VideoImageNames[VideoCodecString.ToLower()];
+                if (VideoImageNames.ContainsKey(VideoCodecString)) return "codec_" + VideoImageNames[VideoCodecString];
                 //finally, just try the codec itself
                 return "codec_"+VideoCodecString.ToLower();
             }
@@ -309,7 +309,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                if (this.VideoFrameRateString != null && this.VideoFrameRateString != "")
+                if (!string.IsNullOrEmpty(this.VideoFrameRateString))
                 {
                     return string.Format("{0} {1} {2}", this.VideoResolutionString, Kernel.Instance.StringData.GetString("AtStr"), this.VideoFrameRateString);
                 }
@@ -400,7 +400,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                if (this.VideoFPS != null && this.VideoFPS != "" && this.VideoFPS != "0")
+                if (!string.IsNullOrEmpty(this.VideoFPS) && this.VideoFPS != "0")
                 {
                     return VideoFPS.ToString() + " " + Kernel.Instance.StringData.GetString("FrameRateStr");
                 }   
@@ -412,7 +412,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                if (this.VideoRateStr != null && this.VideoRateStr != "")
+                if (!string.IsNullOrEmpty(this.VideoRateStr))
                 {
                     return string.Format("{0} {1} {2}", this.VideoCodec, Kernel.Instance.StringData.GetString("AtStr"), this.VideoRateStr);
                 }
@@ -424,7 +424,7 @@ namespace MediaBrowser.Library.Entities
 
         #region Properties Audio
 
-        protected static Dictionary<string, string> AudioImageNames = new Dictionary<string, string>()
+        protected static Dictionary<string, string> AudioImageNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {"aac","Aac"},
             {"ac-3","Ac3"},
@@ -448,6 +448,7 @@ namespace MediaBrowser.Library.Entities
             {"wma2","Wma"},
             {"wma3","Wma"},            
             {"vorbis","Vorbis"},
+            {"pcm","PCM"},
 			
             //Legacy values not needed with change to seperate channel icons 
             {"ac-3 1","DD_10"},
@@ -491,7 +492,10 @@ namespace MediaBrowser.Library.Entities
             get {
                 //if (AudioImageNames.ContainsKey(AudioCombinedString.ToLower())) return "codec_"+AudioImageNames[AudioCombinedString.ToLower()];
                 //Removed to allow change to seperate channel icons
-                if (AudioImageNames.ContainsKey(AudioProfileString.ToLower())) return "codec_"+AudioImageNames[AudioProfileString.ToLower()];
+                var profile = AudioProfileString;
+                if (AudioImageNames.ContainsKey(profile)) return "codec_" + AudioImageNames[profile];
+                profile = profile.Substring(0, Math.Min(profile.Length, 3));
+                if (AudioImageNames.ContainsKey(profile)) return "codec_" + AudioImageNames[profile];
                 return "codec_"+AudioProfileString.ToLower(); //not found...
             }
         }
@@ -558,7 +562,7 @@ namespace MediaBrowser.Library.Entities
        {
             get
             {
-                if (this.AudioLanguagesString != null && this.AudioLanguagesString != "")
+                if (!string.IsNullOrEmpty(this.AudioLanguagesString))
                 {
                     return AudioLanguagesString;
                 }
@@ -571,7 +575,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                if (this.AudioRateStr != null && this.AudioRateStr != "")
+                if (!string.IsNullOrEmpty(this.AudioRateStr))
                 {
                     return string.Format("{0} {1} {2}", this.AudioProfileString, Kernel.Instance.StringData.GetString("AtStr"), this.AudioRateStr);
                 }
@@ -592,7 +596,7 @@ namespace MediaBrowser.Library.Entities
                         case "dts":
                         case "mpeg audio":
                             {
-                                if (this.AudioProfile != null && this.AudioProfile != "")
+                                if (!string.IsNullOrEmpty(this.AudioProfile))
                                     return string.Format("{0} {1}", this.AudioFormat, this.AudioProfile);
                                 else
                                     return this.AudioFormat;
