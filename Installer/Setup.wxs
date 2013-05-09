@@ -237,6 +237,9 @@
       <Component Id="Protobuf" Guid="C6E52F3D-03E0-4E01-991E-1AF6219F2C7B" DiskId="1">
         <File Id="Protobuf" Name="protobuf-net.dll" Source="..\3rdParty\protobuf-net.dll" Checksum="no" />
       </Component>
+      <Component Id="Websocket" Guid="56295741-0952-49EE-9396-1B5C19363F4E" DiskId="1">
+        <File Id="Protobuf" Name="websocket4net.dll" Source="..\3rdParty\websocket4net.dll" Checksum="no" />
+      </Component>
     </DirectoryRef>
     
 
@@ -261,6 +264,7 @@
       <ComponentRef Id="SQLite64" />
       <ComponentRef Id="JsonNet" />
       <ComponentRef Id="Protobuf" />
+      <ComponentRef Id="Websocket" />
       <ComponentRef Id="DefaultShortcuts" />
       <ComponentRef Id="OptionalStartmenuFolderShortcut" />
       <ComponentRef Id="OptionalDesktopFolderShortcut" />
