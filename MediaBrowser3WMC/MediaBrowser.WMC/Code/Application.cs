@@ -1092,8 +1092,23 @@ namespace MediaBrowser
                         Async.Queue(Async.STARTUP_QUEUE, () =>
                         {
                             PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
-                        }, 60000);
+                        }, 30000);
                     }
+
+                    // Let the user know if the server needs to be restarted
+                    // Put it on the same thread as the update checks so it will be behind them
+                    Async.Queue(Async.STARTUP_QUEUE, () =>
+                                                         {
+                                                             if (Kernel.ServerInfo.HasPendingRestart)
+                                                             {
+                                                                 if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                                                                 {
+                                                                     Kernel.ApiClient.PerformPendingRestart();
+                                                                     MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
+                                                                     Close();
+                                                                 }
+                                                             }
+                                                         },35000);
 
                     Navigate(this.RootFolderModel);
                 }
