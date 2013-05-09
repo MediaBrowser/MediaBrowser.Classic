@@ -202,8 +202,8 @@
       <Component Id="MediaBrowser.InstallUtil.dll" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
         <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\..\MediaBrowser\Installation\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
       </Component>
-      <Component Id="Newtonsoft.Json.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
-        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\3rdParty\Newtonsoft.Json.dll" Checksum="no" Vital="yes"/>
+      <Component Id="ServiceStack.Text.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
+        <File Id="ServiceStack.Text.dll" Name="ServiceStack.Text.dll" Source="..\3rdParty\ServiceStack.Text.dll" Checksum="no" Vital="yes"/>
       </Component>
     </DirectoryRef>
 
@@ -251,7 +251,7 @@
       <ComponentRef Id="MBMigrate.exe.config" />
       <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
-      <ComponentRef Id="Newtonsoft.Json.dll" />
+      <ComponentRef Id="ServiceStack.Text.dll" />
       <ComponentRef Id="Application.png" />
       <ComponentRef Id="ApplicationInactive.png" />
       <ComponentRef Id="Registration7.xml" />
