@@ -329,7 +329,7 @@ namespace MediaBrowser.Library {
                 IShow show = baseItem as IShow;
                 if (show != null)
                 {
-                    if (show.AspectRatio != null && show.AspectRatio != "")
+                    if (!string.IsNullOrEmpty(show.AspectRatio))
                     {
                         return show.AspectRatio;
                     }

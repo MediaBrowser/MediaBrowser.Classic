@@ -69,5 +69,8 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public MediaInfoData MediaInfo { get; set; }
 
+        [Persist]
+        public string AspectRatio { get; set; }
+
     }
 }

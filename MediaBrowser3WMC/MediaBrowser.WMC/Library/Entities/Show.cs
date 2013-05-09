@@ -105,9 +105,6 @@ namespace MediaBrowser.Library.Entities {
         public int? ProductionYear { get; set; }
 
         [Persist]
-        public string AspectRatio { get; set; }
-
-        [Persist]
         public override string TagLine { get; set; }
 
         [Persist]
