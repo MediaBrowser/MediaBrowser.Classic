@@ -97,12 +97,12 @@ namespace MediaBrowser.Code.ModelItems {
                 //  by design .... 
                 if (!changed) { return; }
 
-                fastMetadataRefresher.Inject(children.folder);
-                bool isSeason = children.folder.GetType() == typeof(Season) && children.folder.Parent != null;
-                if (isSeason)
-                {
-                    fastMetadataRefresher.Inject(children.folder.Parent);
-                }
+                //fastMetadataRefresher.Inject(children.folder);
+                //bool isSeason = children.folder.GetType() == typeof(Season) && children.folder.Parent != null;
+                //if (isSeason)
+                //{
+                //    fastMetadataRefresher.Inject(children.folder.Parent);
+                //}
             }
         }
 

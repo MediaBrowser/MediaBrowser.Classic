@@ -552,12 +552,19 @@ namespace MediaBrowser.Library {
         {
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folder: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.Folders[0], args.UpdateInfo.ItemsAdded.Count(), args.UpdateInfo.ItemsRemoved.Count(), args.UpdateInfo.ItemsUpdated.Count());
-            var changedItem = FindItem(args.UpdateInfo.Folders[0]);
-            if (changedItem != null) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
-            else Logger.ReportVerbose("Changed folder {0} is not loaded", args.UpdateInfo.Folders[0]);
-            changedItem = FindItem(args.UpdateInfo.ItemsUpdated[0]);
-            if (changedItem != null) Logger.ReportVerbose("First item with changes is: {0}", changedItem.Name);
-            else Logger.ReportVerbose("Changed Item {0} is not loaded", args.UpdateInfo.ItemsUpdated[0]);
+            //var changedItem = FindItem(args.UpdateInfo.Folders[0]);
+            //if (changedItem != null) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
+            //else Logger.ReportVerbose("Changed folder {0} is not loaded", args.UpdateInfo.Folders[0]);
+            foreach (var id in args.UpdateInfo.ItemsUpdated)
+            {
+                var changedItem = FindItem(id);
+                if (changedItem != null)
+                {
+                    Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
+                    changedItem.RefreshMetadata();
+                }
+                else Logger.ReportVerbose("Changed Item {0} is not loaded", id);
+            }
         }
 
         public void ReLoadConfig()

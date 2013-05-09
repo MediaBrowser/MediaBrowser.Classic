@@ -469,52 +469,53 @@ namespace MediaBrowser.Library.Entities {
         /// <summary>
         /// Refresh metadata on this item, will return true if the metadata changed 
         /// </summary>
-        /// <param name="fastOnly">Only use fast providers (excluse internet based and slow providers)</param>
-        /// <param name="force">Force a metadata refresh</param>
         /// <returns>True if the metadata changed</returns>
         public virtual bool RefreshMetadata(MetadataRefreshOptions options)
         {
-            return false;
+            Logger.ReportVerbose("In refresh metadata for {0}",Name);
+            //Just fire this if we are attached to model item it will refresh
+            OnMetadataChanged(new MetadataChangedEventArgs());
+            return true;
+
         }
 
         public void ReCacheAllImages()
         {
-            string ignore;
             if (this.PrimaryImage != null)
             {
                 PrimaryImage.ClearLocalImages();
-                ignore = this.PrimaryImage.GetLocalImagePath(); //no size - cache at original size
+                this.PrimaryImage.GetLocalImagePath(); //no size - cache at original size
             }
 
-            foreach (MediaBrowser.Library.ImageManagement.LibraryImage image in this.BackdropImages)
+            foreach (LibraryImage image in this.BackdropImages)
             {
                 image.ClearLocalImages();
-                ignore = image.GetLocalImagePath(); //force the backdrops to re-cache
+                image.GetLocalImagePath(); //force the backdrops to re-cache
             }
             if (this.BannerImage != null)
             {
                 this.BannerImage.ClearLocalImages();
-                ignore = this.BannerImage.GetLocalImagePath(); //and banner
+                this.BannerImage.GetLocalImagePath(); //and banner
             }
             if (this.LogoImage != null)
             {
                 this.LogoImage.ClearLocalImages();
-                ignore = this.LogoImage.GetLocalImagePath(); //and logo
+                this.LogoImage.GetLocalImagePath(); //and logo
             }
             if (this.ArtImage != null)
             {
                 this.ArtImage.ClearLocalImages();
-                ignore = this.ArtImage.GetLocalImagePath(); //and art
+                this.ArtImage.GetLocalImagePath(); //and art
             }
             if (this.DiscImage != null)
             {
                 this.DiscImage.ClearLocalImages();
-                ignore = this.DiscImage.GetLocalImagePath(); //and disc
+                this.DiscImage.GetLocalImagePath(); //and disc
             }
             if (this.ThumbnailImage != null)
             {
                 this.ThumbnailImage.ClearLocalImages();
-                ignore = this.ThumbnailImage.GetLocalImagePath(); //and, finally, thumb
+                this.ThumbnailImage.GetLocalImagePath(); //and, finally, thumb
             }
         }
 

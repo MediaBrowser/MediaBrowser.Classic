@@ -382,28 +382,28 @@ namespace MediaBrowser.Library {
                             Where(actor => actor.Name != null && actor.Name.Trim().Length > 0)
                             .ToList();
 
-                        if (actors.Count > 0)
-                        {
+                        //if (actors.Count > 0)
+                        //{
 
-                            Async.Queue("Actor Loader", () =>
-                            {
-                                foreach (var actor in actors.Distinct())
-                                {
-                                    if (actor.Person.RefreshMetadata(MetadataRefreshOptions.FastOnly))
-                                    {
-                                        Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
-                                    }
-                                }
+                        //    Async.Queue("Actor Loader", () =>
+                        //    {
+                        //        foreach (var actor in actors.Distinct())
+                        //        {
+                        //            if (actor.Person.RefreshMetadata(MetadataRefreshOptions.FastOnly))
+                        //            {
+                        //                Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
+                        //            }
+                        //        }
 
-                                foreach (var actor in actors.Distinct())
-                                {
-                                    if (actor.Person.RefreshMetadata())
-                                    {
-                                        Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
-                                    }
-                                }
-                            });
-                        }
+                        //        foreach (var actor in actors.Distinct())
+                        //        {
+                        //            if (actor.Person.RefreshMetadata())
+                        //            {
+                        //                Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
+                        //            }
+                        //        }
+                        //    });
+                        //}
 
                     }
 
@@ -607,17 +607,9 @@ namespace MediaBrowser.Library {
 
 
         private void MetadataChanged(object sender, MetadataChangedEventArgs args) {
-            if (!Microsoft.MediaCenter.UI.Application.IsApplicationThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke( _ => MetadataChanged(sender, args));
-                return;
-            }
+            //Something on the server changed - reload us but no UI message
+            RefreshMetadata(false);
 
-            FirePropertyChanged("Name");
-            FirePropertyChanged("Overview");
-            FirePropertyChanged("PrimaryImage"); 
-            FirePropertyChanged("PrimaryImageSmall"); 
-            FirePropertyChanged("PrimaryImage"); 
-            FirePropertyChanged("PreferredImageSmall"); 
         }
     }
 }
