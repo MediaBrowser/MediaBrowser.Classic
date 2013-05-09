@@ -17,6 +17,7 @@ namespace MediaBrowser.Library.Util {
             this.hasValue = false;
         }
 
+        public bool HasValue {get { return hasValue; }}
 
         public Lazy(Func<T> func, Action changeNotify) : this(func) {
             this.changeNotify = changeNotify;

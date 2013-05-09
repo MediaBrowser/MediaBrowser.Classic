@@ -552,6 +552,9 @@ namespace MediaBrowser.Library {
         {
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folder: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.Folders[0], args.UpdateInfo.ItemsAdded.Count(), args.UpdateInfo.ItemsRemoved.Count(), args.UpdateInfo.ItemsUpdated.Count());
+            var changedFolder = FindItem(args.UpdateInfo.Folders[0]);
+            if (changedFolder != null) Logger.ReportVerbose("Folder with changes is: {0}", changedFolder.Name);
+            else Logger.ReportVerbose("Changed folder {0} is not loaded", args.UpdateInfo.Folders[0]);
         }
 
         public void ReLoadConfig()
@@ -576,6 +579,21 @@ namespace MediaBrowser.Library {
                     //MBServiceController.SendCommandToCore(IPCCommands.ReloadConfig);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Find an item in the library by Id
+        /// If onlyIflLoaded is true, we will only search for items in children that have actually been loaded
+        /// Use this parameter when searching for items that have changed on the server so that we don't cause
+        /// a complete library load when not necessary.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="onlyIfLoaded"></param>
+        /// <returns></returns>
+        public BaseItem FindItem(Guid id, bool onlyIfLoaded = true)
+        {
+            return onlyIfLoaded ? RootFolder.RecursiveLoadedChildren.FirstOrDefault(i => i.Id == id) :
+                       RootFolder.RecursiveChildren.FirstOrDefault(i => i.Id == id);
         }
 
         private static System.Reflection.Assembly _jsonAssembly;

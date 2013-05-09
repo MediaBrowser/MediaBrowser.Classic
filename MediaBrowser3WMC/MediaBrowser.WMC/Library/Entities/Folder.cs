@@ -158,6 +158,14 @@ namespace MediaBrowser.Library.Entities {
         }
 
         /// <summary>
+        /// Return our children only if they have actually been loaded
+        /// </summary>
+        public IList<BaseItem> LoadedChildren
+        {
+            get { return children.HasValue ? Children : new List<BaseItem>(); }
+        }
+
+        /// <summary>
         /// Returns our first child or null if no children
         /// </summary>
         public virtual BaseItem FirstChild
@@ -578,6 +586,28 @@ namespace MediaBrowser.Library.Entities {
                     return Year.GetYear(unknown);
                 default:
                     return Genre.GetGenre(unknown);
+            }
+        }
+
+        /// <summary>
+        /// Recursive enumerator that returns recursive children only if they have already been loaded
+        /// </summary>
+        public virtual IEnumerable<BaseItem> RecursiveLoadedChildren
+        {
+            get
+            {
+                foreach (var item in LoadedChildren)
+                {
+                    yield return item;
+                    var folder = item as Folder;
+                    if (folder != null)
+                    {
+                        foreach (var subitem in folder.RecursiveLoadedChildren)
+                        {
+                            yield return subitem;
+                        }
+                    }
+                }
             }
         }
 
