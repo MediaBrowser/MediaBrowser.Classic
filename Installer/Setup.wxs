@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.18.0" ?>
-<?define Property_ProductCode = "35A88378-9EE1-48E0-B1E8-F2E7122180E5" ?>
+<?define Property_ProductVersion = "3.0.19.0" ?>
+<?define Property_ProductCode = "8CC40096-35DC-4A77-87D4-361BFFEE4541" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -65,14 +65,14 @@
       </Directory>
       <Directory Id="DesktopFolder" Name="Desktop"/>
       <Directory Id="StartupFolder" Name="Startup"/>
-      <!--<Directory Id="AppDataFolder" />-->
+      <Directory Id="AppDataFolder" />
       <Directory Id="TEMPDIR" Name="TempFolder"/>
-      <Directory Id="AppDataFolder">
-        <Directory Id="MBFolder" Name="MediaBrowser-Classic" >
-          <!--<Directory Id="PluginsFolder" Name="Plugins"/>-->
-          <!--<Directory Id="CacheFolder" Name="cache">
-              --><!--<Directory Id="CacheItemsFolder" Name="items" />--><!--
-          </Directory>-->
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="MBFolder" Name="MediaBrowser-Classic">
+          <Directory Id="PluginsFolder" Name="Plugins"/>
+          <Directory Id="CacheFolder" Name="cache">
+              <!--<Directory Id="CacheItemsFolder" Name="items" />-->
+          </Directory>
         </Directory>
       </Directory>
     </Directory>
@@ -202,8 +202,8 @@
       <Component Id="MediaBrowser.InstallUtil.dll" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
         <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\..\MediaBrowser\Installation\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
       </Component>
-      <Component Id="ServiceStack.Text.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
-        <File Id="ServiceStack.Text.dll" Name="ServiceStack.Text.dll" Source="..\3rdParty\ServiceStack.Text.dll" Checksum="no" Vital="yes"/>
+      <Component Id="Newtonsoft.Json.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\3rdParty\Newtonsoft.Json.dll" Checksum="no" Vital="yes"/>
       </Component>
     </DirectoryRef>
 
@@ -212,55 +212,29 @@
     <!-- As long as there is content in the folder, it will not be removed during uninstallation            -->
     <PropertyRef Id="WIX_ACCOUNT_USERS" />
     <DirectoryRef Id="MBFolder">
-      <Component Id="MBProgramDataFolder" Guid="43D322E8-ABF5-48ee-B37E-C12CA86603E7" Permanent="yes">
-        <RegistryValue Root='HKCU' Key='Software\MediaBrowser\MBClassic'
-                       Name='ProgramFolder'
-                       Value='ProgramFolder'
-                       Type='string'
-                       KeyPath='yes' />
+      <Component Id="MBProgramDataFolder" Guid="43D322E8-ABF5-48ee-B37E-C12CA86603E7">
         <CreateFolder>
           <!--Using PermissionEx we keep the current permissions and give additional permissions to the group-->
           <!--Using WIX_ACCOUNT_USERS to handle localized qualified name of the Users group.                 -->
            <util:PermissionEx User="[WIX_ACCOUNT_USERS]" GenericAll="yes"/>
         </CreateFolder>
-        <RemoveFolder Id="MBFolder" On="uninstall" />
       </Component>
       
       <!-- Install the proper SQLite package -->
       <Component Id="SQLite32" Guid="77801CA1-BE8B-4A96-83C7-A364694A9362" DiskId="1">
-        <RegistryValue Root='HKCU' Key='Software\MediaBrowser\MBClassic'
-                       Name='SQLite32'
-                       Value='SQLite32'
-                       Type='string'
-                       KeyPath='yes' />
         <File Id="System.Data.SQLite.32" Name="System.Data.SQLite.dll" Source="..\SQLite\System.Data.SQLite.dll" Checksum="no" />
         <Condition>Not VersionNT64</Condition>
       </Component>
       <Component Id="SQLite64" Guid="EAFE88A3-6ED1-4F65-8AB1-980D42FCCD82" DiskId="1">
-        <RegistryValue Root='HKCU' Key='Software\MediaBrowser\MBClassic'
-                       Name='SQLite64'
-                       Value='SQLite64'
-                       Type='string'
-                       KeyPath='yes' />
         <File Id="System.Data.SQLite.64" Name="System.Data.SQLite.dll" Source="..\SQLite\x64\System.Data.SQLite.dll" Checksum="no" />
         <Condition>VersionNT64</Condition>
       </Component>
       
       <!-- Install json.net and protobuf -->
       <Component Id="JsonNet" Guid="67A3FC10-E6F2-4547-9BE8-E8E732FACED3" DiskId="1">
-        <RegistryValue Root='HKCU' Key='Software\MediaBrowser\MBClassic'
-                       Name='JsonNet'
-                       Value='JsonNet'
-                       Type='string'
-                       KeyPath='yes' />
         <File Id="Json.Net" Name="Newtonsoft.Json.dll" Source="..\3rdParty\Newtonsoft.Json.dll" Checksum="no" />
       </Component>
       <Component Id="Protobuf" Guid="C6E52F3D-03E0-4E01-991E-1AF6219F2C7B" DiskId="1">
-        <RegistryValue Root='HKCU' Key='Software\MediaBrowser\MBClassic'
-                       Name='Protobuf'
-                       Value='Protobuf'
-                       Type='string'
-                       KeyPath='yes' />
         <File Id="Protobuf" Name="protobuf-net.dll" Source="..\3rdParty\protobuf-net.dll" Checksum="no" />
       </Component>
     </DirectoryRef>
@@ -277,7 +251,7 @@
       <ComponentRef Id="MBMigrate.exe.config" />
       <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
-      <ComponentRef Id="ServiceStack.Text.dll" />
+      <ComponentRef Id="Newtonsoft.Json.dll" />
       <ComponentRef Id="Application.png" />
       <ComponentRef Id="ApplicationInactive.png" />
       <ComponentRef Id="Registration7.xml" />

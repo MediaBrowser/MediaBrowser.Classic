@@ -47,7 +47,7 @@ namespace MediaBrowser.Library.Configuration {
 
         static ApplicationPaths() {
             pathMap = new Dictionary<string, string>();
-            pathMap["app_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+            pathMap["app_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
             
             BuildTree();
         }
