@@ -247,7 +247,7 @@ namespace MediaBrowser.Library.Persistance
                         var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
                         var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
                         media.MediaStreams = mb3Item.MediaStreams;
-                        media.AspectRatio = vidStream != null ? vidStream.AspectRatio : null;
+                        media.AspectRatio = mb3Item.AspectRatio;
 
                         media.MediaInfo = new MediaInfoData
                                               {
