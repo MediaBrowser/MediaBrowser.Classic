@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Windows.Data;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
@@ -551,10 +552,12 @@ namespace MediaBrowser.Library {
         private void LibraryChanged(object sender, LibraryChangedEventArgs args)
         {
             Logger.ReportVerbose("Library Changed...");
-            Logger.ReportVerbose("Folder: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.Folders[0], args.UpdateInfo.ItemsAdded.Count(), args.UpdateInfo.ItemsRemoved.Count(), args.UpdateInfo.ItemsUpdated.Count());
-            //var changedItem = FindItem(args.UpdateInfo.Folders[0]);
-            //if (changedItem != null) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
-            //else Logger.ReportVerbose("Changed folder {0} is not loaded", args.UpdateInfo.Folders[0]);
+            Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
+            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).Select(id => FindItem(id)).Where(folder => folder != null).Cast<Folder>().ToList();
+            // Get folders that were reported to us
+            foreach (var changedItem in changedFolders) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
+
+            // Get changed items and update them
             foreach (var id in args.UpdateInfo.ItemsUpdated)
             {
                 var changedItem = FindItem(id);
@@ -565,6 +568,11 @@ namespace MediaBrowser.Library {
                 }
                 else Logger.ReportVerbose("Changed Item {0} is not loaded", id);
             }
+
+            //Get Added items and determine the parent(s) that needs to be refreshed
+            var addedItems = MB3ApiRepository.RetrieveSpecificItems(args.UpdateInfo.ItemsAdded.Select(i => i.ToString()).ToArray());
+            var foldersAddedTo = addedItems.Select(i => i.ApiParentId).Distinct().Select(id => FindItem(new Guid(id))).Where(folder => folder != null).ToList();
+            foreach (var folder in foldersAddedTo) Logger.ReportVerbose("Folder {0} needs to be refreshed",folder.Name);
         }
 
         public void ReLoadConfig()

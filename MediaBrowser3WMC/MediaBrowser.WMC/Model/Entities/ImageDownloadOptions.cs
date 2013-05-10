@@ -1,55 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ProtoBuf;
-
+﻿
 namespace MediaBrowser.Model.Entities
 {
-    [ProtoContract]
+    /// <summary>
+    /// Class ImageDownloadOptions
+    /// </summary>
     public class ImageDownloadOptions
     {
         /// <summary>
         /// Download Art Image
         /// </summary>
-        [ProtoMember(1)]
+        /// <value><c>true</c> if art; otherwise, <c>false</c>.</value>
         public bool Art { get; set; }
 
         /// <summary>
         /// Download Logo Image
         /// </summary>
-        [ProtoMember(2)]
+        /// <value><c>true</c> if logo; otherwise, <c>false</c>.</value>
         public bool Logo { get; set; }
 
         /// <summary>
         /// Download Primary Image
         /// </summary>
-        [ProtoMember(3)]
+        /// <value><c>true</c> if primary; otherwise, <c>false</c>.</value>
         public bool Primary { get; set; }
 
         /// <summary>
         /// Download Backdrop Images
         /// </summary>
-        [ProtoMember(4)]
+        /// <value><c>true</c> if backdrops; otherwise, <c>false</c>.</value>
         public bool Backdrops { get; set; }
 
         /// <summary>
         /// Download Disc Image
         /// </summary>
-        [ProtoMember(5)]
+        /// <value><c>true</c> if disc; otherwise, <c>false</c>.</value>
         public bool Disc { get; set; }
 
         /// <summary>
         /// Download Thumb Image
         /// </summary>
-        [ProtoMember(6)]
+        /// <value><c>true</c> if thumb; otherwise, <c>false</c>.</value>
         public bool Thumb { get; set; }
 
         /// <summary>
         /// Download Banner Image
         /// </summary>
-        [ProtoMember(7)]
+        /// <value><c>true</c> if banner; otherwise, <c>false</c>.</value>
         public bool Banner { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageDownloadOptions"/> class.
+        /// </summary>
+        public ImageDownloadOptions()
+        {
+            Art = true;
+            Logo = true;
+            Primary = true;
+            Backdrops = true;
+            Disc = true;
+            Thumb = true;
+            Banner = true;
+        }
     }
 }

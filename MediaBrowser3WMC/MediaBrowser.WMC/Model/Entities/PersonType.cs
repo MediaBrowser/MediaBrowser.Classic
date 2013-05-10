@@ -23,8 +23,12 @@ namespace MediaBrowser.Model.Entities
         /// </summary>
         public const string Writer = "Writer";
         /// <summary>
-        /// The music artist
+        /// The guest star
         /// </summary>
-        public const string MusicArtist = "MusicArtist";
+        public const string GuestStar = "GuestStar";
+        /// <summary>
+        /// The producer
+        /// </summary>
+        public const string Producer = "Producer";
     }
 }

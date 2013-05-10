@@ -25,6 +25,14 @@ namespace MediaBrowser.Model.Entities
         /// <summary>
         /// MusicBrainz
         /// </summary>
-        Musicbrainz
+        Musicbrainz,
+        /// <summary>
+        /// The rotten tomatoes
+        /// </summary>
+        RottenTomatoes,
+        /// <summary>
+        /// Tmdb Collection Id
+        /// </summary>
+        TmdbCollection
     }
 }

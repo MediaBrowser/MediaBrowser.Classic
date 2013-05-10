@@ -149,6 +149,7 @@ namespace MediaBrowser.Library.Persistance
                 item.SortName = mb3Item.SortName;
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
                 item.UserData = mb3Item.UserData;
+                item.ApiParentId = mb3Item.ParentId;
 
                 var index = item as IndexFolder;
                 if (index != null)
@@ -374,7 +375,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
-                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo
+                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)

@@ -668,6 +668,7 @@ namespace MediaBrowser.Library {
                         Logger.ReportInfo("re-caching images for " + item.Name);
                         item.ReCacheAllImages();
                     }
+                    
 
                     RefreshUI();
                 }
@@ -700,12 +701,9 @@ namespace MediaBrowser.Library {
                     //if this is the root page - also the recent items
                     try
                     {
-                        foreach (FolderModel folder in this.Children)
+                        foreach (FolderModel fld in this.Children)
                         {
-                            folder.QuickListItems = null;
-                            //folder.newestItems = null; //force it to go get the real items
-                            //folder.GetNewestItems(Config.Instance.RecentItemCount);
-                            //folder.recentUnwatchedItems = null;
+                            fld.QuickListItems = null;
                         }
                     }
                     catch (Exception ex)

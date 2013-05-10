@@ -1,5 +1,4 @@
 ﻿using System.Web;
-using MediaBrowser.Model.Connectivity;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;

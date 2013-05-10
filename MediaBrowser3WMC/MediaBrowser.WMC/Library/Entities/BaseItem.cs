@@ -263,6 +263,7 @@ namespace MediaBrowser.Library.Entities {
         public string CustomPIN { get; set; }
 
         public UserItemDataDto UserData { get; set; }
+        public string ApiParentId { get; set; }
 
         public virtual string OfficialRating
         {

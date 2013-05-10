@@ -4,6 +4,7 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Serialization;
+using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Tasks;
 using MediaBrowser.Model.Updates;
 using System;
@@ -56,6 +57,10 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// Occurs when [library changed].
         /// </summary>
         public event EventHandler<LibraryChangedEventArgs> LibraryChanged;
+
+        public event EventHandler<BrowseRequestEventArgs> BrowseCommand;
+        public event EventHandler<PlayRequestEventArgs> PlayCommand;
+        public event EventHandler<PlaystateRequestEventArgs> PlaystateCommand;
 
         /// <summary>
         /// Occurs when [restart required].
@@ -163,6 +168,27 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                 FireEvent(UserUpdated, this, new UserUpdatedEventArgs
                 {
                     User = _jsonSerializer.DeserializeFromString<UserDto>(message.Data.ToString())
+                });
+            }
+            else if (string.Equals(message.MessageType, "Browse"))
+            {
+                FireEvent(BrowseCommand, this, new BrowseRequestEventArgs
+                {
+                    Request = _jsonSerializer.DeserializeFromString<BrowseRequest>(message.Data.ToString())
+                });
+            }
+            else if (string.Equals(message.MessageType, "Play"))
+            {
+                FireEvent(PlayCommand, this, new PlayRequestEventArgs
+                {
+                    Request = _jsonSerializer.DeserializeFromString<PlayRequest>(message.Data.ToString())
+                });
+            }
+            else if (string.Equals(message.MessageType, "UpdatePlaystate"))
+            {
+                FireEvent(PlaystateCommand, this, new PlaystateRequestEventArgs
+                {
+                    Request = _jsonSerializer.DeserializeFromString<PlaystateRequest>(message.Data.ToString())
                 });
             }
         }

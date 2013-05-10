@@ -307,7 +307,6 @@
     <Compile Include="Model\Configuration\UserConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Connectivity\ClientConnectionInfo.cs" />
     <Compile Include="Model\Drawing\DrawingUtils.cs" />
     <Compile Include="Model\DTO\BaseItemDto.cs" />
     <Compile Include="Model\DTO\BaseItemPerson.cs" />
@@ -365,6 +364,10 @@
     <Compile Include="Model\Serialization\IJsonSerializer.cs" />
     <Compile Include="Model\Serialization\IProtobufSerializer.cs" />
     <Compile Include="Model\Serialization\IXmlSerializer.cs" />
+    <Compile Include="Model\Session\BrowseRequest.cs" />
+    <Compile Include="Model\Session\PlayRequest.cs" />
+    <Compile Include="Model\Session\PlaystateRequest.cs" />
+    <Compile Include="Model\Session\SessionInfoDto.cs" />
     <Compile Include="Model\System\SystemInfo.cs">
       <SubType>Code</SubType>
     </Compile>
