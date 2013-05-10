@@ -144,6 +144,7 @@ namespace MediaBrowser.Library.Persistance
                 item.Name = mb3Item.Name;
                 item.Path = mb3Item.Path;
                 item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
+                //item.DateModified = (mb3Item.DateModified ?? DateTime.MinValue).ToLocalTime();
                 item.DisplayMediaType = mb3Item.DisplayMediaType;
                 item.Overview = mb3Item.Overview;
                 item.SortName = mb3Item.SortName;

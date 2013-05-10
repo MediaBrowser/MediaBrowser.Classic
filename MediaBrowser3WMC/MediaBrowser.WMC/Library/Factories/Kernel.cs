@@ -423,7 +423,6 @@ namespace MediaBrowser.Library {
         public static User CurrentUser;
         public static List<UserDto> AvailableUsers; 
         public bool ServerConnected { get; set; }
-        public static ApiWebSocket WebSocket { get; private set; }
         public static SystemInfo ServerInfo { get; set; } 
 
         static Kernel GetDefaultKernel(ConfigData config, KernelLoadDirective loadDirective) {
@@ -447,8 +446,6 @@ namespace MediaBrowser.Library {
                 connected = true;
                 AvailableUsers = ApiClient.GetAllUsers().ToList();
                 ServerInfo = ApiClient.GetSystemInfo();
-                WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
-                WebSocket.Connect(ApiClient.ServerHostName, ServerInfo.WebSocketPortNumber, "MBClassic", ApiClient.DeviceName);
             }
 
             var repository = new MB3ApiRepository();
@@ -467,8 +464,6 @@ namespace MediaBrowser.Library {
              LocalRepo = localRepo,
              MediaLocationFactory = new MediaLocationFactory(),
              };
-
-             WebSocket.LibraryChanged += kernel.LibraryChanged;
 
             //Kernel.UseNewSQLRepo = config.UseNewSQLRepo;
 
@@ -547,32 +542,6 @@ namespace MediaBrowser.Library {
                 favFolder.AddChildren(new List<BaseItem> {new FavoritesTypeFolder(new string[] {"Movie"}, "Movies" ), new FavoritesTypeFolder(new[] {"Series", "Season", "Episode"}, "TV"), new FavoritesTypeFolder(new[] {"Audio", "MusicAlbum", "MusicArtist"}, "Music")});
                 kernel.RootFolder.AddVirtualChild(favFolder);
             }
-        }
-
-        private void LibraryChanged(object sender, LibraryChangedEventArgs args)
-        {
-            Logger.ReportVerbose("Library Changed...");
-            Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
-            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).Select(id => FindItem(id)).Where(folder => folder != null).Cast<Folder>().ToList();
-            // Get folders that were reported to us
-            foreach (var changedItem in changedFolders) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
-
-            // Get changed items and update them
-            foreach (var id in args.UpdateInfo.ItemsUpdated)
-            {
-                var changedItem = FindItem(id);
-                if (changedItem != null)
-                {
-                    Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
-                    changedItem.RefreshMetadata();
-                }
-                else Logger.ReportVerbose("Changed Item {0} is not loaded", id);
-            }
-
-            //Get Added items and determine the parent(s) that needs to be refreshed
-            var addedItems = MB3ApiRepository.RetrieveSpecificItems(args.UpdateInfo.ItemsAdded.Select(i => i.ToString()).ToArray());
-            var foldersAddedTo = addedItems.Select(i => i.ApiParentId).Distinct().Select(id => FindItem(new Guid(id))).Where(folder => folder != null).ToList();
-            foreach (var folder in foldersAddedTo) Logger.ReportVerbose("Folder {0} needs to be refreshed",folder.Name);
         }
 
         public void ReLoadConfig()

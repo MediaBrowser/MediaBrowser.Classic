@@ -18,6 +18,7 @@ namespace MediaBrowser.Library.Entities {
     public class Folder : BaseItem, MediaBrowser.Library.Entities.IFolder {
 
         public event EventHandler<ChildrenChangedEventArgs> ChildrenChanged;
+        public event EventHandler<EventArgs> QuickListChanged;
 
         MediaBrowser.Library.Util.Lazy<List<BaseItem>> children;
         protected IFolderMediaLocation location;
@@ -227,7 +228,7 @@ namespace MediaBrowser.Library.Entities {
 
                     Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
                     if (!reBuildQuickList) quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                    if (quickListFolder == null || quickListFolder.Children.Count == 0)
+                    if (quickListFolder == null || quickListFolder.Children.Count == 0 || quickListFolder.DateModified < this.DateModified)
                     {
                         //re-build
                         using (new MediaBrowser.Util.Profiler("RAL Load for " + this.Name)) UpdateQuickList(recentItemOption);
@@ -724,11 +725,14 @@ namespace MediaBrowser.Library.Entities {
             if (ChildrenChanged != null)
             {
                 ChildrenChanged(this, args);
-                //Logger.ReportVerbose("Called Childrenchanged for " + Name);
             }
-            else
+        }
+
+        public void OnQuickListChanged(EventArgs args) {
+
+            if (QuickListChanged != null)
             {
-                //Logger.ReportVerbose("NOT Calling Childrenchanged for " + Name);
+                QuickListChanged(this, args);
             }
         }
 

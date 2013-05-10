@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MediaBrowser.ApiInteraction;
+using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
@@ -314,6 +315,94 @@ namespace MediaBrowser
         {
             MessageBox(msg, false, 0, "resx://MediaBrowser/MediaBrowser.Resources/Message#ProgressBox");
         }
+
+        #endregion
+
+        #region Websocket
+        public static ApiWebSocket WebSocket { get; private set; }
+
+        private void LibraryChanged(object sender, LibraryChangedEventArgs args)
+        {
+            Logger.ReportVerbose("Library Changed...");
+            Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
+            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).Select(id => Kernel.Instance.FindItem(id)).Where(folder => folder != null).Cast<Folder>().ToList();
+            // Get folders that were reported to us
+            foreach (var changedItem in changedFolders) Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
+
+            var topFolders = new Dictionary<Guid, Folder>();
+
+            //First get all the top folders of removed items
+            foreach (var id in args.UpdateInfo.ItemsRemoved)
+            {
+                var removed = Kernel.Instance.FindItem(id);
+                if (removed != null)
+                {
+                    var top = removed.TopParent;
+                    if (top != null) topFolders[top.Id] = top;
+
+                    // If our parent wasn't included in the updated list - refresh it
+                    var parent = removed.Parent;
+                    if (parent != null)
+                    {
+                        if (!args.UpdateInfo.ItemsUpdated.Contains(parent.Id)) parent.RefreshMetadata();
+                    }
+                }
+            }
+
+            // Get changed items and update them
+            foreach (var id in args.UpdateInfo.ItemsUpdated)
+            {
+                var changedItem = Kernel.Instance.FindItem(id);
+                if (changedItem != null)
+                {
+                    Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
+                    changedItem.RefreshMetadata();
+                    
+                    // Add it's top parent so we can clear out recent lists if this was an added item
+                    if (args.UpdateInfo.ItemsAdded.Contains(changedItem.Id))
+                    {
+                        var top = changedItem.TopParent;
+                        if (top != null) topFolders[top.Id] = top;
+                    }
+                }
+                else
+                {
+                    Logger.ReportVerbose("Changed Item {0} is not loaded", id);
+                }
+            }
+
+            //Now we can get all the top folders of added items and parents if they weren't refreshed already
+            foreach (var id in args.UpdateInfo.ItemsAdded)
+            {
+                var added = Kernel.Instance.FindItem(id);
+                if (added != null)
+                {
+                    var top = added.TopParent;
+                    if (top != null) topFolders[top.Id] = top;
+
+                    // If our parent wasn't included in the updated list - refresh it
+                    var parent = added.Parent;
+                    if (parent != null)
+                    {
+                        if (!args.UpdateInfo.ItemsUpdated.Contains(parent.Id)) parent.RefreshMetadata();
+                    }
+                }
+            }
+
+            //And reset the recent list for each top folder affected
+            foreach (var top in topFolders.Values)
+            {
+                top.ResetQuickList();
+                top.OnQuickListChanged(null);
+            } 
+
+            //Get Added items and determine the parent(s) that needs to be refreshed
+            //var addedItems = Kernel.Instance.MB3ApiRepository.RetrieveSpecificItems(args.UpdateInfo.ItemsAdded.Select(i => i.ToString()).ToArray());
+            //var foldersAddedTo = addedItems.Select(i => i.ApiParentId).Distinct().Select(id => Kernel.Instance.FindItem(new Guid(id))).Where(folder => folder != null).ToList();
+            //foreach (var folder in foldersAddedTo) Logger.ReportVerbose("Folder {0} needs to be refreshed", folder.Name);
+        }
+
+
 
         #endregion
 
@@ -1082,6 +1171,10 @@ namespace MediaBrowser
                     //        RootFolderModel.Children.Sort(); //make sure sort is right
                     //    }, 2000);
                     //}
+
+                    WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
+                    WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceName);
+                    WebSocket.LibraryChanged += LibraryChanged;
 
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.

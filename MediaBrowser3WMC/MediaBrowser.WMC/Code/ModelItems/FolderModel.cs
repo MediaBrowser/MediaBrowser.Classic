@@ -36,8 +36,9 @@ namespace MediaBrowser.Library {
 
         internal override void Assign(BaseItem baseItem ) { 
             base.Assign(baseItem);
-            folder = (MediaBrowser.Library.Entities.Folder)baseItem;
+            folder = (Folder)baseItem;
             folderChildren.Assign(this, FireChildrenChangedEvents);
+            folder.QuickListChanged += QuickListChanged;
         }
 
         #endregion
@@ -324,6 +325,11 @@ namespace MediaBrowser.Library {
             }
         }
 
+        protected void QuickListChanged(object sender, EventArgs args)
+        {
+            QuickListItems = null;
+        }
+
         protected string lastQuickListType = Config.Instance.RecentItemOption;
         protected bool validated = false;
         protected object quickListLock = new object();
@@ -398,12 +404,8 @@ namespace MediaBrowser.Library {
                                     Logger.ReportVerbose(this.Name + " unwatched items changed.");
                                     QuickListItems = null;
                                 }
-                                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                                {
-                                    FirePropertyChanged("RecentItems");
-                                    FirePropertyChanged("NewestItems");
-                                    FirePropertyChanged("QuickListItems");
-                                });
+
+                                FireQuicklistPropertiesChanged();
                             }
                         }, null, true);
 
@@ -415,14 +417,19 @@ namespace MediaBrowser.Library {
             {
                 folder.ResetQuickList();
                 quickListItems = null;
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                {
-                    FirePropertyChanged("RecentItems");
-                    FirePropertyChanged("NewestItems");
-                    FirePropertyChanged("QuickListItems");
-                });
-
+                FireQuicklistPropertiesChanged();
             }
+        }
+
+        protected void FireQuicklistPropertiesChanged()
+        {
+            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+            {
+                FirePropertyChanged("RecentItems");
+                FirePropertyChanged("NewestItems");
+                FirePropertyChanged("QuickListItems");
+            });
+            
         }
 
         protected void CreateEpisodeParents(Item item)
