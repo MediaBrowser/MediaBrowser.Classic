@@ -21,6 +21,7 @@
     xmlns:pu="resx://MediaBrowser/MediaBrowser.Resources/PluginUpdateButton"
     xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
     xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
 	  xmlns:me="Me"
 	  >
 
@@ -43,6 +44,7 @@
       <Command Name="ResetConfig" />
       <Command Name="UpdateCheck" />
       <Command Name="CloseMessage"/>
+      <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
@@ -212,6 +214,32 @@
         </Actions>
       </Changed>
 
+      <Changed Source="[Application.ShowMessage]" >
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[MessageBox.Visible]" Value="true" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Invoke Target="[MsgDelay.Start]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[MsgDelay.Tick]" >
+        <Actions>
+          <Invoke Target="[MessageBox.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.ShowMessage]">
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+      
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Panel1.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="1" ConditionOp="Equals" Target="[Panel2.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="2" ConditionOp="Equals" Target="[Panel3.Visible]" Value="true" />
