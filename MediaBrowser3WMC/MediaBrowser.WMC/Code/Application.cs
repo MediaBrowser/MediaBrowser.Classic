@@ -698,7 +698,7 @@ namespace MediaBrowser
 
         void ScreenSaverTimer_Tick(object sender, EventArgs e)
         {
-            if (Config.EnableScreenSaver) 
+            if (LoggedIn && Config.EnableScreenSaver) 
             {
                 if (!IsPlayingVideo && !IsExternalWmcApplicationPlaying)
                 {
