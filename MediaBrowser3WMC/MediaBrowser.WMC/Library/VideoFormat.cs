@@ -9,6 +9,6 @@ namespace MediaBrowser.Library
     {
         Standard,
         Digital3D,
-        SBS3D
+        Sbs3D
     }
 }
