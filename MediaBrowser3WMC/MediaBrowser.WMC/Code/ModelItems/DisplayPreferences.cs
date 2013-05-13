@@ -47,7 +47,7 @@ namespace MediaBrowser.Library
 
             try
             {
-                this.viewType.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.ViewType ?? "Poster" : "Poster";
+                this.viewType.Chosen = folder.DisplayPreferences != null ? folder.DisplayPreferences.ViewType ?? Config.Instance.DefaultViewType.ToString() : Config.Instance.DefaultViewType.ToString();
             }
             catch (ArgumentException)
             {
