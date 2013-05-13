@@ -1201,7 +1201,7 @@ namespace MediaBrowser
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.
                     Updater = new Updater(this);
-                    if (Config.EnableUpdates)
+                    if (Config.EnableUpdates && !RunningOnExtender)
                     {
                         Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
                         Async.Queue(Async.STARTUP_QUEUE, () =>
@@ -1241,6 +1241,11 @@ namespace MediaBrowser
             {
                 Async.Queue("UPDATE CHECK", () =>
                                                 {
+                                                    if (RunningOnExtender)
+                                                    {
+                                                        Information.AddInformationString("Cannot update from an extender.");
+                                                        return;
+                                                    }
                                                     SystemUpdateCheckInProgress = true;
                                                     Updater.CheckForUpdate();
                                                     SystemUpdateCheckInProgress = false;
