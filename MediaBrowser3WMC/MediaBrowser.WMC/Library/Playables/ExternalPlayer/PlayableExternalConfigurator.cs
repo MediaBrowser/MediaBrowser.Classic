@@ -17,12 +17,12 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         /// <summary>
         /// Gets the default configuration that will be pre-populated into the UI of the configurator.
         /// </summary>
-        public virtual ConfigData.ExternalPlayer GetDefaultConfiguration()
+        public virtual CommonConfigData.ExternalPlayer GetDefaultConfiguration()
         {
-            ConfigData.ExternalPlayer config = new ConfigData.ExternalPlayer();
+            CommonConfigData.ExternalPlayer config = new CommonConfigData.ExternalPlayer();
 
             config.ExternalPlayerName = ExternalPlayerName;
-            config.LaunchType = ConfigData.ExternalPlayerLaunchType.CommandLine;
+            config.LaunchType = CommonConfigData.ExternalPlayerLaunchType.CommandLine;
             config.SupportsPlaylists = true;
             config.SupportsMultiFileCommandArguments = false;
             config.ShowSplashScreen = true;
@@ -111,7 +111,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
             }
         }
 
-        public virtual void ConfigureUserSettings(ConfigData.ExternalPlayer currentConfiguration)
+        public virtual void ConfigureUserSettings(CommonConfigData.ExternalPlayer currentConfiguration)
         {
         }
     }

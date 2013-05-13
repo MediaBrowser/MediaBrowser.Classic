@@ -86,7 +86,7 @@ namespace MediaBrowser.Util
                 var mbClassic = Kernel.ApiClient.GetPackageInfo("MBClassic");
                 if (mbClassic != null)
                 {
-                    var newVersion = mbClassic.versions.FirstOrDefault(v => v.classification <= Kernel.Instance.ConfigData.SystemUpdateClass 
+                    var newVersion = mbClassic.versions.FirstOrDefault(v => v.classification <= Kernel.Instance.CommonConfigData.SystemUpdateClass 
                         && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
                     if (newVersion != null)
                     {
@@ -108,7 +108,7 @@ namespace MediaBrowser.Util
                                 var info = new ProcessStartInfo
                                                {
                                                    FileName = ApplicationPaths.UpdaterExecutableFile,
-                                                   Arguments = "product=mbc class=" + Kernel.Instance.ConfigData.SystemUpdateClass + " admin=true",
+                                                   Arguments = "product=mbc class=" + Kernel.Instance.CommonConfigData.SystemUpdateClass + " admin=true",
                                                    Verb = "runas"
                                                };
 

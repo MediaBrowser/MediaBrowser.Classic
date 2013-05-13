@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Configuration;
 using System.Reflection;
-using System.Xml;
 using MediaBrowser.Model.Updates;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library;
-using MediaBrowser.Library.Entities;
-using MediaBrowser.LibraryManagement;
 using MediaBrowser.Attributes;
 using Microsoft.MediaCenter;
-using System.Diagnostics;
 using MediaBrowser.Library.Configuration;
-using MediaBrowser.Library.Plugins;
-using MediaBrowser.Code;
 using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser
@@ -23,12 +14,13 @@ namespace MediaBrowser
 
     public class Config : IModelItem
     {
-        private ConfigData data;
+        private ConfigData Data { get { return Kernel.Instance.ConfigData; } }
+        private CommonConfigData CommonData { get { return Kernel.Instance.CommonConfigData; } }
 
         public bool AlwaysShowDetailsPage
         {
-            get { return this.data.AlwaysShowDetailsPage; }
-            set { if (this.data.AlwaysShowDetailsPage != value) { this.data.AlwaysShowDetailsPage = value; Save(); FirePropertyChanged("AlwaysShowDetailsPage"); } }
+            get { return this.Data.AlwaysShowDetailsPage; }
+            set { if (this.Data.AlwaysShowDetailsPage != value) { this.Data.AlwaysShowDetailsPage = value; Save(); FirePropertyChanged("AlwaysShowDetailsPage"); } }
         }
 
         //public int ParentalUnlockPeriod
@@ -98,78 +90,78 @@ namespace MediaBrowser
 
         public bool EnableRootPage
         {
-            get { return this.data.EnableRootPage; }
-            set { if (this.data.EnableRootPage != value) { this.data.EnableRootPage = value; Save(); FirePropertyChanged("EnableRootPage"); } }
+            get { return this.Data.EnableRootPage; }
+            set { if (this.Data.EnableRootPage != value) { this.Data.EnableRootPage = value; Save(); FirePropertyChanged("EnableRootPage"); } }
         }
 
         public bool ProcessBanners
         {
-            get { return this.data.ProcessBanners; }
-            set { if (this.data.ProcessBanners != value) { this.data.ProcessBanners = value; Save(); FirePropertyChanged("ProcessBanners"); } }
+            get { return this.Data.ProcessBanners; }
+            set { if (this.Data.ProcessBanners != value) { this.Data.ProcessBanners = value; Save(); FirePropertyChanged("ProcessBanners"); } }
         }
 
         public bool ProcessBackdrops
         {
-            get { return this.data.ProcessBackdrops; }
-            set { if (this.data.ProcessBackdrops != value) { this.data.ProcessBackdrops = value; Save(); FirePropertyChanged("ProcessBackdrops"); } }
+            get { return this.Data.ProcessBackdrops; }
+            set { if (this.Data.ProcessBackdrops != value) { this.Data.ProcessBackdrops = value; Save(); FirePropertyChanged("ProcessBackdrops"); } }
         }
 
         public bool AskIncludeChildrenRefresh
         {
-            get { return this.data.AskIncludeChildrenRefresh; }
-            set { if (this.data.AskIncludeChildrenRefresh != value) { this.data.AskIncludeChildrenRefresh = value; Save(); FirePropertyChanged("AskIncludeChildrenRefresh"); } }
+            get { return this.Data.AskIncludeChildrenRefresh; }
+            set { if (this.Data.AskIncludeChildrenRefresh != value) { this.Data.AskIncludeChildrenRefresh = value; Save(); FirePropertyChanged("AskIncludeChildrenRefresh"); } }
         }
 
         public bool DefaultIncludeChildrenRefresh
         {
-            get { return this.data.DefaultIncludeChildrenRefresh; }
-            set { if (this.data.DefaultIncludeChildrenRefresh != value) { this.data.DefaultIncludeChildrenRefresh = value; Save(); FirePropertyChanged("DefaultIncludeChildrenRefresh"); } }
+            get { return this.Data.DefaultIncludeChildrenRefresh; }
+            set { if (this.Data.DefaultIncludeChildrenRefresh != value) { this.Data.DefaultIncludeChildrenRefresh = value; Save(); FirePropertyChanged("DefaultIncludeChildrenRefresh"); } }
         }
 
         public bool IsFirstRun
         {
-            get { return this.data.IsFirstRun; }
-            set { if (this.data.IsFirstRun != value) { this.data.IsFirstRun = value; Save(); FirePropertyChanged("HasBeenConfigured"); } }
+            get { return this.CommonData.IsFirstRun; }
+            set { if (this.CommonData.IsFirstRun != value) { this.CommonData.IsFirstRun = value; Save(); FirePropertyChanged("HasBeenConfigured"); } }
         }
 
         public bool CacheAllImagesInMemory
         {
-            get { return this.data.CacheAllImagesInMemory; }
-            set { if (this.data.CacheAllImagesInMemory != value) { this.data.CacheAllImagesInMemory = value; Save(); FirePropertyChanged("CacheAllImagesInMemory"); } }
+            get { return this.Data.CacheAllImagesInMemory; }
+            set { if (this.Data.CacheAllImagesInMemory != value) { this.Data.CacheAllImagesInMemory = value; Save(); FirePropertyChanged("CacheAllImagesInMemory"); } }
         }
 
         public bool HideEmptyFolders
         {
-            get { return this.data.HideEmptyFolders; }
-            set { if (this.data.HideEmptyFolders != value) { this.data.HideEmptyFolders = value; Save(); FirePropertyChanged("HideEmptyFolders"); } }
+            get { return this.Data.HideEmptyFolders; }
+            set { if (this.Data.HideEmptyFolders != value) { this.Data.HideEmptyFolders = value; Save(); FirePropertyChanged("HideEmptyFolders"); } }
         }
 
         [Comment(@"The current version of MB - will be the last version te first time we run so we can do something")]
         public string MBVersion
         {
-            get { return this.data.MBVersion; }
-            set { if (this.data.MBVersion != value) { this.data.MBVersion = value; Save(); FirePropertyChanged("MBVersion"); } }
+            get { return this.CommonData.MBVersion; }
+            set { if (this.CommonData.MBVersion != value) { this.CommonData.MBVersion = value; Save(); FirePropertyChanged("MBVersion"); } }
         }
         [Comment("Synchronize the view for similar folder types")]
         public bool EnableSyncViews
         {
-            get { return this.data.EnableSyncViews; }
-            set { if (this.data.EnableSyncViews != value) { this.data.EnableSyncViews = value; Save(); FirePropertyChanged("EnableSyncViews"); } }
+            get { return this.Data.EnableSyncViews; }
+            set { if (this.Data.EnableSyncViews != value) { this.Data.EnableSyncViews = value; Save(); FirePropertyChanged("EnableSyncViews"); } }
 
         }
 
         public bool ShowFavoritesCollection
         {
-            get { return this.data.ShowFavoritesCollection; }
-            set { if (this.data.ShowFavoritesCollection != value) { this.data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); Application.CurrentInstance.ReLoad(); } }
+            get { return this.Data.ShowFavoritesCollection; }
+            set { if (this.Data.ShowFavoritesCollection != value) { this.Data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); Application.CurrentInstance.ReLoad(); } }
         }
 
 
         [Comment("Dim all unselected posters in poster and thumbstrib views")]
         public bool DimUnselectedPosters
         {
-            get { return this.data.DimUnselectedPosters; }
-            set { if (this.data.DimUnselectedPosters != value) { this.data.DimUnselectedPosters = value; Save(); FirePropertyChanged("DimUnselectedPosters"); } }
+            get { return this.Data.DimUnselectedPosters; }
+            set { if (this.Data.DimUnselectedPosters != value) { this.Data.DimUnselectedPosters = value; Save(); FirePropertyChanged("DimUnselectedPosters"); } }
         }
 
         //Leave for backward compat
@@ -182,12 +174,12 @@ namespace MediaBrowser
         [Comment(@"Enables you to scan the display to cope with overscan issue, parameter should be of the for x,y,z scaling factors")]
         public Vector3 OverScanScaling
         {
-            get { return this.data.OverScanScaling.ToMediaCenterVector3(); }
+            get { return this.Data.OverScanScaling.ToMediaCenterVector3(); }
             set
             {
-                if (this.data.OverScanScaling.ToMediaCenterVector3() != value)
+                if (this.Data.OverScanScaling.ToMediaCenterVector3() != value)
                 {
-                    this.data.OverScanScaling = MediaBrowser.Code.ShadowTypes.Vector3.FromMediaCenterVector3(value);
+                    this.Data.OverScanScaling = MediaBrowser.Code.ShadowTypes.Vector3.FromMediaCenterVector3(value);
                     Save();
                     FirePropertyChanged("OverScanScaling");
                 }
@@ -196,12 +188,12 @@ namespace MediaBrowser
         [Comment("Defines padding to apply round the edge of the screen to cope with overscan issues")]
         public Inset OverScanPadding
         {
-            get { return this.data.OverScanPadding.ToMediaCenterInset(); }
+            get { return this.Data.OverScanPadding.ToMediaCenterInset(); }
             set
             {
-                if (this.data.OverScanPadding.ToMediaCenterInset() != value)
+                if (this.Data.OverScanPadding.ToMediaCenterInset() != value)
                 {
-                    this.data.OverScanPadding = MediaBrowser.Code.ShadowTypes.Inset.FromMediaCenterInset(value);
+                    this.Data.OverScanPadding = MediaBrowser.Code.ShadowTypes.Inset.FromMediaCenterInset(value);
                     Save();
                     FirePropertyChanged("OverScanPadding");
                 }
@@ -210,21 +202,21 @@ namespace MediaBrowser
         [Comment(@"Enables the writing of trace log files in a production environment to assist with problem solving")]
         public bool EnableTraceLogging
         {
-            get { return this.data.EnableTraceLogging; }
-            set { if (this.data.EnableTraceLogging != value) { this.data.EnableTraceLogging = value; Save(); FirePropertyChanged("EnableTraceLogging"); } }
+            get { return this.CommonData.EnableTraceLogging; }
+            set { if (this.CommonData.EnableTraceLogging != value) { this.CommonData.EnableTraceLogging = value; Save(); FirePropertyChanged("EnableTraceLogging"); } }
         }
         [Comment(@"The default size of posters before change are made to the view settings")]
         public Size DefaultPosterSize
         {
             get
             {
-                return this.data.DefaultPosterSize.ToMediaCenterSize();
+                return this.Data.DefaultPosterSize.ToMediaCenterSize();
             }
             set
             {
-                if (this.data.DefaultPosterSize.ToMediaCenterSize() != value)
+                if (this.Data.DefaultPosterSize.ToMediaCenterSize() != value)
                 {
-                    this.data.DefaultPosterSize = MediaBrowser.Code.ShadowTypes.Size.FromMediaCenterSize(value);
+                    this.Data.DefaultPosterSize = MediaBrowser.Code.ShadowTypes.Size.FromMediaCenterSize(value);
                     Save();
                     FirePropertyChanged("DefaultPosterSize");
                 }
@@ -240,12 +232,12 @@ namespace MediaBrowser
         [Comment("Controls the space between items in the poster and thumb strip views")]
         public Size GridSpacing
         {
-            get { return this.data.GridSpacing.ToMediaCenterSize(); }
+            get { return this.Data.GridSpacing.ToMediaCenterSize(); }
             set
             {
-                if (this.data.GridSpacing.ToMediaCenterSize() != value)
+                if (this.Data.GridSpacing.ToMediaCenterSize() != value)
                 {
-                    this.data.GridSpacing = MediaBrowser.Code.ShadowTypes.Size.FromMediaCenterSize(value);
+                    this.Data.GridSpacing = MediaBrowser.Code.ShadowTypes.Size.FromMediaCenterSize(value);
                     Save();
                     FirePropertyChanged("GridSpacing");
                 }
@@ -260,26 +252,26 @@ namespace MediaBrowser
 
         public int ThumbStripPosterWidth
         {
-            get { return this.data.ThumbStripPosterWidth; }
-            set { if (this.data.ThumbStripPosterWidth != value) { this.data.ThumbStripPosterWidth = value; Save(); FirePropertyChanged("ThumbStripPosterWidth"); } }
+            get { return this.Data.ThumbStripPosterWidth; }
+            set { if (this.Data.ThumbStripPosterWidth != value) { this.Data.ThumbStripPosterWidth = value; Save(); FirePropertyChanged("ThumbStripPosterWidth"); } }
         }
 
         public bool RememberIndexing
         {
-            get { return this.data.RememberIndexing; }
-            set { if (this.data.RememberIndexing != value) { this.data.RememberIndexing = value; Save(); FirePropertyChanged("RememberIndexing"); } }
+            get { return this.Data.RememberIndexing; }
+            set { if (this.Data.RememberIndexing != value) { this.Data.RememberIndexing = value; Save(); FirePropertyChanged("RememberIndexing"); } }
         }
 
         public bool ShowIndexWarning
         {
-            get { return this.data.ShowIndexWarning; }
-            set { if (this.data.ShowIndexWarning != value) { this.data.ShowIndexWarning = value; Save(); FirePropertyChanged("ShowIndexWarning"); } }
+            get { return this.Data.ShowIndexWarning; }
+            set { if (this.Data.ShowIndexWarning != value) { this.Data.ShowIndexWarning = value; Save(); FirePropertyChanged("ShowIndexWarning"); } }
         }
 
         public double IndexWarningThreshold
         {
-            get { return this.data.IndexWarningThreshold; }
-            set { if (this.data.IndexWarningThreshold != value) { this.data.IndexWarningThreshold = value; Save(); FirePropertyChanged("IndexWarningThreshold"); } }
+            get { return this.Data.IndexWarningThreshold; }
+            set { if (this.Data.IndexWarningThreshold != value) { this.Data.IndexWarningThreshold = value; Save(); FirePropertyChanged("IndexWarningThreshold"); } }
         }
 
         [Comment(@"Controls the maximum difference between the actual aspect ration of a poster image and the thumbnails being displayed to allow the application to stretch the image non-proportionally.
@@ -287,56 +279,56 @@ namespace MediaBrowser
             if x is less than the configured value the imae will be stretched non-proportionally to fit the display size")]
         public float MaximumAspectRatioDistortion
         {
-            get { return this.data.MaximumAspectRatioDistortion; }
-            set { if (this.data.MaximumAspectRatioDistortion != value) { this.data.MaximumAspectRatioDistortion = value; Save(); FirePropertyChanged("MaximumAspectRatioDistortion"); } }
+            get { return this.Data.MaximumAspectRatioDistortion; }
+            set { if (this.Data.MaximumAspectRatioDistortion != value) { this.Data.MaximumAspectRatioDistortion = value; Save(); FirePropertyChanged("MaximumAspectRatioDistortion"); } }
         }
         [Comment(@"Enable transcode 360 support on extenders")]
         public bool EnableTranscode360
         {
-            get { return this.data.EnableTranscode360; }
-            set { if (this.data.EnableTranscode360 != value) { this.data.EnableTranscode360 = value; Save(); FirePropertyChanged("EnableTranscode360"); } }
+            get { return this.Data.EnableTranscode360; }
+            set { if (this.Data.EnableTranscode360 != value) { this.Data.EnableTranscode360 = value; Save(); FirePropertyChanged("EnableTranscode360"); } }
         }
         [Comment(@"A lower case comma delimited list of types the extender supports natively. Example: .dvr-ms,.wmv")]
         public string ExtenderNativeTypes
         {
-            get { return this.data.ExtenderNativeTypes; }
-            set { if (this.data.ExtenderNativeTypes != value) { this.data.ExtenderNativeTypes = value; Save(); FirePropertyChanged("ExtenderNativeTypes"); } }
+            get { return this.Data.ExtenderNativeTypes; }
+            set { if (this.Data.ExtenderNativeTypes != value) { this.Data.ExtenderNativeTypes = value; Save(); FirePropertyChanged("ExtenderNativeTypes"); } }
         }
         [Comment("ShowThemeBackground [Default Value - False]\n\tTrue: Enables transparent background.\n\tFalse: Use default Video Browser background.")]
         public bool ShowThemeBackground
         {
-            get { return this.data.ShowThemeBackground; }
-            set { if (this.data.ShowThemeBackground != value) { this.data.ShowThemeBackground = value; Save(); FirePropertyChanged("ShowThemeBackground"); } }
+            get { return this.Data.ShowThemeBackground; }
+            set { if (this.Data.ShowThemeBackground != value) { this.Data.ShowThemeBackground = value; Save(); FirePropertyChanged("ShowThemeBackground"); } }
         }
         [Comment("Example. If set to true the following will be treated as a movie and an automatic playlist will be created.\n\tIndiana Jones / Disc 1 / a.avi\n\tIndiana Jones / Disc 2 / b.avi")]
         public bool EnableNestedMovieFolders
         {
-            get { return this.data.EnableNestedMovieFolders; }
-            set { if (this.data.EnableNestedMovieFolders != value) { this.data.EnableNestedMovieFolders = value; Save(); FirePropertyChanged("EnableNestedMovieFolders"); } }
+            get { return this.Data.EnableNestedMovieFolders; }
+            set { if (this.Data.EnableNestedMovieFolders != value) { this.Data.EnableNestedMovieFolders = value; Save(); FirePropertyChanged("EnableNestedMovieFolders"); } }
         }
         [Comment("Example. If set to true the following will be treated as a movie and an automatic playlist will be created.\n\tIndiana Jones / a.avi\n\tIndiana Jones / b.avi (This only works for 2 videos (no more))\n**Setting this to false will override EnableNestedMovieFolders if that is enabled.**")]
         public bool EnableMoviePlaylists
         {
-            get { return this.data.EnableMoviePlaylists; }
-            set { if (this.data.EnableMoviePlaylists != value) { this.data.EnableMoviePlaylists = value; Save(); FirePropertyChanged("EnableMoviePlaylists"); } }
+            get { return this.Data.EnableMoviePlaylists; }
+            set { if (this.Data.EnableMoviePlaylists != value) { this.Data.EnableMoviePlaylists = value; Save(); FirePropertyChanged("EnableMoviePlaylists"); } }
         }
         [Comment("Limit to the number of video files that willbe assumed to be a single movie and create a playlist for")]
         public int PlaylistLimit
         {
-            get { return this.data.PlaylistLimit; }
-            set { if (this.data.PlaylistLimit != value) { this.data.PlaylistLimit = value; Save(); FirePropertyChanged("PlaylistLimit"); } }
+            get { return this.Data.PlaylistLimit; }
+            set { if (this.Data.PlaylistLimit != value) { this.Data.PlaylistLimit = value; Save(); FirePropertyChanged("PlaylistLimit"); } }
         }
         [Comment("The starting folder for video browser. By default its set to MyVideos.\nCan be set to a folder for example c:\\ or a virtual folder for example c:\\folder.vf")]
         public string InitialFolder
         {
-            get { return this.data.InitialFolder; }
-            set { if (this.data.InitialFolder != value) { this.data.InitialFolder = value; Save(); FirePropertyChanged("InitialFolder"); } }
+            get { return this.Data.InitialFolder; }
+            set { if (this.Data.InitialFolder != value) { this.Data.InitialFolder = value; Save(); FirePropertyChanged("InitialFolder"); } }
         }
         [Comment(@"Flag for auto-updates.  True will auto-update, false will not.")]
         public bool EnableUpdates
         {
-            get { return this.data.EnableUpdates; }
-            set { if (this.data.EnableUpdates != value) { this.data.EnableUpdates = value; Save(); FirePropertyChanged("EnableUpdates"); } }
+            get { return this.CommonData.EnableUpdates; }
+            set { if (this.CommonData.EnableUpdates != value) { this.CommonData.EnableUpdates = value; Save(); FirePropertyChanged("EnableUpdates"); } }
         }
         [Comment(@"Flag for beta updates.  True will prompt you to update to beta versions.")]
         //public bool EnableBetas
@@ -346,52 +338,52 @@ namespace MediaBrowser
         //}
         public string SystemUpdateClass
         {
-            get { return this.data.SystemUpdateClass.ToString(); }
-            set { if (this.data.SystemUpdateClass.ToString() != value) { this.data.SystemUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), value); Save(); FirePropertyChanged("SystemUpdateClass"); } }
+            get { return this.CommonData.SystemUpdateClass.ToString(); }
+            set { if (this.CommonData.SystemUpdateClass.ToString() != value) { this.CommonData.SystemUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), value); Save(); FirePropertyChanged("SystemUpdateClass"); } }
         }
         public string PluginUpdateClass
         {
-            get { return this.data.PluginUpdateClass.ToString(); }
-            set { if (this.data.PluginUpdateClass.ToString() != value) { this.data.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass),value); Save(); FirePropertyChanged("PluginUpdateClass"); } }
+            get { return this.CommonData.PluginUpdateClass.ToString(); }
+            set { if (this.CommonData.PluginUpdateClass.ToString() != value) { this.CommonData.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), value); Save(); FirePropertyChanged("PluginUpdateClass"); } }
         }
         [Comment(@"Set the location of the Daemon Tools binary..")]
         public string DaemonToolsLocation
         {
-            get { return this.data.DaemonToolsLocation; }
-            set { if (this.data.DaemonToolsLocation != value) { this.data.DaemonToolsLocation = value; Save(); FirePropertyChanged("DaemonToolsLocation"); } }
+            get { return this.Data.DaemonToolsLocation; }
+            set { if (this.Data.DaemonToolsLocation != value) { this.Data.DaemonToolsLocation = value; Save(); FirePropertyChanged("DaemonToolsLocation"); } }
         }
         [Comment(@"The drive letter of the Daemon Tools virtual drive.")]
         public string DaemonToolsDrive
         {
-            get { return this.data.DaemonToolsDrive; }
-            set { if (this.data.DaemonToolsDrive != value) { this.data.DaemonToolsDrive = value; Save(); FirePropertyChanged("DaemonToolsDrive"); } }
+            get { return this.Data.DaemonToolsDrive; }
+            set { if (this.Data.DaemonToolsDrive != value) { this.Data.DaemonToolsDrive = value; Save(); FirePropertyChanged("DaemonToolsDrive"); } }
         }
         [Comment("Flag for alphanumeric sorting.  True will use alphanumeric sorting, false will use alphabetic sorting.\nNote that the sorting algorithm is case insensitive.")]
         public bool EnableAlphanumericSorting
         {
-            get { return this.data.EnableAlphanumericSorting; }
-            set { if (this.data.EnableAlphanumericSorting != value) { this.data.EnableAlphanumericSorting = value; Save(); FirePropertyChanged("EnableAlphanumericSorting"); } }
+            get { return this.Data.EnableAlphanumericSorting; }
+            set { if (this.Data.EnableAlphanumericSorting != value) { this.Data.EnableAlphanumericSorting = value; Save(); FirePropertyChanged("EnableAlphanumericSorting"); } }
         }
         [Comment(@"Enables the showing of tick in the list view for files that have been watched")]
         public bool EnableListViewTicks
         {
-            get { return this.data.EnableListViewTicks; }
-            set { if (this.data.EnableListViewTicks != value) { this.data.EnableListViewTicks = value; Save(); FirePropertyChanged("EnableListViewTicks"); } }
+            get { return this.Data.EnableListViewTicks; }
+            set { if (this.Data.EnableListViewTicks != value) { this.Data.EnableListViewTicks = value; Save(); FirePropertyChanged("EnableListViewTicks"); } }
         }
         [Comment(@"Enables the showing of watched shows in a different color in the list view.")]
         public bool EnableListViewWatchedColor
         {
-            get { return this.data.EnableListViewWatchedColor; }
-            set { if (this.data.EnableListViewWatchedColor != value) { this.data.EnableListViewWatchedColor = value; Save(); FirePropertyChanged("EnableListViewWatchedColor"); } }
+            get { return this.Data.EnableListViewWatchedColor; }
+            set { if (this.Data.EnableListViewWatchedColor != value) { this.Data.EnableListViewWatchedColor = value; Save(); FirePropertyChanged("EnableListViewWatchedColor"); } }
         }
          [Comment(@"Enables the showing of watched shows in a different color in the list view (Transparent disables it)")]
          public Colors ListViewWatchedColor
          {
              get
              {
-                 return (Colors)(int)this.data.ListViewWatchedColor;
+                 return (Colors)(int)this.Data.ListViewWatchedColor;
              }
-             set { if ((int)this.data.ListViewWatchedColor != (int)value) { this.data.ListViewWatchedColor = (MediaBrowser.Code.ShadowTypes.Colors)(int)value; Save(); FirePropertyChanged("ListViewWatchedColor"); FirePropertyChanged("ListViewWatchedColorMcml"); } }
+             set { if ((int)this.Data.ListViewWatchedColor != (int)value) { this.Data.ListViewWatchedColor = (MediaBrowser.Code.ShadowTypes.Colors)(int)value; Save(); FirePropertyChanged("ListViewWatchedColor"); FirePropertyChanged("ListViewWatchedColorMcml"); } }
          }
          public Color ListViewWatchedColorMcml
          {
@@ -399,63 +391,63 @@ namespace MediaBrowser
          }
         public bool ShowUnwatchedCount
         {
-            get { return this.data.ShowUnwatchedCount; }
-            set { if (this.data.ShowUnwatchedCount != value) { this.data.ShowUnwatchedCount = value; Save(); FirePropertyChanged("ShowUnwatchedCount"); } }
+            get { return this.Data.ShowUnwatchedCount; }
+            set { if (this.Data.ShowUnwatchedCount != value) { this.Data.ShowUnwatchedCount = value; Save(); FirePropertyChanged("ShowUnwatchedCount"); } }
         }
 
         public bool ShowUnwatchedIndicator
         {
-            get { return this.data.ShowUnwatchedIndicator; }
-            set { if (this.data.ShowUnwatchedIndicator != value) { this.data.ShowUnwatchedIndicator = value; Save(); FirePropertyChanged("ShowUnwatchedIndicator"); } }
+            get { return this.Data.ShowUnwatchedIndicator; }
+            set { if (this.Data.ShowUnwatchedIndicator != value) { this.Data.ShowUnwatchedIndicator = value; Save(); FirePropertyChanged("ShowUnwatchedIndicator"); } }
         }
 
         public bool ShowWatchedTickOnFolders
         {
-            get { return this.data.ShowWatchedTickOnFolders; }
-            set { if (this.data.ShowWatchedTickOnFolders != value) { this.data.ShowWatchedTickOnFolders = value; Save(); FirePropertyChanged("ShowWatchedTickOnFolders"); } }
+            get { return this.Data.ShowWatchedTickOnFolders; }
+            set { if (this.Data.ShowWatchedTickOnFolders != value) { this.Data.ShowWatchedTickOnFolders = value; Save(); FirePropertyChanged("ShowWatchedTickOnFolders"); } }
         }
 
         public bool ShowWatchTickInPosterView
         {
-            get { return this.data.ShowWatchTickInPosterView; }
-            set { if (this.data.ShowWatchTickInPosterView != value) { this.data.ShowWatchTickInPosterView = value; Save(); FirePropertyChanged("ShowWatchTickInPosterView"); } }
+            get { return this.Data.ShowWatchTickInPosterView; }
+            set { if (this.Data.ShowWatchTickInPosterView != value) { this.Data.ShowWatchTickInPosterView = value; Save(); FirePropertyChanged("ShowWatchTickInPosterView"); } }
         }
 
         public bool ShowHDIndicatorOnPosters
         {
-            get { return this.data.ShowHDIndicatorOnPosters; }
-            set { if (this.data.ShowHDIndicatorOnPosters != value) { this.data.ShowHDIndicatorOnPosters = value; Save(); FirePropertyChanged("ShowHDIndicatorOnPosters"); } }
+            get { return this.Data.ShowHDIndicatorOnPosters; }
+            set { if (this.Data.ShowHDIndicatorOnPosters != value) { this.Data.ShowHDIndicatorOnPosters = value; Save(); FirePropertyChanged("ShowHDIndicatorOnPosters"); } }
         }
 
         public bool ShowRemoteIndicatorOnPosters
         {
-            get { return this.data.ShowRemoteIndicatorOnPosters; }
-            set { if (this.data.ShowRemoteIndicatorOnPosters != value) { this.data.ShowRemoteIndicatorOnPosters = value; Save(); FirePropertyChanged("ShowRemoteIndicatorOnPosters"); } }
+            get { return this.Data.ShowRemoteIndicatorOnPosters; }
+            set { if (this.Data.ShowRemoteIndicatorOnPosters != value) { this.Data.ShowRemoteIndicatorOnPosters = value; Save(); FirePropertyChanged("ShowRemoteIndicatorOnPosters"); } }
         }
 
         public bool ExcludeRemoteContentInSearch
         {
-            get { return this.data.ExcludeRemoteContentInSearch; }
-            set { if (this.data.ExcludeRemoteContentInSearch != value) { this.data.ExcludeRemoteContentInSearch = value; Save(); FirePropertyChanged("ExcludeRemoteContentInSearch"); } }
+            get { return this.Data.ExcludeRemoteContentInSearch; }
+            set { if (this.Data.ExcludeRemoteContentInSearch != value) { this.Data.ExcludeRemoteContentInSearch = value; Save(); FirePropertyChanged("ExcludeRemoteContentInSearch"); } }
         }
 
         [Comment("Enables the views to default to the first unwatched item in a folder of movies or tv shows")]
         public bool DefaultToFirstUnwatched
         {
-            get { return this.data.DefaultToFirstUnwatched; }
-            set { if (this.data.DefaultToFirstUnwatched != value) { this.data.DefaultToFirstUnwatched = value; Save(); FirePropertyChanged("DefaultToFirstUnwatched"); } }
+            get { return this.Data.DefaultToFirstUnwatched; }
+            set { if (this.Data.DefaultToFirstUnwatched != value) { this.Data.DefaultToFirstUnwatched = value; Save(); FirePropertyChanged("DefaultToFirstUnwatched"); } }
         }
         [Comment("When navigating, if only a single folder exists, enter it.")]
         public bool AutoEnterSingleDirs
         {
-            get { return this.data.AutoEnterSingleDirs; }
-            set { if (this.data.AutoEnterSingleDirs != value) { this.data.AutoEnterSingleDirs = value; Save(); FirePropertyChanged("AutoEnterSingleDirs"); } }
+            get { return this.Data.AutoEnterSingleDirs; }
+            set { if (this.Data.AutoEnterSingleDirs != value) { this.Data.AutoEnterSingleDirs = value; Save(); FirePropertyChanged("AutoEnterSingleDirs"); } }
         }
         [Comment(@"Indicates that files with a date stamp before this date should be assumed to have been watched for the purpose of ticking them off.")]
         public DateTime AssumeWatchedBefore
         {
-            get { return this.data.AssumeWatchedBefore; }
-            set { if (this.data.AssumeWatchedBefore != value) { this.data.AssumeWatchedBefore = value; Save(); FirePropertyChanged("AssumeWatchedBefore"); FirePropertyChanged("AssumeWatchedBeforeStr"); } }
+            get { return this.Data.AssumeWatchedBefore; }
+            set { if (this.Data.AssumeWatchedBefore != value) { this.Data.AssumeWatchedBefore = value; Save(); FirePropertyChanged("AssumeWatchedBefore"); FirePropertyChanged("AssumeWatchedBeforeStr"); } }
         }
 
         public string AssumeWatchedBeforeStr
@@ -475,8 +467,8 @@ namespace MediaBrowser
 
         public bool InheritDefaultView
         {
-            get { return this.data.InheritDefaultView; }
-            set { if (this.data.InheritDefaultView != value) { this.data.InheritDefaultView = value; Save(); FirePropertyChanged("InheritDefaultView"); } }
+            get { return this.Data.InheritDefaultView; }
+            set { if (this.Data.InheritDefaultView != value) { this.Data.InheritDefaultView = value; Save(); FirePropertyChanged("InheritDefaultView"); } }
         }
 
         [Comment("Changes the default view index for folders that have not yet been visited.\n\t[Detail|Poster|Thumb]")]
@@ -486,67 +478,67 @@ namespace MediaBrowser
             {
                 try
                 {
-                    return (ViewType)Enum.Parse(typeof(ViewType), this.data.DefaultViewType);
+                    return (ViewType)Enum.Parse(typeof(ViewType), this.Data.DefaultViewType);
                 }
                 catch
                 {
                     return ViewType.Poster;
                 }
             }
-            set { if (this.data.DefaultViewType != value.ToString()) { this.data.DefaultViewType = value.ToString(); Save(); FirePropertyChanged("DefaultViewType"); } }
+            set { if (this.Data.DefaultViewType != value.ToString()) { this.Data.DefaultViewType = value.ToString(); Save(); FirePropertyChanged("DefaultViewType"); } }
         }
         [Comment("Specifies whether the default Poster and Thumb views show labels")]
         public bool DefaultShowLabels
         {
-            get { return this.data.DefaultShowLabels; }
-            set { if (this.data.DefaultShowLabels != value) { this.data.DefaultShowLabels = value; Save(); FirePropertyChanged("DefaultShowLabels"); } }
+            get { return this.Data.DefaultShowLabels; }
+            set { if (this.Data.DefaultShowLabels != value) { this.Data.DefaultShowLabels = value; Save(); FirePropertyChanged("DefaultShowLabels"); } }
         }
         [Comment("Specifies is the default for the Poster view is vertical scrolling")]
         public bool DefaultVerticalScroll
         {
-            get { return this.data.DefaultVerticalScroll; }
-            set { if (this.data.DefaultVerticalScroll != value) { this.data.DefaultVerticalScroll = value; Save(); FirePropertyChanged("DefaultVerticalScroll"); } }
+            get { return this.Data.DefaultVerticalScroll; }
+            set { if (this.Data.DefaultVerticalScroll != value) { this.Data.DefaultVerticalScroll = value; Save(); FirePropertyChanged("DefaultVerticalScroll"); } }
         }
         [Comment(@"Limits the number of levels shown by the breadcrumbs.")]
         public int BreadcrumbCountLimit
         {
-            get { return this.data.BreadcrumbCountLimit; }
-            set { if (this.data.BreadcrumbCountLimit != value) { this.data.BreadcrumbCountLimit = value; Save(); FirePropertyChanged("BreadcrumbCountLimit"); } }
+            get { return this.CommonData.BreadcrumbCountLimit; }
+            set { if (this.CommonData.BreadcrumbCountLimit != value) { this.CommonData.BreadcrumbCountLimit = value; Save(); FirePropertyChanged("BreadcrumbCountLimit"); } }
         }
         public int DefaultMessageTimeout
         {
-            get { return this.data.DefaultMessageTimeout; }
-            set { if (this.data.DefaultMessageTimeout != value) { this.data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
+            get { return this.Data.DefaultMessageTimeout; }
+            set { if (this.Data.DefaultMessageTimeout != value) { this.Data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
         }
         public bool AllowInternetMetadataProviders
         {
-            get { return this.data.AllowInternetMetadataProviders; }
-            set { if (this.data.AllowInternetMetadataProviders != value) { this.data.AllowInternetMetadataProviders = value; Save(); FirePropertyChanged("AllowInternetMetadataProviders"); } }
+            get { return this.Data.AllowInternetMetadataProviders; }
+            set { if (this.Data.AllowInternetMetadataProviders != value) { this.Data.AllowInternetMetadataProviders = value; Save(); FirePropertyChanged("AllowInternetMetadataProviders"); } }
         }
 
-        internal List<ConfigData.ExternalPlayer> ExternalPlayers
+        internal List<CommonConfigData.ExternalPlayer> ExternalPlayers
         {
-            get { return this.data.ExternalPlayers; }
+            get { return this.CommonData.ExternalPlayers; }
             //set { if (this.data.ExternalPlayers != value) { this.data.ExternalPlayers = value; Save(); FirePropertyChanged("ExternalPlayers"); } }
         }
 
         public bool UseAutoPlayForIso
         {
-            get { return this.data.UseAutoPlayForIso; }
-            set { if (this.data.UseAutoPlayForIso != value) { this.data.UseAutoPlayForIso = value; Save(); FirePropertyChanged("UseAutoPlayForIso"); } }
+            get { return this.Data.UseAutoPlayForIso; }
+            set { if (this.Data.UseAutoPlayForIso != value) { this.Data.UseAutoPlayForIso = value; Save(); FirePropertyChanged("UseAutoPlayForIso"); } }
         }
 
         [Comment("List of characters to remove from titles for alphanumeric sorting.  Separate each character with a '|'.\nThis allows titles like '10,000.BC.2008.720p.BluRay.DTS.x264-hV.mkv' to be properly sorted.")]
         public string SortRemoveCharacters
         {
-            get { return this.data.SortRemoveCharacters; }
-            set { if (this.data.SortRemoveCharacters != value) { this.data.SortRemoveCharacters = value; Save(); FirePropertyChanged("SortRemoveCharacters"); } }
+            get { return this.Data.SortRemoveCharacters; }
+            set { if (this.Data.SortRemoveCharacters != value) { this.Data.SortRemoveCharacters = value; Save(); FirePropertyChanged("SortRemoveCharacters"); } }
         }
         [Comment("List of characters to replace with a ' ' in titles for alphanumeric sorting.  Separate each character with a '|'.\nThis allows titles like 'Iron.Man.REPACK.720p.BluRay.x264-SEPTiC.mkv' to be properly sorted.")]
         public string SortReplaceCharacters
         {
-            get { return this.data.SortReplaceCharacters; }
-            set { if (this.data.SortReplaceCharacters != value) { this.data.SortReplaceCharacters = value; Save(); FirePropertyChanged("SortReplaceCharacters"); } }
+            get { return this.Data.SortReplaceCharacters; }
+            set { if (this.Data.SortReplaceCharacters != value) { this.Data.SortReplaceCharacters = value; Save(); FirePropertyChanged("SortReplaceCharacters"); } }
         }
         [Comment(@"List of words to remove from alphanumeric sorting.  Separate each word with a '|'.  Note that the
         algorithm appends a ' ' to the end of each word during the search which means words found at the end
@@ -555,14 +547,14 @@ namespace MediaBrowser
         allows titles like 'The.Adventures.Of.Baron.Munchausen.1988.720p.BluRay.x264-SiNNERS.mkv' to be properly sorted.")]
         public string SortReplaceWords
         {
-            get { return this.data.SortReplaceWords; }
-            set { if (this.data.SortReplaceWords != value) { this.data.SortReplaceWords = value; Save(); FirePropertyChanged("SortReplaceWords"); } }
+            get { return this.Data.SortReplaceWords; }
+            set { if (this.Data.SortReplaceWords != value) { this.Data.SortReplaceWords = value; Save(); FirePropertyChanged("SortReplaceWords"); } }
         }
 
         public string ViewTheme
         {
-            get { return this.data.ViewTheme; }
-            set { if (this.data.ViewTheme != value) { this.data.ViewTheme = value; Save(); FirePropertyChanged("ViewTheme"); } }
+            get { return this.Data.ViewTheme; }
+            set { if (this.Data.ViewTheme != value) { this.Data.ViewTheme = value; Save(); FirePropertyChanged("ViewTheme"); } }
         }
 
         //public string PreferredMetaDataLanguage
@@ -579,54 +571,54 @@ namespace MediaBrowser
 
         public string Theme
         {
-            get { return this.data.Theme; }
-            set { if (this.data.Theme != value) { this.data.Theme = value; Save(); FirePropertyChanged("Theme"); } }
+            get { return Data != null ? this.Data.Theme : "Default"; }
+            set { if (this.Data.Theme != value) { this.Data.Theme = value; Save(); FirePropertyChanged("Theme"); } }
         }
 
         public string FontTheme
         {
-            get { return this.data.FontTheme; }
-            set { if (this.data.FontTheme != value) { this.data.FontTheme = value; Save(); FirePropertyChanged("FontTheme"); } }
+            get { return this.Data.FontTheme; }
+            set { if (this.Data.FontTheme != value) { this.Data.FontTheme = value; Save(); FirePropertyChanged("FontTheme"); } }
         }
 
         [Comment(@"Enable clock onscreen.")]
         public bool ShowClock
         {
-            get { return this.data.ShowClock; }
-            set { if (this.data.ShowClock != value) { this.data.ShowClock = value; Save(); FirePropertyChanged("ShowClock"); } }
+            get { return this.Data.ShowClock; }
+            set { if (this.Data.ShowClock != value) { this.Data.ShowClock = value; Save(); FirePropertyChanged("ShowClock"); } }
         }
 
         [Comment(@"Enable more advanced commands.")]
         public bool EnableAdvancedCmds
         {
-            get { return this.data.EnableAdvancedCmds; }
-            set { if (this.data.EnableAdvancedCmds != value) { this.data.EnableAdvancedCmds = value; Save(); FirePropertyChanged("EnableAdvancedCmds"); } }
+            get { return this.Data.EnableAdvancedCmds; }
+            set { if (this.Data.EnableAdvancedCmds != value) { this.Data.EnableAdvancedCmds = value; Save(); FirePropertyChanged("EnableAdvancedCmds"); } }
         }
 
         [Comment(@"Advanced Command: Enable Delete")]
         public bool Advanced_EnableDelete
         {
-            get { return this.data.Advanced_EnableDelete; }
-            set { if (this.data.Advanced_EnableDelete != value) { this.data.Advanced_EnableDelete = value; Save(); FirePropertyChanged("Advanced_EnableDelete"); } }
+            get { return this.Data.Advanced_EnableDelete; }
+            set { if (this.Data.Advanced_EnableDelete != value) { this.Data.Advanced_EnableDelete = value; Save(); FirePropertyChanged("Advanced_EnableDelete"); } }
         }
 
         [Comment(@"Show backdrop on main views.")]
         public bool ShowBackdrop
         {
-            get { return this.data.ShowBackdrop; }
-            set { if (this.data.ShowBackdrop != value) { this.data.ShowBackdrop = value; Save(); FirePropertyChanged("ShowBackdrop"); } }
+            get { return this.Data.ShowBackdrop; }
+            set { if (this.Data.ShowBackdrop != value) { this.Data.ShowBackdrop = value; Save(); FirePropertyChanged("ShowBackdrop"); } }
         }
 
 
         [Comment(@"The name displayed in the top right when you first navigate into your library")]
         public string InitialBreadcrumbName
         {
-            get { return this.data.InitialBreadcrumbName; }
+            get { return this.CommonData.InitialBreadcrumbName; }
             set
             {
-                if (this.data.InitialBreadcrumbName != value)
+                if (this.CommonData.InitialBreadcrumbName != value)
                 {
-                    this.data.InitialBreadcrumbName = value;
+                    this.CommonData.InitialBreadcrumbName = value;
                     Save();
                     FirePropertyChanged("InitialBreadcrumbName");
                 }
@@ -635,29 +627,29 @@ namespace MediaBrowser
 
         public bool ShowConfigButton
         {
-            get { return this.data.ShowConfigButton; }
-            set { if (this.data.ShowConfigButton != value) { this.data.ShowConfigButton = value; Save(); FirePropertyChanged("ShowConfigButton"); } }
+            get { return this.Data.ShowConfigButton; }
+            set { if (this.Data.ShowConfigButton != value) { this.Data.ShowConfigButton = value; Save(); FirePropertyChanged("ShowConfigButton"); } }
         }
 
         public int AlphaBlending
         {
-            get { return this.data.AlphaBlending; }
-            set { if (this.data.AlphaBlending != value) { this.data.AlphaBlending = value; Save(); FirePropertyChanged("AlphaBlending"); } }
+            get { return this.Data.AlphaBlending; }
+            set { if (this.Data.AlphaBlending != value) { this.Data.AlphaBlending = value; Save(); FirePropertyChanged("AlphaBlending"); } }
         }
         public string YahooWeatherFeed
         {
-            get { return this.data.YahooWeatherFeed; }
-            set { if (this.data.YahooWeatherFeed != value) { this.data.YahooWeatherFeed = value; Save(); FirePropertyChanged("YahooWeatherFeed"); } }
+            get { return this.Data.YahooWeatherFeed; }
+            set { if (this.Data.YahooWeatherFeed != value) { this.Data.YahooWeatherFeed = value; Save(); FirePropertyChanged("YahooWeatherFeed"); } }
         }
         public string YahooWeatherUnit
         {
-            get { return this.data.YahooWeatherUnit; }
-            set { if (this.data.YahooWeatherUnit != value) { this.data.YahooWeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
+            get { return this.Data.YahooWeatherUnit; }
+            set { if (this.Data.YahooWeatherUnit != value) { this.Data.YahooWeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
         }
         public string SupporterKey
         {
-            get { return this.data.SupporterKey; }
-            set { if (this.data.SupporterKey != value) { this.data.SupporterKey = value; FirePropertyChanged("SupporterKey"); } }
+            get { return this.Data.SupporterKey; }
+            set { if (this.Data.SupporterKey != value) { this.Data.SupporterKey = value; FirePropertyChanged("SupporterKey"); } }
         }
 
         //public string PodcastHome
@@ -667,8 +659,8 @@ namespace MediaBrowser
         //}
         public bool HideFocusFrame
         {
-            get { return this.data.HideFocusFrame; }
-            set { if (this.data.HideFocusFrame != value) { this.data.HideFocusFrame = value; Save(); FirePropertyChanged("HideFocusFrame"); } }
+            get { return this.Data.HideFocusFrame; }
+            set { if (this.Data.HideFocusFrame != value) { this.Data.HideFocusFrame = value; Save(); FirePropertyChanged("HideFocusFrame"); } }
         }
 
         //public bool EnableProxyLikeCaching
@@ -684,44 +676,44 @@ namespace MediaBrowser
         //}
         public bool ShowRootBackground
         {
-            get { return this.data.ShowRootBackground; }
-            set { if (this.data.ShowRootBackground != value) { this.data.ShowRootBackground = value; Save(); FirePropertyChanged("ShowRootBackground"); } }
+            get { return this.Data.ShowRootBackground; }
+            set { if (this.Data.ShowRootBackground != value) { this.Data.ShowRootBackground = value; Save(); FirePropertyChanged("ShowRootBackground"); } }
         }
 
         public bool EnableMouseHook
         {
-            get { return this.data.EnableMouseHook; }
-            set { if (this.data.EnableMouseHook != value) { this.data.EnableMouseHook = value; Save(); FirePropertyChanged("EnableMouseHook"); } }
+            get { return this.CommonData.EnableMouseHook; }
+            set { if (this.CommonData.EnableMouseHook != value) { this.CommonData.EnableMouseHook = value; Save(); FirePropertyChanged("EnableMouseHook"); } }
         }
 
         public int RecentItemCount
         {
-            get { return this.data.RecentItemCount; }
-            set { if (this.data.RecentItemCount != value) { this.data.RecentItemCount = value; Save(); FirePropertyChanged("RecentItemCount"); } }
+            get { return this.Data.RecentItemCount; }
+            set { if (this.Data.RecentItemCount != value) { this.Data.RecentItemCount = value; Save(); FirePropertyChanged("RecentItemCount"); } }
         }
 
         public int RecentItemDays
         {
-            get { return this.data.RecentItemDays; }
-            set { if (this.data.RecentItemDays != value) { this.data.RecentItemDays = value; Save(); FirePropertyChanged("RecentItemDays"); } }
+            get { return this.Data.RecentItemDays; }
+            set { if (this.Data.RecentItemDays != value) { this.Data.RecentItemDays = value; Save(); FirePropertyChanged("RecentItemDays"); } }
         }
 
         public int RecentItemCollapseThresh
         {
-            get { return this.data.RecentItemCollapseThresh; }
-            set { if (this.data.RecentItemCollapseThresh != value) { this.data.RecentItemCollapseThresh = value; Save(); FirePropertyChanged("RecentItemCollapseThresh"); } }
+            get { return this.Data.RecentItemCollapseThresh; }
+            set { if (this.Data.RecentItemCollapseThresh != value) { this.Data.RecentItemCollapseThresh = value; Save(); FirePropertyChanged("RecentItemCollapseThresh"); } }
         }
 
         public string RecentItemOption
         {
-            get { return this.data.RecentItemOption; }
-            set { if (this.data.RecentItemOption != value) { this.data.RecentItemOption = value; Save(); FirePropertyChanged("RecentItemOption"); } }
+            get { return this.Data.RecentItemOption; }
+            set { if (this.Data.RecentItemOption != value) { this.Data.RecentItemOption = value; Save(); FirePropertyChanged("RecentItemOption"); } }
         }
 
         public List<string> PluginSources
         {
-            get { return this.data.PluginSources; }
-            set { if (this.data.PluginSources != value) { this.data.PluginSources = value; Save(); FirePropertyChanged("PluginSources"); } }
+            get { return this.CommonData.PluginSources; }
+            set { if (this.CommonData.PluginSources != value) { this.CommonData.PluginSources = value; Save(); FirePropertyChanged("PluginSources"); } }
         }
         
         //public bool PNGTakesPrecedence
@@ -732,32 +724,32 @@ namespace MediaBrowser
 
         public bool RandomizeBackdrops
         {
-            get { return this.data.RandomizeBackdrops; }
-            set { if (this.data.RandomizeBackdrops != value) { this.data.RandomizeBackdrops = value; Save(); FirePropertyChanged("RandomizeBackdrops"); } }
+            get { return this.Data.RandomizeBackdrops; }
+            set { if (this.Data.RandomizeBackdrops != value) { this.Data.RandomizeBackdrops = value; Save(); FirePropertyChanged("RandomizeBackdrops"); } }
         }
 
         public bool RotateBackdrops
         {
-            get { return this.data.RotateBackdrops; }
-            set { if (this.data.RotateBackdrops != value) { this.data.RotateBackdrops = value; Save(); FirePropertyChanged("RotateBackdrops"); } }
+            get { return this.Data.RotateBackdrops; }
+            set { if (this.Data.RotateBackdrops != value) { this.Data.RotateBackdrops = value; Save(); FirePropertyChanged("RotateBackdrops"); } }
         }
 
         public int BackdropRotationInterval
         {
-            get { return this.data.BackdropRotationInterval; }
-            set { if (this.data.BackdropRotationInterval != value) { this.data.BackdropRotationInterval = value; Save(); FirePropertyChanged("BackdropRotationInterval"); } }
+            get { return this.Data.BackdropRotationInterval; }
+            set { if (this.Data.BackdropRotationInterval != value) { this.Data.BackdropRotationInterval = value; Save(); FirePropertyChanged("BackdropRotationInterval"); } }
         }
 
         public float BackdropTransitionInterval
         {
-            get { return this.data.BackdropTransitionInterval; }
-            set { if (this.data.BackdropTransitionInterval != value) { this.data.BackdropTransitionInterval = (float)Math.Round(value, 1); Save(); FirePropertyChanged("BackdropTransitionInterval"); } }
+            get { return this.Data.BackdropTransitionInterval; }
+            set { if (this.Data.BackdropTransitionInterval != value) { this.Data.BackdropTransitionInterval = (float)Math.Round(value, 1); Save(); FirePropertyChanged("BackdropTransitionInterval"); } }
         }
 
         public int BackdropLoadDelay
         {
-            get { return this.data.BackdropLoadDelay; }
-            set { if (this.data.BackdropLoadDelay != value) { this.data.BackdropLoadDelay = value; Save(); FirePropertyChanged("BackdropLoadDelay"); } }
+            get { return this.Data.BackdropLoadDelay; }
+            set { if (this.Data.BackdropLoadDelay != value) { this.Data.BackdropLoadDelay = value; Save(); FirePropertyChanged("BackdropLoadDelay"); } }
         }
         
         public int FullRefreshInterval
@@ -795,30 +787,30 @@ namespace MediaBrowser
 
          public bool YearSortAsc
         {
-            get { return this.data.YearSortAsc; }
-            set { if (this.data.YearSortAsc != value) { this.data.YearSortAsc = value; Save(); FirePropertyChanged("YearSortAsc"); } }
+            get { return this.Data.YearSortAsc; }
+            set { if (this.Data.YearSortAsc != value) { this.Data.YearSortAsc = value; Save(); FirePropertyChanged("YearSortAsc"); } }
         }
 
         public bool AutoScrollText
         {
-            get { return this.data.AutoScrollText; }
-            set { if (this.data.AutoScrollText != value) { this.data.AutoScrollText = value; Save(); FirePropertyChanged("AutoScrollText"); } }
+            get { return this.Data.AutoScrollText; }
+            set { if (this.Data.AutoScrollText != value) { this.Data.AutoScrollText = value; Save(); FirePropertyChanged("AutoScrollText"); } }
         }
         public int AutoScrollDelay
         {
-            get { return this.data.AutoScrollDelay * 1000; } //Convert to milliseconds for MCML consumption
-            set { if (this.data.AutoScrollDelay != value) { this.data.AutoScrollDelay = value; Save(); FirePropertyChanged("AutoScrollDelay"); } }
+            get { return this.Data.AutoScrollDelay * 1000; } //Convert to milliseconds for MCML consumption
+            set { if (this.Data.AutoScrollDelay != value) { this.Data.AutoScrollDelay = value; Save(); FirePropertyChanged("AutoScrollDelay"); } }
         }
         public int AutoScrollSpeed
         {
-            get { return this.data.AutoScrollSpeed; }
-            set { if (this.data.AutoScrollSpeed != value) { this.data.AutoScrollSpeed = value; Save(); FirePropertyChanged("AutoScrollSpeed"); } }
+            get { return this.Data.AutoScrollSpeed; }
+            set { if (this.Data.AutoScrollSpeed != value) { this.Data.AutoScrollSpeed = value; Save(); FirePropertyChanged("AutoScrollSpeed"); } }
         }
 
         public bool AutoValidate
         {
-            get { return this.data.AutoValidate; }
-            set { if (this.data.AutoValidate != value) { this.data.AutoValidate = value; Save(); FirePropertyChanged("AutoValidate"); } }
+            get { return this.CommonData.AutoValidate; }
+            set { if (this.CommonData.AutoValidate != value) { this.CommonData.AutoValidate = value; Save(); FirePropertyChanged("AutoValidate"); } }
         }
 
         //public bool SaveLocalMeta
@@ -829,21 +821,21 @@ namespace MediaBrowser
 
         public LogSeverity MinLoggingSeverity
         {
-            get { return this.data.MinLoggingSeverity; }
-            set { if (this.data.MinLoggingSeverity != value) { this.data.MinLoggingSeverity = value; Save(); FirePropertyChanged("MinLoggingSeverity"); } }
+            get { return this.CommonData.MinLoggingSeverity; }
+            set { if (this.CommonData.MinLoggingSeverity != value) { CommonData.MinLoggingSeverity = value; Save(); FirePropertyChanged("MinLoggingSeverity"); } }
         }
 
         [Comment(@"Enable screen Saver.")]
         public bool EnableScreenSaver
         {
-            get { return this.data.EnableScreenSaver; }
-            set { if (this.data.EnableScreenSaver != value) { this.data.EnableScreenSaver = value; Save(); FirePropertyChanged("EnableScreenSaver"); } }
+            get { return this.Data.EnableScreenSaver; }
+            set { if (this.Data.EnableScreenSaver != value) { this.Data.EnableScreenSaver = value; Save(); FirePropertyChanged("EnableScreenSaver"); } }
         }
 
         public int ScreenSaverTimeOut
         {
-            get { return this.data.ScreenSaverTimeOut; }
-            set { if (this.data.ScreenSaverTimeOut != value) { this.data.ScreenSaverTimeOut = value; Save(); FirePropertyChanged("ScreenSaverTimeOut"); } }
+            get { return this.Data.ScreenSaverTimeOut; }
+            set { if (this.Data.ScreenSaverTimeOut != value) { this.Data.ScreenSaverTimeOut = value; Save(); FirePropertyChanged("ScreenSaverTimeOut"); } }
         }
 
         /* End of app specific settings*/
@@ -883,19 +875,19 @@ namespace MediaBrowser
             _instance = new Config();
         }
 
-        private static Config _instance = new Config();
+        private static Config _instance;
         public static Config Instance
         {
             get
             {
-                return _instance;
+                return _instance ?? (_instance = new Config());
             }
         }
 
         bool isValid;
         private Config()
         {
-            isValid = Load();
+            isValid = CommonData != null;
         }
 
         public bool IsValid
@@ -909,15 +901,9 @@ namespace MediaBrowser
         private void Save()
         {
             lock (this)
-                this.data.Save();
-        }
-
-        public void Reset()
-        {
-            lock (this)
             {
-                this.data = new ConfigData();
-                Save();
+                if (Data != null) Data.Save();
+                CommonData.Save();
             }
         }
 
@@ -932,27 +918,6 @@ namespace MediaBrowser
             return comment;
         }
 
-        private bool Load()
-        {
-            try
-            {
-                this.data = ConfigData.FromFile(ApplicationPaths.ConfigFile);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-                DialogResult r = ev.Dialog(ex.Message + "\n" + Application.CurrentInstance.StringData("ConfigErrorDial"), Application.CurrentInstance.StringData("ConfigErrorCapDial"), DialogButtons.Yes | DialogButtons.No, 600, true);
-                if (r == DialogResult.Yes)
-                {
-                    this.data = new ConfigData();
-                    Save();
-                    return true;
-                }
-                else
-                    return false;
-            }
-        }
 
         #region IModelItem Members
 

@@ -80,7 +80,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         protected override void PlayMediaInternal(PlayableItem playable)
         {
             // Two different launch methods depending on how the player is configured
-            if (LaunchType == ConfigData.ExternalPlayerLaunchType.WMCNavigate)
+            if (LaunchType == CommonConfigData.ExternalPlayerLaunchType.WMCNavigate)
             {
                 PlayUsingWMCNavigation(playable);
 
@@ -380,11 +380,11 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
             }
         }
 
-        protected virtual ConfigData.ExternalPlayerLaunchType LaunchType
+        protected virtual CommonConfigData.ExternalPlayerLaunchType LaunchType
         {
             get
             {
-                return ConfigData.ExternalPlayerLaunchType.CommandLine;
+                return CommonConfigData.ExternalPlayerLaunchType.CommandLine;
             }
         }
 

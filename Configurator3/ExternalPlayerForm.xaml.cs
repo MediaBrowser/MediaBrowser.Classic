@@ -52,7 +52,7 @@ namespace Configurator
 
             if (MessageBox.Show(uiConfigurator.ConfigureUserSettingsConfirmationMessage, "Configure Player", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                ConfigData.ExternalPlayer currentConfiguration = uiConfigurator.GetDefaultConfiguration();
+                var currentConfiguration = uiConfigurator.GetDefaultConfiguration();
                 currentConfiguration.Command = txtCommand.Text;
 
                 try
@@ -117,8 +117,8 @@ namespace Configurator
 
         void lstPlayerType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PlayableExternalConfigurator uiConfigurator = PlayableItemFactory.Instance.GetPlayableExternalConfiguratorByName(ExternalPlayerName);
-            ConfigData.ExternalPlayer externalPlayer = uiConfigurator.GetDefaultConfiguration();
+            var uiConfigurator = PlayableItemFactory.Instance.GetPlayableExternalConfiguratorByName(ExternalPlayerName);
+            var externalPlayer = uiConfigurator.GetDefaultConfiguration();
 
             FillControlsFromObject(externalPlayer, uiConfigurator, false, false);
         }
@@ -147,12 +147,12 @@ namespace Configurator
             SetListDataSource(lstVideoFormats, EnumWrapperList<VideoFormat>.Create());
         }
 
-        public void FillControlsFromObject(ConfigData.ExternalPlayer externalPlayer)
+        public void FillControlsFromObject(CommonConfigData.ExternalPlayer externalPlayer)
         {
             FillControlsFromObject(externalPlayer, PlayableItemFactory.Instance.GetPlayableExternalConfiguratorByName(externalPlayer.ExternalPlayerName), true, true);
         }
 
-        public void FillControlsFromObject(ConfigData.ExternalPlayer externalPlayer, PlayableExternalConfigurator uiConfigurator, bool refreshMediaTypes, bool refreshVideoFormats)
+        public void FillControlsFromObject(CommonConfigData.ExternalPlayer externalPlayer, PlayableExternalConfigurator uiConfigurator, bool refreshMediaTypes, bool refreshVideoFormats)
         {
             lstPlayerType.SelectedItem = externalPlayer.ExternalPlayerName;
 
@@ -191,10 +191,10 @@ namespace Configurator
             }
         }
 
-        public void UpdateObjectFromControls(ConfigData.ExternalPlayer externalPlayer)
+        public void UpdateObjectFromControls(CommonConfigData.ExternalPlayer externalPlayer)
         {
             PlayableExternalConfigurator uiConfigurator = PlayableItemFactory.Instance.GetPlayableExternalConfiguratorByName(ExternalPlayerName);
-            ConfigData.ExternalPlayer externalPlayerDefault = uiConfigurator.GetDefaultConfiguration();
+            var externalPlayerDefault = uiConfigurator.GetDefaultConfiguration();
 
             externalPlayer.LaunchType = externalPlayerDefault.LaunchType;
             externalPlayer.ExternalPlayerName = lstPlayerType.SelectedItem.ToString();

@@ -98,7 +98,7 @@ namespace MediaBrowser.Library {
             }
         }
 
-        private static MultiLogger GetDefaultLogger(ConfigData config) {
+        private static MultiLogger GetDefaultLogger(CommonConfigData config) {
             var logger = new MultiLogger(config.MinLoggingSeverity);
 
             if (config.EnableTraceLogging) {
@@ -117,20 +117,20 @@ namespace MediaBrowser.Library {
             Init(KernelLoadDirective.None);
         }
 
-        public static void Init(ConfigData config) {
+        public static void Init(CommonConfigData config) {
            Init(KernelLoadDirective.None, config);
         }
 
 
         public static void Init(KernelLoadDirective directives) {
-            ConfigData config = null;
+            CommonConfigData config = null;
 
-            config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+            config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
            
             Init(directives, config);
         } 
 
-        public static void Init(KernelLoadDirective directives, ConfigData config) {
+        public static void Init(KernelLoadDirective directives, CommonConfigData config) {
             lock (sync) {
 
                 // Its critical to have the logger initialized early so initialization 
@@ -393,12 +393,12 @@ namespace MediaBrowser.Library {
             }
         }
 
-        static IItemRepository GetLocalRepository(ConfigData config)
+        static IItemRepository GetLocalRepository()
         {
             IItemRepository repository = null;
             if (kernel != null && kernel.MB3ApiRepository != null) kernel.MB3ApiRepository.ShutdownDatabase(); //we need to do this for SQLite
             string sqliteDb = Path.Combine(ApplicationPaths.AppCachePath, "localcache.db");
-            string sqliteDll = Path.Combine(ApplicationPaths.AppConfigPath, "system.data.sqlite.dll");
+            string sqliteDll = Path.Combine(ApplicationPaths.AppProgramPath, "system.data.sqlite.dll");
             if (File.Exists(sqliteDll))
             {
                 try
@@ -425,7 +425,7 @@ namespace MediaBrowser.Library {
         public bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; } 
 
-        static Kernel GetDefaultKernel(ConfigData config, KernelLoadDirective loadDirective) {
+        static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
 
             // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
@@ -449,13 +449,13 @@ namespace MediaBrowser.Library {
             }
 
             var repository = new MB3ApiRepository();
-            var localRepo = GetLocalRepository(config);
+            var localRepo = GetLocalRepository();
 
             var kernel = new Kernel()
             {
              PlaybackControllers = new List<BasePlaybackController>(),
              //MetadataProviderFactories = MetadataProviderHelper.DefaultProviders(),
-             ConfigData = config,
+             CommonConfigData = config,
              //ServiceConfigData = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile),
              StringData = LocalizedStrings.Instance,
              ImageResolvers = DefaultImageResolvers(false),
@@ -484,11 +484,21 @@ namespace MediaBrowser.Library {
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
             //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
 
+            return kernel;
+        }
+
+        public void LoadUserConfig()
+        {
+            ConfigData = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+        }
+
+        public void LoadPlugins()
+        {
             using (new Profiler("Plugin Loading and Init"))
             {
-                kernel.Plugins = DefaultPlugins((loadDirective & KernelLoadDirective.ShadowPlugins) == KernelLoadDirective.ShadowPlugins);
+                kernel.Plugins = DefaultPlugins(true);
 
-                // initialize our plugins (maybe we should add a kernel.init ? )
+                // initialize our plugins 
                 // The ToList enables us to remove stuff from the list if there is a failure
                 foreach (var plugin in kernel.Plugins.ToList())
                 {
@@ -507,7 +517,6 @@ namespace MediaBrowser.Library {
                     }
                 }
             }
-            return kernel;
         }
 
         public void ReLoadRoot()
@@ -597,20 +606,20 @@ namespace MediaBrowser.Library {
             else
             if (args.Name.StartsWith("Newtonsoft.Json,"))
             {
-                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppConfigPath, "Newtonsoft.Json.dll"));
-                return _jsonAssembly ?? (_jsonAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "Newtonsoft.Json.dll")));
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll"));
+                return _jsonAssembly ?? (_jsonAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll")));
             }
             else
             if (args.Name.StartsWith("protobuf-net,"))
             {
-                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppConfigPath, "protobuf-net.dll"));
-                return _protoAssembly ?? (_protoAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "protobuf-net.dll")));
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "protobuf-net.dll"));
+                return _protoAssembly ?? (_protoAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "protobuf-net.dll")));
             }
             else
             if (args.Name.StartsWith("websocket4net,", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppConfigPath, "websocket4net.dll"));
-                return _websocketAssembly ?? (_websocketAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "websocket4net.dll")));
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "websocket4net.dll"));
+                return _websocketAssembly ?? (_websocketAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "websocket4net.dll")));
             }
 
             else
@@ -665,7 +674,8 @@ namespace MediaBrowser.Library {
         public List<MetadataProviderFactory> MetadataProviderFactories { get; set; }
         public List<ImageResolver> ImageResolvers { get; set; }
         public ConfigData ConfigData { get; set; }
-        public ServiceConfigData ServiceConfigData { get; set; }
+        public CommonConfigData CommonConfigData { get; set; }
+        //public ServiceConfigData ServiceConfigData { get; set; }
         public LocalizedStrings StringData { get; set; }
         public MB3ApiRepository MB3ApiRepository { get; set; }
         public IItemRepository ItemRepository { get { return LocalRepo; }}

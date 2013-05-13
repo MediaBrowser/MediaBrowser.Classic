@@ -71,18 +71,7 @@ namespace MediaBrowser
                             return;
                         }
 
-                        Environment.CurrentDirectory = ApplicationPaths.AppConfigPath;
-                        try
-                        {
-                            CustomResourceManager.SetupStylesMcml(host);
-                            CustomResourceManager.SetupFontsMcml(host);
-                        }
-                        catch (Exception ex)
-                        {
-                            host.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
-                            AddInHost.Current.ApplicationContext.CloseApplication();
-                            return;
-                        }
+                        Environment.CurrentDirectory = ApplicationPaths.AppProgramPath;
                         using (new Util.Profiler("Total Kernel Init"))
                         {
                             Kernel.Init(config);
@@ -121,12 +110,12 @@ namespace MediaBrowser
             }
         }
 
-        private static ConfigData GetConfig()
+        private static CommonConfigData GetConfig()
         {
-            ConfigData config = null;
+            CommonConfigData config = null;
             try
             {
-                config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+                config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
             }
             catch (Exception ex)
             {
@@ -134,12 +123,12 @@ namespace MediaBrowser
                 DialogResult r = ev.Dialog(ex.Message + "\n" + Application.CurrentInstance.StringData("ConfigErrorDial"), Application.CurrentInstance.StringData("ConfigErrorCapDial"), DialogButtons.Yes | DialogButtons.No, 600, true);
                 if (r == DialogResult.Yes)
                 {
-                    config = new ConfigData(ApplicationPaths.ConfigFile);
+                    config = new CommonConfigData(ApplicationPaths.CommonConfigFile);
                     config.Save();
                 }
                 else
                 {
-                    Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                    AddInHost.Current.ApplicationContext.CloseApplication();
 
                 }
             }

@@ -22,6 +22,7 @@ using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
+using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -30,6 +31,7 @@ using MediaBrowser.Util;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
 using Microsoft.MediaCenter.UI;
+using AddInHost = Microsoft.MediaCenter.Hosting.AddInHost;
 
 namespace MediaBrowser
 {
@@ -686,10 +688,6 @@ namespace MediaBrowser
             {
                 Kernel.Instance.MouseActiveHooker.MouseActive += new IsMouseActiveHooker.MouseActiveHandler(mouseActiveHooker_MouseActive);
             }
-            //populate the config model choice
-            ConfigModel = new Choice();
-            ConfigModel.Options = ConfigPanelNames;
-
             //initialize our menu manager
             menuManager = new MenuManager();
 
@@ -991,14 +989,13 @@ namespace MediaBrowser
         // Entry point for the app
         public void Init()
         {
+            Config.IsFirstRun = false;
 
             Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
-            Logger.ReportInfo("*** Internet Providers are "+(Config.AllowInternetMetadataProviders ? "ON." : "OFF."));
             //if (Config.AllowInternetMetadataProviders) Logger.ReportInfo("*** Save Locally is "+(Config.SaveLocalMeta ? "ON." : "OFF."));
-            Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
             // Now let's put a diagnostic ping in here for the beta cycle so we can see how much testing we're getting
             //string info = "IP=" + Config.AllowInternetMetadataProviders + " EXTP=" + Config.ExternalPlayers.Count + " EXT=" + RunningOnExtender;
             //Helper.Ping("http://www.ebrsoft.com/software/mb/plugins/ping.php?product=MBBeta&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress() + "&key=" + info);
@@ -1093,7 +1090,7 @@ namespace MediaBrowser
             {
                 Kernel.ApiClient.AuthenticateUser(user.Id, pw);
             }
-            catch (MediaBrowser.Model.Net.HttpException e)
+            catch (Model.Net.HttpException e)
             {
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
@@ -1103,7 +1100,31 @@ namespace MediaBrowser
                 throw;
             }
 
+            LoggedIn = true;
+
             Kernel.ApiClient.CurrentUserId = user.Id;
+
+            // load user config
+            Kernel.Instance.LoadUserConfig();
+
+            // setup styles and fonts
+            try
+            {
+                CustomResourceManager.SetupStylesMcml(AddInHost.Current);
+                CustomResourceManager.SetupFontsMcml(AddInHost.Current);
+            }
+            catch (Exception ex)
+            {
+                AddInHost.Current.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
+                AddInHost.Current.ApplicationContext.CloseApplication();
+                return;
+            }
+
+            // load plugins
+            Kernel.Instance.LoadPlugins();
+
+            //populate the config model choice
+            ConfigModel = new Choice { Options = ConfigPanelNames };
 
             // load root
             Kernel.Instance.ReLoadRoot();
@@ -1118,6 +1139,7 @@ namespace MediaBrowser
             }
             else
             {
+                Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
                 //Launch into our entrypoint
                 LaunchEntryPoint(EntryPointResolver.EntryPointPath);
             }
@@ -1498,17 +1520,6 @@ namespace MediaBrowser
             }
         }
 
-        public void ResetConfig()
-        {
-            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-            DialogResult r = ev.Dialog(CurrentInstance.StringData("ResetConfigDial"), CurrentInstance.StringData("ResetConfigCapDial"), DialogButtons.Yes | DialogButtons.No, 60, true);
-            if (r == DialogResult.Yes)
-            {
-                Config.Instance.Reset();
-                ev.Dialog(CurrentInstance.StringData("RestartMBDial"), CurrentInstance.StringData("ConfigResetDial"), DialogButtons.Ok, 60, true);
-                Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
-            }
-        }
 
         public void OpenConfiguration(bool showFullOptions)
         {
@@ -1937,6 +1948,8 @@ namespace MediaBrowser
                 this.lastPlayed = ItemFactory.Instance.Create(playedMediaItems.LastOrDefault());
             }
         }
+
+        public bool LoggedIn { get; set; } //used to tell if we have logged in successfully
 
         public bool RequestingPIN { get; set; } //used to signal the app that we are asking for PIN entry
 

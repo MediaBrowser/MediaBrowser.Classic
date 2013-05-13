@@ -188,7 +188,7 @@ namespace MediaBrowser.Library.Factories
                 .Select(p => new KeyValuePair<PlayableExternal, PlayableExternalConfigurator>(p, Activator.CreateInstance(p.ConfiguratorType) as PlayableExternalConfigurator));
 
             // Important - need to add them in the order they appear in configuration
-            foreach (ConfigData.ExternalPlayer externalPlayerConfiguration in Config.Instance.ExternalPlayers)
+            foreach (CommonConfigData.ExternalPlayer externalPlayerConfiguration in Config.Instance.ExternalPlayers)
             {
                 if (allPlayableExternals.Any(p => p.Value.ExternalPlayerName == externalPlayerConfiguration.ExternalPlayerName))
                 {

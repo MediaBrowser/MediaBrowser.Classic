@@ -17,7 +17,7 @@ namespace MediaBrowser.Library.ImageManagement
         {
             if (sqliteAssembly == null)
             {
-                sqliteAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppConfigPath, "system.data.sqlite.dll"));
+                sqliteAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "system.data.sqlite.dll"));
                 AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(SqliteResolver);
             }
 

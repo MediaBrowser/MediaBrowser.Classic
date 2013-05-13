@@ -15,11 +15,11 @@ namespace MediaBrowser.Library.Playables.TMT5
         /// <summary>
         /// Gets the default configuration that will be pre-populated into the UI of the configurator.
         /// </summary>
-        public override ConfigData.ExternalPlayer GetDefaultConfiguration()
+        public override CommonConfigData.ExternalPlayer GetDefaultConfiguration()
         {
-            ConfigData.ExternalPlayer config = base.GetDefaultConfiguration();
+            CommonConfigData.ExternalPlayer config = base.GetDefaultConfiguration();
 
-            config.LaunchType = ConfigData.ExternalPlayerLaunchType.WMCNavigate;
+            config.LaunchType = CommonConfigData.ExternalPlayerLaunchType.WMCNavigate;
 
             return config;
         }

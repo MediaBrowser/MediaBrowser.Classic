@@ -29,8 +29,8 @@ namespace MediaBrowser.Library.Util
         {
             try
             {
-                string file = Path.Combine(ApplicationPaths.AppConfigPath, FONTS_FILE);
-                string custom = Path.Combine(ApplicationPaths.AppConfigPath, CUSTOM_FONTS_FILE);
+                string file = Path.Combine(ApplicationPaths.AppProgramPath, FONTS_FILE);
+                string custom = Path.Combine(ApplicationPaths.AppProgramPath, CUSTOM_FONTS_FILE);
                 if (File.Exists(file))
                 {
                     try
@@ -73,8 +73,8 @@ namespace MediaBrowser.Library.Util
         {
             try
             {
-                string file = Path.Combine(ApplicationPaths.AppConfigPath, "Styles_DoNotEdit.mcml");
-                string custom = Path.Combine(ApplicationPaths.AppConfigPath, CUSTOM_STYLE_FILE);
+                string file = Path.Combine(ApplicationPaths.AppProgramPath, "Styles_DoNotEdit.mcml");
+                string custom = Path.Combine(ApplicationPaths.AppProgramPath, CUSTOM_STYLE_FILE);
                 if (File.Exists(file))
                 {
                     try
@@ -141,8 +141,8 @@ namespace MediaBrowser.Library.Util
         /// <returns></returns>
         public static bool AppendFonts(string prefix, byte[] stdFontResource, byte[] smallFontResource)
         {
-            string file = Path.Combine(ApplicationPaths.AppConfigPath, FONTS_FILE);
-            string custom = Path.Combine(ApplicationPaths.AppConfigPath, prefix + CUSTOM_FONTS_FILE);
+            string file = Path.Combine(ApplicationPaths.AppProgramPath, FONTS_FILE);
+            string custom = Path.Combine(ApplicationPaths.AppProgramPath, prefix + CUSTOM_FONTS_FILE);
             if (File.Exists(custom))
             {
                 Logger.ReportInfo("Using custom fonts file: " + custom);
@@ -186,8 +186,8 @@ namespace MediaBrowser.Library.Util
 
         public static bool AppendStyles(string prefix, byte[] stdStyleResource, byte[] blackStyleResource)
         {
-            string file = Path.Combine(ApplicationPaths.AppConfigPath, STYLES_FILE);
-            string custom = Path.Combine(ApplicationPaths.AppConfigPath, prefix + CUSTOM_STYLE_FILE);
+            string file = Path.Combine(ApplicationPaths.AppProgramPath, STYLES_FILE);
+            string custom = Path.Combine(ApplicationPaths.AppProgramPath, prefix + CUSTOM_STYLE_FILE);
             if (File.Exists(custom))
             {
                 Logger.ReportInfo("Using custom styles file: " + custom);

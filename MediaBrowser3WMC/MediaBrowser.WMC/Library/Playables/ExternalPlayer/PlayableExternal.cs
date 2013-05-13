@@ -14,12 +14,12 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         #region CanPlay
         public override bool CanPlay(IEnumerable<string> files)
         {
-            return ConfigData.CanPlay(ExternalPlayerConfiguration, files);
+            return CommonConfigData.CanPlay(ExternalPlayerConfiguration, files);
         }
 
         public override bool CanPlay(IEnumerable<Media> mediaList)
         {
-            return ConfigData.CanPlay(ExternalPlayerConfiguration, mediaList);
+            return CommonConfigData.CanPlay(ExternalPlayerConfiguration, mediaList);
         }
 
         public override bool CanPlay(Media media)
@@ -36,7 +36,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         /// <summary>
         /// Gets the ExternalPlayer configuration for this instance
         /// </summary>
-        public ConfigData.ExternalPlayer ExternalPlayerConfiguration
+        public CommonConfigData.ExternalPlayer ExternalPlayerConfiguration
         {
             get;
             set;

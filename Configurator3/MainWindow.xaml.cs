@@ -3,18 +3,14 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Globalization;
 using Configurator.Code;
@@ -27,7 +23,7 @@ using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables.ExternalPlayer;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
-using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.Dto;
 
 namespace Configurator
 {
@@ -39,6 +35,7 @@ namespace Configurator
     {
 
         public ConfigData config;
+        public CommonConfigData commonConfig;
         Ratings ratings;
         PermissionDialog waitWin;
         PopupMsg PopUpMsg;
@@ -64,11 +61,16 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
+            var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
+            Kernel.CurrentUser = new User {Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword};
+            Kernel.Instance.LoadUserConfig();
+            Kernel.Instance.LoadPlugins();
             Logger.ReportVerbose("======= Kernel intialized. Building window...");
             InitializeComponent();
             pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
             config = Kernel.Instance.ConfigData;
+            commonConfig = Kernel.Instance.CommonConfigData;
 
             //Logger.ReportVerbose("======= Loading combo boxes...");
             LoadComboBoxes();
@@ -138,7 +140,7 @@ namespace Configurator
         {
             const string windowsAccount = "Users"; 
             const FileSystemRights fileSystemRights = FileSystemRights.FullControl;
-            var folder = new DirectoryInfo(ApplicationPaths.AppConfigPath);
+            var folder = new DirectoryInfo(ApplicationPaths.AppProgramPath);
 
             if(!folder.Exists)
             {
@@ -286,19 +288,20 @@ namespace Configurator
 
             lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
 
-            ddlLoglevel.SelectedItem = config.MinLoggingSeverity;
+            ddlLoglevel.SelectedItem = commonConfig.MinLoggingSeverity;
 
             //logging
-            cbxEnableLogging.IsChecked = config.EnableTraceLogging;
+            cbxEnableLogging.IsChecked = commonConfig.EnableTraceLogging;
 
             //library validation
-            cbxAutoValidate.IsChecked = config.AutoValidate;
+            cbxAutoValidate.IsChecked = commonConfig.AutoValidate;
 
         }
 
         private void SaveConfig()
         {
             config.Save();
+            commonConfig.Save();
         }
 
         private void RefreshThemes()
@@ -349,6 +352,8 @@ namespace Configurator
 
             ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
 
+            ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
+            ddlUserProfile.SelectedItem = Kernel.CurrentUser.Dto;
         }
 
         #endregion
@@ -374,7 +379,7 @@ namespace Configurator
         private void RefreshPlayers()
         {
             lstExternalPlayers.Items.Clear();
-            foreach (ConfigData.ExternalPlayer item in config.ExternalPlayers)
+            foreach (var item in commonConfig.ExternalPlayers)
             {
                 if (!String.IsNullOrEmpty(item.ExternalPlayerName))
                     lstExternalPlayers.Items.Add(item);
@@ -633,7 +638,7 @@ namespace Configurator
             }
             else
             {
-                var mediaPlayer = (ConfigData.ExternalPlayer)lstExternalPlayers.SelectedItem;
+                var mediaPlayer = (CommonConfigData.ExternalPlayer)lstExternalPlayers.SelectedItem;
 
                 message = "About to remove " + mediaPlayer.ExternalPlayerName + ". Are you sure?";                             
             }
@@ -643,9 +648,9 @@ namespace Configurator
                 return;
             }
 
-            foreach (ConfigData.ExternalPlayer player in lstExternalPlayers.SelectedItems)
+            foreach (CommonConfigData.ExternalPlayer player in lstExternalPlayers.SelectedItems)
             {
-                config.ExternalPlayers.Remove(player);               
+                commonConfig.ExternalPlayers.Remove(player);               
             }
 
             SaveConfig();
@@ -667,12 +672,12 @@ namespace Configurator
 
         private void btnEditPlayer_Click(object sender, RoutedEventArgs e)
         {
-            var externalPlayer = lstExternalPlayers.SelectedItem as ConfigData.ExternalPlayer;
+            var externalPlayer = lstExternalPlayers.SelectedItem as CommonConfigData.ExternalPlayer;
             
             EditExternalPlayer(externalPlayer, false);
         }
 
-        private void EditExternalPlayer(ConfigData.ExternalPlayer externalPlayer, bool isNew)
+        private void EditExternalPlayer(CommonConfigData.ExternalPlayer externalPlayer, bool isNew)
         {
             var form = new ExternalPlayerForm(isNew) {Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner};
 
@@ -684,7 +689,7 @@ namespace Configurator
 
                 if (isNew)
                 {
-                    config.ExternalPlayers.Add(externalPlayer);
+                    commonConfig.ExternalPlayers.Add(externalPlayer);
                 }
 
                 SaveConfig();
@@ -722,12 +727,12 @@ namespace Configurator
         }
         private void MoveExternalPlayer(int oldIndex, int newIndex)
         {
-            var externalPlayer = config.ExternalPlayers[oldIndex];
+            var externalPlayer = commonConfig.ExternalPlayers[oldIndex];
 
             //remove from current location
-            config.ExternalPlayers.RemoveAt(oldIndex);
+            commonConfig.ExternalPlayers.RemoveAt(oldIndex);
             //add back above item above us
-            config.ExternalPlayers.Insert(newIndex, externalPlayer);
+            commonConfig.ExternalPlayers.Insert(newIndex, externalPlayer);
             SaveConfig();
             RefreshPlayers();
             //finally, re-select this item
@@ -843,14 +848,14 @@ namespace Configurator
 
         private void cbxAutoValidate_Click(object sender, RoutedEventArgs e)
         {
-            config.AutoValidate = (bool)cbxAutoValidate.IsChecked;
-            if (!config.AutoValidate) PopUpMsg.DisplayMessage("Warning! Media Changes May Not Be Reflected in Library.");
+            commonConfig.AutoValidate = (bool)cbxAutoValidate.IsChecked;
+            if (!commonConfig.AutoValidate) PopUpMsg.DisplayMessage("Warning! Media Changes May Not Be Reflected in Library.");
             SaveConfig();
         }
 
         private void enableLogging_Click(object sender, RoutedEventArgs e)
         {
-            config.EnableTraceLogging = (bool)cbxEnableLogging.IsChecked;
+            commonConfig.EnableTraceLogging = (bool)cbxEnableLogging.IsChecked;
             SaveConfig();
         }
 
@@ -1055,16 +1060,13 @@ namespace Configurator
 
         private void Window_Closing(object sender, EventArgs e)
         {
-            //if we modified anything in kernel reload the service so it will pick up any changes we made
-            if (KernelModified)
-                MBServiceController.RestartService();
         }
 
         private void ddlLoglevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ddlLoglevel.SelectedItem != null)
             {
-                config.MinLoggingSeverity = (LogSeverity)ddlLoglevel.SelectedItem;
+                commonConfig.MinLoggingSeverity = (LogSeverity)ddlLoglevel.SelectedItem;
                 config.Save();
             }
         }
@@ -1120,6 +1122,18 @@ namespace Configurator
             }
         }
 
+        private void ddlUserProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var userDto = ddlUserProfile.SelectedItem as UserDto;
+            if (userDto != null)
+            {
+                Kernel.CurrentUser = new User { Name = userDto.Name, Id = userDto.Id, Dto = userDto, ParentalAllowed = userDto.HasPassword };
+                Kernel.Instance.LoadUserConfig();
+                config = Kernel.Instance.ConfigData;
+                LoadConfigurationSettings();
+            }
+        }
+
         private void memberList_Collapse(object sender, RoutedEventArgs e)
         {
             //un-select in case current item was collapsed from view
@@ -1172,6 +1186,7 @@ namespace Configurator
             config.FavoriteFolderName = tbxFavoriteName.Text;
             config.Save();
         }
+
     }
 
     #region FormatParser Class

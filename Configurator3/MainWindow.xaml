@@ -353,8 +353,10 @@
                 </TabItem>
             </TabControl>
             <TextBlock Height="25" Margin="15,54,318,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
+            <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="42,42,0,0" VerticalAlignment="Top" Width="207" SelectionChanged="ddlUserProfile_SelectionChanged"/>
+            <Label Content="User Profile" HorizontalAlignment="Left" Margin="31,11.04,0,0" VerticalAlignment="Top" Width="123.993" FontSize="14"/>
         </Grid>
         <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="Images/mbclogo400.png" MouseLeftButtonUp="eggExpert_Click" />
-        <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="112">Version 0.0.0.0</Label>
+        <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="141">Version 0.0.0.0</Label>
     </Grid>
 </Window>

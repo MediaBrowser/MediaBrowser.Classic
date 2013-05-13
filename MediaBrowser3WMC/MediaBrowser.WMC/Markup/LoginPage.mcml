@@ -21,6 +21,12 @@
 
     <Rules>
 
+      <!--We don't want to land here if we've already successfully logged in because plugins can't load twice-->
+      <Condition Source="[Application.LoggedIn]" SourceValue="true">
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Condition>
       <!-- END Configuration Checks & Display Setup -->
 
       <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />

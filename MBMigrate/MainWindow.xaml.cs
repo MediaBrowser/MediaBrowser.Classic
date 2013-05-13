@@ -18,7 +18,7 @@ namespace MBMigrate
     public partial class MainWindow : Window
     {
         //private ServiceConfigData _serviceConfig;
-        private ConfigData _config;
+        private CommonConfigData _config;
 
         public MainWindow()
         {
@@ -26,7 +26,7 @@ namespace MBMigrate
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
             Async.Queue("Migration", () =>
             {
-                if (File.Exists(ApplicationPaths.ConfigFile)) _config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
+                if (File.Exists(ApplicationPaths.ConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.ConfigFile);
                 if (_config == null) // only do this if a fresh install
                 {
                     try
@@ -72,7 +72,7 @@ namespace MBMigrate
 
         public void BackupConfig(Version ver)
         {
-            string backupName = Path.Combine(ApplicationPaths.AppConfigPath,
+            string backupName = Path.Combine(ApplicationPaths.CommonConfigPath,
                 Path.GetFileNameWithoutExtension(ApplicationPaths.ConfigFile) + " (" + ver.ToString() + ").config");
             if (!File.Exists(backupName))
             {
@@ -106,7 +106,7 @@ namespace MBMigrate
                 BuildTree();
 
                 //Move over config file
-                CopyFile(Path.Combine(oldPathMap["AppConfigPath"], "MediaBrowserXml.config"), Path.Combine(ApplicationPaths.AppConfigPath,"MediaBrowserXml.config"));
+                //CopyFile(Path.Combine(oldPathMap["AppConfigPath"], "MediaBrowserXml.config"), Path.Combine(ApplicationPaths.AppConfigPath,"MediaBrowserXml.config"));
 
                 //And Plugins that work
                 foreach (var dll in knownCompatibleDlls)

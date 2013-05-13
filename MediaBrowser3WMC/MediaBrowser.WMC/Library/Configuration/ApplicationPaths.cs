@@ -31,15 +31,18 @@ namespace MediaBrowser.Library.Configuration {
         static Dictionary<string, string> pathMap;
 
         static string[,] tree = { 
-                    { "AppConfigPath",       "app_data",         "MediaBrowser-Classic"  }, 
-                    { "AppCachePath",        "AppConfigPath",    "Cache"         },
-                    { "AppUserSettingsPath", "AppConfigPath",    "Cache"           },
+                    { "AppProgramPath",       "app_data",         "MediaBrowser-Classic"  }, 
+                    { "BaseUserPath",       "user_data",         "MediaBrowser-Classic"  }, 
+                    { "BaseConfigPath",       "BaseUserPath",         "Configurations"  }, 
+                    { "CommonConfigPath",       "AppProgramPath",         "Configurations"  }, 
+                    { "AppCachePath",        "AppProgramPath",    "Cache"         },
+                    { "AppUserSettingsPath", "AppProgramPath",    "Cache"           },
                     { "AutoPlaylistPath",    "AppCachePath",     "autoPlaylists" }, 
-                    { "AppImagePath",        "AppConfigPath",    "ImageCache"},
-                    { "AppPluginPath",       "AppConfigPath",    "Plugins" },
-                    { "AppRSSPath",          "AppConfigPath",    "RSS"},
-                    { "AppLogPath",          "AppConfigPath",    "Logs"},
-                    { "AppLocalizationPath","AppConfigPath", "Localization" },
+                    { "AppImagePath",        "AppProgramPath",    "ImageCache"},
+                    { "AppPluginPath",       "AppProgramPath",    "Plugins" },
+                    { "AppRSSPath",          "AppProgramPath",    "RSS"},
+                    { "AppLogPath",          "AppProgramPath",    "Logs"},
+                    { "AppLocalizationPath","AppProgramPath", "Localization" },
                     { "PluginConfigPath", "AppPluginPath", "Configurations"},
                     { "CustomImagePath", "AppImagePath", "Custom"}
             };
@@ -48,6 +51,7 @@ namespace MediaBrowser.Library.Configuration {
         static ApplicationPaths() {
             pathMap = new Dictionary<string, string>();
             pathMap["app_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+            pathMap["user_data"] = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
             
             BuildTree();
         }
@@ -99,9 +103,24 @@ namespace MediaBrowser.Library.Configuration {
             }
         }
 
+        public static string AppProgramPath {
+            get {
+                return pathMap["AppProgramPath"];
+            }
+        }
+
+        /// <summary>
+        /// This is for backward compatability - don't use it...
+        /// </summary>
         public static string AppConfigPath {
             get {
-                return pathMap["AppConfigPath"];
+                return pathMap["AppProgramPath"];
+            }
+        }
+
+        public static string CommonConfigPath {
+            get {
+                return pathMap["CommonConfigPath"];
             }
         }
 
@@ -142,40 +161,40 @@ namespace MediaBrowser.Library.Configuration {
 
         public static string ConfigFile {
             get {
-                var path = AppConfigPath;
+                var path = pathMap["BaseConfigPath"];
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                return Path.Combine(path, "MediaBrowserXml.config");
+                return Path.Combine(path, Kernel.CurrentUser.Name + "-MediaBrowserXml.config");
             }
         }
 
-        public static string ServiceConfigFile
+        public static string CommonConfigFile
         {
             get
             {
-                var path = AppConfigPath;
+                var path = CommonConfigPath;
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                return Path.Combine(path, "MBServiceXml.config");
+                return Path.Combine(path, "MBCommonXml.config");
             }
         }
 
-        public static string ServiceExecutableFile
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
-                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowserService.exe") : 
-                Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowserService.exe");
-            }
-        }
+        //public static string ServiceExecutableFile
+        //{
+        //    get
+        //    {
+        //        return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
+        //        Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowserService.exe") : 
+        //        Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowserService.exe");
+        //    }
+        //}
 
         public static string UpdaterExecutableFile
         {
             get
             {
-                return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
-                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"MediaBrowser.Classic.Installer.exe") : 
+                return !string.IsNullOrEmpty(Kernel.Instance.CommonConfigData.MBInstallDir) ? 
+                Path.Combine(Kernel.Instance.CommonConfigData.MBInstallDir,"MediaBrowser.Classic.Installer.exe") : 
                 Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\MediaBrowser.Classic.Installer.exe");
             }
         }
@@ -184,8 +203,8 @@ namespace MediaBrowser.Library.Configuration {
         {
             get
             {
-                return !string.IsNullOrEmpty(Kernel.Instance.ConfigData.MBInstallDir) ? 
-                Path.Combine(Kernel.Instance.ConfigData.MBInstallDir,"Configurator.exe") : 
+                return !string.IsNullOrEmpty(Kernel.Instance.CommonConfigData.MBInstallDir) ?
+                Path.Combine(Kernel.Instance.CommonConfigData.MBInstallDir, "Configurator.exe") : 
                 Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "MediaBrowser\\MediaBrowser\\configurator.exe");
             }
         }

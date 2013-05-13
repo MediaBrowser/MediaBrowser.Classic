@@ -25,9 +25,9 @@ namespace MediaBrowser.Library.Playables.MpcHc
             get { return "MPC-HC"; }
         }
 
-        public override ConfigData.ExternalPlayer GetDefaultConfiguration()
+        public override CommonConfigData.ExternalPlayer GetDefaultConfiguration()
         {
-            ConfigData.ExternalPlayer config = base.GetDefaultConfiguration();
+            var config = base.GetDefaultConfiguration();
 
             config.SupportsMultiFileCommandArguments = true;
 
@@ -82,7 +82,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
             }
         }
 
-        public override void ConfigureUserSettings(ConfigData.ExternalPlayer currentConfiguration)
+        public override void ConfigureUserSettings(CommonConfigData.ExternalPlayer currentConfiguration)
         {
             string iniPath = GetIniFilePath(currentConfiguration);
 
@@ -259,7 +259,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
             }
         }
 
-        private static string GetIniFilePath(ConfigData.ExternalPlayer currentConfiguration)
+        private static string GetIniFilePath(CommonConfigData.ExternalPlayer currentConfiguration)
         {
             string directory = Path.GetDirectoryName(currentConfiguration.Command);
 

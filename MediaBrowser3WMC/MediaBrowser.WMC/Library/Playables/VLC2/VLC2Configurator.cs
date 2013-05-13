@@ -19,9 +19,9 @@ namespace MediaBrowser.Library.Playables.VLC2
         /// <summary>
         /// Gets the default configuration that will be pre-populated into the UI of the configurator.
         /// </summary>
-        public override ConfigData.ExternalPlayer GetDefaultConfiguration()
+        public override CommonConfigData.ExternalPlayer GetDefaultConfiguration()
         {
-            ConfigData.ExternalPlayer config = base.GetDefaultConfiguration();
+            var config = base.GetDefaultConfiguration();
 
             // http://wiki.videolan.org/VLC_command-line_help
 

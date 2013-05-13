@@ -102,9 +102,6 @@ namespace MediaBrowser
 
         [Hidden] 
         public bool InvalidateRecentLists = false;
-        [Dangerous]
-        [Comment(@"The version is used to determine if this is the first time a particular version has been run")]
-        public string MBVersion = "1.0.0.0"; //default value will tell us if it is a brand new install
         [Group("Playback")]
         [Comment(@"By default we track a videos position to support resume, this can be disabled by setting this for diagnostic purposes")]
         public bool EnableResumeSupport = true; 
@@ -135,9 +132,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Show an 'Enhanced Home Screen' for the top level items in MB.")]
         public bool EnableRootPage = true;
-        [Dangerous]
-        [Comment(@"Identifies if this is the very first time MB has been run.  Causes an initial setup routine to be performed.")]
-        public bool IsFirstRun = true;
         //[Comment(@"Identifies where MB will look for the special 'IBN' items.  You can change this to point to a location that is shared by multiple machines.")]
         //[PresentationStyle("BrowseFolder")]
         //public string ImageByNameLocation = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
@@ -153,8 +147,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Extra space to account for monitor over/underscan. Format: 0,0.")]
         public Inset OverScanPadding = new Inset();
-        [Comment(@"Turns on logging for all MB components. Recommended you leave this on as it doesn't slow things down and is very helpful in troubleshooting.")]
-        public bool EnableTraceLogging = true;
         [Group("Display")]
         [Comment(@"The default size posters will be shown in any new view.")]
         public Size DefaultPosterSize = new Size() {Width=220, Height=330};
@@ -187,18 +179,6 @@ namespace MediaBrowser
         public int PlaylistLimit = 2;
         [Hidden]
         public string InitialFolder = ApplicationPaths.AppInitialDirPath;
-        [Group("Updates")]
-        [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
-        public bool EnableUpdates = true;
-        [Group("Updates")]
-        [Comment(@"The class of updates to check (Dev/Beta/Release).")]
-        public PackageVersionClass SystemUpdateClass = PackageVersionClass.Dev;
-        [Group("Updates")]
-        [Comment(@"The class of updates to check (Dev/Beta/Release).")]
-        public PackageVersionClass PluginUpdateClass = PackageVersionClass.Beta;
-        //[Group("Updates")]
-        //[Comment(@"Look for beta versions of MB in the auto update check.")]
-        //public bool EnableBetas = false;
         [Dangerous]
         [PresentationStyle("BrowseFolder")]
         [Group("Playback")]
@@ -251,9 +231,6 @@ namespace MediaBrowser
         [Comment(@"Scroll poster views vertically instead of horizontally.")]
         public bool DefaultVerticalScroll = false;
         [Group("Display")]
-        [Comment(@"The number of history items to show in the 'breadcrumbs' (how deep in the structure you are) .")]
-        public int BreadcrumbCountLimit = 2;
-        [Group("Display")]
         [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
         public int DefaultMessageTimeout = 30;
         [Dangerous]
@@ -282,8 +259,6 @@ namespace MediaBrowser
         public double IndexWarningThreshold = 0.1;
         //[Comment(@"The two-character language code to use when retrieving metadata (en,fr,it, etc.).")]
         //public string PreferredMetaDataLanguage = "en";
-        [Hidden]
-        public List<ExternalPlayer> ExternalPlayers = new List<ExternalPlayer>();
         [Dangerous]
         [Group("Display")]
         [Comment(@"The view theme to use.")]
@@ -311,9 +286,6 @@ namespace MediaBrowser
         [Comment(@"Show fan art on views that support it.")]
         public bool ShowBackdrop = true;
         [Group("Display")]
-        [Comment(@"The name of your top level item that will show in the 'breadcrumbs'.")]
-        public string InitialBreadcrumbName = "Media";
-
         //[PresentationStyle("BrowseFolder")]
         //[Comment(@"Path to save display preferences and playstate information.  Change this to use a shared location for multiple machines.")]
         //public string UserSettingsPath = null;
@@ -331,11 +303,6 @@ namespace MediaBrowser
         public string YahooWeatherUnit = "c";
         [Group("Display")]
         public bool ShowRootBackground = true;
-
-        [Dangerous]
-        [Group("Advanced")]
-        [Comment(@"The directory where MB was installed. Filled in at install time and used to call components.")]
-        public string MBInstallDir = "";
 
         //[PresentationStyle("BrowseFolder")]
         //public string PodcastHome = ApplicationPaths.DefaultPodcastPath;
@@ -363,7 +330,6 @@ namespace MediaBrowser
         //[Group("Parental Control")]
         //public int MaxParentalLevel = 3;
 
-        public bool EnableMouseHook = false;
 
         [Group("Display")]
         public int RecentItemCount = 20;
@@ -404,9 +370,6 @@ namespace MediaBrowser
         public int AutoScrollDelay = 8; //Delay to Start and Reset scrolling text
         public int AutoScrollSpeed = 1; //Scroll Speed for scrolling Text
 
-        public bool AutoValidate = true; //automatically validate and refresh items as we access them
-
-        public LogSeverity MinLoggingSeverity = LogSeverity.Debug;
 
         public bool EnableScreenSaver = true; //enable default screen saver functionality
         public int ScreenSaverTimeOut = 10; //minutes of inactivity for screen saver to kick in
@@ -469,77 +432,6 @@ namespace MediaBrowser
         //[Comment("The base url for tmdb images")]
         //public string TmdbImageUrl = "http://cf2.imgobject.com/t/p/"; 
 
-        [Dangerous]
-        public List<string> PluginSources = new List<string>() { "http://www.mediabrowser.tv/plugins/multi/plugin_info.xml" };
-
-        public enum ExternalPlayerLaunchType
-        {
-            CommandLine = 0,
-
-            WMCNavigate = 1
-        }
-
-        public class ExternalPlayer
-        {
-            /// <summary>
-            /// Determines if the external player can play multiple files without having to first generate a playlist
-            /// </summary>
-            public bool SupportsMultiFileCommandArguments { get; set; }
-
-            /// <summary>
-            /// Determines if playlist files are supported
-            /// </summary>
-            public bool SupportsPlaylists { get; set; }
-
-            public ExternalPlayerLaunchType LaunchType { get; set; }
-            public string ExternalPlayerName { get; set; }
-            public List<MediaType> MediaTypes { get; set; }
-            public List<VideoFormat> VideoFormats { get; set; }
-            public string Command { get; set; }
-
-            public string Args { get; set; }
-            public bool MinimizeMCE { get; set; } //whether or not to minimize MCE when starting external player
-            public bool ShowSplashScreen { get; set; } //whether or not to show the MB splash screen
-            public bool HideTaskbar { get; set; }
-
-            public ExternalPlayer()
-            {
-                MediaTypes = new List<MediaType>();
-
-                foreach (MediaType val in Enum.GetValues(typeof(MediaType)))
-                {
-                    MediaTypes.Add(val);
-                }
-
-                VideoFormats = new List<VideoFormat>();
-
-                foreach (VideoFormat val in Enum.GetValues(typeof(VideoFormat)))
-                {
-                    VideoFormats.Add(val);
-                }
-            }
-
-            public string CommandFileName
-            {
-                get
-                {
-                    return string.IsNullOrEmpty(Command) ? string.Empty : Path.GetFileName(Command);
-                }
-            }
-
-            public string MediaTypesFriendlyString
-            {
-                get
-                {
-                    if (MediaTypes.Count == Enum.GetNames(typeof(MediaType)).Count())
-                    {
-                        return "All";
-                    }
-
-                    return string.Join(",", MediaTypes.Select(i => i.ToString()).ToArray());
-                }
-            }
-        }
 
         // for our reset routine
         public ConfigData ()
@@ -582,91 +474,6 @@ namespace MediaBrowser
             MediaBrowser.Library.Threading.Async.Queue("Config notify", () => Kernel.Instance.NotifyConfigChange());
         }
 
-        /// <summary>
-        /// Determines if a given external player configuration is configured to play a list of files
-        /// </summary>
-        public static bool CanPlay(ConfigData.ExternalPlayer player, IEnumerable<string> files)
-        {
-            IEnumerable<MediaType> types = files.Select(f => MediaTypeResolver.DetermineType(f));
-
-            // See if there's a configured player matching the ExternalPlayerType and MediaType. 
-            // We're not able to evaluate VideoFormat in this scenario
-            // If none is found it will return null
-            return CanPlay(player, types, new List<VideoFormat>(), files.Count() > 1);
-        }
-
-        /// <summary>
-        /// Determines if a given external player configuration is configured to play a list of files
-        /// </summary>
-        public static bool CanPlay(ConfigData.ExternalPlayer player, IEnumerable<Media> mediaList)
-        {
-            var types = new List<MediaType>();
-            var formats = new List<VideoFormat>();
-
-            foreach (var media in mediaList)
-            {
-                var video = media as Video;
-
-                if (video != null)
-                {
-                    if (!string.IsNullOrEmpty(video.VideoFormat))
-                    {
-                        var format = (VideoFormat)Enum.Parse(typeof(VideoFormat), video.VideoFormat);
-                        formats.Add(format);
-                    }
-
-                }
-
-                types.Add(media.MediaType);
-            }
-
-            bool isMultiFile = mediaList.Count() == 1 ? (mediaList.First().Files.Count() > 1) : (mediaList.Count() > 1);
-
-            return CanPlay(player, types, formats, isMultiFile);
-        }
-
-        /// <summary>
-        /// Detmines if a given external player configuration is configured to play:
-        /// - ALL of MediaTypes supplied. This filter is ignored if an empty list is provided.
-        /// - All of the VideoFormats supplied. This filter is ignored if an empty list is provided.
-        /// - And is able to play the number of files requested
-        /// </summary>
-        public static bool CanPlay(ConfigData.ExternalPlayer externalPlayer, IEnumerable<MediaType> mediaTypes, IEnumerable<VideoFormat> videoFormats, bool isMultiFile)
-        {
-            // Check options to see if this is not a match
-            if (Application.RunningOnExtender)
-            {
-                return false;
-            }
-
-            // If it's not even capable of playing multiple files in sequence, it's no good
-            if (isMultiFile && !externalPlayer.SupportsMultiFileCommandArguments && !externalPlayer.SupportsPlaylists)
-            {
-                return false;
-            }
-
-            // If configuration wants specific MediaTypes, check that here
-            // If no MediaTypes are specified, proceed
-            foreach (MediaType mediaType in mediaTypes)
-            {
-                if (!externalPlayer.MediaTypes.Contains(mediaType))
-                {
-                    return false;
-                }
-            }
-
-            // If configuration wants specific VideoFormats, check that here
-            // If no VideoFormats are specified, proceed
-            foreach (VideoFormat format in videoFormats)
-            {
-                if (!externalPlayer.VideoFormats.Contains(format))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
 
         
     }

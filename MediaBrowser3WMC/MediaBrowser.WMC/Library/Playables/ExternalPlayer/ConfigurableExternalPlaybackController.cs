@@ -10,7 +10,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         /// <summary>
         /// Gets the ExternalPlayer configuration for this instance
         /// </summary>
-        public ConfigData.ExternalPlayer ExternalPlayerConfiguration
+        public CommonConfigData.ExternalPlayer ExternalPlayerConfiguration
         {
             get;
             set;
@@ -24,7 +24,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         /// <summary>
         /// Gets the launch method to use
         /// </summary>
-        protected override ConfigData.ExternalPlayerLaunchType LaunchType
+        protected override CommonConfigData.ExternalPlayerLaunchType LaunchType
         {
             get
             {

@@ -137,6 +137,7 @@
     <Compile Include="ApiInteraction\WebSocket\EventArgs.cs" />
     <Compile Include="ApiInteraction\WebSocket\IClientWebSocket.cs" />
     <Compile Include="ApiInteraction\WebSocket\WebSocket4NetClientWebSocket.cs" />
+    <Compile Include="Code\CommonConfigData.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
@@ -926,7 +927,6 @@
     <Compile Include="Code\MyHistoryOrientedPageSession.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\ServiceConfigData.cs" />
     <Compile Include="Code\ShadowTypes\Colors.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -982,7 +982,6 @@
     <Compile Include="Library\Plugins\PluginSourceCollection.cs" />
     <Compile Include="Library\Plugins\RemotePlugin.cs" />
     <Compile Include="Library\Ratings.cs" />
-    <Compile Include="Library\ServiceInteraction\MBServiceController.cs" />
     <Compile Include="Library\Threading\DelayedWeakReference.cs" />
     <Compile Include="Library\UI\ExternalSplashForm.cs" />
     <Compile Include="Library\UI\ConfigPanel.cs" />

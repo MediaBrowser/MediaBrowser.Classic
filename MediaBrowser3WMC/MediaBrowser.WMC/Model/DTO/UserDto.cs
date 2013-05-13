@@ -82,6 +82,11 @@ namespace MediaBrowser.Model.Dto
             get { return PrimaryImageTag.HasValue; }
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }
