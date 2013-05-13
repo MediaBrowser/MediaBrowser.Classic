@@ -26,7 +26,7 @@ namespace MBMigrate
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
             Async.Queue("Migration", () =>
             {
-                if (File.Exists(ApplicationPaths.ConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.ConfigFile);
+                if (File.Exists(ApplicationPaths.CommonConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
                 if (_config == null) // only do this if a fresh install
                 {
                     try

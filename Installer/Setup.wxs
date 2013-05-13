@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.20.0" ?>
-<?define Property_ProductCode = "078B7D6B-3CA5-44F2-B628-1FE747A190FB" ?>
+<?define Property_ProductVersion = "3.0.21.0" ?>
+<?define Property_ProductCode = "F6E0C7F6-D387-4052-A640-FDF8C7A29FEA" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -378,9 +378,9 @@
 				<![CDATA[NOT REMOVE]]>
 			</Custom>
 
-      <Custom Action="CA_Migrate" After="InstallFinalize">
+      <!--<Custom Action="CA_Migrate" After="InstallFinalize">
          <![CDATA[NOT REMOVE]]>
-      </Custom>
+      </Custom>-->
 
 		</InstallExecuteSequence>
 
@@ -477,7 +477,7 @@
     <Property Id="LAUNCHAPPONEXIT">1</Property>
 
     <!-- CustomAction to run migration after the setup finishes -->
-    <CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>
+    <!--<CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>-->
     
     <!-- CustomAction to condtionally launch the configurator after the setup finishes -->
     <CustomAction Id="StartAppOnExit" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="check" Impersonate="yes"/>
