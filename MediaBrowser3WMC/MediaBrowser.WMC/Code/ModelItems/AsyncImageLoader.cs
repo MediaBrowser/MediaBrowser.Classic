@@ -156,32 +156,6 @@ namespace MediaBrowser.Code.ModelItems {
           
 
             Image newImage = null;
-            if (Kernel.Instance.ConfigData.CacheAllImagesInMemory)
-            {
-                //defunct code..
-                //if (Kernel.Instance.ConfigData.UseSQLImageCache)
-                //{
-                //    Logger.ReportVerbose("Loading image (from sql): " + localPath);
-                //    var imageStream = ImageCache.Instance.GetImageStream(localImage.Id, localImage.Width);
-                //    //System.Drawing.Image test = System.Drawing.Image.FromStream(imageStream);
-                //    //test.Save("c:\\users\\eric\\my documents\\imagetest\\" + localImage.Id + localImage.Width + ".png");
-                //    //test.Dispose();
-                //    newImage = (Image)ImageFromStream.Invoke(null, new object[] { null, imageStream });
-                //}
-                //else
-                {
-                    Logger.ReportVerbose("Loading image (cacheall true) : " + localPath);
-                    byte[] bytes;
-                    lock (ProtectedFileStream.GetLock(localPath))
-                    {
-                        bytes = File.ReadAllBytes(localPath);
-                    }
-
-                    MemoryStream imageStream = new MemoryStream(bytes);
-                    imageStream.Position = 0;
-                    newImage = Image.FromStream(imageStream, null);
-                }
-            }
 
 
             Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
