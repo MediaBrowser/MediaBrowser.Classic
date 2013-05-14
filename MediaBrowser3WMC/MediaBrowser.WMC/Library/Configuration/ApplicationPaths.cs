@@ -34,7 +34,7 @@ namespace MediaBrowser.Library.Configuration {
                     { "AppProgramPath",       "app_data",         "MediaBrowser-Classic"  }, 
                     { "BaseUserPath",       "user_data",         "MediaBrowser-Classic"  }, 
                     { "BaseConfigPath",       "BaseUserPath",         "Configurations"  }, 
-                    { "CommonConfigPath",       "AppProgramPath",         "Configurations"  }, 
+                    { "CommonConfigPath",       "BaseUserPath",         "Configurations"  }, 
                     { "AppCachePath",        "AppProgramPath",    "Cache"         },
                     { "AppUserSettingsPath", "AppProgramPath",    "Cache"           },
                     { "AutoPlaylistPath",    "AppCachePath",     "autoPlaylists" }, 
