@@ -15,9 +15,7 @@ namespace MediaBrowser.Library.Playables.TMT5
         /// </summary>
         protected override List<string> GetCommandArgumentsList(PlayableItem playbackInfo)
         {
-            List<string> args = new List<string>();
-
-            args.Add("uri={0}");
+            var args = new List<string> {"uri={0}"};
 
             return args;
         }
@@ -34,7 +32,7 @@ namespace MediaBrowser.Library.Playables.TMT5
         {
             base.OnExternalPlayerLaunched(playbackInfo);
 
-            Async.Queue("Wait for process to exit", () => WaitForProcessToExit());
+            Async.Queue("Wait for process to exit", WaitForProcessToExit);
         }
 
         /// <summary>
@@ -42,7 +40,7 @@ namespace MediaBrowser.Library.Playables.TMT5
         /// </summary>
         private void WaitForProcessToExit()
         {
-            string processName = "uMCEPlayer5";
+            const string processName = "uMCEPlayer5";
 
             Process process = Process.GetProcessesByName(processName).FirstOrDefault();
 
