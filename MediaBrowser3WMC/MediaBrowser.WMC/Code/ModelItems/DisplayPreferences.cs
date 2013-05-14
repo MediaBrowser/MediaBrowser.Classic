@@ -69,7 +69,7 @@ namespace MediaBrowser.Library
 
             useCoverflow = new BooleanChoice {Value = false};
 
-            useBackdrop = new BooleanChoice {Value = Config.Instance.ShowBackdrop};
+            useBackdrop = new BooleanChoice {Value = folder.DisplayPreferences != null ? folder.DisplayPreferences.ShowBackdrop : Config.Instance.ShowBackdrop};
 
             if (folder.DisplayPreferences != null)
             {
@@ -370,6 +370,7 @@ namespace MediaBrowser.Library
             Folder.DisplayPreferences.PrimaryImageHeight = ThumbConstraint.Value.Height;
             Folder.DisplayPreferences.PrimaryImageWidth = thumbConstraint.Value.Width;
             Folder.DisplayPreferences.ScrollDirection = this.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+            Folder.DisplayPreferences.ShowBackdrop = this.useBackdrop.Value;
             this.CustomParms["MBCUseBanner"] = UseBanner.Value ? "true" : "false";
             this.CustomParms["MBCShowLabels"] = ShowLabels.Value ? "true" : "false";
             Folder.DisplayPreferences.CustomPrefs = this.CustomParms;
