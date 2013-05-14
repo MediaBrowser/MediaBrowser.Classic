@@ -61,6 +61,12 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
+            if (!Kernel.Instance.ServerConnected)
+            {
+                MessageBox.Show("Cannot connect to the MB3 server.  Please start it.", "Cannot find server");
+                Close();
+                return;
+            }
             var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
             Kernel.CurrentUser = new User {Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword};
             Kernel.Instance.LoadUserConfig();
