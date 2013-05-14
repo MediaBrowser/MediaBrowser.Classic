@@ -378,9 +378,9 @@
 				<![CDATA[NOT REMOVE]]>
 			</Custom>
 
-      <!--<Custom Action="CA_Migrate" After="InstallFinalize">
+      <Custom Action="CA_Migrate" After="InstallFinalize">
          <![CDATA[NOT REMOVE]]>
-      </Custom>-->
+      </Custom>
 
 		</InstallExecuteSequence>
 
@@ -477,7 +477,7 @@
     <Property Id="LAUNCHAPPONEXIT">1</Property>
 
     <!-- CustomAction to run migration after the setup finishes -->
-    <!--<CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>-->
+    <CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>
     
     <!-- CustomAction to condtionally launch the configurator after the setup finishes -->
     <CustomAction Id="StartAppOnExit" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="check" Impersonate="yes"/>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using System.IO;
@@ -27,6 +28,13 @@ namespace MBMigrate
             Async.Queue("Migration", () =>
             {
                 if (File.Exists(ApplicationPaths.CommonConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
+                if (_config != null)
+                {
+                    // Set install directory
+                    _config.MBInstallDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+                    _config.Save();
+                }
+
                 if (_config == null) // only do this if a fresh install
                 {
                     try
