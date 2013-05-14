@@ -238,6 +238,9 @@ namespace MediaBrowser.Library.Persistance
                             case VideoType.Dvd:
                                 media.MediaType = MediaType.DVD;
                                 break;
+                            case VideoType.Iso:
+                                media.MediaType = MediaType.ISO;
+                                break;
                             default:
                                 media.MediaType = MediaType.Unknown;
                                 break;
