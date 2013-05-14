@@ -1347,37 +1347,11 @@ namespace MediaBrowser
 
         public void FullRefresh()
         {
-            Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("ManualRefreshDial"),"", DialogButtons.Ok, 7, false);
-            Async.Queue(CurrentInstance.StringData("Manual Full Refresh"), () => FullRefresh(RootFolder, MetadataRefreshOptions.Force));
-        }
-
-        void FullRefresh(Folder folder, MetadataRefreshOptions options)
-        {
-            Kernel.Instance.MajorActivity = true;
-            Information.AddInformationString(CurrentInstance.StringData("FullRefreshMsg"));
-            folder.RefreshMetadata(options);
-
-            using (new Profiler(CurrentInstance.StringData("FullValidationProf")))
-            {
-                RunActionRecursively(folder, item =>
-                {
-                    Folder f = item as Folder;
-                    if (f != null) f.ValidateChildren();
-                });
-            }
-
-            using (new Profiler(CurrentInstance.StringData("FastRefreshProf")))
-            {
-                RunActionRecursively(folder, item => item.RefreshMetadata(MetadataRefreshOptions.FastOnly));
-            }
-
-            using (new Profiler(CurrentInstance.StringData("SlowRefresh")))
-            {
-                RunActionRecursively(folder, item => item.RefreshMetadata(MetadataRefreshOptions.Default));
-            }
-
-            Information.AddInformationString(CurrentInstance.StringData("FullRefreshFinishedMsg"));
-            Kernel.Instance.MajorActivity = false;
+            Async.Queue(CurrentInstance.StringData("Manual Full Refresh"), () =>
+                                                                               {
+                                                                                   Kernel.ApiClient.StartLibraryScan();
+                                                                                   MessageBox(CurrentInstance.StringData("ManualRefreshDial"));
+                                                                               });
         }
 
         void RunActionRecursively(Folder folder, Action<BaseItem> action)

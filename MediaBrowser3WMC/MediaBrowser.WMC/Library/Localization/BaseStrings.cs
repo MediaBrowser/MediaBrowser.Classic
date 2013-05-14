@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0060";
+        const string VERSION = "1.0061";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -314,7 +314,7 @@ namespace MediaBrowser.Library.Localization
         public string NoContentDial = "No Content that can be played in this context.";
         public string FontsMissingDial = "CustomFonts.mcml as been patched with missing values";
         public string StyleMissingDial = "{0} has been patched with missing values";
-        public string ManualRefreshDial = "Library Update Started.  Will proceed in the background.";
+        public string ManualRefreshDial = "The server has begun a scan of your library. Changes will be reflected in MB Classic when it is finished.";
         public string ForcedRebuildDial = "Your library is currently being migrated by the service.  The service will re-start when it is finished and you may then run Media Browser.";
         public string ForcedRebuildCapDial = "Library Migration";
         public string RefreshFailedDial = "The last service refresh process failed.  Please run a manual refresh from the service.";

@@ -512,7 +512,7 @@
                   <sb:SimpleButton  Name="ContinueBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Close]" Visible="false" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton FocusOrder="1" Name="BackBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Back]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton Name="UpdateConfigBtn" Text="[Application.LocalStrings.#CheckForUpdateConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UpdateCheck]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
-                  <!--<sb:SimpleButton Name="UpdateLibraryBtn" Text="[Application.LocalStrings.#UpdateLibraryConfig!cor:String]" FocusItem="[FocusItem]"  Command="[FullRefresh]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>-->
+                  <sb:SimpleButton Name="UpdateLibraryBtn" Text="[Application.LocalStrings.#UpdateLibraryConfig!cor:String]" FocusItem="[FocusItem]"  Command="[FullRefresh]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
                   <!--<sb:SimpleButton Name="UnlockPCBtn" Text="[Application.LocalStrings.#UnlockConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UnlockPC]" Size="200,50" Font="font://f:CP_ButtonFont" Visible="[Application.Config.ParentalControlEnabled]"/>-->
 
                 </Children>

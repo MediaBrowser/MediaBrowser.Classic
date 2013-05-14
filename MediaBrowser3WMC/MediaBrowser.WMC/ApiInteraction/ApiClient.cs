@@ -329,6 +329,17 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Start a library scan on the server
+        /// </summary>
+        /// <returns>Task.</returns>
+        public void StartLibraryScan()
+        {
+            var url = GetApiUrl("Library/Refresh");
+
+            Post<EmptyRequestResult>(url, new QueryStringDictionary());
+        }
+
+        /// <summary>
         /// Gets the system status async.
         /// </summary>
         /// <returns>Task{SystemInfo}.</returns>
