@@ -107,6 +107,13 @@ namespace MediaBrowser.Library.Playables
 
                 PlaybackStoppedByUser = args.StoppedByUser;
 
+                if (Config.Instance.RecentItemOption == "watched" || Config.Instance.RecentItemOption == "unwatched")
+                {
+                    // go ahead and force these lists to re-build
+                    var top = this.CurrentMedia.TopParent;
+                    if (top != null) top.OnQuickListChanged(null);
+                }
+
                 //MarkWatchedIfNeeded();
             }
 
