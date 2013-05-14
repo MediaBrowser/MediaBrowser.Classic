@@ -174,12 +174,12 @@ namespace MediaBrowser
         [Comment(@"Enables you to scan the display to cope with overscan issue, parameter should be of the for x,y,z scaling factors")]
         public Vector3 OverScanScaling
         {
-            get { return this.Data.OverScanScaling.ToMediaCenterVector3(); }
+            get { return this.CommonData.OverScanScaling.ToMediaCenterVector3(); }
             set
             {
-                if (this.Data.OverScanScaling.ToMediaCenterVector3() != value)
+                if (this.CommonData.OverScanScaling.ToMediaCenterVector3() != value)
                 {
-                    this.Data.OverScanScaling = MediaBrowser.Code.ShadowTypes.Vector3.FromMediaCenterVector3(value);
+                    this.CommonData.OverScanScaling = MediaBrowser.Code.ShadowTypes.Vector3.FromMediaCenterVector3(value);
                     Save();
                     FirePropertyChanged("OverScanScaling");
                 }
@@ -188,12 +188,12 @@ namespace MediaBrowser
         [Comment("Defines padding to apply round the edge of the screen to cope with overscan issues")]
         public Inset OverScanPadding
         {
-            get { return this.Data.OverScanPadding.ToMediaCenterInset(); }
+            get { return this.CommonData.OverScanPadding.ToMediaCenterInset(); }
             set
             {
-                if (this.Data.OverScanPadding.ToMediaCenterInset() != value)
+                if (this.CommonData.OverScanPadding.ToMediaCenterInset() != value)
                 {
-                    this.Data.OverScanPadding = MediaBrowser.Code.ShadowTypes.Inset.FromMediaCenterInset(value);
+                    this.CommonData.OverScanPadding = MediaBrowser.Code.ShadowTypes.Inset.FromMediaCenterInset(value);
                     Save();
                     FirePropertyChanged("OverScanPadding");
                 }

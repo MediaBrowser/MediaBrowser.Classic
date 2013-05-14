@@ -47,6 +47,12 @@ namespace MediaBrowser
         public bool AutoValidate = true; //automatically validate and refresh items as we access them
 
         [Group("Display")]
+        [Comment(@"Scale factor to account for monitor over/underscan. Format: 0,0,0.")]
+        public Vector3 OverScanScaling = new Vector3() { X = 1, Y = 1, Z = 1 };
+        [Group("Display")]
+        [Comment(@"Extra space to account for monitor over/underscan. Format: 0,0.")]
+        public Inset OverScanPadding = new Inset();
+        [Group("Display")]
         [Comment(@"The number of history items to show in the 'breadcrumbs' (how deep in the structure you are) .")]
         public int BreadcrumbCountLimit = 2;
         [Comment(@"The name of your top level item that will show in the 'breadcrumbs'.")]
