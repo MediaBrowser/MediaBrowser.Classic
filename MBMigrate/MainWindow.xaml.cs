@@ -28,17 +28,12 @@ namespace MBMigrate
             Async.Queue("Migration", () =>
             {
                 if (File.Exists(ApplicationPaths.CommonConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
-                if (_config != null)
-                {
-                    // Set install directory
-                    _config.MBInstallDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-                    _config.Save();
-                }
 
                 if (_config == null) // only do this if a fresh install
                 {
                     try
                     {
+                        _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile); // create a new one
                         Migrate300();
                     }
                     catch (Exception e)
@@ -46,6 +41,12 @@ namespace MBMigrate
                         Logger.ReportException("Error during migration",e);
                     }
                     
+                }
+                if (_config != null)
+                {
+                    // Set install directory
+                    _config.MBInstallDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+                    _config.Save();
                 }
                 Dispatcher.Invoke(DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker)(Close));
             });
@@ -113,8 +114,12 @@ namespace MBMigrate
 
                 BuildTree();
 
-                //Move over config file
-                //CopyFile(Path.Combine(oldPathMap["AppConfigPath"], "MediaBrowserXml.config"), Path.Combine(ApplicationPaths.AppConfigPath,"MediaBrowserXml.config"));
+                //Move over external players from old config file
+                var oldConfig = CommonConfigData.FromFile(Path.Combine(oldPathMap["AppConfigPath"], "MediaBrowserXml.config"));
+                if (oldConfig != null && _config != null)
+                {
+                    _config.ExternalPlayers = oldConfig.ExternalPlayers;
+                }
 
                 //And Plugins that work
                 foreach (var dll in knownCompatibleDlls)
