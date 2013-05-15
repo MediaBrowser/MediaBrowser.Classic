@@ -357,15 +357,22 @@ namespace MediaBrowser
                 var changedItem = Kernel.Instance.FindItem(id);
                 if (changedItem != null)
                 {
-                    Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
-                    changedItem.RefreshMetadata();
-                    
-                    // Add it's top parent so we can clear out recent lists if this was an added item
-                    if (args.UpdateInfo.ItemsAdded.Contains(changedItem.Id))
+                    if (!args.UpdateInfo.ItemsUpdated.Contains(changedItem.Parent.Id))
                     {
-                        var top = changedItem.TopParent;
-                        if (top != null) topFolders[top.Id] = top;
+                        Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
+                        changedItem.RefreshMetadata();
+                        // Add it's top parent so we can clear out recent lists if this was an added item
+                        if (args.UpdateInfo.ItemsAdded.Contains(changedItem.Id))
+                        {
+                            var top = changedItem.TopParent;
+                            if (top != null) topFolders[top.Id] = top;
+                        }
                     }
+                    else
+                    {
+                        Logger.ReportVerbose("Not refreshing {0} because parent was/will be.", changedItem.Name);
+                    }
+
                 }
                 else
                 {
