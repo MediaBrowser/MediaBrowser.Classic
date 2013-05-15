@@ -670,11 +670,11 @@ namespace MediaBrowser.Library {
                 {
                     this.folder.RetrieveChildren(); // re-fetch from server
                     //and force images to reload for our children
-                    foreach (BaseItem item in this.folder.RecursiveChildren)
-                    {
-                        Logger.ReportInfo("re-caching images for " + item.Name);
-                        item.ReCacheAllImages();
-                    }
+                    //foreach (BaseItem item in this.folder.RecursiveChildren)
+                    //{
+                    //    Logger.ReportInfo("re-caching images for " + item.Name);
+                    //    item.ReCacheAllImages();
+                    //}
                     
 
                     RefreshUI();
