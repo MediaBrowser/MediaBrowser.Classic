@@ -43,7 +43,7 @@ namespace Configurator.Code {
         PluginSourceCollection sources;
         string backupDir = Path.Combine(ApplicationPaths.AppPluginPath, "Backup");
 
-        Dictionary<string, System.Version> latestVersions = new Dictionary<string, System.Version>();
+        Dictionary<string, System.Version> latestVersions = new Dictionary<string, System.Version>(StringComparer.OrdinalIgnoreCase);
 
         //any of these plugins with older versions than defined here are incompatable with this version
         public static Dictionary<string, System.Version> RequiredVersions = new Dictionary<string, System.Version>() {
@@ -109,7 +109,7 @@ namespace Configurator.Code {
                     availablePlugins.Add(plugin);
                     try
                     {
-                        string key = plugin.Name + System.IO.Path.GetFileName(plugin.Filename);
+                        string key = Path.GetFileName(plugin.Filename);
                         if (latestVersions.ContainsKey(key))
                         {
                             if (plugin.Version > latestVersions[key]) latestVersions[key] = plugin.Version;
@@ -129,11 +129,11 @@ namespace Configurator.Code {
             //now go back through and indicate which one is the latest version
             foreach (var plugin in availablePlugins)
             {
-                string key = plugin.Name + System.IO.Path.GetFileName(plugin.Filename);
+                string key = Path.GetFileName(plugin.Filename);
                 System.Version v;
                 if (latestVersions.TryGetValue(key, out v))
                 {
-                    plugin.IsLatestVersion = (plugin.Version == v) ? true : false;
+                    plugin.IsLatestVersion = (plugin.Version == v);
                 }
             }
         }
@@ -290,7 +290,7 @@ namespace Configurator.Code {
 
         public System.Version GetLatestVersion(IPlugin plugin) {
             System.Version version;
-            latestVersions.TryGetValue(plugin.Name+plugin.Filename, out version);
+            latestVersions.TryGetValue(plugin.Filename, out version);
             return version;
         }
 
