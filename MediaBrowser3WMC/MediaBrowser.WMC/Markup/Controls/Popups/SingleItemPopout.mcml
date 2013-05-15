@@ -1,0 +1,52 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:ts="resx://MediaBrowser/MediaBrowser.Resources/TitleSet"
+	  xmlns:mi="resx://MediaBrowser/MediaBrowser.Resources/MovieInfo"
+	  xmlns:sy="resx://MediaBrowser/MediaBrowser.Resources/Summary"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+
+  <UI Name="SingleItemPopout">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Item]" Target="[TitleSet.Model]" />
+      <Binding Source="[Item]" Target="[TitleSet.ModelFast]" />
+      <Binding Source="[Item]" Target="[MovieInfo.Model]" />
+      <Binding Source="[Item]" Target="[MovieInfo.ModelFast]" />
+      <Binding Source="[Item]" Target="[Summary.Model]" />
+      <Binding Source="[Item]" Target="[Summary.ModelFast]" />
+      <Binding Source="[Item.PrimaryImageSmall]" Target="[Poster.Content]" />
+      
+    </Rules>
+
+    <Content>
+      <ColorFill Content="40,40,40" Layout="HorizontalFlow" Padding="10,10,10,10">
+        <Children>
+          <Graphic Name="Poster" Content="[Item.PrimaryImageSmall]" MaximumSize="200,0" MaintainAspectRatio="true" />
+          <Panel Name="InfoPanel" Layout="VerticalFlow" Margins="5,0,0,0" >
+            <Children>
+              <Text Content="New Item Added:" Font="font://f:PD_TitleFont" Color="color://s:FontColorMedium" Margins="0,0,0,5" />
+              <ts:TitleSet Name="TitleSet" Model="[Item]" ModelFast="[Item]" Font="font://f:PD_TitleFont" SubFont="font://f:PD_SubTitleFont"/>
+              <mi:MovieInfo Name="MovieInfo" Application="[Application]" Model="[Item]" ModelFast="[Item]" DisplayMediaInfo="false" DisplayLastPlayedPanel="false" DisplayWriter="false" />
+              <sy:SummaryNonScrolling Name="Summary" Model="[Item]"  ModelFast="[Item]" Color="color://s:FontColorLight" Font="font://f:PD_SummaryFont" />
+
+            </Children>
+          </Panel>
+
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+
+</Mcml>

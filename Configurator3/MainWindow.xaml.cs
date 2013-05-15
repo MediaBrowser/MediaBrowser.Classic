@@ -266,6 +266,7 @@ namespace Configurator
             cbxOptionAutoEnter.IsChecked = config.AutoEnterSingleDirs;
             cbxScreenSaver.IsChecked = config.EnableScreenSaver;
             cbxOptionShowFavorites.IsChecked = config.ShowFavoritesCollection;
+            cbxOptionShowNewNotification.IsChecked = config.ShowNewItemNotification;
             tbxFavoriteName.Text = config.FavoriteFolderName;
             lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString()+" Mins";
             //cbxSendStats.IsChecked = config.SendStats;
@@ -868,6 +869,12 @@ namespace Configurator
         private void CbxOptionShowFavorites_OnClick(object sender, RoutedEventArgs e)
         {
             config.ShowFavoritesCollection = (bool)cbxOptionShowFavorites.IsChecked;
+            SaveConfig();
+        }
+
+        private void CbxOptionShowNewNotification_OnClick(object sender, RoutedEventArgs e)
+        {
+            config.ShowNewItemNotification = (bool)cbxOptionShowNewNotification.IsChecked;
             SaveConfig();
         }
 

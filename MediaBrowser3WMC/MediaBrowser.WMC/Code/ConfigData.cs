@@ -139,6 +139,9 @@ namespace MediaBrowser
         [Comment(@"Show collection of items marked as favorites.")]
         public bool ShowFavoritesCollection = true;
         [Group("Display")]
+        [Comment(@"Show notifications of new items.")]
+        public bool ShowNewItemNotification = true;
+        [Group("Display")]
         [Comment(@"Name of favorite collection folder.")]
         public string FavoriteFolderName = "Favorites";
         [Group("Display")]

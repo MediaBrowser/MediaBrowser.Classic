@@ -16,7 +16,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0061";
+        const string VERSION = "1.0062";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -91,6 +91,7 @@ namespace MediaBrowser.Library.Localization
         public string SystemClassConfigDesc = "Level at which to subscribe to system updates.";
         public string PluginClassConfigDesc = "Level at which to subscribe to plug-in updates.";
         public string ShowFavoritesCollectionConfigDesc = "Show a top level collection with all your items marked as Favorite in it. Restart MBC to see changes.";
+        public string ShowNewItemNotificationConfigDesc = "Show a notification window when new items are added.";
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
 
 
@@ -124,6 +125,7 @@ namespace MediaBrowser.Library.Localization
         public string ExcludeRemoteContentInSearchesConfig = "Exclude Remote Content In Searches";
         public string EnhancedMouseSupportConfig = "Enhanced Mouse Support";
         public string ShowFavoritesCollectionConfig = "Show Favorites Collection";
+        public string ShowNewItemNotificationConfig = "Show New Item Notification";
         public string ViewsConfig = "Views";
         public string PosterGridSpacingConfig = "Poster Grid Spacing";
         public string ThumbWidthSplitConfig = "Thumb Width Split";

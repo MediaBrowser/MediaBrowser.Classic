@@ -1018,6 +1018,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\HeaderButton.mcml" />
+    <Content Include="Markup\Controls\Popups\SingleItemPopout.mcml" />
     <Content Include="Markup\Controls\UserIndicator.mcml" />
     <Content Include="Markup\Controls\DiamondPagination.mcml" />
     <None Include="Markup\Controls\EdgeDetection.mcml" />

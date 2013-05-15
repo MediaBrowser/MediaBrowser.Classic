@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
@@ -32,6 +33,7 @@ using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
 using Microsoft.MediaCenter.UI;
 using AddInHost = Microsoft.MediaCenter.Hosting.AddInHost;
+using Timer = Microsoft.MediaCenter.UI.Timer;
 
 namespace MediaBrowser
 {
@@ -210,6 +212,35 @@ namespace MediaBrowser
             FirePropertyChanged("IsPlayingVideo");
             FirePropertyChanged("IsPlaying");
         }
+        #endregion
+
+        #region New Item Notification
+
+        private bool _showNewItemPopout;
+        public bool ShowNewItemPopout
+        {
+            get { return _showNewItemPopout; }
+            set {if (_showNewItemPopout != value)
+            {
+                _showNewItemPopout = value;
+                FirePropertyChanged("ShowNewItemPopout");
+            }}
+        }
+
+        private Item _newItem;
+        public Item NewItem
+        {
+            get { return _newItem; }
+            set
+            {
+                if (_newItem != value)
+                {
+                    _newItem = value;
+                    FirePropertyChanged("NewItem");
+                }
+            }
+        }
+
         #endregion
 
         #region CustomDialogs
@@ -405,10 +436,19 @@ namespace MediaBrowser
                 top.OnQuickListChanged(null);
             } 
 
-            //Get Added items and determine the parent(s) that needs to be refreshed
-            //var addedItems = Kernel.Instance.MB3ApiRepository.RetrieveSpecificItems(args.UpdateInfo.ItemsAdded.Select(i => i.ToString()).ToArray());
-            //var foldersAddedTo = addedItems.Select(i => i.ApiParentId).Distinct().Select(id => Kernel.Instance.FindItem(new Guid(id))).Where(folder => folder != null).ToList();
-            //foreach (var folder in foldersAddedTo) Logger.ReportVerbose("Folder {0} needs to be refreshed", folder.Name);
+            //Finally notify if enabled
+            if (Config.ShowNewItemNotification)
+            {
+                var firstNew = Kernel.Instance.MB3ApiRepository.RetrieveItem(args.UpdateInfo.ItemsAdded.FirstOrDefault());
+                if (firstNew != null)
+                {
+                    NewItem = ItemFactory.Instance.Create(firstNew);
+                    ShowNewItemPopout = true;
+                    Thread.Sleep(Config.DefaultMessageTimeout * 1000);
+                    ShowNewItemPopout = false;
+                }
+                
+            }
         }
 
 
@@ -2000,6 +2040,7 @@ namespace MediaBrowser
         }
 
         private Information _information = new Information();
+
         public Information Information
         {
             get

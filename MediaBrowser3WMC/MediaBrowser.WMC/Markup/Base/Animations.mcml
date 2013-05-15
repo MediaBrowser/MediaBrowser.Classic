@@ -76,6 +76,15 @@
     </Keyframes>
   </Animation>
 
+  <Animation Name="NewItemShow">
+    <Keyframes>
+      <AlphaKeyframe Time="0.0" Value="0" />
+      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+      <PositionKeyframe Time="0.0" Value="500,0,0" />
+      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+    </Keyframes>
+  </Animation>
+
   <Animation Name="FadeFast">
     <Keyframes>
       <AlphaKeyframe Time="0.0" Value="0" />

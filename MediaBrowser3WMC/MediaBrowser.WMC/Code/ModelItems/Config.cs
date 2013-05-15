@@ -156,6 +156,11 @@ namespace MediaBrowser
             set { if (this.Data.ShowFavoritesCollection != value) { this.Data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); Application.CurrentInstance.ReLoad(); } }
         }
 
+        public bool ShowNewItemNotification
+        {
+            get { return this.Data.ShowNewItemNotification; }
+            set { if (this.Data.ShowNewItemNotification != value) { this.Data.ShowNewItemNotification = value; Save(); FirePropertyChanged("ShowNewItemNotification"); Application.CurrentInstance.ReLoad(); } }
+        }
 
         [Comment("Dim all unselected posters in poster and thumbstrib views")]
         public bool DimUnselectedPosters
