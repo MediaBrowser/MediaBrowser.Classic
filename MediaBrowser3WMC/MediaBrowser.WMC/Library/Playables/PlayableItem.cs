@@ -91,9 +91,13 @@ namespace MediaBrowser.Library.Playables
                     // Update our status with what was returned from server if valid
                     if (newStatus != null)
                     {
-                        Logger.ReportVerbose("Setting new status");
-                        args.Item.CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
-                        args.Item.CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
+                        // we have to search the loaded library for all occurrences of this item and set the status there
+                        foreach (Media item in Kernel.Instance.FindItems(args.Item.CurrentMedia.Id))
+                        {
+                            Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent.Name));
+                            item.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
+                            item.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
+                        }
                     }
                     else
                     {
