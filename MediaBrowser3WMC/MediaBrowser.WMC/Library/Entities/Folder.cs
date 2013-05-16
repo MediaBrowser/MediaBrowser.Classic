@@ -8,6 +8,8 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Querying;
+using MediaBrowser.Util;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -223,7 +225,7 @@ namespace MediaBrowser.Library.Entities {
                 if (quickListFolder == null)
                 {
                     string recentItemOption = Kernel.Instance.ConfigData.RecentItemOption;
-                    if (recentItemOption == "watched" || Kernel.Instance.ConfigData.InvalidateRecentLists)
+                    //if (recentItemOption == "watched" || Kernel.Instance.ConfigData.InvalidateRecentLists)
                         reBuildQuickList = true; //have to re-build these each time
 
                     Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
@@ -267,33 +269,62 @@ namespace MediaBrowser.Library.Entities {
             List<BaseItem> items = null;
             int containerNo = 0;
             int maxItems = this.ActualChildren.Count > 0 ? (this.ActualChildren[0] is IContainer || this.GetType().Name == "MusicMainFolder") && Kernel.Instance.ConfigData.RecentItemCollapseThresh <= 6 ? Kernel.Instance.ConfigData.RecentItemContainerCount : Kernel.Instance.ConfigData.RecentItemCount : Kernel.Instance.ConfigData.RecentItemCount;
-            Logger.ReportVerbose("Starting RAL ("+recentItemOption+") Build for " + this.Name + 
-                " with "+maxItems +" items out of "+this.RecursiveChildren.Count()+".");
-            switch (recentItemOption)
+            //Logger.ReportVerbose("Starting RAL ("+recentItemOption+") Build for " + this.Name + 
+            //    " with "+maxItems +" items out of "+this.RecursiveChildren.Count()+".");
+            using (new Profiler(string.Format("RAL child retrieval for {0} option {1}", Name, recentItemOption)))
             {
-                case "watched":
-                    items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount > 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => (i as Media).PlaybackStatus.LastPlayed).Take(maxItems).ToList();
+                switch (recentItemOption)
+                {
+                    case "watched":
+                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                   {
+                                                                                       UserId = Kernel.CurrentUser.ApiId,
+                                                                                       ParentId = this.ApiId,
+                                                                                       Limit = maxItems,
+                                                                                       Fields = MB3ApiRepository.StandardFields,
+                                                                                       Filters = new[] {ItemFilter.IsPlayed,},
+                                                                                       SortBy = new[] {ItemSortBy.DatePlayed},
+                                                                                       SortOrder = Model.Entities.SortOrder.Descending
+                                                                                   }).ToList();
+                        //items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount > 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => (i as Media).PlaybackStatus.LastPlayed).Take(maxItems).ToList();
 
-                    break;
+                        break;
 
-                case "unwatched":
-                    items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount == 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(v => v.DateCreated).Take(maxItems).ToList();
-                    break;
+                    case "unwatched":
+                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                   {
+                                                                                       UserId = Kernel.CurrentUser.ApiId,
+                                                                                       ParentId = this.ApiId,
+                                                                                       Limit = maxItems,
+                                                                                       Fields = MB3ApiRepository.StandardFields,
+                                                                                       Filters = new[] {ItemFilter.IsUnplayed,},
+                                                                                       SortBy = new[] {ItemSortBy.DateCreated},
+                                                                                       SortOrder = Model.Entities.SortOrder.Descending
+                                                                                   }).ToList();
+                        //items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount == 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(v => v.DateCreated).Take(maxItems).ToList();
+                        break;
 
-                default:
-                    items = this.RecursiveChildren.Where(i => i is Media).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => i.DateCreated).Take(maxItems).ToList();
-                    break;
+                    default:
+                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                   {
+                                                                                       UserId = Kernel.CurrentUser.ApiId,
+                                                                                       ParentId = this.ApiId,
+                                                                                       Limit = maxItems,
+                                                                                       Fields = MB3ApiRepository.StandardFields,
+                                                                                       SortBy = new[] {ItemSortBy.DateCreated},
+                                                                                       SortOrder = Model.Entities.SortOrder.Descending
+                                                                                   }).ToList();
+                        //items = this.RecursiveChildren.Where(i => i is Media).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => i.DateCreated).Take(maxItems).ToList();
+                        break;
 
+                }
             }
-            if (items != null)
-            {
-                Logger.ReportVerbose(recentItemOption + " list for " + this.Name + " loaded with " + items.Count + " items.");
-                List<BaseItem> folderChildren = new List<BaseItem>();
+            Logger.ReportVerbose(recentItemOption + " list for " + this.Name + " loaded with " + items.Count + " items.");
+                var folderChildren = new List<BaseItem>();
                 //now collapse anything that needs to be and create the child list for the list folder
                 var containers = from item in items
                                  where item is IGroupInIndex
                                  group item by (item as IGroupInIndex).MainContainer;
-
                 foreach (var container in containers) 
                 {
                     Logger.ReportVerbose("Container "+(container.Key == null ? "--Unknown--" : container.Key.Name) + " items: "+container.Count());
@@ -317,26 +348,26 @@ namespace MediaBrowser.Library.Entities {
                         var currentSeries = currentContainer as Series;
                         containerNo++;
                         var aContainer = new LocalCacheFolder(new List<BaseItem>())
-                            {
-                                Id = ("container"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
-                                Name = currentContainer.Name + " ("+container.Count()+" Items)",
-                                Overview = currentContainer.Overview,
-                                MpaaRating = currentContainer.MpaaRating,
-                                Genres = currentContainer.Genres,
-                                ImdbRating = currentContainer.ImdbRating,
-                                Studios = currentContainer.Studios,
-                                PrimaryImagePath = currentContainer.PrimaryImagePath,
-                                SecondaryImagePath = currentContainer.SecondaryImagePath,
-                                BannerImagePath = currentContainer.BannerImagePath,
-                                BackdropImagePaths = currentContainer.BackdropImagePaths,
-                                TVDBSeriesId = currentSeries != null ? currentSeries.TVDBSeriesId : null,
-                                LogoImagePath = currentSeries != null ? currentSeries.LogoImagePath : null,
-                                ArtImagePath = currentSeries != null ? currentSeries.ArtImagePath : null,
-                                ThumbnailImagePath = currentSeries != null ? currentSeries.ThumbnailImagePath : null,
-                                DisplayMediaType = currentContainer.DisplayMediaType,
-                                DateCreated = container.First().DateCreated,
-                                Parent = this
-                            };
+                                             {
+                                                 Id = ("container"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
+                                                 Name = currentContainer.Name + " ("+container.Count()+" Items)",
+                                                 Overview = currentContainer.Overview,
+                                                 MpaaRating = currentContainer.MpaaRating,
+                                                 Genres = currentContainer.Genres,
+                                                 ImdbRating = currentContainer.ImdbRating,
+                                                 Studios = currentContainer.Studios,
+                                                 PrimaryImagePath = currentContainer.PrimaryImagePath,
+                                                 SecondaryImagePath = currentContainer.SecondaryImagePath,
+                                                 BannerImagePath = currentContainer.BannerImagePath,
+                                                 BackdropImagePaths = currentContainer.BackdropImagePaths,
+                                                 TVDBSeriesId = currentSeries != null ? currentSeries.TVDBSeriesId : null,
+                                                 LogoImagePath = currentSeries != null ? currentSeries.LogoImagePath : null,
+                                                 ArtImagePath = currentSeries != null ? currentSeries.ArtImagePath : null,
+                                                 ThumbnailImagePath = currentSeries != null ? currentSeries.ThumbnailImagePath : null,
+                                                 DisplayMediaType = currentContainer.DisplayMediaType,
+                                                 DateCreated = container.First().DateCreated,
+                                                 Parent = this
+                                             };
                         if (container.Key is Series)
                         {
 
@@ -348,26 +379,26 @@ namespace MediaBrowser.Library.Entities {
                                 var currentSeason = season.Key as Series ?? new Season() { Name = "<Unknown>" };
                                 containerNo++;
                                 var aSeason = new LocalCacheFolder(season.ToList())
-                                {
-                                    Id = ("season"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
-                                    Name = currentSeason.Name + " ("+season.Count()+" Items)",
-                                    Overview = currentSeason.Overview,
-                                    MpaaRating = currentSeason.MpaaRating,
-                                    Genres = currentSeason.Genres,
-                                    ImdbRating = currentSeason.ImdbRating,
-                                    Studios = currentSeason.Studios,
-                                    PrimaryImagePath = currentSeason.PrimaryImagePath,
-                                    SecondaryImagePath = currentSeason.SecondaryImagePath,
-                                    BannerImagePath = currentSeason.BannerImagePath,
-                                    BackdropImagePaths = currentSeason.BackdropImagePaths,
-                                    TVDBSeriesId = currentSeason.TVDBSeriesId,
-                                    LogoImagePath = currentSeason.LogoImagePath,
-                                    ArtImagePath = currentSeason.ArtImagePath,
-                                    ThumbnailImagePath = currentSeason.ThumbnailImagePath,
-                                    DisplayMediaType = currentSeason.DisplayMediaType,
-                                    DateCreated = season.First().DateCreated,
-                                    Parent = currentSeason == aContainer ? this : aContainer
-                                };
+                                                  {
+                                                      Id = ("season"+recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
+                                                      Name = currentSeason.Name + " ("+season.Count()+" Items)",
+                                                      Overview = currentSeason.Overview,
+                                                      MpaaRating = currentSeason.MpaaRating,
+                                                      Genres = currentSeason.Genres,
+                                                      ImdbRating = currentSeason.ImdbRating,
+                                                      Studios = currentSeason.Studios,
+                                                      PrimaryImagePath = currentSeason.PrimaryImagePath,
+                                                      SecondaryImagePath = currentSeason.SecondaryImagePath,
+                                                      BannerImagePath = currentSeason.BannerImagePath,
+                                                      BackdropImagePaths = currentSeason.BackdropImagePaths,
+                                                      TVDBSeriesId = currentSeason.TVDBSeriesId,
+                                                      LogoImagePath = currentSeason.LogoImagePath,
+                                                      ArtImagePath = currentSeason.ArtImagePath,
+                                                      ThumbnailImagePath = currentSeason.ThumbnailImagePath,
+                                                      DisplayMediaType = currentSeason.DisplayMediaType,
+                                                      DateCreated = season.First().DateCreated,
+                                                      Parent = currentSeason == aContainer ? this : aContainer
+                                                  };
                                 Kernel.Instance.LocalRepo.SaveItem(aSeason);
                                 Kernel.Instance.LocalRepo.SaveChildren(aSeason.Id, season.Select(i => i.Id));
                                 aContainer.AddChild(aSeason);
@@ -383,7 +414,6 @@ namespace MediaBrowser.Library.Entities {
                         //and container to children
                         folderChildren.Add(aContainer);
                     }
-                }
 
                 //finally add all the items that don't go in containers
                 folderChildren.AddRange(items.Where(i => (!(i is IGroupInIndex))));
@@ -396,7 +426,6 @@ namespace MediaBrowser.Library.Entities {
                 Kernel.Instance.LocalRepo.SaveChildren(QuickListID(recentItemOption), folderChildren.Select(i => i.Id));
 
             }
-
         }
 
         public virtual void Sort(IComparer<BaseItem> sortFunction) {
