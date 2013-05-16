@@ -122,10 +122,10 @@ namespace MBMigrate
                 }
 
                 //And Plugins that work
-                foreach (var dll in knownCompatibleDlls)
-                {
-                    CopyFile(Path.Combine(oldPathMap["AppPluginPath"], dll), Path.Combine(ApplicationPaths.AppPluginPath, dll));
-                }
+                //foreach (var dll in knownCompatibleDlls)
+                //{
+                //    CopyFile(Path.Combine(oldPathMap["AppPluginPath"], dll), Path.Combine(ApplicationPaths.AppPluginPath, dll));
+                //}
 
                 //And the Localization folder
                 foreach (var file in Directory.GetFiles(oldPathMap["AppLocalizationPath"]))
