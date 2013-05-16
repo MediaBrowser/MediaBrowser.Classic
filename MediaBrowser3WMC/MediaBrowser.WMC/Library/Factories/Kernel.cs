@@ -592,6 +592,21 @@ namespace MediaBrowser.Library {
                        RootFolder.RecursiveChildren.FirstOrDefault(i => i.Id == id);
         }
 
+        /// <summary>
+        /// Find all occurences of an item in the library by Id
+        /// If onlyIflLoaded is true, we will only search for items in children that have actually been loaded
+        /// Use this parameter when searching for items that have changed on the server so that we don't cause
+        /// a complete library load when not necessary.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="onlyIfLoaded"></param>
+        /// <returns></returns>
+        public IEnumerable<BaseItem> FindItems(Guid id, bool onlyIfLoaded = true)
+        {
+            return onlyIfLoaded ? RootFolder.RecursiveLoadedChildren.Where(i => i.Id == id) :
+                       RootFolder.RecursiveChildren.Where(i => i.Id == id);
+        }
+
         private static System.Reflection.Assembly _jsonAssembly;
         private static System.Reflection.Assembly _protoAssembly;
         private static System.Reflection.Assembly _websocketAssembly;
