@@ -2,15 +2,12 @@
     xmlns:cor="assembly://MsCorLib/System"
     xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
-	  xmlns:s="file://Styles_DoNotEdit.mcml"
-	  xmlns:f="file://Fonts_DoNotEdit.mcml"
     xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
     xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
-      xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
     xmlns:me="Me"
     >
 
@@ -46,7 +43,7 @@
             </LayoutInput>
 
           </ss:DefaultScreenSaver>
-          <Text Name="Title" Content="Please Select a User Profile >" Font="Segoe UI, 28" Color="color://s:FontColorLight" >
+          <Text Name="Title" Content="Please Select a User Profile >" Font="Segoe UI, 28" Color="White" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,.2" Top="Parent,.1"/>
             </LayoutInput>
@@ -80,7 +77,6 @@
               </Animation>
             </Animations>
             <Content>
-              <!--<Text Content="[RepeatedItem!lib:Item.Name]" Color="color://s:FontColorLight" MinimumSize="200,0" MaximumSize="200,0" />-->
               <me:UserTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" />
             </Content>
           </Repeater>
@@ -112,7 +108,7 @@
       <Index Name="Index" Index="null" />
       <cor:String Name="Label" String="" />
       <Vector3 Name="FocusZoom" Vector3="1.1,1.1,1.1" />
-      <Font Name="Font" Font="font://f:CP_ConfigItemFont" />
+      <Font Name="Font" Font="Segoe Media Center Semibold,16" />
       <Size Name="Size" Size="248,162" />
       <Command Name="Command" Available="false" />
       <Color Name="BGColor" Color="DarkBlue" />
@@ -179,7 +175,7 @@
         <Children>
           <Panel Name="TextArea" Layout="Form" LayoutInput="[TextStandardLayout]" >
             <Children>
-              <Text Name="Title" Content="[Label]" Font="[Font]" Color="color://s:FontColorLight" HorizontalAlignment="Center" WordWrap="true" MaximumLines="2" FadeSize="150" >
+              <Text Name="Title" Content="[Label]" Font="[Font]" Color="White" HorizontalAlignment="Center" WordWrap="true" MaximumLines="2" FadeSize="150" >
                 <LayoutInput>
                   <AnchorLayoutInput Top="Parent, 0, 2" Horizontal="Near" />
                 </LayoutInput>

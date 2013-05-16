@@ -1141,7 +1141,7 @@ namespace MediaBrowser
             {
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
-                    Async.Queue("pw", () => MessageBox("Incorrect Password. Please re-try."));
+                    AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
                     return;
                 }
                 throw;
@@ -1154,11 +1154,11 @@ namespace MediaBrowser
             // load user config
             Kernel.Instance.LoadUserConfig();
 
-            // setup styles and fonts
+            // setup styles and fonts with user options
             try
             {
-                CustomResourceManager.SetupStylesMcml(AddInHost.Current);
-                CustomResourceManager.SetupFontsMcml(AddInHost.Current);
+                CustomResourceManager.SetupStylesMcml(AddInHost.Current, Config.Instance);
+                CustomResourceManager.SetupFontsMcml(AddInHost.Current, Config.Instance);
             }
             catch (Exception ex)
             {

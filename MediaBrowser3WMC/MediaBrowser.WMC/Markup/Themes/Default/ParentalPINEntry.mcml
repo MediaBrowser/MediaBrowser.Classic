@@ -1,15 +1,10 @@
 <Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
 	  xmlns:cor="assembly://MSCorLib/System"
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
-	  xmlns:f="file://Fonts_DoNotEdit.mcml"
     xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
-    xmlns:s="file://Styles_DoNotEdit.mcml"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
-    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
-      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
-      xmlns:np="resx://MediaBrowser/MediaBrowser.Resources/NumberPad"
       >
 
   <UI Name="ParentalPINEntry">
@@ -22,9 +17,6 @@
     <Locals>
       <EditableText Name="PIN" Value=""/>
       <Command Name="PINEntered" />
-      <Command Name="ShowNumPad" />
-      <Command Name="CloseMessage"/>
-      <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
     </Locals>
 
     <Rules>
@@ -43,73 +35,12 @@
       </Changed>
       <Binding Source="[PIN.Value]" Target="[Application.CustomPINEntry]">
       </Binding>
-      <Changed Source="[ShowNumPad.Invoked]" >
-        <Actions>
-          <Set Target="[NumberPad.Visible]" Value="true"/>
-          <Set Target="[ShowPadBtn.Visible]" Value="false"/>
-          <Invoke Target="[NumberPad.NavigateInto]" />
-        </Actions>
-      </Changed>
 
-      <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
-      <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
-      <Changed Source="[CloseMessage.Invoked]">
-        <Actions>
-          <Set Target="[MessageBox.Visible]" Value="false" />
-          <Set Target="[MouseBlocker.Visible]" Value="false" />
-          <Set Target="[Application.ShowMessage]" Value="false" />
-          <Set Target="[PIN.Value]" Value="" />
-          <Invoke Target="[PINBox.NavigateInto]" />
-        </Actions>
-      </Changed>
-
-      <Changed Source="[Application.ShowMessage]" >
-        <Conditions>
-          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Miniselect" />
-          <Set Target="[MessageBox.Visible]" Value="true" />
-          <Set Target="[MouseBlocker.Visible]" Value="true" />
-          <Invoke Target="[MsgDelay.Start]" />
-        </Actions>
-      </Changed>
-      <Changed Source="[MsgDelay.Tick]" >
-        <Actions>
-          <Invoke Target="[MessageBox.NavigateInto]" />
-        </Actions>
-      </Changed>
-      <Changed Source="[Application.ShowMessage]">
-        <Conditions>
-          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="false" />
-        </Conditions>
-        <Actions>
-          <Set Target="[MessageBox.Visible]" Value="false" />
-          <Set Target="[MouseBlocker.Visible]" Value="false" />
-        </Actions>
-      </Changed>
     </Rules>
 
     <Content>
       <Panel Layout="Form" >
         <Children>
-          <!--MessageBox-->
-          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="1300,400" MaximumSize="1300,400" >
-            <Animations>
-              <Animation Type="Show" >
-                <Keyframes>
-                  <AlphaKeyframe Time="0.0" Value="0" />
-                  <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
-                </Keyframes>
-              </Animation>
-              <Animation Type="Hide" >
-                <Keyframes>
-                  <AlphaKeyframe Time="0.0" Value="1" />
-                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
-                </Keyframes>
-              </Animation>
-            </Animations>
-          </msg:MessageBox>
 
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
 
@@ -128,15 +59,9 @@
             <Children>
               <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
               </pe:PINEdit>
-              <sb:SimpleButton Name="ShowPadBtn" Text="1,2,3" Size="50,50" Font="Segoe Media Center, 8" Command="[ShowNumPad]" />
             </Children>
             
           </Panel>
-          <np:NumberPad  Name="NumberPad" Theme="[Application.Config.Theme]" EditBox="[PIN]" Visible="false" >
-            <LayoutInput>
-              <FormLayoutInput Top="PINPanel,1,30"/>
-            </LayoutInput>
-          </np:NumberPad>
         
         
         </Children>

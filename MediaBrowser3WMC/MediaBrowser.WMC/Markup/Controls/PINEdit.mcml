@@ -1,7 +1,6 @@
 <Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
 	  xmlns:cor="assembly://MSCorLib/System"
 	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
-	  xmlns:s="file://Styles_DoNotEdit.mcml"
     xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
 	  >
@@ -17,8 +16,8 @@
       <Command Name="EndCommand" Command="$Required"/>
       <Image Name="Border" Image="image://i:PlainBorder"/>
       <!-- Label color. -->
-      <Color Name="LabelColor" Color="color://s:FontColorLight"/>
-      <Color Name="LabelFocusedColor" Color="color://s:FontColorLight"/>
+      <Color Name="LabelColor" Color="White"/>
+      <Color Name="LabelFocusedColor" Color="White"/>
       <Font Name="Font" Font="$Required"/>
     </Properties>
 
@@ -104,7 +103,7 @@
           <FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
         </Layout>
         <Children>
-          <Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,5,0" ></Text>
+          <Text Name="Lbl" Color="255, 147,212,250" Font="[Font]" Margins="5,0,5,0" ></Text>
           <!-- Solid background color. -->
           <Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="100,34">
             <Children>

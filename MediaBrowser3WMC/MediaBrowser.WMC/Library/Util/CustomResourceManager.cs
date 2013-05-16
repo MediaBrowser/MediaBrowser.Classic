@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Util
         private const string FONTS_FILE = "Fonts_DoNotEdit.mcml";
         private const string CUSTOM_FONTS_FILE = "CustomFonts.mcml";
 
-        public static void SetupFontsMcml(AddInHost host)
+        public static void SetupFontsMcml(AddInHost host, Config config = null)
         {
             try
             {
@@ -50,7 +50,8 @@ namespace MediaBrowser.Library.Util
                 }
                 else
                 {
-                    switch (Config.Instance.FontTheme)
+                    var fontTheme = config != null ? config.FontTheme : "Default";
+                    switch (fontTheme)
                     {
                         case "Small":
                             File.WriteAllBytes(file, Resources.FontsSmall);
@@ -69,7 +70,7 @@ namespace MediaBrowser.Library.Util
             }
         }
 
-        public static void SetupStylesMcml(AddInHost host)
+        public static void SetupStylesMcml(AddInHost host, Config config = null)
         {
             try
             {
@@ -94,8 +95,9 @@ namespace MediaBrowser.Library.Util
                 }
                 else
                 {
+                    var styleTheme = config != null ? config.Theme : "Default";
                     // new options must be added to the ThemeModel choice in configpage.mcml
-                    switch (Config.Instance.Theme)
+                    switch (styleTheme)
                     {
                         case "Black":
                             File.WriteAllBytes(file, Resources.StylesBlack);
