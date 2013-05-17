@@ -121,6 +121,7 @@ namespace MediaBrowser.Library.Entities {
         public virtual void RetrieveChildren()
         {
             children = new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
+            mediaCount = null;
         }
 
         public virtual bool PromptForChildRefresh
@@ -507,7 +508,6 @@ namespace MediaBrowser.Library.Entities {
                 if (mediaCount == null)
                 {
                     mediaCount = this.RecursiveMedia.Distinct(i => i.Id).Count();
-                    Kernel.Instance.MB3ApiRepository.SaveItem(this);
                 }
                 return mediaCount == null ? 0 : mediaCount.Value;
             }

@@ -654,6 +654,7 @@ namespace MediaBrowser.Library {
                 using (new MediaBrowser.Util.Profiler("Refresh " + this.Name))
                 {
                     this.folder.RetrieveChildren(); // re-fetch from server
+                    this.RefreshFolderOverviewCache();
                     RefreshUI();
                 }
             });

@@ -33,6 +33,7 @@ using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
 using Microsoft.MediaCenter.UI;
 using AddInHost = Microsoft.MediaCenter.Hosting.AddInHost;
+using MediaType = Microsoft.MediaCenter.MediaType;
 using Timer = Microsoft.MediaCenter.UI.Timer;
 
 namespace MediaBrowser
@@ -983,13 +984,7 @@ namespace MediaBrowser
 
                         // try and run the file regardless whether it exists or not.  Ideally we want it to play but if we can't find it, it will still put MC in a state that allows
                         // us to delete the file we are trying to delete
-                        PlayableItem playable = PlayableItemFactory.Instance.CreateForInternalPlayer(new string[] { DingFile });
-
-                        playable.GoFullScreen = false;
-                        playable.RaiseGlobalPlaybackEvents = false;
-                        playable.ShowNowPlayingView = false;
-
-                        Play(playable);
+                        mce.PlayMedia(MediaType.Audio, DingFile, false);
 
                         // The play method runs asynchronously, so give it a second to ensure it's at least started.
                         System.Threading.Thread.Sleep(1000);
