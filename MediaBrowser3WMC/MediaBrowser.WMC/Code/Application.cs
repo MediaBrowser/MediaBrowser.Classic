@@ -594,7 +594,7 @@ namespace MediaBrowser
 
         public FavoritesCollectionFolder FavoritesFolder
         {
-            get { return Kernel.Instance.RootFolder.Children.OfType<FavoritesCollectionFolder>().FirstOrDefault(); }
+            get { return Kernel.Instance.FavoritesFolder; }
         }
 
         public void ClearFavorites()
@@ -975,6 +975,7 @@ namespace MediaBrowser
                     Item parent = Item.PhysicalParent;
                     string path = Item.Path;
                     string name = Item.Name;
+                    var topParents = Kernel.Instance.FindItems(Item.Id).Select(i => i.TopParent).Distinct(i => i.Id);
 
                     try
                     {
@@ -1013,6 +1014,9 @@ namespace MediaBrowser
                     }
                     DeleteNavigationHelper(parent);
                     this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
+                    // And refresh the RAL of all needed parents
+                    foreach (var folder in topParents) folder.OnQuickListChanged(null);
+                    
                 }
                 else
                     mce.Dialog(CurrentInstance.StringData("NotDelTypeDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
