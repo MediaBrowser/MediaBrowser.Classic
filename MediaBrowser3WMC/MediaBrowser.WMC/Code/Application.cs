@@ -961,7 +961,7 @@ namespace MediaBrowser
                 var caption = CurrentInstance.StringData("DeleteMediaCapDial");
 
                 // Present dialog
-                DialogResult dr = mce.Dialog(msg, caption, DialogButtons.No | DialogButtons.Yes, 0, true);
+                var dr = mce.Dialog(msg, caption, DialogButtons.No | DialogButtons.Yes, 0, true);
 
                 if (dr == DialogResult.No)
                 {
@@ -969,8 +969,7 @@ namespace MediaBrowser
                     return;
                 }
 
-                if (dr == DialogResult.Yes && this.Config.Advanced_EnableDelete == true
-                    && this.Config.EnableAdvancedCmds == true)
+                if (dr == DialogResult.Yes && this.Config.Advanced_EnableDelete && this.Config.EnableAdvancedCmds)
                 {
                     Item parent = Item.PhysicalParent;
                     string path = Item.Path;
