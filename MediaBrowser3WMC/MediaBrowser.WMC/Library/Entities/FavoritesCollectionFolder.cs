@@ -49,6 +49,14 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        protected override string[] RalExcludeTypes
+        {
+            get
+            {
+                return new string[] {};
+            }
+        }
+
         public void Clear()
         {
             foreach (var child in Children.OfType<FavoritesTypeFolder>())

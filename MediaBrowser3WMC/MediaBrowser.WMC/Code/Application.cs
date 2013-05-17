@@ -1012,7 +1012,7 @@ namespace MediaBrowser
                     {
                         mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
                     }
-                    DeleteNavigationHelper(parent);
+                    DeleteNavigationHelper(Item);
                     this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
                     // And refresh the RAL of all needed parents
                     foreach (var folder in topParents) folder.OnQuickListChanged(null);
@@ -1025,16 +1025,21 @@ namespace MediaBrowser
         }
 
 
-        private void DeleteNavigationHelper(Item Parent)
+        private void DeleteNavigationHelper(Item item)
         {
             Back(); // Back to the Parent Item; This parent still contains old data.
-            if (Parent != null) //if we came from a recent list parent may not be valid
-            {
-                if (Parent is FolderModel)
-                {
-                    Async.Queue("Post delete validate", () => (Parent as FolderModel).Folder.ValidateChildren()); //update parent info
-                }
-            }
+            Async.Queue("Post delete validate", () =>
+                                                    {
+                                                        //update parent info on all occurences in lib
+                                                        foreach (var occurence in Kernel.Instance.FindItems(item.Id))
+                                                        {
+                                                            var parent = occurence.Parent;
+                                                            if (parent != null) parent.RefreshMetadata();
+                                                        }
+
+                                                        //and also actual parent of this item (in case in recent list)
+                                                        item.PhysicalParent.RefreshChildren();
+                                                    });
         }
 
         // Entry point for the app
