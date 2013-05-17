@@ -27,7 +27,7 @@
       <ShortcutHandler Name="SearchShortcut" Handle="true" HandlerStage="Bubbled" Shortcut="Yellow"/>
       <KeyHandler Name="SearchKey" Handle="true" HandlerStage="Bubbled" Key="S" Modifiers="Control"/>
 
-      <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
+      <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseSearch"/>
       <Command Name="CloseMessage"/>
     </Locals>
@@ -101,9 +101,9 @@
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Miniselect" />
-          <Set Target="[MessageBox.Visible]" Value="true" />
-          <Set Target="[MouseBlocker.Visible]" Value="true" />
           <Invoke Target="[MsgDelay.Start]" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Set Target="[MessageBox.Visible]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[MsgDelay.Tick]" >

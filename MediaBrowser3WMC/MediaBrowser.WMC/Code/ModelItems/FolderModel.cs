@@ -887,7 +887,15 @@ namespace MediaBrowser.Library {
         }
 
         public override void SetWatched(bool value) {
-            folder.Watched = value;
+            Async.Queue("Folder SetWatched", () =>
+                                                 {
+                                                     if (Application.CurrentInstance.YesNoBox(string.Format("Mark ALL content as {0}? Are you very sure...?", value ? "Played" : "UnPlayed")) == "Y")
+                                                     {
+                                                         folder.Watched = value;
+                                                         unwatchedCountCache = -1;
+                                                         FirePropertiesChanged("UnwatchedCountString", "HaveWatched", "UnwatchedCount");
+                                                     }
+                                                 });
         }
 
         public Item SelectedChild {
