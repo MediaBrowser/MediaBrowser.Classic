@@ -7,6 +7,7 @@ namespace MediaBrowser.Library.Entities
 {
     public interface IGroupInIndex
     {
+        Guid Id { get; set; }
         IContainer MainContainer { get; }
     }
 }

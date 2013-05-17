@@ -98,9 +98,7 @@ namespace MediaBrowser.Library.Entities {
         {
             if (seasonItem == null && !string.IsNullOrEmpty(this.Path))
             {
-                //derive id of what would be our season - hate this but don't have to store and maintain pointers this way
-                string parentPath = System.IO.Path.GetDirectoryName(this.Path);
-                Guid seasonId = (typeof(Season).FullName + parentPath.ToLower()).GetMD5();
+                var seasonId = new Guid(this.ApiParentId);
                 seasonItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seasonId) as Season;
             }
             return seasonItem;

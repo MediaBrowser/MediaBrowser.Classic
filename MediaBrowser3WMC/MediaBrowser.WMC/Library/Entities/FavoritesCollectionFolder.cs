@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
@@ -35,12 +36,27 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        protected override string RalParentId
+        {
+            get { return Kernel.Instance.RootFolder.ApiId; }
+        }
+
+        protected override ItemFilter[] AdditionalRalFilters
+        {
+            get
+            {
+                return new[] {ItemFilter.IsFavorite};
+            }
+        }
+
         public void Clear()
         {
             foreach (var child in Children.OfType<FavoritesTypeFolder>())
             {
                 child.Clear();
             }
+            OnChildrenChanged(null);
+            OnQuickListChanged(null);
         }
     }
 }

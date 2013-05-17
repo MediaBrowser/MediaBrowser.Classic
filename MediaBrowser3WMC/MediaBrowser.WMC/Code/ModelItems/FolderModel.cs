@@ -348,62 +348,53 @@ namespace MediaBrowser.Library {
                     if (quickListItems == null)
                         Async.Queue("Newest Item Loader", () =>
                         {
-                            //the first time kick off a validation of our whole tree so we pick up anything new
-                            if (!validated && Config.Instance.AutoValidate)
-                            {
-                                Async.Queue(this.Name + " Initial Validation", () =>
-                                {
-                                    validated = true;
-                                    var changed = false;
-                                    var lastDate = folder.QuickList.DateCreated.ToLocalTime();
-                                    using (new MediaBrowser.Util.Profiler(this.Name + " Initial validate"))
-                                    {
-                                        changed = folder.DateCreated > lastDate || folder.DateModified > lastDate;
-                                        changed = folder.RecursiveChildren.Aggregate(changed, (current, subItem) => current | (subItem.DateCreated > lastDate || subItem.DateModified > lastDate));
-                                    }
-                                    if (changed)
-                                    {
-                                        Logger.ReportVerbose(this.Name + " has had changes.");
-                                        this.mediaCount = this.runtime = null;
-                                        QuickListItems = null; //this will force it to re-load
-                                    }
+                            ////the first time kick off a validation of our whole tree so we pick up anything new
+                            //if (!validated && Config.Instance.AutoValidate)
+                            //{
+                            //    Async.Queue(this.Name + " Initial Validation", () =>
+                            //    {
+                            //        validated = true;
+                            //        var changed = false;
+                            //        var lastDate = folder.QuickList.DateCreated.ToLocalTime();
+                            //        using (new MediaBrowser.Util.Profiler(this.Name + " Initial validate"))
+                            //        {
+                            //            changed = folder.DateCreated > lastDate || folder.DateModified > lastDate;
+                            //            changed = folder.RecursiveChildren.Aggregate(changed, (current, subItem) => current | (subItem.DateCreated > lastDate || subItem.DateModified > lastDate));
+                            //        }
+                            //        if (changed)
+                            //        {
+                            //            Logger.ReportVerbose(this.Name + " has had changes.");
+                            //            this.mediaCount = this.runtime = null;
+                            //            QuickListItems = null; //this will force it to re-load
+                            //        }
 
-                                }, null, true);
-                            }
+                            //    }, null, true);
+                            //}
                             lock (quickListLock)
                             {
                                 //Logger.ReportVerbose(this.Name + " Quicklist has " + folder.QuickList.Children.Count + " items");
                                 quickListItems = recentItemOption == "watched" ? 
                                     folder.QuickList.Children.Select(c => ItemFactory.Instance.Create(c)).OrderByDescending(i => i.LastPlayed).ToList() :
                                     folder.QuickList.Children.Select(c => ItemFactory.Instance.Create(c)).OrderByDescending(i => i.BaseItem.DateCreated).ToList();
-                                Logger.ReportVerbose(this.Name + " Quicklist created with " + quickListItems.Count + " items");
+                                //Logger.ReportVerbose(this.Name + " Quicklist created with " + quickListItems.Count + " items");
                                 foreach (var item in quickListItems)
                                 {
                                     if (item.BaseItem is Episode)
                                     {
                                         //orphaned episodes need to point back to their actual season/series for some themes
-                                        var episode = item.BaseItem as Episode;
-                                        if (episode.Parent is Series && !(episode.Parent is IndexFolder))
-                                        {
-                                            //we loaded in context - just create normally
-                                            item.PhysicalParent = ItemFactory.Instance.Create(item.BaseItem.Parent) as FolderModel;
-                                        }
-                                        else
-                                        {
-                                            CreateEpisodeParents(item);
-                                        }
+                                        CreateEpisodeParents(item);
                                     }
                                     else
                                     {
                                         item.PhysicalParent = this; //otherwise, just point to us
                                     }
                                 }
-                                if (recentItemOption == "unwatched" && folder.QuickList.RecursiveMedia.Count() != folder.QuickList.UnwatchedCount)
-                                {
-                                    //something is watched in our unwatched list - force a rebuild
-                                    Logger.ReportVerbose(this.Name + " unwatched items changed.");
-                                    QuickListItems = null;
-                                }
+                                //if (recentItemOption == "unwatched" && folder.QuickList.RecursiveMedia.Count() != folder.QuickList.UnwatchedCount)
+                                //{
+                                //    //something is watched in our unwatched list - force a rebuild
+                                //    Logger.ReportVerbose(this.Name + " unwatched items changed.");
+                                //    QuickListItems = null;
+                                //}
 
                                 FireQuicklistPropertiesChanged();
                             }

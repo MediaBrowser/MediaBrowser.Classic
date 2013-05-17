@@ -519,6 +519,8 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public FavoritesCollectionFolder FavoritesFolder { get; set; }
+
         public void ReLoadRoot()
         {
             //save the items added by plugins before we re-load
@@ -547,9 +549,9 @@ namespace MediaBrowser.Library {
             if (ConfigData.ShowFavoritesCollection && kernel.RootFolder != null)
             {
                 //Create Favorites
-                var favFolder = new FavoritesCollectionFolder();
-                favFolder.AddChildren(new List<BaseItem> {new FavoritesTypeFolder(new string[] {"Movie"}, "Movies" ), new FavoritesTypeFolder(new[] {"Series", "Season", "Episode"}, "TV"), new FavoritesTypeFolder(new[] {"Audio", "MusicAlbum", "MusicArtist"}, "Music")});
-                kernel.RootFolder.AddVirtualChild(favFolder);
+                FavoritesFolder = new FavoritesCollectionFolder();
+                FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist" }, "Music") });
+                kernel.RootFolder.AddVirtualChild(FavoritesFolder);
             }
         }
 

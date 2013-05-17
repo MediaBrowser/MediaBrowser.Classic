@@ -7,6 +7,7 @@ namespace MediaBrowser.Library.Entities
 {
     public interface IContainer : IFolder, IShow
     {
+        Guid Id { get; set; }
         string Name { get; set; }
         string Overview { get; set; }
         string PrimaryImagePath { get; set; }
