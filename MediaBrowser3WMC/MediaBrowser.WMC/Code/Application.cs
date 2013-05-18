@@ -1645,10 +1645,6 @@ namespace MediaBrowser
                                 Recursive = true
                             };
             var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};
-            //var index = searchStart.Search(
-            //    ShowFinder(show => show.Actors == null ? false :
-            //        show.Actors.Exists(a => a.Name == person.Name)),
-            //        person.Name);
 
             Navigate(ItemFactory.Instance.Create(index));
         }
@@ -1658,11 +1654,16 @@ namespace MediaBrowser
         {
             var searchStart = GetStartingFolder(currentMovie.BaseItem.Parent);
 
-            var index = searchStart.Search(
-                ShowFinder(show => show.Genres == null ? false : show.Genres.Contains(genre)),
-                genre);
-
-            index.Name = genre;
+            var query = new ItemQuery
+            {
+                UserId = Kernel.CurrentUser.Id.ToString(),
+                Fields = MB3ApiRepository.StandardFields,
+                ParentId = searchStart.ApiId,
+                Genres = new[] {genre},
+                ExcludeItemTypes = Config.ExcludeRemoteContentInSearch ? new[] { "Episode", "Season", "Trailer" } : new[] { "Episode", "Season" },
+                Recursive = true
+            };
+            var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) { Name = genre };
 
             Navigate(ItemFactory.Instance.Create(index));
         }
