@@ -34,7 +34,7 @@ namespace Configurator
     public partial class MainWindow : Window
     {
 
-        public ConfigData config;
+        //public ConfigData config;
         public CommonConfigData commonConfig;
         Ratings ratings;
         PermissionDialog waitWin;
@@ -61,21 +61,21 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
-            if (!Kernel.Instance.ServerConnected)
-            {
-                MessageBox.Show("Cannot connect to the MB3 server.  Please start it.", "Cannot find server");
-                Close();
-                return;
-            }
-            var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
-            Kernel.CurrentUser = new User {Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword};
-            Kernel.Instance.LoadUserConfig();
+            //if (!Kernel.Instance.ServerConnected)
+            //{
+            //    MessageBox.Show("Cannot connect to the MB3 server.  Please start it.", "Cannot find server");
+            //    Close();
+            //    return;
+            //}
+            //var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
+            //Kernel.CurrentUser = new User {Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword};
+            //Kernel.Instance.LoadUserConfig();
             Kernel.Instance.LoadPlugins();
             Logger.ReportVerbose("======= Kernel intialized. Building window...");
             InitializeComponent();
             pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
-            config = Kernel.Instance.ConfigData;
+            //config = Kernel.Instance.ConfigData;
             commonConfig = Kernel.Instance.CommonConfigData;
 
             //Logger.ReportVerbose("======= Loading combo boxes...");
@@ -96,13 +96,13 @@ namespace Configurator
             }
 
             try {
-                daemonToolsDrive.SelectedValue = config.DaemonToolsDrive;
+                daemonToolsDrive.SelectedValue = commonConfig.DaemonToolsDrive;
             } catch {
                 // someone bodged up the config
             }
 
             //daemonToolsLocation.Content = config.DaemonToolsLocation; /// old
-            daemonToolsLocation.Text = config.DaemonToolsLocation;
+            daemonToolsLocation.Text = commonConfig.DaemonToolsLocation;
 
 
             //Logger.ReportVerbose("======= Refreshing Extender Formats...");
@@ -232,68 +232,12 @@ namespace Configurator
         }
 
 
-        private void InitExpertMode()
-        {
-            if (configMembers == null)
-            {
-                configMembers = new List<ConfigMember>();
-                foreach (var member in typeof(ConfigData).GetMembers(BindingFlags.Public | BindingFlags.Instance))
-                {
-                    if (XmlSettings<ConfigData>.IsSetting(member) && !XmlSettings<ConfigData>.IsHidden(member))
-                        configMembers.Add(new ConfigMember(member, config));
-                }
-
-                var src = new CollectionViewSource();
-                src.Source = configMembers;
-                src.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
-                configMemberList.ItemsSource = src.View;
-                configMemberList.SelectedIndex = -1;
-            }
-        }
-            
 
         #region Config Loading / Saving        
         private void LoadConfigurationSettings()
         {
-            enableTranscode360.IsChecked = config.EnableTranscode360;
-            useAutoPlay.IsChecked = config.UseAutoPlayForIso;
-            
-            cbxOptionClock.IsChecked = config.ShowClock;            
-            cbxOptionTransparent.IsChecked = config.ShowThemeBackground;
-            cbxOptionIndexing.IsChecked = config.RememberIndexing;
-            cbxOptionDimPoster.IsChecked = config.DimUnselectedPosters;
-            cbxOptionHideFrame.IsChecked = config.HideFocusFrame;
-            cbxOptionAutoEnter.IsChecked = config.AutoEnterSingleDirs;
-            cbxScreenSaver.IsChecked = config.EnableScreenSaver;
-            cbxOptionShowFavorites.IsChecked = config.ShowFavoritesCollection;
-            cbxOptionShowNewNotification.IsChecked = config.ShowNewItemNotification;
-            tbxFavoriteName.Text = config.FavoriteFolderName;
-            lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString()+" Mins";
-            //cbxSendStats.IsChecked = config.SendStats;
-
-            cbxOptionUnwatchedCount.IsChecked      = config.ShowUnwatchedCount;
-            cbxOptionUnwatchedOnFolder.IsChecked   = config.ShowWatchedTickOnFolders;
-            cbxOptionUnwatchedOnVideo.IsChecked    = config.ShowWatchTickInPosterView;
-            cbxOptionUnwatchedDetailView.IsChecked = config.EnableListViewTicks;
-            cbxOptionDefaultToUnwatched.IsChecked  = config.DefaultToFirstUnwatched;
-            cbxRootPage.IsChecked                  = config.EnableRootPage;
-            if (config.MaximumAspectRatioDistortion == Constants.MAX_ASPECT_RATIO_STRETCH)
-                cbxOptionAspectRatio.IsChecked = true;
-            else
-                cbxOptionAspectRatio.IsChecked = false;
-            
-            
-            ddlOptionViewTheme.SelectedItem = config.ViewTheme;
-            ddlOptionThemeColor.SelectedItem = config.Theme;
-            ddlOptionThemeFont.SelectedItem = config.FontTheme;
-
-            tbxWeatherID.Text = config.YahooWeatherFeed;
-            if (config.YahooWeatherUnit.ToLower() == "f")
-                ddlWeatherUnits.SelectedItem = "Fahrenheit";
-            else
-                ddlWeatherUnits.SelectedItem = "Celsius";
-
-            lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
+            enableTranscode360.IsChecked = commonConfig.EnableTranscode360;
+            useAutoPlay.IsChecked = commonConfig.UseAutoPlayForIso;
 
             ddlLoglevel.SelectedItem = commonConfig.MinLoggingSeverity;
 
@@ -307,23 +251,7 @@ namespace Configurator
 
         private void SaveConfig()
         {
-            config.Save();
             commonConfig.Save();
-        }
-
-        private void RefreshThemes()
-        {
-            ddlOptionViewTheme.ItemsSource = Kernel.Instance.AvailableThemes.Keys;
-            if (ddlOptionViewTheme.Items != null)
-            {
-                if (!ddlOptionViewTheme.Items.Contains(config.ViewTheme))
-                {
-                    //must have just deleted our theme plugin - set to default
-                    config.ViewTheme = "Default";
-                    SaveConfig();
-                    ddlOptionViewTheme.SelectedItem = config.ViewTheme;
-                }
-            }
         }
 
         private IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures).OrderBy(c => c.Name);
@@ -343,24 +271,9 @@ namespace Configurator
         private List<string> folderSettings;
         private void LoadComboBoxes()
         {
-            // Themes
-            RefreshThemes();            
-            // Colors
-            ddlOptionThemeColor.Items.Add("Default");
-            ddlOptionThemeColor.Items.Add("Black");
-            ddlOptionThemeColor.Items.Add("Extender Default");
-            ddlOptionThemeColor.Items.Add("Extender Black");
-            // Fonts 
-            ddlOptionThemeFont.Items.Add("Default");
-            ddlOptionThemeFont.Items.Add("Small");
-            // Weather Units
-            ddlWeatherUnits.Items.Add("Celsius");
-            ddlWeatherUnits.Items.Add("Fahrenheit");
 
             ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
 
-            ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
-            ddlUserProfile.SelectedItem = Kernel.CurrentUser.Dto;
         }
 
         #endregion
@@ -368,7 +281,7 @@ namespace Configurator
         private void RefreshExtenderFormats()
         {
             extenderFormats.Items.Clear();
-            foreach (var format in config.ExtenderNativeTypes.Split(','))
+            foreach (var format in commonConfig.ExtenderNativeTypes.Split(','))
             {
                 extenderFormats.Items.Add(format);
             }
@@ -377,7 +290,7 @@ namespace Configurator
         private void RefreshDisplaySettings()
         {
             extenderFormats.Items.Clear();
-            foreach (var format in config.ExtenderNativeTypes.Split(','))
+            foreach (var format in commonConfig.ExtenderNativeTypes.Split(','))
             {
                 extenderFormats.Items.Add(format);
             }
@@ -585,9 +498,9 @@ namespace Configurator
             var result = form.ShowDialog();
             if (result == true)
             {
-                var parser = new FormatParser(config.ExtenderNativeTypes);
+                var parser = new FormatParser(commonConfig.ExtenderNativeTypes);
                 parser.Add(form.formatName.Text);
-                config.ExtenderNativeTypes = parser.ToString();
+                commonConfig.ExtenderNativeTypes = parser.ToString();
                 RefreshExtenderFormats();
                 SaveConfig();
             }
@@ -602,9 +515,9 @@ namespace Configurator
                 if (
                   MessageBox.Show(message, "Remove folder", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
                 {
-                    var parser = new FormatParser(config.ExtenderNativeTypes);
+                    var parser = new FormatParser(commonConfig.ExtenderNativeTypes);
                     parser.Remove(format);
-                    config.ExtenderNativeTypes = parser.ToString();
+                    commonConfig.ExtenderNativeTypes = parser.ToString();
                     RefreshExtenderFormats();
                     SaveConfig();
                 }
@@ -618,9 +531,8 @@ namespace Configurator
             var result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                config.DaemonToolsLocation = dialog.FileName;
-                //daemonToolsLocation.Content = config.DaemonToolsLocation;
-                daemonToolsLocation.Text = config.DaemonToolsLocation;
+                commonConfig.DaemonToolsLocation = dialog.FileName;
+                daemonToolsLocation.Text = commonConfig.DaemonToolsLocation;
                 SaveConfig();
             }
         }
@@ -629,7 +541,7 @@ namespace Configurator
         {
             if (daemonToolsDrive.SelectedValue != null)
             {
-                config.DaemonToolsDrive = (string)daemonToolsDrive.SelectedValue;
+                commonConfig.DaemonToolsDrive = (string)daemonToolsDrive.SelectedValue;
             }
             SaveConfig();
         }
@@ -751,107 +663,15 @@ namespace Configurator
 
         private void useAutoPlay_Click(object sender, RoutedEventArgs e)
         {
-            config.UseAutoPlayForIso = (bool)useAutoPlay.IsChecked;
+            commonConfig.UseAutoPlayForIso = (bool)useAutoPlay.IsChecked;
             SaveConfig();
         }
         private void enableTranscode360_Click(object sender, RoutedEventArgs e)
         {
-            config.EnableTranscode360 = (bool)enableTranscode360.IsChecked;
+            commonConfig.EnableTranscode360 = (bool)enableTranscode360.IsChecked;
             SaveConfig();
         }
 
-        private void cbxOptionClock_Click(object sender, RoutedEventArgs e)
-        {
-            config.ShowClock = (bool)cbxOptionClock.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionTransparent_Click(object sender, RoutedEventArgs e)
-        {
-            config.ShowThemeBackground = (bool)cbxOptionTransparent.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionIndexing_Click(object sender, RoutedEventArgs e)
-        {
-            config.RememberIndexing = (bool)cbxOptionIndexing.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionDimPoster_Click(object sender, RoutedEventArgs e)
-        {
-            config.DimUnselectedPosters = (bool)cbxOptionDimPoster.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionUnwatchedCount_Click(object sender, RoutedEventArgs e)
-        {
-            config.ShowUnwatchedCount = (bool)cbxOptionUnwatchedCount.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionUnwatchedOnFolder_Click(object sender, RoutedEventArgs e)
-        {
-            config.ShowWatchedTickOnFolders = (bool)cbxOptionUnwatchedOnFolder.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionUnwatchedOnVideo_Click(object sender, RoutedEventArgs e)
-        {
-            config.ShowWatchTickInPosterView = (bool)cbxOptionUnwatchedOnVideo.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionUnwatchedDetailView_Click(object sender, RoutedEventArgs e)
-        {
-            config.EnableListViewTicks = (bool)cbxOptionUnwatchedDetailView.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionDefaultToUnwatched_Click(object sender, RoutedEventArgs e)
-        {
-            config.DefaultToFirstUnwatched = (bool)cbxOptionDefaultToUnwatched.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxOptionHideFrame_Click(object sender, RoutedEventArgs e)
-        {
-            config.HideFocusFrame = (bool)cbxOptionHideFrame.IsChecked;
-            SaveConfig();
-        }
-
-        private void cbxScreenSaver_Click(object sender, RoutedEventArgs e)
-        {
-            config.EnableScreenSaver = (bool)cbxScreenSaver.IsChecked;
-            SaveConfig();
-
-        }
-
-        private void cbxOptionAspectRatio_Click(object sender, RoutedEventArgs e)
-        {
-            if ((bool)cbxOptionAspectRatio.IsChecked)
-            {
-                config.MaximumAspectRatioDistortion = Constants.MAX_ASPECT_RATIO_STRETCH;
-            }
-            else
-            {
-                config.MaximumAspectRatioDistortion = Constants.MAX_ASPECT_RATIO_DEFAULT;
-            }
-
-            SaveConfig();
-        }
-        private void cbxRootPage_Click(object sender, RoutedEventArgs e)
-        {
-            WeatherGrid.IsEnabled = (bool)cbxRootPage.IsChecked;
-
-            config.EnableRootPage = (bool)cbxRootPage.IsChecked;
-            SaveConfig();
-        }
-        private void cbxOptionAutoEnter_Click(object sender, RoutedEventArgs e)
-        {
-            config.AutoEnterSingleDirs = (bool)cbxOptionAutoEnter.IsChecked;
-            SaveConfig();
-        }
 
         private void cbxAutoValidate_Click(object sender, RoutedEventArgs e)
         {
@@ -866,72 +686,13 @@ namespace Configurator
             SaveConfig();
         }
 
-        private void CbxOptionShowFavorites_OnClick(object sender, RoutedEventArgs e)
-        {
-            config.ShowFavoritesCollection = (bool)cbxOptionShowFavorites.IsChecked;
-            SaveConfig();
-        }
-
-        private void CbxOptionShowNewNotification_OnClick(object sender, RoutedEventArgs e)
-        {
-            config.ShowNewItemNotification = (bool)cbxOptionShowNewNotification.IsChecked;
-            SaveConfig();
-        }
-
         #endregion
 
         #region ComboBox Events
-        private void ddlOptionViewTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlOptionViewTheme.SelectedValue != null)
-            {
-                config.ViewTheme = ddlOptionViewTheme.SelectedValue.ToString();
-            }
-            SaveConfig();
-        }
-
-        private void ddlOptionThemeColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlOptionThemeColor.SelectedValue != null)
-            {
-                config.Theme = ddlOptionThemeColor.SelectedValue.ToString();
-            }
-            SaveConfig();
-        }
-
-        private void ddlOptionThemeFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlOptionThemeFont.SelectedValue != null)
-            {
-                config.FontTheme = ddlOptionThemeFont.SelectedValue.ToString();
-            }
-            SaveConfig();
-        }
         #endregion
 
         #region Header Selection Methods
-        private void eggExpert_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (System.Windows.Forms.Control.ModifierKeys == (System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift))
-            {
-                InitExpertMode();
-                expertTab.Visibility = Visibility.Visible;
-                helpTab.Visibility = Visibility.Collapsed;
-                tabMain.SelectedItem = expertTab;
-            }
-        }
-
         #endregion
-
-        private void btnWeatherID_Click(object sender, RoutedEventArgs e)
-        {
-            if (ddlWeatherUnits.SelectedItem.ToString() == "Fahrenheit")
-                config.YahooWeatherUnit = "f";
-            else
-                config.YahooWeatherUnit = "c";
-            config.YahooWeatherFeed = tbxWeatherID.Text;
-            SaveConfig();
-        }
 
 
         private void removePlugin_Click(object sender, RoutedEventArgs e) {
@@ -945,7 +706,6 @@ namespace Configurator
                     PluginManager.Instance.RemovePlugin(plugin);
                     PluginManager.Instance.UpdateAvailableAttributes(plugin, false);
                     RefreshEntryPoints(true);
-                    RefreshThemes();
                 }
             }
         }
@@ -964,7 +724,6 @@ namespace Configurator
             PluginManager.Instance.RefreshInstalledPlugins(); //refresh list
             if (current > pluginList.Items.Count) current = pluginList.Items.Count;
             pluginList.SelectedIndex = current;
-            RefreshThemes();
         }
 
         private void configurePlugin_Click(object sender, RoutedEventArgs e)
@@ -1014,38 +773,6 @@ namespace Configurator
             base.OnPreviewTextInput(e);
         }
 
-        private void btnSSTimeUp_Click(object sender, RoutedEventArgs e)
-        {
-            config.ScreenSaverTimeOut++;
-            config.Save();
-            lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString() + " Mins";
-        }
-
-        private void btnSSTimeDn_Click(object sender, RoutedEventArgs e)
-        {
-            config.ScreenSaverTimeOut--;
-            if (config.ScreenSaverTimeOut < 1) config.ScreenSaverTimeOut = 1;
-            config.Save();
-            lblSSTimeout.Content = config.ScreenSaverTimeOut.ToString() + " Mins";
-        }
-
-        private void btnRICUp_Click(object sender, RoutedEventArgs e)
-        {
-            config.RecentItemCollapseThresh++;
-            config.InvalidateRecentLists = true;
-            config.Save();
-            lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
-        }
-
-        private void btnRICDn_Click(object sender, RoutedEventArgs e)
-        {
-            config.RecentItemCollapseThresh--;
-            if (config.RecentItemCollapseThresh < 1) config.RecentItemCollapseThresh = 1;
-            config.InvalidateRecentLists = true;
-            config.Save();
-            lblRecentItemCollapse.Content = config.RecentItemCollapseThresh;
-        }
-
 
         private void btnRollback_Click(object sender, RoutedEventArgs e)
         {
@@ -1080,124 +807,8 @@ namespace Configurator
             if (ddlLoglevel.SelectedItem != null)
             {
                 commonConfig.MinLoggingSeverity = (LogSeverity)ddlLoglevel.SelectedItem;
-                config.Save();
+                SaveConfig();
             }
-        }
-
-        private void configMemberList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            currentConfigMember = configMemberList.SelectedItem as ConfigMember;
-            if (currentConfigMember != null)
-            {
-                txtMemberComment.Text = currentConfigMember.Comment;
-                lblDangerous.Visibility = currentConfigMember.IsDangerous ? Visibility.Visible : Visibility.Hidden;
-                switch (currentConfigMember.Type.Name)
-                {
-                    case "Boolean":
-                        stringGrid.Visibility = numGrid.Visibility = Visibility.Hidden;
-                        cbxBoolMember.Visibility = System.Windows.Visibility.Visible;
-                        cbxBoolMember.Content = currentConfigMember.Name;
-                        cbxBoolMember.IsChecked = (bool)currentConfigMember.Value;
-                        break;
-
-                    case "String":
-                        if (currentConfigMember.PresentationStyle == "BrowseFolder")
-                            btnFolderBrowse.Visibility = Visibility.Visible;
-                        else
-                            btnFolderBrowse.Visibility = Visibility.Hidden;
-                        lblString.Content = currentConfigMember.Name;
-                        tbxString.Text = currentConfigMember.Value.ToString();
-                        stringGrid.Visibility = Visibility.Visible;
-                        cbxBoolMember.Visibility = numGrid.Visibility = Visibility.Hidden;
-                        break;
-
-                    case "Int":
-                    case "Int32":
-                    case "Int16":
-                    case "Double":
-                    case "Single":
-                        lblNum.Content = currentConfigMember.Name;
-                        tbxNum.Text = currentConfigMember.Value.ToString();
-                        numGrid.Visibility = Visibility.Visible;
-                        cbxBoolMember.Visibility = stringGrid.Visibility = Visibility.Hidden;
-                        break;
-
-                    default:
-                        cbxBoolMember.Visibility = stringGrid.Visibility = numGrid.Visibility = System.Windows.Visibility.Hidden;
-                        break;
-                }
-
-            }
-            else
-            {
-                txtMemberComment.Text = "";
-                lblDangerous.Visibility = cbxBoolMember.Visibility = stringGrid.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void ddlUserProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var userDto = ddlUserProfile.SelectedItem as UserDto;
-            if (userDto != null)
-            {
-                Kernel.CurrentUser = new User { Name = userDto.Name, Id = userDto.Id, Dto = userDto, ParentalAllowed = userDto.HasPassword };
-                Kernel.Instance.LoadUserConfig();
-                config = Kernel.Instance.ConfigData;
-                LoadConfigurationSettings();
-            }
-        }
-
-        private void memberList_Collapse(object sender, RoutedEventArgs e)
-        {
-            //un-select in case current item was collapsed from view
-            configMemberList.SelectedIndex = -1;
-
-        }
-
-        private void cbxBoolMember_Checked(object sender, RoutedEventArgs e)
-        {
-            if (currentConfigMember != null)
-            {
-                currentConfigMember.Value = cbxBoolMember.IsChecked;
-                config.Save();
-            }
-        }
-
-        private void tbxNum_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            //called when one of our dynamic member items loses focus - save current member
-            if (currentConfigMember != null)
-            {
-                currentConfigMember.Value = Convert.ToInt32(tbxNum.Text);
-                config.Save();
-            }
-        }
-
-        private void tbxString_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            //called when one of our dynamic member items loses focus - save current member
-            if (currentConfigMember != null)
-            {
-                currentConfigMember.Value = tbxString.Text;
-                config.Save();
-            }
-        }
-
-        private void btnFolderBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            BrowseForFolderDialog dlg = new BrowseForFolderDialog();
-
-            if (true == dlg.ShowDialog(this))
-            {
-                currentConfigMember.Value = tbxString.Text =  dlg.SelectedFolder;
-            }
-
-        }
-
-        private void BtnFavoritesName_OnClick(object sender, RoutedEventArgs e)
-        {
-            config.FavoriteFolderName = tbxFavoriteName.Text;
-            config.Save();
         }
 
     }

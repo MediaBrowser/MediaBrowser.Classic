@@ -72,68 +72,13 @@
         <Grid x:Name="tabGrid1">
             <TabControl Margin="10,90,10,10" x:Name="tabMain" Background="{x:Null}" >
 
-                <TabItem Header="display/playback" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True">
+                <TabItem Header="connection" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True">
                     <Grid>
                         <GroupBox Header="General Display Settings" HorizontalAlignment="Left" Margin="20,35,0,204" Name="groupBox1" Width="270">
-                            <Grid Height="177.76" VerticalAlignment="Top">
-                                <CheckBox Height="22" Margin="10,10,10,0" Name="cbxOptionClock" ToolTip="Display time clock within Media Browser" VerticalAlignment="Top" Click="cbxOptionClock_Click">Show Clock</CheckBox>
-                                <CheckBox Margin="10,32,10,0" Name="cbxOptionDimPoster" ToolTip="Dim unselected items" Click="cbxOptionDimPoster_Click" Height="22" VerticalAlignment="Top">Dim Unselected Posters</CheckBox>
-                                <CheckBox Margin="10,54,10,0" Name="cbxOptionIndexing" ToolTip="Remember indexed filter settings for each folder" Click="cbxOptionIndexing_Click" Height="22" VerticalAlignment="Top">Remember Folder Indexing</CheckBox>
-                                <CheckBox Height="22" Margin="10,76,10,0" Name="cbxOptionAspectRatio" VerticalAlignment="Top" ToolTip="Stretch folder image to fill display area" Click="cbxOptionAspectRatio_Click">Override Poster Aspect Ratio</CheckBox>
-                                <CheckBox Height="22" Margin="10,98,10,0" Name="cbxOptionHideFrame" VerticalAlignment="Top" ToolTip="Hide focus frame around posters." Click="cbxOptionHideFrame_Click">Hide Focus Frame</CheckBox>
-                                <CheckBox Height="22" Margin="10,120,10,0" Name="cbxOptionAutoEnter" VerticalAlignment="Top" Click="cbxOptionAutoEnter_Click" ToolTip="Automatically bypass an item with only one folder in it and continue to the contents of that folder." >Auto Enter Single Folder Items</CheckBox>
-                                <CheckBox Height="22" Margin="10,142,0,0" Name="cbxScreenSaver" ToolTip="Activate a screen saver after configured minutes of inactivity." Click="cbxScreenSaver_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Width="115">Screen Saver</CheckBox>
-                                <Label Height="28" Name="lblSSTimeout" HorizontalAlignment="Right" Margin="0,137,85,0" VerticalAlignment="Top" Width="55">Mins</Label>
-                                <Button Content="+" Height="20" Margin="199,142,0,0" Name="btnSSTimeUp" VerticalAlignment="Top" FontSize="10" FontWeight="Bold" FontFamily="Arial" Click="btnSSTimeUp_Click" HorizontalAlignment="Left" Width="18" />
-                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Left" Margin="179,142,0,0" Name="btnSSTimeDn" VerticalAlignment="Top" Width="18" Click="btnSSTimeDn_Click" />
-                            </Grid>
+                            <Grid Height="177.76" VerticalAlignment="Top"/>
                         </GroupBox>
                         <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,238.38,0,0" Name="groupBox2" Width="270" Height="187" VerticalAlignment="Top">
-                            <Grid>
-                                <CheckBox Margin="10,7.38,10,0" Name="cbxOptionUnwatchedCount" Content="Show Unplayed Count" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedCount_Click" ToolTip="Show unplayed counter on top of poster art" />
-                                <CheckBox Margin="10,29,10,0" Name="cbxOptionUnwatchedOnFolder" Content="Played Indicator on Folders" Click="cbxOptionUnwatchedOnFolder_Click" ToolTip="Display indicator for previously played folders" Height="20.38" VerticalAlignment="Top" />
-                                <CheckBox Margin="10,51,10,0" Name="cbxOptionUnwatchedOnVideo" Content="Played Indicator on Items" Click="cbxOptionUnwatchedOnVideo_Click" ToolTip="Display indicator for previously played items" Height="22.38" VerticalAlignment="Top" />
-                                <CheckBox Margin="10,71.38,10,0" Name="cbxOptionUnwatchedDetailView" Content="Played Indicator in Detail View" Height="22" VerticalAlignment="Top" Click="cbxOptionUnwatchedDetailView_Click" ToolTip="Display indicator in detail view for previously played items" />
-                                <CheckBox Margin="10,92.38,10,0" Name="cbxOptionDefaultToUnwatched" Content="Default to First Unplayed Item" Click="cbxOptionDefaultToUnwatched_Click" Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
-                                <Label Content="Recent Item Group Min" Height="28" HorizontalAlignment="Left" Margin="10,130,0,0" Name="label15" VerticalAlignment="Top" Width="163" ToolTip="The number of like items in a recent list to cause these items to be grouped into a parent folder (e.g. Episodes into Series)" />
-                                <Label Content="2" Height="28" HorizontalAlignment="Right" Margin="0,0,52,3" Name="lblRecentItemCollapse" VerticalAlignment="Bottom" Width="35" />
-                                <Button Content="+" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" Margin="0,0,16,6" Name="btnRICUp" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="18" Click="btnRICUp_Click" />
-                                <Button Content="-" FontFamily="Arial" FontSize="10" FontWeight="Bold" Height="20" HorizontalAlignment="Right" Margin="0,135,35,0" Name="btnRICDn" VerticalAlignment="Top" Width="18" Click="btnRICDn_Click" />
-                                <CheckBox Margin="10,113.38,10,0" x:Name="cbxOptionShowNewNotification" Content="Show New Item Notification" Click="CbxOptionShowNewNotification_OnClick" Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="Theme Settings" Margin="300,35,0,0" HorizontalAlignment="Left" Name="groupBox3" Height="125" Width="430" VerticalAlignment="Top">
-                            <Grid>
-                                <Label Height="28" Margin="10,5,0,0" Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Visual theme of Media Browser">Visual Theme</Label>
-                                <Label Margin="150,5,35,0" Width="130" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Change the color scheme of a theme">Color Scheme</Label>
-                                <Label Margin="290,5,0,0" Width="130" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Font size displayed within Media Browser">Font Size</Label>
-                                <ComboBox Height="28" HorizontalAlignment="Left" Margin="10,32,10,0" Name="ddlOptionViewTheme" VerticalAlignment="Top" Width="130" SelectionChanged="ddlOptionViewTheme_SelectionChanged" ToolTip="Visual theme of Media Browser" />
-                                <ComboBox Height="28" HorizontalAlignment="Left" Margin="150,32,10,0" Name="ddlOptionThemeColor" VerticalAlignment="Top" Width="130" SelectionChanged="ddlOptionThemeColor_SelectionChanged" ToolTip="Change the color scheme of a theme" />
-                                <ComboBox Height="28" HorizontalAlignment="Left" Margin="290,32,10,0" Name="ddlOptionThemeFont" VerticalAlignment="Top" Width="118" SelectionChanged="ddlOptionThemeFont_SelectionChanged" ToolTip="Font size displayed within Media Browser" />
-                                <CheckBox Margin="10,76,10,0" Name="cbxOptionTransparent" ToolTip="Enable transparent background" Click="cbxOptionTransparent_Click" Height="22" VerticalAlignment="Top">Show Theme Background</CheckBox>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="Enhanced Home Screen" HorizontalAlignment="Left" Margin="300,165,0,0" VerticalAlignment="Top" Height="202" Name="groupBox4" Width="430">
-                            <Grid>
-                                <CheckBox Height="22" Margin="10,10,0,0" Name="cbxRootPage" ToolTip="Enable the enhanced home screen" VerticalAlignment="Top" Click="cbxRootPage_Click">Enable Enhanced Home Screen</CheckBox>
-                                <Grid Name="WeatherGrid">
-                                    <!--<Label Margin="10,32,0,0" Height="28" Width="130" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Yahoo! Weather location ID (e.g. UKXX0055)">Yahoo! Weather ID</Label>-->
-                                    <TextBlock Margin="10,32,0,0" Padding="5,5,5,5" Height="28" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130" ToolTip="Go to the Yahoo! Weather">
-                                        Weather ID
-                                    </TextBlock>
-                                    <Label Margin="150,31,0,0" HorizontalAlignment="Left" ToolTip="Weather temperature unit" Height="28" VerticalAlignment="Top">Weather Unit</Label>
-                                    <TextBox Margin="10,60,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Width="130" Name="tbxWeatherID" />
-                                    <ComboBox Margin="150,60,0,0" Name="ddlWeatherUnits" ToolTip="Change the color scheme of a theme" Height="28" Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                    <Button Height="28" Margin="290,60,10,10" Name="btnWeatherID" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnWeatherID_Click" Width="55">Save</Button>
-                                    <CheckBox Margin="10,108,196,0" x:Name="cbxOptionShowFavorites" Content="Show Favorites Collection As" Click="CbxOptionShowFavorites_OnClick"  Height="22" VerticalAlignment="Top" ToolTip="Automatically highlight the first unplayed item" />
-                                    <TextBox Margin="10,135,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Width="270" x:Name="tbxFavoriteName" />
-                                    <Button Height="28" Margin="290,135,0,0" x:Name="btnFavoritesName" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnFavoritesName_OnClick"  Width="55" Content="Save"/>
-                                </Grid>
-                                <TextBlock Margin="350,60,0,0" TextAlignment="Right" Padding="5,5,5,5" Height="28" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left" Width="55">
-                                    <Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1368/how-do-i-show-the-weather-on-supported-themes" RequestNavigate="HandleRequestNavigate">Help?</Hyperlink>
-                                </TextBlock>
-                                
-                            </Grid>
+                            <Grid/>
                         </GroupBox>
                         <CheckBox Height="22" Margin="306,0,0,12" Name="cbxAutoValidate" VerticalAlignment="Bottom" Click="cbxAutoValidate_Click" ToolTip="WARNING! Turning this option off may mean you will have to manually refresh for changes to appear." Visibility="Hidden" HorizontalAlignment="Left" Width="224">Validate Items Automatically</CheckBox>
                     </Grid>
@@ -283,81 +228,10 @@
                             <TextBlock Margin="20,10,327,0" VerticalAlignment="Top" Height="25" Width="401">If you need any help, have a look at these resources:</TextBlock>
                         </Grid>
                 </TabItem>
-                <TabItem Header="config explorer" Name="expertTab" Visibility="Collapsed" FontSize="14">
-                    <Grid>
-                        <Label Content="W A R N I N G  - Making changes in this area could create an unstable system.  Modify at your own risk." Height="28" HorizontalAlignment="Left" Margin="23,6,0,0" Name="label16" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Foreground="Red" />
-                        <ListBox Height="338" HorizontalAlignment="Left" Margin="23,50,0,0" Name="configMemberList" VerticalAlignment="Top" Width="247" SelectionChanged="configMemberList_SelectionChanged" >
-                            <ListBox.GroupStyle>
-                                <GroupStyle>
-                                    <GroupStyle.ContainerStyle>
-                                        <Style TargetType="{x:Type GroupItem}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                        <!--<ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Path=IsBottomLevel}" Value="true">
-                                                <Setter TargetName="gridTemplate" Property="Grid.Background" Value="LightGray" />
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>-->
-                                                        <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                            </Grid.RowDefinitions>
-                                                            <Grid Background="White" x:Name="gridTemplate" Height="26" VerticalAlignment="Center">
-                                                                <Grid.Resources>
-                                                                    <Style TargetType="{x:Type TextBlock}">
-                                                                        <Setter Property="FontSize" Value="14" />
-                                                                        <Setter Property="Foreground" Value="Black" />
-                                                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                                                    </Style>
-                                                                </Grid.Resources>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                    <ColumnDefinition Width="*" />
-                                                                    <ColumnDefinition Width="45" />
-                                                                    <ColumnDefinition Width="33" />
-                                                                </Grid.ColumnDefinitions>
-
-                                                                <ToggleButton x:Name="btnShowHide" IsChecked="False" Margin="3.5" Unchecked="memberList_Collapse" />
-
-                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Name}" Margin="3.5,0" />
-                                                                <!--<TextBlock Grid.Column="2" Text="Total:" />-->
-                                                                <TextBlock Grid.Column="3" Text="{Binding Path=ItemCount}" TextAlignment="Right" Margin="0,0,11,0"  />
-
-                                                            </Grid>
-
-                                                            <ItemsPresenter Visibility="{Binding ElementName=btnShowHide, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Row="1" Margin="11,0,0,3.5" />
-
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </GroupStyle.ContainerStyle>
-                                </GroupStyle>
-                            </ListBox.GroupStyle>
-                        </ListBox>
-                        <TextBlock Height="60" HorizontalAlignment="Left" Margin="291,50,0,0" Name="txtMemberComment" Text="" VerticalAlignment="Top" Width="423" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                        <CheckBox Content="CheckBox" Height="22" HorizontalAlignment="Left" Margin="379,218,0,0" Name="cbxBoolMember" VerticalAlignment="Top" FontSize="14" Width="280" Visibility="Hidden" Checked="cbxBoolMember_Checked" Unchecked="cbxBoolMember_Checked" />
-                        <Grid Height="64" HorizontalAlignment="Left" Margin="318,206,0,0" Name="stringGrid" VerticalAlignment="Top" Width="396" Visibility="Hidden">
-                            <Label Content="Label" Height="28" Name="lblString" Width="225" Margin="6,7,164,29" />
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="20,35,0,0" Name="tbxString" PreviewLostKeyboardFocus="tbxString_PreviewLostKeyboardFocus" VerticalAlignment="Top" Width="321" />
-                            <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="349,35,0,0" Name="btnFolderBrowse" VerticalAlignment="Top" Width="29" Visibility="Hidden" Click="btnFolderBrowse_Click" />
-                        </Grid>
-                        <Label Content="Only change this value if you really know what you are doing!" FontSize="14" FontWeight="Bold" Foreground="Red" Height="28" HorizontalAlignment="Left" Margin="291,131,0,0" Name="lblDangerous" VerticalAlignment="Top" Width="451" Visibility="Hidden" />
-                        <Grid Height="64" HorizontalAlignment="Left" Margin="318,206,0,0" Name="numGrid" VerticalAlignment="Top" Visibility="Hidden" Width="295">
-                            <Label Content="Label" Height="28" Margin="6,4,64,32" Name="lblNum" Width="225" />
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="20,35,0,0" Name="tbxNum" PreviewTextInput="tbxNumericOnly_PreviewTextInput" PreviewLostKeyboardFocus="tbxNum_PreviewLostKeyboardFocus" VerticalAlignment="Top" Width="55" TextAlignment="Right" />
-                        </Grid>
-                    </Grid>
-                </TabItem>
             </TabControl>
             <TextBlock Height="25" Margin="15,58,318,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
-            <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="42,30,0,0" VerticalAlignment="Top" Width="207" SelectionChanged="ddlUserProfile_SelectionChanged"/>
-            <Label Content="User Profile" HorizontalAlignment="Left" Margin="31,2.04,0,0" VerticalAlignment="Top" Width="123.993" FontSize="14"/>
         </Grid>
-        <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="Images/mbclogo400.png" MouseLeftButtonUp="eggExpert_Click" />
+        <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="Images/mbclogo400.png" />
         <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="141">Version 0.0.0.0</Label>
     </Grid>
 </Window>

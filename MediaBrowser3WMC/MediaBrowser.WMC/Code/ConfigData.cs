@@ -153,13 +153,7 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Maximum amount a poster can be squeezed.")]
         public float MaximumAspectRatioDistortion = 0.2F;
-        [Group("Playback")]
-        [Comment(@"Enable transcoding for 360 extender.")]
-        public bool EnableTranscode360 = false;
         [Dangerous]
-        [Group("Playback")]
-        [Comment(@"The extensions of file types that the Xbox 360 can play natively (without transcoding).")]
-        public string ExtenderNativeTypes = ".dvr-ms,.wmv";
         [Group("Display")]
         [Comment(@"Show main background for theme.  If false, Media Center background can show through.")]
         public bool ShowThemeBackground = true;
@@ -178,12 +172,6 @@ namespace MediaBrowser
         public string InitialFolder = ApplicationPaths.AppInitialDirPath;
         [Dangerous]
         [PresentationStyle("BrowseFolder")]
-        [Group("Playback")]
-        [Comment(@"The location of your ISO mounting program.")]
-        public string DaemonToolsLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"DAEMON Tools Lite\\daemon.exe");
-        [Group("Playback")]
-        [Comment(@"The drive letter to use when mounting an ISO.")]
-        public string DaemonToolsDrive = "E";
         [Group("Display")]
         [Comment(@"Handle sorts with numbers in the names properly with respect to those numbers.")]
         public bool EnableAlphanumericSorting = true;
@@ -276,9 +264,6 @@ namespace MediaBrowser
         [Group("Advanced")]
         [Comment(@"Enable deleting content within MB.")]
         public bool Advanced_EnableDelete = false;
-        [Group("Playback")]
-        [Comment(@"Instead of directly mounting an ISO allow the 'autoplay' settings in windows to handle it.")]
-        public bool UseAutoPlayForIso = false;
         [Group("Display")]
         [Comment(@"Show fan art on views that support it.")]
         public bool ShowBackdrop = true;

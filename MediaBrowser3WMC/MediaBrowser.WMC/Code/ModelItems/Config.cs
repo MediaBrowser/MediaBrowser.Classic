@@ -290,14 +290,14 @@ namespace MediaBrowser
         [Comment(@"Enable transcode 360 support on extenders")]
         public bool EnableTranscode360
         {
-            get { return this.Data.EnableTranscode360; }
-            set { if (this.Data.EnableTranscode360 != value) { this.Data.EnableTranscode360 = value; Save(); FirePropertyChanged("EnableTranscode360"); } }
+            get { return this.CommonData.EnableTranscode360; }
+            set { if (this.CommonData.EnableTranscode360 != value) { this.CommonData.EnableTranscode360 = value; Save(); FirePropertyChanged("EnableTranscode360"); } }
         }
         [Comment(@"A lower case comma delimited list of types the extender supports natively. Example: .dvr-ms,.wmv")]
         public string ExtenderNativeTypes
         {
-            get { return this.Data.ExtenderNativeTypes; }
-            set { if (this.Data.ExtenderNativeTypes != value) { this.Data.ExtenderNativeTypes = value; Save(); FirePropertyChanged("ExtenderNativeTypes"); } }
+            get { return this.CommonData.ExtenderNativeTypes; }
+            set { if (this.CommonData.ExtenderNativeTypes != value) { this.CommonData.ExtenderNativeTypes = value; Save(); FirePropertyChanged("ExtenderNativeTypes"); } }
         }
         [Comment("ShowThemeBackground [Default Value - False]\n\tTrue: Enables transparent background.\n\tFalse: Use default Video Browser background.")]
         public bool ShowThemeBackground
@@ -354,14 +354,14 @@ namespace MediaBrowser
         [Comment(@"Set the location of the Daemon Tools binary..")]
         public string DaemonToolsLocation
         {
-            get { return this.Data.DaemonToolsLocation; }
-            set { if (this.Data.DaemonToolsLocation != value) { this.Data.DaemonToolsLocation = value; Save(); FirePropertyChanged("DaemonToolsLocation"); } }
+            get { return this.CommonData.DaemonToolsLocation; }
+            set { if (this.CommonData.DaemonToolsLocation != value) { this.CommonData.DaemonToolsLocation = value; Save(); FirePropertyChanged("DaemonToolsLocation"); } }
         }
         [Comment(@"The drive letter of the Daemon Tools virtual drive.")]
         public string DaemonToolsDrive
         {
-            get { return this.Data.DaemonToolsDrive; }
-            set { if (this.Data.DaemonToolsDrive != value) { this.Data.DaemonToolsDrive = value; Save(); FirePropertyChanged("DaemonToolsDrive"); } }
+            get { return this.CommonData.DaemonToolsDrive; }
+            set { if (this.CommonData.DaemonToolsDrive != value) { this.CommonData.DaemonToolsDrive = value; Save(); FirePropertyChanged("DaemonToolsDrive"); } }
         }
         [Comment("Flag for alphanumeric sorting.  True will use alphanumeric sorting, false will use alphabetic sorting.\nNote that the sorting algorithm is case insensitive.")]
         public bool EnableAlphanumericSorting
@@ -529,8 +529,8 @@ namespace MediaBrowser
 
         public bool UseAutoPlayForIso
         {
-            get { return this.Data.UseAutoPlayForIso; }
-            set { if (this.Data.UseAutoPlayForIso != value) { this.Data.UseAutoPlayForIso = value; Save(); FirePropertyChanged("UseAutoPlayForIso"); } }
+            get { return this.CommonData.UseAutoPlayForIso; }
+            set { if (this.CommonData.UseAutoPlayForIso != value) { this.CommonData.UseAutoPlayForIso = value; Save(); FirePropertyChanged("UseAutoPlayForIso"); } }
         }
 
         [Comment("List of characters to remove from titles for alphanumeric sorting.  Separate each character with a '|'.\nThis allows titles like '10,000.BC.2008.720p.BluRay.DTS.x264-hV.mkv' to be properly sorted.")]

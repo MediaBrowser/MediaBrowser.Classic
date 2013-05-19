@@ -34,6 +34,15 @@ namespace MediaBrowser
         [Comment(@"The directory where MB was installed. Filled in at install time and used to call components.")]
         public string MBInstallDir = "";
 
+        [Group("Playback")]
+        [Comment(@"The extensions of file types that the Xbox 360 can play natively (without transcoding).")]
+        public string ExtenderNativeTypes = ".dvr-ms,.wmv";
+        [Group("Playback")]
+        [Comment(@"Instead of directly mounting an ISO allow the 'autoplay' settings in windows to handle it.")]
+        public bool UseAutoPlayForIso = false;
+        [Group("Playback")]
+        [Comment(@"Enable transcoding for 360 extender.")]
+        public bool EnableTranscode360 = false;
         [Dangerous]
         [Comment(@"The version is used to determine if this is the first time a particular version has been run")]
         public string MBVersion = "1.0.0.0"; //default value will tell us if it is a brand new install
@@ -58,6 +67,12 @@ namespace MediaBrowser
         [Comment(@"The name of your top level item that will show in the 'breadcrumbs'.")]
         public string InitialBreadcrumbName = "Media";
 
+        [Group("Playback")]
+        [Comment(@"The location of your ISO mounting program.")]
+        public string DaemonToolsLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "DAEMON Tools Lite\\daemon.exe");
+        [Group("Playback")]
+        [Comment(@"The drive letter to use when mounting an ISO.")]
+        public string DaemonToolsDrive = "E";
         [Comment(@"Turns on logging for all MB components. Recommended you leave this on as it doesn't slow things down and is very helpful in troubleshooting.")]
         public bool EnableTraceLogging = true;
         public LogSeverity MinLoggingSeverity = LogSeverity.Debug;
