@@ -32,19 +32,10 @@ namespace MediaBrowser
 
             if (navigateForward)
             {
-                string current = "";
-                
-                if (breadcrumbs.Count == 0) {
-                    current = Config.Instance.InitialBreadcrumbName;
-                }
-
-                else if (currentItem != null)
-                {
-                    current = currentItem.Name;
-                } 
+                string current = currentItem != null ? currentItem.Name : "";
 
                 //check to see if we are going to the PIN page
-                else if (source == "resx://MediaBrowser/MediaBrowser.Resources/ParentalPINEntry")
+                if (source == "resx://MediaBrowser/MediaBrowser.Resources/ParentalPINEntry")
                 {
                     //put special breadcrumb in that we will not show
                     current = "PINENTRY";

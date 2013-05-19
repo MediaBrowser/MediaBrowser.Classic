@@ -64,8 +64,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"The number of history items to show in the 'breadcrumbs' (how deep in the structure you are) .")]
         public int BreadcrumbCountLimit = 2;
-        [Comment(@"The name of your top level item that will show in the 'breadcrumbs'.")]
-        public string InitialBreadcrumbName = "Media";
 
         [Group("Playback")]
         [Comment(@"The location of your ISO mounting program.")]
