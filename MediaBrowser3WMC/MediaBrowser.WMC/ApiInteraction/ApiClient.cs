@@ -904,6 +904,30 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Authenticates a user and returns the result
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="sha1Hash">The sha1 hash.</param>
+        /// <returns>Task.</returns>
+        /// <exception cref="System.ArgumentNullException">userId</exception>
+        public void AuthenticateUserWithHash(Guid userId, string sha1Hash)
+        {
+            if (userId == Guid.Empty)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var password = sha1Hash.Replace("-", string.Empty);
+            var url = GetApiUrl("Users/" + userId + "/Authenticate");
+
+            var args = new Dictionary<string, string>();
+
+            args["password"] = password;
+
+            Post<EmptyRequestResult>(url, args);
+        }
+
+        /// <summary>
         /// Uploads the user image async.
         /// </summary>
         /// <param name="userId">The user id.</param>

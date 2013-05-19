@@ -425,6 +425,34 @@ namespace MediaBrowser.Library {
         public bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; } 
 
+        public static bool ConnectToServer(string address, int port)
+        {
+            ApiClient = new ApiClient
+            {
+                ServerHostName = address,
+                ServerApiPort = port,
+                DeviceId = Guid.NewGuid().ToString(),
+                ClientType = "MB-Classic",
+                DeviceName = Environment.MachineName
+            };
+            try
+            {
+                ServerInfo = ApiClient.GetSystemInfo();
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Unable to connect to server at {0}:{1}", e, address,port);
+                return false;
+            }
+            return true;
+        }
+
+        static bool ConnectAutomatically()
+        {
+            var endPoint = new ServerLocator().FindServer();
+            return endPoint != null && ConnectToServer(endPoint.Address.ToString(), endPoint.Port);
+        }
+
         static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
 
             // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
@@ -432,22 +460,26 @@ namespace MediaBrowser.Library {
 
             //Find MB 3 server
             var connected = false;
-            var endPoint = new ServerLocator().FindServer();
-            if (endPoint != null)
+            if (config.FindServerAutomatically)
             {
-                ApiClient = new ApiClient
+                connected = ConnectAutomatically();
+            }
+            else
+            {
+                //server specified
+                connected = ConnectToServer(config.ServerAddress, config.ServerPort);
+                if (!connected)
                 {
-                    ServerHostName = endPoint.Address.ToString(),
-                    ServerApiPort = endPoint.Port,
-                    DeviceId = Guid.NewGuid().ToString(),
-                    ClientType = "MB-Classic",
-                    DeviceName = Environment.MachineName
-                };
-                connected = true;
-                AvailableUsers = ApiClient.GetAllUsers().ToList();
-                ServerInfo = ApiClient.GetSystemInfo();
+                    Logger.ReportWarning("Unable to connect to configured server {0}:{1}. Will try automatic detection", config.ServerAddress, config.ServerPort);
+                    connected = ConnectAutomatically();
+                }
             }
 
+            if (connected)
+            {
+                Logger.ReportInfo("====== Connected to server {0}:{1}", ApiClient.ServerHostName, ApiClient.ServerApiPort);
+                AvailableUsers = ApiClient.GetAllUsers().ToList();
+            }
             var repository = new MB3ApiRepository();
             var localRepo = GetLocalRepository();
 

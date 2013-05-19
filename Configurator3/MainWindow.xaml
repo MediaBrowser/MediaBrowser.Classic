@@ -72,15 +72,37 @@
         <Grid x:Name="tabGrid1">
             <TabControl Margin="10,90,10,10" x:Name="tabMain" Background="{x:Null}" >
 
-                <TabItem Header="connection" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True">
+                <TabItem Header="system" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True" Height="25.62" VerticalAlignment="Bottom">
                     <Grid>
-                        <GroupBox Header="General Display Settings" HorizontalAlignment="Left" Margin="20,35,0,204" Name="groupBox1" Width="270">
-                            <Grid Height="177.76" VerticalAlignment="Top"/>
+                        <GroupBox Header="Connection" HorizontalAlignment="Left" Margin="20,35,0,12" Name="groupBox1" Width="270">
+                            <Grid Margin="0,0,0,-4">
+                                <RadioButton x:Name="rbServerConnectAuto" Content="Find the server automatically" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="RbServerConnectAuto_OnChecked"/>
+                                <RadioButton x:Name="rbServerConnectManual" Content="Connect to this server" HorizontalAlignment="Left" Margin="10,28.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="rbServerConnectManual_Checked"/>
+                                <TextBox x:Name="tbxServerAddress" HorizontalAlignment="Left" Height="23" Margin="29,81.24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" ToolTip="IP address or Machine name of MB 3 Server machine"/>
+                                <RadioButton x:Name="rbShowUserSelection" Content="Present User Login Page" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="RbShowUserSelection_OnChecked"/>
+                                <RadioButton x:Name="rbLogonAuto" Content="Automatically Login As" HorizontalAlignment="Left" Margin="10,178.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="rbLogonAuto_Checked"/>
+                                <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="28,233,0,0" VerticalAlignment="Top" Width="207" SelectionChanged="DdlUserProfile_OnSelectionChanged"/>
+                                <PasswordBox x:Name="tbxUserPassword" HorizontalAlignment="Left" Margin="29,287.76,0,0" VerticalAlignment="Top" Width="206"/>
+                                <Button x:Name="btnSaveConnection" Content="Validate and Save" HorizontalAlignment="Left" Margin="101,0,0,10" Width="134" Click="btnSaveConnection_Click" Height="28.62" VerticalAlignment="Bottom" IsDefault="True"/>
+                                <TextBox x:Name="tbxPort" HorizontalAlignment="Left" Height="23" Margin="187.653,109.24,0,0" TextWrapping="Wrap" PreviewTextInput="tbxNumericOnly_PreviewTextInput" VerticalAlignment="Top" Width="47.347" ToolTip="IP address or Machine name of MB 3 Server machine"/>
+                                <Label Content="Address" HorizontalAlignment="Left" Margin="10,52.24,0,0" VerticalAlignment="Top"/>
+                                <Label Content="Port" HorizontalAlignment="Left" Margin="146.999,104.24,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.169,0.529"/>
+                            </Grid>
                         </GroupBox>
-                        <GroupBox Header="Media Tracking" HorizontalAlignment="Left" Margin="20,238.38,0,0" Name="groupBox2" Width="270" Height="187" VerticalAlignment="Top">
+                        <GroupBox Header="Updates" HorizontalAlignment="Left" Margin="355,35,0,0" Name="groupBox2" Width="347" Height="222" VerticalAlignment="Top">
                             <Grid/>
                         </GroupBox>
                         <CheckBox Height="22" Margin="306,0,0,12" Name="cbxAutoValidate" VerticalAlignment="Bottom" Click="cbxAutoValidate_Click" ToolTip="WARNING! Turning this option off may mean you will have to manually refresh for changes to appear." Visibility="Hidden" HorizontalAlignment="Left" Width="224">Validate Items Automatically</CheckBox>
+                        <Label Content="User" HorizontalAlignment="Left" Margin="36,255.38,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblPw" Content="Password" HorizontalAlignment="Left" Margin="36,311.38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.477,1.398"/>
+                        <GroupBox Header="Logging" Margin="355,276.38,0,0" Height="142" Width="347" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Grid>
+                                <CheckBox Margin="10,26,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
+                                <Button Margin="139,0,23,10" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="29.38" VerticalAlignment="Bottom" RenderTransformOrigin="0.504,1.458" />
+                                <ComboBox Margin="201,26,23,0" x:Name="ddlLoglevel" Height="22.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
+                                <Label Margin="152,23,0,0" x:Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top" Content="Level"/>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </TabItem>
 
@@ -201,16 +223,8 @@
                                 <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
                                 </Grid>
                         </GroupBox>
-                        <GroupBox Header="Logging" Margin="20,265,0,20" Height="142" Width="175" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <Grid>
-                                <CheckBox Margin="10,10,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
-                                <Button Margin="10,0,13,16" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="28.38" VerticalAlignment="Bottom" />
-                                    <ComboBox Margin="57,38,13,0" Name="ddlLoglevel" Height="22.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
-                                    <Label Margin="8,35,0,0" Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top">Level</Label>
-                                </Grid>
-                        </GroupBox>
 
-                        <GroupBox Header="About Media Browser" Margin="220,265,20,20" Height="142" FontSize="14" VerticalAlignment="Top">
+                        <GroupBox Header="About Media Browser" Margin="20,277,20,0" Height="142" FontSize="14" VerticalAlignment="Top">
                         <Grid>
                             <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser3.com</Hyperlink></TextBlock>
                             <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>

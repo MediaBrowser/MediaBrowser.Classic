@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
@@ -1105,16 +1107,17 @@ namespace MediaBrowser
         /// </summary>
         public void Login()
         {
-            if (Kernel.AvailableUsers.Count == 1)
+            var user = Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) :
+                           Kernel.AvailableUsers.Count == 1 ? AvailableUsers.FirstOrDefault() : null;
+            if (user != null)
             {
-                // only one user - log in automatically
-                LoginUser(AvailableUsers.FirstOrDefault());
+                // only one user or specified - log in automatically
+                LoginUser(user);
             }
             else
             {
                 // show login screen
                 session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/LoginPage", new Dictionary<string, object> {{"Application",this}});
-                //LoginUser(Kernel.AvailableUsers.FirstOrDefault());
             }
         }
 
@@ -1124,8 +1127,12 @@ namespace MediaBrowser
             CurrentUser = user;
             if (Kernel.CurrentUser.HasPassword)
             {
-                // show pw screen
-                OpenSecurityPage("Please Enter Password for " + CurrentUser.Name + " (select or enter when done)");
+                // Try with saved pw
+                if (!Kernel.Instance.CommonConfigData.LogonAutomatically || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
+                {
+                    // show pw screen
+                    OpenSecurityPage("Please Enter Password for " + CurrentUser.Name + " (select or enter when done)");
+                }
             }
             else
             {
@@ -1134,18 +1141,25 @@ namespace MediaBrowser
             }
         }
 
-        protected void LoadUser(User user, string pw)
+        protected bool LoadUser(User user, string pw)
         {
             try
             {
-                Kernel.ApiClient.AuthenticateUser(user.Id, pw);
+                if (!string.IsNullOrEmpty(pw))
+                {
+                    Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
+                }
+                else
+                {
+                    Kernel.ApiClient.AuthenticateUser(user.Id, pw);
+                }
             }
             catch (Model.Net.HttpException e)
             {
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
                     AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
-                    return;
+                    return false;
                 }
                 throw;
             }
@@ -1167,7 +1181,7 @@ namespace MediaBrowser
             {
                 AddInHost.Current.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
                 AddInHost.Current.ApplicationContext.CloseApplication();
-                return;
+                return false;
             }
 
             // load plugins
@@ -1194,7 +1208,7 @@ namespace MediaBrowser
                 LaunchEntryPoint(EntryPointResolver.EntryPointPath);
             }
 
-            
+            return true;
         }
 
         protected void ValidateRoot()
@@ -1988,7 +2002,7 @@ namespace MediaBrowser
         public void ParentalPINEntered()
         {
             RequestingPIN = false;
-            LoadUser(CurrentUser.BaseItem as User, CustomPINEntry);
+            LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry))));
         }
         public void BackToRoot()
         {

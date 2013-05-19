@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,6 +26,8 @@ using MediaBrowser.Library.Playables.ExternalPlayer;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
+using Microsoft.MediaCenter;
+using Microsoft.MediaCenter.Hosting;
 
 namespace Configurator
 {
@@ -61,22 +65,23 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
-            //if (!Kernel.Instance.ServerConnected)
-            //{
-            //    MessageBox.Show("Cannot connect to the MB3 server.  Please start it.", "Cannot find server");
-            //    Close();
-            //    return;
-            //}
-            //var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
-            //Kernel.CurrentUser = new User {Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword};
+            if (!Kernel.Instance.ServerConnected)
+            {
+                MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server");
+            }
+            else
+            {
+                var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
+                Kernel.CurrentUser = new User { Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword };
+            }
             //Kernel.Instance.LoadUserConfig();
             Kernel.Instance.LoadPlugins();
             Logger.ReportVerbose("======= Kernel intialized. Building window...");
             InitializeComponent();
+            commonConfig = Kernel.Instance.CommonConfigData;
             pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
             //config = Kernel.Instance.ConfigData;
-            commonConfig = Kernel.Instance.CommonConfigData;
 
             //Logger.ReportVerbose("======= Loading combo boxes...");
             LoadComboBoxes();
@@ -241,6 +246,31 @@ namespace Configurator
 
             ddlLoglevel.SelectedItem = commonConfig.MinLoggingSeverity;
 
+            if (commonConfig.FindServerAutomatically)
+            {
+                rbServerConnectAuto.IsChecked = true;
+            }
+            else
+            {
+                rbServerConnectManual.IsChecked = true;
+            }
+            
+            if (commonConfig.LogonAutomatically)
+            {
+                rbLogonAuto.IsChecked = true;
+                ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                rbShowUserSelection.IsChecked = true;
+            }
+
+            if (Kernel.Instance.ServerConnected)
+            {
+                tbxServerAddress.Text = Kernel.ApiClient.ServerHostName;
+                tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString();
+            }
+
             //logging
             cbxEnableLogging.IsChecked = commonConfig.EnableTraceLogging;
 
@@ -273,7 +303,13 @@ namespace Configurator
         {
 
             ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
+            RefreshUsers();
 
+        }
+
+        private void RefreshUsers()
+        {
+            ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
         }
 
         #endregion
@@ -811,6 +847,116 @@ namespace Configurator
             }
         }
 
+        private void DdlUserProfile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var user = ddlUserProfile.SelectedItem as UserDto;
+            if (user != null)
+            {
+                if (user.HasPassword)
+                {
+                    lblPw.Visibility = tbxUserPassword.Visibility = Visibility.Visible;
+                    tbxUserPassword.IsEnabled = true;
+                }
+                else
+                {
+                    lblPw.Visibility = tbxUserPassword.Visibility = Visibility.Hidden;
+                    tbxUserPassword.IsEnabled = false;
+                    tbxUserPassword.Password = "";
+                }
+            }
+        }
+
+        private void RbServerConnectAuto_OnChecked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.FindServerAutomatically = true;
+            tbxServerAddress.IsEnabled = tbxPort.IsEnabled = false;
+        }
+
+        private void RbShowUserSelection_OnChecked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.LogonAutomatically = false;
+            ddlUserProfile.IsEnabled = false;
+            tbxUserPassword.Visibility = Visibility.Hidden;
+            lblPw.Visibility = Visibility.Hidden;
+        }
+
+        private void rbServerConnectManual_Checked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.FindServerAutomatically = false;
+            tbxServerAddress.IsEnabled = tbxPort.IsEnabled = true;
+        }
+
+        private void rbLogonAuto_Checked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.LogonAutomatically = true;
+            ddlUserProfile.IsEnabled = true;
+            DdlUserProfile_OnSelectionChanged(this, null);
+        }
+
+        private void btnSaveConnection_Click(object sender, RoutedEventArgs e)
+        {
+            //Validate server address
+            if (rbServerConnectManual.IsChecked == true)
+            {
+                if (!Kernel.ConnectToServer(tbxServerAddress.Text, Convert.ToInt32(tbxPort.Text)))
+                {
+                    MessageBox.Show("Could not connect to server. Please verify address and port.", "Error");
+                    return;
+                }
+                //RefreshUsers();
+                //if (commonConfig.LogonAutomatically)
+                //{
+                //    ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
+                //}
+            }
+
+            //Validate user
+            var user = ddlUserProfile.SelectedItem as UserDto;
+            var pw = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(tbxUserPassword.Password ?? string.Empty));
+            if (rbLogonAuto.IsChecked == true)
+            {
+                try
+                {
+                    Kernel.AvailableUsers = Kernel.ApiClient.GetAllUsers().ToList();
+                }
+                catch (Exception ex)
+                {
+                    Logger.ReportException("Unable to get users from server",ex);
+                    MessageBox.Show("Error connecting to get users");
+                }
+                try
+                {
+                    if (user != null)
+                    {
+                        Kernel.ApiClient.AuthenticateUser(user.Id, pw);
+                    }
+                }
+                catch (MediaBrowser.Model.Net.HttpException ex)
+                {
+                    if (((System.Net.WebException)ex.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
+                    {
+                        MessageBox.Show(string.Format("Incorrect password for user {0}", user) , "Error");
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.ReportException("Error validating user", ex);
+                    return;
+                }
+            }
+
+            //Everything validated - change settings and save
+            commonConfig.FindServerAutomatically = rbServerConnectAuto.IsChecked == true;
+            commonConfig.ServerAddress = tbxServerAddress.Text;
+            commonConfig.ServerPort = Convert.ToInt32(tbxPort.Text);
+            commonConfig.LogonAutomatically = rbLogonAuto.IsChecked == true;
+            commonConfig.AutoLogonUserName = user != null ? user.Name : null;
+            commonConfig.AutoLogonPw = BitConverter.ToString(pw);
+
+            SaveConfig();
+            PopUpMsg.DisplayMessage("Connection information saved.");
+        }
     }
 
     #region FormatParser Class

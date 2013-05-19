@@ -18,6 +18,14 @@ namespace MediaBrowser
     [Serializable]
     public class CommonConfigData
     {
+        public bool FindServerAutomatically = true;
+        public string ServerAddress = "";
+        public int ServerPort = 8096;
+
+        public bool LogonAutomatically = false;
+        public string AutoLogonUserName;
+        public string AutoLogonPw;
+
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
         public bool EnableUpdates = true;
