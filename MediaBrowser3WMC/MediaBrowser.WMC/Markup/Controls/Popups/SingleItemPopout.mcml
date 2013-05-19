@@ -36,7 +36,7 @@
           <Panel Name="InfoPanel" Layout="VerticalFlow" Margins="5,0,0,0" >
             <Children>
               <Text Content="New Item Added:" Font="font://f:PD_TitleFont" Color="color://s:FontColorMedium" Margins="0,0,0,5" />
-              <ts:TitleSet Name="TitleSet" Model="[Item]" ModelFast="[Item]" Font="font://f:PD_TitleFont" SubFont="font://f:PD_SubTitleFont"/>
+              <ts:TitleSet Name="TitleSet" Model="[Item]" ModelFast="[Item]" UseLongName="true" Font="font://f:PD_TitleFont" SubFont="font://f:PD_SubTitleFont"/>
               <mi:MovieInfo Name="MovieInfo" Application="[Application]" Model="[Item]" ModelFast="[Item]" DisplayMediaInfo="false" DisplayLastPlayedPanel="false" DisplayWriter="false" />
               <sy:SummaryNonScrolling Name="Summary" Model="[Item]"  ModelFast="[Item]" Color="color://s:FontColorLight" Font="font://f:PD_SummaryFont" />
 
