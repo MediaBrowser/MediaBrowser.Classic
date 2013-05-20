@@ -65,7 +65,7 @@ namespace Configurator
         private void Initialize() {
             Instance = this;
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
-            if (!Kernel.Instance.ServerConnected)
+            if (!Kernel.ServerConnected)
             {
                 MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server");
             }
@@ -265,7 +265,7 @@ namespace Configurator
                 rbShowUserSelection.IsChecked = true;
             }
 
-            if (Kernel.Instance.ServerConnected)
+            if (Kernel.ServerConnected)
             {
                 tbxServerAddress.Text = Kernel.ApiClient.ServerHostName;
                 tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString();
@@ -898,17 +898,29 @@ namespace Configurator
             //Validate server address
             if (rbServerConnectManual.IsChecked == true)
             {
-                if (!Kernel.ConnectToServer(tbxServerAddress.Text, Convert.ToInt32(tbxPort.Text)))
-                {
-                    MessageBox.Show("Could not connect to server. Please verify address and port.", "Error");
-                    return;
-                }
-                //RefreshUsers();
-                //if (commonConfig.LogonAutomatically)
-                //{
-                //    ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
-                //}
+                PopUpMsg.DisplayMessage("Attempting to contact server...");
+                var address = tbxServerAddress.Text;
+                var port = Convert.ToInt32(tbxPort.Text);
+                this.Cursor = Cursors.AppStarting;
+                btnSaveConnection.IsEnabled = false;
+                Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
             }
+        }
+
+        public void ConnectionValidationDone()
+        {
+            this.Cursor = Cursors.Arrow;
+            btnSaveConnection.IsEnabled = true;
+            if (!Kernel.ServerConnected)
+            {
+                MessageBox.Show("Could not connect to server. Please verify address and port.", "Error");
+                return;
+            }
+            //RefreshUsers();
+            //if (commonConfig.LogonAutomatically)
+            //{
+            //    ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
+            //}
 
             //Validate user
             var user = ddlUserProfile.SelectedItem as UserDto;
@@ -922,7 +934,7 @@ namespace Configurator
                 catch (Exception ex)
                 {
                     Logger.ReportException("Unable to get users from server",ex);
-                    MessageBox.Show("Error connecting to get users");
+                    MessageBox.Show("Error connecting to get users.  Please check server address.", "Cannot get users");
                 }
                 try
                 {
@@ -955,7 +967,7 @@ namespace Configurator
             commonConfig.AutoLogonPw = BitConverter.ToString(pw);
 
             SaveConfig();
-            PopUpMsg.DisplayMessage("Connection information saved.");
+            PopUpMsg.DisplayMessage("Connection information validated and saved.");
         }
     }
 

@@ -422,7 +422,7 @@ namespace MediaBrowser.Library {
         public static ApiClient ApiClient;
         public static User CurrentUser;
         public static List<UserDto> AvailableUsers; 
-        public bool ServerConnected { get; set; }
+        public static bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; } 
 
         public static bool ConnectToServer(string address, int port)
@@ -444,7 +444,7 @@ namespace MediaBrowser.Library {
                 Logger.ReportException("Unable to connect to server at {0}:{1}", e, address,port);
                 return false;
             }
-            return true;
+            return (ServerConnected = ServerInfo != null);
         }
 
         static bool ConnectAutomatically()
@@ -492,7 +492,6 @@ namespace MediaBrowser.Library {
              StringData = LocalizedStrings.Instance,
              ImageResolvers = DefaultImageResolvers(false),
              MB3ApiRepository = repository,
-             ServerConnected = connected,
              LocalRepo = localRepo,
              MediaLocationFactory = new MediaLocationFactory(),
              };

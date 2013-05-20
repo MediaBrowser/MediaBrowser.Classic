@@ -75,7 +75,7 @@ namespace MediaBrowser
                         using (new Util.Profiler("Total Kernel Init"))
                         {
                             Kernel.Init(config);
-                            if (!Kernel.Instance.ServerConnected)
+                            if (!Kernel.ServerConnected)
                             {
                                 host.MediaCenterEnvironment.Dialog("Could not connect to Media Browser 3 Server.  Please be sure it is running on the local network.", "Error", DialogButtons.Ok, 100, true);
                                 AddInHost.Current.ApplicationContext.CloseApplication();
