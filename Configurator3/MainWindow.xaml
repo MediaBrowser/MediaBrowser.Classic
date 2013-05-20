@@ -99,7 +99,7 @@
                             <Grid>
                                 <CheckBox Margin="10,26,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
                                 <Button Margin="139,0,23,10" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="29.38" VerticalAlignment="Bottom" RenderTransformOrigin="0.504,1.458" />
-                                <ComboBox Margin="201,26,23,0" x:Name="ddlLoglevel" Height="22.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
+                                <ComboBox Margin="201,26,23,0" x:Name="ddlLoglevel" Height="24.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
                                 <Label Margin="152,23,0,0" x:Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top" Content="Level"/>
                             </Grid>
                         </GroupBox>
@@ -243,7 +243,7 @@
                         </Grid>
                 </TabItem>
             </TabControl>
-            <TextBlock Height="25" Margin="10,536,79,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Visible" />
+            <TextBlock Height="25" Margin="10,536,79,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
         </Grid>
         <Image Height="80" HorizontalAlignment="Right" Margin="0,5,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="302" Source="Images/mbclogo400.png" />
         <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="141">Version 0.0.0.0</Label>

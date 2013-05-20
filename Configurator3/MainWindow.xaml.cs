@@ -890,6 +890,7 @@ namespace Configurator
         {
             commonConfig.LogonAutomatically = true;
             ddlUserProfile.IsEnabled = true;
+            if (ddlUserProfile.SelectedItem == null && ddlUserProfile.Items.Count > 0) ddlUserProfile.SelectedIndex = 0;
             DdlUserProfile_OnSelectionChanged(this, null);
         }
 
@@ -914,6 +915,7 @@ namespace Configurator
             if (!Kernel.ServerConnected)
             {
                 MessageBox.Show("Could not connect to server. Please verify address and port.", "Error");
+                PopUpMsg.DisplayMessage("Connection Information NOT Saved");
                 return;
             }
             //RefreshUsers();
@@ -935,6 +937,8 @@ namespace Configurator
                 {
                     Logger.ReportException("Unable to get users from server",ex);
                     MessageBox.Show("Error connecting to get users.  Please check server address.", "Cannot get users");
+                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
+                    return;
                 }
                 try
                 {
@@ -948,12 +952,14 @@ namespace Configurator
                     if (((System.Net.WebException)ex.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                     {
                         MessageBox.Show(string.Format("Incorrect password for user {0}", user) , "Error");
+                        PopUpMsg.DisplayMessage("Connection Information NOT Saved");
                         return;
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.ReportException("Error validating user", ex);
+                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
                     return;
                 }
             }
