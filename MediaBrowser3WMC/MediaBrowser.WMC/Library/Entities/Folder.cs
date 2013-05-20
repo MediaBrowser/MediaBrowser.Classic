@@ -260,7 +260,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual string[] RalExcludeTypes
         {
-            get { return new[] {"series", "season", "musicalbum", "artist"}; }
+            get { return new[] {"series", "season", "musicalbum", "artist", "folder", "boxset"}; }
         }
 
         public virtual void ResetQuickList()
