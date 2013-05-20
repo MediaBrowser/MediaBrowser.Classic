@@ -897,15 +897,12 @@ namespace Configurator
         private void btnSaveConnection_Click(object sender, RoutedEventArgs e)
         {
             //Validate server address
-            if (rbServerConnectManual.IsChecked == true)
-            {
-                PopUpMsg.DisplayMessage("Attempting to contact server...");
-                var address = tbxServerAddress.Text;
-                var port = Convert.ToInt32(tbxPort.Text);
-                this.Cursor = Cursors.AppStarting;
-                btnSaveConnection.IsEnabled = false;
-                Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
-            }
+            PopUpMsg.DisplayMessage("Attempting to contact server...");
+            var address = tbxServerAddress.Text;
+            var port = Convert.ToInt32(tbxPort.Text);
+            this.Cursor = Cursors.AppStarting;
+            btnSaveConnection.IsEnabled = false;
+            Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
         }
 
         public void ConnectionValidationDone()
