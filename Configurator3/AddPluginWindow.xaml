@@ -57,7 +57,7 @@
         <Label Height="28" Margin="359,0,12,22" Name="MessageLine" VerticalAlignment="Bottom" FontWeight="Bold">Select a Plug-in to Add</Label>
 		<Label Margin="20,24,0,0" VerticalAlignment="Top" Height="33" Content="Choose a Plug-in from the list below" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
 		<Button Margin="150,0,0,22" Content="Install" Height="32" VerticalAlignment="Bottom" Click="InstallClick" Name="InstallButton" HorizontalAlignment="Left" Width="90" />
-        <ListBox ItemTemplate="{DynamicResource PluginListTemplate}" IsSynchronizedWithCurrentItem="True" Margin="20,85,0,60" Width="316" HorizontalAlignment="Left" Name="pluginList" SelectionChanged="pluginList_SelectionChanged" FontSize="12" ToolTip="Items in bold are installed on your system." >
+        <ListBox ItemTemplate="{DynamicResource PluginListTemplate}" IsSynchronizedWithCurrentItem="True" Margin="20,85,0,60" Width="316" HorizontalAlignment="Left" Name="pluginList" SelectionChanged="pluginList_SelectionChanged" MouseDoubleClick="PluginList_OnMouseDoubleClick" FontSize="12" ToolTip="Items in bold are installed on your system." >
             <ListBox.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>

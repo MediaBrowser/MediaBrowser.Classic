@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Configurator.Code;
 using MediaBrowser.Library.Plugins;
@@ -190,5 +191,10 @@ namespace Configurator {
         }
 
 
+        private void PluginList_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var plugin = pluginList.SelectedItem as IPlugin;
+            if (plugin != null) InstallClick(this, null);
+        }
     }
 }
