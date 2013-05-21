@@ -212,7 +212,7 @@
                 </TabItem>
                 <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Visible">
                     <Grid>
-                            <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="143" Height="25">Version 0.0.0.0</Label>
+                            <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="192" Height="25">Version 0.0.0.0</Label>
                             <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
                             <Grid>
                                     <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1303/media-browser-quickstart-guide" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Quickstart Guide</Hyperlink></TextBlock>
