@@ -8,7 +8,6 @@
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
     xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
-    xmlns:ui="resx://MediaBrowser/MediaBrowser.Resources/UserIndicator"
       xmlns:po="resx://MediaBrowser/MediaBrowser.Resources/SingleItemPopout"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
       xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
@@ -175,12 +174,6 @@
             </LayoutInput>
           </search:SearchPane>
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
-          <!--<ui:UserIndicator Name="UserButton" Application="[Application]" Margins="100,15,10,10">
-            <LayoutInput>
-              <FormLayoutInput Horizontal="Near" Vertical="Near"/>
-            </LayoutInput>
-            
-          </ui:UserIndicator>--> 
           <pd:Page Name="ViewDefault" Folder="[Folder]" Application="[Application]" ThemeConfig ="[ThemeConfig]" Visible="true" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>

@@ -152,10 +152,10 @@
             </Layout>
             <Children>
               <Graphic Name="graphicBullet" MaximumSize="25,25" MinimumSize="25,25" MaintainAspectRatio="true"
-                           Margins="7,10,3,0" Visible="true" Content="[Icon]">
+                           Margins="7,10,5,5" Visible="true" Content="[Icon]">
               </Graphic>
               <!-- The label to display. -->
-              <Text Name="Label"  Color="[Color]" MinimumSize="0,30" Margins="4,3,0,0" Visible="[DisplayText]"
+              <Text Name="Label"  Color="[Color]" MinimumSize="0,30" Margins="4,4,5,5" Visible="[DisplayText]"
                         FadeSize="5"  Font="[Font]" HorizontalAlignment="Center" MaximumSize="[Size]">
                 <Animations>
                   <Animation Type="Show">
@@ -178,7 +178,7 @@
 
   <Image Name="ButtonDisabled"          Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDisabled"          NineGrid="7,7,7,7" />
   <Image Name="ButtonDormant"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonDormant"           NineGrid="7,7,7,7" />
-  <Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNewFocus"          NineGrid="7,7,7,7" />
+  <Image Name="ButtonLeftFocus"         Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocus"          NineGrid="7,7,7,7" />
   <Image Name="ButtonLeftFocusOverlay"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonLeftFocusOverlay"  NineGrid="7,7,7,7" />
   <Image Name="ButtonNoFocus"           Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonNoFocus"           NineGrid="7,7,7,7" />
   <Image Name="ButtonPressedAfterGlow"  Source="resx://MediaBrowser/MediaBrowser.Resources/ButtonPressedAfterGlow"  NineGrid="7,7,7,7" />

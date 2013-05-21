@@ -66,10 +66,13 @@
       <Command Name="ShowSearch" />
       <Command Name="CloseContextMenu" />
       <Command Name="ClosePopupPlay" />
+      <Command Name="Logout" />
       <a:Clock Name="Clock"/>
       <Command Name="Popup"/>
       <!--<KeyHandler Name="SwitchKey" Key="D8" Handle="true" Modifiers="Shift" HandlerStage="Bubbled"/>-->
-      
+
+      <FormLayoutInput Name="EHSUserButtonLayout" Left="Parent,0,25" Top="Parent,0,60" />
+    
     </Locals>
 
     <Rules>
@@ -109,6 +112,7 @@
           <Set Target="[RightEdge.Visible]" Value="false"/>
           <Set Target="[BottomEdge.Visible]" Value="false"/>
           <Set Target="[PCIBtn.Visible]" Value="false"/>
+          <Set Target="[UserButton.LayoutInput]" Value="[EHSUserButtonLayout]"/>
         </Actions>
       </Rule>
 
@@ -155,7 +159,13 @@
         </Actions>
       </Rule>
 
-      <Changed Source="[ClosePopupPlay.Invoked]">
+      <Changed Source="[Logout.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.Logout]" />
+        </Actions>
+      </Changed>
+
+    <Changed Source="[ClosePopupPlay.Invoked]">
         <Actions>
           <Set Target="[Application.DisplayPopupPlay]" Value="false" />
           <!--<PlaySound Sound="sound://sd:Miniselect" />-->
@@ -436,6 +446,7 @@
           <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
             <Children>
 
+
               <Panel Name="TimePanel">
                 <Layout>
                   <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
@@ -447,6 +458,12 @@
                   <Text Name="TimeDate" Font="font://f:P_ClockFont"  Color="White" Visible="[Application.Config.ShowClock]" />
                 </Children>
               </Panel>
+
+              <vm:UserButton Name="UserButton" Application="[Application]" Command="[Logout]" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,205" Bottom="Parent,0,122"/>
+                </LayoutInput>
+              </vm:UserButton>
 
               <pc:PCIndicatorButton Name="PCIBtn" Application="[Application]" Size="23,23">
                 <LayoutInput>
@@ -462,7 +479,7 @@
 
               <vm:ViewsButton Name="ViewsBtn" Application="[Application]" Command="[ShowViewConfiguration]" Font="font://f:P_ConfigButtons">
                 <LayoutInput>
-                  <FormLayoutInput Left="Parent,0,205" Bottom="Parent,0,120"/>
+                  <FormLayoutInput Left="UserButton,1" Bottom="Parent,0,120"/>
                 </LayoutInput>
               </vm:ViewsButton>
 

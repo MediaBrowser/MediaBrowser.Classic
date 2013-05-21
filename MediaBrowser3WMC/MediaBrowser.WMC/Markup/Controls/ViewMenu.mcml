@@ -125,6 +125,56 @@
     </Content>
   </UI>
 
+
+  <UI Name="UserButton">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <ICommand Name="Command" ICommand="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+      <Image Name="Image" Image="null"/>
+      <Image Name="FocusImage" Image="image://i:ButtonLeftFocus" />
+    </Locals>
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true">
+        <Actions>
+          <Set Target="[BoxImage.Content]" Value="[FocusImage]"/>
+          <Set Target="[Label.Color]" Value="color://s:FontColorLight"/>
+        </Actions>
+      </Condition>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[BoxImage]" Animation="animation://me:ButtonPress"/>
+        </Actions>
+      </Condition>
+
+    </Rules>
+    <Content>
+      <Graphic Name="BoxImage" Content="[Image]" SizingPolicy="SizeToChildren" Padding="15,2,15,2">
+        <Children>
+          <Panel Layout="HorizontalFlow">
+            <Children>
+              <Graphic Content="[Application.CurrentUser.PrimaryImage]" Margins="0,0,5,0" MaximumSize="25,25"></Graphic>
+              <Text Name="Label" Content="[Application.CurrentUser.Name]" Color="color://s:FontColorDark" Font="[Font]"/>
+            </Children>
+          </Panel>
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+  
   <Animation Name="ButtonPress" Loop="0" CenterPointPercent="0.5,0.5,1.0">
     <Keyframes>
       <ScaleKeyframe Time="0.00" RelativeTo="Current" Interpolation="Log"/>

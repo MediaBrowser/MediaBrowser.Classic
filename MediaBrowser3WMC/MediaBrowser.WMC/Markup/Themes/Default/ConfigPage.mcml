@@ -43,6 +43,7 @@
       <Command Name="FullRefresh" />
       <Command Name="UpdateCheck" />
       <Command Name="CloseMessage"/>
+      <Command Name="Logout"/>
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
@@ -288,6 +289,12 @@
         </Actions>
       </Changed>
 
+      <Changed Source="[Logout.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.Logout]" />
+        </Actions>
+      </Changed>
+
 
       <Binding Source="[Application.SystemUpdateCheckInProgress]" Target="[UpdateCheck.Available]">
         <Transformer>
@@ -438,6 +445,12 @@
               </msg:MessageBox>
 
               <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
+              <vm:UserButton Name="UserButton" Application="[Application]" Command="[Logout]" Font="font://f:P_ConfigButtons">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,25" Bottom="Parent,0,95"/>
+                </LayoutInput>
+              </vm:UserButton>
 
               <Clip Name="Title" FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
                 <LayoutInput>

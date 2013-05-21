@@ -18,8 +18,14 @@
 
     </Locals>
     <Rules>
-      <Binding Source="[Application.CurrentUser.PrimaryImage]" Target="[UserButton.Icon]" />
-      <Binding Source="[Application.CurrentUser.Name]" Target="[UserButton.Text]" />
+      <Changed Source="[Application.CurrentUser]">
+        <Actions>
+          <Set Target="[UserButton.Icon]" Value="[Application.CurrentUser.PrimaryImage]" />
+          <Set Target="[UserButton.Text]" Value="[Application.CurrentUser.Name]" />
+        </Actions>
+      </Changed>
+      <!--<Binding Source="" Target="[UserButton.Icon]" />
+      <Binding Source="" Target="" />-->
 
       <Changed Source="[DoAction.Invoked]">
         <Actions>

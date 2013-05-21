@@ -1097,7 +1097,13 @@ namespace MediaBrowser
         public void Logout()
         {
             // Present dialog - must be asynced to get off the UI thread
-            Async.Queue("Logout", () => {var dr = YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name));});
+            Async.Queue("Logout", () =>
+                                      {
+                                          if (YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name)) == "Y")
+                                          {
+                                              Close();
+                                          }
+                                      });
             
 
         }
@@ -1125,7 +1131,9 @@ namespace MediaBrowser
         {
             Kernel.CurrentUser = user.BaseItem as User;
             CurrentUser = user;
-            if (Kernel.CurrentUser.HasPassword)
+            var ignore = CurrentUser.PrimaryImage; // force this to load
+            FirePropertyChanged("CurrentUser");
+            if (Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
             {
                 // Try with saved pw
                 if (!Kernel.Instance.CommonConfigData.LogonAutomatically || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
