@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Logging;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Serialization;
 using System;
 
@@ -41,12 +44,23 @@ namespace MediaBrowser.ApiInteraction.WebSocket
 
                 _webSocket.OnReceiveDelegate = OnMessageReceived;
 
-                Send(IdentificationMessageName, GetIdentificationMessage(clientName, deviceId));
+                Async.Queue("ident", () =>
+                                         {
+                                             while (_webSocket.State != WebSocketState.Open)
+                                             {
+                                             }
+                                             SendIdentification(clientName, deviceId);
+                                         } );
             }
             catch (Exception ex)
             {
                 Logger.ReportException("Error connecting to {0}", ex, url);
             }
+        }
+
+        public void SendIdentification(string clientName, string deviceId)
+        {
+            Send(IdentificationMessageName, GetIdentificationMessage(clientName, deviceId));
         }
 
         /// <summary>

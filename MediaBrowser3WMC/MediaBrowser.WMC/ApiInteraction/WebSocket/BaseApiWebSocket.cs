@@ -234,11 +234,11 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// Gets the identification message.
         /// </summary>
         /// <param name="clientName">Name of the client.</param>
-        /// <param name="deviceId">The device id.</param>
+        /// <param name="deviceName">The device id.</param>
         /// <returns>System.String.</returns>
-        protected string GetIdentificationMessage(string clientName, string deviceId)
+        protected string GetIdentificationMessage(string clientName, string deviceName)
         {
-            return clientName + "|" + deviceId;
+            return clientName + "|" + deviceName;
         }
     }
 }

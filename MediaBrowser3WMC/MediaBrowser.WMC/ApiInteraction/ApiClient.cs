@@ -341,6 +341,26 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Refresh an item on the server
+        /// </summary>
+        /// <returns>Task.</returns>
+        public void RefreshItem(string id, bool forced = true, bool recursive = true)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException("id");
+            }
+
+            var options = new QueryStringDictionary();
+            options.AddIfNotNull("Forced", forced);
+            options.AddIfNotNull("Recursive", recursive);
+
+            var url = GetApiUrl("Items/"+id+"/Refresh");
+
+            Post<EmptyRequestResult>(url, options);
+        }
+
+        /// <summary>
         /// Gets the system status async.
         /// </summary>
         /// <returns>Task{SystemInfo}.</returns>

@@ -121,7 +121,7 @@ namespace MediaBrowser
             {
                 try
                 {
-                    WebSocket.SendContextMessage(CurrentItem.GetType().Name, CurrentItem.BaseItem.ApiId, CurrentItem.Name);
+                    WebSocket.SendContextMessage(CurrentItem.BaseItem.GetType().Name, CurrentItem.BaseItem.ApiId, CurrentItem.Name);
                 }
                 catch (Exception e)
                 {
@@ -1277,8 +1277,9 @@ namespace MediaBrowser
                     //}
 
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
-                    WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceName);
+                    WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
                     WebSocket.LibraryChanged += LibraryChanged;
+                  
 
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.

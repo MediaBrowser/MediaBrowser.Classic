@@ -434,7 +434,7 @@ namespace MediaBrowser.Library {
             {
                 ServerHostName = address,
                 ServerApiPort = port,
-                DeviceId = ("MBCLASSIC"+Environment.MachineName).GetMD5().ToString(),
+                DeviceId = ("MBCLASSIC"+Environment.MachineName).GetMD5().ToString().Replace("-",""),
                 ClientType = "MB-Classic",
                 DeviceName = Environment.MachineName
             };
