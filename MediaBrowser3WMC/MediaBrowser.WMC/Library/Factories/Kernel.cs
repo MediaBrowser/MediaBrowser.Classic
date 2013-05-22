@@ -11,6 +11,7 @@ using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Events;
+using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Factories;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.ImageManagement;
@@ -433,7 +434,7 @@ namespace MediaBrowser.Library {
             {
                 ServerHostName = address,
                 ServerApiPort = port,
-                DeviceId = Guid.NewGuid().ToString(),
+                DeviceId = ("MBCLASSIC"+Environment.MachineName).GetMD5().ToString(),
                 ClientType = "MB-Classic",
                 DeviceName = Environment.MachineName
             };
