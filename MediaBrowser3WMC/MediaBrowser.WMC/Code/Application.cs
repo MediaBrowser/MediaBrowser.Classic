@@ -114,14 +114,24 @@ namespace MediaBrowser
 
         internal void OnCurrentItemChanged()
         {
-            FirePropertyChanged("CurrentItem"); 
-            
+            FirePropertyChanged("CurrentItem");
+
+            // send context message
+            Async.Queue("Context", () =>
+            {
+                try
+                {
+                    WebSocket.SendContextMessage(CurrentItem.GetType().Name, CurrentItem.BaseItem.ApiId, CurrentItem.Name);
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Error sending context message", e);
+                }
+            });
+
             if (_CurrentItemChanged != null)
             {
-                Async.Queue("OnCurrentItemChanged", () =>
-                {
-                    _CurrentItemChanged(this, new GenericEventArgs<Item>() { Item = CurrentItem });
-                }); 
+                Async.Queue("OnCurrentItemChanged", () => _CurrentItemChanged(this, new GenericEventArgs<Item>() { Item = CurrentItem })); 
             }
         }
         #endregion
