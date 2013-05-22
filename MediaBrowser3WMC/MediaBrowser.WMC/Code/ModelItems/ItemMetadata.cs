@@ -608,7 +608,7 @@ namespace MediaBrowser.Library {
 
         private void MetadataChanged(object sender, MetadataChangedEventArgs args) {
             //Something on the server changed - reload us but no UI message
-            RefreshMetadata(false);
+            ReLoadFromServer();
 
         }
     }
