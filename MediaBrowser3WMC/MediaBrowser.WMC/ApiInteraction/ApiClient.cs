@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Web;
 using MediaBrowser.Library;
+using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
@@ -350,6 +351,20 @@ namespace MediaBrowser.ApiInteraction
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<SystemInfo>(stream);
+            }
+        }
+
+        /// <summary>
+        /// Gets the system configuration file.
+        /// </summary>
+        /// <returns>Task{SystemInfo}.</returns>
+        public ServerConfiguration GetServerConfiguration()
+        {
+            var url = GetApiUrl("System/Configuration");
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ServerConfiguration>(stream);
             }
         }
 

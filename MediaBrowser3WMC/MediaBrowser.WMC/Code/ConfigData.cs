@@ -268,10 +268,6 @@ namespace MediaBrowser
         [Comment(@"Show fan art on views that support it.")]
         public bool ShowBackdrop = true;
         [Group("Display")]
-        //[PresentationStyle("BrowseFolder")]
-        //[Comment(@"Path to save display preferences and playstate information.  Change this to use a shared location for multiple machines.")]
-        //public string UserSettingsPath = null;
-        //[Group("Display")]
         [Dangerous]
         public string ViewTheme = "Default";
         [Group("Display")]
@@ -281,36 +277,11 @@ namespace MediaBrowser
 
         [Group("Display")]
         public bool EnableSyncViews = true;
-        public string YahooWeatherFeed = "UKXX0085";
-        public string YahooWeatherUnit = "c";
         [Group("Display")]
         public bool ShowRootBackground = true;
 
-        //[PresentationStyle("BrowseFolder")]
-        //public string PodcastHome = ApplicationPaths.DefaultPodcastPath;
         [Group("Display")]
         public bool HideFocusFrame = false;
-
-        //[Group("Depricated")]
-        //[Hidden]
-        //public bool EnableProxyLikeCaching = false;
-        //public int MetadataCheckForUpdateAge = 14;
-
-        //[Group("Parental Control")]
-        //public int ParentalUnlockPeriod = 3;
-        //[Group("Parental Control")]
-        //public bool HideParentalDisAllowed = true; 
-        //[Group("Parental Control")]
-        //public bool ParentalBlockUnrated = false;
-        //[Group("Parental Control")]
-        //public bool UnlockOnPinEntry = true;
-        //[Group("Parental Control")]
-        //public bool ParentalControlEnabled = false;
-        //[Group("Parental Control")]
-        //[Hidden]
-        //public string ParentalPIN = "0000";
-        //[Group("Parental Control")]
-        //public int MaxParentalLevel = 3;
 
 
         [Group("Display")]

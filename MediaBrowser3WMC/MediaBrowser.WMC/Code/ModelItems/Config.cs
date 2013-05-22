@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Updates;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library;
@@ -16,6 +17,7 @@ namespace MediaBrowser
     {
         private ConfigData Data { get { return Kernel.Instance.ConfigData; } }
         private CommonConfigData CommonData { get { return Kernel.Instance.CommonConfigData; } }
+        private ServerConfiguration ServerData { get { return Kernel.ServerConfig; }}
 
         public bool AlwaysShowDetailsPage
         {
@@ -627,13 +629,13 @@ namespace MediaBrowser
         }
         public string YahooWeatherFeed
         {
-            get { return this.Data.YahooWeatherFeed; }
-            set { if (this.Data.YahooWeatherFeed != value) { this.Data.YahooWeatherFeed = value; Save(); FirePropertyChanged("YahooWeatherFeed"); } }
+            get { return this.ServerData.WeatherLocation; }
+            set { if (this.ServerData.WeatherLocation != value) { this.ServerData.WeatherLocation = value; Save(); FirePropertyChanged("YahooWeatherFeed"); } }
         }
         public string YahooWeatherUnit
         {
-            get { return this.Data.YahooWeatherUnit; }
-            set { if (this.Data.YahooWeatherUnit != value) { this.Data.YahooWeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
+            get { return this.ServerData.WeatherUnit.ToString(); }
+            //set { if (this.ServerData.YahooWeatherUnit != value) { this.ServerData.YahooWeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
         }
         public string SupporterKey
         {

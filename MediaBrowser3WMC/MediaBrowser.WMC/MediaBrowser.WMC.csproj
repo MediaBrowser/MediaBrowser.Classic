@@ -305,6 +305,8 @@
     <Compile Include="Library\Util\MutexWrapper.cs" />
     <Compile Include="Library\Util\Taskbar.cs" />
     <Compile Include="Library\VideoFormat.cs" />
+    <Compile Include="Model\Configuration\BaseApplicationConfiguration.cs" />
+    <Compile Include="Model\Configuration\ServerConfiguration.cs" />
     <Compile Include="Model\Configuration\UserConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>

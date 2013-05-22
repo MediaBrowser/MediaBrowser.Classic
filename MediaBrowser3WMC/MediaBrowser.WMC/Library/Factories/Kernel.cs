@@ -24,6 +24,7 @@ using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.MBSystem;
 using MediaBrowser.Util;
@@ -423,7 +424,8 @@ namespace MediaBrowser.Library {
         public static User CurrentUser;
         public static List<UserDto> AvailableUsers; 
         public static bool ServerConnected { get; set; }
-        public static SystemInfo ServerInfo { get; set; } 
+        public static SystemInfo ServerInfo { get; set; }
+        public static ServerConfiguration ServerConfig { get; set; }
 
         public static bool ConnectToServer(string address, int port)
         {
@@ -438,6 +440,7 @@ namespace MediaBrowser.Library {
             try
             {
                 ServerInfo = ApiClient.GetSystemInfo();
+                ServerConfig = ApiClient.GetServerConfiguration();
             }
             catch (Exception e)
             {
