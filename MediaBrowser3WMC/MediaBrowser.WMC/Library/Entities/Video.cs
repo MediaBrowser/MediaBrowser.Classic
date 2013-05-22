@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MediaBrowser.Library.Persistance;
@@ -68,14 +69,48 @@ namespace MediaBrowser.Library.Entities {
                 }
                 else
                 {
-                    yield return Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? "") ? Path
-                                     : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                    if (Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? ""))
+                    {
+                        yield return Path;
+                    }
+                    else
+                    {
+                    yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                              {
+                                                                                  ItemId = ApiId,
+                                                                                  OutputFileExtension = ".ts",
+                                                                                  //AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                                                                              })
+                    : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                               {
                                                                                   ItemId = ApiId,
                                                                                   Static = true
                                                                               });
+                    }
                 }
             }
+        }
+
+        protected static List<string> StreamableCodecs = new List<string> {"DTS", "DTS Express", "AC3", "MP3"}; 
+
+        /// <summary>
+        /// Find the first streamable audio stream for the specified language
+        /// </summary>
+        /// <returns></returns>
+        protected int FindAudioStream(string lang = "")
+        {
+            if (string.IsNullOrEmpty(lang)) lang = "eng";
+            Logging.Logger.ReportVerbose("Looking for audio stream in {0}", lang);
+            MediaStream stream = null;
+            foreach (var codec in StreamableCodecs)
+            {
+                stream = MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio && (s.Language == null || s.Language.Equals(lang, StringComparison.OrdinalIgnoreCase)) 
+                    && s.Codec.Equals(codec,StringComparison.OrdinalIgnoreCase));
+                if (stream != null) break;
+                
+            }
+            Logging.Logger.ReportVerbose("Requesting audio stream #{0}", stream != null ? stream.Index : 0);
+            return stream != null ? stream.Index : 0;
         }
 
         /// <summary>
