@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.Globalization;
 using Configurator.Code;
 using MediaBrowser;
+using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
@@ -897,6 +898,17 @@ namespace Configurator
         private void btnSaveConnection_Click(object sender, RoutedEventArgs e)
         {
             //Validate server address
+            if (rbServerConnectAuto.IsChecked == true)
+            {
+                var endpoint = new ServerLocator().FindServer();
+                if (endpoint == null)
+                {
+                    MessageBox.Show("Unable to find server.  Please specify an address or start the server.", "Error locating server");
+                    return;
+                }
+                tbxServerAddress.Text = endpoint.Address.ToString();
+                tbxPort.Text = endpoint.Port.ToString();
+            }
             PopUpMsg.DisplayMessage("Attempting to contact server...");
             var address = tbxServerAddress.Text;
             var port = Convert.ToInt32(tbxPort.Text);
