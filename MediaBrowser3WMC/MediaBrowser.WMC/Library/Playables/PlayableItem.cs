@@ -593,7 +593,7 @@ namespace MediaBrowser.Library.Playables
                 return;
             }
 
-            Logger.ReportInfo(PlaybackController.ControllerName + " about to play " + DisplayName);
+            Logger.ReportInfo(string.Format("{0} about to play {1}({2}) ", PlaybackController.ControllerName, DisplayName, CurrentMedia.Files.FirstOrDefault()));
 
             // If the controller already has active playable items, stop it and wait for it to flush out
             if (!QueueItem)

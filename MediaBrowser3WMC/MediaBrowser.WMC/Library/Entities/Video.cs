@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
@@ -66,7 +68,12 @@ namespace MediaBrowser.Library.Entities {
                 }
                 else
                 {
-                    yield return Path;
+                    yield return Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? "") ? Path
+                                     : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                              {
+                                                                                  ItemId = ApiId,
+                                                                                  Static = true
+                                                                              });
                 }
             }
         }
