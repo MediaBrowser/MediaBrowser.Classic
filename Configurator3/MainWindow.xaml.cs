@@ -140,11 +140,11 @@ namespace Configurator
             });
 
             //Logger.ReportVerbose("======= Kicking off validations thread...");
-            Async.Queue("Startup Validations", () =>
-            {
-                //RefreshEntryPoints(false);
-                ValidateMBAppDataFolderPermissions();
-            });
+            //Async.Queue("Startup Validations", () =>
+            //{
+            //    //RefreshEntryPoints(false);
+            //    ValidateMBAppDataFolderPermissions();
+            //});
             //Logger.ReportVerbose("======= Initialize Finised.");
         }
 
