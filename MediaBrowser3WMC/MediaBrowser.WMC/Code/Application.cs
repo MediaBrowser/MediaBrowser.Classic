@@ -457,7 +457,7 @@ namespace MediaBrowser
                 {
                     NewItem = ItemFactory.Instance.Create(firstNew);
                     ShowNewItemPopout = true;
-                    Thread.Sleep(Config.DefaultMessageTimeout * 1000);
+                    Thread.Sleep(Config.NewItemNotificationDisplayTime * 1000);
                     ShowNewItemPopout = false;
                 }
                 

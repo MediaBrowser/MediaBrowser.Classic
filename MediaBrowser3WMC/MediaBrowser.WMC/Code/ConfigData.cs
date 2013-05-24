@@ -218,6 +218,8 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
         public int DefaultMessageTimeout = 30;
+        [Comment(@"The number of seconds to display new item notification.")]
+        public int NewItemNotificationDisplayTime = 10;
         [Dangerous]
         [Group("Display")]
         [Comment(@"Characters to be ignored in sorting.")]

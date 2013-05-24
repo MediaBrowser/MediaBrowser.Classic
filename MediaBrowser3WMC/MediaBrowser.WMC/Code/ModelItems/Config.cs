@@ -517,6 +517,11 @@ namespace MediaBrowser
             get { return this.Data.DefaultMessageTimeout; }
             set { if (this.Data.DefaultMessageTimeout != value) { this.Data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
         }
+        public int NewItemNotificationDisplayTime
+        {
+            get { return this.Data.NewItemNotificationDisplayTime; }
+            set { if (this.Data.NewItemNotificationDisplayTime != value) { this.Data.NewItemNotificationDisplayTime = value; Save(); FirePropertyChanged("NewItemNotificationDisplayTime"); } }
+        }
         public bool AllowInternetMetadataProviders
         {
             get { return this.Data.AllowInternetMetadataProviders; }
