@@ -64,7 +64,7 @@ namespace MediaBrowser.Library
             {
                 theForm = new Form();
                 theForm.BackColor = Color.Black;
-                theForm.BackgroundImageLayout = ImageLayout.Center;
+                theForm.BackgroundImageLayout = ImageLayout.Zoom;
                 theForm.BackgroundImage = bgImage;
                 theForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 theForm.WindowState = System.Windows.Forms.FormWindowState.Maximized;
