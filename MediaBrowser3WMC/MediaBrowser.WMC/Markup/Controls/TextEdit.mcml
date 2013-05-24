@@ -29,7 +29,7 @@
 		<Locals>
 			<TypingHandler Name="TypingHandler" EditableText="[EditableText]" TypingPolicy="TripleTap" HandlerStage="Bubbled"/>
       <addin:AddInHost Name="AddInHost" />
-      <ClickHandler Name="Clicker"/>
+      <!--<ClickHandler Name="Clicker"/>-->
     </Locals>
 
 		<Rules>
@@ -40,7 +40,7 @@
 			<Binding Source="[TypingHandler.DisplayValue]" Target="[DisplayText.Content]"/>
 
       <!--Bring up keyboard if clicked-->
-      <Changed Source="[Clicker.Invoked]" >
+      <!--<Changed Source="[Clicker.Invoked]" >
         <Actions>
           <Invoke
                   Target="[AddInHost.MediaCenterEnvironment.ShowOnscreenKeyboard]"
@@ -48,7 +48,7 @@
                   passwordMasked="[TypingHandler.PasswordMasked]"
                   maxLength="[TypingHandler.MaxLength]"/>
         </Actions>
-      </Changed>
+      </Changed>-->
 
       <!-- Change color if in overtype mode. -->
 			<Condition Source="[EditableText.Overtype]" SourceValue="true">
