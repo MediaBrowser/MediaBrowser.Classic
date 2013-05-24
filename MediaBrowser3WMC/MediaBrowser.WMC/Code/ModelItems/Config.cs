@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Updates;
+using MediaBrowser.Model.Weather;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library;
 using MediaBrowser.Attributes;
@@ -639,7 +640,7 @@ namespace MediaBrowser
         }
         public string YahooWeatherUnit
         {
-            get { return this.ServerData.WeatherUnit.ToString(); }
+            get { return this.ServerData.WeatherUnit == WeatherUnits.Fahrenheit ? "f" : "c"; }
             //set { if (this.ServerData.YahooWeatherUnit != value) { this.ServerData.YahooWeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
         }
         public string SupporterKey
