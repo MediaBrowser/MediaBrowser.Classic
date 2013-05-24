@@ -96,9 +96,9 @@ namespace MediaBrowser.Library.Entities {
         Season seasonItem;
         public Season RetrieveSeason()
         {
-            if (seasonItem == null && !string.IsNullOrEmpty(this.Path))
+            if (seasonItem == null && !string.IsNullOrEmpty(ApiParentId))
             {
-                var seasonId = new Guid(this.ApiParentId);
+                var seasonId = new Guid(ApiParentId);
                 seasonItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seasonId) as Season;
             }
             return seasonItem;

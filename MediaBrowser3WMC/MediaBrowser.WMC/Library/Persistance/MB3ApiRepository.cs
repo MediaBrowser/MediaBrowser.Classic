@@ -367,7 +367,7 @@ namespace MediaBrowser.Library.Persistance
                                                          UserId = Kernel.CurrentUser.Id.ToString(),
                                                          ParentId = id,
                                                          IndexBy = indexBy,
-                                                         Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.DisplayPreferencesId, 
+                                                         Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, 
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
