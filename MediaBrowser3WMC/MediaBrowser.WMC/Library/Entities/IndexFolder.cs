@@ -30,14 +30,10 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        protected override List<BaseItem> GetCachedChildren()
-        {
-            return new List<BaseItem>();
-        }
-
         public override void ValidateChildren()
         {
-            return; //never validate as they don't actually exist in the file system in this way
+            // If our children haven't been retrieved yet - get them
+            if (!this.ActualChildren.Any()) RetrieveChildren();
         }
 
         public void AddChild(BaseItem child)

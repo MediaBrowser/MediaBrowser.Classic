@@ -120,7 +120,7 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void RetrieveChildren()
         {
-            children = new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null));
+            children = ApiId != null ? new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null)) : new Lazy<List<BaseItem>>(() => new List<BaseItem>(), null);
             mediaCount = null;
         }
 
@@ -373,7 +373,7 @@ namespace MediaBrowser.Library.Entities {
                     var currentContainer = containerObj ?? new IndexFolder() {Name = "<Unknown>"};
                     var currentSeries = currentContainer as Series;
                     containerNo++;
-                    var aContainer = new IndexFolder(new List<BaseItem>())
+                    var aContainer = new SearchResultFolder(new List<BaseItem>())
                                          {
                                              Id = ("container" + recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
                                              Name = currentContainer.Name + " (" + container.Count() + " Items)",
@@ -404,7 +404,7 @@ namespace MediaBrowser.Library.Entities {
                         {
                             var currentSeason = ((Episode) season.First()).Season;
                             containerNo++;
-                            var aSeason = new IndexFolder(season.ToList())
+                            var aSeason = new SearchResultFolder(season.ToList())
                                               {
                                                   Id = ("season" + recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
                                                   Name = currentSeason.Name + " (" + season.Count() + " Items)",

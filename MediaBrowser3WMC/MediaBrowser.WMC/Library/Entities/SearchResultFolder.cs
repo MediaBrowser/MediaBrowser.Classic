@@ -28,6 +28,11 @@ namespace MediaBrowser.Library.Entities
             Kernel.Instance.LocalRepo.SaveDisplayPreferences(prefs);
         }
 
+        protected override List<BaseItem> GetCachedChildren()
+        {
+            return new List<BaseItem>();
+        }
+
         public override string DisplayPreferencesId
         {
             get
