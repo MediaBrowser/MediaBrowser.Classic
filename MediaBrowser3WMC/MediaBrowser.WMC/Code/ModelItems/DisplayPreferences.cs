@@ -51,7 +51,7 @@ namespace MediaBrowser.Library
             }
             catch (ArgumentException)
             {
-                Logging.Logger.ReportError("Invalid view type {0} stored for {1}.  Setting to Poster.",folder.DisplayPreferences.ViewType, folder.Name);
+                Logging.Logger.ReportError("Invalid view type stored for {0}.  Setting to Poster.", folder.Name);
                 viewType.Chosen = "Poster";
             }
 

@@ -906,7 +906,9 @@ namespace MediaBrowser.Library {
             }
         }
 
-        protected void IndexByChoice_ChosenChanged(object sender, EventArgs e) {
+        protected void IndexByChoice_ChosenChanged(object sender, EventArgs e)
+        {
+            if (displayPrefs == null) return;
             Async.Queue("Index By", () =>
             {
                 Application.CurrentInstance.ProgressBox(string.Format("Building index on {0}. Please wait...", displayPrefs.IndexBy));
