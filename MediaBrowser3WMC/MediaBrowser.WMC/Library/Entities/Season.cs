@@ -14,6 +14,23 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string SeasonNumber { get; set; }
 
+        //used as a valid blank item so MCML won't blow chow
+        public static Season BlankSeason = new Season()
+        {
+            Name = "No Season",
+            Studios = new List<string>(),
+            Genres = new List<string>(),
+            Directors = new List<string>(),
+            Actors = new List<Actor>(),
+            ImdbRating = 0,
+            Status = "Unknown",
+            RunningTime = 0,
+            TVDBSeriesId = "",
+            ProductionYear = 1950,
+            AspectRatio = "",
+            MpaaRating = ""
+        };
+
         public override string OfficialRating
         {
             get

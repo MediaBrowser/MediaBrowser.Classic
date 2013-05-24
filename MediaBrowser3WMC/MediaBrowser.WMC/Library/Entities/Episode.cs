@@ -21,12 +21,7 @@ namespace MediaBrowser.Library.Entities {
         public string SeriesId { get; set; }
 
         public Season Season {
-            get {
-                if (Parent is Season)
-                    return Parent as Season;
-                else
-                    return this.RetrieveSeason();
-            }
+            get { return Parent as Season ?? RetrieveSeason() ?? Season.BlankSeason; }
         }
 
         public Series Series {
