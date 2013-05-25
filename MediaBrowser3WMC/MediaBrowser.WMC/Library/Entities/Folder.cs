@@ -780,6 +780,8 @@ namespace MediaBrowser.Library.Entities {
             {
                 ChildrenChanged(this, args);
             }
+
+            OnQuickListChanged(args);
         }
 
         public void OnQuickListChanged(EventArgs args) {

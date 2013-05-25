@@ -696,7 +696,7 @@ namespace MediaBrowser.Library
         public void ReLoadFromServer()
         {
             //but never null ourselves out
-            this.baseItem = baseItem.ReLoad() ?? baseItem;
+            this.Assign(baseItem.ReLoad() ?? baseItem);
             // force images to reload
             primaryImage = null;
             bannerImage = null;
