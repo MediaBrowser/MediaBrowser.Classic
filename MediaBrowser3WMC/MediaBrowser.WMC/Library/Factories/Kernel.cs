@@ -514,8 +514,8 @@ namespace MediaBrowser.Library {
             kernel.RootFolder = new AggregateFolder {Name = "My Media", Id = new Guid("{F6109BAE-CA26-4746-9EBC-1CD233A7B56F}")};
 
             //create our default config panels with localized names
-            kernel.AddConfigPanel(kernel.StringData.GetString("GeneralConfig"), "");
-            kernel.AddConfigPanel(kernel.StringData.GetString("MediaOptionsConfig"), "");
+            kernel.AddConfigPanel(kernel.StringData.GetString("SystemOptionsConfig"), "");
+            kernel.AddConfigPanel(kernel.StringData.GetString("ViewOptionsConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
             //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
 
@@ -555,12 +555,13 @@ namespace MediaBrowser.Library {
         }
 
         public FavoritesCollectionFolder FavoritesFolder { get; set; }
+        public MovieGenreCollectionFolder MovieGenreFolder { get; set; }
 
         public void ReLoadRoot()
         {
             //save the items added by plugins before we re-load
-            var virtualItems = new List<BaseItem>();
-            virtualItems.AddRange(kernel.RootFolder.VirtualChildren.Where(i => !(i is FavoritesCollectionFolder)));
+            //var virtualItems = new List<BaseItem>();
+            //virtualItems.AddRange(kernel.RootFolder.VirtualChildren.Where(i => !(i is FavoritesCollectionFolder)));
 
             //and re-load the repo
             MB3ApiRepository = new MB3ApiRepository();
@@ -569,24 +570,35 @@ namespace MediaBrowser.Library {
             kernel.RootFolder = kernel.MB3ApiRepository.RetrieveRoot();
 
             //now add back the plug-in children
-            if (virtualItems.Any() && kernel.RootFolder != null)
-            {
-                foreach (var item in virtualItems)
-                {
-                    Logger.ReportVerbose("Adding back " + item.Name);
-                    kernel.RootFolder.AddVirtualChild(item);
-                }
-            }
+            //if (virtualItems.Any() && kernel.RootFolder != null)
+            //{
+            //    foreach (var item in virtualItems)
+            //    {
+            //        Logger.ReportVerbose("Adding back " + item.Name);
+            //        kernel.RootFolder.AddVirtualChild(item);
+            //    }
+            //}
 
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();
 
-            if (ConfigData.ShowFavoritesCollection && kernel.RootFolder != null)
+            if (kernel.RootFolder != null)
             {
-                //Create Favorites
-                FavoritesFolder = new FavoritesCollectionFolder();
-                FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist" }, "Music") });
-                kernel.RootFolder.AddVirtualChild(FavoritesFolder);
+                if (ConfigData.ShowFavoritesCollection)
+                {
+                    //Create Favorites
+                    FavoritesFolder = new FavoritesCollectionFolder();
+                    FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist" }, "Music") });
+                    kernel.RootFolder.AddVirtualChild(FavoritesFolder);
+                }
+                
+                if (ConfigData.ShowMovieGenreCollection)
+                {
+                    //Create Genre collection
+                    MovieGenreFolder = new MovieGenreCollectionFolder();
+                    kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
+                }
+                
             }
         }
 

@@ -139,11 +139,17 @@ namespace MediaBrowser
         [Comment(@"Show collection of items marked as favorites.")]
         public bool ShowFavoritesCollection = true;
         [Group("Display")]
+        [Comment(@"Show collection of movies by genre.")]
+        public bool ShowMovieGenreCollection = true;
+        [Group("Display")]
         [Comment(@"Show notifications of new items.")]
         public bool ShowNewItemNotification = true;
         [Group("Display")]
         [Comment(@"Name of favorite collection folder.")]
         public string FavoriteFolderName = "Favorites";
+        [Group("Display")]
+        [Comment(@"Name of movie genre collection folder.")]
+        public string MovieGenreFolderName = "Movies by Genre";
         [Group("Display")]
         [Comment(@"The default size posters will be shown in any new view.")]
         public Size DefaultPosterSize = new Size() {Width=220, Height=330};

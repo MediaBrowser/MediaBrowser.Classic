@@ -51,6 +51,7 @@
       <BooleanChoice Name="EnableTranscode360" Value="[Application.Config.EnableTranscode360]" />
       <BooleanChoice Name="ShowThemeBackground" Value="[Application.Config.ShowThemeBackground]" />
       <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
+      <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
       <BooleanChoice Name="ShowNewItemNotification" Value="[Application.Config.ShowNewItemNotification]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
@@ -321,6 +322,7 @@
       <Binding Source="[ShowHDIndicatorOnPosters.Value]" Target="[Config.ShowHDIndicatorOnPosters]" />
       <Binding Source="[ShowRemoteIndicatorOnPosters.Value]" Target="[Config.ShowRemoteIndicatorOnPosters]" />
       <Binding Source="[ShowFavoritesCollection.Value]" Target="[Config.ShowFavoritesCollection]" />
+      <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
       <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
@@ -586,16 +588,16 @@
                   </Panel>
                   <Panel Layout="VerticalFlow" >
                     <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#GlobalConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowClockConfig!cor:String]" Checked="[ShowClock]" Margins="[CMargin]"  FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#HideFocusFrameConfig!cor:String]" Checked="[HideFocusFrame]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
+                      <me:TextHeader Text="[Application.LocalStrings.#GeneralBehaviorConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#EnhancedMouseSupportConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[EnableMouseHook]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowHDOverlayonPostersConfig!cor:String]" Checked="[ShowHDIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowIcononRemoteContentConfig!cor:String]" Checked="[ShowRemoteIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AllowNestedMovieFoldersConfig!cor:String]" Checked="[EnableNestedMovieFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
+                      <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>
@@ -607,25 +609,26 @@
                 <Children>
                   <Panel Layout="VerticalFlow" >
                     <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#MediaTrackingConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowClockConfig!cor:String]" Checked="[ShowClock]" Margins="[CMargin]"  FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <!--<cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>-->
+                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
+                    </Children>
+                  </Panel>
+                  <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
+                    <Children>
+                      <me:TextHeader Text="[Application.LocalStrings.#IndicatorsConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#HideFocusFrameConfig!cor:String]" Checked="[HideFocusFrame]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowUnwatchedCountConfig!cor:String]" Checked="[ShowUnwatchedCount]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronFoldersConfig!cor:String]" Checked="[ShowWatchedTickOnFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#HighlightUnwatchedItemsConfig!cor:String]" Checked="[ShowUnwatchedIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronVideosConfig!cor:String]" Checked="[ShowWatchTickInPosterView]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatorinDetailViewConfig!cor:String]" Checked="[EnableListViewTicks]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#GeneralBehaviorConfig!cor:String]" />
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AllowNestedMovieFoldersConfig!cor:String]" Checked="[EnableNestedMovieFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
-                      <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowHDOverlayonPostersConfig!cor:String]" Checked="[ShowHDIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowIcononRemoteContentConfig!cor:String]" Checked="[ShowRemoteIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#HideEmptyFoldersConfig!cor:String]" Checked="[HideEmptyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>-->
                       <!--<me:TextHeader Text="[Application.LocalStrings.#MultipleFileBehaviorConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#TreatMultipleFilesAsSingleMovieConfig!cor:String]" Checked="[EnableMoviePlaylists]"  FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>

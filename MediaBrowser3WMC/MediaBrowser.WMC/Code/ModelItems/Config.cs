@@ -156,13 +156,31 @@ namespace MediaBrowser
         public bool ShowFavoritesCollection
         {
             get { return this.Data.ShowFavoritesCollection; }
-            set { if (this.Data.ShowFavoritesCollection != value) { this.Data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); Application.CurrentInstance.ReLoad(); } }
+            set { if (this.Data.ShowFavoritesCollection != value) { this.Data.ShowFavoritesCollection = value; Save(); FirePropertyChanged("ShowFavoritesCollection"); } }
+        }
+
+        public string FavoriteFolderName
+        {
+            get { return this.Data.FavoriteFolderName; }
+            set { if (this.Data.FavoriteFolderName != value) { this.Data.FavoriteFolderName = value; Save(); FirePropertyChanged("FavoriteFolderName"); } }
+        }
+
+        public bool ShowMovieGenreCollection
+        {
+            get { return this.Data.ShowMovieGenreCollection; }
+            set { if (this.Data.ShowMovieGenreCollection != value) { this.Data.ShowMovieGenreCollection = value; Save(); FirePropertyChanged("ShowMovieGenreCollection"); } }
+        }
+
+        public string MovieGenreFolderName
+        {
+            get { return this.Data.MovieGenreFolderName; }
+            set { if (this.Data.MovieGenreFolderName != value) { this.Data.MovieGenreFolderName = value; Save(); FirePropertyChanged("MovieGenreFolderName"); } }
         }
 
         public bool ShowNewItemNotification
         {
             get { return this.Data.ShowNewItemNotification; }
-            set { if (this.Data.ShowNewItemNotification != value) { this.Data.ShowNewItemNotification = value; Save(); FirePropertyChanged("ShowNewItemNotification"); Application.CurrentInstance.ReLoad(); } }
+            set { if (this.Data.ShowNewItemNotification != value) { this.Data.ShowNewItemNotification = value; Save(); FirePropertyChanged("ShowNewItemNotification"); } }
         }
 
         [Comment("Dim all unselected posters in poster and thumbstrib views")]
