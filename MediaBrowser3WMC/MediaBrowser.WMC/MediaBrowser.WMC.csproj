@@ -140,6 +140,7 @@
     <Compile Include="Code\CommonConfigData.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
     <Compile Include="Library\Entities\ApiSourcedCollectionFolder.cs" />
+    <Compile Include="Library\Entities\MovieGenreFolder.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\LocalIbnSourcedCacheFolder.cs" />

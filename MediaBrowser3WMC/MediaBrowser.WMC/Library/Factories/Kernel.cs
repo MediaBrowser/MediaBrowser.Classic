@@ -556,6 +556,8 @@ namespace MediaBrowser.Library {
 
         public FavoritesCollectionFolder FavoritesFolder { get; set; }
         public MovieGenreCollectionFolder MovieGenreFolder { get; set; }
+        public Guid FavoriteFolderGuid = new Guid("{3D2C3877-4B05-47F4-A231-6C2CF636883F}");
+        public Guid MovieGenreFolderGuid = new Guid("{B01F6DAC-28BA-4EDE-849C-C6716437B2C0}");
 
         public void ReLoadRoot()
         {
@@ -587,7 +589,7 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowFavoritesCollection)
                 {
                     //Create Favorites
-                    FavoritesFolder = new FavoritesCollectionFolder();
+                    FavoritesFolder = new FavoritesCollectionFolder {Id = FavoriteFolderGuid};
                     FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist" }, "Music") });
                     kernel.RootFolder.AddVirtualChild(FavoritesFolder);
                 }
@@ -595,7 +597,7 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowMovieGenreCollection)
                 {
                     //Create Genre collection
-                    MovieGenreFolder = new MovieGenreCollectionFolder();
+                    MovieGenreFolder = new MovieGenreCollectionFolder {Id = MovieGenreFolderGuid};
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
                 }
                 

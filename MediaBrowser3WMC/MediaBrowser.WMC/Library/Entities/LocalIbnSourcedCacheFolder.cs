@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using MediaBrowser.Library.ImageManagement;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -20,6 +21,7 @@ namespace MediaBrowser.Library.Entities
         protected string GetPrimaryImagePath()
         {
             if (base.PrimaryImagePath != null) return base.PrimaryImagePath;
+            if (this.Name == null) return null;
 
             //Look for it on the server IBN
             var path = Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = ImageType.Primary });

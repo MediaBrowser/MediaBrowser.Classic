@@ -263,6 +263,11 @@ namespace MediaBrowser.Library.Entities {
             get { return new[] {"series", "season", "musicalbum", "artist", "folder", "boxset"}; }
         }
 
+        protected virtual string[] RalIncludeTypes
+        {
+            get { return null; }
+        }
+
         public virtual void ResetQuickList()
         {
             quickListFolder = null; //it will re-load next time requested
@@ -301,6 +306,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Limit = maxItems,
                                                                                        Recursive = true,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
+                                                                                       IncludeItemTypes = RalIncludeTypes,
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        Filters = (new[] {ItemFilter.IsPlayed,}).Concat(AdditionalRalFilters).ToArray(),
                                                                                        SortBy = new[] {ItemSortBy.DatePlayed},
@@ -319,6 +325,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Recursive = true,
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
+                                                                                       IncludeItemTypes = RalIncludeTypes,
                                                                                        Filters = (new[] { ItemFilter.IsUnplayed, }).Concat(AdditionalRalFilters).ToArray(),
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
@@ -335,6 +342,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Recursive = true,
                                                                                        Filters = AdditionalRalFilters,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
+                                                                                       IncludeItemTypes = RalIncludeTypes,
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
