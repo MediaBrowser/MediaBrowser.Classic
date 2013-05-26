@@ -28,7 +28,7 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        protected override string DefaultPrimaryImagePath
+        public override string DefaultPrimaryImagePath
         {
             get
             {

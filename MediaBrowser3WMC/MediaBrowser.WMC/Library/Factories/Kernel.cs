@@ -555,7 +555,7 @@ namespace MediaBrowser.Library {
         }
 
         public FavoritesCollectionFolder FavoritesFolder { get; set; }
-        public MovieGenreCollectionFolder MovieGenreFolder { get; set; }
+        public ApiGenreCollectionFolder MovieGenreFolder { get; set; }
         public Guid FavoriteFolderGuid = new Guid("{3D2C3877-4B05-47F4-A231-6C2CF636883F}");
         public Guid MovieGenreFolderGuid = new Guid("{B01F6DAC-28BA-4EDE-849C-C6716437B2C0}");
 
@@ -597,7 +597,7 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowMovieGenreCollection)
                 {
                     //Create Genre collection
-                    MovieGenreFolder = new MovieGenreCollectionFolder {Id = MovieGenreFolderGuid};
+                    MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, IncludeItemTypes = new[] {"Movie", "BoxSet"}};
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
                 }
                 

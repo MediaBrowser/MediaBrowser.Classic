@@ -24,10 +24,7 @@ namespace MediaBrowser.Library.Entities
             return Kernel.Instance.ItemRepository.RetrieveItem(Id);
         }
 
-        protected virtual string DefaultPrimaryImagePath 
-        {
-            get { return null; }
-        }
+        public virtual string DefaultPrimaryImagePath { get; set; }
 
         protected override List<BaseItem> GetCachedChildren()
         {

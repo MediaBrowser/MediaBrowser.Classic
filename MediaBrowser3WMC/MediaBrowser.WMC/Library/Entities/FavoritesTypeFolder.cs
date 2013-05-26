@@ -36,7 +36,7 @@ namespace MediaBrowser.Library.Entities
             OnChildrenChanged(null);
         }
 
-        protected override string DefaultPrimaryImagePath
+        public override string DefaultPrimaryImagePath
         {
             get
             {

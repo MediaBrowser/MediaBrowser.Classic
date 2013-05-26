@@ -7,24 +7,16 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class MovieGenreFolder : ApiSourcedCollectionFolder
+    public class ApiGenreFolder : ApiSourcedFolder
     {
-        public string Genre { get; set; }
+        public ApiGenreFolder() : base()
+        {}
 
-        public MovieGenreFolder() : base()
+        public ApiGenreFolder(BaseItem item, string[] includeTypes = null, string[] excludeTypes = null) : base(item, includeTypes, excludeTypes)
         {
         }
 
-        public MovieGenreFolder(BaseItem genre)
-        {
-            Genre = genre.Name;
-            Id = genre.Id;
-            PrimaryImagePath = genre.PrimaryImagePath;
-            BackdropImagePaths = genre.BackdropImagePaths;
-
-        }
-
-        protected override ItemQuery Query
+        public override ItemQuery Query
         {
             get
             {
@@ -32,10 +24,11 @@ namespace MediaBrowser.Library.Entities
                            {
                                UserId = Kernel.CurrentUser.ApiId,
                                ParentId = Kernel.Instance.RootFolder.ApiId,
-                               IncludeItemTypes = new[] {"Movie", "BoxSet"},
+                               IncludeItemTypes = IncludeItemTypes,
+                               ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
                                Fields = MB3ApiRepository.StandardFields,
-                               Genres = new[] {Genre}
+                               Genres = new[] {Name}
                            };
             }
         }
@@ -44,7 +37,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return new[] {"Movie", "BoxSet"};
+                return IncludeItemTypes;
             }
         }
 

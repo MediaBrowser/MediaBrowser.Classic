@@ -263,10 +263,7 @@ namespace MediaBrowser.Library.Entities {
             get { return new[] {"series", "season", "musicalbum", "artist", "folder", "boxset"}; }
         }
 
-        protected virtual string[] RalIncludeTypes
-        {
-            get { return null; }
-        }
+        protected virtual string[] RalIncludeTypes { get; set; }
 
         public virtual void ResetQuickList()
         {
