@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Threading;
 
 namespace MediaBrowser.Library
 {
@@ -26,7 +27,22 @@ namespace MediaBrowser.Library
 
         private void toggleFavorite(Item item)
         {
+            // Mark this one and return quickly
+            var newValue = !item.IsFavorite;
             item.ToggleFavorite();
+
+            // But kick off a search to be sure we get all instances marked
+            Async.Queue("fav toggle", () =>
+                                          {
+                                              foreach (var instance in Kernel.Instance.FindItems(item.Id).Where(instance => instance != item.BaseItem))
+                                              {
+                                                  Logging.Logger.ReportVerbose("marking instance with parent {0}",instance.Parent.Name);
+                                                  instance.IsFavorite = newValue;
+                                              }
+
+                                              Application.CurrentInstance.ClearFavorites();
+                                          });
+
         }
 
         private string watchedText(Item item)

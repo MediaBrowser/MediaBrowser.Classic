@@ -107,7 +107,6 @@ namespace MediaBrowser.Library
                 if (baseItem.IsFavorite != value)
                 {
                     baseItem.IsFavorite = value;
-                    Application.CurrentInstance.ClearFavorites();
                     FirePropertyChanged("IsFavorite");
                 }
             }

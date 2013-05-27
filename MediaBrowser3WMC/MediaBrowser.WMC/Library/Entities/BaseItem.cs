@@ -11,6 +11,7 @@ using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Sorting;
 using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
 
 namespace MediaBrowser.Library.Entities {
@@ -344,14 +345,15 @@ namespace MediaBrowser.Library.Entities {
                     if (UserData.IsFavorite != value)
                     {
                         UserData.IsFavorite = value;
-                        Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value);
+                        Async.Queue("update fav", () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
                     }
                 }
                 else
                 {
                     UserData = new UserItemDataDto {IsFavorite = value};
-                    Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value);
+                    Async.Queue("update fav", () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
                 }
+
             }
         }
 
