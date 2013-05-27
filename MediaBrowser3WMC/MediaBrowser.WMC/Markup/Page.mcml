@@ -87,10 +87,7 @@
       <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
       <Changed Source="[CloseMessage.Invoked]">
         <Actions>
-          <Set Target="[MessageBox.Visible]" Value="false" />
-          <Set Target="[MouseBlocker.Visible]" Value="false" />
           <Set Target="[Application.ShowMessage]" Value="false" />
-          <Invoke Target="[ViewDefault.NavigateInto]" />
         </Actions>
       </Changed>
 
@@ -117,6 +114,7 @@
         <Actions>
           <Set Target="[MessageBox.Visible]" Value="false" />
           <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Invoke Target="[ViewDefault.NavigateInto]" />
         </Actions>
       </Changed>
     </Rules>
