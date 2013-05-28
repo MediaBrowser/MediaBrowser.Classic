@@ -605,8 +605,8 @@ namespace MediaBrowser.Library {
                 
                 if (ConfigData.ShowMusicGenreCollection)
                 {
-                    //Create Genre collection
-                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
+                    //Create Music Genre collection
+                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
                     kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
                 }
                 

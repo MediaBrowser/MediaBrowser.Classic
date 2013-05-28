@@ -43,7 +43,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return IncludeItemTypes;
+                return base.RalIncludeTypes ?? IncludeItemTypes;
             }
             set { base.RalIncludeTypes = value; }
         }
