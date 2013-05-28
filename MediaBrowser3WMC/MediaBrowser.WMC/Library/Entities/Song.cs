@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Model.Entities;
+﻿using System;
+using MediaBrowser.Model.Entities;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -31,7 +32,7 @@ namespace MediaBrowser.Library.Entities
         /// <value>The album artist.</value>
         public string AlbumArtist { get; set; }
 
-        public IContainer MainContainer { get { return (Parent as MusicAlbum) ?? UnknownAlbum; } }
+        public IContainer MainContainer { get { return (Parent as MusicAlbum) ?? RetrieveAlbum() ?? UnknownAlbum; } }
         public List<Actor> Actors { get; set; }
         public List<string> Directors { get; set; }
         public List<string> Genres { get; set; }
@@ -41,6 +42,11 @@ namespace MediaBrowser.Library.Entities
         public List<string> Studios { get; set; }
         public string AspectRatio { get; set; }
         public int? ProductionYear { get; set; }
+
+        protected MusicAlbum RetrieveAlbum()
+        {
+            return !string.IsNullOrEmpty(ApiParentId) ? Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(ApiParentId)) as MusicAlbum : null;
+        }
 
         public override IEnumerable<string> Files
         {
