@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -30,7 +31,7 @@ namespace MediaBrowser.Library.Entities
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
                                Fields = MB3ApiRepository.StandardFields,
-                               Genres = new[] {Name}
+                               Genres = new[] {HttpUtility.UrlEncode(Name)}
                            };
             }
         }
