@@ -30,6 +30,7 @@ using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
+using MediaBrowser.Model.Session;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
@@ -366,6 +367,58 @@ namespace MediaBrowser
 
         #region Websocket
         public static ApiWebSocket WebSocket { get; private set; }
+
+        private void BrowseRequest(object sender, BrowseRequestEventArgs args)
+        {
+            switch (args.Request.ItemType)
+            {
+                case "Genre":
+                    Logger.ReportInfo("Navigating to genre {0} by request from remote client", args.Request.ItemName);
+                    NavigateToGenre(args.Request.ItemName, CurrentItem);
+                    break;
+                case "Artist":
+                case "Person":
+                    var actor = Kernel.Instance.MB3ApiRepository.RetrievePerson(args.Request.ItemName);
+                    if (actor != null)
+                    {
+                        Logger.ReportInfo("Navigating to person {0} by request from remote client", args.Request.ItemName);
+                        NavigateToActor(ItemFactory.Instance.Create(actor));
+                    }
+                    else
+                    {
+                        Logger.ReportWarning("Unable to browse to person {0}", args.Request.ItemName);
+                    }
+                    break;
+                case "Studio":
+                    break;
+                default:
+                    var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(args.Request.ItemId));
+                    if (item != null)
+                    {
+                        Logger.ReportInfo("Navigating to {0} by request from remote client", item.Name);
+                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(item)));
+                    }
+                    else
+                    {
+                        Logger.ReportWarning("Unable to browse to item {0}", args.Request.ItemId);
+                    }
+                    break;
+            }
+        }
+
+        private void PlayRequest(object sender, PlayRequestEventArgs args)
+        {
+            var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(args.Request.ItemIds.FirstOrDefault() ?? ""));
+                    if (item != null)
+                    {
+                        Logger.ReportInfo("Playing {0} by request from remote client", item.Name);
+                        Play(ItemFactory.Instance.Create(item),false, args.Request.PlayCommand != PlayCommand.PlayNow, false, false, args.Request.StartPositionTicks ?? 0);
+                    }
+                    else
+                    {
+                        Logger.ReportWarning("Unable to play item {0}", args.Request.ItemIds.FirstOrDefault());
+                    }
+        }
 
         private void LibraryChanged(object sender, LibraryChangedEventArgs args)
         {
@@ -1082,21 +1135,14 @@ namespace MediaBrowser
 
                 // setup image to use in external splash screen
                 string splashFilename = Path.Combine(Path.Combine(ApplicationPaths.AppIBNPath, "General"), "splash.png");
-                if (File.Exists(splashFilename))
-                {
-                    ExtSplashBmp = new System.Drawing.Bitmap(splashFilename);
-                }
-                else
-                {
-                    ExtSplashBmp = new System.Drawing.Bitmap(Resources.mblogo1000);
-                }
+                ExtSplashBmp = File.Exists(splashFilename) ? new System.Drawing.Bitmap(splashFilename) : new System.Drawing.Bitmap(Resources.mblogo1000);
 
                 Login();
             }
             catch (Exception e)
             {
-                Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("CriticalErrorDial") + e.ToString() + " " + e.StackTrace.ToString(), CurrentInstance.StringData("CriticalErrorCapDial"), DialogButtons.Ok, 60, true);
-                Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("CriticalErrorDial") + e + " " + e.StackTrace, CurrentInstance.StringData("CriticalErrorCapDial"), DialogButtons.Ok, 60, true);
+                AddInHost.Current.ApplicationContext.CloseApplication();
             }
         }
 
@@ -1279,6 +1325,8 @@ namespace MediaBrowser
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
                     WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
                     WebSocket.LibraryChanged += LibraryChanged;
+                    WebSocket.BrowseCommand += BrowseRequest;
+                    WebSocket.PlayCommand += PlayRequest;
                   
 
                     // We check config here instead of in the Updater class because the Config class 
@@ -1665,40 +1713,51 @@ namespace MediaBrowser
 
         void NavigateToActor(Item item)
         {
-            var person = (Person)item.BaseItem;
-            Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
+            Async.Queue("Person navigation", () =>
+                                                 {
+                                                    ProgressBox(string.Format("Finding items with {0} in them...", item.Name));
+                                                    var person = (Person)item.BaseItem;
+                                                    Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
 
-            var query = new ItemQuery
-                            {
-                                UserId = Kernel.CurrentUser.Id.ToString(),
-                                Fields = MB3ApiRepository.StandardFields,
-                                ParentId = searchStart.ApiId,
-                                Person = person.Name,
-                                PersonTypes = new[] {"Actor"},
-                                Recursive = true
-                            };
-            var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};
+                                                    var query = new ItemQuery
+                                                                    {
+                                                                        UserId = Kernel.CurrentUser.Id.ToString(),
+                                                                        Fields = MB3ApiRepository.StandardFields,
+                                                                        ParentId = searchStart.ApiId,
+                                                                        Person = person.Name,
+                                                                        PersonTypes = new[] {"Actor"},
+                                                                        Recursive = true
+                                                                    };
+                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};
+                                                    ShowMessage = false;
 
-            Navigate(ItemFactory.Instance.Create(index));
+                                                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(index)));
+                                                     
+                                                 });
         }
 
 
         public void NavigateToGenre(string genre, Item currentMovie)
         {
-            var searchStart = GetStartingFolder(currentMovie.BaseItem.Parent);
+            Async.Queue("Genre navigation", () =>
+                                                {
+                                                    ProgressBox(string.Format("Finding items in the {0} genre...", genre));
+                                                    var searchStart = GetStartingFolder(currentMovie.BaseItem.Parent);
 
-            var query = new ItemQuery
-            {
-                UserId = Kernel.CurrentUser.Id.ToString(),
-                Fields = MB3ApiRepository.StandardFields,
-                ParentId = searchStart.ApiId,
-                Genres = new[] {genre},
-                ExcludeItemTypes = Config.ExcludeRemoteContentInSearch ? new[] { "Episode", "Season", "Trailer" } : new[] { "Episode", "Season" },
-                Recursive = true
-            };
-            var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) { Name = genre };
+                                                    var query = new ItemQuery
+                                                                    {
+                                                                        UserId = Kernel.CurrentUser.Id.ToString(),
+                                                                        Fields = MB3ApiRepository.StandardFields,
+                                                                        ParentId = searchStart.ApiId,
+                                                                        Genres = new[] {genre},
+                                                                        ExcludeItemTypes = Config.ExcludeRemoteContentInSearch ? new[] {"Episode", "Season", "Trailer"} : new[] {"Episode", "Season"},
+                                                                        Recursive = true
+                                                                    };
+                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = genre};
+                                                    ShowMessage = false;
 
-            Navigate(ItemFactory.Instance.Create(index));
+                                                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(ItemFactory.Instance.Create(index)));
+                                                });
         }
 
 
@@ -1903,7 +1962,7 @@ namespace MediaBrowser
         /// 
         /// </summary>
         /// <param name="playIntros">Whether not not intros should be played. Unless you have a specific reason to set this, leave it null so the core can decide.</param>
-        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle)
+        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos = 0)
         {
             //if playback is disabled display a message
             if (!PlaybackEnabled)
@@ -1926,6 +1985,7 @@ namespace MediaBrowser
             }
 
             playable.Resume = resume;
+            if (startPos > 0) playable.StartPositionTicks = startPos;
             playable.QueueItem = queue;
             playable.Shuffle = shuffle;
 
