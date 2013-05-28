@@ -177,6 +177,24 @@ namespace MediaBrowser
             set { if (this.Data.MovieGenreFolderName != value) { this.Data.MovieGenreFolderName = value; Save(); FirePropertyChanged("MovieGenreFolderName"); } }
         }
 
+        public bool ShowMusicGenreCollection
+        {
+            get { return this.Data.ShowMusicGenreCollection; }
+            set { if (this.Data.ShowMusicGenreCollection != value) { this.Data.ShowMusicGenreCollection = value; Save(); FirePropertyChanged("ShowMusicGenreCollection"); } }
+        }
+
+        public string MusicGenreFolderName
+        {
+            get { return this.Data.MusicGenreFolderName; }
+            set { if (this.Data.MusicGenreFolderName != value) { this.Data.MusicGenreFolderName = value; Save(); FirePropertyChanged("MusicGenreFolderName"); } }
+        }
+
+        public bool GroupAlbumsByArtist
+        {
+            get { return this.Data.GroupAlbumsByArtist; }
+            set { if (this.Data.GroupAlbumsByArtist != value) { this.Data.GroupAlbumsByArtist = value; Save(); FirePropertyChanged("GroupAlbumsByArtist"); } }
+        }
+
         public bool ShowNewItemNotification
         {
             get { return this.Data.ShowNewItemNotification; }

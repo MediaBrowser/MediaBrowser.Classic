@@ -41,7 +41,7 @@ namespace MediaBrowser.Library.Entities
             get { return Kernel.Instance.RootFolder.ApiId; }
         }
 
-        protected override ItemFilter[] AdditionalRalFilters
+        public override ItemFilter[] AdditionalRalFilters
         {
             get
             {
@@ -49,7 +49,7 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        protected override string[] RalExcludeTypes
+        public override string[] RalExcludeTypes
         {
             get
             {

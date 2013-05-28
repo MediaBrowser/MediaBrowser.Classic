@@ -556,8 +556,10 @@ namespace MediaBrowser.Library {
 
         public FavoritesCollectionFolder FavoritesFolder { get; set; }
         public ApiGenreCollectionFolder MovieGenreFolder { get; set; }
-        public Guid FavoriteFolderGuid = new Guid("{3D2C3877-4B05-47F4-A231-6C2CF636883F}");
-        public Guid MovieGenreFolderGuid = new Guid("{B01F6DAC-28BA-4EDE-849C-C6716437B2C0}");
+        public ApiGenreCollectionFolder MusicGenreFolder { get; set; }
+        public Guid FavoriteFolderGuid = new Guid("3D2C3877-4B05-47F4-A231-6C2CF636883F");
+        public Guid MovieGenreFolderGuid = new Guid("B01F6DAC-28BA-4EDE-849C-C6716437B2C0");
+        public Guid MusicGenreFolderGuid = new Guid("3EBE8C41-289F-40C6-A82C-5621428F9D0F");
 
         public void ReLoadRoot()
         {
@@ -599,6 +601,13 @@ namespace MediaBrowser.Library {
                     //Create Genre collection
                     MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, IncludeItemTypes = new[] {"Movie", "BoxSet"}};
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
+                }
+                
+                if (ConfigData.ShowMusicGenreCollection)
+                {
+                    //Create Genre collection
+                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
+                    kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
                 }
                 
             }
