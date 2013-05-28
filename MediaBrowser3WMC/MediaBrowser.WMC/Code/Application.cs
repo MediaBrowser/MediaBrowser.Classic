@@ -420,6 +420,31 @@ namespace MediaBrowser
                     }
         }
 
+        private void PlayStateRequest(object sender, PlaystateRequestEventArgs args)
+        {
+            if (currentPlaybackController == null)
+            {
+                Logger.ReportWarning("No playback in progress.  Cannot respond to playstate command {0}", args.Request.Command);
+                return;
+            }
+
+            switch (args.Request.Command)
+            {
+                case PlaystateCommand.Pause:
+                case PlaystateCommand.Unpause:
+                    currentPlaybackController.Pause();
+                    break;
+
+                case PlaystateCommand.Stop:
+                    currentPlaybackController.Stop();
+                    break;
+
+                case PlaystateCommand.Seek:
+                    currentPlaybackController.Seek(args.Request.SeekPosition);
+                    break;
+            }
+        }
+
         private void LibraryChanged(object sender, LibraryChangedEventArgs args)
         {
             Logger.ReportVerbose("Library Changed...");
@@ -1309,24 +1334,13 @@ namespace MediaBrowser
                 try
                 {
                     this.RootFolderModel = (FolderModel)ItemFactory.Instance.Create(EntryPointResolver.EntryPoint(this.EntryPointPath));
-                    //if (!IsInEntryPoint)
-                    //{
-                    //    Async.Queue("Top Level Refresher", () =>
-                    //    {
-                    //        foreach (var item in RootFolderModel.Children)
-                    //        {
-                    //            if (item.BaseItem.RefreshMetadata(MetadataRefreshOptions.FastOnly))
-                    //                item.ClearImages(); // refresh all the top-level folders to pick up any changes
-                    //        }
-                    //        RootFolderModel.Children.Sort(); //make sure sort is right
-                    //    }, 2000);
-                    //}
 
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
                     WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
                     WebSocket.LibraryChanged += LibraryChanged;
                     WebSocket.BrowseCommand += BrowseRequest;
                     WebSocket.PlayCommand += PlayRequest;
+                    WebSocket.PlaystateCommand += PlayStateRequest;
                   
 
                     // We check config here instead of in the Updater class because the Config class 
