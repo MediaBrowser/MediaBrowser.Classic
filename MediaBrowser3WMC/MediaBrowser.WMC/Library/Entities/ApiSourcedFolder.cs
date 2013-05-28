@@ -6,7 +6,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiSourcedFolder : LocalIbnSourcedCacheFolder
+    public class ApiSourcedFolder : LocalCacheFolder
     {
         private List<BaseItem> _children;
         public virtual ItemQuery Query { get { return new ItemQuery(); } }
@@ -26,7 +26,7 @@ namespace MediaBrowser.Library.Entities
         {
             Name = item.Name;
             Id = item.Id;
-            PrimaryImagePath = item.PrimaryImagePath;
+            PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
             DisplayMediaType = item.DisplayMediaType;
             IncludeItemTypes = includeTypes;
@@ -39,12 +39,13 @@ namespace MediaBrowser.Library.Entities
             get { return Kernel.Instance.RootFolder.ApiId; }
         }
 
-        protected override string[] RalIncludeTypes
+        public override string[] RalIncludeTypes
         {
             get
             {
                 return IncludeItemTypes;
             }
+            set { base.RalIncludeTypes = value; }
         }
 
         protected override List<BaseItem> ActualChildren

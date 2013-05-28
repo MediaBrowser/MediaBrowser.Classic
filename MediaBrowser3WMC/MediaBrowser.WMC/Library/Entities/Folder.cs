@@ -253,17 +253,17 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        protected virtual ItemFilter[] AdditionalRalFilters
+        public virtual ItemFilter[] AdditionalRalFilters
         {
             get { return new ItemFilter[] {};}
         }
 
-        protected virtual string[] RalExcludeTypes
+        public virtual string[] RalExcludeTypes
         {
             get { return new[] {"series", "season", "musicalbum", "artist", "folder", "boxset"}; }
         }
 
-        protected virtual string[] RalIncludeTypes { get; set; }
+        public virtual string[] RalIncludeTypes { get; set; }
 
         public virtual void ResetQuickList()
         {

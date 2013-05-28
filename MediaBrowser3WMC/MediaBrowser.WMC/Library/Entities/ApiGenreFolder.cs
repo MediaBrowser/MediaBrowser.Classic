@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
@@ -33,12 +35,13 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        protected override string[] RalIncludeTypes
+        public override string[] RalIncludeTypes
         {
             get
             {
                 return IncludeItemTypes;
             }
+            set { base.RalIncludeTypes = value; }
         }
 
 

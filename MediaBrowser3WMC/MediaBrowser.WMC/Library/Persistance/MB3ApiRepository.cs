@@ -167,7 +167,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     foreach (var tag in mb3Item.ImageTags)
                     {
-                        var url = Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions {ImageType = tag.Key, Tag = tag.Value});
+                        var url = item is Genre ? Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
+                                                Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions {ImageType = tag.Key, Tag = tag.Value});
                         switch (tag.Key)
                         {
                             case ImageType.Primary:
