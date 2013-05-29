@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using MediaBrowser.Library.ImageManagement;
 using MediaBrowser.Library.Threading;
@@ -11,39 +12,32 @@ namespace MediaBrowser.Library.Entities
     {
         public override string PrimaryImagePath
         {
-            get { return base.PrimaryImagePath ?? (base.PrimaryImagePath = GetPrimaryImagePath()); }
+            get { return base.PrimaryImagePath ?? (base.PrimaryImagePath = GetImagePath(ImageType.Primary)); }
             set
             {
                 base.PrimaryImagePath = value;
             }
         }
 
-        protected virtual string GetPrimaryImagePath()
+        public override List<string> BackdropImagePaths
+        {
+            get
+            {
+                return base.BackdropImagePaths ?? (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
+            }
+            set
+            {
+                base.BackdropImagePaths = value;
+            }
+        }
+
+        protected virtual string GetImagePath(ImageType imageType)
         {
             if (this.Name == null) return null;
 
             //Look for it on the server IBN
-            return Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = ImageType.Primary });
+            return Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = imageType });
 
-            //Have to actually try to download it to know if it is there
-            //Async.Queue("remote image download", () =>
-            //                                         {
-            //                                             var temp = new RemoteImage {Path = path};
-            //                                             try
-            //                                             {
-            //                                                 temp.DownloadImage();
-            //                                                 base.PrimaryImagePath = path;
-            //                                             }
-            //                                             catch (WebException)
-            //                                             {
-            //                                                 // Not there - use our default
-            //                                                 base.PrimaryImagePath = DefaultPrimaryImagePath;
-            //                                             }
-
-            //                                             OnMetadataChanged(null);
-            //                                         });
-
-            //return base.PrimaryImagePath;
         }
 
     }
