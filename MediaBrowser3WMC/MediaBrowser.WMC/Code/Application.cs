@@ -590,7 +590,7 @@ namespace MediaBrowser
 
         public Item CurrentUser { get; set; }
 
-        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = u.Id, Dto = u, ParentalAllowed = !u.HasPassword})).ToList(); } } 
+        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""), Dto = u, ParentalAllowed = !u.HasPassword})).ToList(); } } 
 
         public List<string> ConfigPanelNames
         {
@@ -1240,7 +1240,7 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    Kernel.ApiClient.AuthenticateUser(user.Id, pw);
+                    Kernel.ApiClient.AuthenticateUser(user.ApiId, pw);
                 }
             }
             catch (Model.Net.HttpException e)

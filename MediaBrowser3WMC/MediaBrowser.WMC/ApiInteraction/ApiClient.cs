@@ -7,7 +7,7 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Querying;
-using MediaBrowser.Model.MBSystem;
+using MediaBrowser.Model.System;
 using MediaBrowser.Model.Tasks;
 using MediaBrowser.Model.Updates;
 using MediaBrowser.Model.Weather;
@@ -263,7 +263,7 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="System.ArgumentNullException">userId</exception>
         public ItemsResult GetAllPeople(ItemsByNameQuery query)
         {
-            if (query.UserId == Guid.Empty)
+            if (string.IsNullOrEmpty(query.UserId))
             {
                 throw new ArgumentNullException("userId");
             }
@@ -283,8 +283,6 @@ namespace MediaBrowser.ApiInteraction
             {
                 dict.Add("fields", query.Fields.Select(f => f.ToString()));
             }
-
-            dict.AddIfNotNull("personTypes", query.PersonTypes);
 
             var url = string.IsNullOrEmpty(query.ParentId) ? "Users/" + query.UserId + "/Items/Root/Persons" : "Users/" + query.UserId + "/Items/" + query.ParentId + "/Persons";
             url = GetApiUrl(url, dict);
@@ -942,9 +940,9 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="sha1Hash">The sha1 hash.</param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public void AuthenticateUser(Guid userId, byte[] sha1Hash)
+        public void AuthenticateUser(string userId, byte[] sha1Hash)
         {
-            if (userId == Guid.Empty)
+            if (string.IsNullOrEmpty(userId))
             {
                 throw new ArgumentNullException("userId");
             }

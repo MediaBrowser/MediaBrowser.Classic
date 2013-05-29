@@ -1,22 +1,13 @@
 using System.Collections.Generic;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter;
-using System.Diagnostics;
-using System.IO;
 using System;
 using System.Threading;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using MediaBrowser.LibraryManagement;
-using System.Xml;
-using System.Reflection;
-using Microsoft.MediaCenter.UI;
-using System.Text;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Configuration;
-using MediaBrowser.Library.Factories;
 using MediaBrowser.Library;
-using MediaBrowser.Library.Util;
 
 namespace MediaBrowser
 {
@@ -27,6 +18,9 @@ namespace MediaBrowser
 
         public void Initialize(Dictionary<string, object> appInfo, Dictionary<string, object> entryPointInfo)
         {
+            // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
+            AppDomain.CurrentDomain.AssemblyResolve += Kernel.OnAssemblyResolve;
+
         }
 
         public void Uninitialize()

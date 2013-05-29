@@ -18,7 +18,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="password">The password.</param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public static void AuthenticateUser(this ApiClient apiClient, Guid userId, string password)
+        public static void AuthenticateUser(this ApiClient apiClient, string userId, string password)
         {
             using (var provider = SHA1.Create())
             {

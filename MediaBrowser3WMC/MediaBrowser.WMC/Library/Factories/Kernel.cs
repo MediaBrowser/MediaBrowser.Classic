@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Data;
 using MediaBrowser.ApiInteraction;
-using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
@@ -19,7 +17,6 @@ using MediaBrowser.Library.Input;
 using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
@@ -27,7 +24,7 @@ using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.MBSystem;
+using MediaBrowser.Model.System;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter.UI;
 
@@ -459,9 +456,6 @@ namespace MediaBrowser.Library {
 
         static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
 
-            // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
-
             //Find MB 3 server
             var connected = false;
             if (config.FindServerAutomatically)
@@ -668,10 +662,10 @@ namespace MediaBrowser.Library {
         }
 
         private static System.Reflection.Assembly _jsonAssembly;
-        private static System.Reflection.Assembly _protoAssembly;
+        private static System.Reflection.Assembly _modelAssembly;
         private static System.Reflection.Assembly _websocketAssembly;
 
-        static System.Reflection.Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
+        public static System.Reflection.Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
             Logger.ReportVerbose("=========System looking for assembly: " + args.Name);
             if (args.Name.StartsWith("MediaBrowser,"))
             {
@@ -679,16 +673,16 @@ namespace MediaBrowser.Library {
                 return typeof(Kernel).Assembly;
             }
             else
+            if (args.Name.StartsWith("MediaBrowser.Model.net35,"))
+            {
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll"));
+                return _modelAssembly ?? (_modelAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "MediaBrowser.Model.net35.dll")));
+            }
+            else
             if (args.Name.StartsWith("Newtonsoft.Json,"))
             {
                 Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll"));
                 return _jsonAssembly ?? (_jsonAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll")));
-            }
-            else
-            if (args.Name.StartsWith("protobuf-net,"))
-            {
-                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "protobuf-net.dll"));
-                return _protoAssembly ?? (_protoAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "protobuf-net.dll")));
             }
             else
             if (args.Name.StartsWith("websocket4net,", StringComparison.OrdinalIgnoreCase))

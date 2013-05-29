@@ -230,12 +230,12 @@
         <Condition>VersionNT64</Condition>
       </Component>
       
-      <!-- Install json.net and protobuf -->
+      <!-- Install json.net, websocket and the model -->
       <Component Id="JsonNet" Guid="67A3FC10-E6F2-4547-9BE8-E8E732FACED3" DiskId="1">
         <File Id="Json.Net" Name="Newtonsoft.Json.dll" Source="..\3rdParty\Newtonsoft.Json.dll" Checksum="no" />
       </Component>
-      <Component Id="Protobuf" Guid="C6E52F3D-03E0-4E01-991E-1AF6219F2C7B" DiskId="1">
-        <File Id="Protobuf" Name="protobuf-net.dll" Source="..\3rdParty\protobuf-net.dll" Checksum="no" />
+      <Component Id="MediaBrowser.Model" Guid="C6E52F3D-03E0-4E01-991E-1AF6219F2C7B" DiskId="1">
+        <File Id="MediaBrowser.Model" Name="MediaBrowser.Model.net35.dll" Source="..\3rdParty\MediaBrowser.Model.net35.dll" Checksum="no" />
       </Component>
       <Component Id="Websocket" Guid="56295741-0952-49EE-9396-1B5C19363F4E" DiskId="1">
         <File Id="Websocket" Name="websocket4net.dll" Source="..\3rdParty\websocket4net.dll" Checksum="no" />
@@ -263,7 +263,7 @@
       <ComponentRef Id="SQLite32" />
       <ComponentRef Id="SQLite64" />
       <ComponentRef Id="JsonNet" />
-      <ComponentRef Id="Protobuf" />
+      <ComponentRef Id="MediaBrowser.Model" />
       <ComponentRef Id="Websocket" />
       <ComponentRef Id="DefaultShortcuts" />
       <ComponentRef Id="OptionalStartmenuFolderShortcut" />

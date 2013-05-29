@@ -24,12 +24,6 @@ namespace MediaBrowser.ApiInteraction
         protected ILogger Logger { get; private set; }
 
         /// <summary>
-        /// Gets the protobuf serializer.
-        /// </summary>
-        /// <value>The protobuf serializer.</value>
-        public IProtobufSerializer ProtobufSerializer { get; set; }
-
-        /// <summary>
         /// Gets the json serializer.
         /// </summary>
         /// <value>The json serializer.</value>
@@ -437,9 +431,9 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="options">The options.</param>
         /// <returns>System.String.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public string GetUserImageUrl(Guid userId, ImageOptions options)
+        public string GetUserImageUrl(string userId, ImageOptions options)
         {
-            if (userId == Guid.Empty)
+            if (string.IsNullOrEmpty(userId))
             {
                 throw new ArgumentNullException("userId");
             }
@@ -963,10 +957,6 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="System.NotImplementedException"></exception>
         protected object DeserializeFromStream(Stream stream, Type type, SerializationFormats format)
         {
-            if (format == SerializationFormats.Protobuf)
-            {
-                return ProtobufSerializer.DeserializeFromStream(stream, type);
-            }
             if (format == SerializationFormats.Json)
             {
                 return JsonSerializer.DeserializeFromStream(stream, type);

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -22,13 +21,10 @@ using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables.ExternalPlayer;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
-using Microsoft.MediaCenter;
-using Microsoft.MediaCenter.Hosting;
 
 namespace Configurator
 {
@@ -52,7 +48,10 @@ namespace Configurator
         public MainWindow()
         { 
             try 
-            {        
+            {
+                // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
+                AppDomain.CurrentDomain.AssemblyResolve += Kernel.OnAssemblyResolve;
+
                 Initialize();
             } 
             catch (Exception ex) 
@@ -73,7 +72,7 @@ namespace Configurator
             else
             {
                 var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
-                Kernel.CurrentUser = new User { Name = user.Name, Id = user.Id, Dto = user, ParentalAllowed = user.HasPassword };
+                Kernel.CurrentUser = new User { Name = user.Name, Id = new Guid(user.Id ?? ""), Dto = user, ParentalAllowed = user.HasPassword };
             }
             //Kernel.Instance.LoadUserConfig();
             Kernel.Instance.LoadPlugins();
