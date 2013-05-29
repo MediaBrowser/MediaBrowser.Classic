@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.IO;
 using System.Xml;
+using MediaBrowser.Library;
 using MediaBrowser.Library.Logging;
 using MediaBrowser;
 using MediaBrowser.Library.Configuration;
@@ -23,6 +24,9 @@ namespace MBMigrate
 
         public MainWindow()
         {
+            // set up assembly resolution hooks, so earlier versions of the plugins resolve properly 
+            AppDomain.CurrentDomain.AssemblyResolve += Kernel.OnAssemblyResolve;
+
             InitializeComponent();
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
             Async.Queue("Migration", () =>
