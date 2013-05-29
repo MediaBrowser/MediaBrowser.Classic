@@ -44,10 +44,17 @@ namespace MediaBrowser.Library
         {
             //We get our ratings from the server
             ratings = new Dictionary<string, int>();
-
-            foreach (var rating in Kernel.ApiClient.GetParentalRatings())
+            try
             {
-                ratings.Add(rating.Name, rating.Value);
+                foreach (var rating in Kernel.ApiClient.GetParentalRatings())
+                {
+                    ratings.Add(rating.Name, rating.Value);
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.ReportException("Error retrieving ratings from server",e);
+                return;
             }
 
             try
