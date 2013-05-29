@@ -34,6 +34,14 @@ namespace MediaBrowser.Library.Entities
             
         }
 
+        public override string ApiId
+        {
+            get
+            {
+                return Id.ToString();
+            }
+        }
+
         protected override string RalParentId
         {
             get { return Kernel.Instance.RootFolder.ApiId; }
@@ -48,14 +56,14 @@ namespace MediaBrowser.Library.Entities
             set { base.RalIncludeTypes = value; }
         }
 
-        protected override List<BaseItem> ActualChildren
+        protected override List<BaseItem> GetCachedChildren()
         {
-            get { return _children ?? (_children = Kernel.Instance.MB3ApiRepository.RetrieveItems(Query).ToList()); }
+            return Kernel.Instance.MB3ApiRepository.RetrieveItems(Query).ToList();
         }
 
         public override BaseItem ReLoad()
         {
-            _children = null;
+            RetrieveChildren();
             return this;
         }
 

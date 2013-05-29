@@ -26,9 +26,9 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        protected override List<BaseItem> ActualChildren
+        protected override List<BaseItem> GetCachedChildren()
         {
-            get { return Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList(); }
+            return Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList(); 
         }
 
     }
