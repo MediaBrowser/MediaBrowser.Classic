@@ -14,22 +14,15 @@ namespace MediaBrowser.Library
     {
         private static Dictionary<string, int> ratings;
         private static Dictionary<int, string> ratingsStrings = new Dictionary<int, string>();
-        private static ConfigData config;
+        private static ConfigData _config;
         private static ConfigData Config
         {
-            get
-            {
-                if (config == null)
-                {
-                    config = Kernel.Instance.ConfigData;
-                }
-                return config;
-            }
+            get { return _config ?? (_config = Kernel.Instance.ConfigData); }
         }
 
         public Ratings(bool blockUnrated)
         {
-            this.Initialize(blockUnrated);
+            if (ratings == null) Initialize(blockUnrated);
         }
 
         public Ratings()
@@ -43,7 +36,7 @@ namespace MediaBrowser.Library
         /// <param name="cfg"></param>
         public Ratings(ConfigData cfg)
         {
-            config = cfg;
+            _config = cfg;
             this.Initialize(false);
         }
 
@@ -59,14 +52,7 @@ namespace MediaBrowser.Library
 
             try
             {
-                if (blockUnrated)
-                {
-                    ratings.Add("", 1000);
-                }
-                else
-                {
-                    ratings.Add("", 0);
-                }
+                ratings.Add("", blockUnrated ? 1000 : 0);
             }
             catch (Exception e)
             {
