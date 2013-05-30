@@ -1359,33 +1359,36 @@ namespace MediaBrowser
                     WebSocket.PlayCommand += PlayRequest;
                     WebSocket.PlaystateCommand += PlayStateRequest;
                   
-
-                    // We check config here instead of in the Updater class because the Config class 
-                    // CANNOT be instantiated outside of the application thread.
-                    Updater = new Updater(this);
-                    if (Config.EnableUpdates && !RunningOnExtender)
+                    if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins
                     {
-                        Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
-                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                        // We check config here instead of in the Updater class because the Config class 
+                        // CANNOT be instantiated outside of the application thread.
+                        Updater = new Updater(this);
+                        if (Config.EnableUpdates && !RunningOnExtender)
                         {
-                            PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
-                        }, 30000);
-                    }
-
-                    // Let the user know if the server needs to be restarted
-                    // Put it on the same thread as the update checks so it will be behind them
-                    Async.Queue(Async.STARTUP_QUEUE, () =>
-                                                         {
-                                                             if (Kernel.ServerInfo.HasPendingRestart)
-                                                             {
-                                                                 if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                            Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
+                            Async.Queue(Async.STARTUP_QUEUE, () =>
                                                                  {
-                                                                     Kernel.ApiClient.PerformPendingRestart();
-                                                                     MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
-                                                                     Close();
+                                                                     PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
+                                                                 }, 30000);
+                        }
+
+                        // Let the user know if the server needs to be restarted
+                        // Put it on the same thread as the update checks so it will be behind them
+                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                                                             {
+                                                                 if (Kernel.ServerInfo.HasPendingRestart)
+                                                                 {
+                                                                     if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                                                                     {
+                                                                         Kernel.ApiClient.PerformPendingRestart();
+                                                                         MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
+                                                                         Close();
+                                                                     }
                                                                  }
-                                                             }
-                                                         },35000);
+                                                             },35000);
+                        
+                    }
 
                     Navigate(this.RootFolderModel);
                 }
