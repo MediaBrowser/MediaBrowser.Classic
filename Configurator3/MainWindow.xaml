@@ -90,7 +90,14 @@
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Updates" HorizontalAlignment="Left" Margin="355,35,0,0" Name="groupBox2" Width="347" Height="222" VerticalAlignment="Top">
-                            <Grid/>
+                            <Grid>
+                                <CheckBox x:Name="cbxCheckForUpdates" Content="Check for Updates at Log-in (admin profiles only)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.364,-0.376" Checked="cbxCheckForUpdates_Checked" Unchecked="cbxCheckForUpdates_Checked"/>
+                                <ComboBox x:Name="ddlSystemUpdateLevel" HorizontalAlignment="Left" Margin="38,62.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlSystemUpdateLevel_SelectionChanged"/>
+                                <ComboBox x:Name="ddlPluginUpdateLevel" HorizontalAlignment="Left" Margin="190,62.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlPluginUpdateLevel_SelectionChanged"/>
+                                <Label Content="System Level" HorizontalAlignment="Left" Margin="25,33.62,0,0" VerticalAlignment="Top" Width="105.653"/>
+                                <Label Content="Plug-in Level" HorizontalAlignment="Left" Margin="175,33.62,0,0" VerticalAlignment="Top" Width="105.653"/>
+                                <Button x:Name="btnCheckForUpdate" Content="Check for System Update Now..." HorizontalAlignment="Left" Margin="56.653,143.76,0,0" VerticalAlignment="Top" Width="224" Height="31.62" Click="btnCheckForUpdate_Click"/>
+                            </Grid>
                         </GroupBox>
                         <CheckBox Height="22" Margin="306,0,0,12" Name="cbxAutoValidate" VerticalAlignment="Bottom" Click="cbxAutoValidate_Click" ToolTip="WARNING! Turning this option off may mean you will have to manually refresh for changes to appear." Visibility="Hidden" HorizontalAlignment="Left" Width="224">Validate Items Automatically</CheckBox>
                         <Label Content="User" HorizontalAlignment="Left" Margin="36,255.38,0,0" VerticalAlignment="Top"/>

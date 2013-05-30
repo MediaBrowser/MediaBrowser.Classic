@@ -25,6 +25,7 @@ using MediaBrowser.Library.Playables.ExternalPlayer;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Updates;
 
 namespace Configurator
 {
@@ -277,6 +278,11 @@ namespace Configurator
             //library validation
             cbxAutoValidate.IsChecked = commonConfig.AutoValidate;
 
+            //updates
+            cbxCheckForUpdates.IsChecked = commonConfig.EnableUpdates;
+            ddlSystemUpdateLevel.SelectedItem = commonConfig.SystemUpdateClass.ToString();
+            ddlPluginUpdateLevel.SelectedItem = commonConfig.PluginUpdateClass.ToString();
+
         }
 
         private void SaveConfig()
@@ -301,7 +307,7 @@ namespace Configurator
         private List<string> folderSettings;
         private void LoadComboBoxes()
         {
-
+            ddlSystemUpdateLevel.ItemsSource = ddlPluginUpdateLevel.ItemsSource = Enum.GetNames(typeof(PackageVersionClass));
             ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
             RefreshUsers();
 
@@ -982,6 +988,76 @@ namespace Configurator
 
             SaveConfig();
             PopUpMsg.DisplayMessage("Connection information validated and saved.");
+        }
+
+        private void ddlSystemUpdateLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddlSystemUpdateLevel.SelectedItem != null)
+            {
+                commonConfig.SystemUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlSystemUpdateLevel.SelectedItem.ToString());
+                SaveConfig();
+            }
+        }
+
+        private void ddlPluginUpdateLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddlPluginUpdateLevel.SelectedItem != null)
+            {
+                commonConfig.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlPluginUpdateLevel.SelectedItem.ToString());
+                SaveConfig();
+            }
+
+        }
+
+        private void btnCheckForUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+            try
+            {
+                var systemInfo = Kernel.ApiClient.GetSystemInfo();
+                var serverVersion = new System.Version(systemInfo.Version ?? "3.0");
+
+
+                var mbClassic = Kernel.ApiClient.GetPackageInfo("MBClassic");
+                if (mbClassic != null)
+                {
+                    var newVersion = mbClassic.versions.FirstOrDefault(v => v.classification <= Kernel.Instance.CommonConfigData.SystemUpdateClass
+                                                                            && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
+                    if (newVersion != null)
+                    {
+                        if (MessageBox.Show("Update to Version {0} found.  Update now?", "Update Found", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            MessageBox.Show("Configurator will close to execute update.");
+                            // execute update and close us
+                            var info = new ProcessStartInfo
+                                           {
+                                               FileName = ApplicationPaths.UpdaterExecutableFile,
+                                               Arguments = "product=mbc class=" + commonConfig.SystemUpdateClass + " admin=true",
+                                               Verb = "runas"
+                                           };
+
+                            Process.Start(info);
+                            Close();
+                        }
+                    }
+                    else
+                    {
+                        PopUpMsg.DisplayMessage("MB Classic is up to date.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error checking for update: " + ex.Message);
+            }
+
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void cbxCheckForUpdates_Checked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.EnableUpdates = cbxCheckForUpdates.IsChecked == true;
+            SaveConfig();
         }
     }
 
