@@ -48,7 +48,7 @@ namespace MediaBrowser.Code.ModelItems {
 
         #region IModelItemOwner Members
 
-        protected void FireAllPropertiesChanged() {
+        public void FireAllPropertiesChanged() {
             RunInUIThread(() =>
             {
                 foreach (var property in this.GetType().GetProperties()) {

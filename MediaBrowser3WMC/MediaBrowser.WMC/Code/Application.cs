@@ -387,6 +387,7 @@ namespace MediaBrowser
                     else
                     {
                         Logger.ReportWarning("Unable to browse to person {0}", args.Request.ItemName);
+                        Information.AddInformationString("Cannot Browse to "+args.Request.ItemName);
                     }
                     break;
                 case "Studio":
@@ -396,11 +397,21 @@ namespace MediaBrowser
                     if (item != null)
                     {
                         Logger.ReportInfo("Navigating to {0} by request from remote client", item.Name);
-                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(item)));
+                        var model = ItemFactory.Instance.Create(item);
+                        if (!TVHelper.CreateEpisodeParents(model))
+                        {
+                            //try to load real parent or attach a default
+                            //var parent = !string.IsNullOrEmpty(item.ApiParentId) ? Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(item.ApiParentId)) as Folder : null;
+                            item.Parent = new IndexFolder(new List<BaseItem> {item});
+                            model.PhysicalParent = ItemFactory.Instance.Create(item.Parent) as FolderModel;
+                        }
+                        CurrentFolder = model.PhysicalParent;
+                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(model));
                     }
                     else
                     {
                         Logger.ReportWarning("Unable to browse to item {0}", args.Request.ItemId);
+                        Information.AddInformationString("Cannot Browse to "+args.Request.ItemName);
                     }
                     break;
             }
@@ -417,6 +428,7 @@ namespace MediaBrowser
                     else
                     {
                         Logger.ReportWarning("Unable to play item {0}", args.Request.ItemIds.FirstOrDefault());
+                        Information.AddInformationString("Unable to play requested item");
                     }
         }
 

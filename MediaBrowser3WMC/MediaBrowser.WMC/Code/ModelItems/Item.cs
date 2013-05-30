@@ -507,7 +507,7 @@ namespace MediaBrowser.Library
             get
             {
                 EnsurePlayStateChangesBoundToUI();
-                return playstate;
+                return playstate ?? new PlaybackStatus();
             }
         }
 

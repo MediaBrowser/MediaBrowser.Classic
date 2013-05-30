@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using MediaBrowser.Library.Query;
+using MediaBrowser.Library.Util;
 using Microsoft.MediaCenter.UI;
 using System.Diagnostics;
 using System.Linq;
@@ -348,28 +349,6 @@ namespace MediaBrowser.Library {
                     if (quickListItems == null)
                         Async.Queue("Newest Item Loader", () =>
                         {
-                            ////the first time kick off a validation of our whole tree so we pick up anything new
-                            //if (!validated && Config.Instance.AutoValidate)
-                            //{
-                            //    Async.Queue(this.Name + " Initial Validation", () =>
-                            //    {
-                            //        validated = true;
-                            //        var changed = false;
-                            //        var lastDate = folder.QuickList.DateCreated.ToLocalTime();
-                            //        using (new MediaBrowser.Util.Profiler(this.Name + " Initial validate"))
-                            //        {
-                            //            changed = folder.DateCreated > lastDate || folder.DateModified > lastDate;
-                            //            changed = folder.RecursiveChildren.Aggregate(changed, (current, subItem) => current | (subItem.DateCreated > lastDate || subItem.DateModified > lastDate));
-                            //        }
-                            //        if (changed)
-                            //        {
-                            //            Logger.ReportVerbose(this.Name + " has had changes.");
-                            //            this.mediaCount = this.runtime = null;
-                            //            QuickListItems = null; //this will force it to re-load
-                            //        }
-
-                            //    }, null, true);
-                            //}
                             lock (quickListLock)
                             {
                                 //Logger.ReportVerbose(this.Name + " Quicklist has " + folder.QuickList.Children.Count + " items");
@@ -389,12 +368,6 @@ namespace MediaBrowser.Library {
                                         item.PhysicalParent = this; //otherwise, just point to us
                                     }
                                 }
-                                //if (recentItemOption == "unwatched" && folder.QuickList.RecursiveMedia.Count() != folder.QuickList.UnwatchedCount)
-                                //{
-                                //    //something is watched in our unwatched list - force a rebuild
-                                //    Logger.ReportVerbose(this.Name + " unwatched items changed.");
-                                //    QuickListItems = null;
-                                //}
 
                                 FireQuicklistPropertiesChanged();
                             }
@@ -425,45 +398,9 @@ namespace MediaBrowser.Library {
 
         protected void CreateEpisodeParents(Item item)
         {
-            var episode = item.BaseItem as Episode;
-            if (episode == null) return;
-            //this item loaded out of context (no season/series parent) we need to derive and create them
-            var mySeason = episode.RetrieveSeason();
-            if (mySeason != null)
+            if (!TVHelper.CreateEpisodeParents(item))
             {
-                //found season - attach it
-                episode.Parent = mySeason;
-                //and create a model item for it
-                item.PhysicalParent = ItemFactory.Instance.Create(mySeason) as FolderModel;
-            }
-            //gonna need a series too
-            var mySeries = episode.RetrieveSeries();
-            if (mySeries != null)
-            {
-                if (mySeason != null)
-                    mySeason.Parent = mySeries;
-                else
-                    episode.Parent = mySeries;
-
-                if (item.PhysicalParent == null)
-                    item.PhysicalParent = ItemFactory.Instance.Create(mySeries) as FolderModel;
-                else
-                    item.PhysicalParent.PhysicalParent = ItemFactory.Instance.Create(mySeries) as FolderModel;
-
-                //now force the blasted images to load so they will inherit
-                var ignoreList = mySeries.BackdropImages;
-                ignoreList = mySeason != null ? mySeason.BackdropImages : null;
-                ignoreList = episode.BackdropImages;
-                var ignore = mySeries.ArtImage;
-                ignore = mySeries.LogoImage;
-                ignore = mySeason != null ? mySeason.ArtImage : null;
-                ignore = mySeason != null ? mySeason.LogoImage : null;
-                ignore = episode.ArtImage;
-                ignore = episode.LogoImage;
-            }
-            else
-            {
-                //something went wrong deriving all this - attach to us
+                //something went wrong - attach to us
                 item.PhysicalParent = this;
             }
 

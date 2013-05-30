@@ -308,6 +308,7 @@
     <Compile Include="Library\Util\Lazy.cs" />
     <Compile Include="Library\Util\MutexWrapper.cs" />
     <Compile Include="Library\Util\Taskbar.cs" />
+    <Compile Include="Library\Util\TVHelper.cs" />
     <Compile Include="Library\VideoFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
