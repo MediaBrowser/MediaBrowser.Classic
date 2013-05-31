@@ -290,7 +290,7 @@ namespace MediaBrowser.Library.Entities {
             //rebuild the proper list
             List<BaseItem> items = null;
             int containerNo = 0;
-            int maxItems = this.ActualChildren.Count > 0 ? (this.ActualChildren[0] is IContainer || this.GetType().Name == "MusicMainFolder") && Kernel.Instance.ConfigData.RecentItemCollapseThresh <= 6 ? Kernel.Instance.ConfigData.RecentItemContainerCount : Kernel.Instance.ConfigData.RecentItemCount : Kernel.Instance.ConfigData.RecentItemCount;
+            int maxItems = this.ActualChildren.Count > 0 ? (this.ActualChildren[0] is IContainer || this.ActualChildren[0] is MusicArtist) && Kernel.Instance.ConfigData.RecentItemCollapseThresh <= 6 ? Kernel.Instance.ConfigData.RecentItemContainerCount : Kernel.Instance.ConfigData.RecentItemCount : Kernel.Instance.ConfigData.RecentItemCount;
             using (new Profiler(string.Format("RAL child retrieval for {0} option {1}", Name, recentItemOption)))
             {
                 switch (recentItemOption)
