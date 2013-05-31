@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
 using System.IO;
-using System.Globalization;
-using MediaBrowser.Library.Extensions;
-using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 
@@ -16,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0065";
+        const string VERSION = "1.0066";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -285,7 +277,7 @@ namespace MediaBrowser.Library.Localization
         public string NotDelTypeDial = "The selected media item cannot be deleted due to its Item-Type or you have not enabled this feature in the configuration file.";
         public string FirstTimeDial = "As this is the first time you have run Media Browser please setup the inital configuration";
         public string FirstTimeCapDial = "Configure";
-        public string EntryPointErrorDial = "Media Browser could not launch directly into ";
+        public string EntryPointErrorDial = "Media Browser could not launch.  Please be sure the server is running, awake and available on the network. ";
         public string EntryPointErrorCapDial = "Entrypoint Error";
         public string CriticalErrorDial = "Media Browser encountered a critical error and had to shut down: ";
         public string CriticalErrorCapDial = "Critical Error";
