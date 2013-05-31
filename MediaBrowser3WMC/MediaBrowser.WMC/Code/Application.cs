@@ -1992,11 +1992,16 @@ namespace MediaBrowser
             }
         }
 
+        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle)
+        {
+            Play(item,resume,queue,playIntros,shuffle,0);
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="playIntros">Whether not not intros should be played. Unless you have a specific reason to set this, leave it null so the core can decide.</param>
-        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos = 0)
+        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos)
         {
             //if playback is disabled display a message
             if (!PlaybackEnabled)
