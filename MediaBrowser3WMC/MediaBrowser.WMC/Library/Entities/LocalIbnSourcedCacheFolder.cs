@@ -31,6 +31,13 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override BaseItem ReLoad()
+        {
+            var ret = base.ReLoad();
+            ReCacheAllImages(); // we have no way to see changes
+            return ret;
+        }
+
         protected virtual string GetImagePath(ImageType imageType)
         {
             if (this.Name == null) return null;

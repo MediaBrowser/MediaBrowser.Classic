@@ -680,16 +680,19 @@ namespace MediaBrowser.Library
             if (displayMessage)
                 Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshProf") + " " + this.Name);
             Async.Queue("UI Triggered Metadata Loader", () =>
-            {
-                // Tell server to refresh us
-                Kernel.ApiClient.RefreshItem(baseItem.ApiId);
+                                                            {
+                                                                if (!string.IsNullOrEmpty(baseItem.ApiId))
+                                                                {
+                                                                    // Tell server to refresh us
+                                                                    Kernel.ApiClient.RefreshItem(baseItem.ApiId);
 
-                // wait a few beats for that to happen...
-                Thread.Sleep(1000);
+                                                                    // wait a few beats for that to happen...
+                                                                    Thread.Sleep(1000);
+                                                                }
 
-                // and then re-load ourselves from the server
-                ReLoadFromServer();
-            });
+                                                                // and then re-load ourselves from the server
+                                                                ReLoadFromServer();
+                                                            });
         }
 
         public void ReLoadFromServer()
