@@ -40,7 +40,7 @@ namespace MediaBrowser.Library.Playables
 
             PlayState = PlayableItemPlayState.Playing;
 
-            UpdatePlayStates(controller, args);
+            UpdateCurrentMediaPlayState(controller, args);
 
             if (_Progress != null)
             {
@@ -73,33 +73,25 @@ namespace MediaBrowser.Library.Playables
             }
         }
 
-        internal void OnPlaybackFinished(BasePlaybackController controller, PlaybackStateEventArgs args)
+        protected void OnItemFinished(Media media, long pos)
         {
-            if (args.Item == this)
-            {
-                // If there's still a valid position, fire progress one last time
-                if (args.Position > 0)
-                {
-                    OnProgress(controller, args);
-                }
-
                 try
                 {
-                    Logger.ReportVerbose("Reporting stopped to server");
-                    var newStatus = Kernel.ApiClient.ReportPlaybackStopped(args.Item.CurrentMedia.ApiId, Kernel.CurrentUser.Id, args.Position);
+                    Logger.ReportVerbose("Reporting stopped to server for {0}",media.Name);
+                    var newStatus = Kernel.ApiClient.ReportPlaybackStopped(media.ApiId, Kernel.CurrentUser.Id, pos);
 
                     // Update our status with what was returned from server if valid
                     if (newStatus != null)
                     {
                         // we have to search the loaded library for all occurrences of this item and set the status there
-                        foreach (var item in Kernel.Instance.FindItems(args.Item.CurrentMedia.Id).OfType<Media>())
+                        foreach (var item in Kernel.Instance.FindItems(media.Id).OfType<Media>())
                         {
                             Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent.Name));
                             item.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                             item.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
                         }
-                        CurrentMedia.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
-                        CurrentMedia.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
+                        media.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
+                        media.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
                     }
                     else
                     {
@@ -111,17 +103,35 @@ namespace MediaBrowser.Library.Playables
                     Logger.ReportException("Error attempting to update status on server", ex);
                 }
 
-                PlaybackStoppedByUser = args.StoppedByUser;
-
-                if (Config.Instance.RecentItemOption == "watched" || Config.Instance.RecentItemOption == "unwatched")
-                {
-                    // go ahead and force these lists to re-build
-                    var top = this.CurrentMedia.TopParent;
-                    if (top != null) top.OnQuickListChanged(null);
-                }
-
-                //MarkWatchedIfNeeded();
+            if (Config.Instance.RecentItemOption == "watched" || Config.Instance.RecentItemOption == "unwatched")
+            {
+                // go ahead and force these lists to re-build
+                var top = media.TopParent;
+                if (top != null) top.OnQuickListChanged(null);
             }
+
+            //MarkWatchedIfNeeded();
+        }
+
+        internal void OnPlaybackFinished(BasePlaybackController controller, PlaybackStateEventArgs args)
+        {
+            if (args.Item == this)
+            {
+                // If there's still a valid position, fire progress one last time
+                if (args.Position > 0)
+                {
+                    OnProgress(controller, args);
+                }
+                //update any previously played items to fully watched
+                for (var i = 0; i < args.Item.CurrentMediaIndex; i++)
+                    OnItemFinished(args.Item.MediaItems.ElementAt(i), long.MaxValue);
+
+                //and then the current one with current state
+                OnItemFinished(CurrentMedia, args.Position);
+            }
+
+            PlaybackStoppedByUser = args.StoppedByUser;
+
 
             PlayState = PlayableItemPlayState.Stopped;
 
@@ -719,6 +729,15 @@ namespace MediaBrowser.Library.Playables
             {
                 // Otherwise if playback is based on a list of files
                 Files = Files.OrderBy(i => rnd.Next()).ToList();
+            }
+        }
+
+        private void UpdateCurrentMediaPlayState(BasePlaybackController controller, PlaybackStateEventArgs args)
+        {
+            if (CurrentMedia != null)
+            {
+                CurrentMedia.PlaybackStatus.PositionTicks = args.Position;
+                Application.CurrentInstance.UpdatePlayState(CurrentMedia, CurrentMedia.PlaybackStatus, controller.GetPlayableFiles(CurrentMedia).ToList().IndexOf(CurrentFile), args.Position, args.DurationFromPlayer, PlaybackStartTime, EnablePlayStateSaving);
             }
         }
 

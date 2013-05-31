@@ -88,7 +88,7 @@ namespace MediaBrowser.Code.ModelItems
                 PlayableItem playable = args.Item;
 
                 // Update PlayableItem progress event
-                // Only report progress to the PlayableItem if the position is 0, because the player may start with an initial position of 0, or reset to 0 when stopping
+                // Only report progress to the PlayableItem if the position is > 0, because the player may start with an initial position of 0, or reset to 0 when stopping
                 // This could end up blowing away resume data
                 if (playable != null && args.Position > 0)
                 {
