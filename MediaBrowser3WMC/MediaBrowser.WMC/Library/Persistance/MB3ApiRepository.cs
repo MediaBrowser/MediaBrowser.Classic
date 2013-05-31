@@ -37,6 +37,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"MusicAlbum", typeof(MusicAlbum)},
                                                                      {"MusicArtist", typeof(MusicArtist)},
                                                                      {"Audio", typeof(Song)},
+                                                                     {"MusicVideo", typeof(MusicVideo)},
                                                                      {"AggregateFolder", typeof (AggregateFolder)},
                                                                      {"CollectionFolder", typeof (Folder)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
