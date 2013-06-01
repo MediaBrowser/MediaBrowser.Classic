@@ -374,7 +374,7 @@ namespace MediaBrowser
                 {
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
-                    Kernel.ApiClient.ReportPlaybackStart(Playable.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id);
+                    if (Playable.HasMediaItems) Kernel.ApiClient.ReportPlaybackStart(Playable.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id);
                 }
                 else
                 {

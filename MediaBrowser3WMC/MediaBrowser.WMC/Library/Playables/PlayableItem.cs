@@ -115,7 +115,7 @@ namespace MediaBrowser.Library.Playables
 
         internal void OnPlaybackFinished(BasePlaybackController controller, PlaybackStateEventArgs args)
         {
-            if (args.Item == this)
+            if (args.Item == this && HasMediaItems)
             {
                 // If there's still a valid position, fire progress one last time
                 if (args.Position > 0)
@@ -603,7 +603,7 @@ namespace MediaBrowser.Library.Playables
                 return;
             }
 
-            Logger.ReportInfo(string.Format("{0} about to play {1}({2}) ", PlaybackController.ControllerName, DisplayName, CurrentMedia.Files.FirstOrDefault()));
+            Logger.ReportInfo(string.Format("{0} about to play {1}({2}) ", PlaybackController.ControllerName, DisplayName, Files.FirstOrDefault()));
 
             // If the controller already has active playable items, stop it and wait for it to flush out
             if (!QueueItem)

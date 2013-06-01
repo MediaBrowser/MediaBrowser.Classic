@@ -2079,9 +2079,9 @@ namespace MediaBrowser
         /// </summary>
         public void RunPostPlayProcesses(PlayableItem playableItem)
         {
-            if (playableItem.EnablePlayStateSaving)
+            if (playableItem.EnablePlayStateSaving && playableItem.HasMediaItems)
             {
-                Async.Queue("AddNewlyWatched", () => AddNewlyWatched(playableItem));
+                //Async.Queue("AddNewlyWatched", () => AddNewlyWatched(playableItem));
                 Async.Queue("Playbackstopped", () => Kernel.ApiClient.ReportPlaybackStopped(playableItem.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id, playableItem.CurrentMedia.PlaybackStatus.PositionTicks));
             }
 
