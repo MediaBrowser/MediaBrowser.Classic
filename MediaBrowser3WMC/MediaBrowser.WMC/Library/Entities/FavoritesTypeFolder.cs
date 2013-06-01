@@ -23,7 +23,7 @@ namespace MediaBrowser.Library.Entities
 
         public override string Name
         {
-            get { return "Favorite " + DisplayType; }
+            get { return Localization.LocalizedStrings.Instance.GetString("Favorite") + " " + DisplayType; }
             set
             {
                 base.Name = value;
