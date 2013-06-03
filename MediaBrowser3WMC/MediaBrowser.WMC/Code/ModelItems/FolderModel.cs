@@ -654,7 +654,8 @@ namespace MediaBrowser.Library {
 
             ResetRunTime();
             ResetMediaCount();
-            FirePropertiesChanged("Children", "SelectedChildIndex");
+            RefreshFolderOverviewCache();
+            FirePropertiesChanged("Children", "SelectedChildIndex", "Overview");
             
             lock (watchLock)
                 unwatchedCountCache = -1;

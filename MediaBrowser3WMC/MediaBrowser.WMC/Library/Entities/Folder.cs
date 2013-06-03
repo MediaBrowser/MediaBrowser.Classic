@@ -32,6 +32,7 @@ namespace MediaBrowser.Library.Entities {
 
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
         public virtual string DisplayPreferencesId { get; set; }
+        public int? ApiRecursiveItemCount { get; set; }
 
         public Folder()
             : base() {
@@ -154,9 +155,9 @@ namespace MediaBrowser.Library.Entities {
                 lock (ActualChildren)
                 {
                     IList<BaseItem> visibleChildren = ActualChildren;
-                    //return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).Children.Any()).ToList() : visibleChildren.ToList();
+                    return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).MediaCount > 0).ToList() : visibleChildren.ToList();
                     //removed for now because hid things that shouldn't be -ebr
-                    return visibleChildren.ToList();
+                    //return visibleChildren.ToList();
                 }
             }
         }
@@ -505,17 +506,13 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        [Persist]
         protected int? mediaCount;
-        public int MediaCount
+        public virtual int MediaCount
         {
             get
             {
-                if (mediaCount == null)
-                {
-                    mediaCount = this.RecursiveMedia.Distinct(i => i.Id).Count();
-                }
-                return mediaCount == null ? 0 : mediaCount.Value;
+                if (ApiRecursiveItemCount == null) Logger.ReportVerbose("************** Api count is null for {0}",Name);
+                return ApiRecursiveItemCount ?? mediaCount ?? (mediaCount = this.RecursiveMedia.Distinct(i => i.Id).Count()).Value;
             }
         }
 

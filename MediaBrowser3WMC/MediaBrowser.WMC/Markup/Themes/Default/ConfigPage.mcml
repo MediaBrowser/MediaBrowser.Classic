@@ -602,6 +602,7 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#HideEmptyFoldersConfig!cor:String]" Checked="[HideEmptyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>
@@ -635,7 +636,6 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatorinDetailViewConfig!cor:String]" Checked="[EnableListViewTicks]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowHDOverlayonPostersConfig!cor:String]" Checked="[ShowHDIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowIcononRemoteContentConfig!cor:String]" Checked="[ShowRemoteIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#HideEmptyFoldersConfig!cor:String]" Checked="[HideEmptyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>-->
                       <!--<me:TextHeader Text="[Application.LocalStrings.#MultipleFileBehaviorConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#TreatMultipleFilesAsSingleMovieConfig!cor:String]" Checked="[EnableMoviePlaylists]"  FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner  Label="[Application.LocalStrings.#MultipleFileSizeLimitConfig!cor:String]" Model="[PlaylistLimit]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />-->

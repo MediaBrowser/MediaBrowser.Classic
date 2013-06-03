@@ -33,7 +33,6 @@ namespace MediaBrowser.Library.Entities
             DisplayMediaType = item.DisplayMediaType;
             IncludeItemTypes = includeTypes;
             ExcludeItemTypes = excludeTypes;
-            
         }
 
         public override string ApiId

@@ -214,6 +214,9 @@ namespace MediaBrowser.Library.Persistance
                     folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
                     folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
                         new Dictionary<string, string> {{LocalizedStrings.Instance.GetString("NoneDispPref"), ""}};
+
+                    // recursive media count
+                    folder.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 }
 
                 var video = item as Video;
@@ -370,7 +373,7 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id,
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, 
+                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, 
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
                                                      });
 
@@ -381,7 +384,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
-                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, 
+                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, ItemFields.ItemCounts, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)

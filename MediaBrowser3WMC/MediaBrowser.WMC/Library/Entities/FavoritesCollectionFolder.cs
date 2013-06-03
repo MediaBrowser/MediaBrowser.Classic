@@ -59,6 +59,8 @@ namespace MediaBrowser.Library.Entities
 
         public void Clear()
         {
+            //this.ActualChildren.Clear();
+            //AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist", "MusicVideo" }, "Music") });
             foreach (var child in Children.OfType<FavoritesTypeFolder>())
             {
                 child.Clear();

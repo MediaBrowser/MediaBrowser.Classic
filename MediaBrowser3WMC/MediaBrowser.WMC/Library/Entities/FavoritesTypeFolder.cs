@@ -8,7 +8,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class FavoritesTypeFolder : LocalIbnSourcedCacheFolder
+    public class FavoritesTypeFolder : ApiSourcedFolder
     {
         protected List<BaseItem> OurChildren;
         protected string[] OurTypes = new string[] {};
@@ -32,7 +32,7 @@ namespace MediaBrowser.Library.Entities
 
         public void Clear()
         {
-            OurChildren = null;
+            RetrieveChildren();
             OnChildrenChanged(null);
         }
 
@@ -61,19 +61,23 @@ namespace MediaBrowser.Library.Entities
             return new FavoritesTypeFolder(OurTypes, DisplayType);
         }
 
-        protected override List<BaseItem> ActualChildren
+        protected override List<BaseItem> GetCachedChildren()
         {
-            get
-            {
-                return OurChildren ?? (OurChildren = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+            var ret = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
                                                                                                         {
                                                                                                             UserId = Kernel.CurrentUser.Id.ToString(),
                                                                                                             IncludeItemTypes = OurTypes,
                                                                                                             Recursive = true,
                                                                                                             Fields = MB3ApiRepository.StandardFields,
                                                                                                             Filters = new[] {ItemFilter.IsFavorite,}
-                                                                                                        }).ToList());
-            }
+                                                                                                        }).ToList();
+            ApiRecursiveItemCount = ret.Count;
+            return ret;
         }
+
+        //protected override List<BaseItem> ActualChildren
+        //{
+        //    get { return OurChildren ?? (OurChildren = GetChildren()); }
+        //}
     }
 }

@@ -20,7 +20,7 @@ namespace MediaBrowser.Library.Entities
                                ParentId = Kernel.Instance.RootFolder.ApiId,
                                IncludeItemTypes = IncludeItemTypes,
                                Recursive = true,
-                               Fields = new[] {ItemFields.SortName, },
+                               Fields = new[] {ItemFields.SortName, ItemFields.ItemCounts, },
                                SortBy = new[] {"SortName"}
                            };
             }
@@ -28,7 +28,9 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList(); 
+            var ret = Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList();
+            ApiRecursiveItemCount = ret.Count;
+            return ret;
         }
 
     }
