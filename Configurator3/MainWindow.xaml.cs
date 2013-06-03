@@ -55,9 +55,13 @@ namespace Configurator
 
                 Initialize();
             } 
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                MessageBox.Show("Failed to start up, please post this on http://community.mediabrowser.tv \n\n" + ex, "Error",MessageBoxButton.OK);
+                Async.Queue("error", () =>
+                                         {
+                                             MessageBox.Show("Failed to start up, please post this on http://community.mediabrowser.tv \n\n" + ex, "Error", MessageBoxButton.OK);
+                                             Close();
+                                         });
                 Logger.ReportException("Error Starting up",ex);
             }
 
@@ -68,7 +72,8 @@ namespace Configurator
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
             if (!Kernel.ServerConnected)
             {
-                MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server");
+                Async.Queue("error", () => { MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server"); Close(); });
+                return;
             }
             else
             {
