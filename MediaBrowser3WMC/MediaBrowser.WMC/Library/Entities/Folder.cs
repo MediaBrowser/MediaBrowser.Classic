@@ -260,7 +260,7 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual string[] RalExcludeTypes
         {
-            get { return new[] {"series", "season", "musicalbum", "artist", "folder", "boxset"}; }
+            get { return new[] {"series", "season", "musicalbum", "musicartist", "folder", "boxset"}; }
         }
 
         public virtual string[] RalIncludeTypes { get; set; }
