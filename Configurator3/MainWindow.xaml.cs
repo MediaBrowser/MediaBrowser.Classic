@@ -1025,7 +1025,7 @@ namespace Configurator
                                                                             && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
                     if (newVersion != null)
                     {
-                        if (MessageBox.Show("Update to Version {0} found.  Update now?", "Update Found", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        if (MessageBox.Show(string.Format("Update to Version {0} found.  Update now?", newVersion.versionStr), "Update Found", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                         {
                             MessageBox.Show("Configurator will close to execute update.");
                             // execute update and close us
