@@ -26,6 +26,18 @@ namespace MediaBrowser.Library.Entities
 
         public virtual string DefaultPrimaryImagePath { get; set; }
 
+        public override string PrimaryImagePath
+        {
+            get
+            {
+                return base.PrimaryImagePath ?? DefaultPrimaryImagePath;
+            }
+            set
+            {
+                base.PrimaryImagePath = value;
+            }
+        }
+
         protected override List<BaseItem> GetCachedChildren()
         {
             List<BaseItem> items = null;
