@@ -468,62 +468,49 @@ namespace MediaBrowser.Library {
             }
         }
 
-        List<StudioItemWrapper>  studioItems = null;
+        readonly List<StudioItemWrapper>  _studioItems = null;
 
         public List<StudioItemWrapper> StudioItems
         {
             get
             {
-                if (studioItems != null) {
-                    return studioItems;
+                if (_studioItems != null) {
+                    return _studioItems;
                 }
 
-                var studioStrs = this.Studios;
-                List<Studio> items = new List<Studio>();
-
-                foreach (string q in studioStrs)
-                    items.Add(Studio.GetStudio(q));
+                var items = Studios.Select(Studio.GetStudio).ToList();
 
                 Async.Queue("Studio Item Loader", () =>
                 {
-                    foreach (Studio studio in items)
-                    {
-                        if (studio.PrimaryImage == null)
-                        {
-                            var image = new MediaBrowser.Code.ModelItems.AsyncImageLoader(
-                                () => studio.PrimaryImage,
-                                DefaultImage,
-                                () => this.FirePropertyChanged("PrimaryImage"));
-                        }
-                    }
+                    items.Where(studio => studio.PrimaryImage == null).Select(studio => new Code.ModelItems.AsyncImageLoader(
+                                                                                                                  () => studio.PrimaryImage,
+                                                                                                                  DefaultImage,
+                                                                                                                  () => FirePropertyChanged("PrimaryImage")));
                 });
 
-                var siw = items
-                    .Select(s => new StudioItemWrapper(s, this.PhysicalParent));
+                return items.Select(s => new StudioItemWrapper(s, this.PhysicalParent)).ToList();
                     // http://community.mediabrowser.tv/permalinks/1356/studio-icons-in-name-order
                     // .OrderBy(x => x.Studio.Name);
 
 
-                if (items.Count > 0) {
+                //if (items.Count > 0) {
 
-                    Async.Queue("Studio Item Loader", () =>
-                    {
-                        foreach (var studio in items.Distinct()) {
-                            if (studio.RefreshMetadata(MetadataRefreshOptions.FastOnly)) {
-                                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
-                            }
-                        }
+                //    Async.Queue("Studio Item Loader", () =>
+                //    {
+                //        foreach (var studio in items.Distinct()) {
+                //            if (studio.RefreshMetadata(MetadataRefreshOptions.FastOnly)) {
+                //                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
+                //            }
+                //        }
 
-                        foreach (var studio in items.Distinct()) {
-                            if (studio.RefreshMetadata()) {
-                                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
-                            }
-                        }
-                    });
-                }
+                //        foreach (var studio in items.Distinct()) {
+                //            if (studio.RefreshMetadata()) {
+                //                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
+                //            }
+                //        }
+                //    });
+                //}
 
-                studioItems =  new List<StudioItemWrapper>(siw);
-                return studioItems;
             }
         }
 
