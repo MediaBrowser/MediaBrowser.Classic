@@ -155,7 +155,7 @@ namespace MediaBrowser.Library.Entities {
                 lock (ActualChildren)
                 {
                     IList<BaseItem> visibleChildren = ActualChildren;
-                    return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).MediaCount > 0).ToList() : visibleChildren.ToList();
+                    return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).HasMedia).ToList() : visibleChildren.ToList();
                     //removed for now because hid things that shouldn't be -ebr
                     //return visibleChildren.ToList();
                 }
@@ -504,6 +504,11 @@ namespace MediaBrowser.Library.Entities {
                 }
                 return runtime == null ? 0 : runtime.Value;
             }
+        }
+
+        public virtual bool HasMedia
+        {
+            get { return (ApiRecursiveItemCount ?? 0) > 0 || (mediaCount ?? 0) > 0 || this.RecursiveMedia.Any(); }
         }
 
         protected int? mediaCount;
