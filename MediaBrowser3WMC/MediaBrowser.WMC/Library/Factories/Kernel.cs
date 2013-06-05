@@ -139,12 +139,19 @@ namespace MediaBrowser.Library {
                 }
                     
                 Logger.LoggerInstance = GetDefaultLogger(config);
-                
+
+                AppDomain.CurrentDomain.UnhandledException += CrashHandler;
+
                 var defaultKernel = GetDefaultKernel(config, directives);
                 Instance = defaultKernel;
 
                 
             }
+        }
+
+        static void CrashHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Logger.ReportException("Unhandled Exception.  Application terminating.", (Exception)args.ExceptionObject);
         }
 
         private static void DisposeKernel(Kernel kernel)

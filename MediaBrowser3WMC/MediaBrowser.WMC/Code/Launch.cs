@@ -130,7 +130,6 @@ namespace MediaBrowser
             return config;
         }
 
-        
 
     }
 }
