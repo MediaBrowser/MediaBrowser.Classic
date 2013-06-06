@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0067";
+        const string VERSION = "1.0068";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -269,6 +269,7 @@ namespace MediaBrowser.Library.Localization
         public string InitialConfigDial = "Initial configuration is complete, please restart Media Browser";
         public string DeleteMediaDial = "Are you sure you wish to delete this media item?";
         public string DeleteMediaCapDial = "Delete Confirmation";
+        public string DelServerDial = "The item has been deleted on the server.  Changes should be reflected momentarily.";
         public string NotDeletedDial = "Item NOT Deleted.";
         public string NotDeletedCapDial = "Delete Cancelled by User";
         public string NotDelInvalidPathDial = "The selected media item cannot be deleted due to an invalid path. Or you may not have sufficient access rights to perform this command.";

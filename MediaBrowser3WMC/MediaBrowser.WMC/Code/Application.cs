@@ -1099,15 +1099,17 @@ namespace MediaBrowser
                         // Now ask the server to delete it
                         Kernel.ApiClient.DeleteItem(Item.BaseItem.ApiId);
 
-                        // Wait a couple beats for it to happen and then refresh all parents
-                        Thread.Sleep(2000);
-                        foreach (var item in Kernel.Instance.FindItems(Item.Id)) item.Parent.RetrieveChildren();
                     }
                     catch (Exception)
                     {
                         mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
                     }
                     DeleteNavigationHelper(Item);
+                    // Show a message - the time it takes them to respond to this will hopefully be enough for it to be gone from the server
+                    Thread.Sleep(1000);
+                    MessageBox(LocalizedStrings.Instance.GetString("DelServerDial"));
+                    Thread.Sleep(5000); // in case they dismiss very quickly
+                    foreach (var item in Kernel.Instance.FindItems(Item.Id)) item.Parent.RefreshMetadata();
                     this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
                     // And refresh the RAL of all needed parents
                     foreach (var folder in topParents) folder.OnQuickListChanged(null);
