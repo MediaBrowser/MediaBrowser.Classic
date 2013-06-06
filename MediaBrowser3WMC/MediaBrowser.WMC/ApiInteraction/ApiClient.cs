@@ -905,6 +905,23 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Delete an item
+        /// </summary>
+        /// <param name="itemId">The item id.</param>
+        /// <exception cref="System.ArgumentNullException">itemId</exception>
+        public void DeleteItem(string itemId)
+        {
+            if (string.IsNullOrEmpty(itemId))
+            {
+                throw new ArgumentNullException("itemId");
+            }
+
+            var url = GetApiUrl("Items/" + itemId);
+
+            HttpClient.Delete(url);
+        }
+
+        /// <summary>
         /// Updates a user's rating for an item, based on likes or dislikes
         /// </summary>
         /// <param name="itemId">The item id.</param>

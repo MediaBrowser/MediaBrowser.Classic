@@ -1096,18 +1096,12 @@ namespace MediaBrowser
                         // The play method runs asynchronously, so give it a second to ensure it's at least started.
                         System.Threading.Thread.Sleep(1000);
 
-                        if (Directory.Exists(path))
-                        {
-                            Directory.Delete(path, true);
-                        }
-                        else if (File.Exists(path))
-                        {
-                            File.Delete(path);
-                        }
-                    }
-                    catch (IOException)
-                    {
-                        mce.Dialog(CurrentInstance.StringData("NotDelInvalidPathDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
+                        // Now ask the server to delete it
+                        Kernel.ApiClient.DeleteItem(Item.BaseItem.ApiId);
+
+                        // Wait a couple beats for it to happen and then refresh all parents
+                        Thread.Sleep(2000);
+                        foreach (var item in Kernel.Instance.FindItems(Item.Id)) item.Parent.RetrieveChildren();
                     }
                     catch (Exception)
                     {
