@@ -106,6 +106,13 @@
     </Keyframes>
   </Animation>
 
+  <Animation Name="FullZoom" Type="Show" CenterPointPercent="0.5,0.5,0.5">
+    <Keyframes>
+      <ScaleKeyframe Time="0" RelativeTo="Current" Value="0,0,0"/>
+      <ScaleKeyframe Time="5.0" RelativeTo="Final" Value="1,1,1"/>
+    </Keyframes>
+  </Animation>
+
   <Animation Name="PivotItemFocusOn">
     <Keyframes>
       <AlphaKeyframe Time="0" Value="0.75"/>

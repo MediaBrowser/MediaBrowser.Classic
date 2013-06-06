@@ -256,6 +256,19 @@ namespace MediaBrowser
         }
 
         #endregion
+        private bool showSplash = false;
+        public bool ShowSplash
+        {
+            get { return showSplash; }
+            set
+            {
+                if (showSplash != value)
+                {
+                    showSplash = value;
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowSplash"));
+                }
+            }
+        }
 
         #region CustomDialogs
         private bool showMessage = false;
@@ -1245,6 +1258,7 @@ namespace MediaBrowser
 
         protected bool LoadUser(User user, string pw)
         {
+            ShowSplash = true;
             try
             {
                 if (!string.IsNullOrEmpty(pw))

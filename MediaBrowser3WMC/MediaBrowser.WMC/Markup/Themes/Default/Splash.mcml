@@ -1,9 +1,6 @@
 <Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
     xmlns:cor="assembly://MsCorLib/System"
-    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
-    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
-		xmlns:pd="resx://MediaBrowser/MediaBrowser.Resources/PageDefault"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
     xmlns:me="Me"
@@ -14,10 +11,14 @@
     <Content>
       <ColorFill Content="Black" Layout="Form">
         <Animations>
-          <Animation Animation="animation://an:PageHide" />
+          <Animation Animation="animation://an:PageShow" />
         </Animations>
         <Children>
-          <Graphic Content="image://i:MBLogo" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          <Graphic Content="image://i:MBLogo" Margins="50,50,50,50" MaintainAspectRatio="true" >
+            <Animations>
+              <Animation Animation="animation://an:FullZoom" />
+            </Animations>
+          </Graphic>
         </Children>
       </ColorFill>
 

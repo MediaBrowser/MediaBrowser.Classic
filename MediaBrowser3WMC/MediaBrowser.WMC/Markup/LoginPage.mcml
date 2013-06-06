@@ -6,6 +6,7 @@
     xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+      xmlns:spl="resx://Mediabrowser/MediaBrowser.Resources/Splash"
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
     xmlns:me="Me"
@@ -17,6 +18,7 @@
     </Properties>
 
     <Rules>
+      <Binding Source="[Application.ShowSplash]" Target="[Splash.Visible]" />
 
       <!--We don't want to land here if we've already successfully logged in because plugins can't load twice-->
       <Condition Source="[Application.LoggedIn]" SourceValue="true">
@@ -37,6 +39,7 @@
     <Content>
       <ColorFill Content="Transparent" Layout="Form">
         <Children>
+          <spl:Splash Name="Splash" Layout="Fill" Visible="false" />
           <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
@@ -92,7 +95,7 @@
               <ColorFill Content="DarkGray" Layout="Fill"/>
             </Children>
           </Clip>
-          <Graphic Content="image://i:Background" Layout="Fill"/>
+          <Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>
         </Children>
       </ColorFill>
 

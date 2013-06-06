@@ -3,6 +3,7 @@
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
     xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:spl="resx://Mediabrowser/MediaBrowser.Resources/Splash"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
       xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
@@ -26,6 +27,7 @@
     <Rules>
       <Default Target="[PIN.Value]" Value="" />
       <Default Target="[MyText.Content]" Value="[PromptString]"/>
+      <Binding Source="[Application.ShowSplash]" Target="[Splash.Visible]" />
       <!--if not called by us (user used "back" to get to us) exit immediately-->
       <Condition Source="[Application.RequestingPIN]" SourceValue="false">
         <Actions>
@@ -58,6 +60,7 @@
         <Children>
 
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+          <spl:Splash Name="Splash" Layout="Fill" Visible="false" />
 
           <Text Name="MyText" Color="White" Font="Calibri, 24">
             <LayoutInput>
