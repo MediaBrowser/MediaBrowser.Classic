@@ -5,6 +5,8 @@
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
+    xmlns:me="Me"
       >
 
   <UI Name="ParentalPINEntry">
@@ -17,6 +19,8 @@
     <Locals>
       <EditableText Name="PIN" Value=""/>
       <Command Name="PINEntered" />
+      <Command Name="OSK"/>
+      <addin:AddInHost Name="AddInHost" />
     </Locals>
 
     <Rules>
@@ -35,6 +39,17 @@
       </Changed>
       <Binding Source="[PIN.Value]" Target="[Application.CustomPINEntry]">
       </Binding>
+
+      <!--Bring up keyboard-->
+      <Changed Source="[OSK.Invoked]" >
+        <Actions>
+          <Invoke
+                  Target="[AddInHost.MediaCenterEnvironment.ShowOnscreenKeyboard]"
+                  editableText="[PIN]"
+                  passwordMasked="true"
+                  maxLength="50"/>
+        </Actions>
+      </Changed>
 
     </Rules>
 
@@ -59,6 +74,7 @@
             <Children>
               <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
               </pe:PINEdit>
+              <me:ImageBtn Name="OSKBtn" Command="[OSK]" Focused="image://i:KeyFocus" NonFocused="image://i:Key"  />              
             </Children>
             
           </Panel>
@@ -70,6 +86,39 @@
       
     </Content>
 
+  </UI>
+
+  <UI Name="ImageBtn">
+    <Properties>
+      <Image Name="Focused" Image="$Required"/>
+      <Image Name="NonFocused" Image="$Required"/>
+      <ICommand Name="Command" ICommand="$Required"/>
+
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" Command="[Command]"/>
+    </Locals>
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Condition Source="[Input.KeyFocus]"  SourceValue="true">
+        <Actions>
+          <Set Target="[Label.Content]" Value="[Focused]" />
+        </Actions>
+      </Condition>
+      <Condition Source="[Input.KeyFocus]"  SourceValue="false">
+        <Actions>
+          <Set Target="[Label.Content]" Value="[NonFocused]" />
+        </Actions>
+      </Condition>
+    </Rules>
+    <Content>
+      <Panel>
+        <Children>
+          <Graphic Name="Label" Content="[NonFocused]" MaximumSize="34,34"/>
+        </Children>
+      </Panel>
+
+    </Content>
   </UI>
 
 </Mcml>

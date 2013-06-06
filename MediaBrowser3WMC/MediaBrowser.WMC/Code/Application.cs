@@ -1249,6 +1249,7 @@ namespace MediaBrowser
             {
                 if (!string.IsNullOrEmpty(pw))
                 {
+                    //Logger.ReportVerbose("Authenticating with pw: {0} ({1})",CustomPINEntry, pw);
                     Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
                 }
                 else

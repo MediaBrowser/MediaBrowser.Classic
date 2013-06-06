@@ -982,7 +982,9 @@
     <Content Include="Markup\Controls\Tabs\TabItem.mcml" />
     <Content Include="Markup\Controls\TextEdit.mcml" />
     <Content Include="Markup\Controls\TitleSet.mcml" />
-    <Content Include="Markup\Controls\ViewMenu.mcml" />
+    <Content Include="Markup\Controls\ViewMenu.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Weather.mcml" />
     <Content Include="Markup\Controls\Writers.mcml" />
     <Content Include="Markup\LoginPage.mcml">
@@ -1013,7 +1015,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Themes\Default\Splash.mcml" />
-    <Content Include="Markup\Themes\Default\ParentalPINEntry.mcml" />
+    <Content Include="Markup\Themes\Default\ParentalPINEntry.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\Selectors\PageDefault.mcml">
       <SubType>Designer</SubType>
     </Content>
