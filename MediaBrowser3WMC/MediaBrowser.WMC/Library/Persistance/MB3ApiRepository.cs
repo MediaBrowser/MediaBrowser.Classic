@@ -47,6 +47,11 @@ namespace MediaBrowser.Library.Persistance
 
         }
 
+        public void AddRegisteredType(string key, Type type)
+        {
+            Mb3Translator.TypeMap[key] = type;
+        }
+
         public IEnumerable<IMetadataProvider> RetrieveProviders(Guid guid)
         {
             throw new NotImplementedException();

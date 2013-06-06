@@ -339,18 +339,9 @@ namespace MediaBrowser.Library {
 
  
 
-        private static bool? _isVista;
         public static bool isVista
         {
-            get
-            {
-                if (_isVista == null)
-                {
-                    System.Version ver = System.Environment.OSVersion.Version;
-                    _isVista = ver.Major == 6 && ver.Minor == 0;
-                }
-                return _isVista.Value;
-            }
+            get { return false; }
         }
 
         static MBLoadContext? _loadContext;
@@ -423,6 +414,11 @@ namespace MediaBrowser.Library {
             }
 
             return repository;
+        }
+
+        public void RegisterType(string serverTypeName, Type type)
+        {
+            MB3ApiRepository.AddRegisteredType(serverTypeName, type);
         }
 
         public static ApiClient ApiClient;
