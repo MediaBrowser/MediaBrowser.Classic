@@ -258,6 +258,7 @@ namespace MediaBrowser.Library.Persistance
                         var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
                         media.MediaStreams = mb3Item.MediaStreams;
                         media.AspectRatio = !string.IsNullOrEmpty(mb3Item.AspectRatio) ? mb3Item.AspectRatio : null;
+                        media.SubTitle = subtStream != null ? subtStream.Language : null;
 
                         media.MediaInfo = new MediaInfoData
                                               {
