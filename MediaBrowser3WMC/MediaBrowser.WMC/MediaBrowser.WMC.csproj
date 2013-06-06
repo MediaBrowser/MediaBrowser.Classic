@@ -953,7 +953,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\NowPlayingViewport.mcml" />
-    <Content Include="Markup\Controls\PINEdit.mcml" />
+    <Content Include="Markup\Controls\PINEdit.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Pivots\Pivot.mcml" />
     <Content Include="Markup\Controls\Pivots\PivotItem.mcml" />
     <Content Include="Markup\Controls\Popups\PopupPlay.mcml" />

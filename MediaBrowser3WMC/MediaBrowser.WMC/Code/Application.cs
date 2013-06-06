@@ -1239,7 +1239,7 @@ namespace MediaBrowser
             else
             {
                 // just log in as we don't have a pw
-                LoadUser(user.BaseItem as User, "");
+                Async.Queue("Load user", () =>LoadUser(user.BaseItem as User, ""));
             }
         }
 
@@ -1287,12 +1287,14 @@ namespace MediaBrowser
                 return false;
             }
 
-            // load plugins
-            Kernel.Instance.LoadPlugins();
+            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+                                                                    {
+                                                                        // load plugins
+                                                                        Kernel.Instance.LoadPlugins();
 
-            //populate the config model choice
-            ConfigModel = new Choice { Options = ConfigPanelNames };
-
+                                                                        //populate the config model choice
+                                                                        ConfigModel = new Choice {Options = ConfigPanelNames};
+                                                                    });
             // load root
             Kernel.Instance.ReLoadRoot();
 
@@ -1308,7 +1310,7 @@ namespace MediaBrowser
             {
                 Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
                 //Launch into our entrypoint
-                LaunchEntryPoint(EntryPointResolver.EntryPointPath);
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>LaunchEntryPoint(EntryPointResolver.EntryPointPath));
             }
 
             return true;
@@ -2117,7 +2119,7 @@ namespace MediaBrowser
         public void ParentalPINEntered()
         {
             RequestingPIN = false;
-            LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry))));
+            Async.Queue("Load user", () => LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry)))));
         }
         public void BackToRoot()
         {
