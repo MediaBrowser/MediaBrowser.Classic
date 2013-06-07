@@ -158,10 +158,7 @@ namespace MediaBrowser
         {
             if (_NavigationInto != null)
             {
-                Async.Queue("OnNavigationInto", () =>
-                {
-                    _NavigationInto(this, new GenericEventArgs<Item>() { Item = item });
-                });
+                Async.Queue("OnNavigationInto", () => _NavigationInto(this, new GenericEventArgs<Item>() { Item = item }));
             }
         }
         #endregion
@@ -1252,7 +1249,7 @@ namespace MediaBrowser
             else
             {
                 // just log in as we don't have a pw
-                Async.Queue("Load user", () =>LoadUser(user.BaseItem as User, ""));
+                LoadUser(user.BaseItem as User, "");
             }
         }
 
@@ -1324,7 +1321,14 @@ namespace MediaBrowser
             {
                 Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
                 //Launch into our entrypoint
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>LaunchEntryPoint(EntryPointResolver.EntryPointPath));
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+                {
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => LaunchEntryPoint(EntryPointResolver.EntryPointPath));
+                }
+                else
+                {
+                    LaunchEntryPoint(EntryPointResolver.EntryPointPath);
+                }
             }
 
             return true;
