@@ -1013,6 +1013,9 @@
     <Content Include="Markup\FontsSmall.mcml" />
     <Content Include="Markup\FontsDefault.mcml" />
     <Content Include="Markup\StylesBlack.mcml" />
+    <Content Include="Markup\Themes\Default\SplashPage.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\SearchPane.mcml">
       <SubType>Designer</SubType>
     </Content>

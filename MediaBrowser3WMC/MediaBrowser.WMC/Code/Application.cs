@@ -1222,6 +1222,7 @@ namespace MediaBrowser
             if (user != null)
             {
                 // only one user or specified - log in automatically
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application",this}});
                 LoginUser(user);
             }
             else
@@ -1248,8 +1249,8 @@ namespace MediaBrowser
             }
             else
             {
-                // just log in as we don't have a pw
-                LoadUser(user.BaseItem as User, "");
+                // just log in as we don't have a pw 
+                Async.Queue("Load user", () => LoadUser(user.BaseItem as User, ""));
             }
         }
 
@@ -1298,14 +1299,8 @@ namespace MediaBrowser
                 return false;
             }
 
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                                                                    {
-                                                                        // load plugins
-                                                                        Kernel.Instance.LoadPlugins();
+            LoadPluginsAndModels();
 
-                                                                        //populate the config model choice
-                                                                        ConfigModel = new Choice {Options = ConfigPanelNames};
-                                                                    });
             // load root
             Kernel.Instance.ReLoadRoot();
 
@@ -1332,6 +1327,22 @@ namespace MediaBrowser
             }
 
             return true;
+        }
+
+        protected void LoadPluginsAndModels()
+        {
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+            {
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => LoadPluginsAndModels());
+            }
+            else
+            {
+                // load plugins
+                Kernel.Instance.LoadPlugins();
+
+                //populate the config model choice
+                ConfigModel = new Choice { Options = ConfigPanelNames };
+            }
         }
 
         protected void ValidateRoot()
@@ -1899,8 +1910,15 @@ namespace MediaBrowser
 
         public void OpenMCMLPage(string page, Dictionary<string, object> properties)
         {
-            currentContextMenu = null; //good chance this has happened as a result of a menu item selection so be sure this is reset
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => session.GoToPage(page, properties));
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+            {
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenMCMLPage(page, properties));
+            }
+            else
+            {
+                currentContextMenu = null; //good chance this has happened as a result of a menu item selection so be sure this is reset
+                session.GoToPage(page, properties);
+            }
         }
 
         /// <summary>
