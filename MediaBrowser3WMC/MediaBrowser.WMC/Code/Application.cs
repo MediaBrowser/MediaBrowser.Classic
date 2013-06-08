@@ -1117,8 +1117,9 @@ namespace MediaBrowser
                     DeleteNavigationHelper(Item);
                     // Show a message - the time it takes them to respond to this will hopefully be enough for it to be gone from the server
                     Thread.Sleep(1000);
-                    MessageBox(LocalizedStrings.Instance.GetString("DelServerDial"));
-                    Thread.Sleep(5000); // in case they dismiss very quickly
+                    Information.AddInformationString(LocalizedStrings.Instance.GetString("DelServerDial"));
+                    //MessageBox(LocalizedStrings.Instance.GetString("DelServerDial"));
+                    Thread.Sleep(7000); // in case they dismiss very quickly
                     foreach (var item in Kernel.Instance.FindItems(Item.Id)) item.Parent.RefreshMetadata();
                     this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
                     // And refresh the RAL of all needed parents
