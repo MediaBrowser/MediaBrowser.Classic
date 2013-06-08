@@ -1299,10 +1299,10 @@ namespace MediaBrowser
                 return false;
             }
 
-            LoadPluginsAndModels();
-
             // load root
             Kernel.Instance.ReLoadRoot();
+
+            LoadPluginsAndModels();
 
             if (Kernel.Instance.RootFolder == null)
             {
