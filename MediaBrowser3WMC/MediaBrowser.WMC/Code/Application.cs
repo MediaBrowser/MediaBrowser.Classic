@@ -1275,6 +1275,7 @@ namespace MediaBrowser
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
                     AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                    ShowSplash = false;
                     return false;
                 }
                 throw;
