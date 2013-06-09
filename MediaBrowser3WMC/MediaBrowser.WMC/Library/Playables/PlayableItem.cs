@@ -87,9 +87,11 @@ namespace MediaBrowser.Library.Playables
                         foreach (var item in Kernel.Instance.FindItems(media.Id).OfType<Media>())
                         {
                             Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent.Name));
+                            media.PlaybackStatus.LastPlayed = PlaybackStartTime;
                             item.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                             item.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
                         }
+                        media.PlaybackStatus.LastPlayed = PlaybackStartTime;
                         media.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                         media.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
                     }

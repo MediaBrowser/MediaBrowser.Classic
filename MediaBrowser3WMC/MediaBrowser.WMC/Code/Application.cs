@@ -2119,7 +2119,7 @@ namespace MediaBrowser
             if (playableItem.EnablePlayStateSaving && playableItem.HasMediaItems)
             {
                 //Async.Queue("AddNewlyWatched", () => AddNewlyWatched(playableItem));
-                Async.Queue("Playbackstopped", () => Kernel.ApiClient.ReportPlaybackStopped(playableItem.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id, playableItem.CurrentMedia.PlaybackStatus.PositionTicks));
+                //Async.Queue("Playbackstopped", () => Kernel.ApiClient.ReportPlaybackStopped(playableItem.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id, playableItem.CurrentMedia.PlaybackStatus.PositionTicks));
             }
 
             Logger.ReportVerbose("Firing Application.PlaybackFinished for: " + playableItem.DisplayName);
