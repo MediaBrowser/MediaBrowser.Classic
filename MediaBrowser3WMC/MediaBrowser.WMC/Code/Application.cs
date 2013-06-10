@@ -1389,11 +1389,11 @@ namespace MediaBrowser
                     WebSocket.PlayCommand += PlayRequest;
                     WebSocket.PlaystateCommand += PlayStateRequest;
                   
+                    Updater = new Updater(this);
                     if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins
                     {
                         // We check config here instead of in the Updater class because the Config class 
                         // CANNOT be instantiated outside of the application thread.
-                        Updater = new Updater(this);
                         if (Config.EnableUpdates && !RunningOnExtender)
                         {
                             Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
