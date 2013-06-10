@@ -745,8 +745,8 @@ namespace MediaBrowser
 
         public List<string> PluginSources
         {
-            get { return this.CommonData.PluginSources; }
-            set { if (this.CommonData.PluginSources != value) { this.CommonData.PluginSources = value; Save(); FirePropertyChanged("PluginSources"); } }
+            get { return new List<string>(); }
+            set {  }
         }
         
         //public bool PNGTakesPrecedence
@@ -869,6 +869,36 @@ namespace MediaBrowser
         {
             get { return this.Data.ScreenSaverTimeOut; }
             set { if (this.Data.ScreenSaverTimeOut != value) { this.Data.ScreenSaverTimeOut = value; Save(); FirePropertyChanged("ScreenSaverTimeOut"); } }
+        }
+
+        public Color UserTileColor
+        {
+            get
+            {
+                try
+                {
+                    return new Color((Colors)Enum.Parse(typeof(Colors), this.CommonData.UserTileColor));
+                }
+                catch (Exception)
+                {
+                    return new Color(Colors.DarkBlue);
+                }
+            }
+        }
+
+        public Color LoginBgColor
+        {
+            get
+            {
+                try
+                {
+                    return new Color((Colors)Enum.Parse(typeof(Colors), this.CommonData.LoginBgColor));
+                }
+                catch (Exception)
+                {
+                    return new Color(Colors.DarkGray);
+                }
+            }
         }
 
         /* End of app specific settings*/

@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MediaBrowser.Code;
-using MediaBrowser.Code.ShadowTypes;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Model.Updates;
+using Microsoft.MediaCenter.UI;
+using Inset = MediaBrowser.Code.ShadowTypes.Inset;
+using Vector3 = MediaBrowser.Code.ShadowTypes.Vector3;
 
 namespace MediaBrowser
 {
@@ -86,8 +88,8 @@ namespace MediaBrowser
         [Comment("The number of days to retain log files.  Files older than this will be deleted periodically")]
         public int LogFileRetentionDays = 30;
 
-        [Dangerous]
-        public List<string> PluginSources = new List<string>() { "http://www.mediabrowser.tv/plugins/multi/plugin_info.xml" };
+        public string UserTileColor = "DarkBlue";
+        public string LoginBgColor = "DarkGray";
 
         public enum ExternalPlayerLaunchType
         {

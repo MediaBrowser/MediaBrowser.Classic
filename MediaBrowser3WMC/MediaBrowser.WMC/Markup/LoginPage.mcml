@@ -17,6 +17,11 @@
       <a:Application Name="Application" Application="$Required"/>
     </Properties>
 
+    <Locals>
+      <a:Config Name="Config" Config="[Application.Config]"/>
+
+    </Locals>
+
     <Rules>
       <Binding Source="[Application.ShowSplash]" Target="[Splash.Visible]" />
 
@@ -80,7 +85,7 @@
               </Animation>
             </Animations>
             <Content>
-              <me:UserTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" />
+              <me:UserTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" BGColor="[Config.UserTileColor]" />
             </Content>
           </Repeater>
           <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,0" MaximumSize="400,0" MaintainAspectRatio="true">
@@ -92,7 +97,7 @@
           <Clip FadeSize="720" Orientation="Vertical" FadeAmount="1" ShowNear="false"
             CenterPointPercent="0.5,0.5,0.5" Layout="Fill" >
             <Children>
-              <ColorFill Content="DarkGray" Layout="Fill"/>
+              <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
             </Children>
           </Clip>
           <Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>
