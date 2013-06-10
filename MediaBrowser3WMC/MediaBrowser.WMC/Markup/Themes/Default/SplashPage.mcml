@@ -23,7 +23,7 @@
     </Rules>
 
     <Content>
-      <spl:Splash />
+      <spl:Splash Application="[Application]" />
     </Content>
   </UI>
 

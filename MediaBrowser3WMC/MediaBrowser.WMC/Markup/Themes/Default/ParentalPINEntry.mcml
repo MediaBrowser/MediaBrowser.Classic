@@ -60,7 +60,7 @@
         <Children>
 
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
-          <spl:Splash Name="Splash" Layout="Fill" Visible="false" />
+          <spl:Splash Name="Splash" Application="[Application]" Layout="Fill" Visible="false" />
 
           <Text Name="MyText" Color="White" Font="Calibri, 24">
             <LayoutInput>

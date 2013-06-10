@@ -93,6 +93,7 @@ namespace MediaBrowser
         private bool pluginUpdatesAvailable = false;
         private bool systemUpdateCheckInProgress = false;
         public System.Drawing.Bitmap ExtSplashBmp;
+        public Image LogonSplashImage { get; set; }
         private Item lastPlayed;
         private Updater Updater;
 
@@ -1183,8 +1184,12 @@ namespace MediaBrowser
                 ShowNowPlaying = IsPlaying || IsExternalWmcApplicationPlaying;
 
                 // setup image to use in external splash screen
-                string splashFilename = Path.Combine(Path.Combine(ApplicationPaths.AppIBNPath, "General"), "splash.png");
+                string splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "extsplash.jpg");
                 ExtSplashBmp = File.Exists(splashFilename) ? new System.Drawing.Bitmap(splashFilename) : new System.Drawing.Bitmap(Resources.mblogo1000);
+
+                // setup image to use in login splash screen
+                splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "loginsplash.png");
+                LogonSplashImage = File.Exists(splashFilename) ? new Image("file://"+splashFilename) : new Image("resx://MediaBrowser/MediaBrowser.Resources/mblogo1000");
 
                 Login();
             }

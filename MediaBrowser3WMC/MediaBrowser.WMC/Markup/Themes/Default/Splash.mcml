@@ -7,6 +7,9 @@
     >
 
   <UI Name="Splash">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
 
     <Content>
       <ColorFill Content="Black" Layout="Form">
@@ -14,7 +17,7 @@
           <Animation Animation="animation://an:PageShow" />
         </Animations>
         <Children>
-          <Graphic Content="image://i:MBLogo" Margins="50,50,50,50" MaintainAspectRatio="true" >
+          <Graphic Content="[Application.LogonSplashImage]" Margins="50,50,50,50" MaintainAspectRatio="true" >
             <Animations>
               <Animation Animation="animation://an:FullZoom" />
             </Animations>

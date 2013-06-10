@@ -39,7 +39,7 @@
     <Content>
       <ColorFill Content="Transparent" Layout="Form">
         <Children>
-          <spl:Splash Name="Splash" Layout="Fill" Visible="false" />
+          <spl:Splash Name="Splash" Application="[Application]" Layout="Fill" Visible="false" />
           <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
             <LayoutInput>
               <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
