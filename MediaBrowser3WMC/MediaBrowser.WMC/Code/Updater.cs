@@ -14,39 +14,6 @@ namespace MediaBrowser.Util
     // Updater class deals with checking for updates and downloading/installing them.
     public class Updater
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll")]
-        static extern bool SetWindowPlacement(IntPtr hWnd,
-                           ref WINDOWPLACEMENT lpwndpl);
-        private struct POINTAPI
-        {
-            public int x;
-            public int y;
-        }
-
-        private struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        private struct WINDOWPLACEMENT
-        {
-            public int length;
-            public int flags;
-            public int showCmd;
-            public POINTAPI ptMinPosition;
-            public POINTAPI ptMaxPosition;
-            public RECT rcNormalPosition;
-        }
         
         // Reference back to the application for displaying dialog (thread safe).
         private Application appRef;
@@ -98,12 +65,6 @@ namespace MediaBrowser.Util
                             try
                             {
                                 Logger.ReportVerbose("Updating to version {0}.",newVersion.versionStr);
-                                ////Minimize WMC
-                                //var mceWnd = FindWindow(null, "Windows Media Center");
-                                //var wp = new WINDOWPLACEMENT();
-                                //GetWindowPlacement(mceWnd, ref wp);
-                                //wp.showCmd = 2; // 1 - Normal; 2 - Minimize; 3 - Maximize;
-                                //SetWindowPlacement(mceWnd, ref wp);
 
                                 var info = new ProcessStartInfo
                                                {
@@ -115,9 +76,11 @@ namespace MediaBrowser.Util
                                 Process.Start(info);
 
                                 //And close WMC
-                                var wmc = Process.GetProcessesByName("ehshell.exe").FirstOrDefault();
-                                if (wmc != null) wmc.CloseMainWindow();
-                                //Application.CurrentInstance.Close();
+                                var killWmc = new Process();
+                                killWmc.StartInfo.CreateNoWindow = true;
+                                killWmc.StartInfo.FileName = "Taskkill";
+                                killWmc.StartInfo.Arguments = "/F /im ehshell.exe";
+                                killWmc.Start();
                             }
                             catch (Exception e)
                             {
