@@ -108,7 +108,7 @@ namespace MediaBrowser.Util
                                 var info = new ProcessStartInfo
                                                {
                                                    FileName = ApplicationPaths.UpdaterExecutableFile,
-                                                   Arguments = "product=mbc class=" + Kernel.Instance.CommonConfigData.SystemUpdateClass + " admin=true",
+                                                   Arguments = "product=mbc version=" + newVersion.versionStr + " admin=true",
                                                    Verb = "runas"
                                                };
 
