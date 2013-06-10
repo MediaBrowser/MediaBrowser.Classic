@@ -1781,13 +1781,13 @@ namespace MediaBrowser
                                                  {
                                                     ProgressBox(string.Format("Finding items with {0} in them...", item.Name));
                                                     var person = (Person)item.BaseItem;
-                                                    Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
+                                                    //Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
 
                                                     var query = new ItemQuery
                                                                     {
                                                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                                                         Fields = MB3ApiRepository.StandardFields,
-                                                                        ParentId = searchStart.ApiId,
+                                                                        //ParentId = searchStart.ApiId,
                                                                         Person = person.Name,
                                                                         PersonTypes = new[] {"Actor"},
                                                                         Recursive = true
