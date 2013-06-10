@@ -537,25 +537,41 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public int UnwatchedCount {
-            get {
-                int count = 0;
+        private int? _unwatchedCount;
+        public int UnwatchedCount
+        {
+            get { return _unwatchedCount ?? (int)(_unwatchedCount = GetUnwatchedCount()); }
+            set { _unwatchedCount = value; }
+        }
 
-                // it may be expensive to bring in the playback status 
-                // so don't lock up the object during.
-                foreach (var item in this.Children) {
-                    var media = item as Media;
-                    if (media != null && !media.PlaybackStatus.WasPlayed) {
-                        count++;
-                    } else {
-                        var folder = item as Folder;
-                        if (folder != null) {
-                            count += folder.UnwatchedCount;
-                        }
+        public void ResetUnwatchedCount()
+        {
+            _unwatchedCount = null;
+        }
+
+        protected int GetUnwatchedCount()
+        {
+            var count = 0;
+
+            // it may be expensive to bring in the playback status 
+            // so don't lock up the object during.
+            foreach (var item in this.Children)
+            {
+                var media = item as Media;
+                if (media != null && !media.PlaybackStatus.WasPlayed)
+                {
+                    count++;
+                }
+                else
+                {
+                    var folder = item as Folder;
+                    if (folder != null)
+                    {
+                        count += folder.UnwatchedCount;
                     }
                 }
-                return count;
             }
+            return count;
         }
 
         /// <summary>

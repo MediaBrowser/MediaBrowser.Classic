@@ -222,6 +222,9 @@ namespace MediaBrowser.Library.Persistance
 
                     // recursive media count
                     folder.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
+
+                    // don't replace this with ?? until after the server implementing this has been released...
+                    if (mb3Item.RecursiveUnplayedItemCount != null) folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                 }
 
                 var video = item as Video;
