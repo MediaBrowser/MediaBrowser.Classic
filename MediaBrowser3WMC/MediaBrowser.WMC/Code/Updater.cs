@@ -98,12 +98,12 @@ namespace MediaBrowser.Util
                             try
                             {
                                 Logger.ReportVerbose("Updating to version {0}.",newVersion.versionStr);
-                                //Minimize WMC
-                                var mceWnd = FindWindow(null, "Windows Media Center");
-                                var wp = new WINDOWPLACEMENT();
-                                GetWindowPlacement(mceWnd, ref wp);
-                                wp.showCmd = 2; // 1 - Normal; 2 - Minimize; 3 - Maximize;
-                                SetWindowPlacement(mceWnd, ref wp);
+                                ////Minimize WMC
+                                //var mceWnd = FindWindow(null, "Windows Media Center");
+                                //var wp = new WINDOWPLACEMENT();
+                                //GetWindowPlacement(mceWnd, ref wp);
+                                //wp.showCmd = 2; // 1 - Normal; 2 - Minimize; 3 - Maximize;
+                                //SetWindowPlacement(mceWnd, ref wp);
 
                                 var info = new ProcessStartInfo
                                                {
@@ -113,7 +113,11 @@ namespace MediaBrowser.Util
                                                };
 
                                 Process.Start(info);
-                                Application.CurrentInstance.Close();
+
+                                //And close WMC
+                                var wmc = Process.GetProcessesByName("ehshell.exe").FirstOrDefault();
+                                if (wmc != null) wmc.CloseMainWindow();
+                                //Application.CurrentInstance.Close();
                             }
                             catch (Exception e)
                             {
