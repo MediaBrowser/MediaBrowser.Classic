@@ -22,6 +22,7 @@
       <Command Name="PINEntered" />
       <Command Name="OSK"/>
       <addin:AddInHost Name="AddInHost" />
+      <a:Config Name="Config" Config="[Application.Config]"/>
     </Locals>
 
     <Rules>
@@ -81,8 +82,15 @@
             </Children>
             
           </Panel>
-        
-        
+
+
+          <Clip FadeSize="720" Orientation="Vertical" FadeAmount="1" ShowNear="false"
+            CenterPointPercent="0.5,0.5,0.5" Layout="Fill" >
+            <Children>
+              <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
+            </Children>
+          </Clip>
+          <Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>
         </Children>
       </Panel>
 
