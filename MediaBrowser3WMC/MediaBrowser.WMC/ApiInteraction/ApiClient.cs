@@ -256,6 +256,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for music genres
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetMusicGenres(ItemQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var url = GetMusicGenreListUrl(query);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Gets all People
         /// </summary>
         /// <param name="query">The query.</param>
@@ -327,7 +348,28 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
-            var url = GetApiUrl("Genres/" + name);
+            var url = GetApiUrl("Genres/" + HttpUtility.UrlEncode(name));
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<BaseItemDto>(stream);
+            }
+        }
+
+        /// <summary>
+        /// Gets a music genre
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>Task{BaseItemDto}.</returns>
+        /// <exception cref="System.ArgumentNullException">userId</exception>
+        public BaseItemDto GetMusicGenre(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = GetApiUrl("MusicGenres/" + HttpUtility.UrlEncode(name));
 
             using (var stream = GetSerializedStream(url))
             {
