@@ -576,16 +576,19 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="pluginId">The plugin id.</param>
         /// <returns>Task{Stream}.</returns>
         /// <exception cref="System.ArgumentNullException">assemblyFileName</exception>
-        public Stream GetPluginConfigurationFile(Guid pluginId)
+        public T GetPluginConfiguration<T>(Guid pluginId) where T : class 
         {
             if (pluginId == Guid.Empty)
             {
                 throw new ArgumentNullException("pluginId");
             }
 
-            var url = GetApiUrl("Plugins/" + pluginId + "/ConfigurationFile");
+            var url = GetApiUrl("Plugins/" + pluginId + "/Configuration");
 
-            return HttpClient.Get(url);
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<T>(stream);
+            }
         }
 
         /// <summary>

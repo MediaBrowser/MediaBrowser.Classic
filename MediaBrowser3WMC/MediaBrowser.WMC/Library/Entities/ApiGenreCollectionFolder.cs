@@ -26,12 +26,22 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public GenreType GenreType { get; set; }
+
         protected override List<BaseItem> GetCachedChildren()
         {
-            var ret = Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList();
+            var ret = GenreType == GenreType.Music ?
+                Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList() :
+                Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, IncludeItemTypes)).Cast<BaseItem>().ToList();
             ApiRecursiveItemCount = ret.Count;
             return ret;
         }
 
+    }
+
+    public enum GenreType
+    {
+        Music,
+        Movie
     }
 }

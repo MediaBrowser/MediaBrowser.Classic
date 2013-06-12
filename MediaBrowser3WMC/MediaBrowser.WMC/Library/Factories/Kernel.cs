@@ -596,14 +596,14 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowMovieGenreCollection)
                 {
                     //Create Genre collection
-                    MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, IncludeItemTypes = new[] {"Movie", "BoxSet"}};
+                    MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, IncludeItemTypes = new[] {"Movie", "BoxSet"}, GenreType = GenreType.Movie};
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
                 }
                 
                 if (ConfigData.ShowMusicGenreCollection)
                 {
                     //Create Music Genre collection
-                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
+                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
                     kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
                 }
                 

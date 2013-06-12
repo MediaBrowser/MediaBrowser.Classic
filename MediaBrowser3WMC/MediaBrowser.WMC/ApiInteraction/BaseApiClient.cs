@@ -193,6 +193,16 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets the name of the slug.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>System.String.</returns>
+        protected string GetSlugName(string name)
+        {
+            return name.Replace('/', '-').Replace('?', '-');
+        }
+
+        /// <summary>
         /// Creates a url to return a list of genres
         /// </summary>
         /// <param name="query">The query.</param>
@@ -638,6 +648,25 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var url = "Genres/" + name + "/Images/" + options.ImageType;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetMusicGenreImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "MusicGenres/" + name + "/Images/" + options.ImageType;
 
             return GetImageUrl(url, options, new QueryStringDictionary());
         }

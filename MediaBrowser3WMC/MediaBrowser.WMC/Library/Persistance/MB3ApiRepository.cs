@@ -33,6 +33,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"BoxSet", typeof (BoxSet)},
                                                                      {"Person", typeof (Person)},
                                                                      {"Genre", typeof (Genre)},
+                                                                     {"MusicGenre", typeof (MusicGenre)},
                                                                      {"IndexFolder", typeof(IndexFolder)},
                                                                      {"MusicAlbum", typeof(MusicAlbum)},
                                                                      {"MusicArtist", typeof(MusicArtist)},
@@ -173,7 +174,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     foreach (var tag in mb3Item.ImageTags)
                     {
-                        var url = item is Genre ? Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
+                        var url = item is MusicGenre ? Kernel.ApiClient.GetMusicGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
+                                    item is Genre ? Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
                                                 Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions {ImageType = tag.Key, Tag = tag.Value, CropWhitespace = false});
                         switch (tag.Key)
                         {
@@ -407,6 +409,14 @@ namespace MediaBrowser.Library.Persistance
         public IEnumerable<BaseItem> RetrieveGenres(ItemQuery query)
         {
             var dtos = Kernel.ApiClient.GetGenres(query);
+
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
+        public IEnumerable<BaseItem> RetrieveMusicGenres(ItemQuery query)
+        {
+            var dtos = Kernel.ApiClient.GetMusicGenres(query);
 
             return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
             

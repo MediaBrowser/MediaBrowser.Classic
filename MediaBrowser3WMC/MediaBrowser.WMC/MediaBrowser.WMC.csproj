@@ -146,6 +146,7 @@
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\LocalIbnSourcedCacheFolder.cs" />
     <Compile Include="Library\Entities\ApiGenreCollectionFolder.cs" />
+    <Compile Include="Library\Entities\MusicGenre.cs" />
     <Compile Include="Library\Entities\MusicVideo.cs" />
     <Compile Include="Library\Entities\RemoteTrailer.cs" />
     <Compile Include="Library\Entities\Song.cs" />
