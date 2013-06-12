@@ -107,10 +107,6 @@ namespace MediaBrowser
         public bool EnableResumeSupport = true; 
         [Comment(@"Any folder named trailers will be ignored and treated as a folder containing trailers")]
         public bool EnableLocalTrailerSupport = true; 
-        //[Group("Updates")]
-        //[Comment(@"If you enable this MB will watch for changes in your file system and update the UI as it happens, may not work properly with SMB shares")]
-        //public bool EnableDirectoryWatchers = true;
-
         [Group("Display")]
         [Comment(@"If set to true when sorting by unwatched the unwatched folders will be sorted by name")]
         public bool SortUnwatchedByName = false;
@@ -132,9 +128,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Show an 'Enhanced Home Screen' for the top level items in MB.")]
         public bool EnableRootPage = true;
-        //[Comment(@"Identifies where MB will look for the special 'IBN' items.  You can change this to point to a location that is shared by multiple machines.")]
-        //[PresentationStyle("BrowseFolder")]
-        //public string ImageByNameLocation = Path.Combine(ApplicationPaths.AppConfigPath, "ImagesByName");
         [Group("Display")]
         [Comment(@"Show collection of items marked as favorites.")]
         public bool ShowFavoritesCollection = true;
@@ -256,8 +249,6 @@ namespace MediaBrowser
         public bool RememberIndexing = false;
         public bool ShowIndexWarning = true;
         public double IndexWarningThreshold = 0.1;
-        //[Comment(@"The two-character language code to use when retrieving metadata (en,fr,it, etc.).")]
-        //public string PreferredMetaDataLanguage = "en";
         [Dangerous]
         [Group("Display")]
         [Comment(@"The view theme to use.")]
@@ -315,7 +306,6 @@ namespace MediaBrowser
         public bool ExcludeRemoteContentInSearch = true;
 
         public bool ShowUnwatchedIndicator = false;
-        //public bool PNGTakesPrecedence = false;
 
         public bool RandomizeBackdrops = false;
         public bool RotateBackdrops = true;
@@ -326,10 +316,6 @@ namespace MediaBrowser
         public bool ProcessBanners = false; //hook to allow future processing of banners
         [Hidden]
         public bool ProcessBackdrops = false; //hook to allow future processing of backdrops
-
-        //public int MinResumeDuration = 0; //minimum duration of video to have resume functionality
-        //public int MinResumePct = 1; //if this far or less into video, don't resume
-        //public int MaxResumePct = 95; //if this far or more into video, don't resume
 
         public bool YearSortAsc = false; //true to sort years in ascending order
 
@@ -344,22 +330,12 @@ namespace MediaBrowser
         public bool AskIncludeChildrenRefresh = true; //prompt to include children on a folder refresh
         public bool DefaultIncludeChildrenRefresh = true; //if we don't prompt, are children included?
         
-        [Hidden]
-        //public int NetworkAvailableTimeOut = 5000; //milliseconds to wait for network to be available on validations
-
-        //public bool UseSQLImageCache = false; //switch to use the new SQLite image cache
 
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;
 
         [Comment("The number of days to retain log files.  Files older than this will be deleted periodically")]
         public int LogFileRetentionDays = 30;
-
-        //[Comment("Whether to send os and memory stats during update check")]
-        //public bool SendStats = false;
-
-        //[Comment("Suppress the statistics nag msg")]
-        //public bool SuppressStatsNag = false;
 
         [Comment("This is a hack until I can rewrite some file date processing")]
         public bool EnableShortcutDateHack = true;
@@ -368,36 +344,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment("Hide empty folders (and series and seasons)")]
         public bool HideEmptyFolders = false;
-
-        //[Comment("Save metadata locally so it doesn't have to be re-fetched from the inet")]
-        //public bool SaveLocalMeta = false;
-
-        //[Comment("Save backdrops at the season level (if false will inherit from series)")]
-        //public bool SaveSeasonBackdrops = false;
-
-        //[Comment("Maximum number of backdrops to download from internet provider")]
-        //public int MaxBackdrops = 4; //maximum number of backdrops to be saved by the inet providers
-
-        //[Comment("Download people images to IBN")]
-        //public bool DownloadPeopleImages = true;
-
-        //[Comment("Refresh the images from TMDB when we fetch other meta.  This will replace local versions.")]
-        //public bool RefreshItemImages = true;
-
-        //[Comment("The size of posters to fetch from tmdb")]
-        //public string FetchedPosterSize = "w500"; //w500, w342, w185 or original
-
-        //[Comment("The size of backdrops to fetch from tmdb")]
-        //public string FetchedBackdropSize = "w1280"; //w1280, w780 or original
-
-        //[Comment("The size of people profile images to fetch from tmdb")]
-        //public string FetchedProfileSize = "w185"; //w185 w45 h632 or original
-
-        //[Comment("The country to fetch release date and certification for (ISO 3166.1 code - US, DE, GB, etc.)")]
-        //public string MetadataCountryCode = "US"; //ISO 3166.1 code
-
-        //[Comment("The base url for tmdb images")]
-        //public string TmdbImageUrl = "http://cf2.imgobject.com/t/p/"; 
 
 
         // for our reset routine

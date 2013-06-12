@@ -43,54 +43,6 @@ namespace MediaBrowser
             get { return false; }
             set {  }
         }
-        //public string ParentalPIN
-        //{
-        //    get { return this.data.ParentalPIN; }
-        //    set { if (this.data.ParentalPIN != value) { this.data.ParentalPIN = value; Save(); FirePropertyChanged("ParentalPIN"); } }
-        //}
-        //public bool UnlockOnPinEntry
-        //{
-        //    get { return this.data.UnlockOnPinEntry; }
-        //    set { if (this.data.UnlockOnPinEntry != value) { this.data.UnlockOnPinEntry = value; Save(); FirePropertyChanged("UnlockOnPINEntry"); } }
-        //}
-        //public int MaxParentalLevel
-        //{
-        //    get { return this.data.MaxParentalLevel; }
-        //    set { if (this.data.MaxParentalLevel != value) { this.data.MaxParentalLevel = value; Save(); FirePropertyChanged("MaxParentalLevel"); } }
-        //}
-        //public string ParentalMaxAllowedString
-        //{
-        //    get { return Kernel.Instance.ParentalControls.MaxAllowedString; }
-        //}
-        //public bool HideParentalDisAllowed
-        //{
-        //    get { return this.data.HideParentalDisAllowed; }
-        //    set
-        //    {
-        //        if (this.data.HideParentalDisAllowed != value)
-        //        {
-        //            this.data.HideParentalDisAllowed = value;
-        //            Save();
-        //        }
-        //    }
-        //}
-
-
-        //public bool ParentalBlockUnrated
-        //{
-        //    get { return this.data.ParentalBlockUnrated; }
-        //    set
-        //    {
-        //        if (this.data.ParentalBlockUnrated != value)
-        //        {
-        //            this.data.ParentalBlockUnrated = value;
-        //            Save();
-        //            Kernel.Instance.ParentalControls.SwitchUnrated(value);
-        //            FirePropertyChanged("ParentalBlockUnrated");
-        //        }
-        //    }
-        //}
-
         public bool EnableRootPage
         {
             get { return this.Data.EnableRootPage; }
@@ -374,12 +326,6 @@ namespace MediaBrowser
             get { return this.CommonData.EnableUpdates; }
             set { if (this.CommonData.EnableUpdates != value) { this.CommonData.EnableUpdates = value; Save(); FirePropertyChanged("EnableUpdates"); } }
         }
-        [Comment(@"Flag for beta updates.  True will prompt you to update to beta versions.")]
-        //public bool EnableBetas
-        //{
-        //    get { return this.data.EnableBetas; }
-        //    set { if (this.data.EnableBetas != value) { this.data.EnableBetas = value; Save(); FirePropertyChanged("EnableBetas"); } }
-        //}
         public string SystemUpdateClass
         {
             get { return this.CommonData.SystemUpdateClass.ToString(); }
@@ -606,18 +552,6 @@ namespace MediaBrowser
             set { if (this.Data.ViewTheme != value) { this.Data.ViewTheme = value; Save(); FirePropertyChanged("ViewTheme"); } }
         }
 
-        //public string PreferredMetaDataLanguage
-        //{
-        //    get { return this.data.PreferredMetaDataLanguage; }
-        //    set { if (this.data.PreferredMetaDataLanguage != value) { this.data.PreferredMetaDataLanguage = value; Save(); FirePropertyChanged("PreferredMetaDataLanguage"); } }
-        //}
-
-        //public string UserSettingsPath
-        //{
-        //    get { return this.data.UserSettingsPath; }
-        //    set { if (this.data.UserSettingsPath != value) { this.data.UserSettingsPath = value; Save(); FirePropertyChanged("UserSettingsPath"); } }
-        //}
-
         public string Theme
         {
             get { return Data != null ? this.Data.Theme : "Default"; }
@@ -685,28 +619,12 @@ namespace MediaBrowser
             set { if (this.Data.SupporterKey != value) { this.Data.SupporterKey = value; FirePropertyChanged("SupporterKey"); } }
         }
 
-        //public string PodcastHome
-        //{
-        //    get { return this.data.PodcastHome; }
-        //    set { if (this.data.PodcastHome != value) { this.data.PodcastHome = value; Save(); FirePropertyChanged("PodcastHome"); } }
-        //}
         public bool HideFocusFrame
         {
             get { return this.Data.HideFocusFrame; }
             set { if (this.Data.HideFocusFrame != value) { this.Data.HideFocusFrame = value; Save(); FirePropertyChanged("HideFocusFrame"); } }
         }
 
-        //public bool EnableProxyLikeCaching
-        //{
-        //    get { return this.data.EnableProxyLikeCaching; }
-        //    set { if (this.data.EnableProxyLikeCaching != value) { this.data.EnableProxyLikeCaching = value; Save(); FirePropertyChanged("EnableProxyLikeCaching"); } }
-        //}
-
-        //public int MetadataCheckForUpdateAge
-        //{
-        //    get { return this.data.MetadataCheckForUpdateAge; }
-        //    set { if (this.data.MetadataCheckForUpdateAge != value) { this.data.MetadataCheckForUpdateAge = value; Save(); FirePropertyChanged("MetadataCheckForUpdateAge"); } }
-        //}
         public bool ShowRootBackground
         {
             get { return this.Data.ShowRootBackground; }
@@ -749,12 +667,6 @@ namespace MediaBrowser
             set {  }
         }
         
-        //public bool PNGTakesPrecedence
-        //{
-        //    get { return this.data.PNGTakesPrecedence; }
-        //    set { if (this.data.PNGTakesPrecedence != value) { this.data.PNGTakesPrecedence = value; Save(); FirePropertyChanged("PNGTakesPrecedence"); } }
-        //}
-
         public bool RandomizeBackdrops
         {
             get { return this.Data.RandomizeBackdrops; }
@@ -800,24 +712,6 @@ namespace MediaBrowser
             get { return DateTime.MaxValue;  }
         }
 
-        //public int MinResumeDuration
-        //{
-        //    get { return this.data.MinResumeDuration; }
-        //    set { if (this.data.MinResumeDuration != value) { this.data.MinResumeDuration = value; Save(); FirePropertyChanged("MinResumeDuration"); } }
-        //}
-
-        //public int MinResumePct
-        //{
-        //    get { return this.data.MinResumePct; }
-        //    set { if (this.data.MinResumePct != value) { this.data.MinResumePct = value; Save(); FirePropertyChanged("MinResumePct"); } }
-        //}
-
-        //public int MaxResumePct
-        //{
-        //    get { return this.data.MaxResumePct; }
-        //    set { if (this.data.MaxResumePct != value) { this.data.MaxResumePct = value; Save(); FirePropertyChanged("MaxResumePct"); } }
-        //}
-
          public bool YearSortAsc
         {
             get { return this.Data.YearSortAsc; }
@@ -845,12 +739,6 @@ namespace MediaBrowser
             get { return this.CommonData.AutoValidate; }
             set { if (this.CommonData.AutoValidate != value) { this.CommonData.AutoValidate = value; Save(); FirePropertyChanged("AutoValidate"); } }
         }
-
-        //public bool SaveLocalMeta
-        //{
-        //    get { return this.data.SaveLocalMeta; }
-        //    set { if (this.data.SaveLocalMeta != value) { this.data.SaveLocalMeta = value; Save(); FirePropertyChanged("SaveLocalMeta"); } }
-        //}
 
         public LogSeverity MinLoggingSeverity
         {
