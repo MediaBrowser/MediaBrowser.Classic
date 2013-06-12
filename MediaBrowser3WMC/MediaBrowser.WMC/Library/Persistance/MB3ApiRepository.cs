@@ -199,6 +199,10 @@ namespace MediaBrowser.Library.Persistance
                                 item.ThumbnailImagePath = url;
                                 break;
 
+                            case ImageType.Disc:
+                                item.DiscImagePath = url;
+                                break;
+
                         }
                     }
                 }
