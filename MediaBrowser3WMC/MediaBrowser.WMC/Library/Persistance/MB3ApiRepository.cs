@@ -426,6 +426,14 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        public IEnumerable<BaseItem> RetrieveSimilarItems(SimilarItemsQuery query, string type)
+        {
+            var dtos = Kernel.ApiClient.GetSimilarItems(query, type);
+
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
         public IEnumerable<BaseItem> RetrieveSpecificItems(string[] ids)
         {
             return RetrieveItems(new ItemQuery

@@ -378,6 +378,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets the similar movies async.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetSimilarItems(SimilarItemsQuery query, string type)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var url = GetSimilarItemListUrl(query, type);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Restarts the kernel or the entire server if necessary
         /// If the server application is restarting this request will fail to return, even if
         /// the operation is successful.

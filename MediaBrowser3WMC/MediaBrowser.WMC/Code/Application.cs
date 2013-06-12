@@ -1829,6 +1829,62 @@ namespace MediaBrowser
                                                 });
         }
 
+        public void NavigateToSimilar(Item item)
+        {
+            var itemType = "Movies";
+
+            switch (item.BaseItem.GetType().Name)
+            {
+                case "Series":
+                case "Season":
+                case "Episode":
+                    itemType = "Shows";
+                    break;
+
+                case "MusicAlbum":
+                case "MusicArtist":
+                case "Song":
+                    itemType = "Albums";
+                    break;
+
+                case "Game":
+                    itemType = "Games";
+                    break;
+            }
+
+            Async.Queue("Similar navigation", () =>
+                                                {
+                                                    ProgressBox(string.Format("Finding {0} similar to {1}...", itemType, item.Name));
+
+                                                    var query = new SimilarItemsQuery
+                                                                    {
+                                                                        UserId = Kernel.CurrentUser.Id.ToString(),
+                                                                        Fields = MB3ApiRepository.StandardFields,
+                                                                        Id = item.BaseItem.ApiId,
+                                                                        Limit = 25
+                                                                    };
+                                                    var items = Kernel.Instance.MB3ApiRepository.RetrieveSimilarItems(query, itemType).ToList();
+                                                    // Preserve the order of scoring
+                                                    var i = 0;
+                                                    foreach (var thing in items)
+                                                    {
+                                                        thing.SortName = i.ToString("000");
+                                                        i++;
+                                                    }
+                                                    var index = new SearchResultFolder(items) {Name = LocalizedStrings.Instance.GetString("SimilarTo")+item.Name};
+                                                    ShowMessage = false;
+
+                                                    if (index.Children.Any())
+                                                    {
+                                                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(ItemFactory.Instance.Create(index)));
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox("No Items Found.");
+                                                    }
+                                                });
+        }
+
 
         public void NavigateToDirector(string director, Item currentMovie)
         {

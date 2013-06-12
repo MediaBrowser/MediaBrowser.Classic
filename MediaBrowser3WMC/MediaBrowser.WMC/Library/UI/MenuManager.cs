@@ -83,6 +83,7 @@ namespace MediaBrowser.Library
             Kernel.Instance.AddMenuItem(new MenuItem(Kernel.Instance.StringData.GetString("ShufflePlayCMenu"), "resx://MediaBrowser/MediaBrowser.Resources/IconShuffle", Application.CurrentInstance.Shuffle, playableFolders, new List<MenuType>() { MenuType.Item, MenuType.Play }), 2);
             Kernel.Instance.AddMenuItem(new MenuItem(watchedText, "resx://MediaBrowser/MediaBrowser.Resources/Tick", toggleWatched, allPlayables, new List<MenuType>() { MenuType.Item }), 3);
             Kernel.Instance.AddMenuItem(new MenuItem(favoriteText, "resx://MediaBrowser/MediaBrowser.Resources/IconFavorite", toggleFavorite), 4);
+            Kernel.Instance.AddMenuItem(new MenuItem(Kernel.Instance.StringData.GetString("SimilarTo")+"...", "resx://MediaBrowser/MediaBrowser.Resources/Star_Full", Application.CurrentInstance.NavigateToSimilar, new List<Type> {typeof(Movie), typeof(MusicAlbum), typeof(Series)}, new List<MenuType> { MenuType.Item }),5);
             Kernel.Instance.AddMenuItem(new MenuItem("Queue All", "resx://MediaBrowser/MediaBrowser.Resources/Lines", Application.CurrentInstance.AddToQueue, new List<Type>() { typeof(MusicAlbum), typeof(MusicArtist) }, new List<MenuType>() { MenuType.Item, MenuType.Play }));
             Kernel.Instance.AddMenuItem(new MenuItem("Queue", "resx://MediaBrowser/MediaBrowser.Resources/Lines", Application.CurrentInstance.AddToQueue, new List<Type>() { typeof(Song) }, new List<MenuType>() { MenuType.Item, MenuType.Play }));
 
