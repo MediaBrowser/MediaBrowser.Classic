@@ -28,6 +28,18 @@ namespace MediaBrowser.Library.Entities
 
         public GenreType GenreType { get; set; }
 
+        public override string DisplayMediaType
+        {
+            get
+            {
+                return GenreType.ToString();
+            }
+            set
+            {
+                base.DisplayMediaType = value;
+            }
+        }
+
         protected override List<BaseItem> GetCachedChildren()
         {
             var ret = GenreType == GenreType.Music ?

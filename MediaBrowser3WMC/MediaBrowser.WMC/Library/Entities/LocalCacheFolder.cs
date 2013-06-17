@@ -19,24 +19,24 @@ namespace MediaBrowser.Library.Entities
         {
         }
 
+        public override string DisplayMediaType
+        {
+            get
+            {
+                return string.IsNullOrEmpty(base.DisplayMediaType) ? base.DisplayMediaType : this.GetType().Name;
+            }
+            set
+            {
+                base.DisplayMediaType = value;
+            }
+        }
+
         public override BaseItem ReLoad()
         {
             return Kernel.Instance.ItemRepository.RetrieveItem(Id);
         }
 
         public virtual string DefaultPrimaryImagePath { get; set; }
-
-        //public override string PrimaryImagePath
-        //{
-        //    get
-        //    {
-        //        return base.PrimaryImagePath ?? DefaultPrimaryImagePath;
-        //    }
-        //    set
-        //    {
-        //        base.PrimaryImagePath = value;
-        //    }
-        //}
 
         protected override List<BaseItem> GetCachedChildren()
         {

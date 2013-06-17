@@ -36,6 +36,21 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        /// <summary>
+        /// This is used to construct a display prefs id and we want it to reflect the item types we contain
+        /// </summary>
+        public override string DisplayMediaType
+        {
+            get
+            {
+                return IncludeItemTypes.FirstOrDefault();
+            }
+            set
+            {
+                base.DisplayMediaType = value;
+            }
+        }
+
         public override string[] RalIncludeTypes
         {
             get
