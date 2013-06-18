@@ -343,6 +343,8 @@ namespace MediaBrowser.Library.Persistance
                 if (series != null)
                 {
                     series.Status = mb3Item.Status.ToString();
+                    series.AirTime = mb3Item.AirTime;
+                    series.AirDay = mb3Item.AirDays != null ? mb3Item.AirDays.FirstOrDefault().ToString() : null;
                 }
 
                 var season = item as Season;
