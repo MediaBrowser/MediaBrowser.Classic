@@ -275,6 +275,13 @@ namespace Configurator
             {
                 tbxServerAddress.Text = Kernel.ApiClient.ServerHostName;
                 tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString();
+                if (rbServerConnectManual.IsChecked == true)
+                {
+                    //Be sure we have the proper IP and port saved - we may have discovered them automatically
+                    commonConfig.ServerAddress = Kernel.ApiClient.ServerHostName;
+                    commonConfig.ServerPort = Kernel.ApiClient.ServerApiPort;
+                    SaveConfig();
+                }
             }
 
             //logging
