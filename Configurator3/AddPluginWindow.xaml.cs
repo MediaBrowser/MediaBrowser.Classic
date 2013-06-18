@@ -111,7 +111,7 @@ namespace Configurator {
                     MessageLine.Content = "";
                 }
 
-                imgPlugin.Source = new BitmapImage(new Uri(plugin.RichDescURL));
+                if (!string.IsNullOrEmpty(plugin.RichDescURL)) imgPlugin.Source = new BitmapImage(new Uri(plugin.RichDescURL));
 
                 if (RichDescFrame != null)
                 {
