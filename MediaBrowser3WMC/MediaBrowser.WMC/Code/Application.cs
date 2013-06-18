@@ -2229,7 +2229,10 @@ namespace MediaBrowser
                 return;
             }
             //back up the app to the root page - used when library re-locks itself
-            while (session.BackPage()) { };
+            while (!session.AtRoot)
+            {
+                session.BackPage();
+            }
         }
 
         public string DescString(string name)

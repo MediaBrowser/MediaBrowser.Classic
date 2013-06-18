@@ -9,15 +9,11 @@ namespace MediaBrowser
 {
     public class MyHistoryOrientedPageSession : HistoryOrientedPageSession
     {
+        BreadCrumbs breadcrumbs = new BreadCrumbs(Config.Instance.BreadcrumbCountLimit);
 
-        Application myApp;
-        BreadCrumbs breadcrumbs = new BreadCrumbs(Config.Instance.BreadcrumbCountLimit); 
+        public bool AtRoot { get; private set; }
 
-        public Application Application
-        {
-            get { return myApp; }
-            set { myApp = value; }
-        }
+        public Application Application { get; set; }
 
 
         public void AddBreadcrumb(string breadcrumb) {
@@ -29,6 +25,7 @@ namespace MediaBrowser
             this.Application.NavigatingForward = navigateForward;
 
             Item currentItem = GetCurrentItem(uiProperties);
+            AtRoot = currentItem == Application.CurrentInstance.RootFolderModel;
 
             if (navigateForward)
             {
