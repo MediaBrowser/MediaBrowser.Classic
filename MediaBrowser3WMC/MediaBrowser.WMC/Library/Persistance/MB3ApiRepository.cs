@@ -339,6 +339,12 @@ namespace MediaBrowser.Library.Persistance
                     episode.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToString("ddd d MMM, yyyy") : null;
                 }
 
+                var series = item as Series;
+                if (series != null)
+                {
+                    series.Status = mb3Item.Status.ToString();
+                }
+
                 var season = item as Season;
                 if (season != null)
                 {
@@ -389,7 +395,7 @@ namespace MediaBrowser.Library.Persistance
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, 
-                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName,  }
+                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName, ItemFields.SeriesInfo,  }
                                                      });
 
             return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
