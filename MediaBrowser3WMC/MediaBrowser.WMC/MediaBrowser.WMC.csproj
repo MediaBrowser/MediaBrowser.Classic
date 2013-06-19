@@ -1005,7 +1005,9 @@
     <Content Include="Markup\Themes\Default\LayoutRoot.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Themes\Default\LayoutThumb.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutThumb.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\LayoutThumbStrip.mcml" />
     <Content Include="Markup\StylesBlackExtender.mcml" />
     <Content Include="Markup\StylesDefaultExtender.mcml">

@@ -318,7 +318,7 @@ namespace MediaBrowser.Library.Persistance
 
                     if (mb3Item.People != null)
                     {
-                        show.Actors = new List<Actor>( mb3Item.People.Where(p => p.Type == PersonType.Actor).Select(a => new Actor {Name = a.Name, Role = a.Role}));
+                        show.Actors = new List<Actor>( mb3Item.People.Where(p => p.Type == PersonType.Actor || p.Type == PersonType.GuestStar).Select(a => new Actor {Name = a.Name, Role = a.Role ?? (a.Type == PersonType.GuestStar ? "Guest Star" : "")}));
                         show.Directors = new List<string>(mb3Item.People.Where(p => p.Type == PersonType.Director).Select(a => a.Name));
                     }
 
