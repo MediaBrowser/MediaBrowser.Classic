@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities
 {
@@ -80,7 +81,7 @@ namespace MediaBrowser.Library.Entities
             var dp = new DisplayPreferences(DisplayPreferencesId, this);
             dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp) ?? LoadDefaultDisplayPreferences();
 
-            this.DisplayPreferences = new Model.Entities.DisplayPreferences { ViewType = dp.ViewType.Chosen.ToString(), SortBy = dp.SortOrder };
+            this.DisplayPreferences = new Model.Entities.DisplayPreferences { ViewType = dp.ViewType.Chosen.ToString(), SortBy = dp.SortOrder, ScrollDirection = dp.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal, CustomPrefs = dp.CustomParms};
         }
 
         protected DisplayPreferences LoadDefaultDisplayPreferences()
