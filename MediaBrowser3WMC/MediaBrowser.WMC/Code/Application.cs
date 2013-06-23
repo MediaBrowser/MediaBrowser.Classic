@@ -2092,7 +2092,19 @@ namespace MediaBrowser
 
         public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle)
         {
-            Play(item,resume,queue,playIntros,shuffle,0);
+            if (!item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+            {
+                Async.Queue("Streamed playback warn", () =>
+                                                          {
+                                                              MessageBox("WARNING - Could not directly access media.  Will attempt to stream.  Use UNC paths on server for direct playback.", true, 10000);
+                                                              Play(item, resume, queue, playIntros, shuffle, 0);
+                                                          });
+
+            }
+            else
+            {
+                Play(item, resume, queue, playIntros, shuffle, 0);
+            }
         }
 
         /// <summary>

@@ -75,17 +75,17 @@ namespace MediaBrowser.Library.Entities {
                     }
                     else
                     {
-                    yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                              {
-                                                                                  ItemId = ApiId,
-                                                                                  OutputFileExtension = ".ts",
-                                                                                  //AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-                                                                              })
-                    : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                              {
-                                                                                  ItemId = ApiId,
-                                                                                  Static = true
-                                                                              });
+                        yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                                  {
+                                                                                      ItemId = ApiId,
+                                                                                      OutputFileExtension = ".ts",
+                                                                                      //AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                                                                                  })
+                        : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                                  {
+                                                                                      ItemId = ApiId,
+                                                                                      Static = true
+                                                                                  });
                     }
                 }
             }
