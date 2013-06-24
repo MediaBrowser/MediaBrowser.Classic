@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Mediabrowser.Model.Entities;
 using DisplayPreferences = MediaBrowser.Model.Entities.DisplayPreferences;
 
 namespace MediaBrowser.ApiInteraction
