@@ -595,7 +595,7 @@ namespace MediaBrowser.Library
                 int count = 0;
 
                 var media = baseItem as Media;
-                if (media != null && !media.PlaybackStatus.WasPlayed)
+                if (media != null && media.PlaybackStatus != null && !media.PlaybackStatus.WasPlayed)
                 {
                     count = 1;
                 }

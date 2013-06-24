@@ -36,6 +36,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"MusicGenre", typeof (MusicGenre)},
                                                                      {"IndexFolder", typeof(IndexFolder)},
                                                                      {"MusicAlbum", typeof(MusicAlbum)},
+                                                                     {"MusicAlbumDisc", typeof(MusicAlbum)},
                                                                      {"MusicArtist", typeof(MusicArtist)},
                                                                      {"Audio", typeof(Song)},
                                                                      {"MusicVideo", typeof(MusicVideo)},
@@ -149,6 +150,7 @@ namespace MediaBrowser.Library.Persistance
             if (item != null)
             {
                 item.Name = mb3Item.Name;
+                //Logger.ReportVerbose("Item {0} is {1}", item.Name, item.GetType().Name);
                 item.Path = mb3Item.Path;
                 item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
                 //item.DateModified = (mb3Item.DateModified ?? DateTime.MinValue).ToLocalTime();
@@ -158,6 +160,7 @@ namespace MediaBrowser.Library.Persistance
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
                 item.UserData = mb3Item.UserData;
                 item.ApiParentId = mb3Item.ParentId;
+                //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
 
                 var index = item as IndexFolder;
                 if (index != null)
@@ -243,28 +246,37 @@ namespace MediaBrowser.Library.Persistance
                 var media = item as Media;
                 if (media != null)
                 {
-                    if (mb3Item.VideoType == VideoType.VideoFile)
+                    if (mb3Item.MediaType == Model.Entities.MediaType.Video)
                     {
-                        media.MediaType = MediaTypeResolver.DetermineType(media.Path);
+                        if (mb3Item.VideoType == VideoType.VideoFile)
+                        {
+                            media.MediaType = MediaTypeResolver.DetermineType(media.Path);
+                        }
+                        else
+                        {
+                            switch (mb3Item.VideoType)
+                            {
+                                case VideoType.BluRay:
+                                    media.MediaType = MediaType.BluRay;
+                                    break;
+                                case VideoType.Dvd:
+                                    media.MediaType = MediaType.DVD;
+                                    break;
+                                case VideoType.Iso:
+                                    media.MediaType = MediaType.ISO;
+                                    break;
+                                default:
+                                    media.MediaType = MediaType.Unknown;
+                                    break;
+                            }
+                            
+                        }
                     }
                     else
                     {
-                        switch (mb3Item.VideoType)
-                        {
-                            case VideoType.BluRay:
-                                media.MediaType = MediaType.BluRay;
-                                break;
-                            case VideoType.Dvd:
-                                media.MediaType = MediaType.DVD;
-                                break;
-                            case VideoType.Iso:
-                                media.MediaType = MediaType.ISO;
-                                break;
-                            default:
-                                media.MediaType = MediaType.Unknown;
-                                break;
-                        }
+                        media.MediaType = MediaTypeResolver.DetermineType(media.Path);
                     }
+
                     if (mb3Item.MediaStreams != null)
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);

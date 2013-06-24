@@ -16,6 +16,8 @@ namespace MediaBrowser.Library {
 
             if (pathHasExtension)
             {
+                if (path.EndsWith(".mp3"))
+                    return MediaType.Mp3;
                 if (path.EndsWith(".avi"))
                     return MediaType.Avi;
                 if (path.EndsWith(".mpg"))
@@ -54,15 +56,13 @@ namespace MediaBrowser.Library {
                     return MediaType.M4v;
                 if (path.EndsWith(".asf"))
                     return MediaType.Asf;
-                if (path.EndsWith(".mp3",StringComparison.OrdinalIgnoreCase))
-                    return MediaType.Mp3;
                 if (path.EndsWith(".3gp"))
                     return MediaType.Threegp;
             }
 
-            if (path.Contains("bdmv"))
+            if (path.Contains("\\bdmv"))
                 return MediaType.BluRay;
-            if (path.Contains("hvdvd_ts"))
+            if (path.Contains("\\hvdvd_ts"))
                 return MediaType.HDDVD;
 
             if (!pathHasExtension)
