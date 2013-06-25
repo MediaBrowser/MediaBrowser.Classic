@@ -19,14 +19,6 @@ namespace MediaBrowser.Library.Entities
         public SearchResultFolder(List<BaseItem> children)
             : base(children)
         { }
-        /// <summary>
-        /// We save display prefs in our local cache
-        /// </summary>
-        /// <param name="prefs"></param>
-        public override void SaveDisplayPrefs(DisplayPreferences prefs)
-        {
-            Kernel.Instance.LocalRepo.SaveDisplayPreferences(prefs);
-        }
 
         protected override List<BaseItem> GetCachedChildren()
         {
@@ -45,21 +37,5 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        public override void LoadDisplayPreferences()
-        {
-            Logger.ReportVerbose("Loading display prefs from local repo for " + this.Name + "/" + DisplayMediaType);
-
-            var dp = new DisplayPreferences(DisplayPreferencesId, this);
-            dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp) ?? LoadDefaultDisplayPreferences();
-
-            this.DisplayPreferences = new Model.Entities.DisplayPreferences { ViewType = dp.ViewType.Chosen.ToString(), SortBy = dp.SortOrder };
-        }
-
-        protected DisplayPreferences LoadDefaultDisplayPreferences()
-        {
-            var dp = new DisplayPreferences(DisplayPreferencesId, this);
-            dp.LoadDefaults();
-            return dp;
-        }
     }
 }
