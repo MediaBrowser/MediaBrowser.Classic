@@ -31,6 +31,8 @@ namespace MediaBrowser.Library {
         Mk3d,
         Video,
         Mp3,
+        Flac,
+        Wma
 
     }
 }

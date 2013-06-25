@@ -36,6 +36,8 @@ namespace MediaBrowser.Library {
                     return MediaType.PlayList;
                 if (path.EndsWith(".ts"))
                     return MediaType.Ts;
+                if (path.EndsWith(".flac"))
+                    return MediaType.Flac;
                 if (path.EndsWith(".m2ts"))
                     return MediaType.M2ts;
                 if (path.EndsWith(".mts"))
@@ -58,6 +60,8 @@ namespace MediaBrowser.Library {
                     return MediaType.Asf;
                 if (path.EndsWith(".3gp"))
                     return MediaType.Threegp;
+                if (path.EndsWith(".wma"))
+                    return MediaType.Wma;
             }
 
             if (path.Contains("\\bdmv"))
