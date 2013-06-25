@@ -162,6 +162,8 @@ namespace MediaBrowser.Library.Persistance
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
 
+                var runTimeTicks = IsRippedMedia(mb3Item.VideoType ?? VideoType.VideoFile) ? mb3Item.OriginalRunTimeTicks ?? mb3Item.RunTimeTicks : mb3Item.RunTimeTicks;
+
                 var index = item as IndexFolder;
                 if (index != null)
                 {
@@ -300,7 +302,7 @@ namespace MediaBrowser.Library.Persistance
                                                                          Width = vidStream != null ? vidStream.Width ?? 0 : 0,
                                                                          Height = vidStream != null ? vidStream.Height ?? 0 : 0,
                                                                          Subtitles = subtStream != null ? subtStream.Language : "",
-                                                                         RunTime = mb3Item.RunTimeTicks != null ? Convert.ToInt32(mb3Item.RunTimeTicks / 600000000) : 0
+                                                                         RunTime = runTimeTicks != null ? Convert.ToInt32(runTimeTicks / TimeSpan.TicksPerMinute) : 0
                                                                      }
 
                                               };
@@ -320,7 +322,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime =  mb3Item.RunTimeTicks != null ? (int?)Convert.ToInt32(mb3Item.RunTimeTicks/600000000) : null;
+                    show.RunningTime =  runTimeTicks != null ? (int?)Convert.ToInt32(runTimeTicks/TimeSpan.TicksPerMinute) : null;
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
@@ -373,6 +375,11 @@ namespace MediaBrowser.Library.Persistance
             return item;
         }
 
+        protected bool IsRippedMedia(VideoType type)
+        {
+            return type == VideoType.BluRay || type == VideoType.Dvd || type == VideoType.Iso || type == VideoType.HdDvd;
+        }
+
         protected string TranslateAudioChannels(int totalChannels)
         {
             switch (totalChannels)
@@ -408,7 +415,7 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id,
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, 
+                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, ItemFields.OriginalRunTimeTicks, 
                                                             ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName, ItemFields.SeriesInfo,  }
                                                      });
 
@@ -417,7 +424,7 @@ namespace MediaBrowser.Library.Persistance
 
         public static ItemFields[] StandardFields = new[]
                                                         {
-                                                            ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios,
+                                                            ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios, ItemFields.OriginalRunTimeTicks, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
                                                             ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, ItemFields.ItemCounts, 
                                                         };

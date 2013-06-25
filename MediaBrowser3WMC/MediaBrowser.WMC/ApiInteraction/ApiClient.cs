@@ -646,46 +646,46 @@ namespace MediaBrowser.ApiInteraction
             }
         }
 
-        /// <summary>
-        /// Gets weather information for the default location as set in configuration
-        /// </summary>
-        /// <returns>Task{WeatherInfo}.</returns>
-        public WeatherInfo GetWeatherInfo()
-        {
-            var url = GetApiUrl("Weather");
+        ///// <summary>
+        ///// Gets weather information for the default location as set in configuration
+        ///// </summary>
+        ///// <returns>Task{WeatherInfo}.</returns>
+        //public WeatherInfo GetWeatherInfo()
+        //{
+        //    var url = GetApiUrl("Weather");
 
-            using (var stream = GetSerializedStream(url))
-            {
-                return DeserializeFromStream<WeatherInfo>(stream);
-            }
-        }
+        //    using (var stream = GetSerializedStream(url))
+        //    {
+        //        return DeserializeFromStream<WeatherInfo>(stream);
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets weather information for a specific location
-        /// Location can be a US zipcode, or "city,state", "city,state,country", "city,country"
-        /// It can also be an ip address, or "latitude,longitude"
-        /// </summary>
-        /// <param name="location">The location.</param>
-        /// <returns>Task{WeatherInfo}.</returns>
-        /// <exception cref="System.ArgumentNullException">location</exception>
-        public WeatherInfo GetWeatherInfo(string location)
-        {
-            if (string.IsNullOrEmpty(location))
-            {
-                throw new ArgumentNullException("location");
-            }
+        ///// <summary>
+        ///// Gets weather information for a specific location
+        ///// Location can be a US zipcode, or "city,state", "city,state,country", "city,country"
+        ///// It can also be an ip address, or "latitude,longitude"
+        ///// </summary>
+        ///// <param name="location">The location.</param>
+        ///// <returns>Task{WeatherInfo}.</returns>
+        ///// <exception cref="System.ArgumentNullException">location</exception>
+        //public WeatherInfo GetWeatherInfo(string location)
+        //{
+        //    if (string.IsNullOrEmpty(location))
+        //    {
+        //        throw new ArgumentNullException("location");
+        //    }
 
-            var dict = new QueryStringDictionary();
+        //    var dict = new QueryStringDictionary();
 
-            dict.Add("location", location);
+        //    dict.Add("location", location);
 
-            var url = GetApiUrl("Weather", dict);
+        //    var url = GetApiUrl("Weather", dict);
 
-            using (var stream = GetSerializedStream(url))
-            {
-                return DeserializeFromStream<WeatherInfo>(stream);
-            }
-        }
+        //    using (var stream = GetSerializedStream(url))
+        //    {
+        //        return DeserializeFromStream<WeatherInfo>(stream);
+        //    }
+        //}
 
         /// <summary>
         /// Gets registration status for a specific feature
