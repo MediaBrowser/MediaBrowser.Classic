@@ -205,20 +205,13 @@ namespace MediaBrowser.Library
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.BaseItem.DisplayMediaType) && this.baseItem.DisplayMediaType != "None")
+                var mediaType = "";
+                var video = baseItem as Video;
+                if (video != null)
                 {
-                    return this.BaseItem.DisplayMediaType;
+                    mediaType = video.MediaType.ToString().ToLower();
                 }
-                else
-                {
-                    string mediaType = "";
-                    var video = baseItem as Video;
-                    if (video != null)
-                    {
-                        mediaType = video.MediaType.ToString().ToLower();
-                    }
-                    return mediaType;
-                }
+                return mediaType;
             }
         }
 
