@@ -14,6 +14,13 @@ namespace MediaBrowser.ApiInteraction.WebSocket
     /// </summary>
     public class ApiWebSocket : BaseApiWebSocket
     {
+        protected string HostName { get; set; }
+        protected int Port { get; set; }
+        protected string ClientName { get; set; }
+        protected string DeviceId { get; set; }
+
+        protected Timer KeepAliveTimer { get; set; }
+
         /// <summary>
         /// The _web socket
         /// </summary>
@@ -34,6 +41,11 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// <param name="deviceId">The device id.</param>
         public void Connect(string serverHostName, int serverWebSocketPort, string clientName, string deviceId)
         {
+            HostName = serverHostName;
+            Port = serverWebSocketPort;
+            ClientName = clientName;
+            DeviceId = deviceId;
+
             var url = GetWebSocketUrl(serverHostName, serverWebSocketPort);
 
             try
@@ -50,11 +62,22 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                                              {
                                              }
                                              SendIdentification(clientName, deviceId);
+                                             if (KeepAliveTimer != null) KeepAliveTimer.Dispose();
+                                             KeepAliveTimer = new Timer(KeepAlive, null, 60000, 60000);
                                          } );
             }
             catch (Exception ex)
             {
                 Logger.ReportException("Error connecting to {0}", ex, url);
+            }
+        }
+
+        protected void KeepAlive(object sender)
+        {
+            if (_webSocket.State != WebSocketState.Open)
+            {
+                Logger.ReportInfo("Reconnecting WebSocket which has dropped.");
+                Connect(HostName, Port, ClientName, DeviceId);
             }
         }
 
