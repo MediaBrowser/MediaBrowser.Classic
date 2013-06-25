@@ -372,6 +372,10 @@ namespace MediaBrowser.Library.Persistance
             {
                 Logger.ReportWarning("Ignoring invalid item " + itemType + ".  Would not instantiate in current environment.");
             }
+
+            // Finally, any custom values
+            item.FillCustomValues(mb3Item);
+
             return item;
         }
 

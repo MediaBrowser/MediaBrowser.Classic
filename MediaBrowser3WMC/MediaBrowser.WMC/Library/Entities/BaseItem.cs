@@ -522,6 +522,11 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public virtual void FillCustomValues(BaseItemDto mb3Item)
+        {
+            
+        }
+
         public void MigrateAllImages()
         {
             if (this.PrimaryImage != null)
