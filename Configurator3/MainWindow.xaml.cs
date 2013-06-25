@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Globalization;
@@ -26,6 +27,9 @@ using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Updates;
+using MediaBrowser.Util;
+using Cursors = System.Windows.Input.Cursors;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Configurator
 {
@@ -69,11 +73,13 @@ namespace Configurator
 
         private void Initialize() {
             Instance = this;
+            InitializeComponent();
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
             if (!Kernel.ServerConnected)
             {
-                Async.Queue("error", () => { MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server"); Close(); });
-                return;
+                Async.Queue("error", () => MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server"));
+                // Hide plug-in tab because we can't get to them
+                plugins.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -83,7 +89,6 @@ namespace Configurator
             //Kernel.Instance.LoadUserConfig();
             Kernel.Instance.LoadPlugins();
             Logger.ReportVerbose("======= Kernel intialized. Building window...");
-            InitializeComponent();
             commonConfig = Kernel.Instance.CommonConfigData;
             pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
@@ -123,27 +128,30 @@ namespace Configurator
             //Logger.ReportVerbose("======= Saving Config...");
             SaveConfig();
 
-            //Logger.ReportVerbose("======= Initializing Plugin Manager...");
-            PluginManager.Instance.Init();
-            //Logger.ReportVerbose("======= Loading Plugin List...");
-            var src = new CollectionViewSource();
-            src.Source = PluginManager.Instance.InstalledPlugins;
-            src.GroupDescriptions.Add(new PropertyGroupDescription("PluginClass"));
-
-            pluginList.ItemsSource = src.View;
-
-            //Logger.ReportVerbose("======= Kicking off plugin update check thread...");
-            Async.Queue("Plugin Update Check", () =>
+            if (Kernel.ServerConnected)
             {
-                using (new MediaBrowser.Util.Profiler("Plugin update check"))
-                {
-                    while (!PluginManager.Instance.PluginsLoaded) { } //wait for plugins to load
-                    if (PluginManager.Instance.UpgradesAvailable())
-                        Dispatcher.Invoke(DispatcherPriority.Background, 
-                            (System.Windows.Forms.MethodInvoker)(() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
-                }
-            });
+                //Logger.ReportVerbose("======= Initializing Plugin Manager...");
+                PluginManager.Instance.Init();
+                //Logger.ReportVerbose("======= Loading Plugin List...");
+                var src = new CollectionViewSource();
+                src.Source = PluginManager.Instance.InstalledPlugins;
+                src.GroupDescriptions.Add(new PropertyGroupDescription("PluginClass"));
 
+                pluginList.ItemsSource = src.View;
+
+                //Logger.ReportVerbose("======= Kicking off plugin update check thread...");
+                Async.Queue("Plugin Update Check", () =>
+                                                       {
+                                                           using (new Profiler("Plugin update check"))
+                                                           {
+                                                               while (!PluginManager.Instance.PluginsLoaded) { } //wait for plugins to load
+                                                               if (PluginManager.Instance.UpgradesAvailable())
+                                                                   Dispatcher.Invoke(DispatcherPriority.Background, 
+                                                                                     (MethodInvoker)(() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
+                                                           }
+                                                       });
+                
+            }
             //Logger.ReportVerbose("======= Kicking off validations thread...");
             //Async.Queue("Startup Validations", () =>
             //{
@@ -274,7 +282,7 @@ namespace Configurator
             if (Kernel.ServerConnected)
             {
                 tbxServerAddress.Text = Kernel.ApiClient.ServerHostName;
-                tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString();
+                tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString(CultureInfo.InvariantCulture);
                 if (rbServerConnectManual.IsChecked == true)
                 {
                     //Be sure we have the proper IP and port saved - we may have discovered them automatically
@@ -282,6 +290,11 @@ namespace Configurator
                     commonConfig.ServerPort = Kernel.ApiClient.ServerApiPort;
                     SaveConfig();
                 }
+            }
+            else
+            {
+                tbxPort.Text = commonConfig.ServerPort.ToString(CultureInfo.InvariantCulture);
+                tbxServerAddress.Text = commonConfig.ServerAddress;
             }
 
             //logging
@@ -327,7 +340,7 @@ namespace Configurator
 
         private void RefreshUsers()
         {
-            ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
+            if (Kernel.AvailableUsers != null) ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
         }
 
         #endregion
@@ -928,7 +941,15 @@ namespace Configurator
             }
             PopUpMsg.DisplayMessage("Attempting to contact server...");
             var address = tbxServerAddress.Text;
-            var port = Convert.ToInt32(tbxPort.Text);
+            var port = 8096;
+            try
+            {
+                port = Convert.ToInt32(tbxPort.Text);
+            }
+            catch (Exception)
+            {
+                //let default through
+            }
             this.Cursor = Cursors.AppStarting;
             btnSaveConnection.IsEnabled = false;
             Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
@@ -940,8 +961,19 @@ namespace Configurator
             btnSaveConnection.IsEnabled = true;
             if (!Kernel.ServerConnected)
             {
-                MessageBox.Show("Could not connect to server. Please verify address and port.", "Error");
-                PopUpMsg.DisplayMessage("Connection Information NOT Saved");
+                if (MessageBox.Show("Could not connect to server. Please verify address and port.\n\nSave information anyway?", "Error", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    commonConfig.FindServerAutomatically = rbServerConnectAuto.IsChecked == true;
+                    commonConfig.ServerAddress = tbxServerAddress.Text;
+                    commonConfig.ServerPort = Convert.ToInt32(tbxPort.Text);
+                    SaveConfig();
+                    PopUpMsg.DisplayMessage("Connection Information Saved but NOT Valid at this time.");
+                }
+                else
+                {
+                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
+                }
+
                 return;
             }
             //RefreshUsers();
