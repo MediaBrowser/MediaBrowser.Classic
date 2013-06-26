@@ -95,6 +95,7 @@ namespace MediaBrowser.ApiInteraction
             using (var httpClient = new WebClient {Encoding = Encoding.UTF8})
             {
                 httpClient.Headers["Content-type"] = contentType;
+                httpClient.Headers["Authorization"] = AuthHeader;
 
                 try
                 {
