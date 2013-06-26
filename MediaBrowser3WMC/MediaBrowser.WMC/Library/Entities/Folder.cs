@@ -534,6 +534,9 @@ namespace MediaBrowser.Library.Entities {
                         folder.Watched = value;
                     }
                 }
+
+                _unwatchedCount = null;
+                OnChildrenChanged(null);
             }
         }
 
