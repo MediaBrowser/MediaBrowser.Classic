@@ -367,7 +367,7 @@ namespace MediaBrowser.Library {
             }
         }
 
-        public IEnumerable<IPlugin> GetAvailablePlugins()
+        public IEnumerable<RemotePlugin> GetAvailablePlugins()
         {
             foreach (var package in ApiClient.GetPackages())
             {

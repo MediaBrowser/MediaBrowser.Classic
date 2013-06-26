@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Threading;
 using MediaBrowser.Library.Configuration;
+using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using System.Reflection;
 using MediaBrowser.Library.Logging;
@@ -112,30 +116,78 @@ namespace MediaBrowser.Util
 
         /// <summary>
         /// Check our installed plugins against the available ones to see if there are updated versions available
-        /// Don't try and update from here just display messages and return a bool so we can set an attribute.
+        /// Allow in-place update if there are.
         /// </summary>
         public bool PluginUpdatesAvailable()
         {
             var availablePlugins = Kernel.Instance.GetAvailablePlugins().ToList();
-            bool updatesAvailable = false;
+            var availableUpdates = new List<RemotePlugin>();
+
             Logger.ReportInfo("Checking for Plugin Updates...");
 
             foreach (var plugin in Kernel.Instance.Plugins)
             {
-                var found = availablePlugins.Find(remote => remote.Name == plugin.Name);
+                var found = availablePlugins.FirstOrDefault(remote => remote.Filename.Equals(plugin.Filename, StringComparison.OrdinalIgnoreCase));
                 if (found != null)
                 {
                     if (found.Version > plugin.Version && found.RequiredMBVersion <= Kernel.Instance.Version)
                     {
-                        //newer one available - alert and set our bool
-                        Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("PluginUpdateProf"), plugin.Name));
-                        Logger.ReportInfo("Plugin " + plugin.Name + " (version " + plugin.Version + ") has update to Version " + found.Version + " Available.");
-                        updatesAvailable = true;
+                        //newer one available - add to list
+                        availableUpdates.Add(found);
                     }
                 }
             }
-            if (!updatesAvailable) Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("NoPluginUpdateProf"));
-            return updatesAvailable;
+
+            if (availableUpdates.Any())
+            {
+                if (Application.CurrentInstance.YesNoBox("Some of your plug-ins have updates.  Update now?") == "Y")
+                {
+                    foreach (var availableUpdate in availableUpdates)
+                    {
+                        Application.CurrentInstance.ProgressBox("Updating "+availableUpdate.Name+"...");
+                        InstallPlugin(availableUpdate);
+                        Application.CurrentInstance.ShowMessage = false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            if (_sucessfulUpdate)
+            {
+                Application.CurrentInstance.MessageBox("Update sucessful.  MB Classic will now shut down.\n\nRe-start for updates to take effect.");
+                Application.CurrentInstance.Close();
+            }
+
+            return false;
+        }
+
+        private bool _installInProgress = false;
+        private bool _sucessfulUpdate = false;
+
+        private void InstallPlugin(RemotePlugin plugin)
+        {
+            _installInProgress = true;
+            Kernel.Instance.InstallPlugin(plugin.SourceFilename, plugin.Filename, null, PluginInstallFinish, PluginInstallError );
+            while (_installInProgress)
+            {
+                Thread.Sleep(250);
+            }
+        }
+
+        private void PluginInstallFinish()
+        {
+            _installInProgress = false;
+            _sucessfulUpdate = true;
+        }
+
+        private void PluginInstallError(WebException ex)
+        {
+            Logger.ReportException("Error installing plug-in update.",ex);
+            Application.CurrentInstance.MessageBox("Error Installing.  Please try through Configurator.");
+            _installInProgress = false;
         }
 
     }

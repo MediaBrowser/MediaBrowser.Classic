@@ -1401,11 +1401,12 @@ namespace MediaBrowser
                         // CANNOT be instantiated outside of the application thread.
                         if (Config.EnableUpdates && !RunningOnExtender)
                         {
-                            Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
+                            //Async.Queue(Async.STARTUP_QUEUE, , 10000);
                             Async.Queue(Async.STARTUP_QUEUE, () =>
                                                                  {
+                                                                     CheckForSystemUpdate();
                                                                      PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
-                                                                 }, 30000);
+                                                                 }, 10000);
                         }
 
                         // Let the user know if the server needs to be restarted
