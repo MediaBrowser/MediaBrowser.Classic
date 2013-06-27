@@ -242,7 +242,14 @@ namespace MediaBrowser.Library.Persistance
                 if (video != null && video.Path != null)
                 {
                     video.ContainsTrailers = mb3Item.HasTrailer;
-                    video.VideoFormat = mb3Item.VideoFormat.ToString();
+                    if (mb3Item.Video3DFormat != null)
+                    {
+                        video.VideoFormat = mb3Item.Video3DFormat == Video3DFormat.FullSideBySide || mb3Item.Video3DFormat == Video3DFormat.HalfSideBySide ? "Sbs3D" : "Digital3D";
+                    }
+                    else
+                    {
+                        video.VideoFormat = "Standard";
+                    }
                 }
 
                 var media = item as Media;
