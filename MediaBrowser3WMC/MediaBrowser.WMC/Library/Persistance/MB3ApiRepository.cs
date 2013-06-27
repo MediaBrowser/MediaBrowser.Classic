@@ -420,7 +420,7 @@ namespace MediaBrowser.Library.Persistance
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, ItemFields.OriginalRunTimeTicks, 
-                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName, ItemFields.SeriesInfo,  }
+                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName, ItemFields.SeriesInfo, ItemFields.Taglines,  }
                                                      });
 
             return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
@@ -429,7 +429,7 @@ namespace MediaBrowser.Library.Persistance
         public static ItemFields[] StandardFields = new[]
                                                         {
                                                             ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios, ItemFields.OriginalRunTimeTicks, 
-                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated,
+                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated, ItemFields.Taglines, 
                                                             ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, ItemFields.ItemCounts, 
                                                         };
 
