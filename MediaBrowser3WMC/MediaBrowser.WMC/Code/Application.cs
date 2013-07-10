@@ -381,6 +381,8 @@ namespace MediaBrowser
 
         private void BrowseRequest(object sender, BrowseRequestEventArgs args)
         {
+            ScreenSaverActive = false;
+
             switch (args.Request.ItemType)
             {
                 case "Genre":
@@ -430,6 +432,8 @@ namespace MediaBrowser
 
         private void PlayRequest(object sender, PlayRequestEventArgs args)
         {
+            ScreenSaverActive = false;
+
             var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(args.Request.ItemIds.FirstOrDefault() ?? ""));
                     if (item != null)
                     {
