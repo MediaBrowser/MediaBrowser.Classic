@@ -476,13 +476,13 @@ namespace MediaBrowser
         {
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
-            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).Select(id => Kernel.Instance.FindItem(id)).Where(folder => folder != null).Cast<Folder>().ToList();
+            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(id)).Where(folder => folder != null).Cast<Folder>().ToList();
             var topFolders = new Dictionary<Guid, Folder>();
             // Get folders that were reported to us
             foreach (var changedItem in changedFolders)
             {
                 Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
-                changedItem.RefreshMetadata();
+                changedItem.ReloadChildren();
                 var top = changedItem.TopParent;
                 if (top != null) topFolders[top.Id] = top;
             }
@@ -512,7 +512,7 @@ namespace MediaBrowser
                 var changedItem = Kernel.Instance.FindItem(id);
                 if (changedItem != null)
                 {
-                    if (!args.UpdateInfo.ItemsUpdated.Contains(changedItem.Parent.Id))
+                    if (!args.UpdateInfo.ItemsUpdated.Contains(changedItem.Parent.Id) && !args.UpdateInfo.FoldersAddedTo.Contains(id) && !args.UpdateInfo.FoldersRemovedFrom.Contains(id))
                     {
                         Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
                         changedItem.RefreshMetadata();
@@ -532,24 +532,6 @@ namespace MediaBrowser
                 else
                 {
                     Logger.ReportVerbose("Changed Item {0} is not loaded", id);
-                }
-            }
-
-            //Now we can get all the top folders of added items and parents if they weren't refreshed already
-            foreach (var id in args.UpdateInfo.ItemsAdded)
-            {
-                var added = Kernel.Instance.FindItem(id);
-                if (added != null)
-                {
-                    var top = added.TopParent;
-                    if (top != null) topFolders[top.Id] = top;
-
-                    // If our parent wasn't included in the updated list - refresh it
-                    var parent = added.Parent;
-                    if (parent != null)
-                    {
-                        if (!args.UpdateInfo.ItemsUpdated.Contains(parent.Id)) parent.RefreshMetadata();
-                    }
                 }
             }
 

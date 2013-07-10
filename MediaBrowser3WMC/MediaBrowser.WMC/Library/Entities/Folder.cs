@@ -125,6 +125,12 @@ namespace MediaBrowser.Library.Entities {
             mediaCount = null;
         }
 
+        public void ReloadChildren()
+        {
+            RetrieveChildren();
+            OnChildrenChanged(null);
+        }
+
         public virtual bool PromptForChildRefresh
         {
             get
