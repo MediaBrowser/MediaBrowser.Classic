@@ -79,6 +79,9 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
 
         protected override void PlayMediaInternal(PlayableItem playable)
         {
+            // Report start to server
+            if (playable.HasMediaItems) Kernel.ApiClient.ReportPlaybackStart(playable.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id);
+
             // Two different launch methods depending on how the player is configured
             if (LaunchType == CommonConfigData.ExternalPlayerLaunchType.WMCNavigate)
             {
