@@ -80,6 +80,14 @@ namespace MediaBrowser.Library
                 thumbConstraint = new SizeRef(new Size(width, height));
                 useBanner.Value = (customParms.GetValueOrDefault("MBCUseBanner", "false") == "true");
                 showLabels.Value = (customParms.GetValueOrDefault("MBCShowLabels", "false") == "true");
+                try
+                {
+                    if (Config.Instance.RememberIndexing) indexBy.Chosen = folder.DisplayPreferences.IndexBy;
+                }
+                catch
+                {
+                    indexBy.Chosen = Localization.LocalizedStrings.Instance.GetString("NoneDispPref");
+                }
             }
 
             try

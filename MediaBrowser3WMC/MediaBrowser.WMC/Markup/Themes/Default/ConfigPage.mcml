@@ -598,6 +598,7 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#AllowNestedMovieFoldersConfig!cor:String]" Checked="[EnableNestedMovieFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                       <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
@@ -621,7 +622,6 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="40,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>-->
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                     </Children>
                   </Panel>
