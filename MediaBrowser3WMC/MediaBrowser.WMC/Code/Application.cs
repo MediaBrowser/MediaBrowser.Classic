@@ -482,6 +482,7 @@ namespace MediaBrowser
             foreach (var changedItem in changedFolders)
             {
                 Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
+                changedItem.RefreshMetadata();
                 var top = changedItem.TopParent;
                 if (top != null) topFolders[top.Id] = top;
             }
