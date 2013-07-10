@@ -2093,19 +2093,7 @@ namespace MediaBrowser
 
         public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle)
         {
-            if (!item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
-            {
-                Async.Queue("Streamed playback warn", () =>
-                                                          {
-                                                              MessageBox("WARNING - Could not directly access media.  Will attempt to stream.  Use UNC paths on server for direct playback.", true, 10000);
-                                                              Play(item, resume, queue, playIntros, shuffle, 0);
-                                                          });
-
-            }
-            else
-            {
                 Play(item, resume, queue, playIntros, shuffle, 0);
-            }
         }
 
         /// <summary>
@@ -2121,25 +2109,40 @@ namespace MediaBrowser
                 return;
             }
 
-            PlayableItem playable = PlayableItemFactory.Instance.Create(item);
-
-            // This could happen if both item.IsFolder and item.IsPlayable are false
-            if (playable == null)
+            if (!item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
-                return;
-            }
+                Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
-            if (playIntros.HasValue)
+                Async.Queue("Streamed playback warn", () =>
+                                                          {
+                                                              MessageBox("WARNING - Could not directly access media.  Will attempt to stream.  Use UNC paths on server for direct playback.", true, 10000);
+                                                              Play(item, resume, queue, playIntros, shuffle, 0);
+                                                          });
+
+            }
+            else
             {
-                playable.PlayIntros = playIntros.Value;
+
+                PlayableItem playable = PlayableItemFactory.Instance.Create(item);
+
+                // This could happen if both item.IsFolder and item.IsPlayable are false
+                if (playable == null)
+                {
+                    return;
+                }
+
+                if (playIntros.HasValue)
+                {
+                    playable.PlayIntros = playIntros.Value;
+                }
+
+                playable.Resume = resume;
+                if (startPos > 0) playable.StartPositionTicks = startPos;
+                playable.QueueItem = queue;
+                playable.Shuffle = shuffle;
+
+                Play(playable);
             }
-
-            playable.Resume = resume;
-            if (startPos > 0) playable.StartPositionTicks = startPos;
-            playable.QueueItem = queue;
-            playable.Shuffle = shuffle;
-
-            Play(playable);
         }
 
         /// <summary>
