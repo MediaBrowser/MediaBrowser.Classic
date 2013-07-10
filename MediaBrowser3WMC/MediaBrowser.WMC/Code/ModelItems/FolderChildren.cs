@@ -248,7 +248,7 @@ namespace MediaBrowser.Code.ModelItems {
             if (folder == null) return;
             using (new Profiler("==== Index " + folder.Name + " by " + property))
             {
-                if (string.IsNullOrEmpty(property))
+                if (string.IsNullOrEmpty(property) || property == Library.Localization.LocalizedStrings.Instance.GetString("NoneDispPref"))
                 {
                     folderIsIndexed = false;
                     lock (this)
