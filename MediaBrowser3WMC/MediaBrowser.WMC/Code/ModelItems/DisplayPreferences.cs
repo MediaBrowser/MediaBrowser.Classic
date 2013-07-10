@@ -52,7 +52,7 @@ namespace MediaBrowser.Library
             catch (ArgumentException)
             {
                 Logging.Logger.ReportError("Invalid view type stored for {0}.  Setting to Poster.", folder.Name ?? folder.GetType().Name);
-                viewType.Chosen = "Poster";
+                viewType.Chosen = Localization.LocalizedStrings.Instance.GetString("PosterDispPref");
             }
 
             //set our dynamic choice options
@@ -89,7 +89,7 @@ namespace MediaBrowser.Library
             catch (ArgumentException)
             {
                 Logging.Logger.ReportError("Invalid sort by stored for {0}.  Setting to Name.", folder.Name ?? folder.GetType().Name);
-                sortOrders.Chosen = "Name";
+                sortOrders.Chosen = Localization.LocalizedStrings.Instance.GetString("NameDispPref");
             }
 
             ListenForChanges();
