@@ -1867,6 +1867,7 @@ namespace MediaBrowser
                                                                         Fields = MB3ApiRepository.StandardFields,
                                                                         Id = item.BaseItem.ApiId,
                                                                         Limit = 25
+                                                                        
                                                                     };
                                                     var items = Kernel.Instance.MB3ApiRepository.RetrieveSimilarItems(query, itemType).ToList();
                                                     // Preserve the order of scoring

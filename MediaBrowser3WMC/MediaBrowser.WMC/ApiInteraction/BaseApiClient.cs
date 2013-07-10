@@ -398,6 +398,10 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("Limit", query.Limit);
             dict.AddIfNotNullOrEmpty("UserId", query.UserId);
+            if (type == "Movies" && Config.Instance.ExcludeRemoteContentInSearch)
+            {
+                dict.Add("IncludeTrailers", false);
+            }
 
             if (query.Fields != null)
             {
