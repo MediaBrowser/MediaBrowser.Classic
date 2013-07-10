@@ -88,7 +88,7 @@ namespace MediaBrowser.Library
             }
             catch (ArgumentException)
             {
-                Logging.Logger.ReportError("Invalid sort by stored for {1}.  Setting to Name.", folder.Name ?? folder.GetType().Name);
+                Logging.Logger.ReportError("Invalid sort by stored for {0}.  Setting to Name.", folder.Name ?? folder.GetType().Name);
                 sortOrders.Chosen = "Name";
             }
 
