@@ -841,7 +841,7 @@ namespace MediaBrowser.Library.Persistance {
         }
 
         public DisplayPreferences RetrieveDisplayPreferences(DisplayPreferences dp) {
-                return displayRepo.RetrieveDisplayPreferences(dp);
+                return dp != null ? displayRepo.RetrieveDisplayPreferences(dp) : null;
         }
 
 
