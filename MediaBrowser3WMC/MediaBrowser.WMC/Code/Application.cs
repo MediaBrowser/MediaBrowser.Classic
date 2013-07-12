@@ -1497,6 +1497,25 @@ namespace MediaBrowser
                         //Async.Queue("Playstate Migration",() => Kernel.Instance.ItemRepository.MigratePlayState(oldRepo),15000); //delay to allow repo to load
                     }
                     break;
+
+                case "3.0.50.0":
+                    //Clear the image cache out
+                    Logger.ReportInfo("Clearing image cache...");
+                    try
+                    {
+                        Directory.Delete(ApplicationPaths.AppImagePath, true);
+                        Thread.Sleep(1000); //wait for the delete to fiinish
+                    }
+                    catch (Exception e) { Logger.ReportException("Error trying to clear image cache.", e); } //just log it
+                    try
+                    {
+                        Directory.CreateDirectory(ApplicationPaths.AppImagePath);
+                        Thread.Sleep(500); //wait for the directory to create
+                        Directory.CreateDirectory(ApplicationPaths.CustomImagePath);
+                    }
+                    catch (Exception e) { Logger.ReportException("Error trying to create image cache.", e); } //just log it
+                    break;
+
             }
             return true;
         }
