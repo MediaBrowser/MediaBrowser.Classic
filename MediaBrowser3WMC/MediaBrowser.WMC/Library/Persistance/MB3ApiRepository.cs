@@ -223,7 +223,7 @@ namespace MediaBrowser.Library.Persistance
                     item.BackdropImagePaths = new List<string>();
                     foreach (var bd in mb3Item.BackdropImageTags)
                     {
-                        item.BackdropImagePaths.Add(Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions { ImageType = ImageType.Backdrop, Tag = bd, ImageIndex = ndx}));
+                        item.BackdropImagePaths.Add(Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions { ImageType = ImageType.Backdrop, MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth, Tag = bd, ImageIndex = ndx}));
                         ndx++;
                     }
                 }
