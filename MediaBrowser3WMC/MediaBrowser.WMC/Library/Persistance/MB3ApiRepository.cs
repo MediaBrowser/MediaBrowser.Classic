@@ -190,27 +190,27 @@ namespace MediaBrowser.Library.Persistance
                         {
                             case ImageType.Primary:
 
-                                item.PrimaryImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth, CropWhitespace = false });
+                                item.PrimaryImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Logo:
-                                item.LogoImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth, CropWhitespace = false });
+                                item.LogoImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Art:
-                                item.ArtImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxArtWidth, CropWhitespace = false });
+                                item.ArtImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxArtWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Banner:
-                                item.BannerImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxBannerWidth, CropWhitespace = false });
+                                item.BannerImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxBannerWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Thumb:
-                                item.ThumbnailImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxThumbWidth, CropWhitespace = false });
+                                item.ThumbnailImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxThumbWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Disc:
-                                item.DiscImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxDiscWidth, CropWhitespace = false });
+                                item.DiscImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxDiscWidth, CropWhitespace = false });
                                 break;
 
                         }
@@ -223,7 +223,7 @@ namespace MediaBrowser.Library.Persistance
                     item.BackdropImagePaths = new List<string>();
                     foreach (var bd in mb3Item.BackdropImageTags)
                     {
-                        item.BackdropImagePaths.Add(Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions { ImageType = ImageType.Backdrop, MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth, Tag = bd, ImageIndex = ndx}));
+                        item.BackdropImagePaths.Add(Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions { ImageType = ImageType.Backdrop, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth, Tag = bd, ImageIndex = ndx}));
                         ndx++;
                     }
                 }

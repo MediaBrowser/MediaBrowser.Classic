@@ -98,6 +98,7 @@ namespace MediaBrowser
         public int MaxLogoWidth = 400;
         public int MaxArtWidth = 400;
         public int MaxDiscWidth = 300;
+        public int JpgImageQuality = 90;
 
         public enum ExternalPlayerLaunchType
         {
