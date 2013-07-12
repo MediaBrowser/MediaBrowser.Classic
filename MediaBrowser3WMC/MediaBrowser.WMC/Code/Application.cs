@@ -1498,7 +1498,7 @@ namespace MediaBrowser
                     }
                     break;
 
-                case "3.0.50.0":
+                case "3.0.51.0":
                     //Clear the image cache out
                     Logger.ReportInfo("Clearing image cache...");
                     try
