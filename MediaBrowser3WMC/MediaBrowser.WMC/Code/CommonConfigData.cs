@@ -91,7 +91,7 @@ namespace MediaBrowser
         public string UserTileColor = "DarkBlue";
         public string LoginBgColor = "DarkGray";
 
-        public int MaxPrimaryWidth = 400;
+        public int MaxPrimaryWidth = 350;
         public int MaxThumbWidth = 500;
         public int MaxBannerWidth = 500;
         public int MaxBackgroundWidth = 1920;
