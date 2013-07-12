@@ -645,7 +645,6 @@ namespace MediaBrowser.Library {
                 return;
             }
 
-
             //   the only way to get the binder to update the underlying children is to 
             //   change the refrence to the property bound, otherwise the binder thinks 
             //   its all fine a dandy and will not update the children 

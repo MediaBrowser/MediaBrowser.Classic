@@ -174,6 +174,10 @@
         <Condition>VersionNT = 602</Condition>
         <File Id="Configurator.exe.config" Name="Configurator.exe.config" Source="..\Windows 8.config" CompanionFile="Configurator.exe" Checksum="yes" Vital="yes"/>
       </Component>
+      <Component Id="Configurator81.exe.config" Guid="7A1BCAA0-0B5F-4323-BCAA-77196C24E305" DiskId="1">
+        <Condition>VersionNT = 603</Condition>
+        <File Id="Configurator81.exe.config" Name="Configurator.exe.config" Source="..\Windows 8.1.config" CompanionFile="Configurator.exe" Checksum="yes" Vital="yes"/>
+      </Component>
       <Component Id="MediaBrowser.dll" Guid="3D581843-2412-458d-AF79-29845B277677" DiskId="1">
 				<File Id="MediaBrowser.dll" Name="MediaBrowser.dll" KeyPath="yes" Source="..\MediaBrowser3WMC\Mediabrowser.WMC\bin\$(var.BuildType)\MediaBrowser.dll" Checksum="yes" Vital="yes" Assembly=".net"/>
 			</Component>
@@ -191,6 +195,10 @@
       </Component>
       <Component Id="MBMigrate.exe" Guid="D66E860A-24F2-44A5-B9E1-BD24BF3D7146" DiskId="1">
         <File Id="MBMigrate.exe" Name="MBMigrate.exe" Source="..\MBMigrate\bin\$(var.BuildType)\MBMigrate.exe" Checksum="no"/>
+      </Component>
+      <Component Id="MBMigrate81.exe.config" Guid="977CC054-D24E-47D1-B4E1-2916263BA60D" DiskId="1">
+        <Condition>VersionNT = 603</Condition>
+        <File Id="MBMigrate81.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.1.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
       </Component>
       <Component Id="MBMigrate.exe.config" Guid="46359E77-B137-4DB2-B2CB-E38CF5F9447F" DiskId="1">
         <Condition>VersionNT = 602</Condition>
@@ -249,9 +257,11 @@
 		<Feature Id="APPROOTFEATURE" Title="MediaBrowser" Level="1">
       <ComponentRef Id="Configurator.exe" />
       <ComponentRef Id="Configurator.exe.config" />
+      <ComponentRef Id="Configurator81.exe.config" />
       <ComponentRef Id="MediaBrowser.dll" />
       <ComponentRef Id="MBMigrate.exe" />
       <ComponentRef Id="MBMigrate.exe.config" />
+      <ComponentRef Id="MBMigrate81.exe.config" />
       <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
       <ComponentRef Id="ServiceStack.Text.dll" />
