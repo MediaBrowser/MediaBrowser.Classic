@@ -143,6 +143,13 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        protected string GetImageUrl(BaseItem item, ImageOptions options)
+        {
+            return item is MusicGenre ? Kernel.ApiClient.GetMusicGenreImageUrl(item.Name, options) :
+                                    item is Genre ? Kernel.ApiClient.GetGenreImageUrl(item.Name, options) :
+                                                Kernel.ApiClient.GetImageUrl(item.ApiId, options);
+        }
+
         protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
         {
             var item = InstantiateItem(itemType);
@@ -179,33 +186,31 @@ namespace MediaBrowser.Library.Persistance
                 {
                     foreach (var tag in mb3Item.ImageTags)
                     {
-                        var url = item is MusicGenre ? Kernel.ApiClient.GetMusicGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
-                                    item is Genre ? Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = tag.Key, Tag = tag.Value}) :
-                                                Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions {ImageType = tag.Key, Tag = tag.Value, CropWhitespace = false});
                         switch (tag.Key)
                         {
                             case ImageType.Primary:
-                                item.PrimaryImagePath = url;
+
+                                item.PrimaryImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Logo:
-                                item.LogoImagePath = url;
+                                item.LogoImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Art:
-                                item.ArtImagePath = url;
+                                item.ArtImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxArtWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Banner:
-                                item.BannerImagePath = url;
+                                item.BannerImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxBannerWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Thumb:
-                                item.ThumbnailImagePath = url;
+                                item.ThumbnailImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxThumbWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Disc:
-                                item.DiscImagePath = url;
+                                item.DiscImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, MaxWidth = Kernel.Instance.CommonConfigData.MaxDiscWidth, CropWhitespace = false });
                                 break;
 
                         }

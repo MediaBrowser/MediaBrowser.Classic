@@ -91,6 +91,14 @@ namespace MediaBrowser
         public string UserTileColor = "DarkBlue";
         public string LoginBgColor = "DarkGray";
 
+        public int MaxPrimaryWidth = 300;
+        public int MaxThumbWidth = 500;
+        public int MaxBannerWidth = 500;
+        public int MaxBackgroundWidth = 1920;
+        public int MaxLogoWidth = 400;
+        public int MaxArtWidth = 400;
+        public int MaxDiscWidth = 300;
+
         public enum ExternalPlayerLaunchType
         {
             CommandLine = 0,
