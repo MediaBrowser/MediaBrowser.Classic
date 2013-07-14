@@ -246,7 +246,7 @@ namespace MediaBrowser.Library.Persistance
                 var video = item as Video;
                 if (video != null && video.Path != null)
                 {
-                    video.ContainsTrailers = mb3Item.HasTrailer;
+                    video.ContainsTrailers = mb3Item.LocalTrailerCount > 0;
                     if (mb3Item.Video3DFormat != null)
                     {
                         video.VideoFormat = mb3Item.Video3DFormat == Video3DFormat.FullSideBySide || mb3Item.Video3DFormat == Video3DFormat.HalfSideBySide ? "Sbs3D" : "Digital3D";
