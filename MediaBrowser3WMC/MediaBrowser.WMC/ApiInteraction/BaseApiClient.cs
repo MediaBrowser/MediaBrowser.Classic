@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using MediaBrowser.Library;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;
@@ -141,7 +142,7 @@ namespace MediaBrowser.ApiInteraction
                 return;
             }
 
-            var header = string.Format("UserId=\"{0}\", Client=\"{1}\"", CurrentUserId.Value, ClientType);
+            var header = string.Format("UserId=\"{0}\", Client=\"{1}\", Version=\"{2}\"", CurrentUserId.Value, ClientType, Kernel.Instance.VersionStr);
 
             header += string.Format(", DeviceId=\"{0}\"", DeviceId);
             
