@@ -467,7 +467,7 @@ namespace MediaBrowser
                     break;
 
                 case PlaystateCommand.Seek:
-                    currentPlaybackController.Seek(args.Request.SeekPosition ?? 0);
+                    currentPlaybackController.Seek(args.Request.SeekPositionTicks ?? 0);
                     break;
             }
         }
