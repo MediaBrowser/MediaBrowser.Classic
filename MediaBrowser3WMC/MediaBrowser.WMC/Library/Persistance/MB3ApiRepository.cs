@@ -431,8 +431,8 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id,
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.UserData, ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, ItemFields.OriginalRunTimeTicks, 
-                                                            ItemFields.MediaStreams, ItemFields.DisplayMediaType, ItemFields.SortName, ItemFields.SeriesInfo, ItemFields.Taglines,  }
+                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, ItemFields.OriginalRunTimeTicks, 
+                                                            ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
                                                      });
 
             return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
@@ -441,8 +441,8 @@ namespace MediaBrowser.Library.Persistance
         public static ItemFields[] StandardFields = new[]
                                                         {
                                                             ItemFields.Overview, ItemFields.Genres, ItemFields.People, ItemFields.Studios, ItemFields.OriginalRunTimeTicks, 
-                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.UserData, ItemFields.DateCreated, ItemFields.Taglines, 
-                                                            ItemFields.MediaStreams, ItemFields.SeriesInfo, ItemFields.ParentId, ItemFields.ItemCounts, 
+                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.ItemCounts, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)
