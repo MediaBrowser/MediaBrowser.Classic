@@ -262,7 +262,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     if (mb3Item.MediaType == Model.Entities.MediaType.Video)
                     {
-                        if (mb3Item.VideoType == VideoType.VideoFile)
+                        if (mb3Item.VideoType == VideoType.VideoFile && media.Path != null)
                         {
                             media.MediaType = MediaTypeResolver.DetermineType(media.Path);
                         }

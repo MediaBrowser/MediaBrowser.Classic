@@ -7,6 +7,9 @@ using System.IO;
 namespace MediaBrowser.Library {
     public static class MediaTypeResolver {
         public static MediaType DetermineType(string path) {
+
+            if (path == null) return MediaType.Unknown;
+
             path = path.ToLower();
 
             if (path.Contains("video_ts"))
