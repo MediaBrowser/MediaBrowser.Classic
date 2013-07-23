@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
+using MediaBrowser.Library;
+using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Logging;
@@ -132,6 +135,61 @@ namespace MediaBrowser.ApiInteraction.WebSocket
             }
 
             Send("Context", string.Join("|", vals.ToArray()));
+        }
+
+        /// <summary>
+        /// Sends the server a message indicating the play state and position of the supplied item
+        /// </summary>
+        /// <param name="itemId">The current item id (if any)</param>
+        /// <param name="positionTicks"></param>
+        /// <param name="isPaused"></param>
+        /// <returns></returns>
+        public void SendPlaystateMessage(string itemId, long positionTicks, bool isPaused = false)
+        {
+            var vals = new List<string>
+                {
+                    itemId ?? string.Empty, 
+                    positionTicks.ToString(CultureInfo.InvariantCulture), 
+                    isPaused.ToString()
+                };
+
+
+            Send("PlaybackProgress", string.Join("|", vals.ToArray()));
+        }
+
+        /// <summary>
+        /// Sends the server a message indicating that playback has started for the supplied item
+        /// </summary>
+        /// <param name="itemId">The current item id (if any)</param>
+        /// <param name="positionTicks"></param>
+        /// <param name="isPaused"></param>
+        /// <returns></returns>
+        public void SendPlaybackStarted(string itemId)
+        {
+
+            Send("PlaybackStart", itemId);
+        }
+
+        /// <summary>
+        /// Sends the server a message indicating that playback has stopped for the supplied item
+        /// </summary>
+        /// <param name="itemId">The current item id (if any)</param>
+        /// <param name="positionTicks"></param>
+        /// <returns></returns>
+        public PlaybackStatus SendPlaybackStopped(string itemId, long positionTicks)
+        {
+
+            var vals = new List<string>
+                {
+                    itemId ?? string.Empty, 
+                    positionTicks.ToString(CultureInfo.InvariantCulture), 
+                };
+
+            Send("PlaybackStopped", string.Join("|", vals.ToArray()));
+
+            //Now we have to get the updated playstate from the server.  The only way to do this now is re-retrieve the whole item and grab the playstate
+            var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Video;
+            return updated != null ? updated.PlaybackStatus : null;
         }
     }
 }

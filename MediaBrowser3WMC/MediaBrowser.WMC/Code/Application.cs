@@ -136,6 +136,22 @@ namespace MediaBrowser
                 Async.Queue("OnCurrentItemChanged", () => _CurrentItemChanged(this, new GenericEventArgs<Item>() { Item = CurrentItem })); 
             }
         }
+
+        public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false)
+        {
+            WebSocket.SendPlaystateMessage(id, positionTicks, isPaused);
+        }
+
+        public void ReportPlaybackStart(string id)
+        {
+            WebSocket.SendPlaybackStarted(id);
+        }
+
+        public PlaybackStatus ReportPlaybackStopped(string id, long positionTicks)
+        {
+            return WebSocket.SendPlaybackStopped(id, positionTicks);
+        }
+
         #endregion
 
         #region NavigatedInto EventHandler
@@ -458,8 +474,11 @@ namespace MediaBrowser
             switch (args.Request.Command)
             {
                 case PlaystateCommand.Pause:
-                case PlaystateCommand.Unpause:
                     currentPlaybackController.Pause();
+                    break;
+
+                case PlaystateCommand.Unpause:
+                    currentPlaybackController.UnPause();
                     break;
 
                 case PlaystateCommand.Stop:
@@ -2479,11 +2498,11 @@ namespace MediaBrowser
         /// <summary>
         /// All we do now is check in with the server and let it figure everything else out
         /// </summary>
-        public void UpdatePlayState(Media media, PlaybackStatus playstate, int playlistPosition, long positionTicks, long? duration, DateTime datePlayed, bool saveToDataStore)
+        public void UpdatePlayState(Media media, PlaybackStatus playstate, bool isPaused, bool saveToDataStore)
         {
             if (saveToDataStore)
             {
-                Kernel.Instance.SavePlayState(media, playstate);
+                ReportPlaybackProgress(media.ApiId, playstate.PositionTicks, isPaused);
             }
         }
     }

@@ -359,6 +359,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Playing)
             {
                 PauseInternal();
+                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, true);
             }
         }
 
@@ -367,6 +368,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Paused)
             {
                 UnPauseInternal();
+                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, false);
             }
         }
 

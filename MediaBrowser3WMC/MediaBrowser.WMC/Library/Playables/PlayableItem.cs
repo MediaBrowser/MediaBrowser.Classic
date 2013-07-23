@@ -78,7 +78,7 @@ namespace MediaBrowser.Library.Playables
                 try
                 {
                     Logger.ReportVerbose("Reporting stopped to server for {0}",media.Name);
-                    var newStatus = Kernel.ApiClient.ReportPlaybackStopped(media.ApiId, Kernel.CurrentUser.Id, pos);
+                    var newStatus = Application.CurrentInstance.ReportPlaybackStopped(media.ApiId, pos);
 
                     // Update our status with what was returned from server if valid
                     if (newStatus != null)
@@ -739,7 +739,7 @@ namespace MediaBrowser.Library.Playables
             if (CurrentMedia != null)
             {
                 CurrentMedia.PlaybackStatus.PositionTicks = args.Position;
-                Application.CurrentInstance.UpdatePlayState(CurrentMedia, CurrentMedia.PlaybackStatus, controller.GetPlayableFiles(CurrentMedia).ToList().IndexOf(CurrentFile), args.Position, args.DurationFromPlayer, PlaybackStartTime, EnablePlayStateSaving);
+                Application.CurrentInstance.UpdatePlayState(CurrentMedia, CurrentMedia.PlaybackStatus, controller.IsPaused, EnablePlayStateSaving);
             }
         }
 
@@ -766,7 +766,7 @@ namespace MediaBrowser.Library.Playables
                     media.PlaybackStatus.PositionTicks = currentPositionTicks = args.Position;
                 }
 
-                Application.CurrentInstance.UpdatePlayState(media, media.PlaybackStatus, currentPlaylistPosition, currentPositionTicks, args.DurationFromPlayer, PlaybackStartTime, EnablePlayStateSaving);
+                Application.CurrentInstance.UpdatePlayState(media, media.PlaybackStatus, controller.IsPaused, EnablePlayStateSaving);
 
                 if (isCurrentMedia)
                 {
@@ -791,7 +791,7 @@ namespace MediaBrowser.Library.Playables
                         Logger.ReportVerbose("Marking watched: " + media.Name);
                     }
 
-                    Application.CurrentInstance.UpdatePlayState(media, media.PlaybackStatus, 0, 0, null, PlaybackStartTime, EnablePlayStateSaving);
+                    Application.CurrentInstance.UpdatePlayState(media, media.PlaybackStatus, false, EnablePlayStateSaving);
                 }
             }
         }

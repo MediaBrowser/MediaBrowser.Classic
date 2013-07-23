@@ -891,9 +891,10 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="itemId">The item id.</param>
         /// <param name="userId">The user id.</param>
         /// <param name="positionTicks">The position ticks.</param>
+        /// <param name="isPaused"></param>
         /// <returns>Task{UserItemDataDto}.</returns>
         /// <exception cref="System.ArgumentNullException">itemId</exception>
-        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks)
+        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks, bool isPaused)
         {
             if (string.IsNullOrEmpty(itemId))
             {

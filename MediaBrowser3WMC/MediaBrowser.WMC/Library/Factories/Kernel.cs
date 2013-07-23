@@ -1092,18 +1092,12 @@ namespace MediaBrowser.Library {
         /// <summary>
         /// Persists a PlaybackStatus object
         /// </summary>
-        public void SavePlayState(PlaybackStatus playstate)
-        {
-            SavePlayState(null, playstate);
-        }
-
-        /// <summary>
-        /// Persists a PlaybackStatus object
-        /// </summary>
         /// <param name="media">The item it belongs to. This can be null, but it's used to notify listeners of PlayStateSaved which item it belongs to.</param>
-        public void SavePlayState(BaseItem media, PlaybackStatus playstate)
+        /// <param name="playstate"></param>
+        /// <param name="isPaused"></param>
+        public void SavePlayState(BaseItem media, PlaybackStatus playstate, bool isPaused = false)
         {
-            Kernel.Instance.MB3ApiRepository.SavePlayState(playstate);
+            Application.CurrentInstance.ReportPlaybackProgress(playstate.Id.ToString(), playstate.PositionTicks, isPaused);
             OnPlayStateSaved(media, playstate);
         }
 

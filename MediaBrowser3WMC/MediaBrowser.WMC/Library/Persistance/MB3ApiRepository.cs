@@ -548,11 +548,6 @@ namespace MediaBrowser.Library.Persistance
             throw new NotImplementedException();
         }
 
-        public void SavePlayState(PlaybackStatus playState)
-        {
-            Kernel.ApiClient.ReportPlaybackProgress(playState.Id.ToString(), Kernel.CurrentUser.Id, playState.PositionTicks);
-        }
-
         public void SaveDisplayPreferences(string prefsId, Model.Entities.DisplayPreferences prefs)
         {
             Kernel.ApiClient.UpdateDisplayPreferences(prefsId, prefs);

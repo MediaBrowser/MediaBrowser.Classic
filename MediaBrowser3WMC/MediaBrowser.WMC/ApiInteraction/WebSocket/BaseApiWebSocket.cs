@@ -185,7 +185,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                     Request = _jsonSerializer.DeserializeFromString<PlayRequest>(message.Data.ToString())
                 });
             }
-            else if (string.Equals(message.MessageType, "UpdatePlaystate"))
+            else if (string.Equals(message.MessageType, "Playstate"))
             {
                 FireEvent(PlaystateCommand, this, new PlaystateRequestEventArgs
                 {

@@ -374,7 +374,7 @@ namespace MediaBrowser
                 {
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
-                    if (Playable.HasMediaItems) Kernel.ApiClient.ReportPlaybackStart(Playable.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id);
+                    if (Playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId);
                 }
                 else
                 {
@@ -388,7 +388,7 @@ namespace MediaBrowser
                 var diff = (DateTime.Now - _LastTransportUpdateTime).TotalMilliseconds;
 
                 // Only cancel out Position reports
-                if (diff < 10000 && diff >= 0)
+                if (diff < 5000 && diff >= 0)
                 {
                     return;
                 }
