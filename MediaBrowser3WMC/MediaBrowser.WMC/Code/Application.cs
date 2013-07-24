@@ -2135,6 +2135,13 @@ namespace MediaBrowser
                 return;
             }
 
+            //or if the item is offline
+            if (item.BaseItem.LocationType == LocationType.Offline)
+            {
+                MessageBox("Item is off-line.  Cannot Play.");
+                return;
+            }
+
             if (!item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
                 Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);

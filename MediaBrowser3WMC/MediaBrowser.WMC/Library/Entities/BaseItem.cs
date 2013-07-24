@@ -13,6 +13,7 @@ using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -20,6 +21,8 @@ namespace MediaBrowser.Library.Entities {
 
     public class BaseItem
     {
+
+        public LocationType LocationType { get; set; }
 
         public bool FullDetailsLoaded = false;
 
