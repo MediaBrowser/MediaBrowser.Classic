@@ -2138,7 +2138,7 @@ namespace MediaBrowser
             //or if the item is offline
             if (item.BaseItem.LocationType == LocationType.Offline)
             {
-                MessageBox("Item is off-line.  Cannot Play.");
+                DisplayDialog("Item is off-line.", "Cannot Play");
                 return;
             }
 
