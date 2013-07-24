@@ -204,7 +204,7 @@ namespace MediaBrowser.ApiInteraction
         /// <returns>Task{UserDto[]}.</returns>
         public UserDto[] GetAllUsers()
         {
-            var url = GetApiUrl("Users/Public");
+            var url = GetApiUrl("Users");
 
             using (var stream = GetSerializedStream(url))
             {
