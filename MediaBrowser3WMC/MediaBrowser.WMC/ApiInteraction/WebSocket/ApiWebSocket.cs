@@ -187,8 +187,6 @@ namespace MediaBrowser.ApiInteraction.WebSocket
 
             Send("PlaybackStopped", string.Join("|", vals.ToArray()));
             Logger.ReportVerbose("Sent stopped websocket message for {0}", itemId);
-            Logger.ReportVerbose("Trying fallback reporting via http as well...");
-            return Kernel.ApiClient.ReportPlaybackStopped(itemId, Kernel.CurrentUser.Id, positionTicks);
             //Now we have to get the updated playstate from the server.  The only way to do this now is re-retrieve the whole item and grab the playstate
             var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Video;
             return updated != null ? updated.PlaybackStatus : null;
