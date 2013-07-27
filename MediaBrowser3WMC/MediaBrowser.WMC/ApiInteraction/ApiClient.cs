@@ -190,7 +190,12 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("prefsId");
             }
 
-            var url = GetApiUrl("DisplayPreferences/" + prefsId);
+            var dict = new QueryStringDictionary();
+
+            dict.AddIfNotNull("userId", Kernel.CurrentUser.Id);
+            dict.Add("client", "MBC");
+
+            var url = GetApiUrl("DisplayPreferences/" + prefsId, dict);
 
             using (var stream = GetSerializedStream(url))
             {
@@ -1126,7 +1131,12 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("displayPreferences");
             }
 
-            var url = GetApiUrl("DisplayPreferences/" + prefsId);
+            var dict = new QueryStringDictionary();
+
+            dict.AddIfNotNull("userId", Kernel.CurrentUser.Id);
+            dict.Add("client", "MBC");
+
+            var url = GetApiUrl("DisplayPreferences/" + prefsId, dict);
 
             Post<DisplayPreferences, EmptyRequestResult>(url, displayPreferences);
         }
