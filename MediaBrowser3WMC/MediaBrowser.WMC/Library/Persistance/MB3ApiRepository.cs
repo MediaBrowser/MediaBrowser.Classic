@@ -315,7 +315,7 @@ namespace MediaBrowser.Library.Persistance
                                                                          Width = vidStream != null ? vidStream.Width ?? 0 : 0,
                                                                          Height = vidStream != null ? vidStream.Height ?? 0 : 0,
                                                                          Subtitles = subtStream != null ? subtStream.Language : "",
-                                                                         RunTime = runTimeTicks != null ? Convert.ToInt32(runTimeTicks / TimeSpan.TicksPerMinute) : 0
+                                                                         RunTime = runTimeTicks != null ? ConvertToTicksToMinutes(runTimeTicks) : 0
                                                                      }
 
                                               };
@@ -335,7 +335,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime =  runTimeTicks != null ? (int?)Convert.ToInt32(runTimeTicks/TimeSpan.TicksPerMinute) : null;
+                    show.RunningTime =  runTimeTicks != null ? (int?)ConvertToTicksToMinutes(runTimeTicks) : null;
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
@@ -390,6 +390,21 @@ namespace MediaBrowser.Library.Persistance
             item.FillCustomValues(mb3Item);
 
             return item;
+        }
+
+        protected int ConvertToTicksToMinutes(long? ticks)
+        {
+            if (ticks == null) return 0;
+
+            try
+            {
+                return Convert.ToInt32(ticks/TimeSpan.TicksPerMinute);
+            }
+            catch (OverflowException e)
+            {
+                Logger.ReportException("Error converting tick value: {0}", e, ticks);
+                return 0;
+            }
         }
 
         protected bool IsRippedMedia(VideoType type)
