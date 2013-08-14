@@ -917,6 +917,7 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary();
             dict.AddIfNotNull("positionTicks", positionTicks);
+            dict.AddIfNotNull("isPaused", isPaused);
 
             var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId + "/Progress", dict);
 
