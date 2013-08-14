@@ -676,10 +676,10 @@ namespace MediaBrowser.Library {
                 return typeof(Kernel).Assembly;
             }
             else
-            if (args.Name.StartsWith("MediaBrowser.Model.net35,"))
+            if (args.Name.StartsWith("MediaBrowser.Model,"))
             {
-                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "Newtonsoft.Json.dll"));
-                return _modelAssembly ?? (_modelAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "MediaBrowser.Model.net35.dll")));
+                Logger.ReportInfo("Resolving " + args.Name + " to " + Path.Combine(ApplicationPaths.AppProgramPath, "MediaBrowser.Model.dll"));
+                return _modelAssembly ?? (_modelAssembly = System.Reflection.Assembly.LoadFile(System.IO.Path.Combine(ApplicationPaths.AppProgramPath, "MediaBrowser.Model.dll")));
             }
             else
             if (args.Name.StartsWith("Newtonsoft.Json,"))
