@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.57.0" ?>
-<?define Property_ProductCode = "5F7EB0D5-061E-4626-A1C2-09A41839C373" ?>
+<?define Property_ProductVersion = "3.0.58.0" ?>
+<?define Property_ProductCode = "001874ED-A065-4A17-A093-F2BD034EC659" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -337,7 +337,7 @@
     <!-- The InstallExecuteSequence table describes the order that actions will be executed during       -->
 		<!-- installation, repair and uninstall of this product.                                             -->
 		<InstallExecuteSequence>
-      <Custom Action="KillSvc" Before="InstallValidate">Installed</Custom>
+      <!--<Custom Action="KillSvc" Before="InstallValidate">Installed</Custom>-->
       <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
 				<![CDATA[NEWERVERSIONDETECTED]]>
 			</Custom>
