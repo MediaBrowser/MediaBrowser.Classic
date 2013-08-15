@@ -145,8 +145,8 @@ namespace MediaBrowser
 
         public void ReportPlaybackStart(string id)
         {
-            //Kernel.ApiClient.ReportPlaybackStart(id, Kernel.CurrentUser.Id);
-            WebSocket.SendPlaybackStarted(id);
+            Kernel.ApiClient.ReportPlaybackStart(id, Kernel.CurrentUser.Id);
+            //WebSocket.SendPlaybackStarted(id);
         }
 
         public PlaybackStatus ReportPlaybackStopped(string id, long positionTicks)
