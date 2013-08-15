@@ -37,7 +37,7 @@ namespace MediaBrowser.Library.Entities {
                     StudioCache[dto.Name] = new Studio
                                                 {
                                                     Name = dto.Name,
-                                                    PrimaryImagePath = dto.HasPrimaryImage ? Kernel.ApiClient.GetImageUrl("/Studios/" + dto.Name + "/Images/Primary", new ImageOptions { Tag = dto.PrimaryImageTag }, new QueryStringDictionary()) : null
+                                                    PrimaryImagePath = dto.HasPrimaryImage ? Kernel.ApiClient.GetImageUrl("Studios/" + dto.Name + "/Images/Primary", new ImageOptions { Tag = dto.PrimaryImageTag }, new QueryStringDictionary()) : null
                                                 };
                 }
             }
