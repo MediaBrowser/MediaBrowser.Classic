@@ -139,17 +139,20 @@ namespace MediaBrowser
 
         public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false)
         {
-            WebSocket.SendPlaystateMessage(id, positionTicks, isPaused);
+            Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused);
+            //WebSocket.SendPlaystateMessage(id, positionTicks, isPaused);
         }
 
         public void ReportPlaybackStart(string id)
         {
+            //Kernel.ApiClient.ReportPlaybackStart(id, Kernel.CurrentUser.Id);
             WebSocket.SendPlaybackStarted(id);
         }
 
         public PlaybackStatus ReportPlaybackStopped(string id, long positionTicks)
         {
-            return WebSocket.SendPlaybackStopped(id, positionTicks);
+            return Kernel.ApiClient.ReportPlaybackStopped(id, Kernel.CurrentUser.Id, positionTicks);
+            //return WebSocket.SendPlaybackStopped(id, positionTicks);
         }
 
         #endregion
@@ -486,7 +489,8 @@ namespace MediaBrowser
                     break;
 
                 case PlaystateCommand.Seek:
-                    currentPlaybackController.Seek(args.Request.SeekPositionTicks ?? 0);
+                    Logger.ReportVerbose("Got seek message: {0}", args.Request.SeekPositionTicks);
+                    currentPlaybackController.Seek(args.Request.SeekPositionTicks ?? currentPlaybackController.CurrentFilePositionTicks);
                     break;
             }
         }
