@@ -699,7 +699,7 @@ namespace MediaBrowser.Code.ModelItems
 
             while (PlayState != PlaybackControllerPlayState.Idle)
             {
-                Logger.ReportVerbose("Still waiting for {0} to stop", ControllerName);
+                Logger.ReportVerbose("Still waiting for {0} to stop.  Reports: {1}", ControllerName, PlayState);
                 System.Threading.Thread.Sleep(250);
             }
         }
