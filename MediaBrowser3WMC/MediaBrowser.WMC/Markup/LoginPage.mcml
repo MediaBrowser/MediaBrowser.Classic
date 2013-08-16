@@ -154,7 +154,7 @@
         </Conditions>
         <Actions>
           <Set Target="[Bg.Scale]" Value="[FocusZoom]" />
-          <!--<Set Target="[TileShadow.Visible]" Value="true" />-->
+          <Set Target="[TileShadow.Visible]" Value="true" />
           <Set Target="[ItemPoster.Alpha]" Value="1" />
         </Actions>
       </Changed>
@@ -217,11 +217,11 @@
             </LayoutInput>
           </Graphic>
           <ColorFill Name="TileBg" Content="[BGColor]" Layout="Fill" />
-          <!--<Graphic Name="TileShadow" Content="image://me:Frame" MaintainAspectRatio="true" ColorFilter="White" CenterPointPercent="0.5,0.5,0.5" Alpha=".8"  Visible="false">
+          <Graphic Name="TileShadow" Content="image://i:DiamondListFocus" ColorFilter="White" CenterPointPercent="0.5,0.5,0.5" Alpha=".8"  Visible="false">
             <LayoutInput>
-              <FormLayoutInput Left="Parent,0,-1" Right="Parent,1,1" Top="Parent,0,-1" Bottom="Parent,1,1" ContributesToHeight="false" ContributesToWidth="false" />
+              <FormLayoutInput Left="Parent,0,-5" Right="Parent,1,5" Top="Parent,0,-5" Bottom="Parent,1,5" ContributesToHeight="false" ContributesToWidth="false" />
             </LayoutInput>
-          </Graphic>-->
+          </Graphic>
           <Panel Layout="Fill" />
         </Children>
         <Animations>
