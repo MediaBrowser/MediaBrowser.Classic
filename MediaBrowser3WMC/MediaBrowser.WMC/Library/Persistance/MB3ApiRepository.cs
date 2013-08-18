@@ -380,14 +380,14 @@ namespace MediaBrowser.Library.Persistance
                     season.SeasonNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
                 }
 
+                // Finally, any custom values
+                item.FillCustomValues(mb3Item);
             }
             else
             {
                 Logger.ReportWarning("Ignoring invalid item " + itemType + ".  Would not instantiate in current environment.");
             }
 
-            // Finally, any custom values
-            item.FillCustomValues(mb3Item);
 
             return item;
         }
