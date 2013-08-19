@@ -132,7 +132,14 @@ namespace MediaBrowser.Library.Persistance
                 }
                 else
                 {
-                    return Serializer.Instantiate<BaseItem>(itemType);
+                    if (itemType.EndsWith("Folder", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new Folder();
+                    }
+                    else
+                    {
+                        return Serializer.Instantiate<BaseItem>(itemType);
+                    }
                 }
             }
             catch (Exception e)
