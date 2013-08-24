@@ -323,6 +323,7 @@ namespace MediaBrowser
         public int AutoScrollDelay = 8; //Delay to Start and Reset scrolling text
         public int AutoScrollSpeed = 1; //Scroll Speed for scrolling Text
 
+        public bool TreatWatchedAsInProgress = false;
 
         public bool EnableScreenSaver = true; //enable default screen saver functionality
         public int ScreenSaverTimeOut = 10; //minutes of inactivity for screen saver to kick in

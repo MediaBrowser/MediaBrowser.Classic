@@ -258,6 +258,12 @@ namespace MediaBrowser
             set { if (this.Data.RememberIndexing != value) { this.Data.RememberIndexing = value; Save(); FirePropertyChanged("RememberIndexing"); } }
         }
 
+        public bool TreatWatchedAsInProgress
+        {
+            get { return this.Data.TreatWatchedAsInProgress; }
+            set { if (this.Data.TreatWatchedAsInProgress != value) { this.Data.TreatWatchedAsInProgress = value; Save(); Application.CurrentInstance.ClearAllQuickLists(); FirePropertyChanged("TreatWatchedAsInProgress"); } }
+        }
+
         public bool ShowIndexWarning
         {
             get { return this.Data.ShowIndexWarning; }
@@ -633,7 +639,11 @@ namespace MediaBrowser
 
         public bool EnableMouseHook
         {
-            get { return this.CommonData.EnableMouseHook; }
+            get
+            {
+                return false; // try eliminating this...
+                //return this.CommonData.EnableMouseHook; 
+            }
             set { if (this.CommonData.EnableMouseHook != value) { this.CommonData.EnableMouseHook = value; Save(); FirePropertyChanged("EnableMouseHook"); } }
         }
 

@@ -312,7 +312,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        ExcludeItemTypes = RalExcludeTypes,
                                                                                        IncludeItemTypes = RalIncludeTypes,
                                                                                        Fields = MB3ApiRepository.StandardFields,
-                                                                                       Filters = (new[] {ItemFilter.IsPlayed,}).Concat(AdditionalRalFilters).ToArray(),
+                                                                                       Filters = (new[] {Config.Instance.TreatWatchedAsInProgress ? ItemFilter.IsResumable : ItemFilter.IsPlayed, }).Concat(AdditionalRalFilters).ToArray(),
                                                                                        SortBy = new[] {ItemSortBy.DatePlayed},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
                                                                                    }).ToList();

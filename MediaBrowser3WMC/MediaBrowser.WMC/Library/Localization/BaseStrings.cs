@@ -87,6 +87,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowMusicGenresCollectionConfigDesc = "Show a top level collection of all music by genre. Restart MBC to see changes.";
         public string ShowNewItemNotificationConfigDesc = "Show a notification window when new items are added.";
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
+        public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an In-Progress list instead.  Anything resumable will appear instead of fully-watched items.";
 
 
         //Config Panel
@@ -184,6 +185,7 @@ namespace MediaBrowser.Library.Localization
         public string PluginClassConfig = "Plugin Update Level";
         public string SystemClassConfig = "System Update Level";
         public string CheckForUpdateConfig = "Check for Update";
+        public string TreatWatchedAsInProgressConfig = "Make 'Watched' list in-progress";
 
 
         //EHS        

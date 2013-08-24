@@ -2027,6 +2027,15 @@ namespace MediaBrowser
         public void RelockPC()
         {}
 
+        public void ClearAllQuickLists()
+        {
+            foreach (var folder in RootFolder.Children.OfType<Folder>())
+            {
+                folder.ResetQuickList();
+                folder.OnQuickListChanged(null);
+            }
+        }
+
         /// <summary>
         /// Themes can use this to disable playback in expired mode.
         /// </summary>
@@ -2239,27 +2248,6 @@ namespace MediaBrowser
             Logger.ReportVerbose("Firing Application.PlaybackFinished for: " + playableItem.DisplayName);
 
             OnPlaybackFinished(playableItem);
-        }
-
-        /// <summary>
-        /// Resets last played item for the top level parents of the played media 
-        /// </summary>
-        private void AddNewlyWatched(PlayableItem playableItem)
-        {
-            var playedMediaItems = playableItem.PlayedMediaItems;
-
-            if (playedMediaItems.Any())
-            {
-                // get the top parents of all items that were played
-                var topParents = playedMediaItems.Select(i => i.TopParentID).Distinct();
-                // and reset the watched list for each of them
-                foreach (FolderModel folderModel in RootFolderModel.Children.Where(f => topParents.Contains(f.Id)))
-                {
-                    folderModel.AddNewlyWatched(ItemFactory.Instance.Create(playedMediaItems.Where(i => i.TopParentID == folderModel.Id).LastOrDefault()));
-                }
-                //I don't think anyone actually uses this but just in case...
-                this.lastPlayed = ItemFactory.Instance.Create(playedMediaItems.LastOrDefault());
-            }
         }
 
         public bool LoggedIn { get; set; } //used to tell if we have logged in successfully

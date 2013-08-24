@@ -370,15 +370,6 @@ namespace MediaBrowser.Library
             }
         }
 
-        public void AddNewlyWatched()
-        {
-            if (!this.IsFolder && this.TopParent != null)
-            {
-                //add to watched list if not a whole folder
-                this.TopParent.AddNewlyWatched(this);
-            }
-        }
-
         public void UpdateResume()
         {
             Logger.ReportVerbose("Updating Resume status...");
