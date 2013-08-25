@@ -104,11 +104,22 @@
       <Changed Source="[Application]" InitialEvaluate="true" >
         <Conditions>
           <Equality Source="[Application.RecentItemOption]" Value="watched"/>
+          <Equality Source="[Application.Config.TreatWatchedAsInProgress]" Value="false"/>
         </Conditions>
         <Actions>
-          <!--<Set Target="[RecentItems.ChosenIndex]" Value="1" />-->
           <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
           <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.RecentItemOption]" Value="watched"/>
+          <Equality Source="[Application.Config.TreatWatchedAsInProgress]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#InProgressEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#InProgressEHS!cor:String]" />
         </Actions>
       </Changed>
 
@@ -186,11 +197,25 @@
         </Actions>
       </Changed>
       <Changed Source="[CmdRecentlyWatched.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.TreatWatchedAsInProgress]" Value="false"/>
+        </Conditions>
         <Actions>
           <Set Target="[Application.RecentItemOption]" Value="watched" />
           <Invoke Target="[SelectedItem.RecentItemsChanged]" />
           <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
           <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#RecentlyWatchedEHS!cor:String]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[CmdRecentlyWatched.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.TreatWatchedAsInProgress]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.RecentItemOption]" Value="watched" />
+          <Invoke Target="[SelectedItem.RecentItemsChanged]" />
+          <Set Target="[NPVTitle.Content]" Value="[Application.LocalStrings.#InProgressEHS!cor:String]" />
+          <Set Target="[NPVTitle2.Content]" Value="[Application.LocalStrings.#InProgressEHS!cor:String]" />
         </Actions>
       </Changed>
       <Changed Source="[CmdRecentlyAddedUnwatched.Invoked]">
@@ -579,7 +604,7 @@
                                        Command="[CmdRecentlyAdded]"
                                        BulletImage="resx://MediaBrowser/MediaBrowser.Resources/IconAdded"
                                   />
-                      <hb:HeaderButton Label="[Application.LocalStrings.#WatchedEHS!cor:String]"
+                      <hb:HeaderButton Label="[Application.WatchedOptionString]"
                                        Command="[CmdRecentlyWatched]"
                                        BulletImage="resx://MediaBrowser/MediaBrowser.Resources/IconWatched"
                                   />
