@@ -1121,9 +1121,11 @@ namespace MediaBrowser
                         Kernel.ApiClient.DeleteItem(Item.BaseItem.ApiId);
 
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Logger.ReportException("Error trying to delete {0}", e, Item.Path);
                         mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
+                        return;
                     }
                     DeleteNavigationHelper(Item);
                     // Show a message - the time it takes them to respond to this will hopefully be enough for it to be gone from the server
