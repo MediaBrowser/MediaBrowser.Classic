@@ -2244,13 +2244,26 @@ namespace MediaBrowser
         {
             if (playableItem.EnablePlayStateSaving && playableItem.HasMediaItems)
             {
-                //Async.Queue("AddNewlyWatched", () => AddNewlyWatched(playableItem));
-                //Async.Queue("Playbackstopped", () => Kernel.ApiClient.ReportPlaybackStopped(playableItem.CurrentMedia.Id.ToString(), Kernel.CurrentUser.Id, playableItem.CurrentMedia.PlaybackStatus.PositionTicks));
+                // cause the RAL to re-load if set to watched or un-watched
+                if (RecentItemOption == "watched" || RecentItemOption == "unwatched")
+                {
+                    Async.Queue("quicklist update", () => { foreach (var item in playableItem.MediaItems) UpdateQuicklist(item); });
+                }
             }
 
             Logger.ReportVerbose("Firing Application.PlaybackFinished for: " + playableItem.DisplayName);
 
             OnPlaybackFinished(playableItem);
+        }
+
+        protected void UpdateQuicklist(BaseItem item)
+        {
+            var top = item.TopParent;
+            if (top != null)
+            {
+                top.ResetQuickList();
+                top.OnQuickListChanged(null);
+            }
         }
 
         public bool LoggedIn { get; set; } //used to tell if we have logged in successfully
