@@ -114,4 +114,16 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// <value>The request.</value>
         public PlaystateRequest Request { get; set; }
     }
+
+    /// <summary>
+    /// Class SystemRequestEventArgs
+    /// </summary>
+    public class SystemRequestEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets or sets the request.
+        /// </summary>
+        /// <value>The request.</value>
+        public string Command { get; set; }
+    }
 }

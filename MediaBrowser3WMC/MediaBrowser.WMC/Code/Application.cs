@@ -450,6 +450,22 @@ namespace MediaBrowser
             }
         }
 
+        private void SystemCommand(object sender, SystemRequestEventArgs args)
+        {
+            ScreenSaverActive = false;
+            switch (args.Command)
+            {
+                case "GoHome":
+                    BackToRoot();
+                    break;
+
+                case "GoToSettings":
+                    OpenConfiguration(true);
+                    break;
+            }
+                
+        }
+
         private void PlayRequest(object sender, PlayRequestEventArgs args)
         {
             ScreenSaverActive = false;
@@ -1406,6 +1422,7 @@ namespace MediaBrowser
                     WebSocket.BrowseCommand += BrowseRequest;
                     WebSocket.PlayCommand += PlayRequest;
                     WebSocket.PlaystateCommand += PlayStateRequest;
+                    WebSocket.SystemCommand += SystemCommand;
                   
                     Updater = new Updater(this);
                     if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins

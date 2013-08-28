@@ -62,6 +62,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         public event EventHandler<BrowseRequestEventArgs> BrowseCommand;
         public event EventHandler<PlayRequestEventArgs> PlayCommand;
         public event EventHandler<PlaystateRequestEventArgs> PlaystateCommand;
+        public event EventHandler<SystemRequestEventArgs> SystemCommand;
 
         /// <summary>
         /// Occurs when [restart required].
@@ -190,6 +191,13 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                 FireEvent(PlaystateCommand, this, new PlaystateRequestEventArgs
                 {
                     Request = _jsonSerializer.DeserializeFromString<PlaystateRequest>(message.Data.ToString())
+                });
+            }
+            else if (string.Equals(message.MessageType, "System"))
+            {
+                FireEvent(SystemCommand, this, new SystemRequestEventArgs()
+                {
+                    Command = message.Data.ToString()
                 });
             }
         }
