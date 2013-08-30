@@ -81,7 +81,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return base.BackdropImagePaths ?? (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
+                return base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
             }
             set
             {

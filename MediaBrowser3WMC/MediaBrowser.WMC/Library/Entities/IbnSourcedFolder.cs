@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using MediaBrowser.Library.ImageManagement;
-using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class LocalIbnSourcedCacheFolder : LocalCacheFolder
+    class IbnSourcedFolder : Folder
     {
         public override string PrimaryImagePath
         {
@@ -46,6 +42,5 @@ namespace MediaBrowser.Library.Entities
             return Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = imageType });
 
         }
-
     }
 }
