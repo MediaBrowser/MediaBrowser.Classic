@@ -901,9 +901,10 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="userId">The user id.</param>
         /// <param name="positionTicks">The position ticks.</param>
         /// <param name="isPaused"></param>
+        /// <param name="isMuted"></param>
         /// <returns>Task{UserItemDataDto}.</returns>
         /// <exception cref="System.ArgumentNullException">itemId</exception>
-        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks, bool isPaused)
+        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks, bool isPaused, bool isMuted)
         {
             if (string.IsNullOrEmpty(itemId))
             {
@@ -918,6 +919,7 @@ namespace MediaBrowser.ApiInteraction
             var dict = new QueryStringDictionary();
             dict.AddIfNotNull("positionTicks", positionTicks);
             dict.AddIfNotNull("isPaused", isPaused);
+            dict.AddIfNotNull("isMuted", isMuted);
 
             var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId + "/Progress", dict);
 

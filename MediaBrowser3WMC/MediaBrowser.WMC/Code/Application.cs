@@ -138,9 +138,22 @@ namespace MediaBrowser
             }
         }
 
+        public bool WMCMute
+        {
+            get { return MediaCenterEnvironment.AudioMixer.Mute; }
+            set
+            {
+                MediaCenterEnvironment.AudioMixer.Mute = value;
+                if (currentPlaybackController != null)
+                {
+                    ReportPlaybackProgress(currentPlaybackController.CurrentPlayableItemId.ToString(), currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused);
+                }
+            }
+        }
+
         public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false)
         {
-            Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused);
+            Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused, WMCMute);
             //WebSocket.SendPlaystateMessage(id, positionTicks, isPaused);
         }
 
@@ -462,6 +475,19 @@ namespace MediaBrowser
                 case "GoToSettings":
                     OpenConfiguration(true);
                     break;
+
+                case "Mute":
+                    WMCMute = true;
+                    break;
+
+                case "Unmute":
+                    WMCMute = false;
+                    break;
+
+                case "ToggleMute":
+                    WMCMute = !WMCMute;
+                    break;
+
             }
                 
         }

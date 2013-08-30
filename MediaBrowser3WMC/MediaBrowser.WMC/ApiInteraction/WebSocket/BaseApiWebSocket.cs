@@ -193,7 +193,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                     Request = _jsonSerializer.DeserializeFromString<PlaystateRequest>(message.Data.ToString())
                 });
             }
-            else if (string.Equals(message.MessageType, "System"))
+            else if (string.Equals(message.MessageType, "SystemCommand"))
             {
                 FireEvent(SystemCommand, this, new SystemRequestEventArgs()
                 {
