@@ -473,7 +473,7 @@ namespace MediaBrowser
                     break;
 
                 case "GoToSettings":
-                    OpenConfiguration(true);
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenConfiguration(true));
                     break;
 
                 case "Mute":
