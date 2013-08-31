@@ -43,7 +43,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return IncludeItemTypes.FirstOrDefault();
+                return "Genre-" + IncludeItemTypes.FirstOrDefault();
             }
             set
             {

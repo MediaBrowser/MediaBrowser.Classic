@@ -70,7 +70,7 @@ namespace MediaBrowser.Library {
          * This should be set to "R" (or "SPn") with each official release and then immediately changed back to "R+" (or "SPn+")
          * so future trunk builds will indicate properly.
          * */
-        private const string versionExtension = "B8-25.1";
+        private const string versionExtension = "B8-30.1";
 
         public const string MBSERVICE_MUTEX_ID = "Global\\{E155D5F4-0DDA-47bb-9392-D407018D24B1}";
         public const string MBCLIENT_MUTEX_ID = "Global\\{9F043CB3-EC8E-41bf-9579-81D5F6E641B9}";
@@ -588,7 +588,7 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowFavoritesCollection)
                 {
                     //Create Favorites
-                    FavoritesFolder = new FavoritesCollectionFolder {Id = FavoriteFolderGuid};
+                    FavoritesFolder = new FavoritesCollectionFolder {Id = FavoriteFolderGuid, DisplayMediaType = "FavoritesFolder"};
                     FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist", "MusicVideo" }, "Music") });
                     kernel.RootFolder.AddVirtualChild(FavoritesFolder);
                 }
@@ -596,14 +596,14 @@ namespace MediaBrowser.Library {
                 if (ConfigData.ShowMovieGenreCollection)
                 {
                     //Create Genre collection
-                    MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, IncludeItemTypes = new[] {"Movie", "BoxSet"}, GenreType = GenreType.Movie};
+                    MovieGenreFolder = new ApiGenreCollectionFolder {Id = MovieGenreFolderGuid, Name = ConfigData.MovieGenreFolderName, DisplayMediaType = "MovieGenres", IncludeItemTypes = new[] {"Movie", "BoxSet"}, GenreType = GenreType.Movie};
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
                 }
                 
                 if (ConfigData.ShowMusicGenreCollection)
                 {
                     //Create Music Genre collection
-                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
+                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, DisplayMediaType = "MusicGenres", IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
                     kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
                 }
                 
