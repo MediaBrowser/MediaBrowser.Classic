@@ -10,13 +10,13 @@ namespace MediaBrowser.Library.Entities
             get
             {
                 //Logger.ReportVerbose("File to be played is: {0}", Path);
-                yield return Path;
-                //return new[] {Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                //                                              {
-                //                                                  ItemId = ApiId,
-                //                                                  Static = true
+                //yield return Path;
+                return new[] {Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                              {
+                                                                  ItemId = ApiId,
+                                                                  Static = true
 
-                //                                              })};
+                                                              })};
             }
         }
     }
