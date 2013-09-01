@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Persistance
                                                                  {
                                                                      {"Folder", typeof (Folder)},
                                                                      {"Movie", typeof (Movie)},
-                                                                     {"Trailer", typeof (RemoteTrailer)},
+                                                                     {"Trailer", typeof (RemoteVideo)},
                                                                      {"Series", typeof (Series)},
                                                                      {"Season", typeof (Season)},
                                                                      {"Episode", typeof (Episode)},
@@ -44,7 +44,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"CollectionFolder", typeof (Folder)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
                                                                      {"YoutubeVideo", typeof (Movie)},
-                                                                     {"VodCastVideo", typeof (Movie)},
+                                                                     {"VodCastVideo", typeof (RemoteVideo)},
                                                                      {"VodCast", typeof (IbnSourcedFolder)},
                                                                  };
 
