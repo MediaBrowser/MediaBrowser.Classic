@@ -604,8 +604,8 @@ namespace MediaBrowser.Library.Playables
                 ev.Dialog(Application.CurrentInstance.StringData("NoContentDial"), Application.CurrentInstance.StringData("Playstr"), Microsoft.MediaCenter.DialogButtons.Ok, 500, true);
                 return;
             }
-
-            Logger.ReportInfo(string.Format("{0} about to play {1}({2}) ", PlaybackController.ControllerName, DisplayName, Files.FirstOrDefault()));
+            if (CurrentMedia != null)
+                Logger.ReportInfo(string.Format("{0} about to play {1}({2}) ", PlaybackController.ControllerName, DisplayName, CurrentMedia.Files.FirstOrDefault()));
 
             // If the controller already has active playable items, stop it and wait for it to flush out
             if (!QueueItem)
