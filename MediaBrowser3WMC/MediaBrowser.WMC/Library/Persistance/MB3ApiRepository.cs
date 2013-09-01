@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Persistance
                                                                  {
                                                                      {"Folder", typeof (Folder)},
                                                                      {"Movie", typeof (Movie)},
-                                                                     {"Trailer", typeof (RemoteVideo)},
+                                                                     {"Trailer", typeof (Movie)},
                                                                      {"Series", typeof (Series)},
                                                                      {"Season", typeof (Season)},
                                                                      {"Episode", typeof (Episode)},
@@ -98,7 +98,7 @@ namespace MediaBrowser.Library.Persistance
 
         protected BaseItem GetIbnItem(BaseItemDto mb3Item, string itemType)
         {
-            var item = InstantiateItem(itemType);
+            var item = InstantiateItem(itemType, mb3Item.Path);
             if (item != null)
             {
                 item.Name = mb3Item.Name;
@@ -122,10 +122,16 @@ namespace MediaBrowser.Library.Persistance
             return item;
         }
 
-        protected BaseItem InstantiateItem(string itemType)
+        protected BaseItem InstantiateItem(string itemType, string path)
         {
             try
             {
+                // Special handling for Apple trailers
+                if (itemType.Equals("trailer", StringComparison.OrdinalIgnoreCase) && path != null && path.IndexOf("apple.com", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    return new AppleTrailer();
+                }
+
                 Type typ;
                 if (Mb3Translator.TypeMap.TryGetValue(itemType, out typ))
                 {
@@ -160,7 +166,7 @@ namespace MediaBrowser.Library.Persistance
 
         protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
         {
-            var item = InstantiateItem(itemType);
+            var item = InstantiateItem(itemType, mb3Item.Path);
 
             if (item != null)
             {
