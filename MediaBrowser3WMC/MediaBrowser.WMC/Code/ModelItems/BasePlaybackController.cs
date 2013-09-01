@@ -698,12 +698,12 @@ namespace MediaBrowser.Code.ModelItems
             }
 
             var start = DateTime.Now;
-            const int timeOut = 10000;
+            const int timeOut = 3;
             while (PlayState != PlaybackControllerPlayState.Idle)
             {
                 Logger.ReportVerbose("Still waiting for {0} to stop.  Reports: {1}", ControllerName, PlayState);
                 System.Threading.Thread.Sleep(250);
-                if ((DateTime.Now - start).Ticks > timeOut)
+                if ((DateTime.Now - start).TotalSeconds > timeOut)
                 {
                     Logger.ReportWarning("Player didn't stop - trying ot continue anyway.");
                     break;
