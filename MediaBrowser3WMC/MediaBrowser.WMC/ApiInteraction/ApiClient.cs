@@ -213,7 +213,7 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("isDisabled", false);
 
-            var url = GetApiUrl("Users/Public", dict);
+            var url = GetApiUrl("Users", dict);
 
             using (var stream = GetSerializedStream(url))
             {
