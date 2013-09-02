@@ -26,6 +26,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"Folder", typeof (Folder)},
                                                                      {"Movie", typeof (Movie)},
                                                                      {"Trailer", typeof (Movie)},
+                                                                     {"AdultVideo", typeof (Movie)},
                                                                      {"Series", typeof (Series)},
                                                                      {"Season", typeof (Season)},
                                                                      {"Episode", typeof (Episode)},
