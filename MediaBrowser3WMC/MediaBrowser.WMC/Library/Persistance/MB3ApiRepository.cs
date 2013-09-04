@@ -99,7 +99,7 @@ namespace MediaBrowser.Library.Persistance
 
         protected BaseItem GetIbnItem(BaseItemDto mb3Item, string itemType)
         {
-            var item = InstantiateItem(itemType, mb3Item.Path);
+            var item = InstantiateItem(itemType, mb3Item);
             if (item != null)
             {
                 item.Name = mb3Item.Name;
@@ -123,12 +123,12 @@ namespace MediaBrowser.Library.Persistance
             return item;
         }
 
-        protected BaseItem InstantiateItem(string itemType, string path)
+        protected BaseItem InstantiateItem(string itemType, BaseItemDto mb3Item)
         {
             try
             {
                 // Special handling for Apple trailers
-                if (itemType.Equals("trailer", StringComparison.OrdinalIgnoreCase) && path != null && path.IndexOf("apple.com", StringComparison.OrdinalIgnoreCase) != -1)
+                if (itemType.Equals("trailer", StringComparison.OrdinalIgnoreCase) && mb3Item.Path != null && mb3Item.Path.IndexOf("apple.com", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     return new AppleTrailer();
                 }
@@ -146,6 +146,13 @@ namespace MediaBrowser.Library.Persistance
                     }
                     else
                     {
+                        // Try media type
+                        if (Mb3Translator.TypeMap.TryGetValue(mb3Item.MediaType, out typ))
+                        {
+                            return (BaseItem)Activator.CreateInstance(typ);
+                        }
+
+                        // fallback
                         return Serializer.Instantiate<BaseItem>(itemType);
                     }
                 }
@@ -167,7 +174,7 @@ namespace MediaBrowser.Library.Persistance
 
         protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
         {
-            var item = InstantiateItem(itemType, mb3Item.Path);
+            var item = InstantiateItem(itemType, mb3Item);
 
             if (item != null)
             {
