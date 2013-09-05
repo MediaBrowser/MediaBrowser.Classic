@@ -217,7 +217,7 @@
             </LayoutInput>
           </Graphic>
           <ColorFill Name="TileBg" Content="[BGColor]" Layout="Fill" />
-          <Graphic Name="TileShadow" Content="image://i:DiamondListFocus" ColorFilter="White" CenterPointPercent="0.5,0.5,0.5" Alpha=".8"  Visible="false">
+          <Graphic Name="TileShadow" Content="image://i:BackLight" ColorFilter="White" CenterPointPercent="0.5,0.5,0.5" Alpha=".8"  Visible="false">
             <LayoutInput>
               <FormLayoutInput Left="Parent,0,-5" Right="Parent,1,5" Top="Parent,0,-5" Bottom="Parent,1,5" ContributesToHeight="false" ContributesToWidth="false" />
             </LayoutInput>

@@ -20,7 +20,7 @@
 	<Image Name="ConfigImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Config"/>
 	<Image Name="SortImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Sort"/>
 	<Image Name="IndexImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Index"/>
-  <Image Name="BackShadow" Source="resx://MediaBrowser/MediaBrowser.Resources/BackShadow" NineGrid="65,65,65,65"/>
+  <Image Name="BackLight" Source="resx://MediaBrowser/MediaBrowser.Resources/BackLight" NineGrid="4,4,4,4"/>
   <Image Name="Starburst" Source="resx://MediaBrowser/MediaBrowser.Resources/Starburst"/>
   <Image Name="Locked" Source="resx://MediaBrowser/MediaBrowser.Resources/Locked"/>
   <Image Name="UnLocked" Source="resx://MediaBrowser/MediaBrowser.Resources/UnLocked"/>
