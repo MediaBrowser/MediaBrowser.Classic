@@ -16,7 +16,8 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return new[] {Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                return new[] {Config.Instance.UseCustomStreamingUrl ? string.Format(Config.Instance.CustomStreamingUrl, Kernel.ApiClient.ServerHostName+":"+Kernel.ApiClient.ServerApiPort, ApiId) :
+                    Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                               {
                                                                   ItemId = ApiId,
                                                                   Static = true

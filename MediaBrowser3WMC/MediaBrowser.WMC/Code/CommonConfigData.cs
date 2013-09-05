@@ -100,6 +100,9 @@ namespace MediaBrowser
         public int MaxDiscWidth = 300;
         public int JpgImageQuality = 90;
 
+        public bool UseCustomStreamingUrl;
+        public string CustomStreamingUrl = "http://{0}/mediabrowser/Videos/{1}/stream?Static=True";
+
         public enum ExternalPlayerLaunchType
         {
             CommandLine = 0,

@@ -270,6 +270,16 @@ namespace MediaBrowser
             set { if (this.Data.ShowIndexWarning != value) { this.Data.ShowIndexWarning = value; Save(); FirePropertyChanged("ShowIndexWarning"); } }
         }
 
+        public bool UseCustomStreamingUrl
+        {
+            get { return this.CommonData.UseCustomStreamingUrl; }
+        }
+
+        public string CustomStreamingUrl
+        {
+            get { return this.CommonData.CustomStreamingUrl; }
+        }
+
         public double IndexWarningThreshold
         {
             get { return this.Data.IndexWarningThreshold; }
