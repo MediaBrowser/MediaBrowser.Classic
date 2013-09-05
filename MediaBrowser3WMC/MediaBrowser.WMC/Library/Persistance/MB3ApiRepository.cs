@@ -81,6 +81,8 @@ namespace MediaBrowser.Library.Persistance
 
         public BaseItem RetrieveItem(Guid id)
         {
+            if (id == Guid.Empty) return null;
+
             var dto = Kernel.ApiClient.GetItem(id.ToString());
             return dto != null ? GetItem(dto, dto.Type) : null;
         }
