@@ -174,7 +174,7 @@ namespace MediaBrowser.Library.Persistance
                                                 Kernel.ApiClient.GetImageUrl(item.ApiId, options);
         }
 
-        protected BaseItem GetItem(BaseItemDto mb3Item, string itemType)
+        public BaseItem GetItem(BaseItemDto mb3Item, string itemType)
         {
             var item = InstantiateItem(itemType, mb3Item);
 

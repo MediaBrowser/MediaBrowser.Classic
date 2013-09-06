@@ -1064,7 +1064,7 @@ namespace MediaBrowser.ApiInteraction
         /// <typeparam name="T"></typeparam>
         /// <param name="stream">The stream.</param>
         /// <returns>``0.</returns>
-        protected T DeserializeFromStream<T>(Stream stream)
+        public T DeserializeFromStream<T>(Stream stream)
             where T : class
         {
             return stream != null ? (T)DeserializeFromStream(stream, typeof(T), SerializationFormat) : null;
