@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using MediaBrowser.Library.Util;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Extensions;
@@ -534,6 +535,7 @@ namespace MediaBrowser.Library.Entities {
                     if (media != null) {
                         media.PlaybackStatus.WasPlayed = value;
                         Kernel.ApiClient.UpdatePlayedStatus(media.ApiId, Kernel.CurrentUser.Id, value);
+                        Thread.Sleep(250); // try a delay and see if it helps the timeouts - we'll reduce this if it works
                     }
                     var folder = item as Folder;
                     if (folder != null) {
