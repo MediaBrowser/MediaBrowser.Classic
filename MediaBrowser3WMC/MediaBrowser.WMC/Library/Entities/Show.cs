@@ -120,6 +120,8 @@ namespace MediaBrowser.Library.Entities {
 
         protected void LoadFullDetails()
         {
+            if (FullDetailsLoaded) return;
+
             Logging.Logger.ReportVerbose("Loading full details for {0} actors: {1}",Name, _actors != null ? _actors.Count.ToString() : "null");
             var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Show;
             if (temp != null)
@@ -131,7 +133,6 @@ namespace MediaBrowser.Library.Entities {
                 Genres = temp.Genres;
                 Studios = temp.Studios;
             }
-
             FullDetailsLoaded = true;
         }
     }

@@ -132,6 +132,8 @@ namespace MediaBrowser.Library.Entities {
 
         protected void LoadFullDetails()
         {
+            if (FullDetailsLoaded) return;
+
             var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Series;
             if (temp != null)
             {
@@ -141,7 +143,6 @@ namespace MediaBrowser.Library.Entities {
                 Genres = temp.Genres;
                 Studios = temp.Studios;
             }
-
             FullDetailsLoaded = true;
         }
 
