@@ -1996,11 +1996,11 @@ namespace MediaBrowser
 
             if (item.BaseItem is Show)
             {
-                if ((item.HasDataForDetailPage && item.BaseItem is Movie) ||
+                if ((item.HasDataForDetailPage) ||
                     this.Config.AlwaysShowDetailsPage)
                 {
                     // go to details screen 
-                    Dictionary<string, object> properties = new Dictionary<string, object>();
+                    var properties = new Dictionary<string, object>();
                     properties["Application"] = this;
                     properties["Item"] = item;
                     properties["ThemeConfig"] = CurrentTheme.Config;

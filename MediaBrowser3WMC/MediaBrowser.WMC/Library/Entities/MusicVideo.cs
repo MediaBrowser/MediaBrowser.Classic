@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class MusicVideo : Video
+    public class MusicVideo : Show
     {
     }
 }
