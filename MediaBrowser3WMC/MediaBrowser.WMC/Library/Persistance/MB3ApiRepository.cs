@@ -320,10 +320,10 @@ namespace MediaBrowser.Library.Persistance
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
                         var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
-                        var subtStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Subtitle);
+                        var subtStreams = mb3Item.MediaStreams.Where(s => s.Type == MediaStreamType.Subtitle && !string.IsNullOrEmpty(s.Language)).Select(s => s.Language).ToArray();
                         media.MediaStreams = mb3Item.MediaStreams;
                         media.AspectRatio = !string.IsNullOrEmpty(mb3Item.AspectRatio) ? mb3Item.AspectRatio : null;
-                        media.SubTitle = subtStream != null ? subtStream.Language : null;
+                        media.SubTitle = subtStreams.Any() ? string.Join(", ", subtStreams) : null;
 
                         media.MediaInfo = new MediaInfoData
                                               {
@@ -338,7 +338,7 @@ namespace MediaBrowser.Library.Persistance
                                                                          VideoFPS = vidStream != null ? vidStream.AverageFrameRate.ToString() : "",
                                                                          Width = vidStream != null ? vidStream.Width ?? 0 : 0,
                                                                          Height = vidStream != null ? vidStream.Height ?? 0 : 0,
-                                                                         Subtitles = subtStream != null ? subtStream.Language : "",
+                                                                         Subtitles = subtStreams.Any() ? string.Join(", ", subtStreams) : null,
                                                                          RunTime = runTimeTicks != null ? ConvertToTicksToMinutes(runTimeTicks) : 0
                                                                      }
 
