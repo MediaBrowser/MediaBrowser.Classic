@@ -383,7 +383,6 @@ namespace MediaBrowser.Library.Persistance
                 var episode = item as Episode;
                 if (episode != null)
                 {
-                    episode.SortName = episode.EpisodeNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
                     var indexDisplay = mb3Item.IndexNumber != null && mb3Item.IndexNumber > 0 ? mb3Item.IndexNumber + (mb3Item.IndexNumberEnd != null ? "-" + mb3Item.IndexNumberEnd : "") + " - " : "";
                     episode.Name = indexDisplay != "" ? indexDisplay + episode.Name : episode.Name; 
                     episode.SeasonNumber = mb3Item.ParentIndexNumber != null ? mb3Item.ParentIndexNumber.Value.ToString("#00") : null;
