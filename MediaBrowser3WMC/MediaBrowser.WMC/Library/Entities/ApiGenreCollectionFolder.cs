@@ -26,6 +26,28 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override int MediaCount
+        {
+            get { return ApiRecursiveItemCount ?? (int)(ApiRecursiveItemCount = GetItemCount()); }
+        }
+
+        protected int GetItemCount()
+        {
+            var counts = Kernel.ApiClient.GetItemCounts(Kernel.CurrentUser.Id);
+
+            switch (GenreType)
+            {
+                case GenreType.Movie:
+                    return counts.MovieCount;
+
+                    case GenreType.Music:
+                    return counts.SongCount;
+
+                default:
+                    return 0;
+            }
+        }
+
         public GenreType GenreType { get; set; }
 
         public override string DisplayMediaType

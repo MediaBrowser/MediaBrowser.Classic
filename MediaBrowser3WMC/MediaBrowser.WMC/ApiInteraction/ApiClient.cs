@@ -177,6 +177,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets Item Counts
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <exception cref="System.ArgumentNullException">userId</exception>
+        public ItemCounts GetItemCounts(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var dict = new QueryStringDictionary {{"userId", userId}};
+            var url = GetApiUrl("Items/Counts/", dict);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemCounts>(stream);
+            }
+        }
+
+        /// <summary>
         /// Gets DisplayPrefs
         /// </summary>
         /// <param name="userId">The user id.</param>

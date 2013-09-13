@@ -1034,6 +1034,8 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual void Sort(IComparer<BaseItem> sortFunction, bool notifyChange) {
             this.sortFunction = sortFunction;
+            if (ActualChildren == null) return;
+
             lock (ActualChildren) {
                 //Logger.ReportVerbose("=====sorting actual children for " + Name + " Sort function: "+sortFunction);
                 ActualChildren.Sort(sortFunction);
