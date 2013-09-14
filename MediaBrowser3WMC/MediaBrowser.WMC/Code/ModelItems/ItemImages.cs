@@ -96,6 +96,11 @@ namespace MediaBrowser.Library
                 }
                 if (backdropImage != null) //may not have had time to fill this in yet - if not, a propertychanged event will fire it again
                 {
+                    if (backdropImage.IsCorrupt)
+                    {
+                        baseItem.BackdropImagePaths = null;
+                        return null;
+                    }
                     return backdropImage.Image;
                 }
                 else

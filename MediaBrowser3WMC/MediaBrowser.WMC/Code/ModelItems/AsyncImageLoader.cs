@@ -47,6 +47,11 @@ namespace MediaBrowser.Code.ModelItems {
             private set;
         }
 
+        public bool IsCorrupt
+        {
+            get { return localImage != null && localImage.Corrupt; }
+        }
+
         public AsyncImageLoader(Func<LibraryImage> source, Image defaultImage, Action afterLoad) {
             this.source = source;
             this.afterLoad = afterLoad;

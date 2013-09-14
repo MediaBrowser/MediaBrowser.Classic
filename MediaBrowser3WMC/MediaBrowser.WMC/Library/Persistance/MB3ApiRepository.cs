@@ -214,27 +214,32 @@ namespace MediaBrowser.Library.Persistance
                         switch (tag.Key)
                         {
                             case ImageType.Primary:
-
+                                if (mb3Item.HasPrimaryImage)
                                 item.PrimaryImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Logo:
+                                if (mb3Item.HasLogo)
                                 item.LogoImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Art:
+                                if (mb3Item.HasArtImage)
                                 item.ArtImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxArtWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Banner:
+                                if (mb3Item.HasBanner)
                                 item.BannerImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxBannerWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Thumb:
+                                if (mb3Item.HasThumb)
                                 item.ThumbnailImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxThumbWidth, CropWhitespace = false });
                                 break;
 
                             case ImageType.Disc:
+                                if (mb3Item.HasDiscImage)
                                 item.DiscImagePath = GetImageUrl(item, new ImageOptions { ImageType = tag.Key, Tag = tag.Value, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxDiscWidth, CropWhitespace = false });
                                 break;
 
