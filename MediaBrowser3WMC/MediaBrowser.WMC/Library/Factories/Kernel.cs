@@ -589,7 +589,7 @@ namespace MediaBrowser.Library {
                 {
                     //Create Favorites
                     FavoritesFolder = new FavoritesCollectionFolder {Id = FavoriteFolderGuid, DisplayMediaType = "FavoritesFolder"};
-                    FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist", "MusicVideo" }, "Music") });
+                    FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist", "MusicVideo" }, "Music"), new FavoritesTypeFolder(new[] { "Game", "GameConsole" }, "Games"), new FavoritesTypeFolder(new[] { "Book" }, "Books") });
                     kernel.RootFolder.AddVirtualChild(FavoritesFolder);
                 }
                 
