@@ -395,7 +395,8 @@ namespace MediaBrowser.Library.Persistance
                 if (episode != null)
                 {
                     var indexDisplay = mb3Item.IndexNumber != null && mb3Item.IndexNumber > 0 ? mb3Item.IndexNumber + (mb3Item.IndexNumberEnd != null ? "-" + mb3Item.IndexNumberEnd : "") + " - " : "";
-                    episode.Name = indexDisplay != "" ? indexDisplay + episode.Name : episode.Name; 
+                    episode.Name = indexDisplay != "" ? indexDisplay + episode.Name : episode.Name;
+                    episode.EpisodeNumber = mb3Item.IndexNumber != null ? mb3Item.IndexNumber.Value.ToString("#00") : null;
                     episode.SeasonNumber = mb3Item.ParentIndexNumber != null ? mb3Item.ParentIndexNumber.Value.ToString("#00") : null;
                     episode.SeriesId = mb3Item.SeriesId;
                     episode.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToString("ddd d MMM, yyyy") : null;
