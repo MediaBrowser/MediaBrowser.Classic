@@ -509,8 +509,10 @@ namespace MediaBrowser.Library.Entities {
                 {
                     runtime = this.RecursiveMedia.Select(m => m.RunTime).Sum();
                 }
-                return runtime ?? 0;
+                return runtime.Value;
             }
+
+            set { runtime = value; }
         }
 
         public virtual bool HasMedia

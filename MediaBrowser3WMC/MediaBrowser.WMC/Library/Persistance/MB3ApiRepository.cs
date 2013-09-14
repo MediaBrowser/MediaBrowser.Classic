@@ -264,6 +264,12 @@ namespace MediaBrowser.Library.Persistance
                     // recursive media count
                     folder.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
 
+                    // cumulative runtime
+                    if (mb3Item.CumulativeRunTimeTicks != null)
+                    {
+                        folder.RunTime =  (int)(mb3Item.CumulativeRunTimeTicks/TimeSpan.TicksPerMinute);
+                    }
+
                     // don't replace this with ?? until after the server implementing this has been released...
                     if (mb3Item.RecursiveUnplayedItemCount != null) folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                 }
