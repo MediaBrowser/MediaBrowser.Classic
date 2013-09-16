@@ -45,8 +45,9 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"CollectionFolder", typeof (Folder)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
                                                                      {"YoutubeVideo", typeof (Movie)},
-                                                                     {"VodCastVideo", typeof (RemoteVideo)},
-                                                                     {"VodCast", typeof (IbnSourcedFolder)},
+                                                                     {"VodCastVideo", typeof (VodCastVideo)},
+                                                                     {"VodCastAudio", typeof (PodCastAudio)},
+                                                                     {"VodCast", typeof (VodCast)},
                                                                  };
 
         }

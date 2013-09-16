@@ -4,7 +4,7 @@ using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities
 {
-    class IbnSourcedFolder : Folder
+    public class IbnSourcedFolder : Folder
     {
         public override string PrimaryImagePath
         {

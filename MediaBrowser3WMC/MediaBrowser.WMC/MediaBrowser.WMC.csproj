@@ -157,6 +157,7 @@
     <Compile Include="Library\Entities\MusicArtist.cs" />
     <Compile Include="Library\Entities\StaticFolder.cs" />
     <Compile Include="Library\Entities\User.cs" />
+    <Compile Include="Library\Entities\PodCastAudio.cs" />
     <Compile Include="Library\Events\GenericEventArgs.cs" />
     <Compile Include="Library\Events\PlaybackStateEventArgs.cs" />
     <Compile Include="Library\Events\PlayStateSaveEventArgs.cs" />
