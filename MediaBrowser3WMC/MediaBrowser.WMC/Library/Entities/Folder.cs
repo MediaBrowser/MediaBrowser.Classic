@@ -234,19 +234,6 @@ namespace MediaBrowser.Library.Entities {
                 if (quickListFolder == null)
                 {
                     quickListFolder = UpdateQuickList(Kernel.Instance.ConfigData.RecentItemOption);
-                    //string recentItemOption = Kernel.Instance.ConfigData.RecentItemOption;
-                    ////if (recentItemOption == "watched" || Kernel.Instance.ConfigData.InvalidateRecentLists)
-                    //    reBuildQuickList = true; //have to re-build these each time
-
-                    //Logger.ReportVerbose("=====Retrieving Quicklist ID: " + QuickListID(recentItemOption));
-                    //if (!reBuildQuickList) quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                    //if (quickListFolder == null || quickListFolder.Children.Count == 0 || quickListFolder.DateModified < this.DateModified)
-                    //{
-                    //    //re-build
-                    //    using (new MediaBrowser.Util.Profiler("RAL Load for " + this.Name)) UpdateQuickList(recentItemOption);
-                    //    //and then try and load again
-                    //    quickListFolder = Kernel.Instance.LocalRepo.RetrieveItem(QuickListID(recentItemOption)) as LocalCacheFolder;
-                    //}
 
                 }
                 return quickListFolder ?? new IndexFolder();
@@ -281,16 +268,6 @@ namespace MediaBrowser.Library.Entities {
 
         protected void RemoveQuicklist()
         {
-            //remove any persisted lists from the cache
-            //quickListFolder = new LocalCacheFolder(new List<BaseItem>()) { Id = QuickListID("added"), Name = "Reset" };
-            //Kernel.Instance.LocalRepo.SaveItem(quickListFolder);
-            //Kernel.Instance.LocalRepo.SaveChildren(quickListFolder.Id, new List<Guid>());
-            //quickListFolder.Id = QuickListID("unwatched");
-            //Kernel.Instance.LocalRepo.SaveItem(quickListFolder);
-            //Kernel.Instance.LocalRepo.SaveChildren(quickListFolder.Id, new List<Guid>());
-            //quickListFolder.Id = QuickListID("watched");
-            //Kernel.Instance.LocalRepo.SaveItem(quickListFolder);
-            //Kernel.Instance.LocalRepo.SaveChildren(quickListFolder.Id, new List<Guid>());
         }
 
         public virtual IndexFolder UpdateQuickList(string recentItemOption) 
@@ -317,7 +294,6 @@ namespace MediaBrowser.Library.Entities {
                                                                                        SortBy = new[] {ItemSortBy.DatePlayed},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
                                                                                    }).ToList();
-                        //items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount > 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => (i as Media).PlaybackStatus.LastPlayed).Take(maxItems).ToList();
 
                         break;
 
@@ -335,7 +311,6 @@ namespace MediaBrowser.Library.Entities {
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
                                                                                    }).ToList();
-                        //items = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount == 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(v => v.DateCreated).Take(maxItems).ToList();
                         break;
 
                     default:
@@ -352,7 +327,6 @@ namespace MediaBrowser.Library.Entities {
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
                                                                                    }).ToList();
-                        //items = this.RecursiveChildren.Where(i => i is Media).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => i.DateCreated).Take(maxItems).ToList();
                         break;
 
                 }
@@ -438,8 +412,7 @@ namespace MediaBrowser.Library.Entities {
                                                   DateCreated = season.First().DateCreated,
                                                   Parent = currentSeason.Id == aContainer.Id ? this : aContainer
                                               };
-                            //Kernel.Instance.LocalRepo.SaveItem(aSeason);
-                            //Kernel.Instance.LocalRepo.SaveChildren(aSeason.Id, season.Select(i => i.Id));
+
                             aContainer.AddChild(aSeason);
                         }
                     }
@@ -448,8 +421,7 @@ namespace MediaBrowser.Library.Entities {
                         //not series so just add all children to container
                         aContainer.AddChildren(container.ToList());
                     }
-                    //Kernel.Instance.LocalRepo.SaveItem(aContainer);
-                    //Kernel.Instance.LocalRepo.SaveChildren(aContainer.Id, aContainer.Children.Select(i => i.Id));
+
                     //and container to children
                     folderChildren.Add(aContainer);
                 }
@@ -459,11 +431,7 @@ namespace MediaBrowser.Library.Entities {
             folderChildren.AddRange(items.Where(i => (!(i is IGroupInIndex))));
 
             //and create our quicklist folder
-            //we save it with the current state of parental controls so we know when we re-load if it is valid
             return new IndexFolder(folderChildren) { Id = QuickListID(recentItemOption), Name = "User:" + Kernel.CurrentUser.Name, DateCreated = DateTime.UtcNow, Parent = this };
-            //Logger.ReportVerbose(this.Name + " folderChildren: " + folderChildren.Count + " listfolder.children: " + quickList.Children.Count());
-            //Kernel.Instance.LocalRepo.SaveItem(quickList);
-            //Kernel.Instance.LocalRepo.SaveChildren(QuickListID(recentItemOption), folderChildren.Select(i => i.Id));
 
         }
 
