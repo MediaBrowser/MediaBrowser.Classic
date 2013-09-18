@@ -168,7 +168,7 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
-        protected string GetImageUrl(BaseItem item, ImageOptions options)
+        public string GetImageUrl(BaseItem item, ImageOptions options)
         {
             return item is MusicGenre ? Kernel.ApiClient.GetMusicGenreImageUrl(item.Name, options) :
                                     item is Genre ? Kernel.ApiClient.GetGenreImageUrl(item.Name, options) :
