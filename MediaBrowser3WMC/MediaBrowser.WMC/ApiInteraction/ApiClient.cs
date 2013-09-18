@@ -892,6 +892,15 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Sends a delete command to the specified url
+        /// </summary>
+        /// <param name="url"></param>
+        public void Delete(string url)
+        {
+            HttpClient.Delete(url);
+        }
+
+        /// <summary>
         /// Reports to the server that the user has begun playing an item
         /// </summary>
         /// <param name="itemId">The item id.</param>
