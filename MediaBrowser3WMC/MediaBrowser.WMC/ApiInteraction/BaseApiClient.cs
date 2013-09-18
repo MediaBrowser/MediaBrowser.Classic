@@ -770,6 +770,21 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
+            switch (options.ImageType)
+            {
+                case ImageType.Primary:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth;
+                    break;
+                case ImageType.Backdrop:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth;
+                    break;
+                case ImageType.Logo:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth;
+                    break;
+            }
+
+            options.Quality = Kernel.Instance.CommonConfigData.JpgImageQuality;
+
             var url = "Images/General/" + HttpUtility.UrlEncode(name) + "/" + options.ImageType;
 
             return GetImageUrl(url, options, new QueryStringDictionary());
