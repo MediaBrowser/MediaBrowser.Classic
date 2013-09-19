@@ -927,7 +927,9 @@
     <Content Include="Markup\Controls\Buttons\DirectorButton.mcml" />
     <Content Include="Markup\Controls\Buttons\GenreButton.mcml" />
     <Content Include="Markup\Controls\Buttons\ImageButton.mcml" />
-    <Content Include="Markup\Controls\Buttons\ItemButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\ItemButton.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Buttons\LinkItem.mcml" />
     <Content Include="Markup\Controls\Buttons\ListButton.mcml" />
     <Content Include="Markup\Controls\Buttons\PersonButton.mcml" />

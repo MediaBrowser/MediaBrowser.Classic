@@ -306,6 +306,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for music artists
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetArtists(ItemsByNameQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var url = GetItemByNameListUrl("Artists", query);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Gets all People
         /// </summary>
         /// <param name="query">The query.</param>

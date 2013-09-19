@@ -411,7 +411,56 @@ namespace MediaBrowser.ApiInteraction
 
             return GetApiUrl(type + "/" + query.Id + "/Similar", dict);
         }
-        
+
+        /// <summary>
+        /// Gets the item by name list URL.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="query">The query.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        protected string GetItemByNameListUrl(string type, ItemsByNameQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var dict = new QueryStringDictionary { };
+
+            dict.AddIfNotNullOrEmpty("ParentId", query.ParentId);
+
+            dict.Add("UserId", query.UserId);
+            dict.AddIfNotNull("StartIndex", query.StartIndex);
+
+            dict.AddIfNotNull("Limit", query.Limit);
+
+            dict.AddIfNotNull("SortBy", query.SortBy);
+
+            if (query.SortOrder.HasValue)
+            {
+                dict["sortOrder"] = query.SortOrder.ToString();
+            }
+
+            if (query.Fields != null)
+            {
+                dict.Add("fields", query.Fields.Select(f => f.ToString()));
+            }
+
+            if (query.ImageTypes != null)
+            {
+                dict.Add("ImageTypes", query.ImageTypes.Select(f => f.ToString()));
+            }
+
+            dict.Add("recursive", query.Recursive);
+
+            dict.AddIfNotNull("MediaTypes", query.MediaTypes);
+            dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
+            dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
+
+            return GetApiUrl(type, dict);
+        }
+
         /// <summary>
         /// Gets the image URL.
         /// </summary>

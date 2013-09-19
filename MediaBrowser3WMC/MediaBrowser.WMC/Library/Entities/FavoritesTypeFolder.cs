@@ -8,7 +8,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class FavoritesTypeFolder : ApiSourcedFolder
+    public class FavoritesTypeFolder : ApiSourcedFolder<ItemQuery>
     {
         protected List<BaseItem> OurChildren;
         protected string[] OurTypes = new string[] {};

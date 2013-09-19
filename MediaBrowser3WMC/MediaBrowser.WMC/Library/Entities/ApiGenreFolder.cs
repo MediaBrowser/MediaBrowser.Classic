@@ -10,7 +10,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiGenreFolder : ApiSourcedFolder
+    public class ApiGenreFolder : ApiSourcedFolder<ItemQuery>
     {
         public ApiGenreFolder() : base()
         {}

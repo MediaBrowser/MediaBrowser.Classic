@@ -8,10 +8,10 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiSourcedFolder : LocalCacheFolder
+    public class ApiSourcedFolder<T> : LocalCacheFolder where T : new() 
     {
         private List<BaseItem> _children;
-        public virtual ItemQuery Query { get { return new ItemQuery(); } }
+        public virtual T Query { get { return new T(); } }
         public virtual string[] IncludeItemTypes { get; set; }
         public virtual string[] ExcludeItemTypes { get; set; }
 
@@ -59,7 +59,8 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveItems(Query).ToList();
+            return typeof(T) == typeof(ItemQuery) ? Kernel.Instance.MB3ApiRepository.RetrieveItems(Query as ItemQuery).ToList()
+                       : new List<BaseItem>();
         }
 
         public override BaseItem ReLoad()

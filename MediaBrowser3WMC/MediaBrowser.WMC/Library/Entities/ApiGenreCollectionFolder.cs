@@ -7,7 +7,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiGenreCollectionFolder : ApiSourcedFolder
+    public class ApiGenreCollectionFolder : ApiSourcedFolder<ItemQuery>
     {
 
         public override ItemQuery Query
