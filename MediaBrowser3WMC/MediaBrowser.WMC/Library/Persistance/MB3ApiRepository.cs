@@ -522,6 +522,14 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        public IEnumerable<BaseItem> RetrieveIbnItems(string ibnName, ItemsByNameQuery query)
+        {
+            var dtos = Kernel.ApiClient.GetIbnItems(ibnName, query);
+
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
         public IEnumerable<BaseItem> RetrieveMusicArtists(ItemsByNameQuery query)
         {
             var dtos = Kernel.ApiClient.GetArtists(query);

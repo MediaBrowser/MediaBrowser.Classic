@@ -306,6 +306,29 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for IBN Items
+        /// </summary>
+        /// <param name="ibnName"></param>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetIbnItems(string ibnName, ItemsByNameQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var url = GetItemByNameListUrl(ibnName, query);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+
+        /// <summary>
         /// Queries for music artists
         /// </summary>
         /// <param name="query">The query.</param>
@@ -313,17 +336,7 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="System.ArgumentNullException">query</exception>
         public ItemsResult GetArtists(ItemsByNameQuery query)
         {
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
-            }
-
-            var url = GetItemByNameListUrl("Artists", query);
-
-            using (var stream = GetSerializedStream(url))
-            {
-                return DeserializeFromStream<ItemsResult>(stream);
-            }
+            return GetIbnItems("Artists", query);
         }
 
         /// <summary>
