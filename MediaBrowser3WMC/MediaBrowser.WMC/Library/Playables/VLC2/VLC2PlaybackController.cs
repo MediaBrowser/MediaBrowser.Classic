@@ -244,6 +244,11 @@ namespace MediaBrowser.Library.Playables.VLC2
             }
         }
 
+        /// <summary>
+        /// For externals we can communicate with our default finished position is not played at all
+        /// </summary>
+        protected override long DefaultFinishedPosition { get { return 0; } }
+
         protected override void OnPlaybackFinished(PlaybackStateEventArgs args)
         {
             _MonitorPlayback = false;

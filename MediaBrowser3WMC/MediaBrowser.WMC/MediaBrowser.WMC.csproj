@@ -924,7 +924,9 @@
     <Content Include="Markup\Controls\Buttons\PCIndicatorButton.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Controls\Buttons\DirectorButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\DirectorButton.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Buttons\GenreButton.mcml" />
     <Content Include="Markup\Controls\Buttons\ImageButton.mcml" />
     <Content Include="Markup\Controls\Buttons\ItemButton.mcml">

@@ -1039,7 +1039,7 @@ namespace MediaBrowser.Library {
 
             float f = folderChildren.GetChildAspect(useBanner);
 
-            Size s = this.DisplayPrefs.ThumbConstraint.Value;
+            var s = GetThumbConstraint();
             if (f == 0)
                 f = 1;
             float maxAspect = s.Height / s.Width;
@@ -1053,6 +1053,11 @@ namespace MediaBrowser.Library {
                 FirePropertyChanged("ReferenceSize");
                 FirePropertyChanged("PosterZoom");
             }
+        }
+
+        protected virtual Size GetThumbConstraint()
+        {
+            return this.DisplayPrefs.ThumbConstraint.Value;
         }
 
         /// <summary>

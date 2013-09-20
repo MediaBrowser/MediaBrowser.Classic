@@ -289,6 +289,11 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         }
 
         /// <summary>
+        /// For generic externals our default finished position is fully played
+        /// </summary>
+        protected virtual long DefaultFinishedPosition { get { return long.MaxValue; } }
+
+        /// <summary>
         /// Gets the watched state after playback has stopped.
         /// Subclasses will need to provide their own support for this.
         /// </summary>
@@ -296,7 +301,8 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         {
             return _LastProgressPlaybackState ?? new PlaybackStateEventArgs()
             {
-                Item = GetCurrentPlayableItem()
+                Item = GetCurrentPlayableItem(),
+                Position = DefaultFinishedPosition
             };
         }
 

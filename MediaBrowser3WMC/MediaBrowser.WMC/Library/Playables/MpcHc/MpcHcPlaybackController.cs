@@ -233,6 +233,11 @@ namespace MediaBrowser.Library.Playables.MpcHc
         }
 
         /// <summary>
+        /// For externals we can communicate with our default finished position is not played at all
+        /// </summary>
+        protected override long DefaultFinishedPosition { get { return 0; } }
+
+        /// <summary>
         /// When playback is based purely on files, this will take the files that were supplied to the PlayableItem,
         /// and create the actual paths that will be sent to the player
         /// </summary>
