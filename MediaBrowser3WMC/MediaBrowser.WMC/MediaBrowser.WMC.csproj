@@ -656,6 +656,8 @@
     <Content Include="Images\Unwatched\TickPosterBase.png" />
     <Content Include="Images\Unwatched\Unwatched.png" />
     <Content Include="Images\Unwatched\UnwatchedBase.png" />
+    <Content Include="Images\Unwatched\UnwatchedNew.png" />
+    <Content Include="Images\Unwatched\Watched.png" />
     <Content Include="Images\UserLoginDefault.png" />
     <Content Include="Images\Vanilla\arrows\left.png" />
     <Content Include="Images\Vanilla\arrows\right.png" />

@@ -14,7 +14,8 @@
 	<Image Name="Tick" Source="resx://MediaBrowser/MediaBrowser.Resources/Tick" />
 	<Image Name="TickPoster" Source="resx://MediaBrowser/MediaBrowser.Resources/TickPoster" />
 	<Image Name="TickPosterBase" Source="resx://MediaBrowser/MediaBrowser.Resources/TickPosterBase" />
-	<Image Name="Unwatched" Source="resx://MediaBrowser/MediaBrowser.Resources/Unwatched" />
+	<Image Name="Unwatched" Source="resx://MediaBrowser/MediaBrowser.Resources/UnwatchedNew" />
+	<Image Name="Watched" Source="resx://MediaBrowser/MediaBrowser.Resources/Watched" />
 	<Image Name="UnwatchedBase" Source="resx://MediaBrowser/MediaBrowser.Resources/UnwatchedBase" />
 	<Image Name="Lines" Source="resx://MediaBrowser/MediaBrowser.Resources/Lines"/>
 	<Image Name="ConfigImg" Source="resx://MediaBrowser/MediaBrowser.Resources/Config"/>

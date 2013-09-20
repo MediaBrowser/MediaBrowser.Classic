@@ -3830,6 +3830,16 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UnwatchedNew {
+            get {
+                object obj = ResourceManager.GetObject("UnwatchedNew", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] UserIndicator {
@@ -3876,6 +3886,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("ViewMovieMinimal", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Watched {
+            get {
+                object obj = ResourceManager.GetObject("Watched", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
