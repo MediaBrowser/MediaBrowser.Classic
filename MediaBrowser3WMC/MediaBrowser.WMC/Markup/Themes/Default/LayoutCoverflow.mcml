@@ -618,27 +618,17 @@
                   <AnchorLayout SizeToHorizontalChildren="false" SizeToVerticalChildren="false"/>
                 </Layout>
                 <Children>
-                  <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Center" Alpha="0.8" Name="TickIndicatorPanel" Visible="[Application.Config.ShowWatchTickInPosterView]" MaximumSize="32,32" Margins="5,5,0,0">
+                  <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Center" Alpha="0.8" Name="TickIndicatorPanel" Visible="[Application.Config.ShowWatchTickInPosterView]" MaximumSize="37,37" Margins="5,5,0,0">
                     <LayoutInput>
                       <AnchorLayoutInput Horizontal="Near" Vertical="Near" />
                     </LayoutInput>
                     <Children>
                       <Panel Name="TickPanel" Layout="Center">
                         <Children>
-                          <Graphic Content="image://i:TickPoster"  MaximumSize="30,30"  />
-                          <Graphic Content="image://i:TickPosterBase" ColorFilter="color://s:FilterColor" MaximumSize="30,30"  Visible="global://s:ShowWatchedMarkerBackgrounds" />
+                          <Graphic Content="image://i:Watched"  MaximumSize="35,35"  />
+                          <!--<Graphic Content="image://i:TickPosterBase" ColorFilter="color://s:FilterColor" MaximumSize="30,30"  Visible="global://s:ShowWatchedMarkerBackgrounds" />-->
                         </Children>
                       </Panel>
-                    </Children>
-                  </Panel>
-                  <Panel  Margins="2,2,0,0" Scale="1,1,1" Padding="0,0,0,0" Layout="Center" Name="UnwatchedIndicator" MaximumSize="47,47" >
-                    <LayoutInput>
-                      <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
-                    </LayoutInput>
-                    <Children>
-                      <Text Name="UnwatchedCount" Content="" Color="color://s:FontColorLight" Font="[UnwatchedCountFont]" Margins="0,0,-3,-10"></Text>
-                      <Graphic Visible="global://s:ShowWatchedMarkerBackgrounds" Content="image://i:Unwatched"  MinimumSize="45,45" MaximumSize="45,45" MaintainAspectRatio="true" Layout="Center" ></Graphic>
-                      <Graphic Visible="true" ColorFilter="color://s:FilterColor" Content="image://i:UnwatchedBase" MinimumSize="45,45" MaximumSize="45,45"  MaintainAspectRatio="true" Layout="Center" ></Graphic>
                     </Children>
                   </Panel>
                   <Panel  Margins="2,2,0,0" Scale="1,1,1" Padding="0,0,0,0" Layout="Center" Alpha=".90" Name="UnwatchedGlowPanel" MaximumSize="[GlowSize]" Visible="[Application.Config.ShowUnwatchedIndicator]" >
@@ -661,6 +651,16 @@
                         </Animations>
 
                       </Graphic>
+                    </Children>
+                  </Panel>
+                  <Panel  Margins="5,5,0,0" Scale="1,1,1" Padding="0,0,0,0" Layout="Center" Name="UnwatchedIndicator" MaximumSize="42,42" >
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                    </LayoutInput>
+                    <Children>
+                      <Text Name="UnwatchedCount" Content="" Color="color://s:FontColorLight" Font="[UnwatchedCountFont]" Margins="0,0,-3,-10"></Text>
+                      <Graphic Visible="global://s:ShowWatchedMarkerBackgrounds" Content="image://i:Unwatched"  MinimumSize="40,40" MaximumSize="40,40" MaintainAspectRatio="true" Layout="Center" ></Graphic>
+                      <!--<Graphic Visible="true" ColorFilter="color://s:FilterColor" Content="image://i:UnwatchedBase" MinimumSize="45,45" MaximumSize="45,45"  MaintainAspectRatio="true" Layout="Center" ></Graphic>-->
                     </Children>
                   </Panel>
                   <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="HDIndicator">
