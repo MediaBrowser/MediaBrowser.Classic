@@ -14,12 +14,17 @@
 	<Color Name="TabFontColorLight" Color="128,128,128"/>
 	<Color Name="TabFontColorMedium" Color="32,32,32"/>
 
-	<!-- The color of the filter and associated alpha level used in the minimal movie page and also to define the color of the watch/unwatch markers in poster views-->
+	<!-- The color of the filter and associated alpha level used in the minimal movie page-->
 	<Color Name="FilterColor" Color="White"/>
 	<Color Name="FillColor" Color="Black"/>
 	<cor:Single Name="FilterAlpha" Single="0.71" />
 
-	<!-- color filter applied to backdrops on thumbstrip view and detailed movie view-->
+  <!-- The color of the filter and associated alpha level used in the watch/unwatch markers in poster views-->
+  <Color Name="UnwatchedColor" Color="0,127,14"/>
+  <Color Name="WatchedColor" Color="187,0,0"/>
+  <cor:Single Name="WatchedAlpha" Single="0.75" />
+
+  <!-- color filter applied to backdrops on thumbstrip view and detailed movie view-->
 	<Color Name="BackdropFilter" Color="White"/>
 
 	<!-- Background is faded vertically from color1 in the middle to color2 top and bottom-->
