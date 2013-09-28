@@ -399,7 +399,7 @@ namespace MediaBrowser.Library {
 
         protected void CreateEpisodeParents(Item item)
         {
-            if (!TVHelper.CreateEpisodeParents(item))
+            if (!TVHelper.CreateEpisodeParents(item, this))
             {
                 //something went wrong - attach to us
                 item.PhysicalParent = this;

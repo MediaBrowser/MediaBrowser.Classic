@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Util
 {
     public static class TVHelper
     {
-        public static bool CreateEpisodeParents(Item item)
+        public static bool CreateEpisodeParents(Item item, FolderModel topParent = null)
         {
             var episode = item.BaseItem as Episode;
             if (episode == null) return false;
@@ -34,6 +34,8 @@ namespace MediaBrowser.Library.Util
                     item.PhysicalParent = ItemFactory.Instance.Create(mySeries) as FolderModel;
                 else
                     item.PhysicalParent.PhysicalParent = ItemFactory.Instance.Create(mySeries) as FolderModel;
+
+                if (topParent != null) mySeries.Parent = topParent.Folder;
 
                 //now force the blasted images to load so they will inherit
                 var ignoreList = mySeries.BackdropImages;

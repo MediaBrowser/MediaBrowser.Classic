@@ -2290,7 +2290,7 @@ namespace MediaBrowser
                 // cause the RAL to re-load if set to watched or un-watched
                 if (RecentItemOption == "watched" || RecentItemOption == "unwatched")
                 {
-                    Async.Queue("quicklist update", () => { foreach (var item in playableItem.MediaItems) UpdateQuicklist(item); });
+                    Async.Queue("quicklist update", () => { foreach (var item in playableItem.PlayedMediaItems.Select(i => i.TopParent).Where(i => i != null).Distinct()) UpdateQuicklist(item); });
                 }
             }
 
@@ -2299,14 +2299,10 @@ namespace MediaBrowser
             OnPlaybackFinished(playableItem);
         }
 
-        protected void UpdateQuicklist(BaseItem item)
+        protected void UpdateQuicklist(Folder item)
         {
-            var top = item.TopParent;
-            if (top != null)
-            {
-                top.ResetQuickList();
-                top.OnQuickListChanged(null);
-            }
+            item.ResetQuickList();
+            item.OnQuickListChanged(null);
         }
 
         public bool LoggedIn { get; set; } //used to tell if we have logged in successfully
