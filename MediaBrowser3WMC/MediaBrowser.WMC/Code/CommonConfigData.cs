@@ -33,7 +33,7 @@ namespace MediaBrowser
         public bool EnableUpdates = true;
         [Group("Updates")]
         [Comment(@"The class of updates to check (Dev/Beta/Release).")]
-        public PackageVersionClass SystemUpdateClass = PackageVersionClass.Dev;
+        public PackageVersionClass SystemUpdateClass = PackageVersionClass.Beta;
         [Group("Updates")]
         [Comment(@"The class of updates to check (Dev/Beta/Release).")]
         public PackageVersionClass PluginUpdateClass = PackageVersionClass.Beta;
