@@ -80,6 +80,8 @@ namespace MediaBrowser.ApiInteraction.WebSocket
             if (_webSocket.State != WebSocketState.Open)
             {
                 Logger.ReportInfo("Reconnecting WebSocket which has dropped.");
+                var info = Kernel.ApiClient.GetSystemInfo();
+                Port = info.WebSocketPortNumber;
                 Connect(HostName, Port, ClientName, DeviceId);
             }
         }
