@@ -1,4 +1,5 @@
 ﻿using MediaBrowser.Library;
+using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -247,7 +248,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// <returns>System.String.</returns>
         protected string GetIdentificationMessage(string clientName, string deviceName)
         {
-            return clientName + "|" + deviceName + "|" + Kernel.Instance.VersionStr;
+            return clientName + "|" + Kernel.ApiClient.DeviceId + "|" + Kernel.Instance.VersionStr + "|" + deviceName;
         }
     }
 }
