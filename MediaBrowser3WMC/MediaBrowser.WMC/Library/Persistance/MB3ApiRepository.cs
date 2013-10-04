@@ -484,7 +484,7 @@ namespace MediaBrowser.Library.Persistance
                                                          ParentId = id,
                                                          IndexBy = indexBy,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.ItemCounts, ItemFields.OriginalRunTimeTicks, 
+                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.OriginalRunTimeTicks, 
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
                                                      });
 
@@ -495,7 +495,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.OriginalRunTimeTicks, ItemFields.IndexOptions, ItemFields.SortName, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
-                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.ItemCounts, 
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)
@@ -554,6 +554,12 @@ namespace MediaBrowser.Library.Persistance
                                          Ids = ids,
                                          Fields = StandardFields
                                      });
+        }
+
+        public IEnumerable<Media> RetrieveIntros(string id)
+        {
+            var dtos = Kernel.ApiClient.GetIntros(id, Kernel.CurrentUser.Id);
+            return dtos == null ? new Media[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null).Cast<Media>();
         }
 
         public IList<Index> RetrieveIndex(Folder folder, string property, Func<string, BaseItem> constructor)

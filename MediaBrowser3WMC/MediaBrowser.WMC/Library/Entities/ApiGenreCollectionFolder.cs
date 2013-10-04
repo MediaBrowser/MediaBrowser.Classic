@@ -20,7 +20,7 @@ namespace MediaBrowser.Library.Entities
                                ParentId = Kernel.Instance.RootFolder.ApiId,
                                IncludeItemTypes = IncludeItemTypes,
                                Recursive = true,
-                               Fields = new[] {ItemFields.SortName, ItemFields.ItemCounts, },
+                               Fields = new[] {ItemFields.SortName },
                                SortBy = new[] {"SortName"}
                            };
             }

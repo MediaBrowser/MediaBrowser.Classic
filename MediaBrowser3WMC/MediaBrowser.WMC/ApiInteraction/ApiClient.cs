@@ -135,7 +135,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="userId">The user id.</param>
         /// <returns>Task{System.String[]}.</returns>
         /// <exception cref="System.ArgumentNullException">id</exception>
-        public string[] GetIntros(string itemId, Guid userId)
+        public ItemsResult GetIntros(string itemId, Guid userId)
         {
             if (string.IsNullOrEmpty(itemId))
             {
@@ -151,7 +151,7 @@ namespace MediaBrowser.ApiInteraction
 
             using (var stream = GetSerializedStream(url))
             {
-                return DeserializeFromStream<string[]>(stream);
+                return DeserializeFromStream<ItemsResult>(stream);
             }
         }
 
