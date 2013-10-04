@@ -140,6 +140,7 @@
     <Compile Include="ApiInteraction\WebSocket\WebSocket4NetClientWebSocket.cs" />
     <Compile Include="Code\CommonConfigData.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
+    <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
     <Compile Include="Library\Entities\ApiGenreFolder.cs" />
     <Compile Include="Library\Entities\AppleTrailer.cs" />

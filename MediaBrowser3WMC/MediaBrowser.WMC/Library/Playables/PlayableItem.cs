@@ -621,6 +621,24 @@ namespace MediaBrowser.Library.Playables
                 StopAllApplicationPlayback();
             }
 
+            // Play Intros if specified
+            if (PlayIntros && HasMediaItems)
+            {
+                var item = MediaItems.First();
+                if (item is Movie && item.DisplayMediaType != null && !item.DisplayMediaType.Equals("trailer", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Get intros for this item
+                    var intros = Kernel.ApiClient.GetIntros(MediaItems.First().ApiId, Kernel.CurrentUser.Id).ToList();
+
+                    // Kick off our intro playback controller
+                    if (intros.Any())
+                    {
+                        Application.CurrentInstance.IntroController.Init(intros);
+                        Application.CurrentInstance.IntroController.Play();
+                    }
+                }
+            }
+
             if (UseAutoPlay)
             {
                 Logger.ReportVerbose("Playing with autoplay. Marking watched since we have no way of getting status on this.");

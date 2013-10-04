@@ -1051,6 +1051,8 @@ namespace MediaBrowser
             }
         }
 
+        public IntrosPlaybackController IntroController { get; set; }
+
         /// <summary>
         /// Determines whether or not a PlaybackController is currently playing
         /// </summary>
@@ -1245,6 +1247,8 @@ namespace MediaBrowser
                 // setup image to use in login splash screen
                 splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "loginsplash.png");
                 LogonSplashImage = File.Exists(splashFilename) ? new Image("file://"+splashFilename) : new Image("resx://MediaBrowser/MediaBrowser.Resources/mblogo1000");
+
+                IntroController = new IntrosPlaybackController();
 
                 Login();
             }
