@@ -1475,11 +1475,18 @@ namespace MediaBrowser
                                                              {
                                                                  if (Kernel.ServerInfo.HasPendingRestart)
                                                                  {
-                                                                     if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                                                                     if (Kernel.ServerInfo.CanSelfRestart)
                                                                      {
-                                                                         Kernel.ApiClient.PerformPendingRestart();
-                                                                         MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
-                                                                         Close();
+                                                                         if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                                                                         {
+                                                                             Kernel.ApiClient.PerformPendingRestart();
+                                                                             MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
+                                                                             Close();
+                                                                         }
+                                                                     }
+                                                                     else
+                                                                     {
+                                                                        MessageBox("Your server needs to be re-started to apply an update.  You must re-start it from the server machine.");
                                                                      }
                                                                  }
                                                              },35000);
