@@ -144,6 +144,7 @@
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
     <Compile Include="Library\Entities\ApiGenreFolder.cs" />
     <Compile Include="Library\Entities\AppleTrailer.cs" />
+    <Compile Include="Library\Entities\ApiPersonFolder.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\IbnSourcedFolder.cs" />

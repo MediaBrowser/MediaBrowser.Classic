@@ -9,6 +9,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Util;
 
@@ -637,6 +638,42 @@ namespace MediaBrowser.Library.Entities {
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
 
+            } else if (property == LocalizedStrings.Instance.GetString("ActorDispPref"))
+            {
+                var personTypes = new[] {PersonType.Actor, PersonType.GuestStar};
+                var query = new PersonsQuery
+                                {
+                                    UserId = Kernel.CurrentUser.ApiId,
+                                    ParentId = ApiId,
+                                    Recursive = true,
+                                    Fields = new[] {ItemFields.SortName},
+                                    SortBy = new[] {"SortName"},
+                                    PersonTypes = personTypes
+
+                                };
+                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
+                ApiRecursiveItemCount = ret.Count;
+                SetParent(ret);
+                Logger.ReportVerbose("=========== Indexing with new technique...");
+                return ret;
+            } else if (property == LocalizedStrings.Instance.GetString("DirectorDispPref"))
+            {
+                var personTypes = new[] {PersonType.Director};
+                var query = new PersonsQuery
+                                {
+                                    UserId = Kernel.CurrentUser.ApiId,
+                                    ParentId = ApiId,
+                                    Recursive = true,
+                                    Fields = new[] {ItemFields.SortName},
+                                    SortBy = new[] {"SortName"},
+                                    PersonTypes = personTypes
+
+                                };
+                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
+                ApiRecursiveItemCount = ret.Count;
+                SetParent(ret);
+                Logger.ReportVerbose("=========== Indexing with new technique...");
+                return ret;
             }
 
             return Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);

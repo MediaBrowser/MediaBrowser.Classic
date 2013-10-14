@@ -452,6 +452,13 @@ namespace MediaBrowser.ApiInteraction
                 dict.Add("ImageTypes", query.ImageTypes.Select(f => f.ToString()));
             }
 
+            var personQuery = query as PersonsQuery;
+
+            if (personQuery != null && personQuery.PersonTypes != null)
+            {
+                dict.Add("PersonTypes", personQuery.PersonTypes.Select(f => f.ToString()));
+            }
+
             dict.Add("recursive", query.Recursive);
 
             dict.AddIfNotNull("MediaTypes", query.MediaTypes);

@@ -285,6 +285,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for people
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetPersons(PersonsQuery query)
+        {
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            var url = GetItemByNameListUrl("Persons", query);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for music genres
         /// </summary>
         /// <param name="query">The query.</param>

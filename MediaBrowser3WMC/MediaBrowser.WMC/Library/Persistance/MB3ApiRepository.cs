@@ -516,6 +516,14 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        public IEnumerable<BaseItem> RetrievePersons(PersonsQuery query)
+        {
+            var dtos = Kernel.ApiClient.GetPersons(query);
+
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
         public IEnumerable<BaseItem> RetrieveMusicGenres(ItemQuery query)
         {
             var dtos = Kernel.ApiClient.GetMusicGenres(query);
