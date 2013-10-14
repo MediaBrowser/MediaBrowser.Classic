@@ -6,15 +6,8 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class FavoritesCollectionFolder : LocalIbnSourcedCacheFolder
+    public class FavoritesCollectionFolder : LocalIbnSourcedFolder
     {
-        public override bool AllowRemoteChildren
-        {
-            get
-            {
-                return false;
-            }
-        }
 
         public override string Name
         {

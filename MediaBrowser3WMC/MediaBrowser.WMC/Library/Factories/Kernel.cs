@@ -560,25 +560,12 @@ namespace MediaBrowser.Library {
 
         public void ReLoadRoot()
         {
-            //save the items added by plugins before we re-load
-            //var virtualItems = new List<BaseItem>();
-            //virtualItems.AddRange(kernel.RootFolder.VirtualChildren.Where(i => !(i is FavoritesCollectionFolder)));
 
             //and re-load the repo
             MB3ApiRepository = new MB3ApiRepository();
 
             // our root folder needs metadata
             kernel.RootFolder = kernel.MB3ApiRepository.RetrieveRoot();
-
-            //now add back the plug-in children
-            //if (virtualItems.Any() && kernel.RootFolder != null)
-            //{
-            //    foreach (var item in virtualItems)
-            //    {
-            //        Logger.ReportVerbose("Adding back " + item.Name);
-            //        kernel.RootFolder.AddVirtualChild(item);
-            //    }
-            //}
 
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();

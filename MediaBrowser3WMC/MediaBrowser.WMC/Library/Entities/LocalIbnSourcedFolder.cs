@@ -8,7 +8,7 @@ using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class LocalIbnSourcedCacheFolder : LocalCacheFolder
+    public class LocalIbnSourcedFolder : IndexFolder
     {
         public override string PrimaryImagePath
         {

@@ -31,6 +31,8 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public virtual string DefaultPrimaryImagePath { get; set; }
+
         public override void ValidateChildren()
         {
             // If our children haven't been retrieved yet - get them
@@ -53,14 +55,6 @@ namespace MediaBrowser.Library.Entities
         {
             return false; //we don't have real metadata...
         }
-        /// <summary>
-        /// We save display prefs in our local cache
-        /// </summary>
-        /// <param name="prefs"></param>
-        public override void SaveDisplayPrefs(DisplayPreferences prefs)
-        {
-            Kernel.Instance.LocalRepo.SaveDisplayPreferences(prefs);
-        }
 
         public override string DisplayPreferencesId
         {
@@ -74,23 +68,5 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        public override void LoadDisplayPreferences()
-        {
-            Logger.ReportVerbose("Loading display prefs from local repo for " + this.Name + "/" + DisplayMediaType);
-
-            var dp = new DisplayPreferences(DisplayPreferencesId, this);
-            dp = Kernel.Instance.LocalRepo.RetrieveDisplayPreferences(dp) ?? LoadDefaultDisplayPreferences();
-
-            this.DisplayPreferences = new Model.Entities.DisplayPreferences { ViewType = dp.ViewType.Chosen.ToString(), SortBy = dp.SortOrder, 
-                ScrollDirection = dp.VerticalScroll.Value ? ScrollDirection.Vertical : ScrollDirection.Horizontal, CustomPrefs = dp.CustomParms,
-            PrimaryImageHeight = dp.ThumbConstraint.Value.Height, PrimaryImageWidth = dp.ThumbConstraint.Value.Width, ShowBackdrop = dp.UseBackdrop.Value};
-        }
-
-        protected DisplayPreferences LoadDefaultDisplayPreferences()
-        {
-            var dp = new DisplayPreferences(DisplayPreferencesId, this);
-            dp.LoadDefaults();
-            return dp;
-        }
     }
 }

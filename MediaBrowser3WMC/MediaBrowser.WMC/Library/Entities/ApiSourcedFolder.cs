@@ -8,7 +8,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiSourcedFolder<T> : LocalCacheFolder where T : new() 
+    public class ApiSourcedFolder<T> : IndexFolder where T : new() 
     {
         private List<BaseItem> _children;
         public virtual T Query { get { return new T(); } }
