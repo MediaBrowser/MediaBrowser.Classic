@@ -15,7 +15,7 @@ namespace MediaBrowser.Library.Entities
         public ApiGenreFolder() : base()
         {}
 
-        public ApiGenreFolder(BaseItem item, string[] includeTypes = null, string[] excludeTypes = null) : base(item, includeTypes, excludeTypes)
+        public ApiGenreFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null) : base(item, searchParentId, includeTypes, excludeTypes)
         {
         }
 
@@ -26,7 +26,7 @@ namespace MediaBrowser.Library.Entities
                 return new ItemQuery
                            {
                                UserId = Kernel.CurrentUser.ApiId,
-                               ParentId = Kernel.Instance.RootFolder.ApiId,
+                               ParentId = SearchParentId,
                                IncludeItemTypes = IncludeItemTypes,
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
@@ -43,7 +43,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return "Genre-" + IncludeItemTypes.FirstOrDefault();
+                return "Genre-" + (IncludeItemTypes != null ? IncludeItemTypes.FirstOrDefault() : Parent.ApiId);
             }
             set
             {

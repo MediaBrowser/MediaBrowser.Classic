@@ -114,6 +114,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public string CollectionType { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist) ? "music" : null; }}
+
         public override bool PlayAction(Item item)
         {
             //set our flag to show the popup menu
@@ -615,18 +617,29 @@ namespace MediaBrowser.Library.Entities {
         {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
-            var index = Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);
-            //build in images
-            //Async.Queue("Index image builder", () =>
-            //{
-            //    foreach (var item in index)
-            //    {
-            //        if (item.PrimaryImage == null) //this will keep us from blanking out images that are already there and the source is not available
-            //            item.RefreshMetadata();
-            //    }
-            //});
 
-            return index;
+            if (property == LocalizedStrings.Instance.GetString("GenreDispPref"))
+            {
+                var query = new ItemQuery
+                {
+                    UserId = Kernel.CurrentUser.ApiId,
+                    ParentId = ApiId,
+                    Recursive = true,
+                    Fields = new[] { ItemFields.SortName },
+                    SortBy = new[] { "SortName" }
+                };
+
+                var ret = CollectionType == "music" ?
+                              Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList() :
+                              Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList();
+                ApiRecursiveItemCount = ret.Count;
+                SetParent(ret);
+                Logger.ReportVerbose("=========== Indexing with new technique...");
+                return ret;
+
+            }
+
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);
         }
 
         private static BaseItem UnknownItem(IndexType indexType) {

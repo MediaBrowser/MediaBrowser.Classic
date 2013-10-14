@@ -14,20 +14,22 @@ namespace MediaBrowser.Library.Entities
         public virtual T Query { get { return new T(); } }
         public virtual string[] IncludeItemTypes { get; set; }
         public virtual string[] ExcludeItemTypes { get; set; }
+        protected string SearchParentId { get; set; }
 
         public ApiSourcedFolder() : base()
         {
         }
 
-        public ApiSourcedFolder(BaseItem item, string[] includeTypes = null, string[] excludeTypes = null)
+        public ApiSourcedFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
         {
-            Init(item, includeTypes, excludeTypes);
+            Init(item, searchParentId, includeTypes, excludeTypes);
         }
 
-        protected void Init(BaseItem item, string[] includeTypes = null, string[] excludeTypes = null)
+        protected void Init(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
         {
             Name = item.Name;
             Id = item.Id;
+            SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
             DisplayMediaType = item.DisplayMediaType;

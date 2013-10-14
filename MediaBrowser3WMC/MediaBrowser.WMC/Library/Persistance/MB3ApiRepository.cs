@@ -262,6 +262,8 @@ namespace MediaBrowser.Library.Persistance
                 var folder = item as Folder;
                 if (folder != null)
                 {
+                    // Collection Type
+                    // Will need to add this at a later time
                     // Fill in display prefs and indexby options
                     folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
                     folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
