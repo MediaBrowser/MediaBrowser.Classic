@@ -995,7 +995,11 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId);
+            var dict = new QueryStringDictionary();
+            dict.Add("CanSeek", true);
+            dict.Add("QueueableMediaTypes", "");
+
+            var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId, dict);
 
             Post<EmptyRequestResult>(url, new Dictionary<string, string>());
         }
