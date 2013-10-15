@@ -222,11 +222,11 @@
                             <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="192" Height="25">Version 0.0.0.0</Label>
                             <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
                             <Grid>
-                                    <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/permalinks/1303/media-browser-quickstart-guide" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Quickstart Guide</Hyperlink></TextBlock>
-                                <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to quickly setup Media Browser for the first time...</TextBlock>
-                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv/topics?category_id=5&amp;status=published" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
-                                <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find information on best practices to organize your media for maximum compatibility...</TextBlock>
-                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://community.mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community Tracker</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community/index.php?/topic/733-mb-classic-setup-and-configuration/" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Classic Guide</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to learn how to setup Media Browser Classic...</TextBlock>
+                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community/index.php?/forum/23-knowledge-base/" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find helpful information and guides for the various Media Browser components...</TextBlock>
+                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community</Hyperlink></TextBlock>
                                 <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
                                 </Grid>
                         </GroupBox>
