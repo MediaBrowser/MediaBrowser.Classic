@@ -15,6 +15,9 @@ namespace MediaBrowser.Library.Entities
         public virtual string[] IncludeItemTypes { get; set; }
         public virtual string[] ExcludeItemTypes { get; set; }
         protected string SearchParentId { get; set; }
+        protected bool PrimaryImageChecked { get; set; }
+        protected bool BackdropImageChecked { get; set; }
+        protected bool HasShadowItem { get; set; }
 
         public ApiSourcedFolder() : base()
         {
@@ -32,9 +35,11 @@ namespace MediaBrowser.Library.Entities
             SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
+            BannerImagePath = item.BannerImagePath;
             DisplayMediaType = item.DisplayMediaType;
             IncludeItemTypes = includeTypes;
             ExcludeItemTypes = excludeTypes;
+            HasShadowItem = true;
         }
 
         public override string ApiId
@@ -73,7 +78,7 @@ namespace MediaBrowser.Library.Entities
 
         public override string PrimaryImagePath
         {
-            get { return base.PrimaryImagePath ?? (base.PrimaryImagePath = GetImagePath(ImageType.Primary)); }
+            get { return HasShadowItem ? base.PrimaryImagePath : base.PrimaryImagePath ?? (base.PrimaryImagePath = !PrimaryImageChecked ? GetImagePath(ImageType.Primary) : null); }
             set
             {
                 base.PrimaryImagePath = value;
@@ -84,7 +89,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
+                return HasShadowItem ? base.BackdropImagePaths :  base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> {!BackdropImageChecked ? GetImagePath(ImageType.Backdrop) : null });
             }
             set
             {
@@ -96,6 +101,15 @@ namespace MediaBrowser.Library.Entities
         {
             if (this.Name == null) return null;
 
+            switch (imageType)
+            {
+                case ImageType.Backdrop:
+                    BackdropImageChecked = true;
+                    break;
+                case ImageType.Primary:
+                    PrimaryImageChecked = true;
+                    break;
+            }
             //Look for it on the server IBN
             return Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = imageType });
 

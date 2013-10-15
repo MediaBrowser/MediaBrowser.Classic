@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Web;
 using MediaBrowser.Library;
 using MediaBrowser.Model.Configuration;
@@ -601,6 +602,26 @@ namespace MediaBrowser.ApiInteraction
                 return DeserializeFromStream<List<PackageInfo>>(stream);
             }
 
+        }
+
+        /// <summary>
+        /// Test a particular url for an error (like if it exists)
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>true if no error false otherwise</returns>
+        public bool TestUrl(string url)
+        {
+            try
+            {
+                HttpClient.Get(url);
+                Logger.Debug("Tested url {0}", url);
+                return true;
+            }
+            catch (WebException)
+            {
+                Logger.Debug("Url Test failed {0}", url);
+                return false;
+            }
         }
 
         /// <summary>
@@ -1348,6 +1369,276 @@ namespace MediaBrowser.ApiInteraction
             }
 
             return url;
+        }
+
+        /// <summary>
+        /// Gets the person image URL.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+        public string GetPersonImageUrl(BaseItemDto item, ImageOptions options)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            options.Tag = item.ImageTags[ImageType.Primary];
+
+            return GetPersonImageUrl(item.Name, options);
+        }
+
+        /// <summary>
+        /// Gets the year image URL.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+        public string GetYearImageUrl(BaseItemDto item, ImageOptions options)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            options.Tag = item.ImageTags[ImageType.Primary];
+
+            return GetYearImageUrl(int.Parse(item.Name), options);
+        }
+
+        /// <summary>
+        /// Gets the genre image URL.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+        public string GetGenreImageUrl(BaseItemDto item, ImageOptions options)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            options.Tag = item.ImageTags[ImageType.Primary];
+
+            return GetGenreImageUrl(item.Name, options);
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetMusicGenreImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "MusicGenres/" + name + "/Images/" + options.ImageType;
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return TestUrl(url) ? url : null;
+        }
+
+        /// <summary>
+        /// Gets the studio image URL.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+        public string GetStudioImageUrl(BaseItemDto item, ImageOptions options)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            options.Tag = item.ImageTags[ImageType.Primary];
+
+            return GetStudioImageUrl(item.Name, options);
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetGeneralIbnImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            switch (options.ImageType)
+            {
+                case ImageType.Primary:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxPrimaryWidth;
+                    break;
+                case ImageType.Backdrop:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth;
+                    break;
+                case ImageType.Logo:
+                    options.MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth;
+                    break;
+            }
+
+            options.Quality = Kernel.Instance.CommonConfigData.JpgImageQuality;
+
+            var url = "Images/General/" + HttpUtility.UrlEncode(name) + "/" + options.ImageType;
+
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return TestUrl(url) ? url : null;
+        }
+
+        /// <summary>
+        /// Gets the person image URL.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+        public string GetPersonImageUrl(BaseItemPerson item, ImageOptions options)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            options.Tag = item.PrimaryImageTag;
+
+            return GetPersonImageUrl(item.Name, options);
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name of the person</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetPersonImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "Persons/" + name + "/Images/" + options.ImageType;
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return TestUrl(url) ? url : null;
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        public string GetYearImageUrl(int year, ImageOptions options)
+        {
+            var url = "Years/" + year + "/Images/" + options.ImageType;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetGenreImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "Genres/" + name + "/Images/" + options.ImageType;
+
+            return GetImageUrl(url, options, new QueryStringDictionary());
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetStudioImageUrl(string name, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = "Studios/" + HttpUtility.UrlEncode(name) + "/Images/" + options.ImageType;
+
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return TestUrl(url) ? url : null;
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="theme"></param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetRatingsImageUrl(string name, string theme, ImageOptions options)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            if (string.IsNullOrEmpty(theme))
+            {
+                throw new ArgumentNullException("theme");
+            }
+
+            var url = "Images/Ratings/" + HttpUtility.UrlEncode(theme + "/" + name);
+
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return TestUrl(url) ? url : null;
         }
     }
 }

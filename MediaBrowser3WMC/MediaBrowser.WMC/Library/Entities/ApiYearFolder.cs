@@ -10,18 +10,15 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiPersonFolder : ApiSourcedFolder<ItemQuery>
+    public class ApiYearFolder : ApiSourcedFolder<ItemQuery>
     {
-        public ApiPersonFolder() : base()
+        public ApiYearFolder() : base()
         {}
 
-        public ApiPersonFolder(BaseItem item, string searchParentId = null, string[] personTypes = null, string[] includeTypes = null, string[] excludeTypes = null)
+        public ApiYearFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
             : base(item, searchParentId, includeTypes, excludeTypes)
         {
-            PersonTypes = personTypes;
         }
-
-        protected string[] PersonTypes { get; set; }
 
         public override ItemQuery Query
         {
@@ -35,8 +32,7 @@ namespace MediaBrowser.Library.Entities
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
                                Fields = MB3ApiRepository.StandardFields,
-                               Person = HttpUtility.UrlEncode(Name),
-                               PersonTypes = PersonTypes
+                               Years = new[] {Convert.ToInt32(Name)}
                            };
             }
         }
@@ -48,7 +44,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return "Person-" + Parent.ApiId;
+                return "Year-" + Parent.ApiId;
             }
             set
             {
@@ -65,10 +61,6 @@ namespace MediaBrowser.Library.Entities
             set { base.RalIncludeTypes = value; }
         }
 
-        protected override string GetImagePath(ImageType imageType)
-        {
-            return Kernel.ApiClient.GetPersonImageUrl(this.Name, new ImageOptions { ImageType = imageType });
-        }
 
     }
 }

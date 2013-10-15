@@ -34,6 +34,8 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"BoxSet", typeof (BoxSet)},
                                                                      {"Person", typeof (Person)},
                                                                      {"Genre", typeof (Genre)},
+                                                                     {"Year", typeof(Year)},
+                                                                     {"Studio", typeof(Studio)},
                                                                      {"MusicGenre", typeof (MusicGenre)},
                                                                      {"IndexFolder", typeof(IndexFolder)},
                                                                      {"MusicAlbum", typeof(MusicAlbum)},

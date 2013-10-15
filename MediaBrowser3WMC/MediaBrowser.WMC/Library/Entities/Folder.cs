@@ -674,6 +674,22 @@ namespace MediaBrowser.Library.Entities {
                 SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
+            } else if (property == LocalizedStrings.Instance.GetString("YearDispPref"))
+            {
+                var query = new ItemsByNameQuery
+                                {
+                                    UserId = Kernel.CurrentUser.ApiId,
+                                    ParentId = ApiId,
+                                    Recursive = true,
+                                    Fields = new[] {ItemFields.SortName},
+                                    SortBy = new[] {"SortName"},
+
+                                };
+                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId)).Cast<BaseItem>().ToList();
+                ApiRecursiveItemCount = ret.Count;
+                SetParent(ret);
+                Logger.ReportVerbose("=========== Indexing with new technique...");
+                return ret;
             }
 
             return Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);

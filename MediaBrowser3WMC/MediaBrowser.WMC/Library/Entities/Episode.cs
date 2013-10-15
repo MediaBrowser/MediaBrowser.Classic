@@ -34,7 +34,7 @@ namespace MediaBrowser.Library.Entities {
                         found = Parent as Series;
                     }
                 }
-                if (found == null)
+                if (found == null || found.GetType() != typeof(Series))
                 {
                     //we may have been loaded out of context - retrieve from repo
                     found = RetrieveSeries();
