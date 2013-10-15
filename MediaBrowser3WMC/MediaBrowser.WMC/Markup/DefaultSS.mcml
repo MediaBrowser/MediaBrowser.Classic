@@ -37,10 +37,7 @@
         <Children>
           <ColorFill Content="Black" >
             <Children>
-              <Graphic Content="image://i:MBLogo" Scale="0.25,.18,0" Alpha=".7">
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,.33" Top="Parent,.45"/>
-                </LayoutInput>
+              <Graphic Content="image://i:MBLogo" Scale=".45, .12, 0" MaintainAspectRatio="true" Alpha=".7">
                 <Animations>
                   <Animation Animation="animation://an:FloatAround"/>
                 </Animations>
