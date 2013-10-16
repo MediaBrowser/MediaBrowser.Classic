@@ -2212,6 +2212,13 @@ namespace MediaBrowser
                 return;
             }
 
+            //or virtual
+            if (item.BaseItem.LocationType == LocationType.Virtual)
+            {
+                DisplayDialog("Item is not actually in your collection.", "Cannot Play");
+                return;
+            }
+
             if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
                 Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
