@@ -631,7 +631,7 @@ namespace MediaBrowser.Library.Entities {
                 };
 
                 var ret = CollectionType == "music" ?
-                              Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList() :
+                              Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId, new[] {"MusicAlbum"})).Cast<BaseItem>().ToList() :
                               Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
                 SetParent(ret);
