@@ -1221,10 +1221,8 @@ namespace MediaBrowser
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
-            //if (Config.AllowInternetMetadataProviders) Logger.ReportInfo("*** Save Locally is "+(Config.SaveLocalMeta ? "ON." : "OFF."));
-            // Now let's put a diagnostic ping in here for the beta cycle so we can see how much testing we're getting
-            //string info = "IP=" + Config.AllowInternetMetadataProviders + " EXTP=" + Config.ExternalPlayers.Count + " EXT=" + RunningOnExtender;
-            //Helper.Ping("http://www.ebrsoft.com/software/mb/plugins/ping.php?product=MBBeta&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress() + "&key=" + info);
+            //Need to track who is still using us
+            Helper.Ping("http://www.mb3admin.com/admin/service/registration/ping?feature=MBClassic&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress());
             try
             {
                 //Check to see if this is the first time this version is run
