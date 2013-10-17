@@ -135,6 +135,12 @@ namespace MediaBrowser
             set { if (this.Data.ShowMusicGenreCollection != value) { this.Data.ShowMusicGenreCollection = value; Save(); FirePropertyChanged("ShowMusicGenreCollection"); } }
         }
 
+        public bool ShowMusicAlbumCollection
+        {
+            get { return this.Data.ShowMusicAlbumCollection; }
+            set { if (this.Data.ShowMusicAlbumCollection != value) { this.Data.ShowMusicAlbumCollection = value; Save(); FirePropertyChanged("ShowMusicAlbumCollection"); } }
+        }
+
         public string MusicGenreFolderName
         {
             get { return this.Data.MusicGenreFolderName; }

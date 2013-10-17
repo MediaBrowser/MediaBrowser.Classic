@@ -554,9 +554,11 @@ namespace MediaBrowser.Library {
         public FavoritesCollectionFolder FavoritesFolder { get; set; }
         public ApiGenreCollectionFolder MovieGenreFolder { get; set; }
         public ApiGenreCollectionFolder MusicGenreFolder { get; set; }
+        public ApiAlbumCollectionFolder MusicAlbumFolder { get; set; }
         public Guid FavoriteFolderGuid = new Guid("3D2C3877-4B05-47F4-A231-6C2CF636883F");
         public Guid MovieGenreFolderGuid = new Guid("B01F6DAC-28BA-4EDE-849C-C6716437B2C0");
         public Guid MusicGenreFolderGuid = new Guid("3EBE8C41-289F-40C6-A82C-5621428F9D0F");
+        public Guid MusicAlbumFolderGuid = new Guid("6153369B-AC3B-4638-973F-850B625CB8D2");
 
         public void ReLoadRoot()
         {
@@ -592,6 +594,13 @@ namespace MediaBrowser.Library {
                     //Create Music Genre collection
                     MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, DisplayMediaType = "MusicGenres", IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
                     kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
+                }
+                
+                if (ConfigData.ShowMusicAlbumCollection)
+                {
+                    //Create Music Album collection
+                    MusicAlbumFolder = new ApiAlbumCollectionFolder {Id = MusicAlbumFolderGuid, Name = ConfigData.MusicAlbumFolderName, DisplayMediaType = "MusicAlbums", IncludeItemTypes = new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
+                    kernel.RootFolder.AddVirtualChild(MusicAlbumFolder);
                 }
                 
             }

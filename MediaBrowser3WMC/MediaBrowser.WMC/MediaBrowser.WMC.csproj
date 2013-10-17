@@ -147,6 +147,7 @@
     <Compile Include="Library\Entities\ApiPersonFolder.cs" />
     <Compile Include="Library\Entities\ApiYearFolder.cs" />
     <Compile Include="Library\Entities\ApiStudioFolder.cs" />
+    <Compile Include="Library\Entities\ApiAlbumCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\IbnSourcedFolder.cs" />

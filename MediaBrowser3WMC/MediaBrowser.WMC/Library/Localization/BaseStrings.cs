@@ -85,6 +85,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowFavoritesCollectionConfigDesc = "Show a top level collection with all your items marked as Favorite in it. Restart MBC to see changes.";
         public string ShowGenresCollectionConfigDesc = "Show a top level collection of all movies by genre. Restart MBC to see changes.";
         public string ShowMusicGenresCollectionConfigDesc = "Show a top level collection of all music by genre. Restart MBC to see changes.";
+        public string ShowMusicAlbumCollectionConfigDesc = "Show a top level collection of all music by album. Restart MBC to see changes.";
         public string ShowNewItemNotificationConfigDesc = "Show a notification window when new items are added.";
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
         public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an In-Progress list instead.  Anything resumable will appear instead of fully-watched items.";
@@ -126,6 +127,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowFavoritesCollectionConfig = "Show Favorites Collection";
         public string ShowGenresCollectionConfig = "Show Movie Genres Collection";
         public string ShowMusicGenresCollectionConfig = "Show Music Genres Collection";
+        public string ShowMusicAlbumCollectionConfig = "Show Music Albums Collection";
         public string GroupAlbumsByArtistConfig = "Group by Artist";
         public string ShowNewItemNotificationConfig = "Show New Item Notification";
         public string ViewsConfig = "Views";

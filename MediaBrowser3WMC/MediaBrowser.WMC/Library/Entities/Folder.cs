@@ -685,7 +685,7 @@ namespace MediaBrowser.Library.Entities {
                                     SortBy = new[] {"SortName"},
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId)).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
                 SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
@@ -701,7 +701,7 @@ namespace MediaBrowser.Library.Entities {
                                     SortBy = new[] {"SortName"},
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Studios", query).Select(p => new ApiStudioFolder(p, ApiId)).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Studios", query).Select(p => new ApiStudioFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
                 SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");

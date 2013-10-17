@@ -138,6 +138,8 @@ namespace MediaBrowser
         public bool ShowMusicGenreCollection = true;
         [Comment(@"Group albums by artist.")]
         public bool GroupAlbumsByArtist = true;
+        [Comment(@"Show collection of Albums.")]
+        public bool ShowMusicAlbumCollection = true;
         [Group("Display")]
         [Comment(@"Show notifications of new items.")]
         public bool ShowNewItemNotification = true;
@@ -147,6 +149,8 @@ namespace MediaBrowser
         [Comment(@"Name of favorite collection folder.")]
         public string MusicGenreFolderName = "Music by Genre";
         [Group("Display")]
+        [Comment(@"Name of album collection folder.")]
+        public string MusicAlbumFolderName = "Music Albums";
         [Comment(@"Name of movie genre collection folder.")]
         public string MovieGenreFolderName = "Movies by Genre";
         [Group("Display")]
