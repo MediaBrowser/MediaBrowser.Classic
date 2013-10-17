@@ -138,12 +138,16 @@ namespace MediaBrowser
             }
         }
 
+        private bool _isMuted;
         public bool WMCMute
         {
-            get { return MediaCenterEnvironment.AudioMixer.Mute; }
+            get
+            {
+                return _isMuted; // MediaCenterEnvironment.AudioMixer.Mute; 
+            }
             set
             {
-                MediaCenterEnvironment.AudioMixer.Mute = value;
+                MediaCenterEnvironment.AudioMixer.Mute = _isMuted = value;
                 if (currentPlaybackController != null)
                 {
                     ReportPlaybackProgress(currentPlaybackController.CurrentPlayableItemId.ToString(), currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused);
