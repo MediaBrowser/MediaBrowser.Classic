@@ -1064,7 +1064,7 @@ namespace MediaBrowser.ApiInteraction
             HttpClient.Delete(url);
 
             //Now we have to get the updated playstate from the server.  The only way to do this now is re-retrieve the whole item and grab the playstate
-            var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Library.Entities.Video;
+            var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Library.Entities.Media;
             return updated != null ? updated.PlaybackStatus : null;
         }
 

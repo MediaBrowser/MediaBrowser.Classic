@@ -133,15 +133,6 @@ namespace MediaBrowser.ApiInteraction
                     httpClient.Headers["Authorization"] = AuthHeader;
                     httpClient.UploadData(url, "DELETE", new byte[] {});
                 }
-                //var request = WebRequest.Create(url);
-                //request.Method = "DELETE";
-                //request.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
-                //request.ContentType = "application/x-www-form-urlencoded";
-                //var resp = (HttpWebResponse)request.GetResponse();
-                //if (resp.StatusCode != HttpStatusCode.OK)
-                //{
-                //    throw new ApplicationException(string.Format("Delete returned bad response: {0} {1}", resp.StatusCode, resp.StatusDescription));
-                //}
             }
             catch (WebException ex)
             {
