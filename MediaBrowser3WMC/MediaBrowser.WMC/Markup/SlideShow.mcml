@@ -1,0 +1,118 @@
+<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+            xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+      xmlns:mbi="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:as="resx://MediaBrowser/MediaBrowser.Resources/AutoScroller"
+      xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:mp="resx://MediaBrowser/MediaBrowser.Resources/MPAARating"
+	    xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      >
+
+  <UI Name="SlideShow">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <a:MBPhotoController Name="MBPhotoController" />
+    </Properties>
+
+    <Locals>
+      <Timer Name="MainTimer" AutoRepeat="true" Enabled="true" Interval="[MBPhotoController.Instance.SlideShowInterval]"/>
+      <ShortcutHandler Name="Next" Shortcut="ChannelUp"/>
+      <ShortcutHandler Name="Prev" Shortcut="ChannelDown"/>
+      <ShortcutHandler Name="Pause" Shortcut="Pause"/>
+      <ShortcutHandler Name="Play" Shortcut="Play"/>
+      <ShortcutHandler Name="Back" Shortcut="Back"/>
+    </Locals>
+
+    <Rules>
+
+      <Changed Source="[Back.Invoked]" >
+        <Actions>
+          <Invoke Target="[MBPhotoController.Instance.StopAudio]" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Next.Invoked]" >
+        <Actions>
+          <Set Target="[MainTimer.Enabled]" Value="false" />
+          <Invoke Target="[MBPhotoController.Instance.NextSlideShowItem]" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Prev.Invoked]" >
+        <Actions>
+          <Set Target="[MainTimer.Enabled]" Value="false" />
+          <Invoke Target="[MBPhotoController.Instance.PrevSlideShowItem]" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Pause.Invoked]" >
+        <Actions>
+          <Set Target="[MainTimer.Enabled]" Value="false" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Play.Invoked]" >
+        <Actions>
+          <Invoke Target="[MBPhotoController.Instance.NextSlideShowItem]" />
+          <Set Target="[MainTimer.Enabled]" Value="true" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[MainTimer.Tick]" >
+        <Actions>
+          <Invoke Target="[MBPhotoController.Instance.NextSlideShowItem]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[MBPhotoController.Instance.CurrentSlideShowItem.BackdropImage]" Target="[MainImage.Content]" />
+      <Binding Source="[MainTimer.Enabled]" Target="[PauseIcon.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Black" Layout="Form">
+        <LayoutInput>
+          <FormLayoutInput Horizontal="Fill" Vertical="Fill"/>
+        </LayoutInput>
+        <Children>
+          <Graphic Name="PauseIcon" Content="image://mbi:Pause" Alpha=".7" Visible="false" Margins="0,0,10,10" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Far"/>
+            </LayoutInput>
+            
+          </Graphic>
+          <Graphic Name="MainImage"  MaintainAspectRatio="true" Content="[MBPhotoController.Instance.CurrentSlideShowItem.BackdropImage]"  >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Center" Vertical="Center"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="ContentChangeHide">
+                <Keyframes>
+                  <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+                  <AlphaKeyframe RelativeTo="Current" Time="0.5" Value="1"/>
+                  <AlphaKeyframe RelativeTo="Current" Time="2.5" Value="0"/>
+                </Keyframes>
+              </Animation>
+              <Animation Type="ContentChangeShow">
+                <Keyframes>
+                  <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+                  <AlphaKeyframe RelativeTo="Final" Time="1.5" Value="1"/>
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </Graphic>
+          
+        </Children>
+      </ColorFill>
+    </Content>
+
+  </UI>
+
+</Mcml>

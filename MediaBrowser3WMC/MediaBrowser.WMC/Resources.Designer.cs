@@ -2900,6 +2900,16 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pause {
+            get {
+                object obj = ResourceManager.GetObject("Pause", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] PCIndicatorButton {
@@ -3515,6 +3525,16 @@ namespace MediaBrowser {
         internal static byte[] SingleItemPopout {
             get {
                 object obj = ResourceManager.GetObject("SingleItemPopout", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SlideShow {
+            get {
+                object obj = ResourceManager.GetObject("SlideShow", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -2221,6 +2221,13 @@ namespace MediaBrowser
                 return;
             }
 
+            //special handling for photos
+            if (item.BaseItem is Photo || item.BaseItem is PhotoFolder)
+            {
+                MBPhotoController.Instance.SlideShow(item);
+                return;
+            }
+
             if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
                 Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
@@ -2267,17 +2274,7 @@ namespace MediaBrowser
 
         public void Play(PlayableItem playable)
         {
-            //if (Config.Instance.ParentalControlEnabled && !playable.ParentalAllowed)
-            //{
-            //    //PIN screen mucks with turning this off
-            //    Application.CurrentInstance.DisplayPopupPlay = false; 
-                
-            //    Kernel.Instance.ParentalControls.PlayProtected(playable);
-            //}
-            //else
-            {
-                PlaySecure(playable);
-            }
+            PlaySecure(playable);
         }
 
         internal void PlaySecure(PlayableItem playable)

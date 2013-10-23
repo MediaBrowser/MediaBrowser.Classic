@@ -24,6 +24,8 @@ namespace MediaBrowser.Library.Persistance
             public static Dictionary<string, Type> TypeMap = new Dictionary<string, Type>
                                                                  {
                                                                      {"Folder", typeof (Folder)},
+                                                                     {"PhotoFolder", typeof (PhotoFolder)},
+                                                                     {"Photo", typeof (Photo)},
                                                                      {"Movie", typeof (Movie)},
                                                                      {"Trailer", typeof (Movie)},
                                                                      {"AdultVideo", typeof (Movie)},

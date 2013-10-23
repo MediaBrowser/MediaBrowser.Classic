@@ -231,6 +231,12 @@ namespace MediaBrowser
             set { this.DefaultPosterSize = new Size(value, value); }
         }
 
+        public int SlideShowInterval
+        {
+            get { return this.Data.SlideShowInterval; }
+            set { if (this.Data.SlideShowInterval != value) { this.Data.SlideShowInterval = value; Save(); FirePropertyChanged("SlideShowInterval"); } }
+        }
+
         [Comment("Controls the space between items in the poster and thumb strip views")]
         public Size GridSpacing
         {

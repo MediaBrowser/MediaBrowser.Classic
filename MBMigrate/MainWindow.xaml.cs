@@ -31,6 +31,17 @@ namespace MBMigrate
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
             Async.Queue("Migration", () =>
             {
+                var mbphoto = Path.Combine(ApplicationPaths.AppPluginPath, "mbphoto.classic.dll");
+                if (File.Exists(mbphoto))
+                    try
+                    {
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error deleting old MBPhoto plug-in", e);
+                    }
+
                 if (File.Exists(ApplicationPaths.CommonConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
 
                 if (_config == null) // only do this if a fresh install

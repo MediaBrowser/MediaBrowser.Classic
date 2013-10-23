@@ -177,6 +177,9 @@ namespace MediaBrowser
         [Group("Playback")]
         [Comment(@"The maximum number of files that will be treated as one movie if EnableMoviePlaylists is set to true.")]
         public int PlaylistLimit = 2;
+        [Group("Playback")]
+        [Comment(@"The interval between images in the photo slide show.")]
+        public int SlideShowInterval = 8;
         [Hidden]
         public string InitialFolder = ApplicationPaths.AppInitialDirPath;
         [Dangerous]
