@@ -103,6 +103,7 @@
       <EditableText Name="FocusItem"/>
 
       <IntRangedValue Name="SSTimeout" Value="[Application.Config.ScreenSaverTimeOut]" MaxValue="100" MinValue="1" Step="1" />
+      <IntRangedValue Name="SlideShowInterval" Value="[Application.Config.SlideShowInterval]" MaxValue="300" MinValue="1" Step="1" />
       <IntRangedValue Name="PlaylistLimit" Value="[Application.Config.PlaylistLimit]" MaxValue="100" MinValue="0" Step="1" />
       <IntRangedValue Name="BreadcrumbCount" Value="[Application.Config.BreadcrumbCountLimit]" MaxValue="10" MinValue="1" Step="1"/>
       <IntRangedValue Name="GridSpacing" Value="[Application.Config.GridSpacingCfg]" MaxValue="50" MinValue="0" Step="2"/>
@@ -308,6 +309,7 @@
       </Binding>
       <Binding Source="[EnableScreenSaver.Value]" Target="[Config.EnableScreenSaver]" />
       <Binding Source="[SSTimeout.Value]" Target="[Config.ScreenSaverTimeOut]" />
+      <Binding Source="[SlideShowInterval.Value]" Target="[Config.SlideShowInterval]" />
       <Binding Source="[EnableRootPage.Value]" Target="[Config.EnableRootPage]" />
       <Binding Source="[EnableTraceLogging.Value]" Target="[Config.EnableTraceLogging]" />
       <Binding Source="[EnableTranscode360.Value]" Target="[Config.EnableTranscode360]" />
@@ -581,6 +583,7 @@
                       <cb:CheckBox Name="Logging" Label="" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <!--
                   <te:TextEdit LabelSize="[LabelSize1]" Label="Initial Location" EditableText="[InitialFolder]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
 									-->

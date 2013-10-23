@@ -89,12 +89,14 @@ namespace MediaBrowser.Library.Localization
         public string ShowNewItemNotificationConfigDesc = "Show a notification window when new items are added.";
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
         public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an In-Progress list instead.  Anything resumable will appear instead of fully-watched items.";
+        public string SlideShowIntervalConfigDesc = "The number of seconds to show each item in a photo slide show";
 
 
         //Config Panel
         public string ConfigConfig = "Configuration";
         public string VersionConfig = "Version";
         public string MediaOptionsConfig = "Media";
+        public string SlideShowIntervalConfig = "Photo Slide Show Interval";
         public string ThemesConfig = "Theme Options";
         public string ViewOptionsConfig = "View Options";
         public string TopLevelViewsConfig = "Top Level Views";
