@@ -35,7 +35,7 @@ namespace MBMigrate
                 if (File.Exists(mbphoto))
                     try
                     {
-
+                        File.Delete(mbphoto);
                     }
                     catch (Exception e)
                     {
