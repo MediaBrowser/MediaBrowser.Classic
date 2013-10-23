@@ -297,8 +297,11 @@ namespace MediaBrowser.Library {
         private static List<ImageResolver> DefaultImageResolvers(bool enableProxyLikeCaching) {
             return new List<ImageResolver>() {
                 (path, canBeProcessed, item) =>  { 
-                    if (path != null && path.ToLower().StartsWith("http")) {
-                        return new RemoteImage();
+                    if (path != null && path.ToLower().StartsWith("http"))
+                    {
+                        //We need to re-load IBN general images each time
+                        var reAquire = path.IndexOf("mediabrowser/images/general/", StringComparison.OrdinalIgnoreCase) > -1;
+                        return new RemoteImage {ReAcquireOnStart = reAquire};
                     }
                     return null;
                 },
