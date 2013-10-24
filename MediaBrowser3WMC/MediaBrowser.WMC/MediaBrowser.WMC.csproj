@@ -1071,6 +1071,9 @@
     <Content Include="Markup\MovieDetailsPage.mcml" />
     <Content Include="Markup\Themes\Default\LayoutPoster.mcml" />
     <Content Include="Markup\StylesDefault.mcml" />
+    <Content Include="Markup\Themes\Default\MetroLoginPage.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Registration7.xml">
       <SubType>Designer</SubType>
     </Content>

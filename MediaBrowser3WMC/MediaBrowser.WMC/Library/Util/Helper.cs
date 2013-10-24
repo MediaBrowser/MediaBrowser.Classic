@@ -334,6 +334,39 @@ namespace MediaBrowser.LibraryManagement
 
         }
 
+        public static int DaysAgo(DateTime date)
+        {
+            var daysAgo = DateTime.Now.DayOfYear - date.DayOfYear;
+            if (daysAgo < 0)
+            {
+                //crossed years
+                daysAgo = (365 - date.DayOfYear) + DateTime.Now.DayOfYear - 1;
+            }
+            return daysAgo;
+        }
+
+
+        public static string FriendlyDateStr(DateTime date)
+        {
+            if (date != DateTime.MinValue)
+            {
+                var daysAgo = DaysAgo(date);
+                if (daysAgo <= 8)
+                {
+                    return (daysAgo == 0 ? " today" : daysAgo == 1 ? " yesterday" : " " + daysAgo.ToString("#0") + " days ago");
+                }
+                else
+                {
+                    return " " + date.ToShortDateString();
+                }
+            }
+            else
+            {
+                return " never";
+            }
+
+        }
+
         /// <summary>
         /// Fetch an XmlDocument
         /// </summary>

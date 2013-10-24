@@ -675,7 +675,7 @@ namespace MediaBrowser
 
         public Item CurrentUser { get; set; }
 
-        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""), Dto = u, ParentalAllowed = !u.HasPassword})).ToList(); } } 
+        public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""), Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr(u.LastActivityDate ?? DateTime.MinValue)})).ToList(); } } 
 
         public List<string> ConfigPanelNames
         {
@@ -1295,7 +1295,7 @@ namespace MediaBrowser
             else
             {
                 // show login screen
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/LoginPage", new Dictionary<string, object> {{"Application",this}});
+                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application",this}});
             }
         }
 
@@ -1596,6 +1596,12 @@ namespace MediaBrowser
                         Directory.CreateDirectory(ApplicationPaths.CustomImagePath);
                     }
                     catch (Exception e) { Logger.ReportException("Error trying to create image cache.", e); } //just log it
+                    break;
+
+                case "3.0.83.0":
+                    // Re-set login background
+                    Kernel.Instance.CommonConfigData.LoginBgColor = "Transparent";
+                    Kernel.Instance.CommonConfigData.Save();
                     break;
 
             }

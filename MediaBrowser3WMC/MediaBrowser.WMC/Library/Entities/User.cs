@@ -21,6 +21,8 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override string TagLine { get; set; }
+
         public override bool SelectAction(Item item)
         {
             Application.CurrentInstance.LoginUser(item);
