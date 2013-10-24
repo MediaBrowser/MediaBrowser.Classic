@@ -38,7 +38,7 @@ namespace MediaBrowser.Code.ModelItems {
         Dictionary<Guid, Item> items = new Dictionary<Guid, Item>();
         IList<BaseItem> currentChildren = new List<BaseItem> ();
         Action onChildrenChanged;
-        bool folderIsIndexed = false;
+        public bool FolderIsIndexed = false;
         public bool IsFiltered { get; set; }
         float childImageAspect = 1;
         IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
@@ -152,7 +152,7 @@ namespace MediaBrowser.Code.ModelItems {
                 clone.items = items;
                 clone.currentChildren = currentChildren;
                 clone.onChildrenChanged = onChildrenChanged;
-                clone.folderIsIndexed = folderIsIndexed;
+                clone.FolderIsIndexed = FolderIsIndexed;
                 clone.childImageAspect = childImageAspect;
                 clone.sortFunction = sortFunction;
                 return clone;
@@ -166,7 +166,7 @@ namespace MediaBrowser.Code.ModelItems {
         }
 
         void folder_ChildrenChanged(object sender, ChildrenChangedEventArgs e) {
-            if (!folderIsIndexed) {
+            if (!FolderIsIndexed) {
                 lock (this) {
                     currentChildren = folder.Children;
                 }
@@ -182,7 +182,7 @@ namespace MediaBrowser.Code.ModelItems {
 
         public void Sort(IComparer<BaseItem> sortFunction)
         {
-            if (folder != null && !folderIsIndexed) {
+            if (folder != null && !FolderIsIndexed) {
                 this.sortFunction = sortFunction;
                 Logger.ReportVerbose("Sorting " + folder.Name);
                 Async.Queue("Background Sorter", () => folder.Sort(sortFunction));
@@ -196,7 +196,7 @@ namespace MediaBrowser.Code.ModelItems {
 
                     if (currentChildren.Count <= index) { 
                         // compensate for defer load
-                        if (!folderIsIndexed) {
+                        if (!FolderIsIndexed) {
                             currentChildren = folder.Children;
                         }
                     }
@@ -250,7 +250,7 @@ namespace MediaBrowser.Code.ModelItems {
             {
                 if (string.IsNullOrEmpty(property) || property == Library.Localization.LocalizedStrings.Instance.GetString("NoneDispPref"))
                 {
-                    folderIsIndexed = false;
+                    FolderIsIndexed = false;
                     lock (this)
                     {
                         currentChildren = folder.Children;
@@ -263,7 +263,7 @@ namespace MediaBrowser.Code.ModelItems {
                         try
                         {
                             currentChildren = folder.IndexBy(property).Select(i => (BaseItem) i).OrderBy(i => i.SortName).ToList();
-                            folderIsIndexed = true;
+                            FolderIsIndexed = true;
                         }
                         catch (Exception e)
                         {

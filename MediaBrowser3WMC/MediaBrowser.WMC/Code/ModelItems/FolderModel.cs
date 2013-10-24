@@ -874,7 +874,7 @@ namespace MediaBrowser.Library {
 
                 if (!String.IsNullOrEmpty(value) && (MediaBrowser.LibraryManagement.Helper.IsAlphaNumeric(value))) {
                     BaseItemComparer comparer = new BaseItemComparer(SortOrder.Name, StringComparison.InvariantCultureIgnoreCase);
-                    BaseItem tempItem = Activator.CreateInstance(this.folder.ChildType) as BaseItem;
+                    BaseItem tempItem =  Activator.CreateInstance(this.folder.ChildType) as BaseItem;
                     if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("NameDispPref") || (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref")))
                     {
                         tempItem.Name = this.baseItem is Series && !(this.baseItem is Season) ? "Season "+value : value;
