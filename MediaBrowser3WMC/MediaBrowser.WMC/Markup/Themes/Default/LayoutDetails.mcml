@@ -98,6 +98,8 @@
       <Binding Target="[LastWatched.Visible]" Source="[SelectedItem.HaveWatched]"/>
       <Binding Target="[MPAARating.Value]" Source="[SelectedItem.OfficialRating]" />
       <Binding Target="[MediaInfo.Item]" Source="[SelectedItem]" />
+      <Binding Source="[Item.IsMissing]" Target="[MissingImage.Visible]" />
+      <Binding Source="[Item.IsFuture]" Target="[FutureImage.Visible]" />
 
       <Binding Source="[SelectedItem.DynamicProperties.#PreciseRuntimeStr!cor:String]" Target="[TxtRuntime.Content]">
         <Conditions>
@@ -220,6 +222,17 @@
             </LayoutInput>
           </lv:ListView>
 
+          <Graphic Name="MissingImage" Content="image://i:MissingBanner" Margins="0,0,0,0" MaximumSize="120,120" MaintainAspectRatio="true">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Near"/>
+            </LayoutInput>
+          </Graphic>
+          <Graphic Name="FutureImage" Content="image://i:FutureBanner" Margins="0,0,0,0" MaximumSize="120,120" MaintainAspectRatio="true">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Near"/>
+            </LayoutInput>
+          </Graphic>
+
           <!-- Title and details information -->
           <Panel Name="InfoPanel" >
             <LayoutInput>
@@ -294,7 +307,7 @@
               <me:NewItemList Application="[Application]" Name="NewItemList"/>
             </Children>
           </Panel>
-
+          
 
           <!-- Thumbnail Poster -->
           <ColorFill Name="PosterPanel" Content="Transparent">
@@ -305,7 +318,8 @@
               <AnchorLayoutInput Top="Parent,0.45" Left="Parent,0.82" Bottom="Parent, 1, -20" Right="Parent, 1, -45" Horizontal="Far"/>
             </LayoutInput>
             <Children>
-              <Graphic Name="Preview" MaintainAspectRatio="true"  SizingPolicy="SizeToConstraint"/>
+              <Graphic Name="Preview" MaintainAspectRatio="true"  SizingPolicy="SizeToConstraint">
+              </Graphic>
             </Children>
           </ColorFill>
 

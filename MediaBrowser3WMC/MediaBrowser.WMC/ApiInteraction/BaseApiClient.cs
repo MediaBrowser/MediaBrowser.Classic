@@ -357,6 +357,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("studios", query.Studios);
             dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
             dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
+            dict.AddIfNotNull("ExcludeLocationTypes", query.ExcludeLocationTypes.Select(t => t.ToString()));
 
             dict.AddIfNotNullOrEmpty("person", query.Person);
             dict.AddIfNotNull("personTypes", query.PersonTypes);

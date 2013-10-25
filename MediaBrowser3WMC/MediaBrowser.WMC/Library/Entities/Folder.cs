@@ -292,6 +292,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Recursive = true,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
                                                                                        IncludeItemTypes = RalIncludeTypes,
+                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        Filters = (new[] {Config.Instance.TreatWatchedAsInProgress ? ItemFilter.IsResumable : ItemFilter.IsPlayed, }).Concat(AdditionalRalFilters).ToArray(),
                                                                                        SortBy = new[] {ItemSortBy.DatePlayed},
@@ -310,6 +311,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
                                                                                        IncludeItemTypes = RalIncludeTypes,
+                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
                                                                                        Filters = (new[] { ItemFilter.IsUnplayed, }).Concat(AdditionalRalFilters).ToArray(),
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending
@@ -326,6 +328,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                        Filters = AdditionalRalFilters,
                                                                                        ExcludeItemTypes = RalExcludeTypes,
                                                                                        IncludeItemTypes = RalIncludeTypes,
+                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
                                                                                        Fields = MB3ApiRepository.StandardFields,
                                                                                        SortBy = new[] {ItemSortBy.DateCreated},
                                                                                        SortOrder = Model.Entities.SortOrder.Descending

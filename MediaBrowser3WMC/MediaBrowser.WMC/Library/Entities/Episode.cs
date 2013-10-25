@@ -5,6 +5,7 @@ using System.Text;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
     public class Episode : Show, IGroupInIndex {
@@ -19,6 +20,19 @@ namespace MediaBrowser.Library.Entities {
         public string FirstAired { get; set; }
 
         public string SeriesId { get; set; }
+
+        public DateTime PremierDate { get; set; }
+
+        public override bool IsMissing
+        {
+            get { return LocationType == LocationType.Virtual && PremierDate <= DateTime.UtcNow; }
+        }
+
+        public override bool IsFuture
+        {
+            get { return LocationType == LocationType.Virtual && PremierDate > DateTime.UtcNow; }
+        }
+
 
         public Season Season {
             get { return Parent as Season ?? RetrieveSeason() ?? Season.BlankSeason; }

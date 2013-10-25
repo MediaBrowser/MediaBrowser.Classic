@@ -44,6 +44,8 @@
 			<Binding Source="[Item.UnwatchedCountString]" Target="[UnwatchedCount.Content]" />
       <Binding Source="[Item.HaveWatched]" Target="[TickPanel.Visible]" />
 			<Binding Source="[Item.ShowUnwatched]" Target="[UnwatchedIndicator.Visible]" />
+			<Binding Source="[Item.IsMissing]" Target="[MissingIndicator.Visible]" />
+			<Binding Source="[Item.IsFuture]" Target="[FutureIndicator.Visible]" />
 			<Binding Source="[Item.Name]" Target="[BelowLabelPanel.Content]" />
 			<Binding Source="[Item.Name]" Target="[Label.Content]" />
       <Binding Source="[Item.HaveWatched]" Target="[UnwatchedGlow.Visible]">
@@ -120,7 +122,6 @@
 
 			<Condition Source="[Application.Config.DimUnselectedPosters]" ConditionOp="Equals" SourceValue="false" Target="[ConstraintPanel.ColorFilter]" Value="White" />
 			<Condition Source="[Application.Config.DimUnselectedPosters]" ConditionOp="Equals" SourceValue="false" Target="[ConstraintPanel.Alpha]" Value="1" />
-
 			<Condition Source="[InFocus.Value]" SourceValue="true">
 				<Actions>
 					<Set Target="[MainPanel.Scale]" Value="[ParentItem.PosterZoom]"/>
@@ -310,6 +311,30 @@
 												</LayoutInput>
 												<Children>
 													<Graphic Name="HDImage" Content="image://i:HDLogo" Margins="0,0,5,5" MaximumSize="48,35" MaintainAspectRatio="true">
+														<LayoutInput>
+															<AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+														</LayoutInput>
+													</Graphic>
+												</Children>
+											</Panel>
+                      <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="MissingIndicator">
+												<LayoutInput>
+													<AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
+												</LayoutInput>
+												<Children>
+													<Graphic Name="MissingImage" Content="image://i:MissingBanner" Margins="0,0,0,0" MaximumSize="75,75" MaintainAspectRatio="true">
+														<LayoutInput>
+															<AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+														</LayoutInput>
+													</Graphic>
+												</Children>
+											</Panel>
+                      <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="FutureIndicator">
+												<LayoutInput>
+													<AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
+												</LayoutInput>
+												<Children>
+													<Graphic Name="FutureImage" Content="image://i:FutureBanner" Margins="0,0,0,0" MaximumSize="75,75" MaintainAspectRatio="true">
 														<LayoutInput>
 															<AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
 														</LayoutInput>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
 
@@ -57,5 +58,36 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public override bool IsFuture
+        {
+            get
+            {
+                if (LocationType == LocationType.Virtual)
+                {
+                    var episode = FirstChild as Episode;
+                    return episode != null && episode.IsFuture;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public override bool IsMissing
+        {
+            get
+            {
+                if (LocationType == LocationType.Virtual)
+                {
+                    var episode = FirstChild as Episode;
+                    return episode != null && episode.IsMissing;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

@@ -38,8 +38,18 @@
 			<!-- Bind the button's label and command-->
 			<Binding Source="[Item.Name]" Target="[Label.Content]"/>
 			<Binding Source="[Item.HaveWatched]" Target="[TickIndicator.Visible]" />
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Equality Source="[Item.IsMissing]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[Item.IsFuture]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Label.Alpha]" Value=".65" />
+        </Actions>
+      </Rule>
 
-      
+
+
       <!-- Use WatchedTextColor if enabled. Each color scheme has a default color in the appropriate styles.mcml file
            the user can override this color via the CustomStyles.mcml support mechanism.
       -->

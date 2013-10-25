@@ -520,6 +520,8 @@
       <Binding Source="[Item.HaveWatched]" Target="[TickPanel.Visible]" />
       <Binding Source="[Item.UnwatchedCountString]" Target="[UnwatchedCount.Content]" />
       <Binding Source="[Item.ShowUnwatched]" Target="[UnwatchedIndicator.Visible]" />
+      <Binding Source="[Item.IsMissing]" Target="[MissingIndicator.Visible]" />
+      <Binding Source="[Item.IsFuture]" Target="[FutureIndicator.Visible]" />
 
       <Changed Source="[Item.HaveWatched]">
         <Conditions>
@@ -682,6 +684,30 @@
                     </LayoutInput>
                     <Children>
                       <Graphic Name="PCLockImage" Content="image://i:Lock" Margins="0,0,5,5" MaximumSize="30,30" MaintainAspectRatio="true">
+                        <LayoutInput>
+                          <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                        </LayoutInput>
+                      </Graphic>
+                    </Children>
+                  </Panel>
+                  <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="MissingIndicator">
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
+                    </LayoutInput>
+                    <Children>
+                      <Graphic Name="MissingImage" Content="image://i:MissingBanner" Margins="0,0,0,0" MaximumSize="75,75" MaintainAspectRatio="true">
+                        <LayoutInput>
+                          <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                        </LayoutInput>
+                      </Graphic>
+                    </Children>
+                  </Panel>
+                  <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="FutureIndicator">
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
+                    </LayoutInput>
+                    <Children>
+                      <Graphic Name="FutureImage" Content="image://i:FutureBanner" Margins="0,0,0,0" MaximumSize="75,75" MaintainAspectRatio="true">
                         <LayoutInput>
                           <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
                         </LayoutInput>

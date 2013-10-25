@@ -1952,6 +1952,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FutureBanner {
+            get {
+                object obj = ResourceManager.GetObject("FutureBanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gears {
             get {
                 object obj = ResourceManager.GetObject("Gears", resourceCulture);
@@ -2806,6 +2816,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("MetroLoginPage", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MissingBanner {
+            get {
+                object obj = ResourceManager.GetObject("MissingBanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

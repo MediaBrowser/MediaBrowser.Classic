@@ -183,6 +183,52 @@ namespace MediaBrowser.Library
                 return items[items.Length - 1];
             }
         }
+
+        public string LocationType
+        {
+            get { return baseItem.LocationType.ToString(); }
+        }
+
+        private bool? _isMissing;
+        public bool IsMissing
+        {
+            get
+            {
+                if (_isMissing == null)
+                {
+                    DetermineVirtualType();
+                }
+                return _isMissing ?? false;
+            }
+        }
+
+        private bool? _isFuture;
+        public bool IsFuture
+        {
+            get
+            {
+                if (_isFuture == null)
+                {
+                    DetermineVirtualType();
+                }
+                return _isFuture ?? false;
+            }
+        }
+
+        private void DetermineVirtualType()
+        {
+            if (baseItem.LocationType != Model.Entities.LocationType.Virtual)
+            {
+                _isMissing = false;
+                _isFuture = false;
+            }
+            else
+            {
+                _isMissing = baseItem.IsMissing;
+                _isFuture = baseItem.IsFuture;
+            }
+        }
+
         protected static Dictionary<string, string> MediaImageNames = new Dictionary<string, string>() {
             {"f4v","flv"},
             {"m4v","mov"},
@@ -190,6 +236,7 @@ namespace MediaBrowser.Library
             {"ogv","ogg"},
             {"threegp","3gp"}
         };
+
         protected string MediaImageName
         {
             get

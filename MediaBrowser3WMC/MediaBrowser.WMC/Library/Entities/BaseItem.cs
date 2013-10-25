@@ -24,6 +24,10 @@ namespace MediaBrowser.Library.Entities {
 
         public LocationType LocationType { get; set; }
 
+        public virtual bool IsMissing { get { return false; } }
+
+        public virtual bool IsFuture { get { return false; } }
+
         public bool FullDetailsLoaded = false;
 
         public virtual string ApiId { get { return Id.ToString(); } }
