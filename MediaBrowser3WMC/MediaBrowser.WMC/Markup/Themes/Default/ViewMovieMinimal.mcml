@@ -441,6 +441,7 @@
       <Binding Source="[Item.CanResume]" Target="[ResumeMovieButton.Visible]" />
       <Binding Source="[Item.ContainsTrailers]" Target="[PlayTrailersButton.Visible]" />
       <Condition Source="[Item.CanResume]" ConditionOp="Equals" SourceValue="false" Target="[ResumeMovieButton.Visible]" Value="false"/>
+      <Binding Source="[Item.IsPlayable]" Target="[PlayMovieButton.Visible]" />
       <Condition Source="[ResumeMovieButton.Visible]" ConditionOp="Equals" SourceValue="false" Target="[ResumeSpacer.Visible]" Value="true"/>
       
       <Changed Source="[PlayMovieCommand.Invoked]">

@@ -47,7 +47,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return true;
+                return LocationType != LocationType.Virtual;
             }
         }
 
