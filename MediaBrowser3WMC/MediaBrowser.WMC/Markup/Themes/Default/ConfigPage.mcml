@@ -54,6 +54,8 @@
       <BooleanChoice Name="ShowMusicAlbumCollection" Value="[Application.Config.ShowMusicAlbumCollection]" />
       <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
       <BooleanChoice Name="ShowMusicGenresCollection" Value="[Application.Config.ShowMusicGenreCollection]" />
+      <BooleanChoice Name="ShowMissingItems" Value="[Application.Config.ShowMissingItems]" />
+      <BooleanChoice Name="ShowUnairedItems" Value="[Application.Config.ShowUnairedItems]" />
       <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
       <BooleanChoice Name="ShowNewItemNotification" Value="[Application.Config.ShowNewItemNotification]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
@@ -331,6 +333,8 @@
       <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
       <Binding Source="[ShowMusicGenresCollection.Value]" Target="[Config.ShowMusicGenreCollection]" />
       <Binding Source="[ShowMusicAlbumCollection.Value]" Target="[Config.ShowMusicAlbumCollection]" />
+      <Binding Source="[ShowUnairedItems.Value]" Target="[Config.ShowUnairedItems]" />
+      <Binding Source="[ShowMissingItems.Value]" Target="[Config.ShowMissingItems]" />
       <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
@@ -648,6 +652,13 @@
                       <!--<me:TextHeader Text="[Application.LocalStrings.#MultipleFileBehaviorConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#TreatMultipleFilesAsSingleMovieConfig!cor:String]" Checked="[EnableMoviePlaylists]"  FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner  Label="[Application.LocalStrings.#MultipleFileSizeLimitConfig!cor:String]" Model="[PlaylistLimit]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />-->
+                    </Children>
+                  </Panel>
+                  <Panel Layout="VerticalFlow" Margins="40,0,20,0"  >
+                    <Children>
+                      <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMissingItemsConfig!cor:String]" Checked="[ShowMissingItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowUnairedItemsConfig!cor:String]" Checked="[ShowUnairedItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Visible="false" >

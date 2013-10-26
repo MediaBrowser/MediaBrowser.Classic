@@ -699,6 +699,18 @@ namespace MediaBrowser
             set {  }
         }
         
+        public bool ShowMissingItems
+        {
+            get { return this.Data.ShowMissingItems; }
+            set { if (this.Data.ShowMissingItems != value) { this.Data.ShowMissingItems = value; Save(); FirePropertyChanged("ShowMissingItems"); } }
+        }
+
+        public bool ShowUnairedItems
+        {
+            get { return this.Data.ShowUnairedItems; }
+            set { if (this.Data.ShowUnairedItems != value) { this.Data.ShowUnairedItems = value; Save(); FirePropertyChanged("ShowUnairedItems"); } }
+        }
+
         public bool RandomizeBackdrops
         {
             get { return this.Data.RandomizeBackdrops; }

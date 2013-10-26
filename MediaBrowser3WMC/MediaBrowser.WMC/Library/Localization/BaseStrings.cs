@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0070";
+        const string VERSION = "1.0071";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -90,9 +90,12 @@ namespace MediaBrowser.Library.Localization
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic.";
         public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an In-Progress list instead.  Anything resumable will appear instead of fully-watched items.";
         public string SlideShowIntervalConfigDesc = "The number of seconds to show each item in a photo slide show";
+        public string ShowUnairedItemsConfigDesc = "Enable to show TV episodes that have information but have yet to actually air";
+        public string ShowMissingItemsConfigDesc = "Enable to show TV episodes that exist but are not actually in your collection";
 
 
         //Config Panel
+        public string LibraryConfig = "Library";
         public string ConfigConfig = "Configuration";
         public string VersionConfig = "Version";
         public string MediaOptionsConfig = "Media";
@@ -130,6 +133,8 @@ namespace MediaBrowser.Library.Localization
         public string ShowGenresCollectionConfig = "Show Movie Genres Collection";
         public string ShowMusicGenresCollectionConfig = "Show Music Genres Collection";
         public string ShowMusicAlbumCollectionConfig = "Show Music Albums Collection";
+        public string ShowUnairedItemsConfig = "Show Un-aired Items";
+        public string ShowMissingItemsConfig = "Show Missing Items";
         public string GroupAlbumsByArtistConfig = "Group by Artist";
         public string ShowNewItemNotificationConfig = "Show New Item Notification";
         public string ViewsConfig = "Views";
