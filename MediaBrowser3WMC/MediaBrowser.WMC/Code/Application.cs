@@ -1599,6 +1599,9 @@ namespace MediaBrowser
                     break;
 
                 case "3.0.83.0":
+                case "3.0.86.0":
+                case "3.0.87.0":
+                case "3.0.88.0":
                     // Re-set login background
                     Kernel.Instance.CommonConfigData.LoginBgColor = "Transparent";
                     Kernel.Instance.CommonConfigData.Save();
