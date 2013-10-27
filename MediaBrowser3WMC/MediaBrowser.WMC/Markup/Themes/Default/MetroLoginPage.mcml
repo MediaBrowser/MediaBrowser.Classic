@@ -112,7 +112,7 @@
       <cor:String Name="Label" String="" />
       <Vector3 Name="FocusZoom" Vector3="1.1,1.1,1.1" />
       <Font Name="Font" Font="Segoe UI Light, 40" />
-      <Size Name="Size" Size="400,120" />
+      <Size Name="Size" Size="405,120" />
       <Command Name="Command" Available="false" />
       <Color Name="BGColor" Color="60,60,60" />
     </Properties>
@@ -152,6 +152,7 @@
           <Set Target="[Bg.Content]" Value="188,188,188" />
           <Set Target="[Title.Color]" Value="Black" />
           <Set Target="[LastSeen.Color]" Value="Black" />
+          <Set Target="[FocusInd.Visible]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[Clicker.Invoked]">
@@ -184,7 +185,7 @@
           </Graphic>
           <ColorFill Name="Bg" Content="[BGColor]" Layout="HorizontalFlow" >
             <LayoutInput>
-              <FormLayoutInput Left="Parent, 0" Top="Parent, 0"/>
+              <FormLayoutInput Left="Parent, 0,5" Top="Parent, 0"/>
             </LayoutInput>
             <Children>
               <Graphic Name="ItemPoster" Content="image://i:BlankImage"  MinimumSize="[IconSize]" MaximumSize="[IconSize]">
@@ -209,7 +210,13 @@
               </Animation>
             </Animations>
           </ColorFill>
-          
+
+          <ColorFill Name="FocusInd" Content="200,0,0" MinimumSize="5,120" MaximumSize="5,120" Visible="false" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0" Top="Parent, 0"/>
+            </LayoutInput>
+            
+          </ColorFill>
         </Children>
       </Panel>
     </Content>
