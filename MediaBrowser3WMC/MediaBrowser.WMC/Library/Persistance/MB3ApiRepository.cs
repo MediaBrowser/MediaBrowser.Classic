@@ -367,7 +367,7 @@ namespace MediaBrowser.Library.Persistance
                         media.PlaybackStatus = PlaybackStatusFactory.Instance.Create(media.Id);
                         media.PlaybackStatus.PositionTicks = mb3Item.UserData.PlaybackPositionTicks;
                         media.PlaybackStatus.PlayCount = mb3Item.UserData.PlayCount;
-                        media.PlaybackStatus.WasPlayed = mb3Item.UserData.Played;
+                        media.PlaybackStatus.WasPlayed = mb3Item.UserData.Played || mb3Item.LocationType == LocationType.Virtual;
                         media.PlaybackStatus.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
                     }
                 }
