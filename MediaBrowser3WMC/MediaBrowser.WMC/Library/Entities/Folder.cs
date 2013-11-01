@@ -834,7 +834,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return RecursiveChildren.OfType<Media>();
+                return RecursiveChildren.OfType<Media>().Where(m => m.LocationType != LocationType.Virtual);
             }
         }
 
