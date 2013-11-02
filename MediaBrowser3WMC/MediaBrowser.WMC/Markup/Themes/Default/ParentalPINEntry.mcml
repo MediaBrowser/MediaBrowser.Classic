@@ -58,14 +58,24 @@
 
     <Content>
       <Panel Layout="Form" >
+        <Animations>
+          <Animation Type="Show">
+            <Keyframes>
+              <AlphaKeyframe Time="0.0" Value="0" />
+              <AlphaKeyframe Time="0.7" Value="1" Interpolation="SCurve" />
+              <PositionKeyframe Time="0.0" Value="0,-700,0" />
+              <PositionKeyframe Time="0.5" Value="0,0,0" Interpolation="SCurve" />
+            </Keyframes>
+          </Animation>
+        </Animations>
         <Children>
 
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
           <spl:Splash Name="Splash" Application="[Application]" Layout="Fill" Visible="false" />
 
-          <Text Name="MyText" Color="White" Font="Calibri, 24">
+          <Text Name="MyText" Color="White" Font="Segoe UI Light, 28" >
             <LayoutInput>
-              <FormLayoutInput Top="Parent,.40" Horizontal="Center"/>
+              <FormLayoutInput Top="Parent,.30" Horizontal="Center"/>
             </LayoutInput>  
           </Text>
           <Panel Name="PINPanel" >
@@ -73,7 +83,7 @@
               <FlowLayout Orientation="Horizontal" />
             </Layout>
             <LayoutInput>
-              <FormLayoutInput Top="Parent,.50" Horizontal="Center"/>
+              <FormLayoutInput Top="Parent,.40" Horizontal="Center"/>
             </LayoutInput>
             <Children>
               <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
@@ -84,13 +94,7 @@
           </Panel>
 
 
-          <Clip FadeSize="720" Orientation="Vertical" FadeAmount="1" ShowNear="false"
-            CenterPointPercent="0.5,0.5,0.5" Layout="Fill" >
-            <Children>
-              <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
-            </Children>
-          </Clip>
-          <Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>
+          <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
         </Children>
       </Panel>
 
