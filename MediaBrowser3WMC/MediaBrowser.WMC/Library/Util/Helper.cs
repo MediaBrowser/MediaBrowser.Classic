@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using MediaBrowser.Interop;
@@ -658,7 +660,43 @@ namespace MediaBrowser.LibraryManagement
             return totalCapacity / 1073741824;
         }
     
+        /// <summary>
+        /// Try to wake the specified machine
+        /// </summary>
+        /// <param name="mac">Should be in format xx-xx-xx-xx-xx-xx</param>
+        public static void WakeMachine(string mac)
+        {
+            Logger.ReportVerbose("Attempting to wake server at address {0}", mac);
+            try
+            {
+                var client = new UdpClient();
+                client.Connect(IPAddress.Broadcast,  7); 
+                var counter = 0;
+                //buffer to be sent
+                var bytes = new byte[1024];   // more than enough :-)
+                //first 6 bytes should be 0xFF
+                for (var y = 0; y < 6; y++)
+                    bytes[counter++] = 0xFF;
+                //now repeate MAC 16 times
+                for (var y = 0; y < 16; y++)
+                {
+                    for (var i = 0; i < mac.Length; i += 3)
+                    {
+                        bytes[counter++] =
+                            byte.Parse(mac.Substring(i, 2),
+                            NumberStyles.HexNumber);
+                    }
+                }
 
+                //now send wake up packet
+                client.Send(bytes, 1024);
+                Logger.ReportVerbose("Wake command sent");
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error attempting to wake last server",e);
+            }
+        }
 
         public static int SystemIdleTime
         {

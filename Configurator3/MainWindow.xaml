@@ -74,24 +74,25 @@
 
                 <TabItem Header="system" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True" Height="25.62" VerticalAlignment="Bottom">
                     <Grid Height="432.38" VerticalAlignment="Top">
-                        <GroupBox Header="Connection" HorizontalAlignment="Left" Margin="20,35,0,12" Name="groupBox1" Width="270">
+                        <GroupBox Header="Connection" HorizontalAlignment="Left" Margin="20,23,0,12" Name="groupBox1" Width="270">
                             <Grid Margin="0,0,0,-4">
                                 <RadioButton x:Name="rbServerConnectAuto" Content="Find the server automatically" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="RbServerConnectAuto_OnChecked"/>
                                 <RadioButton x:Name="rbServerConnectManual" Content="Connect to this server" HorizontalAlignment="Left" Margin="10,28.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="rbServerConnectManual_Checked"/>
                                 <TextBox x:Name="tbxServerAddress" HorizontalAlignment="Left" Height="23" Margin="29,81.24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" ToolTip="IP address or Machine name of MB 3 Server machine"/>
-                                <RadioButton x:Name="rbShowUserSelection" Content="Present User Login Page" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="RbShowUserSelection_OnChecked"/>
-                                <RadioButton x:Name="rbLogonAuto" Content="Automatically Login As" HorizontalAlignment="Left" Margin="10,178.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="rbLogonAuto_Checked"/>
-                                <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="28,233,0,0" VerticalAlignment="Top" Width="207" SelectionChanged="DdlUserProfile_OnSelectionChanged"/>
-                                <PasswordBox x:Name="tbxUserPassword" HorizontalAlignment="Left" Margin="29,287.76,0,0" VerticalAlignment="Top" Width="206"/>
+                                <RadioButton x:Name="rbShowUserSelection" Content="Present User Login Page" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="RbShowUserSelection_OnChecked"/>
+                                <RadioButton x:Name="rbLogonAuto" Content="Automatically Login As" HorizontalAlignment="Left" Margin="10,190.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="rbLogonAuto_Checked"/>
+                                <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="27,0,0,108.14" VerticalAlignment="Bottom" Width="207" SelectionChanged="DdlUserProfile_OnSelectionChanged"/>
+                                <PasswordBox x:Name="tbxUserPassword" HorizontalAlignment="Left" Margin="28,0,0,54.9" VerticalAlignment="Bottom" Width="206"/>
                                 <Button x:Name="btnSaveConnection" Content="Validate and Save" HorizontalAlignment="Left" Margin="101,0,0,10" Width="134" Click="btnSaveConnection_Click" Height="28.62" VerticalAlignment="Bottom" IsDefault="True"/>
                                 <TextBox x:Name="tbxPort" HorizontalAlignment="Left" Height="23" Margin="187.653,109.24,0,0" TextWrapping="Wrap" PreviewTextInput="tbxNumericOnly_PreviewTextInput" VerticalAlignment="Top" Width="47.347" ToolTip="IP address or Machine name of MB 3 Server machine"/>
                                 <Label Content="Address" HorizontalAlignment="Left" Margin="10,52.24,0,0" VerticalAlignment="Top"/>
                                 <Label Content="Port" HorizontalAlignment="Left" Margin="146.999,104.24,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.169,0.529"/>
+                                <CheckBox x:Name="cbxWakeServer" Content="Attempt to Wake Server" Click="cbxWakeServer_Checked" HorizontalAlignment="Left" Margin="10,140.38,0,0" VerticalAlignment="Top"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Updates" HorizontalAlignment="Left" Margin="355,35,0,0" Name="groupBox2" Width="347" Height="222" VerticalAlignment="Top">
                             <Grid>
-                                <CheckBox x:Name="cbxCheckForUpdates" Content="Check for Updates at Log-in (admin profiles only)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.364,-0.376" Checked="cbxCheckForUpdates_Checked" Unchecked="cbxCheckForUpdates_Checked"/>
+                                <CheckBox x:Name="cbxCheckForUpdates" Content="Check for Updates at Log-in (admin profiles only)"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.364,-0.376" Checked="cbxCheckForUpdates_Checked" Unchecked="cbxCheckForUpdates_Checked"/>
                                 <ComboBox x:Name="ddlSystemUpdateLevel" HorizontalAlignment="Left" Margin="38,62.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlSystemUpdateLevel_SelectionChanged"/>
                                 <ComboBox x:Name="ddlPluginUpdateLevel" HorizontalAlignment="Left" Margin="190,62.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlPluginUpdateLevel_SelectionChanged"/>
                                 <Label Content="System Level" HorizontalAlignment="Left" Margin="25,33.62,0,0" VerticalAlignment="Top" Width="105.653"/>

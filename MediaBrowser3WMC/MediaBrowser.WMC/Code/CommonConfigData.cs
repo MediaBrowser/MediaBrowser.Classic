@@ -23,10 +23,13 @@ namespace MediaBrowser
         public bool FindServerAutomatically = true;
         public string ServerAddress = "";
         public int ServerPort = 8096;
+        public string LastServerMacAddress;
 
         public bool LogonAutomatically = false;
         public string AutoLogonUserName;
         public string AutoLogonPw;
+
+        public bool WakeServer = true;
 
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]

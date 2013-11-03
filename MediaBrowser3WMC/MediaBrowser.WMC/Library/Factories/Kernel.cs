@@ -142,6 +142,12 @@ namespace MediaBrowser.Library {
 
                 AppDomain.CurrentDomain.UnhandledException += CrashHandler;
 
+                // Now try and wake the last server we connected to if set
+                if (config.WakeServer && !string.IsNullOrEmpty(config.LastServerMacAddress))
+                {
+                    Helper.WakeMachine(config.LastServerMacAddress);
+                }
+                
                 var defaultKernel = GetDefaultKernel(config, directives);
                 Instance = defaultKernel;
 
@@ -483,6 +489,8 @@ namespace MediaBrowser.Library {
             {
                 Logger.ReportInfo("====== Connected to server {0}:{1}", ApiClient.ServerHostName, ApiClient.ServerApiPort);
                 AvailableUsers = ApiClient.GetAllUsers().ToList();
+                config.LastServerMacAddress = ServerInfo.MacAddress;
+                config.Save();
             }
             var repository = new MB3ApiRepository();
             var localRepo = GetLocalRepository();

@@ -257,6 +257,7 @@ namespace Configurator
         {
             enableTranscode360.IsChecked = commonConfig.EnableTranscode360;
             useAutoPlay.IsChecked = commonConfig.UseAutoPlayForIso;
+            cbxWakeServer.IsChecked = commonConfig.WakeServer;
 
             ddlLoglevel.SelectedItem = commonConfig.MinLoggingSeverity;
 
@@ -1101,6 +1102,12 @@ namespace Configurator
         private void cbxCheckForUpdates_Checked(object sender, RoutedEventArgs e)
         {
             commonConfig.EnableUpdates = cbxCheckForUpdates.IsChecked == true;
+            SaveConfig();
+        }
+
+        private void cbxWakeServer_Checked(object sender, RoutedEventArgs e)
+        {
+            commonConfig.WakeServer = cbxWakeServer.IsChecked == true;
             SaveConfig();
         }
     }
