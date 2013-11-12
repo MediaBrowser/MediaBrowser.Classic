@@ -974,7 +974,9 @@
     <Content Include="Markup\Controls\GenreList.mcml" />
     <Content Include="Markup\Controls\ItemPoster.mcml" />
     <Content Include="Markup\Controls\LastWatched.mcml" />
-    <Content Include="Markup\Controls\ListView.mcml" />
+    <Content Include="Markup\Controls\ListView.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\MediaInfoPanel.mcml" />
     <Content Include="Markup\Controls\MovieInfo.mcml" />
     <Content Include="Markup\Controls\MPAARating.mcml">
