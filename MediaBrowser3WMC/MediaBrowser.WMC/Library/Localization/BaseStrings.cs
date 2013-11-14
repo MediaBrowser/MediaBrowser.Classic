@@ -227,6 +227,7 @@ namespace MediaBrowser.Library.Localization
         //Media Detail Page
         public string GeneralDetail = "General";
         public string ActorsDetail = "Actors";
+        public string ChaptersDetail = "Chapters";
         public string ArtistsDetail = "Artists";        
         public string PlayDetail = "Play";
         public string ResumeDetail = "Resume";

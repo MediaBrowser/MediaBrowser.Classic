@@ -298,6 +298,13 @@ namespace MediaBrowser.Library.Persistance
                     {
                         video.VideoFormat = "Standard";
                     }
+
+                    // Chapters
+                    if (mb3Item.Chapters != null)
+                    {
+                        var ndx = 0;
+                        video.Chapters = mb3Item.Chapters.Select(c => new Chapter {ApiParentId = mb3Item.Id, PositionTicks = c.StartPositionTicks, Name = c.Name, PrimaryImagePath = c.HasImage ? GetImageUrl(video, new ImageOptions {Tag = c.ImageTag, ImageType = ImageType.Chapter, ImageIndex = ndx++}) : null}).ToList();
+                    }
                 }
 
                 var media = item as Media;

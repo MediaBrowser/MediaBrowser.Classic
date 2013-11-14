@@ -1083,6 +1083,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] ChapterButton {
+            get {
+                object obj = ResourceManager.GetObject("ChapterButton", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] CheckBox {
             get {
                 object obj = ResourceManager.GetObject("CheckBox", resourceCulture);
@@ -1946,6 +1956,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("FontsSmall", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Frames {
+            get {
+                object obj = ResourceManager.GetObject("Frames", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

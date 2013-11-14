@@ -347,6 +347,11 @@ namespace MediaBrowser.LibraryManagement
             return daysAgo;
         }
 
+        public static string TicksToFriendlyTime(long ticks)
+        {
+            var pos = new TimeSpan(ticks);
+            return string.Format("{0}h {1}m {2}s", pos.Hours, pos.Minutes, pos.Seconds);
+        }
 
         public static string FriendlyDateStr(DateTime date)
         {

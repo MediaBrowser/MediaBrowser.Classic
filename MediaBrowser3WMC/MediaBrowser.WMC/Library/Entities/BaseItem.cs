@@ -300,6 +300,8 @@ namespace MediaBrowser.Library.Entities {
             set { }
         }
 
+        public List<Chapter> Chapters { get; set; } 
+
         public virtual bool CanResume
         {
             get

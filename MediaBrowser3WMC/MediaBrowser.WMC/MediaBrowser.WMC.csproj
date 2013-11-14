@@ -140,6 +140,7 @@
     <Compile Include="ApiInteraction\WebSocket\WebSocket4NetClientWebSocket.cs" />
     <Compile Include="Code\CommonConfigData.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
+    <Compile Include="Code\ModelItems\ChapterItem.cs" />
     <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Library\Entities\ApiYearFolder.cs" />
     <Compile Include="Library\Entities\ApiStudioFolder.cs" />
     <Compile Include="Library\Entities\ApiAlbumCollectionFolder.cs" />
+    <Compile Include="Library\Entities\Chapter.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\IbnSourcedFolder.cs" />
@@ -388,6 +390,7 @@
     <Content Include="Images\Favorites.png" />
     <Content Include="Images\FavTV.png" />
     <Content Include="Images\heart.png" />
+    <Content Include="Images\Icons\Frames.png" />
     <Content Include="Images\Icons\IconAdded.png" />
     <None Include="Images\Icons\IconNext.png" />
     <None Include="Images\Icons\IconPrevious.png" />
@@ -934,6 +937,7 @@
     <Content Include="Markup\Controls\Backdrop.mcml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Markup\Controls\Buttons\ChapterButton.mcml" />
     <Content Include="Markup\Controls\Buttons\PCIndicatorButton.mcml">
       <SubType>Designer</SubType>
     </Content>

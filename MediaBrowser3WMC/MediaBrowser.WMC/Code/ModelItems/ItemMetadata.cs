@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Entities;
 using Microsoft.MediaCenter.UI;
 using System.Threading;
@@ -337,6 +338,12 @@ namespace MediaBrowser.Library {
                 //calculated aspect ratios on ripped media are garbage
                 return (baseItem is Video && !(baseItem as Video).ContainsRippedMedia) ? this.MediaInfo.AspectRatioString : "";
             }
+        }
+
+        private List<ChapterItem> _chapters;
+        public List<ChapterItem> Chapters
+        {
+            get { return _chapters ?? (_chapters = baseItem.Chapters.Select(c => ChapterItem.Create(c, this)).ToList()); }
         }
 
         private List<ActorItemWrapper> _actors;

@@ -34,6 +34,12 @@
         </Actions>
       </Condition>
 
+      <Condition Source="[Label]" ConditionOp="Equals" SourceValue="Chapters">
+        <Actions>
+          <Set Target="[graphicBullet.Content]" Value="resx://MediaBrowser/MediaBrowser.Resources/Frames"/>
+        </Actions>
+      </Condition>
+
       <!-- Key Focus = true -->
       <Rule ConditionLogicalOp="Or">
         <Conditions>

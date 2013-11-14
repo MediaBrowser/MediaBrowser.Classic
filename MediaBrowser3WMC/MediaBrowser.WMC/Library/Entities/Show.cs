@@ -132,6 +132,7 @@ namespace MediaBrowser.Library.Entities {
                 Writers = temp.Writers;
                 Genres = temp.Genres;
                 Studios = temp.Studios;
+                Chapters = temp.Chapters;
             }
             FullDetailsLoaded = true;
         }

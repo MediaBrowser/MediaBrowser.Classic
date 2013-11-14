@@ -10,6 +10,7 @@ using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UserInput;
 using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
 
 namespace MediaBrowser.Library
@@ -160,7 +161,6 @@ namespace MediaBrowser.Library
                 return baseItem.DateCreated.ToShortDateString();
             }
         }
-
 
         public ItemType ItemType
         {

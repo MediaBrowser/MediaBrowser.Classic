@@ -2198,6 +2198,16 @@ namespace MediaBrowser
             }
         }
 
+        /// <summary>
+        /// Play an item starting at a specific position
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="pos"></param>
+        public void Play(Item item, long pos)
+        {
+            Play(item, false, false, false, false, pos);
+        }
+
         public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle)
         {
                 Play(item, resume, queue, playIntros, shuffle, 0);

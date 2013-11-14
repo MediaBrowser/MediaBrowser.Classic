@@ -23,6 +23,7 @@
     xmlns:db="resx://MediaBrowser/MediaBrowser.Resources/DirectorButton"
     xmlns:al="resx://MediaBrowser/MediaBrowser.Resources/ArtistList"
     xmlns:ai="resx://MediaBrowser/MediaBrowser.Resources/ActivityIndicator"
+    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/ChapterButton"
     xmlns:me="Me"
     >
 
@@ -43,6 +44,7 @@
         <Options>
           <cor:String String="[Application.LocalStrings.#GeneralDetail!cor:String]" />
           <cor:String String="[Application.LocalStrings.#ActorsDetail!cor:String]" />
+          <cor:String String="[Application.LocalStrings.#ChaptersDetail!cor:String]" />
         </Options>
       </Choice>
       
@@ -181,6 +183,16 @@
         </Conditions>
         <Actions>
           <Set Target="[ActorScroller.Visible]" Value="true" />
+        </Actions>
+      </Rule>
+      <Rule >
+        <Conditions>
+          <Equality Source="[Item.ItemTypeString]" ConditionOp="NotEquals" Value="Song" />
+          <Equality Source="[Model.ChosenIndex]" ConditionOp="Equals" Value="2" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ChapterScroller.Visible]" Value="true" />
+          <Set Target="[ActorScroller.Visible]" Value="false" />
         </Actions>
       </Rule>
       <!--<Condition Source="[Model.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Info.Visible]" Value="true" />
@@ -353,6 +365,7 @@
             <Children>
               <me:InfoBlock Name="Info" Item="[Item]" Application="[Application]" Padding="0,0,0,25" Visible="false" />
               <me:ActorList Name="ActorScroller" Item="[Item]" Application="[Application]" Visible="false" />
+              <me:ChapterList Name="ChapterScroller" Item="[Item]" Application="[Application]" Visible="false" />
             </Children>
           </Panel>
 
@@ -703,6 +716,162 @@
           <pb:PersonButton PersonItem="[aiw]" Color="color://s:FontColorMedium" Command="[NavigateToActorsCommand]" />
           <!-- <sb:SimpleButton Text="[actor.DisplayName]" Font="[Font]" Command="[NavigateToActorsCommand]" Size="230,40" LeftAlign="true"  />
           <Text Name="ActorRole" Font="[Font]" Color="color://s:FontColorMedium" Content="[aiw.Actor.DisplayName]" MinimumSize="150,40" />-->
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <!-- ChapterList-->
+  <UI Name="ChapterList">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+    <Locals>
+      <ScrollingHandler Name="ScrollingHandler" HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandlePageKeys="true" HandlePageCommands="true" HandleMouseWheel="true"/>
+      <ScrollingData Name="ScrollingData" />
+      <Command Name="ScrollUpCommand" />
+      <Command Name="ScrollDownCommand" />
+
+      <GridLayout Name="MyLayout" Orientation="Horizontal" Rows="0"
+							  AllowWrap="true" Spacing="0,5"  />
+
+    </Locals>
+    <Rules>
+      <Binding Source="[Item.Chapters]" Target="[ListRepeater.Source]" />
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+      <Changed Source="[ScrollUpCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollUp]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollDownCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollDown]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollUpCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollUp]"/>
+        </Actions>
+      </Changed>
+      <Changed Source="[ScrollDownCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ScrollingData.ScrollDown]"/>
+        </Actions>
+      </Changed>
+
+      <Binding Source="[ScrollingData.CurrentPage]" Target="[CurrentPage.Content]">
+        <Transformer>
+          <FormatTransformer Format="{0:F0}"/>
+        </Transformer>
+      </Binding>
+
+      <Binding Source="[ScrollingData.TotalPages]" Target="[TotalPages.Content]">
+        <Transformer>
+          <FormatTransformer Format="{0:F0}"/>
+        </Transformer>
+      </Binding>
+
+      <!-- Hides the page info display if there is only 1 page.  We may what to remove this from the
+           Scoll area and actor list since the selectable areas line up a little nicer if we leave them -->
+      <Rule>
+        <Conditions>
+          <Equality Source="[ScrollingData.TotalPages]" ConditionOp="LessThanOrEquals" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ScrollInfo.Visible]" Value="false" />
+          <Set Target="[Input.KeyInteractive]" Value="false" />
+          <Set Target ="[ImagePanel.MouseInteractive]" Value="false" />
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[ScrollingData.TotalPages]" ConditionOp="GreaterThan" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Input.KeyInteractive]" Value="true" />
+          <Set Target ="[ImagePanel.MouseInteractive]" Value="true" />
+        </Actions>
+      </Rule>
+
+    </Rules>
+    <Content>
+      <!-- Chapters -->
+      <Panel Name="Chapters" Layout="Dock">
+        <Children>
+          <Graphic Content="image://i:BlankImage" Name="ImagePanel" Layout="Form"
+							 Padding="10,5,10,0">
+            <LayoutInput>
+              <DockLayoutInput Position="Client"/>
+            </LayoutInput>
+            <Children>
+              <Scroller Name="ChapterScroller" FadeSize="-5" ScrollingData="[ScrollingData]" Orientation="Vertical">
+                <LayoutInput>
+                  <AnchorLayoutInput Horizontal="Fill" Vertical="Near"/>
+                </LayoutInput>
+
+                <Children>
+                  <Repeater Name="ListRepeater" Source="[Item.Actors]" Layout="[MyLayout]" >
+                    <Content>
+                      <me:Chapter ChapterItem="[RepeatedItem!lib:ChapterItem]" Font="font://f:MM_ActorFont" Application="[Application]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+
+              </Scroller>
+            </Children>
+          </Graphic>
+
+          <!-- The pagination display at the bottom of the scroller-->
+          <Panel Name="ScrollInfo"  Visible="true">
+            <LayoutInput>
+              <DockLayoutInput Position="Bottom" Alignment="Center"/>
+            </LayoutInput>
+            <Children>
+              <Panel Layout="HorizontalFlow" Margins="0,0,0,0">
+                <Children>
+                  <Text Name="CurrentPage" Font="font://f:MM_ActorFont" Color="color://s:FontColorLight" />
+                  <Text Content="|" Font="font://f:MM_ActorFont" Color="color://s:FontColorLight" />
+                  <Text Name="TotalPages"  Font="font://f:MM_ActorFont" Color="color://s:FontColorLight" />
+                </Children>
+              </Panel>
+
+            </Children>
+          </Panel>
+        </Children>
+        <Animations>
+          <Animation Animation="animation://an:SlideUpFade" />
+        </Animations>
+      </Panel>
+    </Content>
+  </UI>
+
+  <!--Chapter-->
+  <UI Name="Chapter">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:ChapterItem Name="ChapterItem" ChapterItem="$Required" />
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Locals>
+      <Command Name="PlayCommand"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[PlayCommand.Invoked]">
+        <Actions>
+          <Invoke Target="[ChapterItem.PlayAction]"  />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <Panel Layout="HorizontalFlow" >
+        <Children>
+          <cb:ChapterButton ChapterItem="[ChapterItem]" Color="color://s:FontColorMedium" Command="[PlayCommand]" />
         </Children>
       </Panel>
     </Content>
