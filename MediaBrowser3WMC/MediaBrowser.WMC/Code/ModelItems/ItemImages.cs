@@ -772,6 +772,7 @@ namespace MediaBrowser.Library
         static readonly Image DefaultUserImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/UserLoginDefault");
         static readonly Image DefaultAlbumImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultAlbum");
         static readonly Image DefaultSongImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultSong");
+        static readonly Image DefaultChapterImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/Frames");
  
         
         public Image DefaultImage
@@ -807,6 +808,10 @@ namespace MediaBrowser.Library
                 else if (baseItem is MusicAlbum)
                 {
                     image = DefaultAlbumImage;
+                }
+                else if (baseItem is Chapter)
+                {
+                    image = DefaultChapterImage;
                 }
 
                 return image;
