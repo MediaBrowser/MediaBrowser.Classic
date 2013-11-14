@@ -773,6 +773,15 @@
         </Transformer>
       </Binding>
 
+      <Rule>
+        <Conditions>
+          <Equality Source="[Item.Chapters.Count]" ConditionOp="Equals" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[NoChapters.Visible]" Value="true" />
+        </Actions>
+      </Rule>
+
       <!-- Hides the page info display if there is only 1 page.  We may what to remove this from the
            Scoll area and actor list since the selectable areas line up a little nicer if we leave them -->
       <Rule>
@@ -821,6 +830,7 @@
                 </Children>
 
               </Scroller>
+              <Text Name="NoChapters" Content="No Chapter Information" Visible="false" Font="Segoe UI, 48" Alpha=".7" Color="color://s:FontColorMedium" />
             </Children>
           </Graphic>
 
