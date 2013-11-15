@@ -29,6 +29,7 @@
   <Image Name="Key" Source="resx://MediaBrowser/MediaBrowser.Resources/IconKeyboard"/>
   <Image Name="KeyFocus" Source="resx://MediaBrowser/MediaBrowser.Resources/IconKeyboardFocus"/>
   <Image Name="Pause" Source="resx://MediaBrowser/MediaBrowser.Resources/Pause"/>
+  <Image Name="IconChapter" Source="resx://MediaBrowser/MediaBrowser.Resources/Frames"/>
 
   <Image Name="HDLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/HD" />
 	<Image Name="HDLogo1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hd1080" />
