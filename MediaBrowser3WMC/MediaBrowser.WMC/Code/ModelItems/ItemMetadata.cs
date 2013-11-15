@@ -340,6 +340,7 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public bool HasChapterInfo { get { return Chapters.Count > 0; } }
         private List<ChapterItem> _chapters;
         public List<ChapterItem> Chapters
         {
