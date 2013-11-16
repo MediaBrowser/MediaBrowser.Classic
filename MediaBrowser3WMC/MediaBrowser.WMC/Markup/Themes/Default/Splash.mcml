@@ -3,6 +3,7 @@
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	  xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
     xmlns:me="Me"
     >
 
@@ -11,17 +12,169 @@
       <a:Application Name="Application" Application="$Required"/>
     </Properties>
 
+    <Locals>
+      <Timer Name="DotTimer" Interval="3000" AutoRepeat="true" Enabled="true"/>
+      <Timer Name="DotTimer2" Interval="300" AutoRepeat="false" Enabled="false"/>
+    </Locals>
+
+    <Rules>
+      <Default Target="[DotTimer.Enabled]" Value="true" />
+      
+      <Changed Source="[DotTimer.Tick]" >
+        <Actions>
+          <PlaySound Sound="sound://sd:Select" />
+          <Set Target="[Dots.Visible]" Value="false" />
+          <Set Target="[DotTimer2.Enabled]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[DotTimer2.Tick]" >
+        <Actions>
+          <Set Target="[Dots.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+    </Rules>
     <Content>
       <ColorFill Content="Black" Layout="Form">
         <Animations>
           <Animation Animation="animation://an:PageShow" />
         </Animations>
         <Children>
-          <Graphic Content="[Application.LogonSplashImage]" Margins="50,50,50,50" MaintainAspectRatio="true" >
+          <ColorFill Name="WelcomePanel" Content="0,50,100" CenterPointPercent=".5,.5,.5" MinimumSize="500,0" MaximumSize="500,0" Layout="Form" >
+            <LayoutInput>
+              <FormLayoutInput Top="Parent, 0" Bottom="Parent, 1"/>
+            </LayoutInput>
             <Animations>
-              <Animation Animation="animation://an:FullZoom" />
+              <Animation Loop="0" Type="Show">
+                <Keyframes>
+                  <PositionKeyframe Time="0.0" Value="-500,0,0" Interpolation="Log" RelativeTo="Absolute" />
+                  <PositionKeyframe Time="0.250" Value="0,0,0" RelativeTo="Absolute" />
+                </Keyframes>
+              </Animation>
+              <Animation Loop="0" Type="Hide">
+                <Keyframes>
+                  <PositionKeyframe Time="0.0" Value="0,0,0" Interpolation="Log" RelativeTo="Absolute" />
+                  <PositionKeyframe Time="0.250" Value="1300,0,0" RelativeTo="Absolute" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+            <Children>
+              <Panel Margins="0,-100,20,0" >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" StripAlignment="Center" ItemAlignment="Far" />
+                </Layout>
+                <LayoutInput>
+                  <FormLayoutInput Horizontal="Far" />
+                </LayoutInput>
+                <Children>
+                  <Text Content="Welcome Back" Font="Segoe UI Light, 24" Color="White" />
+                  <Text Content="[Application.CurrentUser.Name]" Font="Segoe UI Light, 18" Color="White" />
+                  
+                </Children>
+              </Panel>
+            </Children>
+          </ColorFill>
+          <Graphic Name="Logo" Content="[Application.LogonSplashImage]" Margins="50,50,50,0" MaintainAspectRatio="true" MaximumSize="400, 100" CenterPointPercent=".5,.5,.5" >
+            <Animations>
+              <Animation Loop="0" Type="Show">
+                <Keyframes>
+                  <PositionKeyframe Time="0.0" Value="1500,300,0" Interpolation="Log" RelativeTo="Absolute" />
+                  <PositionKeyframe Time="0.250" Value="520,300,0" RelativeTo="Absolute" />
+                </Keyframes>
+              </Animation>
+              <Animation Loop="0" Type="Hide">
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0"  />
+                  <AlphaKeyframe Time="0.150" Value="0" />
+                </Keyframes>
+              </Animation>
             </Animations>
           </Graphic>
+
+          <ColorFill Name="Dots" Content="Transparent" Layout="HorizontalFlow" >
+            <LayoutInput>
+              <FormLayoutInput Top="Logo, 1, 10" Bottom="Logo, 1, 20" Right="Parent, 1" Left="Parent, .4" />
+            </LayoutInput>
+            <Animations>
+              <Animation Loop="0" Type="Hide">
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0"  />
+                  <AlphaKeyframe Time="0.050" Value="0" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+            <Children>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Absolute" />
+                      <PositionKeyframe Time="0.250" Value="1000,0,0" Interpolation="Log" RelativeTo="Absolute" />
+                      <PositionKeyframe Time="0.600" Value="0,0,0" RelativeTo="Absolute" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+            
+              </ColorFill>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" Margins="10,0,0,0" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="0.850" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="1.200" Value="0,0,0" RelativeTo="Current" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </ColorFill>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" Margins="10,0,0,0" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="1.450" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="1.8" Value="0,0,0" RelativeTo="Current" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </ColorFill>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" Margins="10,0,0,0" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="2.050" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="2.4" Value="0,0,0" RelativeTo="Current" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </ColorFill>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" Margins="10,0,0,0" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="2.6500" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="3" Value="0,0,0" RelativeTo="Current" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </ColorFill>
+              <ColorFill Content="White" MaximumSize="5,5" MinimumSize="5,5" Margins="10,0,0,0" CenterPointPercent=".5,.5,.5" >
+                <Animations>
+                  <Animation Loop="0" Type="Show">
+                    <Keyframes>
+                      <PositionKeyframe Time="0.0" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="3.200" Value="1000,0,0" Interpolation="Log" RelativeTo="Current" />
+                      <PositionKeyframe Time="3.55" Value="0,0,0" RelativeTo="Current" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+              </ColorFill>
+              
+            </Children>
+
+          </ColorFill>
+
         </Children>
       </ColorFill>
 
