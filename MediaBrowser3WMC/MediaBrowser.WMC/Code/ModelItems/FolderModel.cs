@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel;
 using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Util;
 using Microsoft.MediaCenter.UI;
@@ -15,6 +16,8 @@ using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Metadata;
+using IContainer = MediaBrowser.Library.Entities.IContainer;
+using PropertyChangedEventHandler = Microsoft.MediaCenter.UI.PropertyChangedEventHandler;
 
 
 namespace MediaBrowser.Library {
@@ -732,6 +735,14 @@ namespace MediaBrowser.Library {
                 return folderChildren;
             }
         }
+
+        public List<Item> CondensedChildren
+        {
+            get
+            {
+                return Application.CurrentInstance.CondensedFolderLimit == 0 || folderChildren.Count <= Application.CurrentInstance.CondensedFolderLimit ? Children.Select(c => c).ToList() : folderChildren.Take(Application.CurrentInstance.CondensedFolderLimit).Concat(new[] { this }).ToList();
+            }
+        } 
 
         public int SelectedChildIndex {
             get {

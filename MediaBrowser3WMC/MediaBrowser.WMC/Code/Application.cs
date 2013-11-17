@@ -673,6 +673,8 @@ namespace MediaBrowser
             get { return Kernel.Instance.ScreenSaverUI; }
         }
 
+        public int CondensedFolderLimit = 25;
+
         public Item CurrentUser { get; set; }
 
         public List<Item> AvailableUsers { get { return Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""), Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr(u.LastActivityDate ?? DateTime.MinValue)})).ToList(); } } 
