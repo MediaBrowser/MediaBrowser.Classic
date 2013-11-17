@@ -344,7 +344,7 @@ namespace MediaBrowser.Library {
         private List<ChapterItem> _chapters;
         public List<ChapterItem> Chapters
         {
-            get { return _chapters ?? (_chapters = baseItem.Chapters.Select(c => ChapterItem.Create(c, this)).ToList()); }
+            get { return _chapters ?? (_chapters = baseItem.Chapters != null ? baseItem.Chapters.Select(c => ChapterItem.Create(c, this)).ToList() : new List<ChapterItem>()); }
         }
 
         private List<ActorItemWrapper> _actors;
