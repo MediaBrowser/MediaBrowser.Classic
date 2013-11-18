@@ -13,16 +13,14 @@
     </Properties>
 
     <Locals>
-      <Timer Name="DotTimer" Interval="3000" AutoRepeat="true" Enabled="true"/>
+      <Timer Name="DotTimer" Interval="4000" AutoRepeat="true" Enabled="true"/>
       <Timer Name="DotTimer2" Interval="300" AutoRepeat="false" Enabled="false"/>
     </Locals>
 
     <Rules>
-      <Default Target="[DotTimer.Enabled]" Value="true" />
       
       <Changed Source="[DotTimer.Tick]" >
         <Actions>
-          <PlaySound Sound="sound://sd:Select" />
           <Set Target="[Dots.Visible]" Value="false" />
           <Set Target="[DotTimer2.Enabled]" Value="true" />
         </Actions>
@@ -97,8 +95,8 @@
             <Animations>
               <Animation Loop="0" Type="Hide">
                 <Keyframes>
-                  <AlphaKeyframe Time="0.0" Value="0"  />
-                  <AlphaKeyframe Time="0.050" Value="0" />
+                  <PositionKeyframe Time="0.0" Value="0,0,0" Interpolation="Log" RelativeTo="Current" />
+                  <PositionKeyframe Time="0.250" Value="1000,0,0" Interpolation="Log"  RelativeTo="Current" />
                 </Keyframes>
               </Animation>
             </Animations>
