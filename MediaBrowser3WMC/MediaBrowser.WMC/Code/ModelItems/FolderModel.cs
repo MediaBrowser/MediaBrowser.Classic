@@ -54,6 +54,8 @@ namespace MediaBrowser.Library {
         }
 
         public bool IsFiltered { get { return folderChildren.IsFiltered; } }
+        public bool IsIndexed { get { return folderChildren.FolderIsIndexed; } }
+
 
         public override void NavigatingInto() {
             // force display prefs to reload.
@@ -866,7 +868,15 @@ namespace MediaBrowser.Library {
                 selectedchildIndex = -1;
                 if (folderChildren.Count > 0)
                     SelectedChildIndex = 0;
-                                            
+
+                // Now if there is a custom index ui re-navigate to us so that the UI will change
+                if (Application.CurrentInstance.IndexUI != null)
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+                                                                            {
+                                                                                Application.CurrentInstance.Back();
+                                                                                Application.CurrentInstance.OpenFolderPage(this);
+                                                                            });
+
             });
         }
 
