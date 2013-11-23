@@ -63,7 +63,8 @@ namespace Configurator
             {
                 Async.Queue("error", () =>
                                          {
-                                             MessageBox.Show("Failed to start up, please post this on http://community.mediabrowser.tv \n\n" + ex, "Error", MessageBoxButton.OK);
+                                             MessageBox.Show("We encountered a critical error and will need to shut down.\n\n  It is possible we cannot contact your MB Server or the internet.\n\n" +
+                                                             " If the problem persists, please post the following on http://mediabrowser3.com/community \n\n" + ex, "Critical Error", MessageBoxButton.OK);
                                              Close();
                                          });
                 Logger.ReportException("Error Starting up",ex);
