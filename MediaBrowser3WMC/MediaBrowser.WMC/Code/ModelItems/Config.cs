@@ -693,6 +693,12 @@ namespace MediaBrowser
             set { if (this.Data.RecentItemOption != value) { this.Data.RecentItemOption = value; Save(); FirePropertyChanged("RecentItemOption"); } }
         }
 
+        public string StartupParms
+        {
+            get { return this.CommonData.StartupParms; }
+            set { if (this.CommonData.StartupParms != value) { this.CommonData.StartupParms = value; Save(); FirePropertyChanged("StartupParms"); } }
+        }
+
         public List<string> PluginSources
         {
             get { return new List<string>(); }

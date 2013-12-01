@@ -1109,6 +1109,25 @@ namespace MediaBrowser
             Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
         }
 
+        /// <summary>
+        /// Restart media browser classic
+        /// </summary>
+        public void Restart()
+        {
+            var updateBat = "ping 127.0.2.0 -n 1 -w 250 > NUL\r\n"; // give us time to exit
+            var windir = Environment.GetEnvironmentVariable("windir") ?? "c:\\windows\\";
+            updateBat += Path.Combine(windir, "ehome\\ehshell /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}");
+            var filename = Path.GetTempFileName();
+            filename += ".bat";
+            File.WriteAllText(filename, updateBat);
+
+            // Start the batch file minimized so they don't notice.
+            var toDo = new Process {StartInfo = {WindowStyle = ProcessWindowStyle.Minimized, FileName = filename}};
+
+            toDo.Start();
+            Close();
+        }
+
         public void BackOut()
         {
             //back up and close the app if that fails
@@ -1274,7 +1293,7 @@ namespace MediaBrowser
                                       {
                                           if (YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name)) == "Y")
                                           {
-                                              Close();
+                                              Restart();
                                           }
                                       });
             

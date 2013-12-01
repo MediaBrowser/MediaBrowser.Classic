@@ -106,6 +106,8 @@ namespace MediaBrowser
         public bool UseCustomStreamingUrl;
         public string CustomStreamingUrl = "http://{0}/mediabrowser/Videos/{1}/stream?Static=True";
 
+        public string StartupParms;
+
         public enum ExternalPlayerLaunchType
         {
             CommandLine = 0,
