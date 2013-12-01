@@ -1233,6 +1233,8 @@ namespace MediaBrowser
                                                     });
         }
 
+        protected bool UsingDirectEntry;
+
         // Entry point for the app
         public void Init()
         {
@@ -1310,6 +1312,7 @@ namespace MediaBrowser
             if (user != null)
             {
                 // only one user or specified - log in automatically
+                UsingDirectEntry = true;
                 OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application",this}});
                 LoginUser(user);
             }
@@ -1361,7 +1364,11 @@ namespace MediaBrowser
             {
                 if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
                 {
-                    AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                    if (!UsingDirectEntry)
+                    {
+                        AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                    }
+                    UsingDirectEntry = false;
                     ShowSplash = false;
                     return false;
                 }
