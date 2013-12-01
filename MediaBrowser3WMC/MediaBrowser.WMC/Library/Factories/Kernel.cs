@@ -877,6 +877,7 @@ namespace MediaBrowser.Library {
         public List<MenuItem> ContextMenuItems { get { return menuOptions.FindAll(m => (m.Available && m.Supports(MenuType.Item))); } }
         public List<MenuItem> PlayMenuItems { get { return menuOptions.FindAll(m => (m.Available && m.Supports(MenuType.Play))); } }
         public List<MenuItem> DetailMenuItems { get { return menuOptions.FindAll(m => (m.Available && m.Supports(MenuType.Detail))); } }
+        public List<MenuItem> UserMenuItems { get { return menuOptions.FindAll(m => (m.Available && m.Supports(MenuType.User))); } }
 
         public MenuItem AddMenuItem(MenuItem menuItem) {
             menuOptions.Add(menuItem);       

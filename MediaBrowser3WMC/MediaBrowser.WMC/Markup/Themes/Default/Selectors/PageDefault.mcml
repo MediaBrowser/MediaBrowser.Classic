@@ -66,7 +66,8 @@
       <Command Name="ShowSearch" />
       <Command Name="CloseContextMenu" />
       <Command Name="ClosePopupPlay" />
-      <Command Name="Logout" />
+      <Command Name="CloseUserMenu" />
+      <Command Name="SwitchUser" />
       <a:Clock Name="Clock"/>
       <Command Name="Popup"/>
       <!--<KeyHandler Name="SwitchKey" Key="D8" Handle="true" Modifiers="Shift" HandlerStage="Bubbled"/>-->
@@ -159,9 +160,26 @@
         </Actions>
       </Rule>
 
-      <Changed Source="[Logout.Invoked]">
+      <Rule>
+        <Conditions>
+          <Equality Source="[Application.DisplayUserMenu]" ConditionOp="Equals" Value="true" />
+        </Conditions>
         <Actions>
-          <Invoke Target="[Application.Logout]" />
+          <Set Target="[UserMenu.Visible]" Value="true" />
+          <Invoke Target="[UserMenu.NavigateInto]" />
+        </Actions>
+      </Rule>
+
+      <Changed Source="[SwitchUser.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayUserMenu]" Value="true"/>
+        </Actions>
+      </Changed>
+
+    <Changed Source="[CloseUserMenu.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayUserMenu]" Value="false" />
+          <Invoke Target="[ViewPanel.NavigateInto]" />
         </Actions>
       </Changed>
 
@@ -459,7 +477,7 @@
                 </Children>
               </Panel>
 
-              <vm:UserButton Name="UserButton" Application="[Application]" Command="[Logout]" Font="font://f:P_ConfigButtons">
+              <vm:UserButton Name="UserButton" Application="[Application]" Command="[SwitchUser]" Font="font://f:P_ConfigButtons">
                 <LayoutInput>
                   <FormLayoutInput Left="Parent,0,205" Bottom="Parent,0,122"/>
                 </LayoutInput>
@@ -581,6 +599,9 @@
 
               <!-- Play Menu -->
               <cm:PlayMenu Name="PopupPlay" Application="[Application]" Close="[ClosePopupPlay]" Visible="false" />
+
+              <!-- User Menu -->
+              <cm:UserMenu Name="UserMenu" Application="[Application]" Close="[CloseUserMenu]" Visible="false" />
 
               <!-- Activity Indicator -->
               <ai:ActivityIndicator Name="ActivityInd" Application="[Application]">

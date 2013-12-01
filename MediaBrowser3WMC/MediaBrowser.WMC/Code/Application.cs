@@ -813,15 +813,13 @@ namespace MediaBrowser
             }
         }
 
+        public string CurrentMenuOption { get; set; }
+
         private List<MenuItem> currentContextMenu;
 
         public List<MenuItem> ContextMenu
         {
-            get
-            {
-                if (currentContextMenu == null) currentContextMenu = Kernel.Instance.ContextMenuItems;
-                return currentContextMenu;
-            }
+            get { return currentContextMenu ?? (currentContextMenu = Kernel.Instance.ContextMenuItems); }
             set
             {
                 currentContextMenu = value;
@@ -848,6 +846,14 @@ namespace MediaBrowser
             get
             {
                 return Kernel.Instance.DetailMenuItems;
+            }
+        }
+
+        public List<MenuItem> UserMenu
+        {
+            get
+            {
+                return Kernel.Instance.UserMenuItems;
             }
         }
 
@@ -1114,7 +1120,7 @@ namespace MediaBrowser
         /// </summary>
         public void Restart()
         {
-            var updateBat = "ping 127.0.2.0 -n 1 -w 250 > NUL\r\n"; // give us time to exit
+            var updateBat = "ping 127.0.2.0 -n 1 -w 150 > NUL\r\n"; // give us time to exit
             var windir = Environment.GetEnvironmentVariable("windir") ?? "c:\\windows\\";
             updateBat += Path.Combine(windir, "ehome\\ehshell /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}");
             var filename = Path.GetTempFileName();
@@ -1241,6 +1247,7 @@ namespace MediaBrowser
             Config.IsFirstRun = false;
 
             Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
+            Logger.ReportInfo("Startup parameters: "+ Config.StartupParms);
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
@@ -1307,8 +1314,12 @@ namespace MediaBrowser
         /// </summary>
         public void Login()
         {
-            var user = Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) :
+            var user = !string.IsNullOrEmpty(Config.StartupParms) ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
+                        Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) :
                            Kernel.AvailableUsers.Count == 1 ? AvailableUsers.FirstOrDefault() : null;
+
+            Config.StartupParms = null;
+
             if (user != null)
             {
                 // only one user or specified - log in automatically
@@ -1343,6 +1354,14 @@ namespace MediaBrowser
                 // just log in as we don't have a pw 
                 Async.Queue("Load user", () => LoadUser(user.BaseItem as User, ""));
             }
+        }
+
+        public void SwitchUser(Item ignore)
+        {
+            //User to switch to will be in CurrentMenuOption
+            //Not a huge fan of that but changing the signature of the menu item command would break all themes
+            Config.StartupParms = CurrentMenuOption;
+            Restart();
         }
 
         protected bool LoadUser(User user, string pw)
@@ -1400,6 +1419,9 @@ namespace MediaBrowser
 
             LoadPluginsAndModels();
 
+            // build switch user menu
+            BuildUserMenu();
+
             if (Kernel.Instance.RootFolder == null)
             {
                 Async.Queue("Launch Error", () =>
@@ -1423,6 +1445,21 @@ namespace MediaBrowser
             }
 
             return true;
+        }
+
+        protected void BuildUserMenu()
+        {
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+            {
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => BuildUserMenu());
+            }
+            else
+            {
+                foreach (var otherUser in AvailableUsers.Where(u => u.Name != CurrentUser.Name))
+                {
+                    Kernel.Instance.AddMenuItem(new MenuItem(otherUser.Name, otherUser.BaseItem.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/UserLoginDefault", SwitchUser, new List<MenuType> { MenuType.User }));
+                }
+            }
         }
 
         protected void LoadPluginsAndModels()
@@ -1715,6 +1752,20 @@ namespace MediaBrowser
             {
                 this.displayPopupPlay = value;
                 FirePropertyChanged("DisplayPopupPlay");
+            }
+        }
+
+        private bool displayUserMenu = false;
+        public bool DisplayUserMenu
+        {
+            get
+            {
+                return this.displayUserMenu;
+            }
+            set
+            {
+                this.displayUserMenu = value;
+                FirePropertyChanged("DisplayUserMenu");
             }
         }
 

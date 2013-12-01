@@ -9,6 +9,7 @@ namespace MediaBrowser.Library
     {
         Item,
         Play,
-        Detail
+        Detail,
+        User
     }
 }
