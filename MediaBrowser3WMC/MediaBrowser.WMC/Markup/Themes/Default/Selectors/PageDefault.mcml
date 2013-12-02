@@ -130,6 +130,7 @@
         <Actions>
           <Invoke Target="[Application.ResetContextMenu]" />
           <Set Target="[ContextMenu.Visible]" Value="true"/>
+          <Set Target="[MouseBlocker.Visible]" Value="true"/>
           <Invoke Target="[ContextMenu.NavigateInto]" />
           <Set Target="[FindAsYouTypePanel.Visible]" Value="false" />
         </Actions>
@@ -139,6 +140,7 @@
         <Actions>
           <Invoke Target="[ViewPanel.NavigateInto]" />
           <Set Target="[ContextMenu.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false"/>
           <Invoke Target="[Application.ResetContextMenu]" />
           <Set Target="[FindAsYouTypePanel.Visible]" Value="true" />
         </Actions>
@@ -156,6 +158,7 @@
         </Conditions>
         <Actions>
           <Set Target="[PopupPlay.Visible]" Value="true" />
+          <Set Target="[MouseBlocker.Visible]" Value="true"/>
           <Invoke Target="[PopupPlay.NavigateInto]" />
         </Actions>
       </Rule>
@@ -167,18 +170,21 @@
         <Actions>
           <Set Target="[UserMenu.Visible]" Value="true" />
           <Invoke Target="[UserMenu.NavigateInto]" />
+          <Set Target="[MouseBlocker.Visible]" Value="true"/>
         </Actions>
       </Rule>
 
       <Changed Source="[SwitchUser.Invoked]">
         <Actions>
           <Set Target="[Application.DisplayUserMenu]" Value="true"/>
+          <Set Target="[MouseBlocker.Visible]" Value="true"/>
         </Actions>
       </Changed>
 
     <Changed Source="[CloseUserMenu.Invoked]">
         <Actions>
           <Set Target="[Application.DisplayUserMenu]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false"/>
           <Invoke Target="[ViewPanel.NavigateInto]" />
         </Actions>
       </Changed>
@@ -189,6 +195,7 @@
           <!--<PlaySound Sound="sound://sd:Miniselect" />-->
           <Invoke Target="[ViewPanel.NavigateInto]" />
           <Set Target="[PopupPlay.Visible]" Value="false"/>
+          <Set Target="[MouseBlocker.Visible]" Value="false"/>
         </Actions>
       </Changed>
 
@@ -580,6 +587,17 @@
                 </LayoutInput>
               </Panel>
 
+              <!-- Context Menu -->
+              <cm:ContextMenu Name="ContextMenu" Application="[Application]" Close="[CloseContextMenu]" Visible="false" />
+
+              <!-- Play Menu -->
+              <cm:PlayMenu Name="PopupPlay" Application="[Application]" Close="[ClosePopupPlay]" Visible="false" />
+
+              <!-- User Menu -->
+              <cm:UserMenu Name="UserMenu" Application="[Application]" Close="[CloseUserMenu]" Visible="false" />
+
+              <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
               <!--  View Details-->
               <pda:PageDetailArea Name="ViewPanel" Folder="[Folder]" Application="[Application]"  >
                 <LayoutInput>
@@ -593,15 +611,6 @@
                   <FormLayoutInput Left="Parent,0,-10" Bottom="Parent,1,20" />
                 </LayoutInput>
               </np:NowPlayingViewport>
-
-              <!-- Context Menu -->
-              <cm:ContextMenu Name="ContextMenu" Application="[Application]" Close="[CloseContextMenu]" Visible="false" />
-
-              <!-- Play Menu -->
-              <cm:PlayMenu Name="PopupPlay" Application="[Application]" Close="[ClosePopupPlay]" Visible="false" />
-
-              <!-- User Menu -->
-              <cm:UserMenu Name="UserMenu" Application="[Application]" Close="[CloseUserMenu]" Visible="false" />
 
               <!-- Activity Indicator -->
               <ai:ActivityIndicator Name="ActivityInd" Application="[Application]">
