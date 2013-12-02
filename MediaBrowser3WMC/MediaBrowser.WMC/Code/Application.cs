@@ -1357,12 +1357,17 @@ namespace MediaBrowser
             }
         }
 
+        public void SwitchUser(string userName)
+        {
+            Config.StartupParms = userName;
+            Restart();
+        }
+
         public void SwitchUser(Item ignore)
         {
             //User to switch to will be in CurrentMenuOption
             //Not a huge fan of that but changing the signature of the menu item command would break all themes
-            Config.StartupParms = CurrentMenuOption;
-            Restart();
+            SwitchUser(CurrentMenuOption);
         }
 
         protected bool LoadUser(User user, string pw)
