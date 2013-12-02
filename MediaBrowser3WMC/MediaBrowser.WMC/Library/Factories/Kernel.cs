@@ -466,10 +466,10 @@ namespace MediaBrowser.Library {
             return endPoint != null && ConnectToServer(endPoint.Address.ToString(), endPoint.Port);
         }
 
-        static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
-
-            //Find MB 3 server
+        public static bool ConnectToServer(CommonConfigData config)
+        {
             var connected = false;
+
             if (config.FindServerAutomatically)
             {
                 connected = ConnectAutomatically();
@@ -492,6 +492,14 @@ namespace MediaBrowser.Library {
                 config.LastServerMacAddress = ServerInfo.MacAddress;
                 config.Save();
             }
+
+            return connected;
+        }
+
+        static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
+
+            //Find MB 3 server
+            ConnectToServer(config);
             var repository = new MB3ApiRepository();
             var localRepo = GetLocalRepository();
 
