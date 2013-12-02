@@ -1302,6 +1302,7 @@ namespace MediaBrowser
                                       {
                                           if (YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name)) == "Y")
                                           {
+                                              if (AvailableUsers.Count > 1) Config.StartupParms = "ShowLogin";
                                               Restart();
                                           }
                                       });
@@ -1314,7 +1315,7 @@ namespace MediaBrowser
         /// </summary>
         public void Login()
         {
-            var user = !string.IsNullOrEmpty(Config.StartupParms) ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
+            var user = !string.IsNullOrEmpty(Config.StartupParms) ? Config.StartupParms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
                         Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) :
                            Kernel.AvailableUsers.Count == 1 ? AvailableUsers.FirstOrDefault() : null;
 
