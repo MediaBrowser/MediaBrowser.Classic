@@ -220,12 +220,6 @@
         </Actions>
       </Changed>
 
-      <Changed Source="[Input.DeepKeyFocus]" >
-        <Actions>
-          <Set Target="[Application.CurrentMenuOption]" Value="[option.Text]"/>
-        </Actions>
-      </Changed>
-
       <Changed Source="[DoAction.Invoked]">
         <Conditions>
           <Equality Source="[option.ItemType]" Value="menu" />

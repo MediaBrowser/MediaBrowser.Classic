@@ -200,6 +200,9 @@ namespace MediaBrowser.Library
 
         public void DoCommand(Item item)
         {
+            // Don't really like this but we can't change the sig of this method call so we pass this info here
+            Application.CurrentInstance.CurrentMenuOption = this.Text;
+
             command.Invoke(item);
         }
     }
