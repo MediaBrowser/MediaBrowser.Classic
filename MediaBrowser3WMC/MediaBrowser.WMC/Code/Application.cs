@@ -1589,6 +1589,7 @@ namespace MediaBrowser
                                                     }
                                                     SystemUpdateCheckInProgress = true;
                                                     Updater.CheckForUpdate();
+                                                    PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
                                                     SystemUpdateCheckInProgress = false;
                                                 });
             }
