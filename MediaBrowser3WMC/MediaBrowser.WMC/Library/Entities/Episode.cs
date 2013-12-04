@@ -20,6 +20,7 @@ namespace MediaBrowser.Library.Entities {
         public string FirstAired { get; set; }
 
         public string SeriesId { get; set; }
+        public string SeasonId { get; set; }
 
         public DateTime PremierDate { get; set; }
 
