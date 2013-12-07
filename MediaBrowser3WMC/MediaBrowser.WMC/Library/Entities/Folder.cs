@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MediaBrowser.Library.Util;
@@ -31,7 +32,7 @@ namespace MediaBrowser.Library.Entities {
         public MBDirectoryWatcher directoryWatcher;
         Type childType;
         protected IndexFolder quickListFolder;
-
+        public bool ChildrenLoaded { get; set; }
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
         public virtual string DisplayPreferencesId { get; set; }
         public int? ApiRecursiveItemCount { get; set; }
@@ -125,6 +126,7 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void RetrieveChildren()
         {
+            ChildrenLoaded = true;
             children = ApiId != null ? new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null)) : new Lazy<List<BaseItem>>(() => new List<BaseItem>(), null);
             mediaCount = null;
         }
@@ -177,7 +179,10 @@ namespace MediaBrowser.Library.Entities {
         /// </summary>
         public IList<BaseItem> LoadedChildren
         {
-            get { return children.HasValue ? Children : new List<BaseItem>(); }
+            get
+            {
+                return ChildrenLoaded ? Children : new List<BaseItem>();
+            }
         }
 
         /// <summary>
@@ -882,118 +887,7 @@ namespace MediaBrowser.Library.Entities {
 
         bool ValidateChildrenImpl()
         {
-
             return false;
-
-            location = null;
-            int unavailableItems = 0;
-            // cache a copy of the children
-
-            var childrenCopy = ActualChildren.ToList(); //changed this to reference actual children so it wouldn't keep mucking up hidden ones -ebr
-
-            var validChildren = GetChildren(false);
-            var currentChildren = new Dictionary<Guid, BaseItem>();
-            // in case some how we have a non distinct list 
-            foreach (var item in childrenCopy) {
-                currentChildren[item.Id] = item;
-            }
-
-            if (currentChildren.Count != validChildren.Count)
-                Logger.ReportVerbose("Validating "+this.Name+". CurrentChildren: "+currentChildren.Count+". Physical Children: "+validChildren.Count);
-
-            bool changed = false;
-            foreach (var item in validChildren) {
-                BaseItem currentChild;
-                if (currentChildren.TryGetValue(item.Id, out currentChild)) {
-                    if (currentChild != null) {
-                        bool thisItemChanged = currentChild.AssignFromItem(item);
-                        if (thisItemChanged)
-                        {
-                            item.RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions.Default);
-                            Kernel.Instance.MB3ApiRepository.SaveItem(item);
-                        }
-                        
-                        currentChildren[item.Id] = null;
-                    }
-                } else {
-                    changed = true;
-                    Logger.ReportInfo("Adding new item to library: " + item.Name + " (" + item.Path + ")");
-                    lock (ActualChildren) {
-                        item.Parent = this;
-                        ActualChildren.Add(item);
-                        item.RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions.Force); //necessary to get it to show up without user intervention
-                        Kernel.Instance.MB3ApiRepository.SaveItem(item);
-                        
-                        // Notify the kernel that a new item was added
-                        Kernel.Instance.OnItemAddedToLibrary(item);
-
-                        var folder = item as Folder;
-
-                        if (folder != null)
-                        {
-                            Logger.ReportVerbose(item.Name + " is folder - validating and refreshing children...");
-                            folder.ValidateChildren();
-                            foreach (var child in folder.Children)  //necessary to get new sub-items to refresh properly
-                            {
-                                child.RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions.Force);
-                            }
-                        }
-                    }
-                }
-            }
-
-            foreach (var item in currentChildren.Values.Where(item => item != null))
-            {
-                if (FolderMediaLocation != null && FolderMediaLocation.IsUnavailable(item.Path))
-                {
-                    Logger.ReportInfo("Not removing missing item " + item.Name + " because its location is unavailable.");
-                    unavailableItems++;
-                }
-                else
-                {
-                    changed = true;
-                    Logger.ReportInfo("Removing missing item from library: (" + item.Id + ") " + item.Path);
-                    lock (ActualChildren)
-                    {
-                        ActualChildren.RemoveAll(current => current.Id == item.Id);
-                    }
-                    // Notify the kernel that an item was removed
-                    Kernel.Instance.OnItemRemovedFromLibrary(item);
-                }
-
-            }
-
-            // this is a rare concurrency bug workaround - which I already fixed (it protects against regressions)
-            if (!changed && childrenCopy.Count != (validChildren.Count + unavailableItems)) {
-                Logger.ReportWarning("For some reason we have duplicate items in folder "+Name+", fixing this up!");
-                Logger.ReportVerbose("ChildrenCopy count: "+childrenCopy.Count + " ValidChildren count: "+(validChildren.Count + unavailableItems));
-                //Logger.ReportVerbose("ChildrenCopy contents are: ");
-                //foreach (var item in childrenCopy) Logger.ReportVerbose("  --- " + item.Name + " Path: " + item.Path);
-                //Logger.ReportVerbose("ValidChildren contents are: ");
-                //foreach (var item in validChildren) Logger.ReportVerbose("  --- " + item.Name + " Path: " + item.Path);
-                childrenCopy = childrenCopy
-                    .Distinct(i => i.Id)
-                    .ToList();
-
-                lock (ActualChildren) {
-                    ActualChildren.Clear();
-                    ActualChildren.AddRange(childrenCopy);
-                }
-
-                changed = true;
-            }
-
-
-            if (changed) {
-                lock(ActualChildren)
-                    SaveChildren(ActualChildren);
-                //we need to blank out the persisted RAL items for the top level folder
-                var item = this;
-                while (item != null && item.Parent != Kernel.Instance.RootFolder) item = item.Parent;
-                if (item != null) item.RemoveQuicklist();
-                OnChildrenChanged(new ChildrenChangedEventArgs { FolderContentChanged = true });
-            }
-            return changed;
         }
 
         List<BaseItem> GetChildren(bool allowCache) {
@@ -1002,7 +896,6 @@ namespace MediaBrowser.Library.Entities {
             if (allowCache) {
                 items = GetCachedChildren();
             }
-
 
             if (items != null) SetParent(items);
             return items;

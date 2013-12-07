@@ -546,7 +546,7 @@ namespace MediaBrowser
         {
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
-            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(id)).Where(folder => folder != null).Cast<Folder>().ToList();
+            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(id)).OfType<Folder>().Where(folder => folder != null).ToList();
             var topFolders = new Dictionary<Guid, Folder>();
             // Get folders that were reported to us
             foreach (var changedItem in changedFolders)
