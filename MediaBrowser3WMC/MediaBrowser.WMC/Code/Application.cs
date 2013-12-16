@@ -547,14 +547,12 @@ namespace MediaBrowser
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
             var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(id)).OfType<Folder>().Where(folder => folder != null).ToList();
-            var topFolders = new Dictionary<Guid, Folder>();
+
             // Get folders that were reported to us
             foreach (var changedItem in changedFolders)
             {
                 Logger.ReportVerbose("Folder with changes is: {0}", changedItem.Name);
                 changedItem.ReloadChildren();
-                var top = changedItem.TopParent;
-                if (top != null) topFolders[top.Id] = top;
             }
 
 
@@ -564,9 +562,6 @@ namespace MediaBrowser
                 var removed = Kernel.Instance.FindItem(id);
                 if (removed != null)
                 {
-                    var top = removed.TopParent;
-                    if (top != null) topFolders[top.Id] = top;
-
                     // If our parent wasn't included in the updated list - refresh it
                     var parent = removed.Parent;
                     if (parent != null)
@@ -586,12 +581,6 @@ namespace MediaBrowser
                     {
                         Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
                         changedItem.RefreshMetadata();
-                        // Add it's top parent so we can clear out recent lists if this was an added item
-                        if (args.UpdateInfo.ItemsAdded.Contains(changedItem.Id))
-                        {
-                            var top = changedItem.TopParent;
-                            if (top != null) topFolders[top.Id] = top;
-                        }
                     }
                     else
                     {
@@ -605,8 +594,8 @@ namespace MediaBrowser
                 }
             }
 
-            //And reset the recent list for each top folder affected
-            foreach (var top in topFolders.Values)
+            //And reset the recent list for each top folder - just do them all
+            foreach (var top in RootFolder.Children.OfType<Folder>())
             {
                 top.ResetQuickList();
                 top.OnQuickListChanged(null);
