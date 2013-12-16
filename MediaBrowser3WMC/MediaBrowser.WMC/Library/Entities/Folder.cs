@@ -153,6 +153,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        protected virtual bool HideEmptyFolders { get { return Kernel.Instance.ConfigData.HideEmptyFolders; } }
+
         /// <summary>
         /// Returns a safe clone of the children
         /// </summary>
@@ -166,10 +168,9 @@ namespace MediaBrowser.Library.Entities {
                 // return a clone
                 lock (ActualChildren)
                 {
-                    return ActualChildren.ToList();
                     //once again, the hide empty folders feature is a problem.  causes a recursive load on big libraries
                     IList<BaseItem> visibleChildren = ActualChildren;
-                    return Kernel.Instance.ConfigData.HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).HasMedia).ToList() : visibleChildren.ToList();
+                    return HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).HasMedia).ToList() : visibleChildren.ToList();
                 }
             }
         }

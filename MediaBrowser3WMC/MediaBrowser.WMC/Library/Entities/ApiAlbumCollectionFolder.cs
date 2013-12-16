@@ -38,6 +38,17 @@ namespace MediaBrowser.Library.Entities
 
         }
 
+        /// <summary>
+        /// This causes severe performance problems on large index folders and should not be necessary
+        /// </summary>
+        protected override bool HideEmptyFolders
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         protected override List<BaseItem> GetCachedChildren()
         {
             var ret = Kernel.Instance.MB3ApiRepository.RetrieveItems(Query).ToList();
