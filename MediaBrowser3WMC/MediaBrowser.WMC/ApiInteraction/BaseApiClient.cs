@@ -366,7 +366,6 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("years", query.Years);
 
-            dict.AddIfNotNullOrEmpty("indexBy", query.IndexBy);
             dict.AddIfNotNullOrEmpty("SearchTerm", query.SearchTerm);
             dict.AddIfNotNullOrEmpty("MaxOfficialRating", query.MaxOfficialRating);
             dict.AddIfNotNullOrEmpty("MinOfficialRating", query.MinOfficialRating);

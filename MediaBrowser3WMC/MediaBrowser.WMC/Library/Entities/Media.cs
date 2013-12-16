@@ -8,7 +8,7 @@ using MediaBrowser.Library.Persistance;
 using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
-    public abstract class Media : BaseItem, IHasMediaStreams
+    public abstract class Media : BaseItem
     {
         protected PlaybackStatus playbackStatus;
         public virtual PlaybackStatus PlaybackStatus { get { return playbackStatus; } set { playbackStatus = value; } }
