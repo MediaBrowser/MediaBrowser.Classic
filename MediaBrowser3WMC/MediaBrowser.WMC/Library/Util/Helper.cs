@@ -350,7 +350,8 @@ namespace MediaBrowser.LibraryManagement
         public static string TicksToFriendlyTime(long ticks)
         {
             var pos = new TimeSpan(ticks);
-            return string.Format("{0}h {1}m {2}s", pos.Hours, pos.Minutes, pos.Seconds);
+            return pos.Hours > 0 ? string.Format("{0}:{1}:{2}", pos.Hours, pos.Minutes.ToString("00"), pos.Seconds.ToString("00"))
+                : string.Format("{0}:{1}", pos.Minutes.ToString("00"), pos.Seconds.ToString("00"));
         }
 
         public static string FriendlyDateStr(DateTime date)
