@@ -83,8 +83,8 @@ namespace MediaBrowser.Library {
                 Application.CurrentInstance.ProgressBox(string.Format("Searching {0} for {1} ", Name == "Default" ? "Library" : Name , searchText));
                 searchValue = searchValue.ToLower();
                 IEnumerable<BaseItem> results = includeSubs ?
-                    this.folder.RecursiveChildren.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList() :
-                    this.folder.Children.Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList();
+                    this.folder.RecursiveChildren.Distinct(i => i.Id).Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList() :
+                    this.folder.Children.Distinct(i => i.Id).Where(i => MatchesCriteria(i, searchValue, unwatchedOnly, rating, ratingFactor)).ToList();
 
                 Application.CurrentInstance.ShowMessage = false;
 
