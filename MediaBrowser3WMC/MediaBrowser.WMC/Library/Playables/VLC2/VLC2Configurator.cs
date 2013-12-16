@@ -37,7 +37,7 @@ namespace MediaBrowser.Library.Playables.VLC2
         {
             get
             {
-                return "Version 2.0 required. For a better transition from MB to VLC, it is recommended to enable View -> Fullscreen interface in VLC.";
+                return "Only supports versions from 2.0 to 2.1.0.  Use the generic type for 2.1.1+. For a better transition from MB to VLC, it is recommended to enable View -> Fullscreen interface in VLC.";
             }
         }
 
