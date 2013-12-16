@@ -214,7 +214,7 @@ namespace MediaBrowser.Library {
                                 //this might take a bit...
                                 Async.Queue("runningtimestr calc", () =>
                                 {
-                                    int totalMinutes = folder.RunTime;
+                                    var totalMinutes = folder.RunTime;
                                     if (totalMinutes > 0)
                                     {
                                         if (totalMinutes <= 60)
@@ -223,7 +223,7 @@ namespace MediaBrowser.Library {
                                         }
                                         else
                                         {
-                                            TimeSpan ts = TimeSpan.FromMinutes(totalMinutes);
+                                            var ts = TimeSpan.FromMinutes(totalMinutes);
                                             runtimestr = string.Format("{0} {2} {1} {3}", (int)ts.TotalHours, ts.Minutes, Kernel.Instance.StringData.GetString("HoursStr"), Kernel.Instance.StringData.GetString("MinutesStr"));
                                         }
                                     }
@@ -238,7 +238,7 @@ namespace MediaBrowser.Library {
                         }
                     }
                 }
-                return runtimestr == null ? "" : runtimestr;
+                return runtimestr ?? "";
             }
         }
 

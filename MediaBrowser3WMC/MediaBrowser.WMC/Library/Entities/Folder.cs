@@ -461,7 +461,7 @@ namespace MediaBrowser.Library.Entities {
                 if (FolderChildrenChanged)
                 {
                     //recalculate and store the new counts
-                    this.runtime = this.mediaCount = null;
+                    this.mediaCount = null;
                     var ignore = this.MediaCount;
                     ignore = this.RunTime;
                 }
@@ -480,20 +480,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        protected int? runtime;
-        public int RunTime
-        {
-            get
-            {
-                if (runtime == null)
-                {
-                    runtime = this.RecursiveMedia.Select(m => m.RunTime).Sum();
-                }
-                return runtime.Value;
-            }
-
-            set { runtime = value; }
-        }
+        public int RunTime { get; set; }
 
         public virtual bool HasMedia
         {
@@ -868,7 +855,6 @@ namespace MediaBrowser.Library.Entities {
 
         protected void OnChildrenChanged(ChildrenChangedEventArgs args) {
             Sort(sortFunction, false);
-            runtime = null;
 
             if (ChildrenChanged != null)
             {
