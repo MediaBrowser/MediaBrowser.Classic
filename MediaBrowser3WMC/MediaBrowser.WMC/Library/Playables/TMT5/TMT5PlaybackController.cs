@@ -170,15 +170,24 @@ namespace MediaBrowser.Library.Playables.TMT5
         /// </summary>
         protected void SendCommandToMMC(string command)
         {
-            string directory = new FileInfo(ExternalPlayerConfiguration.Command).DirectoryName;
-            string exe = Path.Combine(directory, "MMCEDT5.exe");
+            var directory = new FileInfo(ExternalPlayerConfiguration.Command).DirectoryName;
+            var exe = Path.Combine(directory, "MMCEDT5.exe");
 
             // Best we can do for now
-            ProcessStartInfo processInfo = new ProcessStartInfo(exe, command);
-            processInfo.CreateNoWindow = true;
-
-            using (Process process = Process.Start(processInfo))
+            if (File.Exists(exe))
             {
+                var processInfo = new ProcessStartInfo(exe, command) {CreateNoWindow = true};
+                try
+                {
+                    using (var process = Process.Start(processInfo))
+                    {
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Error trying to communicate with TMT5", e);
+                }
+                
             }
         }
 
