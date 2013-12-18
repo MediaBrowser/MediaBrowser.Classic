@@ -170,8 +170,9 @@ namespace MediaBrowser.Library.Playables.TMT5
         /// </summary>
         protected void SendCommandToMMC(string command)
         {
-            var directory = new FileInfo(ExternalPlayerConfiguration.Command).DirectoryName;
+            var directory = new FileInfo(ExternalPlayerConfiguration.Command).DirectoryName ?? "";
             var exe = Path.Combine(directory, "MMCEDT5.exe");
+            if (!File.Exists(exe)) exe = Path.Combine(directory, "MMCEDT6.exe"); // try tmt6 version
 
             // Best we can do for now
             if (File.Exists(exe))
