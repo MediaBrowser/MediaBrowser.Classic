@@ -259,7 +259,7 @@
                 <Children>
 
                   <Text Name="TextVal" Color="[Color]" Font="[Font]" WordWrap="true" Content="[Text]"
-                        Padding="0,0,0,50">
+                        Padding="0,0,0,0">
                     <Animations>
                       <Animation Type="Move">
                         <Keyframes>
