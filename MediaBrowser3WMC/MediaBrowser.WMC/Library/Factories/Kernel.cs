@@ -380,7 +380,8 @@ namespace MediaBrowser.Library {
         {
             foreach (var package in ApiClient.GetPackages())
             {
-                foreach (var ver in package.versions.Where(v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version))
+                foreach (var ver in package.versions.Where(v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version
+                    && v.classification <= CommonConfigData.PluginUpdateClass))
                 {
                     yield return (new RemotePlugin()
                     {
