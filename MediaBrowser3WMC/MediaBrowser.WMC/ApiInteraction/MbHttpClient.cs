@@ -48,7 +48,7 @@ namespace MediaBrowser.ApiInteraction
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
                 var ms = new MemoryStream();
-                req.Timeout = 30000;
+                req.Timeout = 35000;
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     var r = resp.GetResponseStream();
