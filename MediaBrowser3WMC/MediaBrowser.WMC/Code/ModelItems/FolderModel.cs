@@ -744,7 +744,9 @@ namespace MediaBrowser.Library {
             {
                 return Application.CurrentInstance.CondensedFolderLimit == 0 || folderChildren.Count <= Application.CurrentInstance.CondensedFolderLimit ? Children.Select(c => c).ToList() : folderChildren.Take(Application.CurrentInstance.CondensedFolderLimit).Concat(new[] { this }).ToList();
             }
-        } 
+        }
+
+        public bool HasCondensedChildren { get { return folderChildren.Count > Application.CurrentInstance.CondensedFolderLimit; } }
 
         public int SelectedChildIndex {
             get {
