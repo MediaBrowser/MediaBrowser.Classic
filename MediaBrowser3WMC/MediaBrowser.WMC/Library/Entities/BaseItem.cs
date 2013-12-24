@@ -433,6 +433,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public DateTime PremierDate { get; set; }
+
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
             // we should never reasign identity 

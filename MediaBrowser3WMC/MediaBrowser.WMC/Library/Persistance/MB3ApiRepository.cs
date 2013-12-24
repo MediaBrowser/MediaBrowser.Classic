@@ -189,12 +189,12 @@ namespace MediaBrowser.Library.Persistance
                 //Logger.ReportVerbose("Item {0} is {1}", item.Name, item.GetType().Name);
                 item.Path = mb3Item.Path;
                 item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
-                //item.DateModified = (mb3Item.DateModified ?? DateTime.MinValue).ToLocalTime();
                 item.DisplayMediaType = mb3Item.DisplayMediaType;
                 item.Overview = mb3Item.Overview;
                 item.SortName = mb3Item.SortName;
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
                 item.UserData = mb3Item.UserData;
+                item.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
                 item.LocationType = mb3Item.LocationType;
@@ -415,7 +415,6 @@ namespace MediaBrowser.Library.Persistance
                     episode.SeasonNumber = mb3Item.ParentIndexNumber != null ? mb3Item.ParentIndexNumber.Value.ToString("#00") : null;
                     episode.SeriesId = mb3Item.SeriesId;
                     episode.SeasonId = mb3Item.SeasonId;
-                    episode.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
                     episode.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
                 }
 

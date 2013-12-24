@@ -42,14 +42,11 @@ namespace MediaBrowser.Library {
 
                 case SortOrder.Year:
 
-                    var xProductionYear = x is IShow ? (x as IShow).ProductionYear : null;
-                    var yProductionYear = y is IShow ? (y as IShow).ProductionYear : null;
+                    var xProductionYear = x.PremierDate;
+                    var yProductionYear = y.PremierDate;
 
-                    xProductionYear = xProductionYear ?? 0;
-                    yProductionYear = yProductionYear ?? 0;
-
-                    int orderFactor = Config.Instance.YearSortAsc ? -1 : 1;
-                    compare = orderFactor * yProductionYear.Value.CompareTo(xProductionYear.Value); //this will reverse the order if that option is set
+                    var orderFactor = Config.Instance.YearSortAsc ? -1 : 1;
+                    compare = orderFactor * yProductionYear.CompareTo(xProductionYear); //this will reverse the order if that option is set
                     break;
 
                 case SortOrder.Rating:

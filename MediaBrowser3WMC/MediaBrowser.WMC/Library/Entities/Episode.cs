@@ -22,8 +22,6 @@ namespace MediaBrowser.Library.Entities {
         public string SeriesId { get; set; }
         public string SeasonId { get; set; }
 
-        public DateTime PremierDate { get; set; }
-
         public override bool IsMissing
         {
             get { return LocationType == LocationType.Virtual && PremierDate <= DateTime.UtcNow; }
