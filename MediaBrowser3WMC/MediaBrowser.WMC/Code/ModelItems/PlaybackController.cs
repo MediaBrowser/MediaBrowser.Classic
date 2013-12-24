@@ -7,6 +7,7 @@ using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
+using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
@@ -464,7 +465,7 @@ namespace MediaBrowser
             }
 
             // Fire the OnFinished event for each item
-            OnPlaybackFinished(e);
+            Async.Queue("Playback Finished", () => OnPlaybackFinished(e));
         }
 
         /// <summary>
