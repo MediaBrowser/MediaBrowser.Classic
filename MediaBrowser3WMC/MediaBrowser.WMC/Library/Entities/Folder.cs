@@ -32,7 +32,6 @@ namespace MediaBrowser.Library.Entities {
         public MBDirectoryWatcher directoryWatcher;
         Type childType;
         protected IndexFolder quickListFolder;
-        public bool ChildrenLoaded { get; set; }
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
         public virtual string DisplayPreferencesId { get; set; }
         public int? ApiRecursiveItemCount { get; set; }
@@ -126,7 +125,6 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void RetrieveChildren()
         {
-            ChildrenLoaded = true;
             children = ApiId != null ? new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null)) : new Lazy<List<BaseItem>>(() => new List<BaseItem>(), null);
             mediaCount = null;
         }
@@ -182,7 +180,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return ChildrenLoaded ? Children : new List<BaseItem>();
+                return children.HasValue ? Children : new List<BaseItem>();
             }
         }
 
