@@ -248,7 +248,7 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual string SortName { 
             get {
-                return SortHelper.GetSortableName(sortName ?? Name);
+                return sortName ?? SortHelper.GetSortableName(Name);
             }
             set {
                 sortName = value;
