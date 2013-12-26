@@ -541,7 +541,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                return baseItem.ArtImagePath != null || (PhysicalParent != null ? PhysicalParent.HasArtImage : false);
+                return baseItem.ArtImagePath != null || (PhysicalParent != null && PhysicalParent.HasArtImage);
             }
         }
 
@@ -580,7 +580,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                return baseItem.ThumbnailImagePath != null;
+                return baseItem.ThumbnailImagePath != null || (PhysicalParent != null && PhysicalParent.HasThumbnailImage);
             }
         }
 

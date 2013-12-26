@@ -113,7 +113,7 @@ namespace MediaBrowser.Library.Entities {
 
         public LibraryImage ThumbnailImage {
             get {
-                return GetImage(ThumbnailImagePath) ?? PrimaryImage;
+                return SearchParents<LibraryImage>(this, item => item.GetImage(item.ThumbnailImagePath)) ?? PrimaryImage;
             }
         }
 
