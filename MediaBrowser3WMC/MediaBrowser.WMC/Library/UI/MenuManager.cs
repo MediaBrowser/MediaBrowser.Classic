@@ -72,7 +72,7 @@ namespace MediaBrowser.Library
             var playableItems = new List<Type>() { typeof(Movie), typeof(Episode), typeof(Song), typeof(AppleTrailer), typeof(RemoteVideo), typeof(Photo) };
             playableItems.AddRange(Kernel.Instance.ExternalPlayableItems);
             //and the folder-type queue options
-            var playableFolders = new List<Type>() { typeof(Folder), typeof(Series), typeof(Season), typeof(Index), typeof(BoxSet), typeof(MusicAlbum), typeof(MusicArtist), typeof(IbnSourcedFolder), typeof(PhotoFolder) };
+            var playableFolders = new List<Type>() { typeof(Folder), typeof(Series), typeof(Season), typeof(Index), typeof(BoxSet), typeof(MusicAlbum), typeof(MusicArtist), typeof(IbnSourcedFolder), typeof(PhotoFolder), typeof(ApiGenreFolder), typeof(ApiPersonFolder), typeof(ApiYearFolder) };
             playableFolders.AddRange(Kernel.Instance.ExternalPlayableFolders);
             var allPlayables = new List<Type>();
             allPlayables.AddRange(playableItems);
