@@ -418,12 +418,12 @@ namespace MediaBrowser.Library.Persistance
                     episode.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
                     if (mb3Item.AirsAfterSeasonNumber != null)
                     {
-                        episode.SortName = mb3Item.AirsAfterSeasonNumber.Value.ToString("000") + "-999999";
+                        episode.SortName = mb3Item.AirsAfterSeasonNumber.Value.ToString("000") + "-999999" + mb3Item.SortName;
                     } 
                     else 
                         if (mb3Item.AirsBeforeSeasonNumber != null && mb3Item.AirsBeforeEpisodeNumber != null)
                         {
-                            episode.SortName = mb3Item.AirsBeforeSeasonNumber.Value.ToString("000") + "-" + ((int)(mb3Item.AirsBeforeEpisodeNumber - 1)).ToString("0000") + ".5";
+                            episode.SortName = mb3Item.AirsBeforeSeasonNumber.Value.ToString("000") + "-" + ((int)(mb3Item.AirsBeforeEpisodeNumber - 1)).ToString("0000") + ".5" + mb3Item.SortName;
                         }
                 }
 
