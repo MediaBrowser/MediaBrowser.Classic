@@ -28,10 +28,12 @@
     </Locals>
 
     <Rules>
+      <Default Target="[Application.MediaCenterEnvironment.ScreenSaverEnabledHint]" Value="false" />
 
       <Changed Source="[Back.Invoked]" >
         <Actions>
           <Invoke Target="[MBPhotoController.Instance.StopAudio]" />
+          <Set Target="[Application.MediaCenterEnvironment.ScreenSaverEnabledHint]" Value="true" />
         </Actions>
       </Changed>
       
