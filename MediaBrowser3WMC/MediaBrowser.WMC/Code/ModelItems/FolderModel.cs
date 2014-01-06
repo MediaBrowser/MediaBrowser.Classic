@@ -296,6 +296,11 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public string CollectionType
+        {
+            get { return folder.CollectionType; }
+        }
+
         public override bool ShowNewestItems {
             get {
                 return string.IsNullOrEmpty(BaseItem.Overview);

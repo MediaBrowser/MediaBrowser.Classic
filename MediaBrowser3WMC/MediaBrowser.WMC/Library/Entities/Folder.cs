@@ -35,6 +35,12 @@ namespace MediaBrowser.Library.Entities {
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
         public virtual string DisplayPreferencesId { get; set; }
         public int? ApiRecursiveItemCount { get; set; }
+        private string _collectionType;
+        public string CollectionType
+        {
+            get { return _collectionType ?? (Parent != null ? Parent.CollectionType : null); }
+            set { _collectionType = value; }
+        }
 
         public Folder()
             : base() {
@@ -115,7 +121,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public string CollectionType { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist) ? "music" : null; }}
+        public bool ContainsMusic { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist); } }
 
         public override bool PlayAction(Item item)
         {
@@ -624,7 +630,7 @@ namespace MediaBrowser.Library.Entities {
                     SortBy = new[] { "SortName" }
                 };
 
-                var ret = CollectionType == "music" ?
+                var ret = CollectionType == "Music" || ContainsMusic ?
                               Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId, new[] {"MusicAlbum"})).Cast<BaseItem>().ToList() :
                               Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
