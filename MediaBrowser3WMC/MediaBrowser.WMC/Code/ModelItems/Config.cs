@@ -528,6 +528,11 @@ namespace MediaBrowser
             get { return this.Data.DefaultMessageTimeout; }
             set { if (this.Data.DefaultMessageTimeout != value) { this.Data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
         }
+        public int HttpTimeout
+        {
+            get { return this.CommonData.HttpTimeout; }
+            set { if (this.CommonData.HttpTimeout != value) { this.CommonData.HttpTimeout = value; Save(); FirePropertyChanged("HttpTimeout"); } }
+        }
         public int NewItemNotificationDisplayTime
         {
             get { return this.Data.NewItemNotificationDisplayTime; }

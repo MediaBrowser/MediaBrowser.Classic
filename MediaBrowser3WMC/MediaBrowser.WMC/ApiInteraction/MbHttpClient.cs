@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading;
+using MediaBrowser.Library;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
 using System;
@@ -48,7 +49,7 @@ namespace MediaBrowser.ApiInteraction
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
                 var ms = new MemoryStream();
-                req.Timeout = 35000;
+                req.Timeout = Kernel.Instance.CommonConfigData.HttpTimeout;
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     var r = resp.GetResponseStream();

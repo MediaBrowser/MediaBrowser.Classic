@@ -108,6 +108,8 @@ namespace MediaBrowser
 
         public string StartupParms;
 
+        public int HttpTimeout = 40000;
+
         public enum ExternalPlayerLaunchType
         {
             CommandLine = 0,
