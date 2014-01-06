@@ -61,8 +61,6 @@
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
-      <cor:String Name="SystemUpdateClass" String="[Application.Config.SystemUpdateClass]" />
-      <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
       <BooleanChoice Name="EnableAlphanumericSorting" Value="[Application.Config.EnableAlphanumericSorting]" />
       <BooleanChoice Name="EnableListViewTicks" Value="[Application.Config.EnableListViewTicks]" />
       <BooleanChoice Name="ShowUnwatchedCount" Value="[Application.Config.ShowUnwatchedCount]" />
@@ -158,20 +156,6 @@
         <Options>
           <cor:String String="Default" />
           <cor:String String="Small" />
-        </Options>
-      </Choice>
-      <Choice Name="SystemClassModel">
-        <Options>
-          <cor:String String="Dev" />
-          <cor:String String="Beta" />
-          <cor:String String="Release" />
-        </Options>
-      </Choice>
-      <Choice Name="PluginClassModel">
-        <Options>
-          <cor:String String="Dev" />
-          <cor:String String="Beta" />
-          <cor:String String="Release" />
         </Options>
       </Choice>
       <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]">
@@ -319,8 +303,6 @@
       <Binding Source="[EnableNestedMovieFolders.Value]" Target="[Config.EnableNestedMovieFolders]" />
       <Binding Source="[EnableMoviePlaylists.Value]" Target="[Config.EnableMoviePlaylists]" />
       <Binding Source="[EnableUpdates.Value]" Target="[Config.EnableUpdates]" />
-      <Binding Source="[SystemUpdateClass]" Target="[Config.SystemUpdateClass]" />
-      <Binding Source="[PluginUpdateClass]" Target="[Config.PluginUpdateClass]" />
       <Binding Source="[EnableAlphanumericSorting.Value]" Target="[Config.EnableAlphanumericSorting]" />
       <Binding Source="[EnableListViewTicks.Value]" Target="[Config.EnableListViewTicks]" />
       <Binding Source="[ShowUnwatchedCount.Value]" Target="[Config.ShowUnwatchedCount]" />
@@ -364,8 +346,6 @@
       </Binding>
       <Binding Source="[FontThemeModel.Chosen!cor:String]" Target="[Config.FontTheme]" />
       <Binding Source="[ViewThemeModel.Chosen!cor:String]" Target="[Config.ViewTheme]" />
-      <Binding Source="[PluginClassModel.Chosen!cor:String]" Target="[Config.PluginUpdateClass]" />
-      <Binding Source="[SystemClassModel.Chosen!cor:String]" Target="[Config.SystemUpdateClass]" />
       <Binding Source="[DefaultToFirstUnwatched.Value]" Target="[Config.DefaultToFirstUnwatched]" />
       <Binding Source="[AutoEnterSingleDirs.Value]" Target="[Config.AutoEnterSingleDirs]" />
       <Binding Source="[DefaultShowLabels.Value]" Target="[Config.DefaultShowLabels]" />
@@ -596,8 +576,6 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#SaveLocalMetaConfig!cor:String]" Padding="40,0,0,0" Checked="[SaveLocalMeta]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                       <me:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
-                      <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
-                      <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" />
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#BetaUpdatesConfig!cor:String]" Checked="[EnableBetas]" Margins="[CMargin]"  FocusItem="[FocusItem]"  Font="font://f:CP_ConfigItemFont"/>-->
                     </Children>
                   </Panel>

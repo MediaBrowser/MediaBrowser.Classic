@@ -438,7 +438,7 @@ namespace MediaBrowser.Library {
         public static SystemInfo ServerInfo { get; set; }
         public static ServerConfiguration ServerConfig { get; set; }
 
-        public static bool ConnectToServer(string address, int port)
+        public static bool ConnectToServer(string address, int port, int timeout)
         {
             ApiClient = new ApiClient
             {
@@ -446,7 +446,8 @@ namespace MediaBrowser.Library {
                 ServerApiPort = port,
                 DeviceId = ("MBCLASSIC"+Environment.MachineName+Environment.UserName).GetMD5().ToString().Replace("-",""),
                 ClientType = "MB-Classic",
-                DeviceName = Environment.MachineName+"/"+Environment.UserName
+                DeviceName = Environment.MachineName+"/"+Environment.UserName,
+                Timeout = timeout
             };
             try
             {
@@ -461,10 +462,10 @@ namespace MediaBrowser.Library {
             return (ServerConnected = ServerInfo != null);
         }
 
-        static bool ConnectAutomatically()
+        static bool ConnectAutomatically(int timeout)
         {
             var endPoint = new ServerLocator().FindServer();
-            return endPoint != null && ConnectToServer(endPoint.Address.ToString(), endPoint.Port);
+            return endPoint != null && ConnectToServer(endPoint.Address.ToString(), endPoint.Port, timeout);
         }
 
         public static bool ConnectToServer(CommonConfigData config)
@@ -473,16 +474,16 @@ namespace MediaBrowser.Library {
 
             if (config.FindServerAutomatically)
             {
-                connected = ConnectAutomatically();
+                connected = ConnectAutomatically(config.HttpTimeout);
             }
             else
             {
                 //server specified
-                connected = ConnectToServer(config.ServerAddress, config.ServerPort);
+                connected = ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
                 if (!connected)
                 {
                     Logger.ReportWarning("Unable to connect to configured server {0}:{1}. Will try automatic detection", config.ServerAddress, config.ServerPort);
-                    connected = ConnectAutomatically();
+                    connected = ConnectAutomatically(config.HttpTimeout);
                 }
             }
 

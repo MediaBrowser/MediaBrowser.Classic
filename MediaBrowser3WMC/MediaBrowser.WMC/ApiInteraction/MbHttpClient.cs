@@ -24,6 +24,8 @@ namespace MediaBrowser.ApiInteraction
         /// <value>The logger.</value>
         private ILogger Logger { get; set; }
 
+        public int Timeout { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiClient" /> class.
         /// </summary>
@@ -49,7 +51,7 @@ namespace MediaBrowser.ApiInteraction
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
                 var ms = new MemoryStream();
-                req.Timeout = Kernel.Instance.CommonConfigData.HttpTimeout;
+                req.Timeout = Timeout > 0 ? Timeout : 30000;
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     var r = resp.GetResponseStream();

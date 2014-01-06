@@ -954,7 +954,7 @@ namespace Configurator
             }
             this.Cursor = Cursors.AppStarting;
             btnSaveConnection.IsEnabled = false;
-            Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
+            Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port, 20000), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
         }
 
         public void ConnectionValidationDone()

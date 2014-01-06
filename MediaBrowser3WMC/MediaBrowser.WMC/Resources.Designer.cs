@@ -543,6 +543,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] AdvancedConfigPanel {
+            get {
+                object obj = ResourceManager.GetObject("AdvancedConfigPanel", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Animations {
             get {
                 object obj = ResourceManager.GetObject("Animations", resourceCulture);

@@ -8,13 +8,13 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0071";
+        const string VERSION = "1.0073";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
 
         //these are our strings keyed by property name
-        public string LoggingConfigDesc = "Write messages to a log file at run time.";
+        public string LoggingConfigDesc = "Write messages to a log file at run time. Please leave enabled.  It won't slow the program down.";
         public string EnableScreenSaverConfigDesc = "Enable Screen Saver functionality after defined time out.";
         public string SSTimeOutConfigDesc = "Minutes Before Screen Saver is Activated.";
         public string EnableInternetProvidersConfigDesc = "Search the Internet for Cover Art, Backdrops and Metadata.";
@@ -92,9 +92,11 @@ namespace MediaBrowser.Library.Localization
         public string SlideShowIntervalConfigDesc = "The number of seconds to show each item in a photo slide show";
         public string ShowUnairedItemsConfigDesc = "Enable to show TV episodes that have information but have yet to actually air";
         public string ShowMissingItemsConfigDesc = "Enable to show TV episodes that exist but are not actually in your collection";
+        public string HttpTimeoutConfigDesc = "The maximum amount of time to wait for the server to respond to a request. 1000 = 1 second.";
 
 
         //Config Panel
+        public string AdvancedConfig = "Advanced";
         public string LibraryConfig = "Library";
         public string ConfigConfig = "Configuration";
         public string VersionConfig = "Version";
@@ -195,7 +197,7 @@ namespace MediaBrowser.Library.Localization
         public string SystemClassConfig = "System Update Level";
         public string CheckForUpdateConfig = "Check for Update";
         public string TreatWatchedAsInProgressConfig = "Make 'Watched' list in-progress";
-
+        public string HttpTimeoutConfig = "Server Communication Timeout";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";

@@ -14,6 +14,8 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="header"></param>
         void SetAuthorizationHeader(string header);
 
+        int Timeout { get; set; }
+
         /// <summary>
         /// Gets the stream async.
         /// </summary>

@@ -1468,6 +1468,10 @@ namespace MediaBrowser
                 // load plugins
                 Kernel.Instance.LoadPlugins();
 
+                // add advanced config panel to end
+                if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator)
+                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("AdvancedConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#AdvancedPanel");
+                
                 //populate the config model choice
                 ConfigModel = new Choice { Options = ConfigPanelNames };
             }

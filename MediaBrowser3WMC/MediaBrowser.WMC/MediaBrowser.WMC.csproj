@@ -1039,6 +1039,7 @@
     </Content>
     <Content Include="Markup\Message.mcml" />
     <Content Include="Markup\SlideShow.mcml" />
+    <Content Include="Markup\Themes\Default\AdvancedConfigPanel.mcml" />
     <Content Include="Markup\Themes\Default\ConfigPage.mcml">
       <SubType>Designer</SubType>
     </Content>

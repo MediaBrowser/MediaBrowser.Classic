@@ -32,6 +32,11 @@ namespace MediaBrowser.ApiInteraction
         /// <value>The HTTP client.</value>
         protected IHttpClient HttpClient { get; private set; }
 
+        public int Timeout
+        {
+            set { HttpClient.Timeout = value; }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiClient" /> class.
         /// </summary>
