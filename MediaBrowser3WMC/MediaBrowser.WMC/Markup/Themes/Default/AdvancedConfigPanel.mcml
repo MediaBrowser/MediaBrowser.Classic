@@ -1,0 +1,81 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
+    xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
+    xmlns:cp="resx://MediaBrowser/MediaBrowser.Resources/ConfigPage"  
+      
+>
+  <!--*****************************************************************************************************************
+
+    This is an example of a config panel for your theme.  Modify this to include any theme-specific options you require.
+    You must also handle the saving/loading of any of these options somewhere in your assembly.
+
+  *********************************************************************************************************************-->
+
+  <UI Name="AdvancedPanel">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <EditableText Name="FocusItem" />
+    </Properties>
+    <Locals>
+      <Inset Name="CMargin" Inset="25,0,0,0" />
+      <Inset Name="SMargin" Inset="10,0,0,0" />
+      <IntRangedValue Name="HttpTimeout" Value="[Application.Config.HttpTimeout]" MaxValue="120000" MinValue="20000" Step="1000" />
+      <Size Name="LabelSize1" Size="250,0" />
+      <Size Name="PanelSize" Size="800,400" />
+
+      <cor:String Name="SystemUpdateClass" String="[Application.Config.SystemUpdateClass]" />
+      <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
+
+      <Choice Name="SystemClassModel">
+        <Options>
+          <cor:String String="Dev" />
+          <cor:String String="Beta" />
+          <cor:String String="Release" />
+        </Options>
+      </Choice>
+      <Choice Name="PluginClassModel">
+        <Options>
+          <cor:String String="Dev" />
+          <cor:String String="Beta" />
+          <cor:String String="Release" />
+        </Options>
+      </Choice>
+    </Locals>
+    
+    <Rules>
+      <Binding Source="[HttpTimeout.Value]" Target="[Application.Config.HttpTimeout]" />
+      <Binding Source="[PluginClassModel.Chosen!cor:String]" Target="[Application.Config.PluginUpdateClass]" />
+      <Binding Source="[SystemClassModel.Chosen!cor:String]" Target="[Application.Config.SystemUpdateClass]" />
+      <Binding Source="[SystemUpdateClass]" Target="[Application.Config.SystemUpdateClass]" />
+      <Binding Source="[PluginUpdateClass]" Target="[Application.Config.PluginUpdateClass]" />
+
+
+    </Rules>
+
+    <Content>
+              <Graphic Name="Advanced" Content="image://cp:50AlphaBg" Layout="HorizontalFlow"
+                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                <Children>
+                  <Panel Layout="VerticalFlow" >
+                    <Children>
+                      <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <cp:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
+                      <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
+                      <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" />
+                    </Children>
+                  </Panel>
+                </Children>
+              </Graphic>
+
+    </Content>
+
+  </UI>
+
+</Mcml>
