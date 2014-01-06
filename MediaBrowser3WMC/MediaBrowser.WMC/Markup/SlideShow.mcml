@@ -28,12 +28,16 @@
     </Locals>
 
     <Rules>
-      <Default Target="[Application.MediaCenterEnvironment.ScreenSaverEnabledHint]" Value="false" />
+      <Changed Source="[Application]" InitialEvaluate="true">
+        <Actions>
+          <Invoke Target="[Application.PowerSettings.PreventMonitorPowerdown]" />
+        </Actions>
+      </Changed>
 
       <Changed Source="[Back.Invoked]" >
         <Actions>
           <Invoke Target="[MBPhotoController.Instance.StopAudio]" />
-          <Set Target="[Application.MediaCenterEnvironment.ScreenSaverEnabledHint]" Value="true" />
+          <Invoke Target="[Application.PowerSettings.AllowMonitorPowerdown]" />
         </Actions>
       </Changed>
       

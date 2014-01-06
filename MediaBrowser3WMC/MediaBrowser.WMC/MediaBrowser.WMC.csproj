@@ -143,6 +143,7 @@
     <Compile Include="Code\ModelItems\ChapterItem.cs" />
     <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
+    <Compile Include="Code\PowerSettings.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
     <Compile Include="Library\Entities\ApiGenreFolder.cs" />
     <Compile Include="Library\Entities\AppleTrailer.cs" />
@@ -1038,7 +1039,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Message.mcml" />
-    <Content Include="Markup\SlideShow.mcml" />
+    <Content Include="Markup\SlideShow.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\AdvancedConfigPanel.mcml" />
     <Content Include="Markup\Themes\Default\ConfigPage.mcml">
       <SubType>Designer</SubType>

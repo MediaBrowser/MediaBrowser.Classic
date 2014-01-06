@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
+using MediaBrowser.Code;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
@@ -97,6 +98,9 @@ namespace MediaBrowser
         public Image LogonSplashImage { get; set; }
         private Item lastPlayed;
         private Updater Updater;
+        private PowerSettings _powerSetings;
+
+        public PowerSettings PowerSettings { get { return _powerSetings ?? (_powerSetings = new PowerSettings()); } }
 
         #region CurrentItemChanged EventHandler
         volatile EventHandler<GenericEventArgs<Item>> _CurrentItemChanged;
