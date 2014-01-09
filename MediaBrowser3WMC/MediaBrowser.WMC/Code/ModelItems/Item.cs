@@ -673,6 +673,7 @@ namespace MediaBrowser.Library
                         if (this.PhysicalParent != null)
                         {
                             this.PhysicalParent.RemoveRecentlyUnwatched(this); //thought about asynch'ing this but its a list of 20 items...
+                            PhysicalParent.ResetWatchedCount();
                         }
                         //don't add to watched list as we didn't really watch it (and it might just clutter up the list)
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("SetWatchedProf"), this.Name));
@@ -684,6 +685,7 @@ namespace MediaBrowser.Library
                         if (this.PhysicalParent != null)
                         {
                             this.PhysicalParent.RemoveNewlyWatched(this); //thought about asynch'ing this but its a list of 20 items...
+                            PhysicalParent.ResetWatchedCount();
                         }
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("ClearWatchedProf"), this.Name));
                     }

@@ -263,6 +263,12 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public void ResetWatchedCount()
+        {
+            unwatchedCountCache = -1;
+            FireWatchedChangedEvents();
+        }
+
         public int FirstUnwatchedIndex {
             get {
                 if (Config.Instance.DefaultToFirstUnwatched) {
@@ -851,7 +857,7 @@ namespace MediaBrowser.Library {
                                                      {
                                                          folder.Watched = value;
                                                          unwatchedCountCache = -1;
-                                                         FirePropertiesChanged("UnwatchedCountString", "HaveWatched", "UnwatchedCount");
+                                                         FireWatchedChangedEvents();
                                                      }
                                                  });
         }
