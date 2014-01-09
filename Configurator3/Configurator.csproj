@@ -240,7 +240,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Migrated rules for Configurator.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

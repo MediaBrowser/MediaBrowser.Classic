@@ -2336,11 +2336,7 @@ namespace MediaBrowser
             {
                 Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
-                Async.Queue("Streamed playback warn", () =>
-                                                          {
-                                                              MessageBox("WARNING - Could not directly access media.  Will attempt to stream.  Use UNC paths on server for direct playback.", true, 10000);
-                                                              Play(item, resume, queue, playIntros, shuffle, 0);
-                                                          });
+                Async.Queue("Access Error", () => MessageBox("ERROR - Could not access media.  Use UNC paths on server and ensure this machine can access them.", true, 10000));
 
             }
             else

@@ -84,7 +84,9 @@ namespace MediaBrowser.Library.Entities {
                         : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                   {
                                                                                       ItemId = ApiId,
-                                                                                      Static = true
+                                                                                      AudioCodec = AudioCodecs.Copy,
+                                                                                      VideoCodec = VideoCodecs.Copy,
+
                                                                                   });
                     }
                 }
