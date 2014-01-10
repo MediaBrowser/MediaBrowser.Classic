@@ -250,6 +250,20 @@
       </Component>
     </DirectoryRef>
     
+    <!-- Install Chocolate Theme as it is the new default -->
+    <DirectoryRef Id="PluginsFolder">
+      <Component Id="MBPluginsFolder" Guid="9BCF10DF-30AD-4AEC-9E4C-F219099DB4F1">
+        <CreateFolder>
+          <!--Using PermissionEx we keep the current permissions and give additional permissions to the group-->
+          <!--Using WIX_ACCOUNT_USERS to handle localized qualified name of the Users group.                 -->
+          <util:PermissionEx User="[WIX_ACCOUNT_USERS]" GenericAll="yes"/>
+        </CreateFolder>
+      </Component>
+      <Component Id="Chocolate" Guid="92525169-2613-4A90-8695-5D12FF8536B3" DiskId="1">
+        <File Id="Chocolate" Name="Chocolate.dll" Source="..\3rdParty\Chocolate.dll" Checksum="no" />
+      </Component>
+    </DirectoryRef>
+    
 
     <!-- This is a list of features that are installed as a part of this product. In this case, there is -->
 		<!-- only one feature. Each feature contains a list of components that it will install. Features can -->
@@ -270,11 +284,13 @@
       <ComponentRef Id="Registration7.xml" />
       <ComponentRef Id="MediaBrowserIcon.ico" />
       <ComponentRef Id="MBProgramDataFolder" />
+      <ComponentRef Id="MBPluginsFolder" />
       <ComponentRef Id="SQLite32" />
       <ComponentRef Id="SQLite64" />
       <ComponentRef Id="JsonNet" />
       <ComponentRef Id="MediaBrowser.Model" />
       <ComponentRef Id="Websocket" />
+      <ComponentRef Id="Chocolate" />
       <ComponentRef Id="DefaultShortcuts" />
       <ComponentRef Id="OptionalStartmenuFolderShortcut" />
       <ComponentRef Id="OptionalDesktopFolderShortcut" />
