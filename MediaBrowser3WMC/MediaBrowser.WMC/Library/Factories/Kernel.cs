@@ -859,6 +859,12 @@ namespace MediaBrowser.Library {
             AvailableThemes.Add(name, new ViewTheme(name, pageArea, detailArea));
         }
 
+        public void AddTheme(string name, string pageArea, string detailArea, string msgBox, string progressBox, string yesNoBox)
+        {
+            if (AvailableThemes.ContainsKey(name)) AvailableThemes.Remove(name); //clear it if previously was there
+            AvailableThemes.Add(name, new ViewTheme(name, pageArea, detailArea, msgBox, progressBox, yesNoBox));
+        }
+
         public void AddTheme(string name, string pageArea, string detailArea, ModelItem config)
         {
             if (AvailableThemes.ContainsKey(name)) AvailableThemes.Remove(name); //clear it if previously was there

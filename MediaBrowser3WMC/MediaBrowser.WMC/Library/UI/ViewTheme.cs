@@ -36,21 +36,9 @@ namespace MediaBrowser.Library.UI
             init(themeName, pageAreaRef, detailAreaRef, null, null, null, null, null, null, config);
         }
 
-        public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string rootLayoutRef)
+        public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string msgBoxRef, string progressBoxRef, string yesNoBoxRef)
         {
-            init(themeName, pageAreaRef, detailAreaRef, null, null, rootLayoutRef,null, null, null, null);
-
-        }
-
-        public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef )
-        {
-            init(themeName, pageAreaRef, detailAreaRef, rootLayoutRef, folderPageRef, detailPageRef, null, null, null, null);
-
-        }
-
-        public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef, string msgBoxRef, string progressBoxRef, string yesNoBoxRef)
-        {
-            this.init(themeName, pageAreaRef, detailAreaRef, folderPageRef, detailPageRef, rootLayoutRef, msgBoxRef, progressBoxRef, yesNoBoxRef, null);
+            this.init(themeName, pageAreaRef, detailAreaRef, null, null, null, msgBoxRef, progressBoxRef, yesNoBoxRef, null);
         }
 
         private void init(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef, string msgBoxRef, string progressBoxRef, string yesNoBoxRef, ModelItem config)
