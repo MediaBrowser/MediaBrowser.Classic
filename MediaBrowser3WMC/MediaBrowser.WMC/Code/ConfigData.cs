@@ -226,7 +226,7 @@ namespace MediaBrowser
         [Dangerous]
         [Group("Display")]
         [Comment(@"The default view type to use on new folders.")]
-        public string DefaultViewType = ViewType.Poster.ToString();
+        public string DefaultViewType = ViewType.CoverFlow.ToString();
         [Group("Display")]
         [Comment(@"Show the titles of items in poster views.")]
         public bool DefaultShowLabels = false;
