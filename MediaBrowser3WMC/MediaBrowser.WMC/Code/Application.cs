@@ -358,7 +358,7 @@ namespace MediaBrowser
 
         protected string MessageBox(string msg, bool modal, int timeout, string ui)
         {
-            MessageUI = !string.IsNullOrEmpty(ui) ? ui : "resx://MediaBrowser/MediaBrowser.Resources/Message#MessageBox";
+            MessageUI = !string.IsNullOrEmpty(ui) ? ui : CurrentTheme.MsgBox;
             MessageResponse = "";
             MessageText = msg;
             ShowMessage = true;
@@ -407,12 +407,12 @@ namespace MediaBrowser
 
         public string YesNoBox(string msg)
         {
-            return MessageBox(msg, true, Config.DefaultMessageTimeout * 1000, "resx://MediaBrowser/MediaBrowser.Resources/Message#YesNoBox");
+            return MessageBox(msg, true, Config.DefaultMessageTimeout * 1000, CurrentTheme.YesNoBox);
         }
 
         public void ProgressBox(string msg)
         {
-            MessageBox(msg, false, 0, "resx://MediaBrowser/MediaBrowser.Resources/Message#ProgressBox");
+            MessageBox(msg, false, 0, CurrentTheme.ProgressBox);
         }
 
         #endregion

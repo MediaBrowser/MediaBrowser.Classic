@@ -15,37 +15,46 @@ namespace MediaBrowser.Library.UI
         protected string pageArea = "resx://MediaBrowser/MediaBrowser.Resources/PageDefault#Page";
         protected string detailArea = "resx://MediaBrowser/MediaBrowser.Resources/ViewMovieMinimal#ViewMovieMinimal";
         protected string rootLayout = "resx://MediaBrowser/MediaBrowser.Resources/LayoutRoot#LayoutRoot";
+        protected string msgBox = "resx://MediaBrowser/MediaBrowser.Resources/Message#MessageBox";
+        protected string progressBox = "resx://MediaBrowser/MediaBrowser.Resources/Message#ProgressBox";
+        protected string yesNoBox = "resx://MediaBrowser/MediaBrowser.Resources/Message#YesNoBox";
         protected string status = "Unknown"; //can be used by themes to expire themselves
         protected ModelItem configObject;
 
         public ViewTheme()
         {
-            init(null,null,null,null,null,null,null);
+            init(null,null,null,null,null,null,null, null, null, null);
         }
 
         public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef)
         {
-            init(themeName,pageAreaRef,detailAreaRef,null,null,null,null);
+            init(themeName,pageAreaRef,detailAreaRef,null,null,null,null, null, null, null);
         }
 
         public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, ModelItem config)
         {
-            init(themeName, pageAreaRef, detailAreaRef, null, null, null, config);
+            init(themeName, pageAreaRef, detailAreaRef, null, null, null, null, null, null, config);
         }
 
         public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string rootLayoutRef)
         {
-            init(themeName, pageAreaRef, detailAreaRef, null, null, rootLayoutRef,null);
+            init(themeName, pageAreaRef, detailAreaRef, null, null, rootLayoutRef,null, null, null, null);
 
         }
 
         public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef )
         {
-            init(themeName, pageAreaRef, detailAreaRef, rootLayoutRef, folderPageRef, detailPageRef, null);
+            init(themeName, pageAreaRef, detailAreaRef, rootLayoutRef, folderPageRef, detailPageRef, null, null, null, null);
 
         }
 
-        private void init(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef, ModelItem config) {
+        public ViewTheme(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef, string msgBoxRef, string progressBoxRef, string yesNoBoxRef)
+        {
+            this.init(themeName, pageAreaRef, detailAreaRef, folderPageRef, detailPageRef, rootLayoutRef, msgBoxRef, progressBoxRef, yesNoBoxRef, null);
+        }
+
+        private void init(string themeName, string pageAreaRef, string detailAreaRef, string folderPageRef, string detailPageRef, string rootLayoutRef, string msgBoxRef, string progressBoxRef, string yesNoBoxRef, ModelItem config)
+        {
             if (!String.IsNullOrEmpty(themeName))
                 name = themeName;
             if (!String.IsNullOrEmpty(pageAreaRef))
@@ -58,6 +67,12 @@ namespace MediaBrowser.Library.UI
                 folderPage = folderPageRef;
             if (!String.IsNullOrEmpty(detailPageRef))
                 detailPage = detailPageRef;
+            if (!String.IsNullOrEmpty(msgBoxRef))
+                msgBox = msgBoxRef;
+            if (!String.IsNullOrEmpty(progressBoxRef))
+                progressBox = progressBoxRef;
+            if (!String.IsNullOrEmpty(yesNoBoxRef))
+                yesNoBox = yesNoBoxRef;
             configObject = config;
         }
 
@@ -101,6 +116,21 @@ namespace MediaBrowser.Library.UI
         {
             get { return status; }
             set { status = value; }
+        }
+        public string MsgBox
+        {
+            get { return msgBox; }
+            set { msgBox = value; }
+        }
+        public string ProgressBox
+        {
+            get { return progressBox; }
+            set { progressBox = value; }
+        }
+        public string YesNoBox
+        {
+            get { return yesNoBox; }
+            set { yesNoBox = value; }
         }
         public ModelItem Config
         {
