@@ -849,7 +849,7 @@ namespace MediaBrowser.Library {
 
         public Dictionary<string, ViewTheme> AvailableThemes = new Dictionary<string, ViewTheme>()
             {
-                {"Default", new ViewTheme()}        
+                {"Classic", new ViewTheme()}        
             };
 
         //method for external entities (plug-ins) to add a new theme - only support replacing detail areas for now...

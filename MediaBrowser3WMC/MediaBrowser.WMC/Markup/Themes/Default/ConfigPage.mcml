@@ -158,18 +158,8 @@
           <cor:String String="Small" />
         </Options>
       </Choice>
-      <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]">
-        <!--<Options Source="">
-          -->
-        <!--<cor:String String="Classic" />-->
-        <!--
-          -->
-        <!--<cor:String String="Default" />
-          <cor:String String="Diamond" />
-          <cor:String String="Vanilla" />-->
-        <!--
-        </Options>-->
-      </Choice>
+      <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]" />
+      
       <BooleanChoice Name="ThemeLoaded" Value="false" />
 
       <BooleanChoice Name="ShowConfigButton" Value="[Application.Config.ShowConfigButton]" />

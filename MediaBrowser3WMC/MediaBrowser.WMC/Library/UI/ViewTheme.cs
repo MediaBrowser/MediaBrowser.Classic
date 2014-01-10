@@ -9,7 +9,7 @@ namespace MediaBrowser.Library.UI
 {
     public class ViewTheme
     {
-        protected string name = "Default";
+        protected string name = "Classic";
         protected string detailPage = "resx://MediaBrowser/MediaBrowser.Resources/MovieDetailsPage";
         protected string folderPage = "resx://MediaBrowser/MediaBrowser.Resources/Page";
         protected string pageArea = "resx://MediaBrowser/MediaBrowser.Resources/PageDefault#Page";

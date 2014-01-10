@@ -735,8 +735,10 @@ namespace MediaBrowser
                 else
                 { //old or bogus theme - return default so we don't crash
                     //and set the config so config page doesn't crash
-                    Config.Instance.ViewTheme = "Default";
-                    return AvailableThemes["Default"];
+                    // first try chocolate - fall back to classic
+                    var def = AvailableThemes.ContainsKey("Chocolate") ? "Chocolate" : "Classic";
+                    Config.Instance.ViewTheme = def;
+                    return AvailableThemes[def];
                 }
             }
         }

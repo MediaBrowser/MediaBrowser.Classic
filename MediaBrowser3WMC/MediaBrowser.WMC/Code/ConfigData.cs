@@ -287,7 +287,7 @@ namespace MediaBrowser
         public bool ShowBackdrop = true;
         [Group("Display")]
         [Dangerous]
-        public string ViewTheme = "Default";
+        public string ViewTheme = "Chocolate";
         [Group("Display")]
         public int AlphaBlending = 80;
         [Group("Display")]
