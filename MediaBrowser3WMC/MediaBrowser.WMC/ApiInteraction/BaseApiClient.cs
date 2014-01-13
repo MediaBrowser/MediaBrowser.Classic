@@ -136,13 +136,8 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         private void ResetAuthorizationHeader()
         {
-            if (!CurrentUserId.HasValue)
-            {
-                SetAuthorizationHeader(null);
-                return;
-            }
-
-            var header = string.Format("UserId=\"{0}\", Client=\"{1}\", Version=\"{2}\"", CurrentUserId.Value, ClientType, Kernel.Instance.VersionStr);
+            var header = CurrentUserId.HasValue ? string.Format("UserId=\"{0}\", Client=\"{1}\", Version=\"{2}\"", CurrentUserId.Value, ClientType, Kernel.Instance.VersionStr)
+                             : string.Format("Client=\"{0}\", Version=\"{1}\"", ClientType, Kernel.Instance.VersionStr);
 
             header += string.Format(", DeviceId=\"{0}\"", DeviceId);
             
