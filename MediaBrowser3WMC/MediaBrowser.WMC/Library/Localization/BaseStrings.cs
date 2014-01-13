@@ -30,7 +30,8 @@ namespace MediaBrowser.Library.Localization
         public string MediaOptionsConfigDesc = "Media Related Configuration Items.";
         public string ThemesConfigDesc = "Select the Visual Presentation Style of MediaBrowser.";
         public string ParentalControlConfigDesc = "Parental Control Configuration.  Requires PIN to Access.";
-        public string RememberFolderIndexingConfigDesc = "Remember Folder Indexing.  e.g. If a Folder is Indexed by Genre, It Will Stay Indexed Each Time It is Entered.";
+        public string RememberFolderIndexingConfigDesc = "If a Folder is Indexed, It Will Be Indexed Even at First Start-up.";
+        public string RememberFolderFiltersConfigDesc = "If a Folder is Filtered, It Will Be Filtered Even at First Start-up.";
         public string ShowUnwatchedCountConfigDesc = "Show the Number of Unplayed Items in a Folder on the Folder Poster.";
         public string WatchedIndicatoronFoldersConfigDesc = "Show an Indicator if All Items Inside a Folder Have Been Played.";
         public string WatchedIndicatoronVideosConfigDesc = "Show an Indicator if an Item Has Been Marked Played.";
@@ -151,6 +152,7 @@ namespace MediaBrowser.Library.Localization
         public string EnableAdvancedCmdsConfig = "Enable Advanced Commands";
         public string MediaTrackingConfig = "Media Tracking";
         public string RememberFolderIndexingConfig = "Remember Folder Indexing";
+        public string RememberFolderFiltersConfig = "Remember Folder Filters";
         public string ShowUnwatchedCountConfig = "Show Unplayed Count";
         public string WatchedIndicatoronFoldersConfig = "Played Indicator on Folders";
         public string HighlightUnwatchedItemsConfig = "Highlight Unplayed Items";

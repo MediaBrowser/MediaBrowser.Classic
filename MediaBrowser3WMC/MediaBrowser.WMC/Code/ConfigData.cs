@@ -262,6 +262,8 @@ namespace MediaBrowser
         public bool RememberIndexing = false;
         public bool ShowIndexWarning = true;
         public double IndexWarningThreshold = 0.1;
+        [Comment(@"Remember (and re-filter) the fildtered state of a folder so it will stay filtered on subsequent entries.")]
+        public bool RememberFilters = false;
         [Dangerous]
         [Group("Display")]
         [Comment(@"The view theme to use.")]

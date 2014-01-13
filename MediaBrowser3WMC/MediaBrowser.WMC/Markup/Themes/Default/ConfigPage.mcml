@@ -69,6 +69,7 @@
       <BooleanChoice Name="DimUnselectedPosters" Value="[Application.Config.DimUnselectedPosters]" />
       <BooleanChoice Name="AllowInternetMetadataProviders" Value="[Application.Config.AllowInternetMetadataProviders]" />
       <BooleanChoice Name="RememberIndexing" Value="[Application.Config.RememberIndexing]" />
+      <BooleanChoice Name="RememberFilters" Value="[Application.Config.RememberFilters]" />
       <BooleanChoice Name="InheritDefaultView" Value="[Application.Config.InheritDefaultView]" />
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
@@ -314,6 +315,7 @@
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
       <Binding Source="[UseAutoPlayForIso.Value]" Target="[Config.UseAutoPlayForIso]" />
       <Binding Source="[RememberIndexing.Value]" Target="[Config.RememberIndexing]" />
+      <Binding Source="[RememberFilters.Value]" Target="[Config.RememberFilters]" />
       <Binding Source="[TreatWatchedAsInProgress.Value]" Target="[Config.TreatWatchedAsInProgress]" />
       <Binding Source="[InheritDefaultView.Value]" Target="[Config.InheritDefaultView]" />
       <Binding Source="[ShowClock.Value]" Target="[Config.ShowClock]" />
@@ -578,7 +580,7 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AllowNestedMovieFoldersConfig!cor:String]" Checked="[EnableNestedMovieFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
+                      <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderFiltersConfig!cor:String]" Checked="[RememberFilters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>

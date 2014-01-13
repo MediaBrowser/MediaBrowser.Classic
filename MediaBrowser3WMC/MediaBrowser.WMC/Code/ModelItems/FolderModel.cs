@@ -1171,7 +1171,6 @@ namespace MediaBrowser.Library {
             set
             {
                 Folder.SetFilterWatched(!value);
-                DisplayPrefs.CustomParms["IsWatched"] = value.ToString();
                 Folder.SaveDisplayPrefs(DisplayPrefs);
                 Folder.ReloadChildren();
                 FirePropertyChanged("FilterUnwatched");
@@ -1184,7 +1183,6 @@ namespace MediaBrowser.Library {
             set
             {
                 Folder.SetFilterFavorite(value);
-                DisplayPrefs.CustomParms["IsFavorite"] = value.ToString();
                 Folder.SaveDisplayPrefs(DisplayPrefs);
                 Folder.ReloadChildren();
                 FirePropertyChanged("FilterFavorite");
