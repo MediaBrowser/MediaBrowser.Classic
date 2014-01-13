@@ -53,7 +53,6 @@ namespace MediaBrowser.Library {
             }
         }
 
-        public bool IsFiltered { get { return folderChildren.IsFiltered; } }
         public bool IsIndexed { get { return folderChildren.FolderIsIndexed; } }
 
 
@@ -1036,7 +1035,7 @@ namespace MediaBrowser.Library {
         protected virtual void LoadDisplayPreferences() {
             Logger.ReportVerbose("Loading display prefs for " + this.Path);
 
-            this.Folder.LoadDisplayPreferences();
+            if (Folder.DisplayPreferences == null) Folder.LoadDisplayPreferences();
 
             var dp = new DisplayPreferences(this.Folder.DisplayPreferencesId, this.Folder);
 
@@ -1164,6 +1163,32 @@ namespace MediaBrowser.Library {
             UpdateActualThumbSize();
             FirePropertyChanged("ReferenceSize");
             FirePropertyChanged("PosterZoom");
+        }
+
+        public bool FilterUnwatched
+        {
+            get { return Folder.Filters.IsWatched == false; }
+            set
+            {
+                Folder.SetFilterWatched(!value);
+                DisplayPrefs.CustomParms["IsWatched"] = value.ToString();
+                Folder.SaveDisplayPrefs(DisplayPrefs);
+                Folder.ReloadChildren();
+                FirePropertyChanged("FilterUnwatched");
+            }
+        }
+
+        public bool FilterFavorite
+        {
+            get { return Folder.Filters.IsFavorite == true; }
+            set
+            {
+                Folder.SetFilterFavorite(value);
+                DisplayPrefs.CustomParms["IsFavorite"] = value.ToString();
+                Folder.SaveDisplayPrefs(DisplayPrefs);
+                Folder.ReloadChildren();
+                FirePropertyChanged("FilterFavorite");
+            }
         }
 
         protected override void Dispose(bool disposing) {

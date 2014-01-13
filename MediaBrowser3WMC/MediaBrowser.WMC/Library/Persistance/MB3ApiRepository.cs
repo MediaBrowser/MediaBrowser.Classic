@@ -493,12 +493,8 @@ namespace MediaBrowser.Library.Persistance
             //throw new NotImplementedException();
         }
 
-        public IEnumerable<BaseItem> RetrieveChildren(string id)
-        {
-            return RetrieveChildren(id, null);
-        }
 
-        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy)
+        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy = null, ItemFilter[] filters = null)
         {
             if (id == Guid.Empty.ToString() || string.IsNullOrEmpty(id)) return null;  //some dummy items have blank ids
 
@@ -506,6 +502,7 @@ namespace MediaBrowser.Library.Persistance
                                                      {
                                                          UserId = Kernel.CurrentUser.Id.ToString(),
                                                          ParentId = id,
+                                                         Filters = filters,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.OriginalRunTimeTicks, 
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }

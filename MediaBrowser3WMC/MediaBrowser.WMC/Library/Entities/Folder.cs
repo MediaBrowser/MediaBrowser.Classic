@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Util;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Extensions;
@@ -88,6 +89,48 @@ namespace MediaBrowser.Library.Entities {
         {
             get { return indexByOptions; }
             set { indexByOptions = value; }
+        }
+
+        private FilterProperties _filters;
+        public FilterProperties Filters
+        {
+            get { return _filters ?? (_filters = GetFilterProperties()); }
+        }
+
+        /// <summary>
+        /// Convert our current filter settings to an ItemFilter array for queries
+        /// </summary>
+        /// <returns></returns>
+        private ItemFilter[] GetFilterArray()
+        {
+            var filters = new List<ItemFilter>();
+            if (Filters.IsFavorite ?? false) filters.Add(ItemFilter.IsFavorite);
+            if (Filters.IsWatched != null && !Filters.IsWatched.Value) filters.Add(ItemFilter.IsUnplayed);
+            return filters.ToArray();
+        }
+
+        private FilterProperties GetFilterProperties()
+        {
+            var filters = new FilterProperties();
+            if (DisplayPreferences == null) LoadDisplayPreferences();
+            if (DisplayPreferences != null)
+            {
+                filters.IsWatched = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsWatched", "False") == "True";
+                filters.IsFavorite = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsFavorite", "False") == "True";
+            }
+            return filters;
+        }
+
+        public void SetFilterWatched(bool value)
+        {
+            Filters.IsWatched = value;
+            DisplayPreferences.CustomPrefs["IsWatched"] = value.ToString();
+        }
+
+        public void SetFilterFavorite(bool value)
+        {
+            Filters.IsFavorite = value;
+            DisplayPreferences.CustomPrefs["IsFavorite"] = value.ToString();
         }
 
         /// <summary>
@@ -619,6 +662,9 @@ namespace MediaBrowser.Library.Entities {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
 
+            //test
+            var filters = GetFilterArray();
+
             if (property == LocalizedStrings.Instance.GetString("GenreDispPref"))
             {
                 var query = new ItemQuery
@@ -626,6 +672,7 @@ namespace MediaBrowser.Library.Entities {
                     UserId = Kernel.CurrentUser.ApiId,
                     ParentId = ApiId,
                     Recursive = true,
+                    Filters = filters,
                     Fields = new[] { ItemFields.SortName },
                     SortBy = new[] { "SortName" }
                 };
@@ -646,7 +693,8 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    Fields = new[] {ItemFields.SortName},
+                                    Filters = filters,
+                                    Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
                                     PersonTypes = personTypes
 
@@ -664,7 +712,8 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    Fields = new[] {ItemFields.SortName},
+                                    Filters = filters,
+                                    Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
                                     PersonTypes = personTypes
 
@@ -681,7 +730,8 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    Fields = new[] {ItemFields.SortName},
+                                    Filters = filters,
+                                    Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
 
                                 };
@@ -697,7 +747,8 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    Fields = new[] {ItemFields.SortName},
+                                    Filters = filters,
+                                    Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
 
                                 };
@@ -935,6 +986,8 @@ namespace MediaBrowser.Library.Entities {
         void SetParent(IEnumerable<BaseItem> items) {
             foreach (var item in items) {
                 item.Parent = this;
+                var folder = item as Folder;
+                if (folder != null) folder.DisplayPreferences = this.DisplayPreferences;
             }
         }
 
@@ -986,15 +1039,9 @@ namespace MediaBrowser.Library.Entities {
             //Logger.ReportVerbose("=====FINISHED sorting actual children for " + Name);
         }
 
-        protected virtual List<BaseItem> GetCachedChildren() {
-            List<BaseItem> items = null;
-            //using (new MediaBrowser.Util.Profiler(this.Name + " child retrieval"))
-            {
-                //Logger.ReportInfo("Getting Children for: "+this.Name);
-                var children = Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId);
-                items = children != null ? children.ToList() : null;
-            }
-            return items;
+        protected virtual List<BaseItem> GetCachedChildren()
+        {
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, null, GetFilterArray()).ToList();
         }
 
         public bool HasVideoChildren {

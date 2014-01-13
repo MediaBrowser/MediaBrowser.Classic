@@ -39,7 +39,6 @@ namespace MediaBrowser.Code.ModelItems {
         IList<BaseItem> currentChildren = new List<BaseItem> ();
         Action onChildrenChanged;
         public bool FolderIsIndexed = false;
-        public bool IsFiltered { get; set; }
         float childImageAspect = 1;
         IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
 
@@ -219,27 +218,6 @@ namespace MediaBrowser.Code.ModelItems {
                 items[guid] = item;
             }
             return item;
-        }
-
-        /// <summary>
-        /// Filter ourselves against the supplied filter functions
-        /// </summary>
-        /// <param name="filters"></param>
-        public void Filter(FilterProperties filters)
-        {
-            IEnumerable<BaseItem> filteredChildren = folder.Children;
-            if (filters == null)
-            {
-                // un-filter
-                IsFiltered = false;
-            }
-            else
-            {
-                filteredChildren = folder.Children.Where(c => c.PassesFilter(filters));
-                IsFiltered = true;
-            }
-
-            currentChildren = filteredChildren.ToList();
         }
 
         public void IndexBy(string property)
