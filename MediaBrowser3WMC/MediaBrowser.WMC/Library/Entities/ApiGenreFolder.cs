@@ -30,6 +30,7 @@ namespace MediaBrowser.Library.Entities
                                IncludeItemTypes = IncludeItemTypes,
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
+                               Filters = GetFilterArray(),
                                Fields = MB3ApiRepository.StandardFields,
                                Genres = new[] {HttpUtility.UrlEncode(Name)}
                            };

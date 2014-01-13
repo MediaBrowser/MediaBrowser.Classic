@@ -101,7 +101,7 @@ namespace MediaBrowser.Library.Entities {
         /// Convert our current filter settings to an ItemFilter array for queries
         /// </summary>
         /// <returns></returns>
-        private ItemFilter[] GetFilterArray()
+        protected ItemFilter[] GetFilterArray()
         {
             var filters = new List<ItemFilter>();
             if (Filters.IsFavorite ?? false) filters.Add(ItemFilter.IsFavorite);
