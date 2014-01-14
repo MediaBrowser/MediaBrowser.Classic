@@ -129,8 +129,21 @@ namespace Configurator
             //Logger.ReportVerbose("======= Saving Config...");
             SaveConfig();
 
+            LoadAvailablePlugins();
+            //Logger.ReportVerbose("======= Kicking off validations thread...");
+            //Async.Queue("Startup Validations", () =>
+            //{
+            //    //RefreshEntryPoints(false);
+            //    ValidateMBAppDataFolderPermissions();
+            //});
+            //Logger.ReportVerbose("======= Initialize Finised.");
+        }
+
+        private void LoadAvailablePlugins()
+        {
             if (Kernel.ServerConnected)
             {
+                Cursor = Cursors.Wait;
                 //Logger.ReportVerbose("======= Initializing Plugin Manager...");
                 PluginManager.Instance.Init();
                 //Logger.ReportVerbose("======= Loading Plugin List...");
@@ -145,21 +158,17 @@ namespace Configurator
                                                        {
                                                            using (new Profiler("Plugin update check"))
                                                            {
-                                                               while (!PluginManager.Instance.PluginsLoaded) { } //wait for plugins to load
+                                                               while (!PluginManager.Instance.PluginsLoaded)
+                                                               {
+                                                               } //wait for plugins to load
                                                                if (PluginManager.Instance.UpgradesAvailable())
-                                                                   Dispatcher.Invoke(DispatcherPriority.Background, 
-                                                                                     (MethodInvoker)(() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
+                                                                   Dispatcher.Invoke(DispatcherPriority.Background,
+                                                                                     (MethodInvoker) (() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
                                                            }
                                                        });
-                
+
+                Cursor = Cursors.Arrow;
             }
-            //Logger.ReportVerbose("======= Kicking off validations thread...");
-            //Async.Queue("Startup Validations", () =>
-            //{
-            //    //RefreshEntryPoints(false);
-            //    ValidateMBAppDataFolderPermissions();
-            //});
-            //Logger.ReportVerbose("======= Initialize Finised.");
         }
 
         public void ValidateMBAppDataFolderPermissions()
@@ -1051,6 +1060,7 @@ namespace Configurator
             {
                 commonConfig.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlPluginUpdateLevel.SelectedItem.ToString());
                 SaveConfig();
+                LoadAvailablePlugins();
             }
 
         }
