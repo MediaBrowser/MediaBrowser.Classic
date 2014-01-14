@@ -846,6 +846,7 @@ namespace MediaBrowser.Library {
         private void SelectedChildChanged() {
             FirePropertyChanged("SelectedChildIndex");
             FirePropertyChanged("SelectedChild");
+            FirePropertyChanged("SelectedCondensedChild");
             Application.CurrentInstance.OnCurrentItemChanged();
         }
 
@@ -866,6 +867,14 @@ namespace MediaBrowser.Library {
                 if ((SelectedChildIndex < 0) || (selectedchildIndex >= Children.Count))
                     return Item.BlankItem;
                 return Children[SelectedChildIndex];
+            }
+        }
+
+        public Item SelectedCondensedChild {
+            get {
+                if ((SelectedChildIndex < 0) || (selectedchildIndex >= CondensedChildren.Count))
+                    return Item.BlankItem;
+                return CondensedChildren[SelectedChildIndex];
             }
         }
 
