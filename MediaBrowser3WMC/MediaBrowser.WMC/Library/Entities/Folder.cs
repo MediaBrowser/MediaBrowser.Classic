@@ -106,7 +106,7 @@ namespace MediaBrowser.Library.Entities {
             var filters = new List<ItemFilter>();
             if (Filters.IsFavorite ?? false) filters.Add(ItemFilter.IsFavorite);
             if (Filters.IsWatched != null && !Filters.IsWatched.Value) filters.Add(ItemFilter.IsUnplayed);
-            return filters.ToArray();
+            return filters.Any() ? filters.ToArray() : null;
         }
 
         private FilterProperties GetFilterProperties()

@@ -508,7 +508,7 @@ namespace MediaBrowser.Library.Persistance
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
                                                      });
 
-            return dtos == null ? null : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
         public static ItemFields[] StandardFields = new[]
