@@ -890,14 +890,6 @@ namespace MediaBrowser.Library {
                 if (folderChildren.Count > 0)
                     SelectedChildIndex = 0;
 
-                // Now if there is a custom index ui re-navigate to us so that the UI will change
-                if (Application.CurrentInstance.IndexUI != null)
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                                                                            {
-                                                                                Application.CurrentInstance.Back();
-                                                                                Application.CurrentInstance.OpenFolderPage(this);
-                                                                            });
-
             });
         }
 
