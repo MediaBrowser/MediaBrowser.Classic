@@ -102,9 +102,6 @@ namespace MediaBrowser.Library.Entities {
         }
 
         [Persist]
-        public int? ProductionYear { get; set; }
-
-        [Persist]
         public override string TagLine { get; set; }
 
         [Persist]

@@ -42,8 +42,8 @@ namespace MediaBrowser.Library {
 
                 case SortOrder.Year:
 
-                    var xProductionYear = x.PremierDate;
-                    var yProductionYear = y.PremierDate;
+                    var xProductionYear = x.PremierDate != DateTime.MinValue ? x.PremierDate : new DateTime(Convert.ToInt16(x.ProductionYear),1,1);
+                    var yProductionYear = y.PremierDate != DateTime.MinValue ? y.PremierDate : new DateTime(Convert.ToInt16(y.ProductionYear), 1, 1);
 
                     var orderFactor = Config.Instance.YearSortAsc ? -1 : 1;
                     compare = orderFactor * yProductionYear.CompareTo(xProductionYear); //this will reverse the order if that option is set

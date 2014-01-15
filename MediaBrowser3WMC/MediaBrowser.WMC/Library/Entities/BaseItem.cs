@@ -435,6 +435,9 @@ namespace MediaBrowser.Library.Entities {
 
         public DateTime PremierDate { get; set; }
 
+        [Persist]
+        public int? ProductionYear { get; set; }
+
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
             // we should never reasign identity 
