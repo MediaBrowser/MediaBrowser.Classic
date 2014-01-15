@@ -1036,7 +1036,7 @@ namespace MediaBrowser.Library {
         protected virtual void LoadDisplayPreferences() {
             Logger.ReportVerbose("Loading display prefs for " + this.Path);
 
-            if (Folder.DisplayPreferences == null) Folder.LoadDisplayPreferences();
+            Folder.LoadDisplayPreferences();
 
             var dp = new DisplayPreferences(this.Folder.DisplayPreferencesId, this.Folder);
 
