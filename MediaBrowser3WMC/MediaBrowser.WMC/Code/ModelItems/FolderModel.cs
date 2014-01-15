@@ -1173,7 +1173,14 @@ namespace MediaBrowser.Library {
             {
                 Folder.SetFilterWatched(!value);
                 Folder.SaveDisplayPrefs(DisplayPrefs);
-                Folder.ReloadChildren();
+                if (folderChildren.FolderIsIndexed)
+                {
+                    IndexByChoice_ChosenChanged(this, null);
+                }
+                else
+                {
+                    Folder.ReloadChildren();
+                }
                 FirePropertyChanged("FilterUnwatched");
             }
         }
@@ -1185,7 +1192,14 @@ namespace MediaBrowser.Library {
             {
                 Folder.SetFilterFavorite(value);
                 Folder.SaveDisplayPrefs(DisplayPrefs);
-                Folder.ReloadChildren();
+                if (folderChildren.FolderIsIndexed)
+                {
+                    IndexByChoice_ChosenChanged(this, null);
+                }
+                else
+                {
+                    Folder.ReloadChildren();
+                }
                 FirePropertyChanged("FilterFavorite");
             }
         }
