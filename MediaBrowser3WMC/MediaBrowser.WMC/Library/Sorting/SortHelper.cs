@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace MediaBrowser.Library.Sorting {
-    static class SortHelper {
+    public static class SortHelper {
 
         public static string GetSortableName(string name) {
             if (name == null) return ""; //some items may not have name filled in properly
