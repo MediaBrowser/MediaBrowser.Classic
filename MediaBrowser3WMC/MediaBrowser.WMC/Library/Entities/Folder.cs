@@ -666,7 +666,6 @@ namespace MediaBrowser.Library.Entities {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
 
-            //test
             var filters = GetFilterArray();
 
             if (property == LocalizedStrings.Instance.GetString("GenreDispPref"))
@@ -993,7 +992,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        void SetParent(IEnumerable<BaseItem> items, bool inheritPrefs = false) {
+        protected void SetParent(IEnumerable<BaseItem> items, bool inheritPrefs = false) {
             foreach (var item in items) {
                 item.Parent = this;
                 if (inheritPrefs)

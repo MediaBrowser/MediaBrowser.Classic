@@ -654,7 +654,7 @@ namespace MediaBrowser.Library {
             }, null, true);
         }
 
-        protected void FireChildrenChangedEvents() {
+        protected virtual void FireChildrenChangedEvents() {
             if (!Microsoft.MediaCenter.UI.Application.IsApplicationThread) {
                 Microsoft.MediaCenter.UI.Application.DeferredInvoke( _ => FireChildrenChangedEvents());
                 return;
