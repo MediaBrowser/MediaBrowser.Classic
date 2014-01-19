@@ -222,6 +222,8 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("sortBy", query.SortBy);
 
+            dict.AddIfNotNull("IsPlayed", query.IsPlayed);
+
             if (query.SortOrder.HasValue)
             {
                 dict["sortOrder"] = query.SortOrder.ToString();
@@ -273,6 +275,8 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("limit", query.Limit);
 
             dict.AddIfNotNull("sortBy", query.SortBy);
+
+            dict.AddIfNotNull("IsPlayed", query.IsPlayed);
 
             if (query.SortOrder.HasValue)
             {
@@ -326,6 +330,8 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("limit", query.Limit);
 
             dict.AddIfNotNull("sortBy", query.SortBy);
+
+            dict.AddIfNotNull("IsPlayed", query.IsPlayed);
 
             if (query.SortOrder.HasValue)
             {

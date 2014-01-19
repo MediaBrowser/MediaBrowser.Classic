@@ -1168,10 +1168,10 @@ namespace MediaBrowser.Library {
 
         public bool FilterUnwatched
         {
-            get { return Folder.Filters.IsWatched == false; }
+            get { return Folder.Filters.IsUnWatched; }
             set
             {
-                Folder.SetFilterWatched(!value);
+                Folder.SetFilterUnWatched(value);
                 Folder.SaveDisplayPrefs(DisplayPrefs);
                 if (folderChildren.FolderIsIndexed)
                 {

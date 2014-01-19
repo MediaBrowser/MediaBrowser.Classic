@@ -105,7 +105,6 @@ namespace MediaBrowser.Library.Entities {
         {
             var filters = new List<ItemFilter>();
             if (Filters.IsFavorite ?? false) filters.Add(ItemFilter.IsFavorite);
-            if (Filters.IsWatched != null && !Filters.IsWatched.Value) filters.Add(ItemFilter.IsUnplayed);
             return filters.Any() ? filters.ToArray() : null;
         }
 
@@ -117,18 +116,23 @@ namespace MediaBrowser.Library.Entities {
                 if (DisplayPreferences == null) LoadDisplayPreferences();
                 if (DisplayPreferences != null)
                 {
-                    var watched = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsWatched", null);
-                    filters.IsWatched = watched == null ? null : watched == Boolean.TrueString ? true : watched == Boolean.FalseString ? false : (bool?)null;
+                    var unWatched = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsUnWatched", Boolean.FalseString);
+                    filters.IsUnWatched = Boolean.Parse(unWatched);
                     filters.IsFavorite = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsFavorite", null) == Boolean.TrueString;
                 }
             }
             return filters;
         }
 
-        public void SetFilterWatched(bool value)
+        public void SetFilterUnWatched(bool value)
         {
-            Filters.IsWatched = value;
-            DisplayPreferences.CustomPrefs["IsWatched"] = value.ToString();
+            Filters.IsUnWatched = value;
+            if (value)
+                DisplayPreferences.CustomPrefs["IsUnWatched"] = Boolean.TrueString;
+            else
+            {
+                DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
+            }
         }
 
         public void SetFilterFavorite(bool value)
@@ -675,6 +679,7 @@ namespace MediaBrowser.Library.Entities {
                     UserId = Kernel.CurrentUser.ApiId,
                     ParentId = ApiId,
                     Recursive = true,
+                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                     Filters = filters,
                     Fields = new[] { ItemFields.SortName },
                     SortBy = new[] { "SortName" }
@@ -696,6 +701,7 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
+                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                     Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
@@ -715,6 +721,7 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
+                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                     Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
@@ -733,6 +740,7 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
+                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                     Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
@@ -751,6 +759,7 @@ namespace MediaBrowser.Library.Entities {
                                     ParentId = ApiId,
                                     Recursive = true,
                                     Filters = filters,
+                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
 
@@ -975,7 +984,7 @@ namespace MediaBrowser.Library.Entities {
             if (!Kernel.Instance.ConfigData.RememberFilters)
             {
                 //Re-initialize these to un-filtered
-                DisplayPreferences.CustomPrefs.Remove("IsWatched");
+                DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
                 DisplayPreferences.CustomPrefs.Remove("IsFavorite");
             }
         }
@@ -1053,7 +1062,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, null, GetFilterArray()).ToList();
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, null, GetFilterArray(), Filters.IsUnWatched ? false : (bool?)null).ToList();
         }
 
         public bool HasVideoChildren {

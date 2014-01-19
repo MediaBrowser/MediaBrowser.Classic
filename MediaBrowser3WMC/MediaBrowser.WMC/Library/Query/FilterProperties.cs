@@ -10,7 +10,7 @@ namespace MediaBrowser.Library.Query
         public int RatedLessThan { get; set; }
         public int RatedGreaterThan { get; set; }
         public bool? IsFavorite { get; set; }
-        public bool? IsWatched { get; set; }
+        public bool IsUnWatched { get; set; }
         public IEnumerable<string> OfTypes { get; set; } 
 
         public FilterProperties()

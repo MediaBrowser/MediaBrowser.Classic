@@ -494,7 +494,7 @@ namespace MediaBrowser.Library.Persistance
         }
 
 
-        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy = null, ItemFilter[] filters = null)
+        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy = null, ItemFilter[] filters = null, bool? isPlayed = null)
         {
             if (id == Guid.Empty.ToString() || string.IsNullOrEmpty(id)) return new List<BaseItem>();  //some dummy items have blank ids
 
@@ -503,6 +503,7 @@ namespace MediaBrowser.Library.Persistance
                                                          UserId = Kernel.CurrentUser.Id.ToString(),
                                                          ParentId = id,
                                                          Filters = filters,
+                                                         IsPlayed = isPlayed,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.OriginalRunTimeTicks, 
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
