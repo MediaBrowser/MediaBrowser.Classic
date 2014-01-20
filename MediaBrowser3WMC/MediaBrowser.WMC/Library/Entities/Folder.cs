@@ -95,6 +95,7 @@ namespace MediaBrowser.Library.Entities {
         public FilterProperties Filters
         {
             get { return _filters ?? (_filters = GetFilterProperties()); }
+            set { _filters = value; }
         }
 
         /// <summary>
@@ -689,7 +690,7 @@ namespace MediaBrowser.Library.Entities {
                               Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId, new[] {"MusicAlbum"})).Cast<BaseItem>().ToList() :
                               Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret, true);
+                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
 
@@ -710,7 +711,7 @@ namespace MediaBrowser.Library.Entities {
                                 };
                 var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret, true);
+                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("DirectorDispPref"))
@@ -730,7 +731,7 @@ namespace MediaBrowser.Library.Entities {
                                 };
                 var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret, true);
+                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("YearDispPref"))
@@ -748,7 +749,7 @@ namespace MediaBrowser.Library.Entities {
                                 };
                 var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret, true);
+                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("StudioDispPref"))
@@ -766,7 +767,7 @@ namespace MediaBrowser.Library.Entities {
                                 };
                 var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Studios", query).Select(p => new ApiStudioFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret, true);
+                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             }
@@ -1001,14 +1002,9 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        protected void SetParent(IEnumerable<BaseItem> items, bool inheritPrefs = false) {
+        protected void SetParent(IEnumerable<BaseItem> items) {
             foreach (var item in items) {
                 item.Parent = this;
-                if (inheritPrefs)
-                {
-                    var folder = item as Folder;
-                    if (folder != null) folder.DisplayPreferences = this.DisplayPreferences;
-                }
             }
         }
 

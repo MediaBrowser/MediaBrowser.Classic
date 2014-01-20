@@ -31,7 +31,7 @@ namespace MediaBrowser.Library.Entities
                                IncludeItemTypes = IncludeItemTypes,
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
-                               IsPlayed = Filters.IsUnWatched,
+                               IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                Filters = GetFilterArray(),
                                Fields = MB3ApiRepository.StandardFields,
                                Years = new[] {Convert.ToInt32(Name)}
