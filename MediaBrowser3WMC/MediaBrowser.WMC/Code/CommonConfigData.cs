@@ -91,6 +91,8 @@ namespace MediaBrowser
         [Comment("The number of days to retain log files.  Files older than this will be deleted periodically")]
         public int LogFileRetentionDays = 30;
 
+        public DateTime LastLogCleanup = DateTime.MinValue;
+
         public string UserTileColor = "DarkBlue";
         public string LoginBgColor = "DarkGray";
 

@@ -537,6 +537,31 @@ namespace MediaBrowser.Library {
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
             //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
 
+            //kick off log clean up task if needed
+            if (config.LastLogCleanup < DateTime.UtcNow.AddDays(-7))
+            {
+                Async.Queue("Logfile cleanup", () =>
+                {
+                    Logger.ReportInfo("Running Logfile clean-up...");
+                    var minDateModified = DateTime.UtcNow.AddDays(-(config.LogFileRetentionDays));
+                    foreach (var source in new DirectoryInfo(ApplicationPaths.AppLogPath).GetFileSystemInfos("*.log")
+                          .Where(f => f.LastWriteTimeUtc < minDateModified))
+                    {
+                        try
+                        {
+                            source.Delete();
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.ReportException("Error deleting log file {0}",e,source.Name);
+                        }                                   
+                    }
+
+                    config.LastLogCleanup = DateTime.UtcNow;
+                    config.Save();
+                });
+            }
+
             return kernel;
         }
 

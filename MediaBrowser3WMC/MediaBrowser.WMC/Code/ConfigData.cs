@@ -350,9 +350,6 @@ namespace MediaBrowser
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;
 
-        [Comment("The number of days to retain log files.  Files older than this will be deleted periodically")]
-        public int LogFileRetentionDays = 30;
-
         [Comment("This is a hack until I can rewrite some file date processing")]
         public bool EnableShortcutDateHack = true;
 
