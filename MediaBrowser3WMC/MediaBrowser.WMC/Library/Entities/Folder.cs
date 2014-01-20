@@ -643,26 +643,26 @@ namespace MediaBrowser.Library.Entities {
             return strings
                 .Where(s => !string.IsNullOrEmpty(s))
                 .Distinct()
-                .Select(s => func(s));
+                .Select(func);
         }
 
         protected virtual Func<string, BaseItem> GetConstructor(string property) {
             switch (property) {
                 case "Actors":
                 case "Directors":
-                    return a => Person.GetPerson(a);
+                    return Person.GetPerson;
 
                 case "Genres":
-                    return g => Genre.GetGenre(g);
+                    return Genre.GetGenre;
 
                 case "ProductionYear":
-                    return y => Year.GetYear(y);
+                    return Year.GetYear;
 
                 case "Studios":
-                    return s => Studio.GetStudio(s);
+                    return Studio.GetStudio;
 
                 default:
-                    return i => GenericItem.GetItem(i);
+                    return GenericItem.GetItem;
             }
         }
 
