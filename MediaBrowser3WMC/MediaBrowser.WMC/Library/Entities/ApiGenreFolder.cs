@@ -15,7 +15,7 @@ namespace MediaBrowser.Library.Entities
         public ApiGenreFolder() : base()
         {}
 
-        public ApiGenreFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null) : base(item, searchParentId, includeTypes, excludeTypes)
+        public ApiGenreFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null) : base(item, searchParentId, includeTypes, excludeTypes, parent)
         {
         }
 

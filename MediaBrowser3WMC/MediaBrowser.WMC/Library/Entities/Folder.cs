@@ -94,7 +94,7 @@ namespace MediaBrowser.Library.Entities {
         private FilterProperties _filters;
         public FilterProperties Filters
         {
-            get { return _filters ?? (_filters = GetFilterProperties()); }
+            get { return Parent != null ? Parent.Filters : _filters ?? (_filters = GetFilterProperties()); }
             set { _filters = value; }
         }
 
@@ -687,10 +687,9 @@ namespace MediaBrowser.Library.Entities {
                 };
 
                 var ret = CollectionType == "Music" || ContainsMusic ?
-                              Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId, new[] {"MusicAlbum"})).Cast<BaseItem>().ToList() :
-                              Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId)).Cast<BaseItem>().ToList();
+                              Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(query).Select(g => new ApiGenreFolder(g, ApiId, new[] {"MusicAlbum"}, null, this)).Cast<BaseItem>().ToList() :
+                              Kernel.Instance.MB3ApiRepository.RetrieveGenres(query).Select(g => new ApiGenreFolder(g, ApiId, null, null, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret);
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
 
@@ -709,10 +708,8 @@ namespace MediaBrowser.Library.Entities {
                                     PersonTypes = personTypes
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret);
-                Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("DirectorDispPref"))
             {
@@ -729,10 +726,8 @@ namespace MediaBrowser.Library.Entities {
                                     PersonTypes = personTypes
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes)).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret);
-                Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("YearDispPref"))
             {
@@ -747,10 +742,8 @@ namespace MediaBrowser.Library.Entities {
                                     SortBy = new[] {"SortName"},
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId, null, new[] {"Audio"}, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret);
-                Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("StudioDispPref"))
             {
@@ -765,10 +758,8 @@ namespace MediaBrowser.Library.Entities {
                                     SortBy = new[] {"SortName"},
 
                                 };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Studios", query).Select(p => new ApiStudioFolder(p, ApiId, null, new[] {"Audio"})).Cast<BaseItem>().ToList();
+                var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Studios", query).Select(p => new ApiStudioFolder(p, ApiId, null, new[] {"Audio"}, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
-                SetParent(ret);
-                Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
             }
 

@@ -23,12 +23,12 @@ namespace MediaBrowser.Library.Entities
         {
         }
 
-        public ApiSourcedFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
+        public ApiSourcedFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
         {
-            Init(item, searchParentId, includeTypes, excludeTypes);
+            Init(item, searchParentId, includeTypes, excludeTypes, parent);
         }
 
-        protected void Init(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
+        protected void Init(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
         {
             Name = item.Name;
             Id = item.Id;
@@ -40,6 +40,7 @@ namespace MediaBrowser.Library.Entities
             IncludeItemTypes = includeTypes;
             ExcludeItemTypes = excludeTypes;
             HasShadowItem = true;
+            Parent = parent;
         }
 
         public override string ApiId

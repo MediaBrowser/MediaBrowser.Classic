@@ -15,8 +15,8 @@ namespace MediaBrowser.Library.Entities
         public ApiStudioFolder() : base()
         {}
 
-        public ApiStudioFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
-            : base(item, searchParentId, includeTypes, excludeTypes)
+        public ApiStudioFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
+            : base(item, searchParentId, includeTypes, excludeTypes, parent)
         {
         }
 

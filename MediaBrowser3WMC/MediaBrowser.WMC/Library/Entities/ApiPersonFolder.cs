@@ -15,8 +15,8 @@ namespace MediaBrowser.Library.Entities
         public ApiPersonFolder() : base()
         {}
 
-        public ApiPersonFolder(BaseItem item, string searchParentId = null, string[] personTypes = null, string[] includeTypes = null, string[] excludeTypes = null)
-            : base(item, searchParentId, includeTypes, excludeTypes)
+        public ApiPersonFolder(BaseItem item, string searchParentId = null, string[] personTypes = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
+            : base(item, searchParentId, includeTypes, excludeTypes, parent)
         {
             PersonTypes = personTypes;
         }

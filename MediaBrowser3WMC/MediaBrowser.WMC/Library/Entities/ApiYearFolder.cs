@@ -15,8 +15,8 @@ namespace MediaBrowser.Library.Entities
         public ApiYearFolder() : base()
         {}
 
-        public ApiYearFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null)
-            : base(item, searchParentId, includeTypes, excludeTypes)
+        public ApiYearFolder(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
+            : base(item, searchParentId, includeTypes, excludeTypes, parent)
         {
         }
 
