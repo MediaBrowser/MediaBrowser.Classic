@@ -31,6 +31,7 @@ namespace MediaBrowser.Library.Entities
         protected void Init(BaseItem item, string searchParentId = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null)
         {
             Name = item.Name;
+            ApiRecursiveItemCount = item.ApiRecursiveItemCount;
             Id = item.Id;
             SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;

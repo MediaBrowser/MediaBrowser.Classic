@@ -35,7 +35,6 @@ namespace MediaBrowser.Library.Entities {
         protected IndexFolder quickListFolder;
         public Model.Entities.DisplayPreferences DisplayPreferences { get; set; }
         public virtual string DisplayPreferencesId { get; set; }
-        public int? ApiRecursiveItemCount { get; set; }
         private string _collectionType;
         public string CollectionType
         {

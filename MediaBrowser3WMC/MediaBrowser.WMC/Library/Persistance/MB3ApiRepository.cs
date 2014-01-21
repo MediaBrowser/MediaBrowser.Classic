@@ -198,7 +198,8 @@ namespace MediaBrowser.Library.Persistance
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
                 item.LocationType = mb3Item.LocationType;
-                
+                // recursive media count
+                item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
 
                 var runTimeTicks = IsRippedMedia(mb3Item.VideoType ?? VideoType.VideoFile) ? mb3Item.OriginalRunTimeTicks ?? mb3Item.RunTimeTicks : mb3Item.RunTimeTicks;
 
@@ -273,9 +274,6 @@ namespace MediaBrowser.Library.Persistance
                     folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
                     folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
                         new Dictionary<string, string> {{LocalizedStrings.Instance.GetString("NoneDispPref"), ""}};
-
-                    // recursive media count
-                    folder.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
 
                     // cumulative runtime
                     if (mb3Item.CumulativeRunTimeTicks != null)
