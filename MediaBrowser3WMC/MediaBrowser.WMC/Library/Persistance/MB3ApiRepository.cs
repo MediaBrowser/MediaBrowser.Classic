@@ -281,6 +281,12 @@ namespace MediaBrowser.Library.Persistance
                         folder.RunTime =  (int)(mb3Item.CumulativeRunTimeTicks/TimeSpan.TicksPerMinute);
                     }
 
+                    // unwatched count
+                    if (mb3Item.RecursiveUnplayedItemCount != null)
+                    {
+                        folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
+                    }
+
                     // don't replace this with ?? until after the server implementing this has been released...
                     if (mb3Item.RecursiveUnplayedItemCount != null) folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                 }

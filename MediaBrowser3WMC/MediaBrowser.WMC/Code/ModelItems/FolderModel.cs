@@ -251,7 +251,6 @@ namespace MediaBrowser.Library {
             get {
                 if (unwatchedCountCache == -1) {
                     unwatchedCountCache = 0;
-                    folder.ResetUnwatchedCount();
                     Async.Queue("Unwatched Counter", () =>
                     { 
                         unwatchedCountCache = folder.UnwatchedCount;
@@ -265,6 +264,7 @@ namespace MediaBrowser.Library {
         public void ResetWatchedCount()
         {
             unwatchedCountCache = -1;
+            folder.ResetUnwatchedCount();
             FireWatchedChangedEvents();
         }
 

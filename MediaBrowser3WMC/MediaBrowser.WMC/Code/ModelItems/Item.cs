@@ -641,7 +641,7 @@ namespace MediaBrowser.Library
 
         public void ToggleWatched()
         {
-            Logger.ReportVerbose("Start ToggleWatched() initial value: " + HaveWatched.ToString());
+            //Logger.ReportVerbose("Start ToggleWatched() initial value: " + HaveWatched.ToString());
             SetWatched(!this.HaveWatched);
             lock (watchLock)
                 unwatchedCountCache = -1;
@@ -669,11 +669,12 @@ namespace MediaBrowser.Library
                     if (value && PlayState.PlayCount == 0)
                     {
                         PlayState.PlayCount = 1;
-                        //remove ourselves from the unwatched list as well
-                        if (this.PhysicalParent != null)
+                        //adjust parent counts
+                        var parent = PhysicalParent;
+                        while (parent != null)
                         {
-                            this.PhysicalParent.RemoveRecentlyUnwatched(this); //thought about asynch'ing this but its a list of 20 items...
-                            PhysicalParent.ResetWatchedCount();
+                            parent.ResetWatchedCount();
+                            parent = parent.PhysicalParent;
                         }
                         //don't add to watched list as we didn't really watch it (and it might just clutter up the list)
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("SetWatchedProf"), this.Name));
