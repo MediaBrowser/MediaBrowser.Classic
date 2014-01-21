@@ -55,7 +55,7 @@ namespace MediaBrowser.Code.ModelItems {
                 this.folder = folderModel.Folder;
                 this.sortFunction = folder.SortFunction;  //make sure this is in sync
                 ListenForChanges();
-                childLoader.Enqueue(this);
+                //childLoader.Enqueue(this);
             }
 
         }
@@ -124,9 +124,6 @@ namespace MediaBrowser.Code.ModelItems {
         public void RefreshAsap() {
             if (!childLoader.PullToFront(this)) {
                 childLoader.Inject(this);
-            }
-            if (!childVerifier.PullToFront(this)) {
-                childVerifier.Inject(this);
             }
 
         }
