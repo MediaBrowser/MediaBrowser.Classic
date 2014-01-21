@@ -440,6 +440,8 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("SortBy", query.SortBy);
 
+            dict.AddIfNotNull("IsPlayed", query.IsPlayed);
+
             if (query.SortOrder.HasValue)
             {
                 dict["sortOrder"] = query.SortOrder.ToString();
@@ -448,6 +450,11 @@ namespace MediaBrowser.ApiInteraction
             if (query.Fields != null)
             {
                 dict.Add("fields", query.Fields.Select(f => f.ToString()));
+            }
+
+            if (query.Filters != null)
+            {
+                dict.Add("Filters", query.Filters.Select(f => f.ToString()));
             }
 
             if (query.ImageTypes != null)
