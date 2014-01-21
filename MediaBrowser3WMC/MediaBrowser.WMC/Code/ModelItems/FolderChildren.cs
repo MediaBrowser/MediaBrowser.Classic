@@ -238,6 +238,7 @@ namespace MediaBrowser.Code.ModelItems {
                         try
                         {
                             currentChildren = folder.IndexBy(property).ToList();
+                            items = new Dictionary<Guid, Item>();  // clear this out to force it to re-build with new filters
                             FolderIsIndexed = true;
                         }
                         catch (Exception e)
