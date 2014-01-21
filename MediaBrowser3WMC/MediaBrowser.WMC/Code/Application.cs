@@ -1243,6 +1243,7 @@ namespace MediaBrowser
 
             Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
             Logger.ReportInfo("Startup parameters: "+ Config.StartupParms);
+            Logger.ReportInfo("Server version: "+ Kernel.ServerInfo.Version);
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
