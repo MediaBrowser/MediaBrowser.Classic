@@ -93,7 +93,7 @@ namespace MediaBrowser.Library.Entities {
         private FilterProperties _filters;
         public FilterProperties Filters
         {
-            get { return Parent != null ? Parent.Filters : _filters ?? (_filters = GetFilterProperties()); }
+            get { return GetFilterProperties(); }
             set { _filters = value; }
         }
 
@@ -116,8 +116,7 @@ namespace MediaBrowser.Library.Entities {
                 if (DisplayPreferences == null) LoadDisplayPreferences();
                 if (DisplayPreferences != null)
                 {
-                    var unWatched = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsUnWatched", Boolean.FalseString);
-                    filters.IsUnWatched = Boolean.Parse(unWatched);
+                    filters.IsUnWatched = Parent != null && Parent.Parent != null ? Parent.Filters.IsUnWatched :Boolean.Parse(DisplayPreferences.CustomPrefs.GetValueOrDefault("IsUnWatched", Boolean.FalseString));
                     filters.IsFavorite = DisplayPreferences.CustomPrefs.GetValueOrDefault("IsFavorite", null) == Boolean.TrueString;
                 }
             }
