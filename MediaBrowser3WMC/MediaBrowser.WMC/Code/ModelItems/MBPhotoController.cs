@@ -6,6 +6,7 @@ using System.Text;
 using MediaBrowser;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library;
+using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Plugins;
 
@@ -71,8 +72,8 @@ namespace MediaBrowser
             {
                 var rnd = new Random();
                 CurrentSlideShowItems = random ?
-                    folder.Folder.RecursiveMedia.OrderBy(r => rnd.Next()).Select(i => ItemFactory.Instance.Create(i)).ToList() :
-                    folder.Folder.RecursiveMedia.SkipWhile(i => i.Id != item.Id).Select(i => ItemFactory.Instance.Create(i)).ToList();
+                    folder.Folder.RecursiveChildren.OfType<Photo>().OrderBy(r => rnd.Next()).Select(i => ItemFactory.Instance.Create(i)).ToList() :
+                    folder.Folder.RecursiveChildren.OfType<Photo>().SkipWhile(i => i.Id != item.Id).Select(i => ItemFactory.Instance.Create(i)).ToList();
                 if (CurrentSlideShowItems.Count > 0)
                 {
                     Logger.ReportVerbose("***** Playing slide show items: " + CurrentSlideShowItems.Count);
