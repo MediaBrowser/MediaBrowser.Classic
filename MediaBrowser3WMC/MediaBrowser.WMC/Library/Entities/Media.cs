@@ -71,5 +71,17 @@ namespace MediaBrowser.Library.Entities {
 
         [Persist]
         public string AspectRatio { get; set; }
+
+        public override bool Watched
+        {
+            get
+            {
+                return PlaybackStatus.WasPlayed;
+            }
+            set
+            {
+                base.Watched = value;
+            }
+        }
     }
 }

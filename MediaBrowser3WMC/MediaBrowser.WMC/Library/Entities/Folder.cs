@@ -97,17 +97,6 @@ namespace MediaBrowser.Library.Entities {
             set { _filters = value; }
         }
 
-        /// <summary>
-        /// Convert our current filter settings to an ItemFilter array for queries
-        /// </summary>
-        /// <returns></returns>
-        protected ItemFilter[] GetFilterArray()
-        {
-            var filters = new List<ItemFilter>();
-            if (Filters.IsFavorite ?? false) filters.Add(ItemFilter.IsFavorite);
-            return filters.Any() ? filters.ToArray() : null;
-        }
-
         private FilterProperties GetFilterProperties()
         {
             var filters = new FilterProperties();
@@ -223,10 +212,15 @@ namespace MediaBrowser.Library.Entities {
                 lock (ActualChildren)
                 {
                     //once again, the hide empty folders feature is a problem.  causes a recursive load on big libraries
-                    IList<BaseItem> visibleChildren = ActualChildren;
+                    IList<BaseItem> visibleChildren = ActualChildren.Where(IsVisible).ToList();
                     return HideEmptyFolders ? visibleChildren.Where(i => !(i is Folder) || (i as Folder).HasMedia).ToList() : visibleChildren.ToList();
                 }
             }
+        }
+
+        protected bool IsVisible(BaseItem item)
+        {
+            return (!Filters.IsFavorite || item.IsFavorite) && (!Filters.IsUnWatched || !item.Watched);
         }
 
         /// <summary>
@@ -551,7 +545,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public bool Watched {
+        public override bool Watched {
+            get { return UnwatchedCount == 0; }
             set {
                 foreach (var item in this.EnumerateChildren()) {
                     var media = item as Media;
@@ -669,8 +664,6 @@ namespace MediaBrowser.Library.Entities {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
 
-            var filters = GetFilterArray();
-
             if (property == LocalizedStrings.Instance.GetString("GenreDispPref"))
             {
                 var query = new ItemQuery
@@ -678,8 +671,6 @@ namespace MediaBrowser.Library.Entities {
                     UserId = Kernel.CurrentUser.ApiId,
                     ParentId = ApiId,
                     Recursive = true,
-                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
-                    Filters = filters,
                     Fields = new[] { ItemFields.SortName },
                     SortBy = new[] { "SortName" }
                 };
@@ -699,8 +690,6 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
-                                    Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
                                     PersonTypes = personTypes
@@ -717,8 +706,6 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
-                                    Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
                                     PersonTypes = personTypes
@@ -734,8 +721,6 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
-                                    Filters = filters,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
 
@@ -750,8 +735,6 @@ namespace MediaBrowser.Library.Entities {
                                     UserId = Kernel.CurrentUser.ApiId,
                                     ParentId = ApiId,
                                     Recursive = true,
-                                    Filters = filters,
-                                    IsPlayed = Filters.IsUnWatched ? false : (bool?)null,
                                     Fields = new[] { ItemFields.SortName },
                                     SortBy = new[] {"SortName"},
 
@@ -1047,7 +1030,7 @@ namespace MediaBrowser.Library.Entities {
 
         protected virtual List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, null, GetFilterArray(), Filters.IsUnWatched ? false : (bool?)null).ToList();
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId).ToList();
         }
 
         public bool HasVideoChildren {
