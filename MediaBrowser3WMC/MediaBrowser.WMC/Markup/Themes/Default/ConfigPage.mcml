@@ -147,9 +147,9 @@
 
       <Choice Name="ThemeModel">
         <Options>
-          <cor:String String="Default" />
+          <cor:String String="Blue" />
           <cor:String String="Black" />
-          <cor:String String="Extender Default" />
+          <cor:String String="Extender Blue" />
           <cor:String String="Extender Black" />
         </Options>
       </Choice>

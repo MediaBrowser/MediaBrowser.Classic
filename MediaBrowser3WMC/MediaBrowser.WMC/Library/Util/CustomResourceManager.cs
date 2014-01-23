@@ -95,20 +95,19 @@ namespace MediaBrowser.Library.Util
                 }
                 else
                 {
-                    var styleTheme = config != null ? config.Theme : "Default";
+                    var styleTheme = config != null ? config.Theme : "Black";
                     // new options must be added to the ThemeModel choice in configpage.mcml
                     switch (styleTheme)
                     {
                         case "Black":
                             File.WriteAllBytes(file, Resources.StylesBlack);
                             break;
-                        case "Extender Default":
+                        case "Extender Blue":
                             File.WriteAllBytes(file, Resources.StylesDefaultExtender);
                             break;
                         case "Extender Black":
                             File.WriteAllBytes(file, Resources.StylesBlackExtender);
                             break;
-                        case "Default":
                         default:
                             File.WriteAllBytes(file, Resources.StylesDefault);
                             break;
@@ -216,7 +215,6 @@ namespace MediaBrowser.Library.Util
                         case "Black":
                             AppendXML(file, blackStyleResource);
                             break;
-                        case "Default":
                         default:
                             AppendXML(file, stdStyleResource);
                             break;

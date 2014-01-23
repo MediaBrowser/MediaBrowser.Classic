@@ -266,8 +266,7 @@ namespace MediaBrowser
         public bool RememberFilters = false;
         [Dangerous]
         [Group("Display")]
-        [Comment(@"The view theme to use.")]
-        public string Theme = "Default";
+        public string Theme = "Black";
         [Dangerous]
         [Group("Display")]
         [Comment(@"The set of fonts/colors to use.")]
