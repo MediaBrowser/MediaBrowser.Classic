@@ -613,8 +613,7 @@ namespace MediaBrowser
         [Comment(@"Enable more advanced commands.")]
         public bool EnableAdvancedCmds
         {
-            get { return this.Data.EnableAdvancedCmds; }
-            set { if (this.Data.EnableAdvancedCmds != value) { this.Data.EnableAdvancedCmds = value; Save(); FirePropertyChanged("EnableAdvancedCmds"); } }
+            get { return Kernel.CurrentUser.Dto.Configuration.IsAdministrator; }
         }
 
         [Comment(@"Advanced Command: Enable Delete")]

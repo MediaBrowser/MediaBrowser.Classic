@@ -34,6 +34,7 @@
 
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
+      <BooleanChoice Name="EnableDelete" Value="[Application.Config.Advanced_EnableDelete]" />
 
       <Choice Name="SystemClassModel">
         <Options>
@@ -59,6 +60,7 @@
       <Binding Source="[PluginUpdateClass]" Target="[Application.Config.PluginUpdateClass]" />
       <Binding Source="[EnableTraceLogging.Value]" Target="[Application.Config.EnableTraceLogging]" />
       <Binding Source="[EnableUpdates.Value]" Target="[Application.Config.EnableUpdates]" />
+      <Binding Source="[EnableDelete.Value]" Target="[Application.Config.Advanced_EnableDelete]" />
 
       <Binding Target="[Logging.Label]" Source="[Application.LocalStrings.#LoggingConfig!cor:String]">
         <Transformer>
@@ -87,6 +89,12 @@
                       <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
                       <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" />
+                    </Children>
+                  </Panel>
+                  <Panel Layout="VerticalFlow" >
+                    <Children>
+                      <cp:TextHeader Text="[Application.LocalStrings.#MediaOptionsConfig!cor:String]" />
+                      <cb:CheckBox Name="Delete" Label="[Application.LocalStrings.#EnableDeleteConfig!cor:String]" Checked="[EnableDelete]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>

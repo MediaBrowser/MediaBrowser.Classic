@@ -71,7 +71,6 @@
       <BooleanChoice Name="InheritDefaultView" Value="[Application.Config.InheritDefaultView]" />
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
-      <BooleanChoice Name="EnableAdvancedCmds" Value="[Application.Config.EnableAdvancedCmds]" />
       <BooleanChoice Name="ShowBackdrop" Value="[Application.Config.ShowBackdrop]" />
       <BooleanChoice Name="RandomizeBackdrop" Value="[Application.Config.RandomizeBackdrops]" />
       <BooleanChoice Name="RotateBackdrop" Value="[Application.Config.RotateBackdrops]" />
@@ -361,7 +360,6 @@
       <Binding Source="[TreatWatchedAsInProgress.Value]" Target="[Config.TreatWatchedAsInProgress]" />
       <Binding Source="[InheritDefaultView.Value]" Target="[Config.InheritDefaultView]" />
       <Binding Source="[ShowClock.Value]" Target="[Config.ShowClock]" />
-      <Binding Source="[EnableAdvancedCmds.Value]" Target="[Config.EnableAdvancedCmds]" />
       <Binding Source="[ShowBackdrop.Value]" Target="[Config.ShowBackdrop]" />
       <Binding Source="[RandomizeBackdrop.Value]" Target="[Config.RandomizeBackdrops]" />
       <Binding Source="[RotateBackdrop.Value]" Target="[Config.RotateBackdrops]" />
@@ -649,7 +647,6 @@
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#PosterGridSpacingConfig!cor:String]" Model="[GridSpacing]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#ThumbWidthSplitConfig!cor:String]" Model="[ThumbStripPosterWidth]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#BreadcrumbCountConfig!cor:String]" Model="[BreadcrumbCount]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <cb:CheckBox Label="[Application.LocalStrings.#EnableAdvancedCmdsConfig!cor:String]" Checked="[EnableAdvancedCmds]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont" Visible="false"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" >
