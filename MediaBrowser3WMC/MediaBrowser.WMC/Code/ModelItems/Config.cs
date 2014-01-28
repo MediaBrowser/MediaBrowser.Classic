@@ -483,7 +483,8 @@ namespace MediaBrowser
         public bool FindServerAutomatically
         {
             get { return this.CommonData.FindServerAutomatically; }
-            set { if (this.CommonData.FindServerAutomatically != value) { this.CommonData.FindServerAutomatically = value; Save(); FirePropertyChanged("FindServerAutomatically"); } }
+            set { if (this.CommonData.FindServerAutomatically != value) { this.CommonData.FindServerAutomatically = value;
+                CommonData.ServerAddress = Kernel.ApiClient.ServerHostName; Save(); FirePropertyChanged("FindServerAutomatically"); } }
         }
 
         public string AssumeWatchedBeforeStr
