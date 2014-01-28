@@ -1287,6 +1287,23 @@ namespace MediaBrowser
             }
         }
 
+        public bool AutoLogin
+        {
+            get { return Kernel.Instance.CommonConfigData.LogonAutomatically; }
+            set
+            {
+                if (Kernel.Instance.CommonConfigData.LogonAutomatically != value)
+                {
+                    Kernel.Instance.CommonConfigData.LogonAutomatically = value;
+                    Kernel.Instance.CommonConfigData.AutoLogonUserName = Kernel.CurrentUser.Name;
+                    Kernel.Instance.CommonConfigData.AutoLogonPw = Kernel.CurrentUser.PwHash;
+                    Kernel.Instance.CommonConfigData.Save();
+                    FirePropertyChanged("AutoLogin");
+                }
+            }
+        }
+
+        public string AutoLoginUserName { get { return Kernel.Instance.CommonConfigData.AutoLogonUserName; } }
         
         /// <summary>
         /// Logout current user and re-display login screen
@@ -1375,6 +1392,8 @@ namespace MediaBrowser
                 {
                     //Logger.ReportVerbose("Authenticating with pw: {0} ({1})",CustomPINEntry, pw);
                     Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
+                    //If we get here the pw was correct - save it so we can use it if automatically logging in
+                    user.PwHash = pw;
                 }
                 else
                 {

@@ -94,10 +94,13 @@ namespace MediaBrowser.Library.Localization
         public string ShowUnairedItemsConfigDesc = "Enable to show TV episodes that have information but have yet to actually air";
         public string ShowMissingItemsConfigDesc = "Enable to show TV episodes that exist but are not actually in your collection";
         public string HttpTimeoutConfigDesc = "The maximum amount of time to wait for the server to respond to a request. 1000 = 1 second.";
+        public string StartUpConfigDesc = "Whether to show the user profile screen or automatically log in at start up.";
 
 
         //Config Panel
         public string AdvancedConfig = "Advanced";
+        public string LoginConfig = "Log In";
+        public string StartUpConfig = "Start Up Behaviour";
         public string LibraryConfig = "Library";
         public string ConfigConfig = "Configuration";
         public string VersionConfig = "Version";

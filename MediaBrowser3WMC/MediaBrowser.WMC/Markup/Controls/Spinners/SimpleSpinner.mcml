@@ -20,6 +20,7 @@
       <EditableText Name="FocusItem" />
       <Size Name="LabelMinSize" Size="200,0"/>
       <Size Name="ValueMinSize" Size="150,35"/>
+      <Size Name="ValueMaxSize" Size="175,35"/>
     </Properties>
 
     <Locals>
@@ -82,7 +83,7 @@
                        Command="[Next]"/>
 
           <!-- Current value -->
-          <ColorFill Name="Background" Content="Transparent" MinimumSize="[ValueMinSize]" MaximumSize="175,35" Padding="5,0,0,5">
+          <ColorFill Name="Background" Content="Transparent" MinimumSize="[ValueMinSize]" MaximumSize="[ValueMaxSize]" Padding="5,0,0,5">
             <Children>
               <Text Name="Value" Font="[ValueFont]" Color="color://s:FontColorLight" />
             </Children>

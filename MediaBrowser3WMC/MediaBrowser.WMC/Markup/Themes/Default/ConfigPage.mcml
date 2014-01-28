@@ -157,6 +157,12 @@
           <cor:String String="Small" />
         </Options>
       </Choice>
+      <Choice Name="StartUp">
+        <Options>
+          <cor:String String="Show Profile Screen" />
+          <cor:String String="Log in as Me" />
+        </Options>
+      </Choice>
       <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]" />
       
       <BooleanChoice Name="ThemeLoaded" Value="false" />
@@ -182,6 +188,46 @@
         </Conditions>
         <Actions>
           <Invoke Target="[FullConfigNav.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Default Target="[StartUp.ChosenIndex]" Value="1">
+        <Conditions>
+          <Equality Source="[Application.AutoLogin]" Value="true" />
+          <Equality Source="[Application.AutoLoginUserName]" Value="[Application.CurrentUser.Name]" />
+        </Conditions>
+      </Default>
+
+      <Default Target="[AutoLogin.Visible]" Value="false">
+        <Conditions>
+          <Equality Source="[Application.AutoLogin]" Value="true" />
+          <Equality Source="[Application.AutoLoginUserName]" ConditionOp="NotEquals" Value="[Application.CurrentUser.Name]" />
+        </Conditions>
+        <Actions>
+          <Set Target="[LoginAsOther.Visible]" Value="true" />
+          <Set Target="[LoginAsOther.Content]" Value="[Application.AutoLoginUserName]" >
+            <Transformer>
+              <FormatTransformer Format="Configured to Login as {0}"/>
+            </Transformer>
+          </Set>
+        </Actions>
+      </Default>
+
+      <Changed Source="[StartUp.Chosen]" >
+        <Conditions>
+          <Equality Source="[StartUp.ChosenIndex]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.AutoLogin]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[StartUp.Chosen]" >
+        <Conditions>
+          <Equality Source="[StartUp.ChosenIndex]" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.AutoLogin]" Value="true" />
         </Actions>
       </Changed>
 
@@ -525,6 +571,9 @@
                       <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <me:TextHeader Text="[Application.LocalStrings.#LoginConfig!cor:String]" />
+                      <ss:SimpleSpinner Name="AutoLogin" Label="[Application.LocalStrings.#StartUpConfig!cor:String]"  Model="[StartUp]" ValueMinSize="230,35" ValueMaxSize="230,35" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <Text Name="LoginAsOther" Content="Configured to Login as"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" Color="color://s:FontColorMedium" Alpha=".6" Visible="false"/>
                     </Children>
                   </Panel>
                 </Children>

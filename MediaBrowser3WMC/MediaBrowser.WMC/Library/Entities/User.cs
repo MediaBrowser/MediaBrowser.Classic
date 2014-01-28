@@ -11,6 +11,7 @@ namespace MediaBrowser.Library.Entities
     {
         public UserDto Dto { get; set; }
         public bool HasPassword { get { return Dto.HasPassword; }}
+        public string PwHash { get; set; }
 
         public override string PrimaryImagePath
         {
