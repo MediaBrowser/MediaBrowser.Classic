@@ -32,6 +32,9 @@
       <cor:String Name="SystemUpdateClass" String="[Application.Config.SystemUpdateClass]" />
       <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
 
+      <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
+      <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
+
       <Choice Name="SystemClassModel">
         <Options>
           <cor:String String="Dev" />
@@ -54,7 +57,20 @@
       <Binding Source="[SystemClassModel.Chosen!cor:String]" Target="[Application.Config.SystemUpdateClass]" />
       <Binding Source="[SystemUpdateClass]" Target="[Application.Config.SystemUpdateClass]" />
       <Binding Source="[PluginUpdateClass]" Target="[Application.Config.PluginUpdateClass]" />
+      <Binding Source="[EnableTraceLogging.Value]" Target="[Application.Config.EnableTraceLogging]" />
+      <Binding Source="[EnableUpdates.Value]" Target="[Application.Config.EnableUpdates]" />
 
+      <Binding Target="[Logging.Label]" Source="[Application.LocalStrings.#LoggingConfig!cor:String]">
+        <Transformer>
+          <FormatTransformer Format="{0}                   "/>
+        </Transformer>
+      </Binding>
+
+      <Binding Target="[Updates.Label]" Source="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]">
+        <Transformer>
+          <FormatTransformer Format="{0}                       "/>
+        </Transformer>
+      </Binding>
 
     </Rules>
 
@@ -65,8 +81,10 @@
                   <Panel Layout="VerticalFlow" >
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
+                      <cb:CheckBox Name="Logging" Label="" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <cp:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
+                      <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
                       <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" />
                     </Children>

@@ -532,7 +532,7 @@ namespace MediaBrowser.Library {
             kernel.RootFolder = new AggregateFolder {Name = "My Media", Id = new Guid("{F6109BAE-CA26-4746-9EBC-1CD233A7B56F}")};
 
             //create our default config panels with localized names
-            kernel.AddConfigPanel(kernel.StringData.GetString("SystemOptionsConfig"), "");
+            kernel.AddConfigPanel(kernel.StringData.GetString("GeneralConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ViewOptionsConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
             //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
