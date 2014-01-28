@@ -487,6 +487,15 @@ namespace MediaBrowser
                 CommonData.ServerAddress = Kernel.ApiClient.ServerHostName; Save(); FirePropertyChanged("FindServerAutomatically"); } }
         }
 
+        public bool WakeServer
+        {
+            get { return this.CommonData.WakeServer; }
+            set
+            {
+                if (this.CommonData.WakeServer != value) { this.CommonData.WakeServer = value; Save(); FirePropertyChanged("WakeServer"); }
+            }
+        }
+
         public string AssumeWatchedBeforeStr
         {
             get { return this.AssumeWatchedBefore.ToString("MMM yyyy"); }

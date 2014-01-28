@@ -35,6 +35,7 @@
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
       <BooleanChoice Name="EnableDelete" Value="[Application.Config.Advanced_EnableDelete]" />
+      <BooleanChoice Name="WakeServer" Value="[Application.Config.WakeServer]" />
 
       <IntRangedValue Name="ServerPort" Value="[Application.Config.ServerPort]" MaxValue="9999" MinValue="0" Step="1" />
 
@@ -71,6 +72,7 @@
       <Binding Source="[EnableUpdates.Value]" Target="[Application.Config.EnableUpdates]" />
       <Binding Source="[EnableDelete.Value]" Target="[Application.Config.Advanced_EnableDelete]" />
       <Binding Source="[ServerPort.Value]" Target="[Application.Config.ServerPort]" />
+      <Binding Source="[WakeServer.Value]" Target="[Application.Config.WakeServer]" />
 
       <Default Target="[ServerConnectModel.ChosenIndex]" Value="1">
         <Conditions>
@@ -108,6 +110,12 @@
         </Transformer>
       </Binding>
 
+      <Binding Target="[WOL.Label]" Source="[Application.LocalStrings.#WakeServerConfig!cor:String]">
+        <Transformer>
+          <FormatTransformer Format="{0}                       "/>
+        </Transformer>
+      </Binding>
+
     </Rules>
 
     <Content>
@@ -120,6 +128,7 @@
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" />
+                      <cb:CheckBox Name="WOL" Label="[Application.LocalStrings.#WakeServerConfig!cor:String]" Checked="[WakeServer]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <cp:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
                       <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />

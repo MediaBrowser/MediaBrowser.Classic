@@ -98,6 +98,7 @@ namespace MediaBrowser.Library.Localization
         public string EnableDeleteConfigDesc = "Allow Admin users to delete media items. W A R N I N G - This will DELETE actual media files from your system.";
         public string ConnectionConfigDesc = "Either connect to this server each time or find an available server at start up.";
         public string PortConfigDesc = "The configured port for your server. Default 8096.";
+        public string WakeServerConfigDesc = "Try to wake up the last known server when MBC starts (in case it is in sleep mode).";
 
 
         //Config Panel
@@ -211,6 +212,7 @@ namespace MediaBrowser.Library.Localization
         public string ServerConfig = "Server";
         public string ConnectionConfig = "Connection";
         public string PortConfig = "Port";
+        public string WakeServerConfig = "Attempt to Wake";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";
