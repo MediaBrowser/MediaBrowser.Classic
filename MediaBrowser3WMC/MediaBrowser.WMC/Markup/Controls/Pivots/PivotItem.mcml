@@ -68,7 +68,7 @@
         </Animations>
         
         <Children>
-          <ColorFill Name="Bg" Content="Transparent" Padding="10,5,10,5" >
+          <ColorFill Name="Bg" Content="Transparent" Padding="10,0,10,5" >
             <Children>
               <Text Name="Name" Font="font://f:PivotItemFont" Color="color://s:FontColorDark" Content="[Label]" />
             </Children>

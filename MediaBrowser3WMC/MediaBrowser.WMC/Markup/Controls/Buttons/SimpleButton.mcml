@@ -37,7 +37,6 @@
 
       <Binding Source="[Command]" Target="[Clicker.Command]" />
       <Binding Source="[Command.Available]" Target="[Input.KeyInteractive]" />
-      <!--<Binding Source="[Input.KeyFocus]" Target="[imgFocusOverlay.Visible]" />-->
       <Binding Source="[Font]" Target="[Label.Font]" />
       <Binding Source="[Text]" Target="[Label.Content]" />
       <Default Target="[Input.KeyInteractive]" Value="true" />
@@ -48,9 +47,6 @@
         </Conditions>
         <Actions>
           <Set Target="[imgButton.MaximumSize]" Value="1000,1000"/>
-          <!--<Set Target="[imgFocusOverlay.MaximumSize]" Value="1000,1000"/>-->
-          <Set Target="[imgButton.SizingPolicy]"  Value="SizeToConstraint"/>
-          <!--<Set Target="[imgFocusOverlay.SizingPolicy]"  Value="SizeToConstraint"/>-->
         </Actions>
       </Rule>
       
@@ -85,7 +81,7 @@
           <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
         </Conditions>
         <Actions>
-          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+          <Set Target="[imgButton.Content]" Value="60,60,60"/>
           <PlaySound Sound="sound://sd:Focus" />
         </Actions>
       </Condition>
@@ -95,13 +91,12 @@
           <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
         </Conditions>
         <Actions>
-          <Set Target="[imgButton.Content]" Value="[ImageFocus]"/>
+          <Set Target="[imgButton.Content]" Value="60,60,60"/>
         </Actions>
       </Condition>
 
       <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="false">
         <Actions>
-          <Set Target="[imgButton.Content]" Value="[ImageDormant]" />
           <Set Target="[imgButton.Alpha]" Value=".5" />
         </Actions>
       </Condition>
@@ -125,33 +120,19 @@
 
       <Panel>
         <Children>
-          <Graphic Name="imgButton"
-                   Content="[ImageNoFocus]"
+          <ColorFill Name="imgButton"
+                   Content="Transparent"
                    Padding="12,7,12,7"
                    MouseInteractive="true"
                    MinimumSize="[Size]"
                    MaximumSize="[Size]"
-                   HorizontalAlignment="Fill"
-                   VerticalAlignment="Fill"
 				   Layout="Center"
                    >
             <Children>
               <Text Name="Label" Color="[Color]" Margins="0,0,0,0" Font="[Font]" HorizontalAlignment="Center" />
             
             </Children>
-          </Graphic>
-
-          <!--<Graphic Name="imgFocusOverlay"
-                   Content="image://me:ButtonLeftFocusOverlay"
-                   MinimumSize="[Size]"
-                   MaximumSize="[Size]"
-                   HorizontalAlignment="Fill"
-                   VerticalAlignment="Fill"
-                   >
-            <Animations>
-              <Animation Animation="animation://an:ButtonFocusOverlayIdle"/>
-            </Animations>
-          </Graphic>-->
+          </ColorFill>
 
         </Children>
       </Panel>
