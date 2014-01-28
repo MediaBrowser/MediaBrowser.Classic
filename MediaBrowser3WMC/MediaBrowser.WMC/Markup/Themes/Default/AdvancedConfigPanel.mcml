@@ -36,6 +36,8 @@
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
       <BooleanChoice Name="EnableDelete" Value="[Application.Config.Advanced_EnableDelete]" />
 
+      <IntRangedValue Name="ServerPort" Value="[Application.Config.ServerPort]" MaxValue="9999" MinValue="0" Step="1" />
+
       <Choice Name="SystemClassModel">
         <Options>
           <cor:String String="Dev" />
@@ -50,6 +52,13 @@
           <cor:String String="Release" />
         </Options>
       </Choice>
+
+      <Choice Name="ServerConnectModel">
+        <Options>
+          <cor:String String="Find Automatically" />
+          <cor:String String="[Application.ServerAddressOptionString]" />
+        </Options>
+      </Choice>
     </Locals>
     
     <Rules>
@@ -61,6 +70,31 @@
       <Binding Source="[EnableTraceLogging.Value]" Target="[Application.Config.EnableTraceLogging]" />
       <Binding Source="[EnableUpdates.Value]" Target="[Application.Config.EnableUpdates]" />
       <Binding Source="[EnableDelete.Value]" Target="[Application.Config.Advanced_EnableDelete]" />
+      <Binding Source="[ServerPort.Value]" Target="[Application.Config.ServerPort]" />
+
+      <Default Target="[ServerConnectModel.ChosenIndex]" Value="1">
+        <Conditions>
+          <Equality Source="[Application.Config.FindServerAutomatically]" Value="false" />
+        </Conditions>
+      </Default>
+
+      <Changed Source="[ServerConnectModel.Chosen]" >
+        <Conditions>
+          <Equality Source="[ServerConnectModel.ChosenIndex]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.Config.FindServerAutomatically]" Value="true" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ServerConnectModel.Chosen]" >
+        <Conditions>
+          <Equality Source="[ServerConnectModel.ChosenIndex]" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.Config.FindServerAutomatically]" Value="false" />
+        </Actions>
+      </Changed>
 
       <Binding Target="[Logging.Label]" Source="[Application.LocalStrings.#LoggingConfig!cor:String]">
         <Transformer>
@@ -82,9 +116,10 @@
                 <Children>
                   <Panel Layout="VerticalFlow" >
                     <Children>
-                      <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
-                      <cb:CheckBox Name="Logging" Label="" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <cp:TextHeader Text="[Application.LocalStrings.#ServerConfig!cor:String]" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" />
                       <cp:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
                       <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
@@ -95,6 +130,8 @@
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#MediaOptionsConfig!cor:String]" />
                       <cb:CheckBox Name="Delete" Label="[Application.LocalStrings.#EnableDeleteConfig!cor:String]" Checked="[EnableDelete]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
+                      <cb:CheckBox Name="Logging" Label="" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>

@@ -474,6 +474,18 @@ namespace MediaBrowser
             set { if (this.Data.AssumeWatchedBefore != value) { this.Data.AssumeWatchedBefore = value; Save(); FirePropertyChanged("AssumeWatchedBefore"); FirePropertyChanged("AssumeWatchedBeforeStr"); } }
         }
 
+        public int ServerPort
+        {
+            get { return this.CommonData.ServerPort; }
+            set { if (this.CommonData.ServerPort != value) { this.CommonData.ServerPort = value; Save(); FirePropertyChanged("ServerPort"); } }
+        }
+
+        public bool FindServerAutomatically
+        {
+            get { return this.CommonData.FindServerAutomatically; }
+            set { if (this.CommonData.FindServerAutomatically != value) { this.CommonData.FindServerAutomatically = value; Save(); FirePropertyChanged("FindServerAutomatically"); } }
+        }
+
         public string AssumeWatchedBeforeStr
         {
             get { return this.AssumeWatchedBefore.ToString("MMM yyyy"); }

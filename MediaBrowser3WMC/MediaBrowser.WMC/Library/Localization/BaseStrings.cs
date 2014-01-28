@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0075";
+        const string VERSION = "1.0076";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -96,6 +96,8 @@ namespace MediaBrowser.Library.Localization
         public string HttpTimeoutConfigDesc = "The maximum amount of time to wait for the server to respond to a request. 1000 = 1 second.";
         public string StartUpConfigDesc = "Whether to show the user profile screen or automatically log in at start up.";
         public string EnableDeleteConfigDesc = "Allow Admin users to delete media items. W A R N I N G - This will DELETE actual media files from your system.";
+        public string ConnectionConfigDesc = "Either connect to this server each time or find an available server at start up.";
+        public string PortConfigDesc = "The configured port for your server. Default 8096.";
 
 
         //Config Panel
@@ -204,8 +206,11 @@ namespace MediaBrowser.Library.Localization
         public string SystemClassConfig = "System Update Level";
         public string CheckForUpdateConfig = "Check for Update";
         public string TreatWatchedAsInProgressConfig = "Make 'Watched' list in-progress";
-        public string HttpTimeoutConfig = "Server Communication Timeout";
+        public string HttpTimeoutConfig = "Communication Timeout";
         public string EnableDeleteConfig = "Enable Media Delete";
+        public string ServerConfig = "Server";
+        public string ConnectionConfig = "Connection";
+        public string PortConfig = "Port";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";

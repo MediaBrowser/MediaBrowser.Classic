@@ -1304,6 +1304,10 @@ namespace MediaBrowser
         }
 
         public string AutoLoginUserName { get { return Kernel.Instance.CommonConfigData.AutoLogonUserName; } }
+
+        public string CurrentServerAddress { get { return Kernel.ApiClient.ServerHostName; } }
+
+        public string ServerAddressOptionString { get { return "This Server (" + CurrentServerAddress + ")"; } }
         
         /// <summary>
         /// Logout current user and re-display login screen
