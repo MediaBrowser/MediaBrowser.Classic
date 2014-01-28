@@ -11,10 +11,10 @@
 
 	<!-- Config Page -->
 	<Font Name="CP_ConfigTitleFont" Font="Segoe Media Center Light, 36"/>
-	<Font Name="CP_ConfigItemFont" Font="Segoe Media Center Semibold,16"/>
-	<Font Name="CP_ConfigHeaderFont" Font="Segoe Media Center Semibold, 20"/>
-	<Font Name="CP_ButtonFont" Font="Segoe Media Center, 20" />
-	<Font Name="CP_ColorSpinnerValueFont" Font="Segoe Media Center,10"/>
+	<Font Name="CP_ConfigItemFont" Font="Segoe Media Center Light,16, Bold"/>
+	<Font Name="CP_ConfigHeaderFont" Font="Segoe Media Center Light, 20, Bold"/>
+	<Font Name="CP_ButtonFont" Font="Segoe Media Center Light, 20, Bold" />
+	<Font Name="CP_ColorSpinnerValueFont" Font="Segoe Media Center Light,10"/>
 	<Font Name="CP_VersionFont" Font="Segoe Media Center, 10"/>
   
   <!-- Message -->
@@ -108,8 +108,8 @@
 	<Font Name="PV_CounterFont" Font="Segoe Media Center, 18"/>
 
 	<!-- General -->
-	<Font Name="PivotItemFont" Font="Segoe Media Center Semibold,19"/>
-	<Font Name="PivotItemFocusFont" Font="Segoe Media Center Semibold,20"/>
+	<Font Name="PivotItemFont" Font="Segoe Media Center Light, 19, Bold"/>
+	<Font Name="PivotItemFocusFont" Font="Segoe Media Center Light,22, Bold"/>
 
 	<!-- Cover Flow View -->
 	<Font Name="CV_TitleFont" Font="Segoe Media Center,26"/>
