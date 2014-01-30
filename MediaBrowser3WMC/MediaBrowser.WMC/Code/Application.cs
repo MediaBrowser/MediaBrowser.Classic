@@ -1495,6 +1495,10 @@ namespace MediaBrowser
             }
             else
             {
+                // add plug-ins config panel if admin
+                if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator)
+                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
+                
                 // load plugins
                 Kernel.Instance.LoadPlugins();
 

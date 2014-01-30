@@ -119,7 +119,7 @@
     </Rules>
 
     <Content>
-              <Graphic Name="Advanced" Content="image://cp:50AlphaBg" Layout="HorizontalFlow"
+              <Panel Name="Advanced" Layout="HorizontalFlow"
                        MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
                 <Children>
                   <Panel Layout="VerticalFlow" >
@@ -144,10 +144,38 @@
                     </Children>
                   </Panel>
                 </Children>
-              </Graphic>
+              </Panel>
 
     </Content>
 
   </UI>
 
+  <UI Name="PluginsPanel">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <EditableText Name="FocusItem" />
+    </Properties>
+    <Locals>
+      <Inset Name="CMargin" Inset="25,0,0,0" />
+      <Inset Name="SMargin" Inset="10,0,0,0" />
+      <Size Name="LabelSize1" Size="250,0" />
+      <Size Name="PanelSize" Size="800,400" />
+
+    </Locals>
+    
+    <Content>
+              <Panel Name="Plugins" Layout="HorizontalFlow"
+                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                <Children>
+                  <Panel Layout="VerticalFlow" >
+                    <Children>
+                      <cp:TextHeader Text="[Application.LocalStrings.#InstalledPluginsConfig!cor:String]" />
+                    </Children>
+                  </Panel>
+                </Children>
+              </Panel>
+
+    </Content>
+
+  </UI>
 </Mcml>

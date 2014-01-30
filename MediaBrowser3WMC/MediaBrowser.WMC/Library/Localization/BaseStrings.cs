@@ -213,6 +213,8 @@ namespace MediaBrowser.Library.Localization
         public string ConnectionConfig = "Connection";
         public string PortConfig = "Port";
         public string WakeServerConfig = "Attempt to Wake";
+        public string PluginsConfig = "Plug-ins";
+        public string InstalledPluginsConfig = "Installed Plug-ins";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";
