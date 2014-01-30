@@ -1,14 +1,15 @@
 ﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
 	  xmlns:cor="assembly://MSCorLib/System"
     xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
 	  xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
 	  xmlns:s="file://Styles_DoNotEdit.mcml"
 	  xmlns:f="file://Fonts_DoNotEdit.mcml"
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
     xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
     xmlns:cp="resx://MediaBrowser/MediaBrowser.Resources/ConfigPage"  
-      
->
+    xmlns:me="Me"
+  >
   <!--*****************************************************************************************************************
 
     This is an example of a config panel for your theme.  Modify this to include any theme-specific options you require.
@@ -170,6 +171,14 @@
                   <Panel Layout="VerticalFlow" >
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#InstalledPluginsConfig!cor:String]" />
+                      <Repeater Name="PluginList" Layout="Grid" Source="[Application.InstalledPluginsCollection.Items]" Margins="[CMargin]" MaximumSize="0,300" >
+                        <Layout>
+                          <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="4,4"/>
+                        </Layout>
+                        <Content>
+                          <me:PluginListItem Application="[Application]" Item="[RepeatedItem!lib:PluginItem]" Parent="[Application.InstalledPluginsCollection]" Index="[RepeatedItemIndex]" />
+                        </Content>
+                      </Repeater>
                     </Children>
                   </Panel>
                 </Children>
@@ -178,4 +187,89 @@
     </Content>
 
   </UI>
+
+<UI Name="PluginListItem">
+  <Properties>
+    <a:Application Name="Application" Application="$Required"/>
+    <lib:PluginItem Name="Item" lib:PluginItem="$Required" />
+    <lib:PluginItemCollection Name="Parent" lib:PluginItemCollection="$Required" />
+    <Index Name="Index" Index="$Required"/>
+  </Properties>
+
+  <Rules>
+    <Default Target="[Input.KeyInteractive]" Value="true" />
+  
+    <Changed Source="[Input.DeepKeyFocus]" >
+      <Conditions>
+        <Equality Source="[Input.DeepKeyFocus]" Value="true" />
+      </Conditions>
+      <Actions>
+        <Set Target="[Parent.SelectedItemIndex]" Value="[Index.Value]" />
+        <Set Target="[Main.Content]" Value="60,60,60" />
+      </Actions>
+    </Changed>
+  
+    <Condition Source="[Item.IsRegistered]" SourceValue="true" Target="[RegInd.Content]" Value="0,80,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Registered" />
+      </Actions>
+    </Condition>
+
+  <Condition Source="[Item.IsInTrial]" SourceValue="true" Target="[RegInd.Content]" Value="0,80,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="[Item.TrialDaysLeft]" >
+          <Transformer>
+            <FormatTransformer Format="{0} Days Left"/>
+          </Transformer>
+        </Set>
+      </Actions>
+    </Condition>
+    
+  <Condition Source="[Item.IsExpired]" SourceValue="true" Target="[RegInd.Content]" Value="80,0,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Expired" >
+        </Set>
+      </Actions>
+    </Condition>
+    
+  <Condition Source="[Item.IsFree]" SourceValue="true" Target="[RegInd.Content]" Value="0,80,80" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Free" >
+        </Set>
+      </Actions>
+    </Condition>
+  </Rules>
+
+  <Content>
+    <ColorFill Name="Main" Content="Transparent" Padding="5,0,5,0"  >
+      <Children>
+        <Panel Layout="VerticalFlow" MinimumSize="300,0" MaximumSize="300,0" >
+          <Children>
+            <Panel Layout="Anchor">
+              <Children>
+                <Text Content="[Item.Name]" Font="font://f:CP_ConfigItemFont" MaximumSize="200,0"  Color="color://s:FontColorMedium" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Near"/>
+                  </LayoutInput>
+                </Text>
+                <ColorFill Name="RegInd" Content="Transparent" Padding="2,0,2,0" Margins="0,4,4,0" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Far"/>
+                  </LayoutInput>
+                  <Children>
+                    <Text Name="RegText"  Font="Segoe Media Center, 10"  Color="color://s:FontColorLight" />
+                  </Children>
+                </ColorFill>
+                
+              </Children>
+            </Panel>
+            <Text Content="[Item.InstalledVersionDisplay]" Font="Segoe Media Center light, 14"  Color="color://s:FontColorMedium" />
+            <ColorFill Content="White" Alpha=".3" MaximumSize="300,2" MinimumSize="300,2" />
+          </Children>
+        </Panel>
+      </Children>
+    </ColorFill>
+
+  </Content>
+</UI>
 </Mcml>

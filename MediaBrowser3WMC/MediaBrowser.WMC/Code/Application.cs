@@ -24,14 +24,17 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables;
+using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
+using MediaBrowser.Model.Updates;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
@@ -765,6 +768,39 @@ namespace MediaBrowser
             }
         }
 
+        public PluginItemCollection InstalledPluginsCollection { get; set; }
+        public PluginItemCollection AvailablePluginsCollection { get; set; }
+        protected List<PackageInfo> Packages { get; set; }
+        protected bool PackagesRetrieved = false;
+
+        public void RefreshPluginCollections()
+        {
+            AvailablePluginsCollection = new PluginItemCollection(Packages);
+
+            var installedPluginItems = new List<PluginItem>();
+
+            foreach (var plugin in Kernel.Instance.Plugins)
+            {
+                var current = plugin;
+                var catalogPlugin = AvailablePluginsCollection.Items.FirstOrDefault(i => i.TargetFilename.Equals(current.Filename, StringComparison.OrdinalIgnoreCase));
+                var installedPlugin = new PluginItem(catalogPlugin != null ? catalogPlugin.Info : new PackageInfo
+                                                                                          {
+                                                                                              name = current.Name, 
+                                                                                              overview = current.Description, 
+                                                                                              isPremium = current.IsPremium, 
+                                                                                              targetFilename = current.Filename
+                                                                                          });
+                installedPlugin.InstalledVersion = current.Version.ToString();
+                var catalogVersion = catalogPlugin != null ? catalogPlugin.Versions.FirstOrDefault(v => v.version == current.Version) : null;
+                installedPlugin.InstalledVersionClass = catalogVersion != null ? " (" + catalogVersion.classification.ToString() + ")" : "";
+
+                installedPluginItems.Add(installedPlugin);
+
+            }
+
+            InstalledPluginsCollection = new PluginItemCollection(installedPluginItems);
+        }
+
         public FavoritesCollectionFolder FavoritesFolder
         {
             get { return Kernel.Instance.FavoritesFolder; }
@@ -1240,7 +1276,6 @@ namespace MediaBrowser
         public void Init()
         {
             Config.IsFirstRun = false;
-
             Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
             Logger.ReportInfo("Startup parameters: "+ Config.StartupParms);
             Logger.ReportInfo("Server version: "+ Kernel.ServerInfo.Version);
@@ -1469,6 +1504,13 @@ namespace MediaBrowser
                 }
             }
 
+            //load plug-in catalog info
+            Async.Queue("PackageLoad", () =>
+            {
+                Packages = Kernel.ApiClient.GetPackages();
+                PackagesRetrieved = true;
+            });
+
             return true;
         }
 
@@ -1508,6 +1550,7 @@ namespace MediaBrowser
                 
                 //populate the config model choice
                 ConfigModel = new Choice { Options = ConfigPanelNames };
+
             }
         }
 
@@ -1920,6 +1963,13 @@ namespace MediaBrowser
             if (session != null)
             {
                 session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
+                if (AvailablePluginsCollection == null)
+                {
+                    if (PackagesRetrieved)
+                    {
+                        RefreshPluginCollections();
+                    }
+                }
             }
             else
             {

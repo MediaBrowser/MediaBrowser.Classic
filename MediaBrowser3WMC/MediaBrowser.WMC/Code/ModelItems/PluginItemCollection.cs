@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MediaBrowser.Code.ModelItems;
+using MediaBrowser.Model.Updates;
+
+namespace MediaBrowser.Library
+{
+    public class PluginItemCollection : BaseModelItem
+    {
+        public List<PluginItem> Items { get; private set; }
+        private int _selectedItemIndex = -1;
+
+        public int SelectedItemIndex
+        {
+            get { return _selectedItemIndex; }
+            set
+            {
+                if (_selectedItemIndex != value)
+                {
+                    _selectedItemIndex = value;
+                    FirePropertiesChanged("SelectedItemIndex", "SelectedItem");
+                }
+            }
+        }
+
+        public PluginItem SelectedItem { get { return Items.Any() ? Items[_selectedItemIndex] : new PluginItem(new PackageInfo {name = "Unknown"}); } }
+
+        public PluginItemCollection()
+        {
+        }
+
+        public PluginItemCollection(IEnumerable<PackageInfo> plugins)
+        {
+            Items = plugins.Select(p => new PluginItem(p)).ToList();
+            FirePropertyChanged("Items");
+        }
+
+        public PluginItemCollection(IEnumerable<PluginItem> plugins)
+        {
+            Items = plugins.ToList();
+            FirePropertyChanged("Items");
+        }
+    }
+}
