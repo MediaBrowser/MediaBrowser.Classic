@@ -172,6 +172,7 @@
     <Rules>
       <Changed Source="[OpenCatalog.Invoked]">
         <Actions>
+          <Set Target="[Application.ConfigPanelIndex]" Value="3" />
           <Invoke Target="[Application.OpenCatalogPage]" />
         </Actions>
       </Changed>

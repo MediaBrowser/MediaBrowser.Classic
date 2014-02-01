@@ -541,7 +541,7 @@
           </Panel>
 
           <!-- Configuration Options selector -->
-          <pv:Pivot Model="[Application.ConfigModel]" Name="FullConfigNav" FocusItem="[FocusItem]"  Navigation="RememberFocus">
+          <pv:Pivot Model="[Application.ConfigModel]" Name="FullConfigNav" FocusItem="[FocusItem]"  Navigation="RememberFocus" InitialIndex="[Application.ConfigPanelIndex]" >
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Top="Parent,0,100" />
             </LayoutInput>

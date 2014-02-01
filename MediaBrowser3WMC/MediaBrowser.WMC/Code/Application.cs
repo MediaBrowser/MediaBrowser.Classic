@@ -905,6 +905,7 @@ namespace MediaBrowser
             set { navigatingForward = value; }
         }
 
+        public int ConfigPanelIndex { get; set; }
 
         private string entryPointPath = string.Empty;
 

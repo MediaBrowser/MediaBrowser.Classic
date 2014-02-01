@@ -12,6 +12,7 @@
 
       <Choice Name="Model" Choice="$Required"/>
       <EditableText Name="FocusItem" />
+      <cor:Int32 Name="InitialIndex" cor:Int32="0" />
 
     </Properties>
 
@@ -26,6 +27,11 @@
 
       <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]" />
       <Default Target="[ScrollingData.Repeater]" Value="[ButtonRepeater]" />
+      <Rule>
+        <Actions>
+          <Invoke  Target="[ButtonRepeater.NavigateIntoIndex]" index="[InitialIndex]" />
+        </Actions>
+      </Rule>
 
       <Changed Source="[Model.Chosen]" InitialEvaluate="true">
         <Actions>
