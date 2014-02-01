@@ -145,6 +145,21 @@ namespace MediaBrowser.Library
         public string InstalledVersion { get; set; }
         public string InstalledVersionClass { get; set; }
         public bool UpdateAvailable { get; set; }
+        private bool _updatePending;
+
+        public bool UpdatePending
+        {
+            get { return _updatePending; }
+            set
+            {
+                if (_updatePending != value)
+                {
+                    _updatePending = value;
+                    FirePropertyChanged("UpdatePending");
+                }
+            }
+        }
+
         public bool NotInCatalog { get; set; }
         public bool CanRegister { get { return IsPremium && !IsRegistered; } }
 

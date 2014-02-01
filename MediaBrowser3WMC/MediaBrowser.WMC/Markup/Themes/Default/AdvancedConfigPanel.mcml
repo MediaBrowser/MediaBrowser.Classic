@@ -177,6 +177,12 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[UpdateAll.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.UpdateAllPlugins]" />
+        </Actions>
+      </Changed>
+    
       <Binding Source="[Application.InstalledPluginsCollection.UpdatesAvailable]" Target="[UpdateAllButton.Visible]" />
     
     </Rules>
@@ -269,6 +275,14 @@
         </Set>
       </Actions>
     </Condition>
+    
+  <Condition Source="[Item.UpdatePending]" SourceValue="true" Target="[UpdateText.Content]" Value="Restart Reqd" >
+      <Actions>
+        <Set Target="[UpdateInd.Visible]" Value="true" >
+        </Set>
+      </Actions>
+    </Condition>
+  
   </Rules>
 
   <Content>

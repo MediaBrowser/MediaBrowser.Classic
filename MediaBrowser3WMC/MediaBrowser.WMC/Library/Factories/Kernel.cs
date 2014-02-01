@@ -995,18 +995,18 @@ namespace MediaBrowser.Library {
 
             if (sourcePath.ToLower().StartsWith("http")) {
                 // Initialise Async Web Request
-                int BUFFER_SIZE = 1024;
-                Uri fileURI = new Uri(sourcePath);
+                var BUFFER_SIZE = 1024;
+                var fileURI = new Uri(sourcePath);
 
-                WebRequest request = WebRequest.Create(fileURI);
-                Network.WebDownload.State requestState = new Network.WebDownload.State(BUFFER_SIZE, target);
+                var request = WebRequest.Create(fileURI);
+                var requestState = new Network.WebDownload.State(BUFFER_SIZE, target);
                 requestState.request = request;
                 requestState.fileURI = fileURI;
                 requestState.progCB = updateCB;
                 requestState.doneCB = doneCB;
                 requestState.errorCB = errorCB;
 
-                IAsyncResult result = (IAsyncResult)request.BeginGetResponse(new AsyncCallback(ResponseCallback), requestState);
+                var result = (IAsyncResult)request.BeginGetResponse(new AsyncCallback(ResponseCallback), requestState);
             }
             else {
                 File.Copy(sourcePath, target, true);
@@ -1110,16 +1110,6 @@ namespace MediaBrowser.Library {
                     requestState.response.Close();
                     requestState.downloadDest.Flush();
                     requestState.downloadDest.Close();
-
-                    // Initialise the Plugin
-                    try
-                    {
-                        InitialisePlugin(requestState.downloadDest.Name);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.ReportException("Failed to initialize plugin.", e);
-                    }
 
                     //Callback to GUI to report download has completed
                     if (requestState.doneCB != null) {

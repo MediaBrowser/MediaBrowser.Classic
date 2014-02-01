@@ -1540,6 +1540,11 @@ namespace MediaBrowser
             PackagesRetrieved = true;
         }
 
+        public void UpdateAllPlugins()
+        {
+            Async.Queue("Plugin Update", () => new Updater(this).UpdateAllPlugins(InstalledPluginsCollection));
+        }
+
         protected void BuildUserMenu()
         {
             if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)

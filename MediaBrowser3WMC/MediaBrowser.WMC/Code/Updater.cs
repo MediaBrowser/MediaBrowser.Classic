@@ -20,12 +20,12 @@ namespace MediaBrowser.Util
     {
         
         // Reference back to the application for displaying dialog (thread safe).
-        private Application appRef;
+        private readonly Application _appRef;
 
         // Constructor.
         public Updater(Application appRef)
         {
-            this.appRef = appRef;
+            this._appRef = appRef;
         }
 
         public static System.Version CurrentVersion
@@ -62,9 +62,9 @@ namespace MediaBrowser.Util
                     if (newVersion != null)
                     {
                         Logger.ReportVerbose("New version {0} found.",newVersion.versionStr);
-                        if (Application.CurrentInstance.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
+                        if (_appRef.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
-                            Application.CurrentInstance.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
+                            _appRef.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
                             //Kick off the installer and shut us down
                             try
                             {
@@ -89,7 +89,7 @@ namespace MediaBrowser.Util
                             catch (Exception e)
                             {
                                 Logger.ReportException("Error attempting to update.",e);
-                                Async.Queue("error", () => Application.CurrentInstance.MessageBox("Error attempting to update.  Please update manually."));
+                                Async.Queue("error", () => _appRef.MessageBox("Error attempting to update.  Please update manually."));
                             }
                         }
                         else
@@ -100,7 +100,7 @@ namespace MediaBrowser.Util
                     }
                     else
                     {
-                        appRef.Information.AddInformationString("MB Classic is up to date");
+                        _appRef.Information.AddInformationString("MB Classic is up to date");
                         Logger.ReportInfo("==== MB Classic is up to date.");
                     }
                 }
@@ -121,13 +121,13 @@ namespace MediaBrowser.Util
         public bool PluginUpdatesAvailable()
         {
             Logger.ReportInfo("Checking for Plugin Updates...");
-            if (Application.CurrentInstance.InstalledPluginsCollection.Items.Any(i => i.UpdateAvailable))
+            if (_appRef.InstalledPluginsCollection.Items.Any(i => i.UpdateAvailable))
             {
-                if (Application.CurrentInstance.YesNoBox(MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("PluginUpdatesAvailQ")) == "Y")
+                if (_appRef.YesNoBox(MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("PluginUpdatesAvailQ")) == "Y")
                 {
-                    Application.CurrentInstance.ConfigPanelIndex = 3;
-                    Application.CurrentInstance.OpenConfiguration(true);
-                    Async.Queue("Panel Reset", () => { Application.CurrentInstance.ConfigPanelIndex = 0; }, 1000);
+                    _appRef.ConfigPanelIndex = 3;
+                    _appRef.OpenConfiguration(true);
+                    Async.Queue("Panel Reset", () => { _appRef.ConfigPanelIndex = 0; }, 1000);
                     
                 }
                 else
@@ -142,14 +142,38 @@ namespace MediaBrowser.Util
         private bool _installInProgress = false;
         private bool _sucessfulUpdate = false;
 
-        public void InstallPlugin(RemotePlugin plugin)
+        public bool UpdateAllPlugins(PluginItemCollection installedPlugins)
+        {
+            var success = false;
+            foreach (var plugin in installedPlugins.Items.Where(p => p.UpdateAvailable))
+            {
+                _appRef.ProgressBox("Updating " + plugin.Name + "...");
+                if (InstallPlugin(new RemotePlugin
+                                      {
+                                          SourceFilename = plugin.Versions.OrderBy(v => v.version).Last().sourceUrl,
+                                          Filename = plugin.TargetFilename
+                                      }))
+                {
+                    plugin.UpdateAvailable = false;
+                    plugin.UpdatePending = true;
+                    success = true;
+                }
+                _appRef.ShowMessage = false;
+            }
+
+            return success;
+        }
+        
+        public bool InstallPlugin(RemotePlugin plugin)
         {
             _installInProgress = true;
+            _sucessfulUpdate = false;
             Kernel.Instance.InstallPlugin(plugin.SourceFilename, plugin.Filename, null, PluginInstallFinish, PluginInstallError );
             while (_installInProgress)
             {
                 Thread.Sleep(250);
             }
+            return _sucessfulUpdate;
         }
 
         private void PluginInstallFinish()
@@ -161,7 +185,7 @@ namespace MediaBrowser.Util
         private void PluginInstallError(WebException ex)
         {
             Logger.ReportException("Error installing plug-in update.",ex);
-            Application.CurrentInstance.MessageBox("Error Installing.  Please try through Configurator.");
+            _appRef.MessageBox("Error Installing.");
             _installInProgress = false;
         }
 
