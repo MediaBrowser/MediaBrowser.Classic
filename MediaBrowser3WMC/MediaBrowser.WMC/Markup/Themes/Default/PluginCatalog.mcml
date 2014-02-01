@@ -105,7 +105,7 @@
                 </Children>
               </Clip>
 
-              <me:PluginsPanel Application="[Application]" Margins="30,80,40,0" >
+              <me:PluginsPanel Application="[Application]" >
                 <LayoutInput>
                   <FormLayoutInput Horizontal="Near" Vertical="Near"  />
                 </LayoutInput>
@@ -168,7 +168,7 @@
         <Children>
           <me:PluginDetailPage Name="PluginDetail" Application="[Application]" Item="[Application.CurrentPluginItem]" Visible="false" Layout="Fill" />
       
-          <Panel Name="Plugins" Layout="HorizontalFlow" Navigation="Group" >
+          <Panel Name="Plugins" Layout="HorizontalFlow" Navigation="Group" Margins="30,80,40,0" >
             <Children>
               <Scroller Name="ScrollingHandler" Orientation="Horizontal" FadeSize="50" >
                 <Children>
@@ -352,7 +352,7 @@
     <Content>
       <Panel Name="Main" Layout="Form">
         <Children>
-          <me:PluginDetailForm Name="Detail" Application="[Application]" Item="[Item]" MaximumSize="1100,600" MinimumSize="1100,600" />
+          <me:PluginDetailForm Name="Detail" Application="[Application]" Item="[Item]" MaximumSize="1100,650" MinimumSize="1100,650" />
           
           <!--Back Fade-->
           <ColorFill Content="Black" Alpha=".6" Layout="Fill" MouseInteractive="true" />
@@ -442,7 +442,7 @@
           </Text>
 					<st:ScrollableText Name="Summary" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
             <LayoutInput>
-              <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -100" Right="Parent, 1, -10"/>
+              <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -80" Right="Parent, 1, -10"/>
             </LayoutInput>
 					</st:ScrollableText>
           
