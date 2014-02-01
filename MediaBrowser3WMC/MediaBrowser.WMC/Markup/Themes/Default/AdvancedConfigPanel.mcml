@@ -186,6 +186,7 @@
       <Binding Source="[Application.InstalledPluginsCollection.UpdatesAvailable]" Target="[UpdateAllButton.Visible]" />
       <Binding Source="[Application.InstalledPluginsCollection.Items]" Target="[PluginList.Source]" />
       <Condition Source="[Application.InstalledPluginsCollection.Items.Count]" SourceValue="0" Target="[NoPlugins.Visible]" Value="true" />
+      <Condition Source="[Application.InstalledPluginsCollection.Items.Count]" SourceValue="12" ConditionOp="GreaterThan" Target="[Plugins.MaximumSize]" Value="1300,400" />
     
     </Rules>
     

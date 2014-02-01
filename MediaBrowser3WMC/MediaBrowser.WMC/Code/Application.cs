@@ -1550,6 +1550,11 @@ namespace MediaBrowser
             Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin));
         }
 
+        public void InstallPlugin(PluginItem plugin)
+        {
+            Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin, "Installing"));
+        }
+
         public void RemovePlugin(PluginItem plugin)
         {
             Async.Queue("Plugin Remove", () =>

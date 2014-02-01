@@ -290,6 +290,9 @@
         </Set>
       </Actions>
     </Condition>
+    
+    <Condition Source="[Item.UpdatePending]" SourceValue="true" Target="[Version.Content]" Value="Pending - Restart Required" />
+
   </Rules>
 
   <Content>
@@ -328,7 +331,7 @@
 
               </Children>
             </Panel>
-            <Text Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 14" MinimumSize="0,30"  Color="color://s:FontColorMedium" />
+            <Text Name="Version" Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 14" MinimumSize="0,30"  Color="color://s:FontColorMedium" />
             <ColorFill Content="White" Alpha=".3" MaximumSize="300,2" MinimumSize="300,2" />
           </Children>
         </Panel>
@@ -407,6 +410,12 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[Install.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.InstallPlugin]" plugin="[Item]" />
+        </Actions>
+      </Changed>
+    
       <Changed Source="[Remove.Invoked]" >
         <Actions>
           <Invoke Target="[Application.RemovePlugin]" plugin="[Item]" />
@@ -453,6 +462,13 @@
       <Binding Source="[Item.UpdateAvailable]" Target="[UpgradeInfoButton.Visible]" />
       <Binding Source="[Item.CanRegister]" Target="[RegisterButton.Visible]" />
       <Binding Source="[Item.UpdatePending]" Target="[UpdatePending.Visible]" />
+      <Condition Source="[Item.UpdatePending]" SourceValue="true" >
+        <Actions>
+          <Set Target="[InstallButton.Visible]" Value="false" />
+          <Set Target="[UpdateButton.Visible]" Value="false" />
+          <Set Target="[UpgradeInfoButton.Visible]" Value="false" />
+        </Actions>
+      </Condition>
     
     </Rules>
 

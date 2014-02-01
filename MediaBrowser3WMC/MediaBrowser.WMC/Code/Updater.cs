@@ -165,13 +165,11 @@ namespace MediaBrowser.Util
             return success;
         }
 
-        public bool UpdatePlugin(PluginItem plugin)
+        public bool UpdatePlugin(PluginItem plugin, string operation = "Updating")
         {
             var success = false;
 
-            if (plugin.UpdateAvailable)
-            {
-                _appRef.ProgressBox("Updating " + plugin.Name + "...");
+                _appRef.ProgressBox(operation + " " + plugin.Name + "...");
                 if (InstallPlugin(new RemotePlugin
                                       {
                                           SourceFilename = plugin.Versions.OrderBy(v => v.version).Last().sourceUrl,
@@ -185,7 +183,6 @@ namespace MediaBrowser.Util
                 }
                 _appRef.ShowMessage = false;
                 
-            }
 
             _appRef.InstalledPluginsCollection.ResetUpdatesAvailable();
             return success;
