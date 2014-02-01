@@ -396,6 +396,7 @@ namespace MediaBrowser.Library.Localization
         public string UpgradeInfo = "Upgrade Info";
         public string UpdateAll = "Update All";
         public string PluginUpdatesAvailQ = "Some of your plug-ins have updates.  Go to Configuration?";
+        public string Overview = "Overview";
 
         //Search
         public string IncludeNested = "Include Subfolders";

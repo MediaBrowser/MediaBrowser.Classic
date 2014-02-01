@@ -184,6 +184,7 @@
       </Changed>
     
       <Binding Source="[Application.InstalledPluginsCollection.UpdatesAvailable]" Target="[UpdateAllButton.Visible]" />
+      <Binding Source="[Application.InstalledPluginsCollection.Items]" Target="[PluginList.Source]" />
     
     </Rules>
     

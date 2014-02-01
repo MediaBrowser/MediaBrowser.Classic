@@ -39,6 +39,12 @@ namespace MediaBrowser.Library
             FirePropertyChanged("UpdatesAvailable");
         }
 
+        public void Remove(PluginItem plugin)
+        {
+            if (Items.Remove(plugin)) Items = new List<PluginItem>(Items);
+            FirePropertyChanged("Items");
+        }
+
         public PluginItemCollection(IEnumerable<PackageInfo> plugins)
         {
             Items = plugins.Select(p => new PluginItem(p)).ToList();
@@ -61,5 +67,6 @@ namespace MediaBrowser.Library
         {
             return Items.GroupBy(i => i.Category).OrderByDescending(g => g.Key).Select(g => new PluginItemCollection(g.OrderBy(i => i.Name)) {Name = g.Key}).ToList();
         }
+
     }
 }

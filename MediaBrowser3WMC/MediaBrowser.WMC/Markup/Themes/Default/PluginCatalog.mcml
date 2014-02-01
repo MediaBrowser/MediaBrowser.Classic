@@ -373,7 +373,8 @@
       <Command Name="Remove" />
       <Command Name="Update" />
       <Command Name="Register" />
-      <Command Name="UpgradeInfo" />
+      <Command Name="ShowUpgradeInfo" />
+      <Command Name="ShowSummary" />
       <KeyHandler Name="Back" Key="Backspace" Handle="true" HandlerStage="Bubbled"/>
     </Locals>
 
@@ -406,10 +407,37 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[Remove.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.RemovePlugin]" plugin="[Item]" />
+        </Actions>
+      </Changed>
+    
+      <Changed Source="[ShowUpgradeInfo.Invoked]" >
+        <Actions>
+          <Set Target="[UpgradeInfo.Visible]" Value="true" />
+          <Set Target="[Summary.Visible]" Value="false" />
+          <Set Target="[UpgradeInfoButton.Visible]" Value="false" />
+          <Set Target="[SummaryButton.Visible]" Value="true" />
+          <Invoke Target="[SummaryButton.NavigateInto]" />
+        </Actions>
+      </Changed>
+    
+      <Changed Source="[ShowSummary.Invoked]" >
+        <Actions>
+          <Set Target="[UpgradeInfo.Visible]" Value="false" />
+          <Set Target="[Summary.Visible]" Value="true" />
+          <Set Target="[UpgradeInfoButton.Visible]" Value="true" />
+          <Set Target="[SummaryButton.Visible]" Value="false" />
+          <Invoke Target="[UpgradeInfoButton.NavigateInto]" />
+        </Actions>
+      </Changed>
+    
       <Binding Source="[Item.Name]" Target="[Name.Content]" />
       <Binding Source="[Item.PreviewImage]" Target="[Preview.Content]" />
       <Binding Source="[Item.NotInCatalog]" Target="[NotInCatalog.Visible]" />
       <Binding Source="[Item.Overview]" Target="[Summary.Text]" />
+      <Binding Source="[Item.UpgradeInfo]" Target="[UpgradeInfo.Text]" />
       <Binding Source="[Item.DisplayOwner]" Target="[Owner.Content]" />
       <Binding Source="[Item.InstalledVersionDisplay2]" Target="[Installed.Content]" />
       <Binding Source="[Item.TotalRatingDisplay]" Target="[TotalRatings.Content]" />
@@ -453,6 +481,12 @@
             </LayoutInput>
 					</st:ScrollableText>
           
+					<st:ScrollableText Name="UpgradeInfo" Visible="false" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -80" Right="Parent, 1, -10"/>
+            </LayoutInput>
+					</st:ScrollableText>
+          
           <Panel Name="PricePanel" Layout="HorizontalFlow" >
             <LayoutInput>
               <AnchorLayoutInput Left="Name, 0" Top="Preview,1"/>
@@ -491,7 +525,8 @@
               <sb:SimpleButton Name="InstallButton" Text="[Application.LocalStrings.#Install!cor:String]" Command="[Install]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="RemoveButton" Text="[Application.LocalStrings.#Remove!cor:String]" Command="[Remove]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="UpdateButton" Text="[Application.LocalStrings.#Update!cor:String]" Command="[Update]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
-              <sb:SimpleButton Name="UpgradeInfoButton" Text="[Application.LocalStrings.#UpgradeInfo!cor:String]" Color="Black" Command="[UpgradeInfo]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="UpgradeInfoButton" Text="[Application.LocalStrings.#UpgradeInfo!cor:String]" Color="Black" Command="[ShowUpgradeInfo]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="SummaryButton" Visible="false" Text="[Application.LocalStrings.#Overview!cor:String]" Color="Black" Command="[ShowSummary]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="CloseButton" Text="[Application.LocalStrings.#Close!cor:String]" Command="[Close]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" FocusOrder="0" />
             </Children>
           </Panel>

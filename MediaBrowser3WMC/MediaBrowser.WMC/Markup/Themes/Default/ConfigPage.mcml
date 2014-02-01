@@ -185,6 +185,7 @@
       <Changed Source="[NavTimer.Tick]">
         <Conditions>
           <Equality Source="[ShowFull]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[Application.NavigatingForward]" ConditionOp="Equals" Value="true" />
         </Conditions>
         <Actions>
           <Invoke Target="[FullConfigNav.NavigateInto]" />

@@ -1550,6 +1550,30 @@ namespace MediaBrowser
             Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin));
         }
 
+        public void RemovePlugin(PluginItem plugin)
+        {
+            Async.Queue("Plugin Remove", () =>
+            {
+                if (YesNoBox("Remove Plug-in "+plugin.Name+" - Are you sure?") == "Y")
+                {
+
+                    try
+                    {
+                        Logger.ReportInfo("Removing plug-in {0}/{1}",plugin.Name, plugin.TargetFilename);
+                        File.Delete(Path.Combine(ApplicationPaths.AppPluginPath, plugin.TargetFilename));
+                        InstalledPluginsCollection.Remove(plugin);
+                        // Close the catalog page
+                        ShowPluginDetailPage = false;
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error attempting to remove plugin {0}", e, plugin.TargetFilename);
+                        Async.Queue("msg", () => MessageBox("Could not delete plugin " + plugin.Name));
+                    }
+                }
+            });
+        }
+
         protected void BuildUserMenu()
         {
             if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)

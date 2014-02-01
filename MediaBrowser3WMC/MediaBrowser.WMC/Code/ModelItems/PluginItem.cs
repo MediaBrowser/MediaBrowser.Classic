@@ -167,7 +167,13 @@ namespace MediaBrowser.Library
         {
             get
             {
-                return Helper.StripTags(Versions != null ? Versions.Last().description : "None");
+                var text = "No upgrade information";
+                if (Versions != null && Versions.Any())
+                {
+                    var last = Versions.OrderBy(v => v.version).Last();
+                    text = "Information for version " + last.versionStr + "\n\n" + Helper.StripTags(last.description);
+                }
+                return text;
             }
         }
 
