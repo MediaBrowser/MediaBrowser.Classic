@@ -184,6 +184,11 @@ namespace MediaBrowser.Library
         /// <value>The versions.</value>
         public List<PackageVersionInfo> Versions { get { return Info.versions; } }
 
+        public void NotifyPropertiesChanged()
+        {
+            FireAllPropertiesChanged();
+        }
+
         // to keep mcml happy
         public PluginItem() {
         }

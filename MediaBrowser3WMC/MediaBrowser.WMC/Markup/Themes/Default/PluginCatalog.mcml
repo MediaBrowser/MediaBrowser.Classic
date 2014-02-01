@@ -400,6 +400,12 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[Update.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.UpdatePlugin]" plugin="[Item]" />
+        </Actions>
+      </Changed>
+    
       <Binding Source="[Item.Name]" Target="[Name.Content]" />
       <Binding Source="[Item.PreviewImage]" Target="[Preview.Content]" />
       <Binding Source="[Item.NotInCatalog]" Target="[NotInCatalog.Visible]" />
@@ -418,6 +424,7 @@
       <Binding Source="[Item.UpdateAvailable]" Target="[UpdateButton.Visible]" />
       <Binding Source="[Item.UpdateAvailable]" Target="[UpgradeInfoButton.Visible]" />
       <Binding Source="[Item.CanRegister]" Target="[RegisterButton.Visible]" />
+      <Binding Source="[Item.UpdatePending]" Target="[UpdatePending.Visible]" />
     
     </Rules>
 
@@ -466,6 +473,12 @@
           <Text Name="Installed" Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 18" MinimumSize="0,30" Margins="20,0,0,0"  Color="Black" >
             <LayoutInput>
               <AnchorLayoutInput Left="Name, 0" Top="Owner,1"/>
+            </LayoutInput>
+            
+          </Text>
+          <Text Name="UpdatePending" Content="Update Pending. Restart MBC to take effect." Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30" Margins="20,0,0,0"  Color="DarkRed" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Top="Installed,1"/>
             </LayoutInput>
             
           </Text>

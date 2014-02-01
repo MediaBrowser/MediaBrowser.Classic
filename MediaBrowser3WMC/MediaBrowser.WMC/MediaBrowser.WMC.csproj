@@ -1054,7 +1054,9 @@
     <Content Include="Markup\SlideShow.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Themes\Default\AdvancedConfigPanel.mcml" />
+    <Content Include="Markup\Themes\Default\AdvancedConfigPanel.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\ConfigPage.mcml">
       <SubType>Designer</SubType>
     </Content>

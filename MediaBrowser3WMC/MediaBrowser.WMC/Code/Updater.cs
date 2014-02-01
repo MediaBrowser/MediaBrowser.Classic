@@ -161,6 +161,33 @@ namespace MediaBrowser.Util
                 _appRef.ShowMessage = false;
             }
 
+            installedPlugins.ResetUpdatesAvailable();
+            return success;
+        }
+
+        public bool UpdatePlugin(PluginItem plugin)
+        {
+            var success = false;
+
+            if (plugin.UpdateAvailable)
+            {
+                _appRef.ProgressBox("Updating " + plugin.Name + "...");
+                if (InstallPlugin(new RemotePlugin
+                                      {
+                                          SourceFilename = plugin.Versions.OrderBy(v => v.version).Last().sourceUrl,
+                                          Filename = plugin.TargetFilename
+                                      }))
+                {
+                    plugin.UpdateAvailable = false;
+                    plugin.UpdatePending = true;
+                    plugin.NotifyPropertiesChanged();
+                    success = true;
+                }
+                _appRef.ShowMessage = false;
+                
+            }
+
+            _appRef.InstalledPluginsCollection.ResetUpdatesAvailable();
             return success;
         }
         

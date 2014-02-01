@@ -34,6 +34,11 @@ namespace MediaBrowser.Library
         {
         }
 
+        public void ResetUpdatesAvailable()
+        {
+            FirePropertyChanged("UpdatesAvailable");
+        }
+
         public PluginItemCollection(IEnumerable<PackageInfo> plugins)
         {
             Items = plugins.Select(p => new PluginItem(p)).ToList();

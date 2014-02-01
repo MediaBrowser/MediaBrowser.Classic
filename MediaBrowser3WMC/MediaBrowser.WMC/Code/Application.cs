@@ -1545,6 +1545,11 @@ namespace MediaBrowser
             Async.Queue("Plugin Update", () => new Updater(this).UpdateAllPlugins(InstalledPluginsCollection));
         }
 
+        public void UpdatePlugin(PluginItem plugin)
+        {
+            Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin));
+        }
+
         protected void BuildUserMenu()
         {
             if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
