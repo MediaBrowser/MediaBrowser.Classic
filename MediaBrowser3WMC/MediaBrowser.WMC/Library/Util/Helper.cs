@@ -566,6 +566,19 @@ namespace MediaBrowser.LibraryManagement
             return result;
         }
 
+        /// <summary>
+        /// Compiled regular expression for performance.
+        /// </summary>
+        static readonly Regex HtmlRegex = new Regex("<.*?>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Remove HTML from string with compiled Regex.
+        /// </summary>
+        public static string StripTags(string source)
+        {
+            return HtmlRegex.Replace(source, string.Empty);
+        }
+
         public static Microsoft.MediaCenter.UI.Image GetMediaInfoImage(string name)
         {
             if (name.EndsWith("_")) return null; //blank codec or other type

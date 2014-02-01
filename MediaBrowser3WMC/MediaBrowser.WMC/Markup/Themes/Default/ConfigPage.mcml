@@ -22,6 +22,7 @@
     xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
     xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:pc="resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog"  
 	  xmlns:me="Me"
 	  >
 
@@ -417,8 +418,22 @@
       <Binding Source="[ViewThemeModel.Chosen!cor:String]" Target="[Config.ViewTheme]" />
       <Binding Source="[ShowConfigButton.Value]" Target="[Config.ShowConfigButton]" />
       <Binding Source="[AlphaBlending.Value]" Target="[Config.AlphaBlending]" />
-      <Binding Source="[Application.PluginUpdatesAvailable]" Target="[UpdateButton.Visible]" />
-      
+
+      <!--Plugin Detail Dialog-->
+      <Binding Source="[Application.ShowPluginDetailPage]" Target="[PluginDetail.Visible]" />
+      <Condition Source="[Application.ShowPluginDetailPage]" SourceValue="true" >
+        <Actions>
+          <Invoke Target="[PluginDetail.NavigateInto]" />
+        </Actions>
+      </Condition>
+      <Condition Source="[Application.ShowPluginDetailPage]" SourceValue="false" >
+        <Actions>
+          <Invoke Target="[Panel99.NavigateInto]" />
+        </Actions>
+      </Condition>
+      <Binding Source="[Application.CurrentPluginItem]" Target="[PluginDetail.Item]" />
+
+
     </Rules>
 
     <Content>
@@ -449,6 +464,8 @@
 
               <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
 
+              <pc:PluginDetailPage Name="PluginDetail" Application="[Application]" Item="[Application.CurrentPluginItem]" Visible="false" Layout="Fill" />
+
               <vm:UserButton Name="UserButton" Application="[Application]" Command="[Logout]" Font="font://f:P_ConfigButtons">
                 <LayoutInput>
                   <FormLayoutInput Left="Parent,0,25" Bottom="Parent,0,95"/>
@@ -471,14 +488,6 @@
                 <Children>
                   <Text Content="[Application.LocalStrings.#VersionConfig!cor:String]" Font="font://f:CP_VersionFont" Color="color://s:FontColorDark" />
                   <Text Content="[Application.AppVersion]" Font="font://f:CP_VersionFont" Color="color://s:FontColorDark"/>
-                </Children>
-              </Panel>
-              <Panel Name="UpdateButton" Visible="[Application.PluginUpdatesAvailable]">
-                <LayoutInput>
-                  <AnchorLayoutInput Bottom="Parent,1,-40" Left="Parent,0,15"/>
-                </LayoutInput>
-                <Children>
-                  <pu:PluginUpdateButton />
                 </Children>
               </Panel>
 

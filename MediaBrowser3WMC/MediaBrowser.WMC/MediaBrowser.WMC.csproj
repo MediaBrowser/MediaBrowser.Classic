@@ -552,6 +552,7 @@
     <None Include="Images\Ratings\rated-gb-18.png" />
     <None Include="Images\Ratings\rated-gb-12a.png" />
     <None Include="Images\Ratings\rated-gb-15.png" />
+    <Content Include="Images\Puzzle.png" />
     <Content Include="Images\Ratings\Rated-NL-9.png" />
     <Content Include="Images\Ratings\Rated-NL-12.png" />
     <Content Include="Images\Ratings\Rated-NL-16.png" />
@@ -665,9 +666,12 @@
     <Content Include="Images\Special\Tab_Selected.png" />
     <Content Include="Images\Special\Tab_SelectedF.png" />
     <Content Include="Images\Special\Underline.png" />
+    <Content Include="Images\Star\Star_Empty_Black.png" />
     <Content Include="Images\Star\Star_Full.png" />
     <Content Include="Images\Star\Star_Empty.png" />
+    <Content Include="Images\Star\Star_Full_Black.png" />
     <Content Include="Images\Star\Star_Half.png" />
+    <Content Include="Images\Star\Star_Half_Black.png" />
     <Content Include="Images\UnLock1.png" />
     <Content Include="Images\UnLocked.png" />
     <Content Include="Images\Unwatched\Tick.png" />
@@ -991,7 +995,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\MediaInfoPanel.mcml" />
-    <Content Include="Markup\Controls\MovieInfo.mcml" />
+    <Content Include="Markup\Controls\MovieInfo.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\MPAARating.mcml">
       <SubType>Designer</SubType>
     </Content>
@@ -1022,7 +1028,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\StarRating.mcml" />
-    <Content Include="Markup\Controls\Summary.mcml" />
+    <Content Include="Markup\Controls\Summary.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Tabs\Tab.mcml">
       <SubType>Designer</SubType>
     </Content>
@@ -1050,6 +1058,7 @@
     <Content Include="Markup\Themes\Default\ConfigPage.mcml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Markup\Themes\Default\PluginCatalog.mcml" />
     <Content Include="Markup\Themes\Default\ExternalPlayback.mcml" />
     <Content Include="Markup\Themes\Default\LayoutCoverflow.mcml" />
     <Content Include="Markup\Themes\Default\LayoutRoot.mcml">

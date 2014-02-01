@@ -1,0 +1,491 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	  xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
+	  xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+	  xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/ScrollableText"
+    xmlns:me="Me"
+  >
+
+  <UI Name="PluginCatalog">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+    <Locals>
+      <Command Name="CloseMessage"/>
+      <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
+    </Locals>
+    
+    <Rules>
+      <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
+      <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
+      <Changed Source="[CloseMessage.Invoked]">
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Set Target="[Application.ShowMessage]" Value="false" />
+          <Invoke Target="[MainPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application.ShowMessage]" >
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[MessageBox.Visible]" Value="true" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Invoke Target="[MsgDelay.Start]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[MsgDelay.Tick]" >
+        <Actions>
+          <Invoke Target="[MessageBox.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.ShowMessage]">
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+    <Content>
+      <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+        <Animations>
+          <Animation Animation="animation://anim:PageShow" />
+          <Animation Animation="animation://anim:PageHide" />
+        </Animations>
+        <Children>
+          <!--MessageBox-->
+          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
+                </Keyframes>
+              </Animation>
+              <Animation Type="Hide" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="1" />
+                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </msg:MessageBox>
+
+          <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
+          <Panel Name="MainPanel" Layout="Form">
+            <Children>
+              <Clip FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent,1,-40" Top="Parent,0,10"  />
+                </LayoutInput>
+                <Children>
+                  <Text Name="Title" Content="[Application.LocalStrings.#PluginCatalog!cor:String]" Font="font://f:CP_ConfigTitleFont" Color="color://s:FontColorMedium">
+                  </Text>
+                </Children>
+              </Clip>
+
+              <me:PluginsPanel Application="[Application]" Margins="30,80,40,0" >
+                <LayoutInput>
+                  <FormLayoutInput Horizontal="Near" Vertical="Near"  />
+                </LayoutInput>
+              </me:PluginsPanel>
+              
+              <!--<ColorFill Name="Backdrop" Content="White" Alpha=".6" Layout="Fill" />-->
+              <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+                <Children>
+                  <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                    <Children>
+                      <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                    </Children>
+                  </Clip>
+                  <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+                </Children>
+              </Panel>
+
+
+            </Children>
+          </Panel>
+
+
+        </Children>
+      </Clip>
+    </Content>
+
+  </UI>
+
+  <UI Name="PluginsPanel">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+    <Locals>
+      <Inset Name="CMargin" Inset="25,0,0,0" />
+      <Inset Name="SMargin" Inset="10,0,0,0" />
+      <ScrollingData Name="ScrollingData" BeginPadding="50" EndPadding="150"/>
+
+    </Locals>
+
+    <Rules>
+      <!-- Give ScrollingData to ScrollingHandler. -->
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+
+      <!-- Give Repeater to ScrollingData. -->
+      <Default Target="[ScrollingData.Repeater]" Value="[PluginGroups]"/>
+
+      <Binding Source="[Application.ShowPluginDetailPage]" Target="[PluginDetail.Visible]" />
+      <Condition Source="[Application.ShowPluginDetailPage]" SourceValue="true" >
+        <Actions>
+          <Invoke Target="[PluginDetail.NavigateInto]" />
+        </Actions>
+      </Condition>
+      <Binding Source="[Application.CurrentPluginItem]" Target="[PluginDetail.Item]" />
+
+
+    </Rules>
+    
+    <Content>
+      <Panel>
+        <Children>
+          <me:PluginDetailPage Name="PluginDetail" Application="[Application]" Item="[Application.CurrentPluginItem]" Visible="false" Layout="Fill" />
+      
+          <Panel Name="Plugins" Layout="HorizontalFlow" Navigation="Group" >
+            <Children>
+              <Scroller Name="ScrollingHandler" Orientation="Horizontal" FadeSize="50" >
+                <Children>
+                  <Repeater Name="PluginGroups" Layout="HorizontalFlow" Source="[Application.AvailablePluginsCollection.GroupedItems]" Margins="[CMargin]" MaximumSize="0,700" >
+                    <Layout>
+                      <FlowLayout Spacing="20,10"/>
+                    </Layout>
+                    <Animations>
+                      <Animation Animation="animation://anim:ScrollerMoveItemSmooth" />
+                    </Animations>
+                    <Content>
+                      <me:PluginGroup Application="[Application]" Group="[RepeatedItem!lib:PluginItemCollection]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Scroller>
+            </Children>
+          </Panel>
+        </Children>
+      </Panel>
+
+    </Content>
+
+  </UI>
+
+  <UI Name="PluginGroup" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:PluginItemCollection Name="Group" lib:PluginItemCollection="$Required" />
+    </Properties>
+
+    <Content>
+      <Panel Name="Plugins" Layout="VerticalFlow" Navigation="Group" >
+        <Children>
+          <Text Content="[Group.Name]" Font="Segoe Media Center Light, 22, Bold"   Color="color://s:FontColorMedium" />
+              <Repeater Name="PluginList" Layout="Grid" Source="[Group.Items]" Margins="25,10,0,0" Navigation="RememberFocus"  >
+                <Layout>
+                  <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="10,10"/>
+                </Layout>
+                <Animations>
+                  <Animation Animation="animation://anim:ScrollerMoveItemSmooth" />
+                </Animations>
+                <Content>
+                  <me:PluginListItem Application="[Application]" Item="[RepeatedItem!lib:PluginItem]" Parent="[Group]" Index="[RepeatedItemIndex]" />
+                </Content>
+              </Repeater>
+        </Children>
+      </Panel>
+      
+    </Content>
+  </UI>
+
+  <UI Name="PluginButton">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker" />
+    </Locals>
+
+    <Rules>
+      <Changed Source="[Clicker.Invoked]" >
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[Application.ShowPluginDetailPage]" Value="true" />
+        </Actions>
+      </Changed>
+    </Rules>
+  </UI>
+
+<UI Name="PluginListItem" BaseUI="me:PluginButton">
+  <Properties>
+    <lib:PluginItem Name="Item" lib:PluginItem="$Required" />
+    <lib:PluginItemCollection Name="Parent" lib:PluginItemCollection="$Required" />
+    <Index Name="Index" Index="$Required"/>
+  </Properties>
+
+  <Rules>
+    <Default Target="[Input.KeyInteractive]" Value="true" />
+  
+    <Changed Source="[Input.DeepKeyFocus]" >
+      <Conditions>
+        <Equality Source="[Input.DeepKeyFocus]" Value="true" />
+      </Conditions>
+      <Actions>
+        <Set Target="[Parent.SelectedItemIndex]" Value="[Index.Value]" />
+        <Set Target="[Application.CurrentPluginItem]" Value="[Item]" />
+        <Set Target="[Main.Content]" Value="80,80,80" />
+      </Actions>
+    </Changed>
+  
+    <Condition Source="[Item.IsRegistered]" SourceValue="true" Target="[RegInd.Content]" Value="0,80,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Registered" />
+      </Actions>
+    </Condition>
+
+  <Condition Source="[Item.IsInTrial]" SourceValue="true" Target="[RegInd.Content]" Value="0,80,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="[Item.TrialDaysLeft]" >
+          <Transformer>
+            <FormatTransformer Format="{0} Days Left"/>
+          </Transformer>
+        </Set>
+      </Actions>
+    </Condition>
+    
+  <Condition Source="[Item.IsExpired]" SourceValue="true" Target="[RegInd.Content]" Value="80,0,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Expired" >
+        </Set>
+      </Actions>
+    </Condition>
+    
+  <Condition Source="[Item.SupporterOnly]" SourceValue="true" Target="[RegInd.Content]" Value="80,80,0" >
+      <Actions>
+        <Set Target="[RegText.Content]" Value="Supporter" >
+        </Set>
+      </Actions>
+    </Condition>
+  </Rules>
+
+  <Content>
+    <ColorFill Name="Main" Content="Transparent" Padding="5,0,5,0"  >
+      <Children>
+        <Panel Layout="VerticalFlow" MinimumSize="300,0" MaximumSize="300,0" >
+          <Children>
+            <Panel Layout="Anchor">
+              <Children>
+                <Graphic Name="Thumb" Content="[Item.ThumbImage]" MaintainAspectRatio="true" MaximumSize="300,170" MinimumSize="300,170" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+                  </LayoutInput>
+                </Graphic>
+                <Text Content="[Item.Name]" Font="font://f:CP_ConfigItemFont" MinimumSize="230,30" MaximumSize="230,0"  Color="color://s:FontColorMedium" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Near" Top="Thumb, 1, 5"/>
+                  </LayoutInput>
+                </Text>
+                <ColorFill Name="RegInd" Content="Transparent" Padding="2,0,2,0" Margins="0,5,4,0" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Far" Top="Thumb, 1, 5"/>
+                  </LayoutInput>
+                  <Children>
+                    <Text Name="RegText"  Font="Segoe Media Center, 12"  Color="color://s:FontColorLight" />
+                  </Children>
+                </ColorFill>
+                
+              </Children>
+            </Panel>
+            <Panel Layout="HorizontalFlow" >
+              <Children>
+                <Text Content="[Item.DisplayPrice]" Font="Segoe Media Center light, 14, Bold" MinimumSize="0,30"  Color="color://s:FontColorMedium" Margins="0,0,10,0" />
+                <sr:StarRating Name="StarRating" Margins="0,4,5,4" Value="[Item.AvgRating!cor:Single]" Size="0,20"/>
+                <Text Content="[Item.TotalRatingDisplay]" Font="Segoe Media Center light, 14, Bold" MinimumSize="0,30"  Color="color://s:FontColorMedium" Margins="0,0,0,0" />
+
+              </Children>
+            </Panel>
+            <Text Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 14" MinimumSize="0,30"  Color="color://s:FontColorMedium" />
+            <ColorFill Content="White" Alpha=".3" MaximumSize="300,2" MinimumSize="300,2" />
+          </Children>
+        </Panel>
+      </Children>
+    </ColorFill>
+
+  </Content>
+</UI>
+
+  <UI Name="PluginDetailPage" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:PluginItem Name="Item" lib:PluginItem="$Required" />
+
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Item]" Target="[Detail.Item]" />
+    </Rules>
+
+    <Content>
+      <Panel Name="Main" Layout="Form">
+        <Children>
+          <me:PluginDetailForm Name="Detail" Application="[Application]" Item="[Item]" MaximumSize="1100,600" MinimumSize="1100,600" />
+          
+          <!--Back Fade-->
+          <ColorFill Content="Black" Alpha=".6" Layout="Fill" MouseInteractive="true" />
+        </Children>
+      </Panel> 
+    </Content>
+  </UI>
+
+  <UI Name="PluginDetailForm">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:PluginItem Name="Item" lib:PluginItem="$Required" />
+
+    </Properties>
+    <Locals>
+      <Command Name="Close" />
+      <Command Name="Install" />
+      <Command Name="Remove" />
+      <Command Name="Update" />
+      <Command Name="Register" />
+      <Command Name="UpgradeInfo" />
+      <KeyHandler Name="Back" Key="Backspace" Handle="true" HandlerStage="Bubbled"/>
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+      <Default Target="[Input.KeyFocusOnMouseEnter]" Value="true" />
+      <Rule>
+        <Actions>
+          <Invoke Target="[CloseButton.NavigateInto]" />
+        </Actions>
+      </Rule>
+      
+      <Changed Source="[Back.Invoked]" >
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+        </Actions>
+      </Changed>
+      
+      <Changed Source="[Close.Invoked]" >
+        <Actions>
+          <Set Target="[Application.ShowPluginDetailPage]" Value="false" />
+        </Actions>
+      </Changed>
+    
+      <Binding Source="[Item.Name]" Target="[Name.Content]" />
+      <Binding Source="[Item.PreviewImage]" Target="[Preview.Content]" />
+      <Binding Source="[Item.NotInCatalog]" Target="[NotInCatalog.Visible]" />
+      <Binding Source="[Item.Overview]" Target="[Summary.Text]" />
+      <Binding Source="[Item.DisplayOwner]" Target="[Owner.Content]" />
+      <Binding Source="[Item.InstalledVersionDisplay2]" Target="[Installed.Content]" />
+      <Binding Source="[Item.TotalRatingDisplay]" Target="[TotalRatings.Content]" />
+      <Binding Source="[Item.AvgRating!cor:Single]" Target="[StarRating.Value]" />
+      <Binding Source="[Item.DisplayPrice]" Target="[Price.Content]" />
+      <Binding Source="[Item.IsInstalled]" Target="[InstallButton.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true"/>
+        </Transformer>
+      </Binding>
+      <Binding Source="[Item.IsInstalled]" Target="[RemoveButton.Visible]" />
+      <Binding Source="[Item.UpdateAvailable]" Target="[UpdateButton.Visible]" />
+      <Binding Source="[Item.UpdateAvailable]" Target="[UpgradeInfoButton.Visible]" />
+      <Binding Source="[Item.CanRegister]" Target="[RegisterButton.Visible]" />
+    
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="150,150,150" Navigation="ContainAll" Layout="Anchor">
+        <Children>
+          
+          <Text Name="Name" Content="[Item.Name]" Font="Segoe Media Center Light, 48, Bold" Color="Black" Margins="30,10,0,0" >
+            <LayoutInput>
+              <AnchorLayoutInput Horizontal="Near" Vertical="Near"/>
+            </LayoutInput>
+          </Text>
+          <Graphic Name="Preview" Content="[Item.PreviewImage]" MaintainAspectRatio="true" MaximumSize="500,281" MinimumSize="500,281" Margins="20,0,0,0" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name,0" Top="Name,1,5"/>
+            </LayoutInput>
+          </Graphic>
+          <Text Name="NotInCatalog" Visible="false" Content="This Plug-in is not in the Catalog" Font="Segoe Media Center Light, 28, Bold" Color="Black" Margins="30,10,0,0" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Bottom="Parent,1,-15"/>
+            </LayoutInput>
+          </Text>
+					<st:ScrollableText Name="Summary" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
+            <LayoutInput>
+              <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -100" Right="Parent, 1, -10"/>
+            </LayoutInput>
+					</st:ScrollableText>
+          
+          <Panel Name="PricePanel" Layout="HorizontalFlow" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Top="Preview,1"/>
+            </LayoutInput>
+            <Children>
+              <Text Name="Price" Content="[Item.DisplayPrice]" Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30"  Color="Black" Margins="20,10,10,0" />
+              <sr:StarRatingBlack Name="StarRating" Margins="0,15,0,4" Value="[Item.AvgRating!cor:Single]" Size="0,30"/>
+              <Text Name="TotalRatings" Content="[Item.TotalRatingDisplay]" Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30"  Color="Black" Margins="0,8,0,0" />
+
+            </Children>
+          </Panel>
+          <Text Name="Owner" Content="[Item.DisplayOwner]" Font="Segoe Media Center light, 18" MinimumSize="0,30" Margins="20,0,0,0"  Color="Black" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Top="PricePanel,1"/>
+            </LayoutInput>
+            
+          </Text>
+          <Text Name="Installed" Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 18" MinimumSize="0,30" Margins="20,0,0,0"  Color="Black" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Top="Owner,1"/>
+            </LayoutInput>
+            
+          </Text>
+          <Panel Name="ButtonPanel" Layout="HorizontalFlow" >
+            <LayoutInput>
+              <AnchorLayoutInput Horizontal="Far" Vertical="Far"/>
+            </LayoutInput>
+            <Children>
+              <sb:SimpleButton Name="RegisterButton" Text="[Application.LocalStrings.#Register!cor:String]" Command="[Register]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="InstallButton" Text="[Application.LocalStrings.#Install!cor:String]" Command="[Install]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="RemoveButton" Text="[Application.LocalStrings.#Remove!cor:String]" Command="[Remove]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="UpdateButton" Text="[Application.LocalStrings.#Update!cor:String]" Command="[Update]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="UpgradeInfoButton" Text="[Application.LocalStrings.#UpgradeInfo!cor:String]" Color="Black" Command="[UpgradeInfo]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="CloseButton" Text="[Application.LocalStrings.#Close!cor:String]" Command="[Close]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" FocusOrder="0" />
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
+
+    
+  </UI>
+</Mcml>

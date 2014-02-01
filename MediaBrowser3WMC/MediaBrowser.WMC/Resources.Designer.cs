@@ -3072,6 +3072,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] PluginCatalog {
+            get {
+                object obj = ResourceManager.GetObject("PluginCatalog", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] PluginUpdateButton {
             get {
                 object obj = ResourceManager.GetObject("PluginUpdateButton", resourceCulture);
@@ -3126,6 +3136,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("PosterViewItem", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Puzzle {
+            get {
+                object obj = ResourceManager.GetObject("Puzzle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -3672,6 +3692,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Star_Empty_Black {
+            get {
+                object obj = ResourceManager.GetObject("Star_Empty_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Star_Full {
             get {
                 object obj = ResourceManager.GetObject("Star_Full", resourceCulture);
@@ -3682,9 +3712,29 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Star_Full_Black {
+            get {
+                object obj = ResourceManager.GetObject("Star_Full_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Star_Half {
             get {
                 object obj = ResourceManager.GetObject("Star_Half", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Star_Half_Black {
+            get {
+                object obj = ResourceManager.GetObject("Star_Half_Black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

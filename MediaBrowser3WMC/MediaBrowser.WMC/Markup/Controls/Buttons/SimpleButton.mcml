@@ -20,6 +20,7 @@
       <Size Name="Size" Size="0,0" />
       <Font Name="Font" Font="$Required" />
       <Color Name="Color" Color="color://s:FontColorLight"/>
+      <Color Name="FocusColor" Color="color://s:FontColorLight"/>
       <Image Name="ImageFocus" Image="image://i:ZoomPane" />
       <Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
       <Image Name="ImageDormant" Image="image://me:ButtonDormant" />
@@ -40,7 +41,7 @@
       <Binding Source="[Font]" Target="[Label.Font]" />
       <Binding Source="[Text]" Target="[Label.Content]" />
       <Default Target="[Input.KeyInteractive]" Value="true" />
-
+      
       <Rule>
         <Conditions>
           <Equality Source="[Size]" Value="0,0"/>
@@ -82,6 +83,7 @@
         </Conditions>
         <Actions>
           <Set Target="[imgButton.Content]" Value="60,60,60"/>
+          <Set Target="[Label.Color]" Value="[FocusColor]"/>
           <PlaySound Sound="sound://sd:Focus" />
         </Actions>
       </Condition>
@@ -91,6 +93,7 @@
           <Equality Source="[Command.Available]" ConditionOp="Equals" Value="true" />
         </Conditions>
         <Actions>
+          <Set Target="[Label.Color]" Value="[FocusColor]"/>
           <Set Target="[imgButton.Content]" Value="60,60,60"/>
         </Actions>
       </Condition>

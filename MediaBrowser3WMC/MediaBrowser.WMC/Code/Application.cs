@@ -787,12 +787,21 @@ namespace MediaBrowser
                                                                                           {
                                                                                               name = current.Name, 
                                                                                               overview = current.Description, 
-                                                                                              isPremium = current.IsPremium, 
                                                                                               targetFilename = current.Filename
                                                                                           });
                 installedPlugin.InstalledVersion = current.Version.ToString();
                 var catalogVersion = catalogPlugin != null ? catalogPlugin.Versions.FirstOrDefault(v => v.version == current.Version) : null;
                 installedPlugin.InstalledVersionClass = catalogVersion != null ? " (" + catalogVersion.classification.ToString() + ")" : "";
+                if (catalogPlugin != null)
+                {
+                    catalogPlugin.InstalledVersion = installedPlugin.InstalledVersion;
+                    catalogPlugin.InstalledVersionClass = installedPlugin.InstalledVersionClass;
+                    installedPlugin.UpdateAvailable = catalogPlugin.UpdateAvailable = catalogPlugin.Versions.Any(v => v.version > current.Version);
+                }
+                else
+                {
+                    installedPlugin.NotInCatalog = true;
+                }
 
                 installedPluginItems.Add(installedPlugin);
 
@@ -1860,6 +1869,20 @@ namespace MediaBrowser
             }
         }
 
+        private bool _showPluginDetailPage;
+        public bool ShowPluginDetailPage
+        {
+            get { return this._showPluginDetailPage; }
+            set
+            {
+                if (_showPluginDetailPage != value)
+                {
+                    _showPluginDetailPage = value;
+                    FirePropertyChanged("ShowPluginDetailPage");
+                }
+            }
+        }
+
         private bool showNowPlaying = false;
         public bool ShowNowPlaying
         {
@@ -1953,10 +1976,25 @@ namespace MediaBrowser
             }
         }
 
+        public void OpenCatalogPage()
+        {
+            var properties = new Dictionary<string, object>();
+            properties["Application"] = this;
+
+            if (session != null)
+            {
+                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog#PluginCatalog", properties);
+            }
+            else
+            {
+                Logger.ReportError("Session is null in OpenPage");
+            }
+            
+        }
 
         public void OpenConfiguration(bool showFullOptions)
         {
-            Dictionary<string, object> properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, object>();
             properties["Application"] = this;
             properties["ShowFull"] = showFullOptions;
 
@@ -2011,9 +2049,23 @@ namespace MediaBrowser
             }
         }
 
+        private PluginItem _currentPluginItem;
+        public PluginItem CurrentPluginItem
+        {
+            get { return _currentPluginItem; }
+            set
+            {
+                if (_currentPluginItem != value)
+                {
+                    _currentPluginItem = value;
+                    FirePropertyChanged("CurrentPluginItem");
+                }
+            }
+        }
+
         public void OpenFolderPage(FolderModel folder)
         {
-            Dictionary<string, object> properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, object>();
             properties["Application"] = this;
             properties["Folder"] = folder;
             properties["ThemeConfig"] = CurrentTheme.Config;

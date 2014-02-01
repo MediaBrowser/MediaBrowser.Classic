@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Updates;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Code.ModelItems;
+using System.Linq;
 using MediaBrowser.Library.Entities;
 
 namespace MediaBrowser.Library
@@ -34,7 +36,7 @@ namespace MediaBrowser.Library
         /// Gets or sets the overview.
         /// </summary>
         /// <value>The overview.</value>
-        public string Overview { get { return Info.overview; } }
+        public string Overview { get { return Helper.StripTags(Info.overview); } }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is premium.
@@ -46,13 +48,13 @@ namespace MediaBrowser.Library
         /// Gets or sets the thumb image.
         /// </summary>
         /// <value>The thumb image.</value>
-        public string ThumbImage { get { return Info.thumbImage; } }
+        public Image ThumbImage { get { return new Image(Info.thumbImage ?? "resx://Mediabrowser/Mediabrowser.Resources/Puzzle"); } }
 
         /// <summary>
         /// Gets or sets the preview image.
         /// </summary>
         /// <value>The preview image.</value>
-        public string PreviewImage { get { return Info.previewImage; } }
+        public Image PreviewImage { get { return new Image(Info.previewImage ?? Info.thumbImage ?? "resx://Mediabrowser/Mediabrowser.Resources/Puzzle"); } }
 
         /// <summary>
         /// Gets or sets the type.
@@ -70,7 +72,7 @@ namespace MediaBrowser.Library
         /// Gets or sets the owner.
         /// </summary>
         /// <value>The owner.</value>
-        public string Owner { get { return Info.owner; } }
+        public string Owner { get { return Info.owner ?? "Unknown"; } }
 
         /// <summary>
         /// Gets or sets the category.
@@ -119,7 +121,7 @@ namespace MediaBrowser.Library
         /// Gets or sets the average rating for this package .
         /// </summary>
         /// <value>The rating.</value>
-        public float AvgRating { get { return Info.avgRating; } }
+        public float AvgRating { get { return Info.avgRating * 2.0f; } }
 
         /// <summary>
         /// Gets or sets whether or not this package is registered.
@@ -135,14 +137,31 @@ namespace MediaBrowser.Library
 
         public bool IsInTrial { get { return IsPremium && !IsRegistered && ExpDate > DateTime.Today; } }
         public int TrialDaysLeft { get { return (int)(ExpDate - DateTime.Today).TotalDays; } }
-        public bool IsExpired { get { return IsPremium && !IsRegistered && ExpDate <= DateTime.Today; } }
-        public bool IsFree { get { return !IsPremium; } }
-        
+        public bool IsExpired { get { return IsPremium && !IsRegistered && ExpDate <= DateTime.Today && ExpDate > DateTime.MinValue; } }
+        public bool IsFree { get { return !IsPremium && !NotInCatalog; } }
+        public bool SupporterOnly { get { return IsPremium && Price < .01; } }
 
+        public bool IsInstalled { get { return InstalledVersion != null; } }
         public string InstalledVersion { get; set; }
         public string InstalledVersionClass { get; set; }
+        public bool UpdateAvailable { get; set; }
+        public bool NotInCatalog { get; set; }
+        public bool CanRegister { get { return IsPremium && !IsRegistered; } }
+
+        public string UpgradeInfo
+        {
+            get
+            {
+                return Helper.StripTags(Versions != null ? Versions.Last().description : "None");
+            }
+        }
 
         public string InstalledVersionDisplay { get { return !string.IsNullOrEmpty(InstalledVersion) ? "Version " + InstalledVersion + InstalledVersionClass : ""; } }
+        public string InstalledVersionDisplay2 { get { return InstalledVersionDisplay != "" ? InstalledVersionDisplay + " " + Localization.LocalizedStrings.Instance.GetString("Installed") : Localization.LocalizedStrings.Instance.GetString("NotInstalled"); } }
+
+        public string DisplayPrice { get { return Price > 0 ? Price.ToString("$#0.00") : "Free"; } }
+        public string TotalRatingDisplay { get { return TotalRatings > 0 ? " (" + TotalRatings + ")" : "(Not Rated)"; } }
+        public string DisplayOwner { get { return "Brought to you by " + Owner; }}
 
         /// <summary>
         /// Gets or sets the versions.

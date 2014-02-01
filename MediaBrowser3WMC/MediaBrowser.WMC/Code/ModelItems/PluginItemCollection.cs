@@ -12,6 +12,9 @@ namespace MediaBrowser.Library
         public List<PluginItem> Items { get; private set; }
         private int _selectedItemIndex = -1;
 
+        public string Name { get; set; }
+        public bool UpdatesAvailable { get { return Items != null && Items.Any(i => i.UpdateAvailable); } }
+
         public int SelectedItemIndex
         {
             get { return _selectedItemIndex; }
@@ -41,6 +44,17 @@ namespace MediaBrowser.Library
         {
             Items = plugins.ToList();
             FirePropertyChanged("Items");
+        }
+
+        private List<PluginItemCollection> _groupedItems; 
+        public List<PluginItemCollection> GroupedItems
+        {
+            get { return _groupedItems ?? (_groupedItems = GetGroupedItems()); }
+        }
+
+        protected List<PluginItemCollection> GetGroupedItems()
+        {
+            return Items.GroupBy(i => i.Category).OrderByDescending(g => g.Key).Select(g => new PluginItemCollection(g.OrderBy(i => i.Name)) {Name = g.Key}).ToList();
         }
     }
 }

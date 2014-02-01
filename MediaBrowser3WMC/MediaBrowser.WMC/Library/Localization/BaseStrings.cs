@@ -384,6 +384,16 @@ namespace MediaBrowser.Library.Localization
         public string Season = "Season";
         public string Favorite = "Favorite";
         public string SimilarTo = "Similar to";
+        public string PluginCatalog = "Plugin Catalog";
+        public string Installed = "Installed";
+        public string NotInstalled = "Not Installed";
+        public string Close = "Close";
+        public string Install = "Install";
+        public string Remove = "Remove";
+        public string Register = "Register";
+        public string Update = "Update";
+        public string UpgradeInfo = "Upgrade Info";
+        public string UpdateAll = "Update All";
 
         //Search
         public string IncludeNested = "Include Subfolders";

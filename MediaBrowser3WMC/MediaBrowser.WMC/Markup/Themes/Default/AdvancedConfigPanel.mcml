@@ -8,6 +8,8 @@
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
     xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
     xmlns:cp="resx://MediaBrowser/MediaBrowser.Resources/ConfigPage"  
+    xmlns:pc="resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog"  
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
     xmlns:me="Me"
   >
   <!--*****************************************************************************************************************
@@ -160,18 +162,35 @@
       <Inset Name="CMargin" Inset="25,0,0,0" />
       <Inset Name="SMargin" Inset="10,0,0,0" />
       <Size Name="LabelSize1" Size="250,0" />
-      <Size Name="PanelSize" Size="800,400" />
+      <Size Name="PanelSize" Size="0,400" />
+
+      <Command Name="OpenCatalog"/>
+      <Command Name="UpdateAll"/>
 
     </Locals>
+
+    <Rules>
+      <Changed Source="[OpenCatalog.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.OpenCatalogPage]" />
+        </Actions>
+      </Changed>
+    
+      <Binding Source="[Application.InstalledPluginsCollection.UpdatesAvailable]" Target="[UpdateAllButton.Visible]" />
+    
+    </Rules>
     
     <Content>
-              <Panel Name="Plugins" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+              <Panel Name="Plugins" Layout="Form"
+                       MinimumSize="200,400" MaximumSize="1100, 400" Padding="[SMargin]" Navigation="Group">
                 <Children>
                   <Panel Layout="VerticalFlow" >
+                    <LayoutInput>
+                      <FormLayoutInput Horizontal="Near" Vertical="Near" />
+                    </LayoutInput>
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#InstalledPluginsConfig!cor:String]" />
-                      <Repeater Name="PluginList" Layout="Grid" Source="[Application.InstalledPluginsCollection.Items]" Margins="[CMargin]" MaximumSize="0,300" >
+                      <Repeater Name="PluginList" Layout="Grid" Source="[Application.InstalledPluginsCollection.Items]" Margins="[CMargin]" Navigation="RememberFocus" MaximumSize="0,300" >
                         <Layout>
                           <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="4,4"/>
                         </Layout>
@@ -181,6 +200,16 @@
                       </Repeater>
                     </Children>
                   </Panel>
+                  <sb:SimpleButton Name="OpenCatalogButton" Text="[Application.LocalStrings.#PluginCatalog!cor:String]" Command="[OpenCatalog]" Font="font://f:CP_ButtonFont" Size="250,50" Margins="0,15,20,5" >
+                    <LayoutInput>
+                      <FormLayoutInput Horizontal="Far" Vertical="Far" />
+                    </LayoutInput>
+                  </sb:SimpleButton>
+                  <sb:SimpleButton Name="UpdateAllButton" Text="[Application.LocalStrings.#UpdateAll!cor:String]" Command="[UpdateAll]" Font="font://f:CP_ButtonFont" Size="250,50" Margins="0,15,20,5" >
+                    <LayoutInput>
+                      <FormLayoutInput Right="OpenCatalogButton, 0, -10" Vertical="Far" />
+                    </LayoutInput>
+                  </sb:SimpleButton>
                 </Children>
               </Panel>
 
@@ -188,7 +217,7 @@
 
   </UI>
 
-<UI Name="PluginListItem">
+<UI Name="PluginListItem" BaseUI="pc:PluginButton">
   <Properties>
     <a:Application Name="Application" Application="$Required"/>
     <lib:PluginItem Name="Item" lib:PluginItem="$Required" />
@@ -205,6 +234,7 @@
       </Conditions>
       <Actions>
         <Set Target="[Parent.SelectedItemIndex]" Value="[Index.Value]" />
+        <Set Target="[Application.CurrentPluginItem]" Value="[Item]" />
         <Set Target="[Main.Content]" Value="60,60,60" />
       </Actions>
     </Changed>
@@ -247,7 +277,7 @@
           <Children>
             <Panel Layout="Anchor">
               <Children>
-                <Text Content="[Item.Name]" Font="font://f:CP_ConfigItemFont" MaximumSize="200,0"  Color="color://s:FontColorMedium" >
+                <Text Content="[Item.Name]" Font="font://f:CP_ConfigItemFont" MaximumSize="230,0"  Color="color://s:FontColorMedium" >
                   <LayoutInput>
                     <AnchorLayoutInput Horizontal="Near"/>
                   </LayoutInput>
@@ -263,7 +293,24 @@
                 
               </Children>
             </Panel>
-            <Text Content="[Item.InstalledVersionDisplay]" Font="Segoe Media Center light, 14"  Color="color://s:FontColorMedium" />
+            <Panel Layout="Anchor">
+              <Children>
+            <Text Content="[Item.InstalledVersionDisplay]" Font="Segoe Media Center light, 14"  Color="color://s:FontColorMedium" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Near"/>
+                  </LayoutInput>
+                </Text>
+                <ColorFill Name="UpdateInd" Content="110,110,0" Padding="2,0,2,0" Margins="0,4,4,0" Visible="[Item.UpdateAvailable]" >
+                  <LayoutInput>
+                    <AnchorLayoutInput Horizontal="Far"/>
+                  </LayoutInput>
+                  <Children>
+                    <Text Name="UpdateText"  Font="Segoe Media Center, 10" Content="Update Avail"  Color="color://s:FontColorLight" />
+                  </Children>
+                </ColorFill>
+                
+              </Children>
+            </Panel>
             <ColorFill Content="White" Alpha=".3" MaximumSize="300,2" MinimumSize="300,2" />
           </Children>
         </Panel>

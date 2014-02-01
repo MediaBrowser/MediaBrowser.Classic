@@ -40,6 +40,9 @@
 	<Image Name="StarEmpty" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Empty" />
 	<Image Name="StarFull" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Full" />
 	<Image Name="StarHalf" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Half" />
+	<Image Name="StarEmptyBlack" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Empty_Black" />
+	<Image Name="StarFullBlack" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Full_Black" />
+	<Image Name="StarHalfBlack" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Half_Black" />
 	<Image Name="RatedG" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_g" />
 	<Image Name="RatedNC17" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_nc_17" />
 	<Image Name="RatedPG13" Source="resx://MediaBrowser/MediaBrowser.Resources/rated_pg_13" />
