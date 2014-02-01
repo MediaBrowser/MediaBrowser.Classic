@@ -185,6 +185,7 @@
     
       <Binding Source="[Application.InstalledPluginsCollection.UpdatesAvailable]" Target="[UpdateAllButton.Visible]" />
       <Binding Source="[Application.InstalledPluginsCollection.Items]" Target="[PluginList.Source]" />
+      <Condition Source="[Application.InstalledPluginsCollection.Items.Count]" SourceValue="0" Target="[NoPlugins.Visible]" Value="true" />
     
     </Rules>
     
@@ -198,6 +199,7 @@
                     </LayoutInput>
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#InstalledPluginsConfig!cor:String]" />
+                      <Text Name="NoPlugins" Content="Use Plug-in Catalog to install plug-ins" Font="Segoe Media Center Light, 48, Bold" Color="White" Alpha=".6" Visible="false" Margins="20,40,0,0" />
                       <Repeater Name="PluginList" Layout="Grid" Source="[Application.InstalledPluginsCollection.Items]" Margins="[CMargin]" Navigation="RememberFocus" MaximumSize="0,300" >
                         <Layout>
                           <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="4,4"/>
