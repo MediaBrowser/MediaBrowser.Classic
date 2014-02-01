@@ -775,39 +775,46 @@ namespace MediaBrowser
 
         public void RefreshPluginCollections()
         {
-            AvailablePluginsCollection = new PluginItemCollection(Packages);
-
-            var installedPluginItems = new List<PluginItem>();
-
-            foreach (var plugin in Kernel.Instance.Plugins)
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
             {
-                var current = plugin;
-                var catalogPlugin = AvailablePluginsCollection.Items.FirstOrDefault(i => i.TargetFilename.Equals(current.Filename, StringComparison.OrdinalIgnoreCase));
-                var installedPlugin = new PluginItem(catalogPlugin != null ? catalogPlugin.Info : new PackageInfo
-                                                                                          {
-                                                                                              name = current.Name, 
-                                                                                              overview = current.Description, 
-                                                                                              targetFilename = current.Filename
-                                                                                          });
-                installedPlugin.InstalledVersion = current.Version.ToString();
-                var catalogVersion = catalogPlugin != null ? catalogPlugin.Versions.FirstOrDefault(v => v.version == current.Version) : null;
-                installedPlugin.InstalledVersionClass = catalogVersion != null ? " (" + catalogVersion.classification.ToString() + ")" : "";
-                if (catalogPlugin != null)
-                {
-                    catalogPlugin.InstalledVersion = installedPlugin.InstalledVersion;
-                    catalogPlugin.InstalledVersionClass = installedPlugin.InstalledVersionClass;
-                    installedPlugin.UpdateAvailable = catalogPlugin.UpdateAvailable = catalogPlugin.Versions.Any(v => v.version > current.Version);
-                }
-                else
-                {
-                    installedPlugin.NotInCatalog = true;
-                }
-
-                installedPluginItems.Add(installedPlugin);
-
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => RefreshPluginCollections());
             }
+            else
+            {
+                AvailablePluginsCollection = new PluginItemCollection(Packages);
 
-            InstalledPluginsCollection = new PluginItemCollection(installedPluginItems);
+                var installedPluginItems = new List<PluginItem>();
+
+                foreach (var plugin in Kernel.Instance.Plugins)
+                {
+                    var current = plugin;
+                    var catalogPlugin = AvailablePluginsCollection.Items.FirstOrDefault(i => i.TargetFilename.Equals(current.Filename, StringComparison.OrdinalIgnoreCase));
+                    var installedPlugin = new PluginItem(catalogPlugin != null ? catalogPlugin.Info : new PackageInfo
+                                                                                                          {
+                                                                                                              name = current.Name,
+                                                                                                              overview = current.Description,
+                                                                                                              targetFilename = current.Filename
+                                                                                                          });
+                    installedPlugin.InstalledVersion = current.Version.ToString();
+                    var catalogVersion = catalogPlugin != null ? catalogPlugin.Versions.FirstOrDefault(v => v.version == current.Version) : null;
+                    installedPlugin.InstalledVersionClass = catalogVersion != null ? " (" + catalogVersion.classification.ToString() + ")" : "";
+                    if (catalogPlugin != null)
+                    {
+                        catalogPlugin.InstalledVersion = installedPlugin.InstalledVersion;
+                        catalogPlugin.InstalledVersionClass = installedPlugin.InstalledVersionClass;
+                        installedPlugin.UpdateAvailable = catalogPlugin.UpdateAvailable = catalogPlugin.Versions.Any(v => v.version > current.Version);
+                    }
+                    else
+                    {
+                        installedPlugin.NotInCatalog = true;
+                    }
+
+                    installedPluginItems.Add(installedPlugin);
+
+                }
+
+                InstalledPluginsCollection = new PluginItemCollection(installedPluginItems);
+            }
         }
 
         public FavoritesCollectionFolder FavoritesFolder
@@ -1515,13 +1522,22 @@ namespace MediaBrowser
             }
 
             //load plug-in catalog info
-            Async.Queue("PackageLoad", () =>
+            if (user.Dto.Configuration.IsAdministrator)
             {
-                Packages = Kernel.ApiClient.GetPackages();
-                PackagesRetrieved = true;
-            });
-
+                Async.Queue("PackageLoad",() =>
+                {
+                    LoadPackages();
+                    RefreshPluginCollections();
+                });
+                
+            }
             return true;
+        }
+
+        private void LoadPackages()
+        {
+            Packages = Kernel.ApiClient.GetPackages();
+            PackagesRetrieved = true;
         }
 
         protected void BuildUserMenu()
@@ -1614,12 +1630,7 @@ namespace MediaBrowser
                         // CANNOT be instantiated outside of the application thread.
                         if (Config.EnableUpdates && !RunningOnExtender)
                         {
-                            //Async.Queue(Async.STARTUP_QUEUE, , 10000);
-                            Async.Queue(Async.STARTUP_QUEUE, () =>
-                                                                 {
-                                                                     CheckForSystemUpdate();
-                                                                     PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
-                                                                 }, 10000);
+                            Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
                         }
 
                         // Let the user know if the server needs to be restarted
@@ -1995,24 +2006,28 @@ namespace MediaBrowser
 
         public void OpenConfiguration(bool showFullOptions)
         {
-            var properties = new Dictionary<string, object>();
-            properties["Application"] = this;
-            properties["ShowFull"] = showFullOptions;
-
-            if (session != null)
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
             {
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
-                if (AvailablePluginsCollection == null)
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenConfiguration(showFullOptions));
+            }
+            else
+            {
+                var properties = new Dictionary<string, object>();
+                properties["Application"] = this;
+                properties["ShowFull"] = showFullOptions;
+
+                if (session != null)
                 {
-                    if (PackagesRetrieved)
+                    session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
+                    if (AvailablePluginsCollection == null && PackagesRetrieved)
                     {
                         RefreshPluginCollections();
                     }
                 }
-            }
-            else
-            {
-                Logger.ReportError("Session is null in OpenPage");
+                else
+                {
+                    Logger.ReportError("Session is null in OpenPage");
+                }
             }
         }
 

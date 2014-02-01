@@ -120,45 +120,20 @@ namespace MediaBrowser.Util
         /// </summary>
         public bool PluginUpdatesAvailable()
         {
-            var availablePlugins = Kernel.Instance.GetAvailablePlugins().ToList();
-            var availableUpdates = new List<RemotePlugin>();
-
             Logger.ReportInfo("Checking for Plugin Updates...");
-
-            foreach (var plugin in Kernel.Instance.Plugins)
+            if (Application.CurrentInstance.InstalledPluginsCollection.Items.Any(i => i.UpdateAvailable))
             {
-                var found = availablePlugins.FirstOrDefault(remote => remote.Filename.Equals(plugin.Filename, StringComparison.OrdinalIgnoreCase));
-                if (found != null)
+                if (Application.CurrentInstance.YesNoBox(MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("PluginUpdatesAvailQ")) == "Y")
                 {
-                    if (found.Version > plugin.Version && found.RequiredMBVersion <= Kernel.Instance.Version)
-                    {
-                        //newer one available - add to list
-                        availableUpdates.Add(found);
-                    }
-                }
-            }
-
-            if (availableUpdates.Any())
-            {
-                if (Application.CurrentInstance.YesNoBox("Some of your plug-ins have updates.  Update now?") == "Y")
-                {
-                    foreach (var availableUpdate in availableUpdates)
-                    {
-                        Application.CurrentInstance.ProgressBox("Updating "+availableUpdate.Name+"...");
-                        InstallPlugin(availableUpdate);
-                        Application.CurrentInstance.ShowMessage = false;
-                    }
+                    Application.CurrentInstance.ConfigPanelIndex = 3;
+                    Application.CurrentInstance.OpenConfiguration(true);
+                    Async.Queue("Panel Reset", () => { Application.CurrentInstance.ConfigPanelIndex = 0; }, 1000);
+                    
                 }
                 else
                 {
                     return true;
                 }
-            }
-
-            if (_sucessfulUpdate)
-            {
-                Application.CurrentInstance.MessageBox("Update sucessful.  MB Classic will now shut down.\n\nRe-start for updates to take effect.");
-                Application.CurrentInstance.Close();
             }
 
             return false;
@@ -167,7 +142,7 @@ namespace MediaBrowser.Util
         private bool _installInProgress = false;
         private bool _sucessfulUpdate = false;
 
-        private void InstallPlugin(RemotePlugin plugin)
+        public void InstallPlugin(RemotePlugin plugin)
         {
             _installInProgress = true;
             Kernel.Instance.InstallPlugin(plugin.SourceFilename, plugin.Filename, null, PluginInstallFinish, PluginInstallError );
