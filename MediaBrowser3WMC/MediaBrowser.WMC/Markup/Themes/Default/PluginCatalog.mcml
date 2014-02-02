@@ -355,7 +355,7 @@
     <Content>
       <Panel Name="Main" Layout="Form">
         <Children>
-          <me:PluginDetailForm Name="Detail" Application="[Application]" Item="[Item]" MaximumSize="1100,650" MinimumSize="1100,650" />
+          <me:PluginDetailForm Name="Detail" Application="[Application]" Item="[Item]" MaximumSize="1150,650" MinimumSize="1100,650" />
           
           <!--Back Fade-->
           <ColorFill Content="Black" Alpha=".6" Layout="Fill" MouseInteractive="true" />
@@ -459,7 +459,6 @@
       </Binding>
       <Binding Source="[Item.IsInstalled]" Target="[RemoveButton.Visible]" />
       <Binding Source="[Item.UpdateAvailable]" Target="[UpdateButton.Visible]" />
-      <Binding Source="[Item.UpdateAvailable]" Target="[UpgradeInfoButton.Visible]" />
       <Binding Source="[Item.CanRegister]" Target="[RegisterButton.Visible]" />
       <Binding Source="[Item.UpdatePending]" Target="[UpdatePending.Visible]" />
       <Condition Source="[Item.UpdatePending]" SourceValue="true" >
@@ -469,6 +468,7 @@
           <Set Target="[UpgradeInfoButton.Visible]" Value="false" />
         </Actions>
       </Condition>
+      <Condition Source="[Item.UpdateAvailable]" SourceValue="false" Target="[UpgradeInfoButton.Text]" Value="[Application.LocalStrings.#LastUpdateInfo!cor:String]" />
     
     </Rules>
 
@@ -488,7 +488,7 @@
           </Graphic>
           <Text Name="NotInCatalog" Visible="false" Content="This Plug-in is not in the Catalog" Font="Segoe Media Center Light, 28, Bold" Color="Black" Margins="30,10,0,0" >
             <LayoutInput>
-              <AnchorLayoutInput Left="Name, 0" Bottom="Parent,1,-15"/>
+              <AnchorLayoutInput Left="Name, 0" Bottom="Parent,1,-80"/>
             </LayoutInput>
           </Text>
 					<st:ScrollableText Name="Summary" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
@@ -541,8 +541,8 @@
               <sb:SimpleButton Name="InstallButton" Text="[Application.LocalStrings.#Install!cor:String]" Command="[Install]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="RemoveButton" Text="[Application.LocalStrings.#Remove!cor:String]" Command="[Remove]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="UpdateButton" Text="[Application.LocalStrings.#Update!cor:String]" Command="[Update]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
-              <sb:SimpleButton Name="UpgradeInfoButton" Text="[Application.LocalStrings.#UpgradeInfo!cor:String]" Color="Black" Command="[ShowUpgradeInfo]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
-              <sb:SimpleButton Name="SummaryButton" Visible="false" Text="[Application.LocalStrings.#Overview!cor:String]" Color="Black" Command="[ShowSummary]" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="UpgradeInfoButton" Text="[Application.LocalStrings.#UpgradeInfo!cor:String]" Color="Black" Command="[ShowUpgradeInfo]" Font="font://f:CP_ButtonFont" Size="220,50" Margins="0,15,20,5" />
+              <sb:SimpleButton Name="SummaryButton" Visible="false" Text="[Application.LocalStrings.#Overview!cor:String]" Color="Black" Command="[ShowSummary]" Font="font://f:CP_ButtonFont" Size="220,50" Margins="0,15,20,5" />
               <sb:SimpleButton Name="CloseButton" Text="[Application.LocalStrings.#Close!cor:String]" Command="[Close]" Color="Black" Font="font://f:CP_ButtonFont" Size="200,50" Margins="0,15,20,5" FocusOrder="0" />
             </Children>
           </Panel>

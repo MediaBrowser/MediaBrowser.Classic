@@ -394,6 +394,7 @@ namespace MediaBrowser.Library.Localization
         public string Register = "Register";
         public string Update = "Update";
         public string UpgradeInfo = "Upgrade Info";
+        public string LastUpdateInfo = "Last Update Info";
         public string UpdateAll = "Update All";
         public string PluginUpdatesAvailQ = "Some of your plug-ins have updates.  Go to Configuration?";
         public string Overview = "Overview";
