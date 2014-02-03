@@ -160,7 +160,7 @@
       <Choice Name="StartUp">
         <Options>
           <cor:String String="Show Profile Screen" />
-          <cor:String String="Log in as Me" />
+          <cor:String String="Log in Current User" />
         </Options>
       </Choice>
       <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]" />

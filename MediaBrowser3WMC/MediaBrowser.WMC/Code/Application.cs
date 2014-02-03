@@ -1354,7 +1354,7 @@ namespace MediaBrowser
 
         public string CurrentServerAddress { get { return Kernel.ApiClient.ServerHostName; } }
 
-        public string ServerAddressOptionString { get { return "This Server (" + CurrentServerAddress + ")"; } }
+        public string ServerAddressOptionString { get { return "Current Server (" + CurrentServerAddress + ")"; } }
         
         /// <summary>
         /// Logout current user and re-display login screen
