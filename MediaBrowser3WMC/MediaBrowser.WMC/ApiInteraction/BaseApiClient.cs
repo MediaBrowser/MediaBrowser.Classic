@@ -105,7 +105,7 @@ namespace MediaBrowser.ApiInteraction
         /// Gets the current api url based on hostname and port.
         /// </summary>
         /// <value>The API URL.</value>
-        protected string ApiUrl
+        public string ApiUrl
         {
             get
             {

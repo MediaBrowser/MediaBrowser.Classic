@@ -422,6 +422,12 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[Register.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.RegisterPlugin]" plugin="[Item]" />
+        </Actions>
+      </Changed>
+    
       <Changed Source="[ShowUpgradeInfo.Invoked]" >
         <Actions>
           <Set Target="[UpgradeInfo.Visible]" Value="true" />

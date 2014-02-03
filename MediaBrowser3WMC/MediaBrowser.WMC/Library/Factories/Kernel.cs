@@ -437,6 +437,7 @@ namespace MediaBrowser.Library {
         public static bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; }
         public static ServerConfiguration ServerConfig { get; set; }
+        public string DashboardUrl { get { return ApiClient.ApiUrl + "/dashboard"; } }
 
         public static bool ConnectToServer(string address, int port, int timeout)
         {

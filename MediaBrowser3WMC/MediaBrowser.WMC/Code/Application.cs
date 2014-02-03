@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
-using MediaBrowser.Code;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Configuration;
@@ -21,17 +20,13 @@ using MediaBrowser.Library.Input;
 using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
-using MediaBrowser.Library.Metadata;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables;
-using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Updates;
@@ -1536,7 +1531,7 @@ namespace MediaBrowser
 
         private void LoadPackages()
         {
-            Packages = Kernel.ApiClient.GetPackages();
+            Packages = Kernel.ApiClient.GetPackages() ?? new List<PackageInfo>();
             PackagesRetrieved = true;
         }
 
@@ -1577,6 +1572,53 @@ namespace MediaBrowser
                     }
                 }
             });
+        }
+
+        /// <summary>
+        /// Open the dash in the default browser to the proper plugin page for registration
+        /// </summary>
+        /// <param name="plugin"></param>
+        public void RegisterPlugin(PluginItem plugin)
+        {
+            Async.Queue("Registration", () =>
+            {
+                if (YesNoBox("The Registration Page will open in your web browser.  You will need a keyboard to complete the transaction.  Continue?") == "Y")
+                {
+                    Process.Start(Kernel.Instance.DashboardUrl + string.Format("/addplugin.html?name={0}&guid={1}&autosubmit=true",plugin.Name, plugin.GuidString));
+                }
+                else
+                {
+                    MessageBox("You can register with any device via the dashboard at " + Kernel.Instance.DashboardUrl + "/plugincatalog.html");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Not used.
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
+        protected string BuildRegisterPage(PluginItem plugin)
+        {
+            var page = "<html>";
+            page += string.Format("<h1 style='text-align: center'>Testing Register {0}</h1><br/>",plugin.Name);
+
+            var form = "<form name=\"_xclick\" action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\">";
+            form += "<input type=\"hidden\" name=\"cmd\" value=\"_xclick\">";
+            form += string.Format("<input type=\"hidden\" id=\"payPalEmail\" name=\"business\" value=\"{0}\">", "donate@ebrsoft.com");
+            form += "<input type=\"hidden\" name=\"currency_code\" value=\"USD\">";
+            form += string.Format("<input type=\"hidden\" id=\"featureName\" name=\"item_name\" value=\"{0}\">", plugin.FeatureId);
+            form += string.Format("<input type=\"hidden\" id=\"amount\" name=\"amount\" value=\"{0}\">", plugin.Price);
+            form += string.Format("<input type=\"hidden\" id=\"featureId\" name=\"item_number\" value=\"{0}\">", plugin.FeatureId);
+            form += "<input type=\"hidden\" name=\"notify_url\" value=\"http://mb3admin.com/admin/service/services/ppipn.php\">";
+            form += "<input type=\"hidden\" name=\"return\" value=\"#\">";
+            form += "<a href=\"#\" onclick=\"$(this).parents('form')[0].submit();\"><img src=\"https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif\" /></a>";
+            form += "</form>";
+            page += form;
+            page += "</html>";
+
+            return page;
+
         }
 
         protected void BuildUserMenu()
@@ -2058,9 +2100,15 @@ namespace MediaBrowser
                 if (session != null)
                 {
                     session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
-                    if (AvailablePluginsCollection == null && PackagesRetrieved)
+                    if (AvailablePluginsCollection == null || !AvailablePluginsCollection.Items.Any())
+                    if (PackagesRetrieved)
                     {
                         RefreshPluginCollections();
+                    }
+                    else
+                    {
+                        InstalledPluginsCollection = new PluginItemCollection(new List<PluginItem>());
+                        AvailablePluginsCollection = new PluginItemCollection(new List<PluginItem>());
                     }
                 }
                 else
