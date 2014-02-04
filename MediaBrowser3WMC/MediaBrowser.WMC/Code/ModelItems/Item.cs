@@ -671,10 +671,9 @@ namespace MediaBrowser.Library
                         PlayState.PlayCount = 1;
                         //adjust parent counts
                         var parent = PhysicalParent;
-                        while (parent != null)
+                        if (parent != null)
                         {
-                            parent.ResetWatchedCount();
-                            parent = parent.PhysicalParent;
+                            parent.Folder.AdjustUnwatched(-1);
                         }
                         //don't add to watched list as we didn't really watch it (and it might just clutter up the list)
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("SetWatchedProf"), this.Name));
@@ -682,17 +681,13 @@ namespace MediaBrowser.Library
                     else
                     {
                         PlayState.WasPlayed = false;
-                        //remove ourselves from the watched list as well
+                        //adjust parent count
                         if (this.PhysicalParent != null)
                         {
-                            this.PhysicalParent.RemoveNewlyWatched(this); //thought about asynch'ing this but its a list of 20 items...
-                            PhysicalParent.ResetWatchedCount();
+                            PhysicalParent.Folder.AdjustUnwatched(1);
                         }
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("ClearWatchedProf"), this.Name));
                     }
-                    Kernel.Instance.SavePlayState(BaseItem, PlayState);
-                    lock (watchLock)
-                        unwatchedCountCache = -1;
                     Async.Queue("Toggle Watched", () => Kernel.ApiClient.UpdatePlayedStatus(this.Id.ToString(), Kernel.CurrentUser.Id, PlayState.WasPlayed));
                 }
             }

@@ -43,6 +43,7 @@ namespace MediaBrowser.Library {
             folder = (Folder)baseItem;
             folderChildren.Assign(this, FireChildrenChangedEvents);
             folder.QuickListChanged += QuickListChanged;
+            folder.UnwatchedCountChanged += AdjustUnwatched;
         }
 
         #endregion
@@ -259,6 +260,12 @@ namespace MediaBrowser.Library {
                 }
                 return unwatchedCountCache;
             }
+        }
+
+        public void AdjustUnwatched(object sender, UnwatchedChangedEventArgs args)
+        {
+            unwatchedCountCache = -1;
+            FireWatchedChangedEvents();
         }
 
         public void ResetWatchedCount()

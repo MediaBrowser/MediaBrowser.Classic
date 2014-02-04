@@ -21,10 +21,15 @@ namespace MediaBrowser.Library.Entities {
         public bool FolderContentChanged { get; set; }
     }
 
+    public class UnwatchedChangedEventArgs : EventArgs {
+        public int CountAdjustment { get; set; }
+    }
+
     public class Folder : BaseItem, MediaBrowser.Library.Entities.IFolder {
 
         public event EventHandler<ChildrenChangedEventArgs> ChildrenChanged;
         public event EventHandler<EventArgs> QuickListChanged;
+        public event EventHandler<UnwatchedChangedEventArgs> UnwatchedCountChanged;
 
         MediaBrowser.Library.Util.Lazy<List<BaseItem>> children;
         protected IFolderMediaLocation location;
@@ -570,6 +575,18 @@ namespace MediaBrowser.Library.Entities {
         {
             get { return _unwatchedCount ?? (int)(_unwatchedCount = GetUnwatchedCount()); }
             set { _unwatchedCount = value; }
+        }
+
+        public void AdjustUnwatched(int adjustment)
+        {
+            UnwatchedCount += adjustment;
+            if (UnwatchedCountChanged != null)
+            {
+                UnwatchedCountChanged(this, new UnwatchedChangedEventArgs {CountAdjustment = adjustment});
+            }
+
+            // And cascade up
+            if (Parent != null) Parent.AdjustUnwatched(adjustment);
         }
 
         public void ResetUnwatchedCount()
