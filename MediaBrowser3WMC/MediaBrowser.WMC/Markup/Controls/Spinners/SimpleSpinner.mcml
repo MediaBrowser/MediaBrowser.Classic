@@ -16,6 +16,7 @@
       <Font Name="Font" Font="$Required"/>
 		  <Font Name="ValueFont" Font="$Required"/>
       <Color Name="Color" Color="color://s:FontColorLight"/>
+      <Color Name="ValueColor" Color="color://s:FontColorLight"/>
       <cor:String Name="Label" String="" />
       <EditableText Name="FocusItem" />
       <Size Name="LabelMinSize" Size="200,0"/>
@@ -73,19 +74,19 @@
           <Text Name="Text" Content="[Label]" Font="[Font]" Color="[Color]" MinimumSize="[LabelMinSize]" />
 
           <!-- Previous button -->
-          <vm:ImageBtn Name="btnPrevious" Focused="image://i:DecrementFocus"
+          <vm:ImageBtn Name="btnPrevious" Focused="image://i:DecrementFocus" Color="[ValueColor]"
                        NonFocused="image://i:DecrementNoFocus"
                        Command="[Previous]"/>
 
           <!-- Next button -->
-          <vm:ImageBtn Name="btnNext" Focused="image://i:IncrementFocus"
+          <vm:ImageBtn Name="btnNext" Focused="image://i:IncrementFocus" Color="[ValueColor]"
                        NonFocused="image://i:IncrementNoFocus"
                        Command="[Next]"/>
 
           <!-- Current value -->
           <ColorFill Name="Background" Content="Transparent" MinimumSize="[ValueMinSize]" MaximumSize="[ValueMaxSize]" Padding="5,0,0,5">
             <Children>
-              <Text Name="Value" Font="[ValueFont]" Color="color://s:FontColorLight" />
+              <Text Name="Value" Font="[ValueFont]" Color="[ValueColor]" />
             </Children>
           </ColorFill>
 

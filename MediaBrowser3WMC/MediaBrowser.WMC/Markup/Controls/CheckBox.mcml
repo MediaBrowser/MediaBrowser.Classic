@@ -22,6 +22,7 @@
 			<cor:String Name="Label" String="$Required" />
 			<Font Name="Font" Font="$Required"/>
       <EditableText Name="FocusItem" />
+      <Color Name="Color" Color="color://s:FontColorMedium" />
 		</Properties>
 
 		<Locals>
@@ -121,8 +122,8 @@
 					<FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
 				</Layout>
 				<Children>
-					<Graphic Name="BoxImage" Content="image://i:CheckBoxUncheckedNoFocus" MaximumSize="34,34" />
-					<Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,0,0" />
+					<Graphic Name="BoxImage" Content="image://i:CheckBoxUncheckedNoFocus" MaximumSize="34,34" ColorFilter="[Color]"/>
+					<Text Name="Lbl" Color="[Color]" Font="[Font]" Margins="5,0,0,0" />
 				</Children>
 			</Panel>
 		</Content>

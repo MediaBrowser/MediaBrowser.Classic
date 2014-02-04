@@ -41,6 +41,8 @@
       <Binding Source="[Font]" Target="[Label.Font]" />
       <Binding Source="[Text]" Target="[Label.Content]" />
       <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Condition Source="[Size.Height]" SourceValue="50" ConditionOp="LessThan" Target="[imgButton.Padding]" Value="12,0,12,4" />
       
       <Rule>
         <Conditions>

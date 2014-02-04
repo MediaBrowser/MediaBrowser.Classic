@@ -47,6 +47,7 @@
       <Image Name="Focused" Image="$Required"/>
       <Image Name="NonFocused" Image="$Required"/>
       <ICommand Name="Command" ICommand="$Required"/>
+      <Color Name="Color" Color="Transparent" />
 
     </Properties>
     <Locals>
@@ -68,7 +69,7 @@
     <Content>
       <Panel>
         <Children>
-          <Graphic Name="Label" Content="[NonFocused]" MaximumSize="34,34"/>
+          <Graphic Name="Label" Content="[NonFocused]" ColorFilter="[Color]" MaximumSize="34,34"/>
         </Children>
       </Panel>
 
