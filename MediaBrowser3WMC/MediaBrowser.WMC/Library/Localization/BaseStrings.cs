@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0076";
+        const string VERSION = "1.0078";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -392,9 +392,12 @@ namespace MediaBrowser.Library.Localization
         public string Install = "Install";
         public string Remove = "Remove";
         public string Register = "Register";
+        public string Rate = "Rate:";
+        public string Stars = "Stars";
         public string Update = "Update";
+        public string Recommend = "Recommend";
         public string UpgradeInfo = "Upgrade Info";
-        public string LastUpdateInfo = "Last Update Info";
+        public string LastUpdateInfo = "Last Version Info";
         public string UpdateAll = "Update All";
         public string PluginUpdatesAvailQ = "Some of your plug-ins have updates.  Go to Configuration?";
         public string Overview = "Overview";

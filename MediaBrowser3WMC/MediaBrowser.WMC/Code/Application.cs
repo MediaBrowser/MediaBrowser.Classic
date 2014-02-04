@@ -1574,6 +1574,12 @@ namespace MediaBrowser
             });
         }
 
+        public void RatePlugin(PluginItem plugin, int rating, bool recommend)
+        {
+            Async.Queue("PackageRating", () => Kernel.ApiClient.RatePackage(plugin.Id, rating, recommend));
+            Information.AddInformationString("Thank you for submitting your rating");
+        }
+
         /// <summary>
         /// Open the dash in the default browser to the proper plugin page for registration
         /// </summary>

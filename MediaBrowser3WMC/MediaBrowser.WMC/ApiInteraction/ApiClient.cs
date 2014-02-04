@@ -1010,6 +1010,21 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Submit a rating for a package
+        /// </summary>
+        public void RatePackage(int packageId, int rating, bool recommend)
+        {
+
+            var dict = new QueryStringDictionary();
+            dict.Add("Rating", rating);
+            dict.Add("Recommend", recommend);
+
+            var url = GetApiUrl("PackageReviews/" + packageId, dict);
+
+            Post<EmptyRequestResult>(url, new Dictionary<string, string>());
+        }
+
+        /// <summary>
         /// Reports playback progress to the server
         /// </summary>
         /// <param name="itemId">The item id.</param>

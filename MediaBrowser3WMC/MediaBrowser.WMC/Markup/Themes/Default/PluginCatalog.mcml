@@ -9,7 +9,9 @@
 	  xmlns:anim="resx://MediaBrowser/MediaBrowser.Resources/Animations"
 	  xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
 	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
 	  xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/ScrollableText"
+	  xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
     xmlns:me="Me"
   >
 
@@ -376,9 +378,14 @@
       <Command Name="Remove" />
       <Command Name="Update" />
       <Command Name="Register" />
+      <Command Name="Rate" />
       <Command Name="ShowUpgradeInfo" />
       <Command Name="ShowSummary" />
       <KeyHandler Name="Back" Key="Backspace" Handle="true" HandlerStage="Bubbled"/>
+
+      <IntRangedValue Name="StarValue" Value="5" MaxValue="5" MinValue="0" Step="1" />
+      <BooleanChoice Name="Recommend" Value="true" />
+
     </Locals>
 
     <Rules>
@@ -428,6 +435,12 @@
         </Actions>
       </Changed>
     
+      <Changed Source="[Rate.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.RatePlugin]" plugin="[Item]" rating="[StarValue.Value]" recommend="[Recommend.Value]" />
+        </Actions>
+      </Changed>
+    
       <Changed Source="[ShowUpgradeInfo.Invoked]" >
         <Actions>
           <Set Target="[UpgradeInfo.Visible]" Value="true" />
@@ -451,6 +464,22 @@
       <Binding Source="[Item.Name]" Target="[Name.Content]" />
       <Binding Source="[Item.PreviewImage]" Target="[Preview.Content]" />
       <Binding Source="[Item.NotInCatalog]" Target="[NotInCatalog.Visible]" />
+      <Binding Source="[Item.NotInCatalog]" Target="[RatePanel.Visible]" >
+        <Conditions>
+          <Equality Source="[Item.IsInstalled]" Value="true" />
+        </Conditions>
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
+      <Binding Source="[Item.NotInCatalog]" Target="[RecommendOption.Visible]" >
+        <Conditions>
+          <Equality Source="[Item.IsInstalled]" Value="true" />
+        </Conditions>
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
       <Binding Source="[Item.Overview]" Target="[Summary.Text]" />
       <Binding Source="[Item.UpgradeInfo]" Target="[UpgradeInfo.Text]" />
       <Binding Source="[Item.DisplayOwner]" Target="[Owner.Content]" />
@@ -497,13 +526,13 @@
               <AnchorLayoutInput Left="Name, 0" Bottom="Parent,1,-80"/>
             </LayoutInput>
           </Text>
-					<st:ScrollableText Name="Summary" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
+					<st:ScrollableText Name="Summary" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="DarkBlue">
             <LayoutInput>
               <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -80" Right="Parent, 1, -10"/>
             </LayoutInput>
 					</st:ScrollableText>
           
-					<st:ScrollableText Name="UpgradeInfo" Visible="false" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="30,30,30">
+					<st:ScrollableText Name="UpgradeInfo" Visible="false" Font="Segoe Media Center Light, 14, Bold" Color="Black" FocusColor="DarkBlue">
             <LayoutInput>
               <AnchorLayoutInput Left="Preview, 1,15" Top="Preview,0" Bottom="Parent, 1, -80" Right="Parent, 1, -10"/>
             </LayoutInput>
@@ -517,6 +546,14 @@
               <Text Name="Price" Content="[Item.DisplayPrice]" Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30"  Color="Black" Margins="20,10,10,0" />
               <sr:StarRatingBlack Name="StarRating" Margins="0,15,0,4" Value="[Item.AvgRating!cor:Single]" Size="0,30"/>
               <Text Name="TotalRatings" Content="[Item.TotalRatingDisplay]" Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30"  Color="Black" Margins="0,8,0,0" />
+              <Panel Name="RatePanel" Layout="HorizontalFlow" Visible="false">
+                <Children>
+                  <sb:SimpleButton Name="RateButton" Text="[Application.LocalStrings.#Rate!cor:String]" Command="[Rate]" Color="Black" Font="Segoe Media Center light, 18, Bold" Size="100,35" Margins="15,8,0,0" />
+                  <ss:SimpleSpinner Label="" Model="[StarValue]" Color="Black" ValueColor="Black"  Margins="4,8,0,0" Font="Segoe Media Center light, 18, Bold" LabelMinSize="0,0" ValueMinSize="0,0" ValueFont="Segoe Media Center light, 18, Bold" />
+                  <Text Content="[Application.LocalStrings.#Stars!cor:String]" Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30"  Color="Black" Margins="0,8,0,0" />
+                </Children>
+              </Panel>
+
 
             </Children>
           </Panel>
@@ -526,13 +563,21 @@
             </LayoutInput>
             
           </Text>
+
+          <cb:CheckBox Name="RecommendOption" Visible="false" Label="[Application.LocalStrings.#Recommend!cor:String]" Checked="[Recommend]" Font="Segoe Media Center light, 18" Color="Black" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Owner, 1,15" Top="PricePanel,1"/>
+            </LayoutInput>
+            
+          </cb:CheckBox>
+
           <Text Name="Installed" Content="[Item.InstalledVersionDisplay2]" Font="Segoe Media Center light, 18" MinimumSize="0,30" Margins="20,0,0,0"  Color="Black" >
             <LayoutInput>
               <AnchorLayoutInput Left="Name, 0" Top="Owner,1"/>
             </LayoutInput>
             
           </Text>
-          <Text Name="UpdatePending" Content="Update Pending. Restart MBC to take effect." Font="Segoe Media Center light, 18, Bold" MinimumSize="0,30" Margins="20,0,0,0"  Color="DarkRed" >
+          <Text Name="UpdatePending" Content="Update Pending. Restart MBC to take effect." Font="Segoe Media Center light, 18, Bold" MinimumSize="0,35" Margins="20,0,0,0"  Color="DarkRed" >
             <LayoutInput>
               <AnchorLayoutInput Left="Name, 0" Top="Installed,1"/>
             </LayoutInput>
