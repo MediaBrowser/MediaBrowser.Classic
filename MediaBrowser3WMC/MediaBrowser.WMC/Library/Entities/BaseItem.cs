@@ -73,6 +73,11 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public virtual string BannerImagePath { get; set; }
 
+        protected virtual bool InheritThumb { get { return true; } }
+        protected virtual bool InheritBanner { get { return true; } }
+        protected virtual bool InheritLogo { get { return true; } }
+        protected virtual bool InheritArt { get { return true; } }
+
         public string BackdropImagePath {
             get {
                 string path = null;
@@ -107,13 +112,13 @@ namespace MediaBrowser.Library.Entities {
 
         public LibraryImage SecondaryImage {
             get {
-                return GetImage(SecondaryImagePath) ?? PrimaryImage;
+                return GetImage(SecondaryImagePath);
             }
         }
 
         public LibraryImage ThumbnailImage {
             get {
-                return SearchParents<LibraryImage>(this, item => item.GetImage(item.ThumbnailImagePath)) ?? PrimaryImage;
+                return InheritThumb ? SearchParents<LibraryImage>(this, item => item.GetImage(item.ThumbnailImagePath)) ?? PrimaryImage : GetImage(ThumbnailImagePath) ?? PrimaryImage;
             }
         }
 
@@ -126,21 +131,21 @@ namespace MediaBrowser.Library.Entities {
         // banner images will fall back to parent
         public LibraryImage BannerImage {
             get {
-                return SearchParents<LibraryImage>(this, item => item.GetImage(item.BannerImagePath, Kernel.Instance.ConfigData.ProcessBanners));
+                return InheritBanner ? SearchParents<LibraryImage>(this, item => item.GetImage(item.BannerImagePath, Kernel.Instance.ConfigData.ProcessBanners)) : GetImage(BannerImagePath);
             }
         }
 
         // logo images will fall back to parent
         public LibraryImage LogoImage {
             get {
-                return SearchParents<LibraryImage>(this, item => item.GetImage(item.LogoImagePath));
+                return InheritLogo ? SearchParents<LibraryImage>(this, item => item.GetImage(item.LogoImagePath)) : GetImage(LogoImagePath);
             }
         }
 
         // art images will fall back to parent
         public LibraryImage ArtImage {
             get {
-                return SearchParents<LibraryImage>(this, item => item.GetImage(item.ArtImagePath));
+                return InheritArt ? SearchParents<LibraryImage>(this, item => item.GetImage(item.ArtImagePath)) : GetImage(ArtImagePath);
             }
         }
 
