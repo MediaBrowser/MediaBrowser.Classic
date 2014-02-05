@@ -98,7 +98,7 @@ namespace MediaBrowser.Library.Entities {
         private FilterProperties _filters;
         public FilterProperties Filters
         {
-            get { return GetFilterProperties(); }
+            get { return _filters ?? (_filters = GetFilterProperties()); }
             set { _filters = value; }
         }
 
