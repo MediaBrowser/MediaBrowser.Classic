@@ -47,7 +47,7 @@
       <Image Name="Focused" Image="$Required"/>
       <Image Name="NonFocused" Image="$Required"/>
       <ICommand Name="Command" ICommand="$Required"/>
-      <Color Name="Color" Color="Transparent" />
+      <Color Name="Color" Color="color://s:FontColorLight" />
 
     </Properties>
     <Locals>
