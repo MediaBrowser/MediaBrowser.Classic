@@ -42,6 +42,17 @@ namespace MBMigrate
                         Logger.ReportException("Error deleting old MBPhoto plug-in", e);
                     }
 
+                const string chocolate = @"\windows\ehome\chocolate.dll";
+                if (File.Exists(chocolate))
+                    try
+                    {
+                        File.Delete(chocolate);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error deleting old chocolate plug-in", e);
+                    }
+
                 if (File.Exists(ApplicationPaths.CommonConfigFile)) _config = CommonConfigData.FromFile(ApplicationPaths.CommonConfigFile);
 
                 if (_config == null) // only do this if a fresh install
