@@ -292,19 +292,7 @@ namespace MediaBrowser.Library {
         {
             get
             {
-                if (Children.Count > 0)
-                {
-                    Media lastPlayedItem = this.folder.RecursiveChildren.Where(i => i is Media).OrderByDescending(i => (i as Media).PlaybackStatus.LastPlayed).First() as Media;
-                    if (lastPlayedItem != null)
-                    {
-                        return lastPlayedItem.PlaybackStatus.LastPlayed;
-                    }
-                    else
-                    {
-                        return DateTime.MinValue;
-                    }
-                }
-                return DateTime.MinValue;
+                return LastWatchedItem != null ? LastWatchedItem.LastPlayed : DateTime.MinValue;
             }
         }
 
@@ -324,7 +312,7 @@ namespace MediaBrowser.Library {
         /// </summary>
         public bool HasLastWatchedItem
         {
-            get { return folder.LastWatchedItem != null; }
+            get { return LastWatchedItem != null; }
         }
 
         protected Item lastWatched;
@@ -334,17 +322,14 @@ namespace MediaBrowser.Library {
             {
                 if (lastWatched == null)
                 {
-                    Async.Queue("lastwatched load", () =>
+                    var baseitem = folder.LastWatchedItem;
+                    if (baseitem != null)
                     {
-                        var baseItem = folder.LastWatchedItem;
-                        if (baseItem != null)
-                        {
-                            lastWatched = ItemFactory.Instance.Create(folder.LastWatchedItem);
-                            if (lastWatched.BaseItem is Episode) CreateEpisodeParents(lastWatched);
-                            FirePropertyChanged("LastWatchedItem");
-                        }
-                    });
+                        lastWatched = ItemFactory.Instance.Create(folder.LastWatchedItem);
+                        if (lastWatched.BaseItem is Episode) CreateEpisodeParents(lastWatched);
+                    }
                 }
+
                 return lastWatched;
             }
         }
@@ -471,73 +456,6 @@ namespace MediaBrowser.Library {
                     return new List<Item>(); //return empty list if folder is protected
                 }
 
-            }
-        }
-
-
-        public void AddNewlyWatched(Item item)
-        {
-            //called when we watch something so add to top of list (this way we don't have to re-build whole thing)
-            folder.LastWatchedItem = item.BaseItem;
-            this.lastWatched = null;
-            FirePropertyChanged("LastWatchedItem");
-            if (Config.Instance.RecentItemOption == "watched" && quickListItems != null) //already have a list
-            {
-                //first we need to remove ourselves if we're already in the list (can't search with item cuz we were cloned)
-                Item us = quickListItems.Find(i => i.Id == item.Id);
-                if (us != null)
-                {
-                    quickListItems.Remove(us);
-                }
-                //then add at the top and tell the UI to update
-                quickListItems.Insert(0, item);
-                FirePropertyChanged("RecentItems");
-                FirePropertyChanged("QuickListItems");
-            }
-        }
-
-        public void RemoveNewlyWatched(Item item)
-        {
-            //called when we clear the watched status manually (this way we don't have to re-build whole thing)
-            if (HasLastWatchedItem && folder.LastWatchedItem.Id == item.Id)
-            {
-                folder.LastWatchedItem = null;
-                FirePropertyChanged("LastWatchedItem");
-            }
-            if (Config.Instance.RecentItemOption == "watched" && (quickListItems != null)) // have a list
-            {
-                Item us = quickListItems.Find(i => i.Id == item.Id);
-                if (us != null)
-                {
-                    quickListItems.Remove(us);
-                    FirePropertyChanged("RecentItems");
-                    FirePropertyChanged("QuickListItems");
-                }
-            }
-            else if (Config.Instance.RecentItemOption == "unwatched" && quickListItems != null) // have a list
-            {
-                Item us = quickListItems.Find(i => i.Id == item.Id);
-                if (us != null)
-                {
-                    quickListItems.Remove(us);
-                    FirePropertyChanged("UnwatchedItems");
-                    FirePropertyChanged("QuickListItems");
-                }
-            }
-        }
-
-        public void RemoveRecentlyUnwatched(Item item)
-        {
-            //called when watched status set manually (this way we don't have to re-build whole thing)
-            if (Config.Instance.RecentItemOption == "unwatched" && quickListItems != null) // have a list
-            {
-                Item us = quickListItems.Find(i => i.Id == item.Id);
-                if (us != null)
-                {
-                    quickListItems.Remove(us);
-                    FirePropertyChanged("UnwatchedItems");
-                    FirePropertyChanged("QuickListItems");
-                }
             }
         }
 

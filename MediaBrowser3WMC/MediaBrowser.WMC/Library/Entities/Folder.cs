@@ -259,16 +259,15 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (lastWatchedItem == null)
-                {
-                    //using (new MediaBrowser.Util.Profiler("folder lastwatched search for "+this.Name))
-                    lastWatchedItem = this.RecursiveChildren.Where(i => i is Media && (i as Media).PlaybackStatus.PlayCount > 0).Distinct(new BaseItemEqualityComparer()).OrderByDescending(i => (i as Media).PlaybackStatus.LastPlayed).FirstOrDefault();
-                }
-                return lastWatchedItem;
-            }
-            set
-            {
-                lastWatchedItem = value;
+                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                          {
+                                                                              UserId = Kernel.CurrentUser.ApiId,
+                                                                              ParentId = ApiId,
+                                                                              Recursive = true,
+                                                                              SortOrder = Model.Entities.SortOrder.Descending,
+                                                                              SortBy = new string[] {"DatePlayed"},
+                                                                              Limit = 1
+                                                                          }).FirstOrDefault();
             }
         }
 
