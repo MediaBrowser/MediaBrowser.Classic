@@ -1394,6 +1394,12 @@ namespace MediaBrowser
             }
             else
             {
+                // validate that we actually have some users
+                if (!Kernel.AvailableUsers.Any())
+                {
+                    AddInHost.Current.MediaCenterEnvironment.Dialog("No user profiles are available.  Please ensure all users are not hidden on the server.", "No Users Found", DialogButtons.Ok, 100, true);
+                    Close();
+                }
                 // show login screen
                 session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application",this}});
             }
