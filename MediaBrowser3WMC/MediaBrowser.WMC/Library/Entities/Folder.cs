@@ -120,11 +120,14 @@ namespace MediaBrowser.Library.Entities {
         public void SetFilterUnWatched(bool value)
         {
             Filters.IsUnWatched = value;
-            if (value)
-                DisplayPreferences.CustomPrefs["IsUnWatched"] = Boolean.TrueString;
-            else
+            if (DisplayPreferences != null)
             {
-                DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
+                if (value)
+                    DisplayPreferences.CustomPrefs["IsUnWatched"] = Boolean.TrueString;
+                else
+                {
+                    DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
+                }
             }
         }
 
