@@ -487,15 +487,12 @@
       <Binding Source="[Item.TotalRatingDisplay]" Target="[TotalRatings.Content]" />
       <Binding Source="[Item.AvgRating!cor:Single]" Target="[StarRating.Value]" />
       <Binding Source="[Item.DisplayPrice]" Target="[Price.Content]" />
-      <Binding Source="[Item.IsInstalled]" Target="[InstallButton.Visible]" >
-        <Transformer>
-          <BooleanTransformer Inverse="true"/>
-        </Transformer>
-      </Binding>
+      <Binding Source="[Item.CanInstall]" Target="[InstallButton.Visible]" />
       <Binding Source="[Item.IsInstalled]" Target="[RemoveButton.Visible]" />
       <Binding Source="[Item.UpdateAvailable]" Target="[UpdateButton.Visible]" />
       <Binding Source="[Item.CanRegister]" Target="[RegisterButton.Visible]" />
       <Binding Source="[Item.UpdatePending]" Target="[UpdatePending.Visible]" />
+      <Binding Source="[Item.NoUpgradeOrInstall]" Target="[NoVersions.Visible]" />
       <Condition Source="[Item.UpdatePending]" SourceValue="true" >
         <Actions>
           <Set Target="[InstallButton.Visible]" Value="false" />
@@ -578,6 +575,12 @@
             
           </Text>
           <Text Name="UpdatePending" Content="Update Pending. Restart MBC to take effect." Font="Segoe Media Center light, 18, Bold" MinimumSize="0,35" Margins="20,0,0,0"  Color="DarkRed" >
+            <LayoutInput>
+              <AnchorLayoutInput Left="Name, 0" Top="Installed,1"/>
+            </LayoutInput>
+            
+          </Text>
+          <Text Name="NoVersions" Content="No compatible versions available." Font="Segoe Media Center light, 18, Bold" MinimumSize="0,35" Margins="20,0,0,0"  Color="DarkRed" >
             <LayoutInput>
               <AnchorLayoutInput Left="Name, 0" Top="Installed,1"/>
             </LayoutInput>

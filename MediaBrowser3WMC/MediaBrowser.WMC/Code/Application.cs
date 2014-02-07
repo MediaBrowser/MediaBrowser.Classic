@@ -797,7 +797,7 @@ namespace MediaBrowser
                     {
                         catalogPlugin.InstalledVersion = installedPlugin.InstalledVersion;
                         catalogPlugin.InstalledVersionClass = installedPlugin.InstalledVersionClass;
-                        installedPlugin.UpdateAvailable = catalogPlugin.UpdateAvailable = catalogPlugin.Versions.Any(v => v.version > current.Version);
+                        installedPlugin.UpdateAvailable = catalogPlugin.UpdateAvailable = catalogPlugin.ValidVersions.Any(v => v.version > current.Version);
                     }
                     else
                     {

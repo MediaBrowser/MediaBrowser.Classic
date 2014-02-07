@@ -162,16 +162,18 @@ namespace MediaBrowser.Library
 
         public bool NotInCatalog { get; set; }
         public bool CanRegister { get { return IsPremium && !IsRegistered; } }
+        public bool CanInstall { get { return !IsInstalled && ValidVersions.Any(); } }
+        public bool NoUpgradeOrInstall { get { return !UpdateAvailable && !IsInstalled && !ValidVersions.Any(); } }
 
         public string UpgradeInfo
         {
             get
             {
-                var text = "No upgrade information";
+                var text = "No information available";
                 if (Versions != null && Versions.Any())
                 {
-                    var last = Versions.OrderBy(v => v.version).Last();
-                    text = "Information for version " + last.versionStr + "\n\n" + Helper.StripTags(last.description);
+                    var last = UpdateAvailable ? ValidVersions.OrderBy(v => v.version).Last() : Versions.FirstOrDefault(v => v.versionStr == InstalledVersion);
+                    text = last != null ? "Information for version " + last.versionStr + "\n\n" + Helper.StripTags(last.description) : "No information available";
                 }
                 return text;
             }
@@ -189,6 +191,15 @@ namespace MediaBrowser.Library
         /// </summary>
         /// <value>The versions.</value>
         public List<PackageVersionInfo> Versions { get { return Info.versions; } }
+
+        public IEnumerable<PackageVersionInfo> ValidVersions
+        {
+            get
+            {
+                return Info.versions.Where(v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version
+                                                && v.classification <= Kernel.Instance.CommonConfigData.PluginUpdateClass);
+            }
+        } 
 
         public void NotifyPropertiesChanged()
         {
