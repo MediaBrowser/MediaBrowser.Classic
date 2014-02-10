@@ -63,7 +63,7 @@ namespace MediaBrowser.Library.Localization
         public string UnlockConfigDesc = "Temporarily Disable Parental Control for the Entire Library.  Will Re-Lock Automatically.";
         public string AssumeWatchedIfOlderThanConfigDesc = "Mark All Items Older Than This as Played.";
         public string ShowThemeBackgroundConfigDesc = "Display Theme background. [TIER 3] Highest tier background effect takes precedence.";
-        public string ShowInitialFolderBackgroundConfigDesc = "Display user backdrop in all views. (User profie must have backdrop image.) [TIER 2] Highest tier background effect takes precedence.";
+        public string ShowInitialFolderBackgroundConfigDesc = "Display user backdrop in all views. (User profile must have backdrop image.) [TIER 2] Highest tier background effect takes precedence.";
         public string ShowFanArtonViewsConfigDesc = "Display fan art as a Background in views that support this capability. [TIER 1] Highest tier background effect takes precedence.";
         public string EnhancedMouseSupportConfigDesc = "Enable Better Scrolling Support with the Mouse.  Leave OFF if You Don't Use a Mouse.  Won't Take Effect Until MediaBrowser is Restarted.";
         public string ShowHDOverlayonPostersConfigDesc = "Show 'HD' or resolution overlay on Hi-def items in Poster Views.";
