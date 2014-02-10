@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0078";
+        const string VERSION = "1.0079";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -63,7 +63,7 @@ namespace MediaBrowser.Library.Localization
         public string UnlockConfigDesc = "Temporarily Disable Parental Control for the Entire Library.  Will Re-Lock Automatically.";
         public string AssumeWatchedIfOlderThanConfigDesc = "Mark All Items Older Than This as Played.";
         public string ShowThemeBackgroundConfigDesc = "Display Theme background. [TIER 3] Highest tier background effect takes precedence.";
-        public string ShowInitialFolderBackgroundConfigDesc = "Display initial backdrop in all views. (backdrop.png or backdrop.jpg sourced from your initial folder) [TIER 2] Highest tier background effect takes precedence.";
+        public string ShowInitialFolderBackgroundConfigDesc = "Display user backdrop in all views. (User profie must have backdrop image.) [TIER 2] Highest tier background effect takes precedence.";
         public string ShowFanArtonViewsConfigDesc = "Display fan art as a Background in views that support this capability. [TIER 1] Highest tier background effect takes precedence.";
         public string EnhancedMouseSupportConfigDesc = "Enable Better Scrolling Support with the Mouse.  Leave OFF if You Don't Use a Mouse.  Won't Take Effect Until MediaBrowser is Restarted.";
         public string ShowHDOverlayonPostersConfigDesc = "Show 'HD' or resolution overlay on Hi-def items in Poster Views.";
@@ -154,7 +154,7 @@ namespace MediaBrowser.Library.Localization
         public string ThumbWidthSplitConfig = "Thumb Width Split";
         public string BreadcrumbCountConfig = "Breadcrumb Count";
         public string ShowFanArtonViewsConfig = "Show Fan Art on Views";
-        public string ShowInitialFolderBackgroundConfig = "Show Initial Folder Background";
+        public string ShowInitialFolderBackgroundConfig = "Show User Background";
         public string ShowThemeBackgroundConfig = "Show Theme Background";
         public string ShowHDOverlayonPostersConfig = "Show HD Overlay on Posters";
         public string ShowIcononRemoteContentConfig = "Show Icon on Remote Content";
