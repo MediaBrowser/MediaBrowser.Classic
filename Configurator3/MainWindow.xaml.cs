@@ -1013,6 +1013,7 @@ namespace Configurator
                 {
                     if (user != null)
                     {
+                        Kernel.ApiClient.CurrentUserId = new Guid(user.Id);
                         Kernel.ApiClient.AuthenticateUser(user.Id, pw);
                     }
                 }
