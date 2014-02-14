@@ -1443,6 +1443,8 @@ namespace MediaBrowser
         protected bool LoadUser(User user, string pw)
         {
             ShowSplash = true;
+            Kernel.ApiClient.CurrentUserId = user.Id;
+
             try
             {
                 if (!string.IsNullOrEmpty(pw))
@@ -1474,7 +1476,6 @@ namespace MediaBrowser
 
             LoggedIn = true;
 
-            Kernel.ApiClient.CurrentUserId = user.Id;
 
             // load user config
             Kernel.Instance.LoadUserConfig();
