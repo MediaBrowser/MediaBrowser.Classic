@@ -34,6 +34,7 @@ namespace MediaBrowser.Library.Entities
             ApiRecursiveItemCount = item.ApiRecursiveItemCount;
             Id = item.Id;
             SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
+            Overview = item.Overview;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
             BannerImagePath = item.BannerImagePath;
