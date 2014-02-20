@@ -124,8 +124,6 @@ namespace MediaBrowser
                         exp.GoToFullScreen();
                     }
 
-                    Async.Queue("refresh rate adjust", playable.AdjustRefreshRate, 1000);
-
                 }
                 else
                 {
@@ -398,9 +396,6 @@ namespace MediaBrowser
                     return;
                 }
             }
-
-            //test
-            Logger.ReportInfo("***************** refresh rate reported as: {0}", DisplayUtil.GetCurrentRefreshRate());
 
             _LastTransportUpdateTime = DateTime.Now;
 
