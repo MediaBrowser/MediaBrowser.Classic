@@ -78,14 +78,18 @@ namespace MediaBrowser.Library.Entities {
                         yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                   {
                                                                                       ItemId = ApiId,
-                                                                                      OutputFileExtension = ".ts",
+                                                                                      OutputFileExtension = ".wmv",
+                                                                                      MaxHeight = MediaInfo.Height,
+                                                                                      MaxWidth = MediaInfo.Width,
                                                                                       //AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
                                                                                   })
                         : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                   {
                                                                                       ItemId = ApiId,
-                                                                                      AudioCodec = AudioCodecs.Copy,
-                                                                                      VideoCodec = VideoCodecs.Copy,
+                                                                                      OutputFileExtension = ".wmv",
+                                                                                      MaxHeight = MediaInfo.Height,
+                                                                                      MaxWidth = MediaInfo.Width,
+                                                                                      VideoCodec = VideoCodecs.Wmv
 
                                                                                   });
                     }

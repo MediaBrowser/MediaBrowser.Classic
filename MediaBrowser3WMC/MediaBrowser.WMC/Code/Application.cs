@@ -2578,14 +2578,14 @@ namespace MediaBrowser
                 return;
             }
 
-            if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
-            {
-                Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
+            //if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+            //{
+            //    Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
-                Async.Queue("Access Error", () => MessageBox("ERROR - Could not access media.  Use UNC paths on server and ensure this machine can access them.", true, 10000));
+            //    Async.Queue("Access Error", () => MessageBox("ERROR - Could not access media.  Use UNC paths on server and ensure this machine can access them.", true, 10000));
 
-            }
-            else
+            //}
+            //else
             {
 
                 PlayableItem playable = PlayableItemFactory.Instance.Create(item);

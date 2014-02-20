@@ -202,7 +202,7 @@ namespace MediaBrowser.Library.Persistance
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 item.ApiItemCount = mb3Item.ChildCount;
 
-                var runTimeTicks = IsRippedMedia(mb3Item.VideoType ?? VideoType.VideoFile) ? mb3Item.OriginalRunTimeTicks ?? mb3Item.RunTimeTicks : mb3Item.RunTimeTicks;
+                var runTimeTicks = mb3Item.RunTimeTicks;
 
                 var index = item as IndexFolder;
                 if (index != null)
@@ -510,7 +510,7 @@ namespace MediaBrowser.Library.Persistance
                                                          Filters = filters,
                                                          IsPlayed = isPlayed,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.OriginalRunTimeTicks, 
+                                                            ItemFields.DateCreated, ItemFields.IndexOptions, 
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
                                                      });
 
@@ -519,7 +519,7 @@ namespace MediaBrowser.Library.Persistance
 
         public static ItemFields[] StandardFields = new[]
                                                         {
-                                                            ItemFields.Overview, ItemFields.OriginalRunTimeTicks, ItemFields.IndexOptions, ItemFields.SortName, 
+                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
                                                             ItemFields.MediaStreams, ItemFields.ParentId, 
                                                         };
