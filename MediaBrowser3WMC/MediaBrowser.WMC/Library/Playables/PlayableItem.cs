@@ -604,7 +604,7 @@ namespace MediaBrowser.Library.Playables
         {
             Prepare();
 
-            if (!HasMediaItems && !Files.Any())
+            if (!MediaItems.Any() && !Files.Any())
             {
                 Microsoft.MediaCenter.MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
                 ev.Dialog(Application.CurrentInstance.StringData("NoContentDial"), Application.CurrentInstance.StringData("Playstr"), Microsoft.MediaCenter.DialogButtons.Ok, 500, true);
@@ -682,7 +682,7 @@ namespace MediaBrowser.Library.Playables
             }
 
             // Filter for IsPlaylistCapable
-            if (MediaItems.Any())
+            if (MediaItems.Count() > 1)
             {
                 // First filter out items that can't be queued in a playlist
                 _MediaItems = GetPlaylistCapableItems(MediaItems);
