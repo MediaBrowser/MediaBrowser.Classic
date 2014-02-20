@@ -448,6 +448,7 @@ namespace MediaBrowser.Library.Entities {
         public int? ProductionYear { get; set; }
 
         public int? ApiRecursiveItemCount { get; set; }
+        public int? ApiItemCount { get; set; }
 
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {

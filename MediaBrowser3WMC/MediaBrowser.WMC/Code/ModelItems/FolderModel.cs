@@ -248,6 +248,32 @@ namespace MediaBrowser.Library {
             }
         }
 
+        protected int? itemCount;
+        public virtual int ItemCount
+        {
+            get
+            {
+                if (mediaCount == null)
+                {
+                    //async this so we don't hang up the UI on large items
+                    Async.Queue(this.Name + " item count", () =>
+                    {
+                        mediaCount = Folder.ItemCount;
+                        FirePropertiesChanged("ItemCount", "ItemCountStr");
+                    });
+                }
+                return mediaCount == null ? 0 : mediaCount.Value;
+            }
+        }
+
+        public virtual string ItemCountStr
+        {
+            get
+            {
+                return ItemCount.ToString();
+            }
+        }
+
         public override int UnwatchedCount {
             get {
                 if (unwatchedCountCache == -1) {

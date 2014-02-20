@@ -547,8 +547,18 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (ApiRecursiveItemCount == null) Logger.ReportVerbose("************** Api count is null for {0}",Name);
+                if (ApiRecursiveItemCount == null) Logger.ReportVerbose("************** Api recursive count is null for {0}",Name);
                 return ApiRecursiveItemCount ?? mediaCount ?? (mediaCount = this.RecursiveMedia.Distinct(i => i.Id).Count()).Value;
+            }
+        }
+
+        protected int? itemCount;
+        public virtual int ItemCount
+        {
+            get
+            {
+                if (ApiItemCount == null) Logger.ReportVerbose("************** Api item count is null for {0}", Name);
+                return ApiItemCount ?? itemCount ?? (itemCount = this.Children.Count).Value;
             }
         }
 

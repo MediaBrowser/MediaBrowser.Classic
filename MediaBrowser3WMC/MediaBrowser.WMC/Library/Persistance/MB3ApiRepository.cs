@@ -200,6 +200,7 @@ namespace MediaBrowser.Library.Persistance
                 item.LocationType = mb3Item.LocationType;
                 // recursive media count
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
+                item.ApiItemCount = mb3Item.ChildCount;
 
                 var runTimeTicks = IsRippedMedia(mb3Item.VideoType ?? VideoType.VideoFile) ? mb3Item.OriginalRunTimeTicks ?? mb3Item.RunTimeTicks : mb3Item.RunTimeTicks;
 
