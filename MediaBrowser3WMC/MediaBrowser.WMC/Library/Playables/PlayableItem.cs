@@ -7,6 +7,7 @@ using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Threading;
+using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 
 namespace MediaBrowser.Library.Playables
@@ -681,10 +682,11 @@ namespace MediaBrowser.Library.Playables
             }
 
             // Filter for IsPlaylistCapable
-            if (MediaItems.Count() > 1)
+            if (MediaItems.Any())
             {
                 // First filter out items that can't be queued in a playlist
                 _MediaItems = GetPlaylistCapableItems(MediaItems);
+
             }
 
             if (Shuffle)
@@ -693,6 +695,38 @@ namespace MediaBrowser.Library.Playables
             }
 
             PlaybackStartTime = DateTime.Now;
+        }
+
+        public void AdjustRefreshRate()
+        {
+            // Set refresh rate if requested
+            if (true)
+            {
+                var first = _MediaItems.FirstOrDefault();
+                if (first != null && !string.IsNullOrEmpty(first.MediaInfo.VideoFPS))
+                {
+                    try
+                    {
+                        var rate = Convert.ToInt32(first.MediaInfo.VideoFPS.Substring(0, first.MediaInfo.VideoFPS.IndexOf('.')));
+                        if (rate >= 23 && rate <= 25) rate = 24;
+                        else if (rate >= 29 && rate <= 31) rate = 60;
+                        else rate = 0;
+
+                        if (rate > 0 && !DisplayUtil.ChangeRefreshRate(rate))
+                        {
+                            Async.Queue("refresh rate error", () => Application.CurrentInstance.MessageBox("Could not change refresh rate to " + rate));
+                        }
+                        //test
+                        Logger.ReportInfo("***************** refresh rate reported as: {0}", DisplayUtil.GetCurrentRefreshRate());
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error trying to adjust refresh rate.", e);
+                    }
+                }
+            }
+            
         }
 
         /// <summary>
