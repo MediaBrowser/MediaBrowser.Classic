@@ -8,6 +8,7 @@ using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
+using MediaBrowser.Library.Util;
 using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
@@ -122,6 +123,9 @@ namespace MediaBrowser
                         Logger.ReportVerbose("Going fullscreen");
                         exp.GoToFullScreen();
                     }
+
+                    Async.Queue("refresh rate adjust", playable.AdjustRefreshRate, 1000);
+
                 }
                 else
                 {
@@ -394,6 +398,9 @@ namespace MediaBrowser
                     return;
                 }
             }
+
+            //test
+            Logger.ReportInfo("***************** refresh rate reported as: {0}", DisplayUtil.GetCurrentRefreshRate());
 
             _LastTransportUpdateTime = DateTime.Now;
 

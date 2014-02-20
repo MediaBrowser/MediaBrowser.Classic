@@ -517,7 +517,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                if (PlayState == null) return "";
+                if (PlayState == null || !HaveWatched) return "";
                 return PlayState.LastPlayed == DateTime.MinValue ? "" : PlayState.LastPlayed.ToShortDateString();
             }
         }

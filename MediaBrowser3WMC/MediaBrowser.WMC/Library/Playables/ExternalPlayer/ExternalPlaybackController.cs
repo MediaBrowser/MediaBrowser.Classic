@@ -93,6 +93,9 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
             {
                 PlayUsingCommandLine(playable);
             }
+
+            playable.AdjustRefreshRate();
+
         }
 
         /// <summary>
