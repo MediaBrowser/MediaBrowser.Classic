@@ -631,7 +631,7 @@ namespace MediaBrowser.Library.Playables
             if (PlayIntros && HasMediaItems)
             {
                 var item = MediaItems.First();
-                if (item is Movie && item.DisplayMediaType != null && !item.DisplayMediaType.Equals("trailer", StringComparison.OrdinalIgnoreCase))
+                if (item is Movie && (item.DisplayMediaType == null || !item.DisplayMediaType.Equals("trailer", StringComparison.OrdinalIgnoreCase)))
                 {
                     // Get intros for this item
                     var intros = Kernel.Instance.MB3ApiRepository.RetrieveIntros(MediaItems.First().ApiId).OfType<Video>().Select(i => i.Files.FirstOrDefault()).ToList();
