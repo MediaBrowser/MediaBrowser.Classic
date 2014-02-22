@@ -634,13 +634,16 @@ namespace MediaBrowser.Library.Playables
                 if (item is Movie && (item.DisplayMediaType == null || !item.DisplayMediaType.Equals("trailer", StringComparison.OrdinalIgnoreCase)))
                 {
                     // Get intros for this item
-                    var intros = Kernel.Instance.MB3ApiRepository.RetrieveIntros(MediaItems.First().ApiId).OfType<Video>().Select(i => i.Files.FirstOrDefault()).ToList();
+                    var introItems = Kernel.Instance.MB3ApiRepository.RetrieveIntros(MediaItems.First().ApiId).OfType<Video>().ToList();
+                    var intros = introItems.Select(i => i.Files.FirstOrDefault()).ToList();
 
                     // Kick off our intro playback controller
                     if (intros.Any())
                     {
                         Application.CurrentInstance.IntroController.Init(intros);
                         Application.CurrentInstance.IntroController.Play();
+                        //mark them watched
+                        Async.Queue("Mark watched", () => { foreach (var i in introItems) Kernel.ApiClient.UpdatePlayedStatus(i.ApiId, Kernel.CurrentUser.Id, true); });
                     }
                 }
             }
