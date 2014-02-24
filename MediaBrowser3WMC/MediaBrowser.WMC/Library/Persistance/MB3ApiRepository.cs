@@ -289,6 +289,9 @@ namespace MediaBrowser.Library.Persistance
                         folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                     }
 
+                    // we want our created date to be the date of last item we contain
+                    folder.DateCreated = mb3Item.DateLastMediaAdded ?? folder.DateCreated;
+
                     // don't replace this with ?? until after the server implementing this has been released...
                     if (mb3Item.RecursiveUnplayedItemCount != null) folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                 }
@@ -511,7 +514,7 @@ namespace MediaBrowser.Library.Persistance
                                                          Filters = filters,
                                                          IsPlayed = isPlayed,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.DateCreated, ItemFields.IndexOptions, 
+                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, 
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
                                                      });
 
@@ -522,7 +525,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
-                                                            ItemFields.MediaStreams, ItemFields.ParentId, 
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)
