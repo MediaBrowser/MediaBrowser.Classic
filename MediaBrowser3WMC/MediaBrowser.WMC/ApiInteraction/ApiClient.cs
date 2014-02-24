@@ -1561,7 +1561,7 @@ namespace MediaBrowser.ApiInteraction
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                return null;
             }
 
             switch (options.ImageType)
