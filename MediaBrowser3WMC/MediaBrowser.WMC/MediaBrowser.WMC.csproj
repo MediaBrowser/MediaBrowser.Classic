@@ -147,6 +147,7 @@
     <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
     <Compile Include="Code\ModelItems\PluginItemCollection.cs" />
+    <Compile Include="Code\ModelItems\UserItem.cs" />
     <Compile Include="Code\PowerSettings.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
     <Compile Include="Library\Entities\ApiGenreFolder.cs" />

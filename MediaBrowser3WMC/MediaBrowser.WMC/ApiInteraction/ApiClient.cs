@@ -8,9 +8,11 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Querying;
+using MediaBrowser.Model.Session;
 using MediaBrowser.Model.System;
 using MediaBrowser.Model.Tasks;
 using MediaBrowser.Model.Updates;
+using MediaBrowser.Model.Users;
 using MediaBrowser.Model.Weather;
 using MediaBrowser.Model.Web;
 using System;
@@ -31,6 +33,8 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <value>The HTTP client.</value>
         protected IHttpClient HttpClient { get; private set; }
+
+        public SessionInfoDto CurrentSessionInfo { get; set; } 
 
         public int Timeout
         {
@@ -1179,7 +1183,42 @@ namespace MediaBrowser.ApiInteraction
 
             args["password"] = password;
 
-            Post<EmptyRequestResult>(url, args);
+            var result = Post<AuthenticationResult>(url, args);
+            CurrentSessionInfo = result.SessionInfo;
+        }
+
+        /// <summary>
+        /// Add user to the current session
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        public void AddUserToSession(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var url = GetApiUrl("Sessions/" + CurrentSessionInfo.Id + "/Users/" + userId);
+
+            Post<EmptyRequestResult>(url, new Dictionary<string, string>());
+            
+        }
+
+        /// <summary>
+        /// Add user to the current session
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        public void RemoveUserFromSession(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var url = GetApiUrl("Sessions/" + CurrentSessionInfo.Id + "/Users/" + userId);
+
+            HttpClient.Delete(url);
+            
         }
 
         /// <summary>
@@ -1203,7 +1242,8 @@ namespace MediaBrowser.ApiInteraction
 
             args["password"] = password;
 
-            Post<EmptyRequestResult>(url, args);
+            var result = Post<AuthenticationResult>(url, args);
+            CurrentSessionInfo = result.SessionInfo;
         }
 
         /// <summary>

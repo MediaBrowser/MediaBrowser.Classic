@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Entities;
 
 namespace MediaBrowser.Library
@@ -29,6 +30,10 @@ namespace MediaBrowser.Library
                     item = (Item)Activator.CreateInstance(itemFactoryItems[isOne]);
 
             if (item == null)
+                if (baseItem is User)
+                {
+                    item = new UserItem();
+                } else
                 if (baseItem is Folder) {
                     item = new FolderModel();
                 } else {

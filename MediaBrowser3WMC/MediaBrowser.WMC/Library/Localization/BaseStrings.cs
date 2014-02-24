@@ -244,6 +244,7 @@ namespace MediaBrowser.Library.Localization
         public string AddFavoriteCMenu = "Add Favorite";
         public string RemoveFavoriteCMenu = "Remove Favorite";
         public string ShufflePlayCMenu = "Shuffle Play";
+        public string UserMenu = "User Menu";
 
         //Media Detail Page
         public string GeneralDetail = "General";
@@ -401,6 +402,8 @@ namespace MediaBrowser.Library.Localization
         public string UpdateAll = "Update All";
         public string PluginUpdatesAvailQ = "Some of your plug-ins have updates.  Go to Configuration?";
         public string Overview = "Overview";
+        public string SwitchTo = "Switch To...";
+        public string AlsoHere = "Also Here";
 
         //Search
         public string IncludeNested = "Include Subfolders";

@@ -45,7 +45,7 @@ namespace MediaBrowser.Library {
                     var xProductionYear = x.PremierDate != DateTime.MinValue ? x.PremierDate : new DateTime(Convert.ToInt16(x.ProductionYear ?? 1900),1,1);
                     var yProductionYear = y.PremierDate != DateTime.MinValue ? y.PremierDate : new DateTime(Convert.ToInt16(y.ProductionYear ?? 1900), 1, 1);
 
-                    Logging.Logger.ReportInfo("=========== x.PremierDate: {0} y.PremierDate: {1}", x.PremierDate, y.PremierDate);
+                    //Logging.Logger.ReportInfo("=========== x.PremierDate: {0} y.PremierDate: {1}", x.PremierDate, y.PremierDate);
                     var orderFactor = Config.Instance.YearSortAsc ? -1 : 1;
                     compare = orderFactor * yProductionYear.CompareTo(xProductionYear); //this will reverse the order if that option is set
                     break;

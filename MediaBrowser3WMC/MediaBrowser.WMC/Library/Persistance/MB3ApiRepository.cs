@@ -195,7 +195,7 @@ namespace MediaBrowser.Library.Persistance
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
                 item.UserData = mb3Item.UserData;
                 item.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
-                Logger.ReportInfo("*********** Premier Date for {0} is {1}",item.Name,item.PremierDate);
+                //Logger.ReportInfo("*********** Premier Date for {0} is {1}",item.Name,item.PremierDate);
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
                 item.LocationType = mb3Item.LocationType;
