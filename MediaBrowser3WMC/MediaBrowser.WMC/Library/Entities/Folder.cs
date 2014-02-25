@@ -264,6 +264,7 @@ namespace MediaBrowser.Library.Entities {
                                                                               UserId = Kernel.CurrentUser.ApiId,
                                                                               ParentId = ApiId,
                                                                               Recursive = true,
+                                                                              Fields = MB3ApiRepository.StandardFields,
                                                                               SortOrder = Model.Entities.SortOrder.Descending,
                                                                               SortBy = new string[] {"DatePlayed"},
                                                                               Limit = 1
