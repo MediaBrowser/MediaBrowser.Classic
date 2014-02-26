@@ -2764,38 +2764,9 @@ namespace MediaBrowser
         }
 
 
-        private static string _background = null;
-
         public string MainBackdrop
         {
-            get
-            {
-                if (_background == null)
-                {
-                    string pngImage = this.Config.InitialFolder + "\\backdrop.png";
-                    string jpgImage = this.Config.InitialFolder + "\\backdrop.jpg";
-
-                    if (File.Exists(pngImage))
-                    {
-                        _background = "file://" + pngImage;
-                    }
-                    else if (File.Exists(jpgImage))
-                    {
-                        _background = "file://" + jpgImage;
-                    }
-                    else
-                    {
-                        _background = string.Empty;
-                    }
-                }
-
-                if (string.IsNullOrEmpty(_background))
-                {
-                    return null;
-                }
-
-                return _background;
-            }
+            get { return RootFolder.BackdropImagePath; }
         }
 
         /// <summary>
