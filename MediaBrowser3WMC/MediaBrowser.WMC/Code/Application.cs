@@ -2220,33 +2220,46 @@ namespace MediaBrowser
 
         private Folder GetStartingFolder(BaseItem item)
         {
-            Index currentIndex = item as Index;
+            var currentIndex = item as Index;
             return currentIndex ?? (Folder)RootFolder;
         }
 
         void NavigateToActor(Item item)
         {
+            var person = item.BaseItem as Person;
+            if (person != null)
+            {
+                NavigateToPerson(person.Name, new string[] {"Actor"});
+            }
+        }
+
+        public void NavigateToDirector(string director, Item currentMovie)
+        {
+            NavigateToPerson(director, new [] {"Director"});
+        }
+
+        void NavigateToPerson(string name, string[] personTypes)
+        {
             Async.Queue("Person navigation", () =>
                                                  {
-                                                    ProgressBox(string.Format("Finding items with {0} in them...", item.Name));
-                                                    var person = (Person)item.BaseItem;
-                                                    //Folder searchStart = GetStartingFolder(item.BaseItem.Parent);
+                                                    ProgressBox(string.Format("Finding items with {0} in them...", name));
+                                                    
 
                                                     var query = new ItemQuery
                                                                     {
                                                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                                                         Fields = MB3ApiRepository.StandardFields,
-                                                                        //ParentId = searchStart.ApiId,
-                                                                        Person = person.Name,
-                                                                        PersonTypes = new[] {"Actor"},
+                                                                        Person = name,
+                                                                        PersonTypes = personTypes,
                                                                         Recursive = true
                                                                     };
-                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = item.Name};
+                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = name};
                                                     ShowMessage = false;
 
                                                     Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(index)));
                                                      
                                                  });
+            
         }
 
 
@@ -2330,20 +2343,6 @@ namespace MediaBrowser
                                                 });
         }
 
-
-        public void NavigateToDirector(string director, Item currentMovie)
-        {
-
-            var searchStart = GetStartingFolder(currentMovie.BaseItem.Parent);
-
-            var index = searchStart.Search(
-                ShowFinder(show => show.Directors == null ? false : show.Directors.Contains(director)),
-                director);
-
-            index.Name = director;
-
-            Navigate(ItemFactory.Instance.Create(index));
-        }
 
 
 
