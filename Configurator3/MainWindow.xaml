@@ -146,24 +146,15 @@
                                 </ListView.GroupStyle>
 
                             </ListView>
-                                <Button HorizontalAlignment="Left" Margin="20,0,0,20" VerticalAlignment="Bottom" Width="125" Height="32" Content="More Plug-ins..." x:Name="addPlugin" Click="addPlugin_Click" />
                         <Button HorizontalAlignment="Left" Margin="200,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Remove" x:Name="removePlugin" Click="removePlugin_Click" Visibility="Visible" IsEnabled="False" />
                         <Grid Margin="300,0,20,20" x:Name="pluginPanel">
                                 <Label Margin="0,10,0,0" VerticalAlignment="Top" Height="35" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="20" FontFamily="Trebuchet MS" x:Name="pluginName"/>
-                            <TextBlock Margin="0,45,0,166" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList}" TextWrapping="Wrap" x:Name="pluginDescription" />
-                            <Label Margin="0,0,210,40" Content="Latest Version:" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="32" HorizontalContentAlignment="Right" />
-                            <Label HorizontalAlignment="Right" Margin="0,0,113,40" Width="90" Height="32" VerticalAlignment="Bottom" x:Name="latestPluginVersion" Content="{Binding Path=SelectedItem.LatestVersion}"/>
-                            <Label Margin="102.99,0,210,77" VerticalAlignment="Bottom" Height="32" Content="Installed Version:" HorizontalContentAlignment="Right" />
-                            <Label HorizontalAlignment="Right" Margin="0,0,114,77" VerticalAlignment="Bottom" Width="90" Height="32" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="installedPluginVersion"/>
-                            <Button Margin="0,0,00,40" VerticalAlignment="Bottom" Height="32" Content="Upgrade" Width="80" HorizontalAlignment="Right" Click="upgradePlugin_Click" x:Name="upgradePlugin" Visibility="Visible"/>
-                            <Button Margin="0,0,0,77" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" IsEnabled="{Binding Path=SelectedItem.IsConfigurable, ElementName=pluginList, Mode=Default}" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
+                            <TextBlock Margin="0,45,0,56" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList}" TextWrapping="Wrap" x:Name="pluginDescription" />
+                            <Label Margin="102.99,0,210,6" VerticalAlignment="Bottom" Height="32" Content="Installed Version:" HorizontalContentAlignment="Right" />
+                            <Label HorizontalAlignment="Right" Margin="0,0,114,6" VerticalAlignment="Bottom" Width="90" Height="32" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="installedPluginVersion"/>
+                            <Button Margin="0,0,0,6" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
 					        <ProgressBar VerticalAlignment="Bottom" Margin="0,0,0,0" x:Name="progress" Visibility="Hidden" Height="32"/>
-                                <Grid Height="45" Margin="0,0,0,115" Name="rollbackPanel" VerticalAlignment="Bottom">
-                                    <Button Name="btnRollback" Visibility="Visible" Width="80" HorizontalAlignment="Right" Margin="0,13,0,0" Height="32" VerticalAlignment="Top" Click="btnRollback_Click">Rollback</Button>
-                                    <Label Content="1.2.3.3" Margin="0,13,114,0" Name="lblBackedUpVersion" HorizontalAlignment="Right" Width="90" />
-                                    <Label HorizontalContentAlignment="Right" Margin="59,13,210,0">Backed Up Version:</Label>
-                                </Grid>
-                            </Grid>
+                        </Grid>
                     </Grid>
                 </TabItem>
 

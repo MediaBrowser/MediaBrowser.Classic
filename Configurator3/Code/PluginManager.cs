@@ -20,10 +20,10 @@ namespace Configurator.Code {
 
         public bool PluginsLoaded = false;
 
-        static PluginManager instance; 
+        static PluginManager _instance; 
         public static PluginManager Instance {
             get {
-                return instance;
+                return _instance ?? (_instance = new PluginManager());
             }
         }
 
@@ -77,11 +77,6 @@ namespace Configurator.Code {
                 {"music support", new System.Version(2,1)},
                 {"mbtv", new System.Version(1,4,9,10)},
             };
-
-        public PluginManager()
-        {
-            instance = this;
-        }
 
         public void RefreshAvailablePlugins() {
 

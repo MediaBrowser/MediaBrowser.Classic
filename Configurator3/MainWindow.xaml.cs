@@ -99,8 +99,6 @@ namespace Configurator
             LoadComboBoxes();
             lblVersion.Content = lblVersion2.Content = "Version " + Kernel.Instance.VersionStr;
 
-            //Logger.ReportVerbose("======= Refreshing Podcasts...");
-            //RefreshPodcasts();
             //Logger.ReportVerbose("======= Refreshing Ext Players...");
             RefreshPlayers();
 
@@ -130,12 +128,7 @@ namespace Configurator
             SaveConfig();
 
             LoadAvailablePlugins();
-            //Logger.ReportVerbose("======= Kicking off validations thread...");
-            //Async.Queue("Startup Validations", () =>
-            //{
-            //    //RefreshEntryPoints(false);
-            //    ValidateMBAppDataFolderPermissions();
-            //});
+
             //Logger.ReportVerbose("======= Initialize Finised.");
         }
 
@@ -152,20 +145,6 @@ namespace Configurator
                 src.GroupDescriptions.Add(new PropertyGroupDescription("PluginClass"));
 
                 pluginList.ItemsSource = src.View;
-
-                //Logger.ReportVerbose("======= Kicking off plugin update check thread...");
-                Async.Queue("Plugin Update Check", () =>
-                                                       {
-                                                           using (new Profiler("Plugin update check"))
-                                                           {
-                                                               while (!PluginManager.Instance.PluginsLoaded)
-                                                               {
-                                                               } //wait for plugins to load
-                                                               if (PluginManager.Instance.UpgradesAvailable())
-                                                                   Dispatcher.Invoke(DispatcherPriority.Background,
-                                                                                     (MethodInvoker) (() => PopUpMsg.DisplayMessage("Some of your plug-ins have upgrades available.")));
-                                                           }
-                                                       });
 
                 Cursor = Cursors.Arrow;
             }
@@ -384,84 +363,6 @@ namespace Configurator
             }
         }
 
-        private void RefreshEntryPoints()
-        {
-            this.RefreshEntryPoints(true);
-        }
-
-        private void RefreshEntryPoints(bool RefreshPlugins)
-        {
-            Async.Queue("Configurator ep refresh", () =>
-            {
-                using (new MediaBrowser.Util.Profiler("Entry Point Refresh"))
-                {
-                    EntryPointManager epm = null;
-
-                    try
-                    {
-                        epm = new EntryPointManager();
-                    }
-                    catch (Exception ex)
-                    {
-                        //Write to error log, don't prompt user.
-                        Logger.ReportError("Error starting Entry Point Manager in RefreshEntryPoints(). " + ex.Message);
-                        return;
-                    }
-
-                    try
-                    {
-                        List<EntryPointItem> entryPoints = new List<EntryPointItem>();
-
-                        try
-                        {
-                            Logger.ReportInfo("Reloading Virtual children");
-                            if (RefreshPlugins)
-                            {
-                                //Kernel.Init(KernelLoadDirective.ShadowPlugins);
-                                Kernel.Instance.ReLoadRoot();
-                            }
-
-                            Kernel.Instance.RootFolder.ValidateChildren();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.ReportError("Error validating children. " + ex.Message, ex);
-                            throw new Exception("Error validating children. " + ex.Message);
-                        }
-
-                        foreach (var folder in Kernel.Instance.RootFolder.Children)
-                        {
-                            String displayName = folder.Name;
-                            if (displayName == null || displayName.Length <= 0)
-                                continue;
-
-                            String path = string.Empty;
-
-                            if (folder.GetType() == typeof(Folder) && folder.Path != null && folder.Path.Length > 1)
-                            {
-                                path = folder.Path;
-                            }
-                            else
-                            {
-                                path = folder.Id.ToString();
-                            }
-
-                            EntryPointItem ep = new EntryPointItem(displayName, path);
-                            entryPoints.Add(ep);
-                        }
-
-                        epm.ValidateEntryPoints(entryPoints);
-                    }
-                    catch (Exception ex)
-                    {
-                        String msg = "Error Refreshing Entry Points. " + ex.Message;
-                        Logger.ReportError(msg, ex);
-                        //MessageBox.Show(msg);
-                    }
-                }
-            });
-        }
-
         #region events
 
 
@@ -474,100 +375,19 @@ namespace Configurator
         {
             if (pluginList.SelectedItem != null)
             {
-                var plugin = (IPlugin)pluginList.SelectedItem;
-                var v = PluginManager.Instance.GetLatestVersion(plugin);
-                var latest = PluginManager.Instance.AvailablePlugins.Find(plugin, v);
-                var rv = latest != null ? latest.RequiredMBVersion : plugin.RequiredMBVersion;
-                var bv = PluginManager.Instance.GetBackedUpVersion(plugin);
                 //enable the remove button if a plugin is selected.
                 removePlugin.IsEnabled = true;
 
+                //show conf button if needed
+                configPlugin.Visibility = (pluginList.SelectedItem as IPlugin).IsConfigurable ? Visibility.Visible : Visibility.Hidden;
+
                 //show the pluginPanel
                 pluginPanel.Visibility = Visibility.Visible;
-                if (v != null)
-                {
-                    if (v > plugin.Version && rv <= Kernel.Instance.Version)
-                        {
-                        upgradePlugin.IsEnabled = true;
-                    }
-                    else
-                    {
-                        upgradePlugin.IsEnabled = false;
-                    }
-                    latestPluginVersion.Content = v.ToString();
-                }
-                else
-                {
-                    latestPluginVersion.Content = "Unknown";
-                    upgradePlugin.IsEnabled = false;
-                }
-                //show backup if exists
-                if (bv != null)
-                {
-                    lblBackedUpVersion.Content = bv.ToString();
-                    btnRollback.IsEnabled = (bv != plugin.Version);
-                    rollbackPanel.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btnRollback.IsEnabled = false;
-                    rollbackPanel.Visibility = Visibility.Hidden;
-                }
             }
             else
             {
                 pluginPanel.Visibility = Visibility.Hidden;
             }
-        }
-
-        private void upgradePlugin_Click(object sender, RoutedEventArgs e) {
-            if (pluginList.SelectedItem != null)
-            {
-                var plugin = pluginList.SelectedItem as IPlugin;
-                //get our latest version so we can upgrade...
-                var newPlugin = PluginManager.Instance.AvailablePlugins.Find(plugin, PluginManager.Instance.GetLatestVersion(plugin));
-                if (newPlugin != null)
-                {
-                    if (!string.IsNullOrEmpty(newPlugin.UpgradeInfo))
-                    {
-                        //confirm upgrade
-                        if (MessageBox.Show("This upgrade has the following information:\n\n" + newPlugin.UpgradeInfo + "\n\nDo you still wish to upgrade?", "Upgrade " + plugin.Name, MessageBoxButton.YesNo) == MessageBoxResult.No)
-                        {
-                            PopUpMsg.DisplayMessage("Upgrade Cancelled");
-                            return;
-                        }
-                    }
-                    var p = new PluginInstaller();
-                    var done = new CallBack(UpgradeFinished);
-                    this.IsEnabled = false;
-                    p.InstallPlugin(newPlugin, progress, this, done);
-                    KernelModified = true;
-                }
-            }
-        }
-
-
-        private delegate void CallBack();
-
-        public void UpgradeFinished()
-        {
-            //called when the upgrade process finishes - we just hide progress bar and re-enable
-            this.IsEnabled = true;
-            var plugin = pluginList.SelectedItem as IPlugin;
-            try
-            {
-                PluginManager.Instance.RefreshInstalledPlugins(); //refresh list
-            }
-            catch (Exception e)
-            {
-                Logger.ReportException("Error refreshing plugins after upgrade", e);
-            }
-            if (plugin != null)
-            {
-                Logger.ReportInfo(plugin.Name + " Upgraded to v" + PluginManager.Instance.GetLatestVersion(plugin));
-            }
-            progress.Value = 0;
-            progress.Visibility = Visibility.Hidden;
         }
 
         private void addExtenderFormat_Click(object sender, RoutedEventArgs e)
@@ -783,25 +603,8 @@ namespace Configurator
                 {
                     PluginManager.Instance.RemovePlugin(plugin);
                     PluginManager.Instance.UpdateAvailableAttributes(plugin, false);
-                    RefreshEntryPoints(true);
                 }
             }
-        }
-
-        private void addPlugin_Click(object sender, RoutedEventArgs e) {
-            var window = new AddPluginWindow();
-            window.Owner = this;
-            window.Top = 10;
-            window.Left = this.Left + 50;
-            if (window.Left + window.Width > SystemParameters.WorkArea.Width) window.Left = SystemParameters.WorkArea.Width - window.Width - 5;
-            if (window.Left < 0) window.Left = 5;
-            if (SystemParameters.WorkArea.Height - 10 < (window.Height)) window.Height = SystemParameters.WorkArea.Height - 10;
-            window.ShowDialog();
-            Async.Queue("Refresh after plugin add", () => RefreshEntryPoints(true));
-            var current = pluginList.SelectedIndex;
-            PluginManager.Instance.RefreshInstalledPlugins(); //refresh list
-            if (current > pluginList.Items.Count) current = pluginList.Items.Count;
-            pluginList.SelectedIndex = current;
         }
 
         private void configurePlugin_Click(object sender, RoutedEventArgs e)
@@ -809,8 +612,6 @@ namespace Configurator
             if (pluginList.SelectedItem != null && (pluginList.SelectedItem as Plugin).IsConfigurable)
             {
                 ((Plugin)pluginList.SelectedItem).Configure();
-
-                this.RefreshEntryPoints(true);
                 KernelModified = true;
             }
         }
@@ -1061,7 +862,6 @@ namespace Configurator
             {
                 commonConfig.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlPluginUpdateLevel.SelectedItem.ToString());
                 SaveConfig();
-                LoadAvailablePlugins();
             }
 
         }
