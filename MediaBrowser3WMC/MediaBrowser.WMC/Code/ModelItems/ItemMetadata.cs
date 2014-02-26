@@ -299,6 +299,20 @@ namespace MediaBrowser.Library {
             get { return (ImdbRating).ToString("0.##"); }
         }
 
+        public bool HasCriticRating { get { return baseItem.CriticRating != null; } }
+        public float CriticRating
+        {
+            get { return baseItem.CriticRating ?? 0; }
+        }
+
+        public string CriticRatingString {get { return HasCriticRating ? "(" + CriticRating.ToString("##0") + "%)" : ""; }}
+
+        public bool HasMetaScore { get { return baseItem.MetaScore != null; } }
+        public float MetaScore
+        {
+            get { return baseItem.MetaScore ?? 0; }
+        }
+
         /// <summary>
         /// DEPRICATED - Use Item.OfficialRating instead
         /// </summary>

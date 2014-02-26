@@ -203,6 +203,10 @@ namespace MediaBrowser.Library.Persistance
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 item.ApiItemCount = mb3Item.ChildCount;
 
+                //Ratings
+                item.CriticRating = mb3Item.CriticRating;
+                item.MetaScore = mb3Item.Metascore;
+
                 var runTimeTicks = mb3Item.RunTimeTicks;
 
                 var index = item as IndexFolder;

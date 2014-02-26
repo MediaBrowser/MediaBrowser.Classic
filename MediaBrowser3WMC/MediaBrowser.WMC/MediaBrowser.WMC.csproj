@@ -409,6 +409,8 @@
     <Content Include="Images\Icons\IconSearch.png" />
     <Content Include="Images\Icons\IconWatched.png" />
     <Content Include="Images\Icons\Pause.png" />
+    <Content Include="Images\Icons\RTFresh.png" />
+    <Content Include="Images\Icons\RTRotten.png" />
     <Content Include="Images\Lock.png" />
     <Content Include="Images\Locked.png" />
     <Content Include="Images\Application.png" />

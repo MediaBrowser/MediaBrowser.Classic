@@ -450,6 +450,10 @@ namespace MediaBrowser.Library.Entities {
         public int? ApiRecursiveItemCount { get; set; }
         public int? ApiItemCount { get; set; }
 
+        public float? CriticRating { get; set; }
+        public string CriticSummary { get; set; }
+        public float? MetaScore { get; set; }
+
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
             // we should never reasign identity 

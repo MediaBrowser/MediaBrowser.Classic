@@ -763,7 +763,10 @@ namespace MediaBrowser.Library
             return size;
         }
 
-
+        public Image RottenTomatoImage
+        {
+            get { return HasCriticRating ? CriticRating >= 60 ? RtFreshImage : RtRottenImage : null; }
+        }
 
         static readonly Image DefaultVideoImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultVideo");
         static readonly Image DefaultActorImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/MissingPerson");
@@ -773,6 +776,8 @@ namespace MediaBrowser.Library
         static readonly Image DefaultAlbumImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultAlbum");
         static readonly Image DefaultSongImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/DefaultSong");
         static readonly Image DefaultChapterImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/Frames");
+        static readonly Image RtFreshImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/RTFresh");
+        static readonly Image RtRottenImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/RTRotten");
  
         
         public Image DefaultImage
