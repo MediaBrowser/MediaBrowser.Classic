@@ -2758,23 +2758,9 @@ namespace MediaBrowser
         {
             get
             {
-                if (_background == null)
+                if (_background == null && this.RootFolder.PrimaryBackdropImage != null)
                 {
-                    string pngImage = this.Config.InitialFolder + "\\backdrop.png";
-                    string jpgImage = this.Config.InitialFolder + "\\backdrop.jpg";
-
-                    if (File.Exists(pngImage))
-                    {
-                        _background = "file://" + pngImage;
-                    }
-                    else if (File.Exists(jpgImage))
-                    {
-                        _background = "file://" + jpgImage;
-                    }
-                    else
-                    {
-                        _background = string.Empty;
-                    }
+                    _background = this.RootFolder.PrimaryBackdropImage.Path;
                 }
 
                 if (string.IsNullOrEmpty(_background))
