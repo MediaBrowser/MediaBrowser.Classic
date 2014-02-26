@@ -404,6 +404,7 @@
     <Content Include="Images\Icons\IconFavorite.png" />
     <Content Include="Images\Icons\IconKeyboard.png" />
     <Content Include="Images\Icons\IconKeyboardFocus.png" />
+    <Content Include="Images\Icons\IconPlus.png" />
     <Content Include="Images\Icons\IconRemote.png" />
     <Content Include="Images\Icons\IconSearch.png" />
     <Content Include="Images\Icons\IconWatched.png" />

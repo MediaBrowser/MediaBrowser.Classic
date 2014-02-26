@@ -1,4 +1,6 @@
-﻿using MediaBrowser.Library.Entities;
+﻿using System.Linq;
+using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Threading;
 
 namespace MediaBrowser.Library
 {
@@ -20,14 +22,20 @@ namespace MediaBrowser.Library
                 if (User.IsAlsoHere != value)
                 {
                     User.IsAlsoHere = value;
-                    if (value)
+                    Async.Queue("Add User", () =>
                     {
-                        Kernel.ApiClient.AddUserToSession(BaseItem.ApiId);
-                    }
-                    else
-                    {
-                        Kernel.ApiClient.RemoveUserFromSession(BaseItem.ApiId);
-                    }
+                        if (value)
+                        {
+                            Application.CurrentInstance.MultipleUsersHere = true;
+                            Kernel.ApiClient.AddUserToSession(BaseItem.ApiId);
+                        }
+                        else
+                        {
+                            Application.CurrentInstance.MultipleUsersHere = Application.CurrentInstance.OtherAvailableUsers.Cast<UserItem>().Any(u => u.IsAlsoHere);
+                            Kernel.ApiClient.RemoveUserFromSession(BaseItem.ApiId);
+                        }
+                                                    
+                    });
                     FirePropertyChanged("IsAlsoHere");
                 }
             }
