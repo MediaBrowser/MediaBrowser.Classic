@@ -425,9 +425,11 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return false;
+                return PlaybackAllowed;
             }
         }
+
+        public bool PlaybackAllowed { get; set; }
 
         bool? isTrailer = null;
         public bool IsTrailer

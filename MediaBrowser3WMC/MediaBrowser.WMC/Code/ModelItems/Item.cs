@@ -612,9 +612,9 @@ namespace MediaBrowser.Library
         {
             get
             {
-                if (this.IsPlayable)
+                if (!IsFolder)
                     return "";
-                int i = this.UnwatchedCount;
+                var i = UnwatchedCount;
                 return (i == 0) ? "" : i.ToString();
             }
         }

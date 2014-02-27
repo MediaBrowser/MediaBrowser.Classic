@@ -13,6 +13,7 @@ using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Library;
 using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Persistance
@@ -202,6 +203,8 @@ namespace MediaBrowser.Library.Persistance
                 // recursive media count
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 item.ApiItemCount = mb3Item.ChildCount;
+                // playback access
+                item.PlaybackAllowed = mb3Item.PlayAccess == PlayAccess.Full;
 
                 //Ratings
                 item.CriticRating = mb3Item.CriticRating;

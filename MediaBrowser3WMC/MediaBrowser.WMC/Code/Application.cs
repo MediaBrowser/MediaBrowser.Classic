@@ -2585,6 +2585,13 @@ namespace MediaBrowser
                 return;
             }
 
+            //or otherwise disabled
+            if (!item.IsPlayable)
+            {
+                DisplayDialog("Item is not playable at this time.", "Cannot Play");
+                return;
+            }
+
             //special handling for photos
             if (item.BaseItem is Photo || item.BaseItem is PhotoFolder)
             {
