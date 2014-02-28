@@ -7,6 +7,7 @@ using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
 using MediaBrowser.Model.Logging;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
 using MediaBrowser.Model.System;
@@ -561,6 +562,20 @@ namespace MediaBrowser.ApiInteraction
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<ServerConfiguration>(stream);
+            }
+        }
+
+        /// <summary>
+        /// Gets the system configuration file.
+        /// </summary>
+        /// <returns>Task{SystemInfo}.</returns>
+        public PluginInfo[] GetServerPlugins()
+        {
+            var url = GetApiUrl("Plugins");
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<PluginInfo[]>(stream);
             }
         }
 

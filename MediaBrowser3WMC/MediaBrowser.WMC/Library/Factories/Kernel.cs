@@ -24,6 +24,7 @@ using MediaBrowser.Library.UI;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter.UI;
@@ -437,6 +438,7 @@ namespace MediaBrowser.Library {
         public static bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; }
         public static ServerConfiguration ServerConfig { get; set; }
+        public static List<PluginInfo> ServerPlugins { get; set; } 
         public string DashboardUrl { get { return ApiClient.ApiUrl + "/dashboard"; } }
 
         public static bool ConnectToServer(string address, int port, int timeout)
@@ -454,6 +456,7 @@ namespace MediaBrowser.Library {
             {
                 ServerInfo = ApiClient.GetSystemInfo();
                 ServerConfig = ApiClient.GetServerConfiguration();
+                ServerPlugins = ApiClient.GetServerPlugins().ToList();
             }
             catch (Exception e)
             {
