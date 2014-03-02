@@ -841,6 +841,8 @@ namespace MediaBrowser
             
         }
 
+        public FolderModel BlankFolder {get {return new FolderModel();}}
+
         private Item currentItem;
 
         public Item CurrentItem

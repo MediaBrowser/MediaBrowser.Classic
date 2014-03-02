@@ -607,6 +607,12 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? new Media[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null).Cast<Media>();
         }
 
+        public IEnumerable<Video> RetrieveSpecialFeatures(string id)
+        {
+            var dtos = Kernel.ApiClient.GetSpecialFeatures(Kernel.CurrentUser.Id, id);
+            return dtos == null ? new Video[] {} : dtos.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null).Cast<Video>();
+        }
+
         public IList<Index> RetrieveIndex(Folder folder, string property, Func<string, BaseItem> constructor)
         {
             throw new NotImplementedException();

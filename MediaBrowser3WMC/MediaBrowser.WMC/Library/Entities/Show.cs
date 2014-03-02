@@ -17,11 +17,17 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string ImdbID { get; set; }
 
+        protected bool SpecialFeaturesLoaded { get; set; }
+
+        private readonly object _detailLock = new object();
+
+        private List<Video> _specialFeatures;
+        public List<Video> SpecialFeatures
+        {
+            get { return _specialFeatures ?? (_specialFeatures = GetSpecialFeatures()); }
+        }
+
         private List<Actor> _actors;
-
-        private object _detailLock = new object();
-
-        [Persist]
         public List<Actor> Actors
         {
             get
@@ -117,6 +123,11 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public override string OfficialRating { get { return MpaaRating ?? ""; }}
+
+        protected List<Video> GetSpecialFeatures()
+        {
+            return Kernel.Instance.MB3ApiRepository.RetrieveSpecialFeatures(ApiId).ToList();
+        }
 
         public void LoadFullDetails()
         {

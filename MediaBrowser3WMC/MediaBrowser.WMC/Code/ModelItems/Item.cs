@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 using MediaBrowser.Code;
 using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Entities;
@@ -217,6 +218,35 @@ namespace MediaBrowser.Library
                     DetermineVirtualType();
                 }
                 return _isFuture ?? false;
+            }
+        }
+
+        public bool HasSpecialFeatures { get { return SpecialFeatures.Any(); } }
+
+        private List<Item> _specialFeatures; 
+        public List<Item> SpecialFeatures
+        {
+            get
+            {
+                if (_specialFeatures == null)
+                {
+                    var show = baseItem as Show;
+                    if (show != null)
+                    {
+                        _specialFeatures = new List<Item>();
+                        Async.Queue("Special Feature Load", () =>
+                                                                {
+                                                                    _specialFeatures = show.SpecialFeatures.Select(s => ItemFactory.Instance.Create(s) as Item).ToList();
+                                                                    FirePropertiesChanged("SpecialFeatures", "HasSpecialFeatures");
+                                                                });
+                    }
+                    else
+                    {
+                        _specialFeatures = new List<Item>();
+                    }
+                }
+
+                return _specialFeatures;
             }
         }
 
