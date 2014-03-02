@@ -2366,6 +2366,7 @@ namespace MediaBrowser
                 if ((item.HasDataForDetailPage) ||
                     this.Config.AlwaysShowDetailsPage)
                 {
+                    item.NavigatingInto();
                     // go to details screen 
                     var properties = new Dictionary<string, object>();
                     properties["Application"] = this;

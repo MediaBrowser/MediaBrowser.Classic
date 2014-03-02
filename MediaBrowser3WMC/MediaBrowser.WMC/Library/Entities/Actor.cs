@@ -15,10 +15,10 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string Role { get; set; }
 
+        private Person _person;
         public Person Person {
             get {
-                var person = Person.GetPerson(Name);
-                return person;
+                return _person ?? (_person = Person.GetPerson(Name));
             }
         }
 

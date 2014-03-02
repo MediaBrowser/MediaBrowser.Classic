@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 
 namespace MediaBrowser.Library.Entities {
@@ -17,6 +18,8 @@ namespace MediaBrowser.Library.Entities {
         public string ImdbID { get; set; }
 
         private List<Actor> _actors;
+
+        private object _detailLock = new object();
 
         [Persist]
         public List<Actor> Actors
@@ -40,7 +43,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (_directors == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -115,23 +118,26 @@ namespace MediaBrowser.Library.Entities {
 
         public override string OfficialRating { get { return MpaaRating ?? ""; }}
 
-        protected void LoadFullDetails()
+        public void LoadFullDetails()
         {
-            if (FullDetailsLoaded) return;
-
-            Logging.Logger.ReportVerbose("Loading full details for {0} actors: {1}",Name, _actors != null ? _actors.Count.ToString() : "null");
-            var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Show;
-            if (temp != null)
+            lock (_detailLock)
             {
-                temp.FullDetailsLoaded = true;
-                Actors = temp.Actors;
-                Directors = temp.Directors;
-                Writers = temp.Writers;
-                Genres = temp.Genres;
-                Studios = temp.Studios;
-                Chapters = temp.Chapters;
+                if (FullDetailsLoaded) return;
+
+                Logger.ReportVerbose("Loading full details for {0}",Name);
+                var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Show;
+                if (temp != null)
+                {
+                    temp.FullDetailsLoaded = true;
+                    Actors = temp.Actors;
+                    Directors = temp.Directors;
+                    Writers = temp.Writers;
+                    Genres = temp.Genres;
+                    Studios = temp.Studios;
+                    Chapters = temp.Chapters;
+                }
+                FullDetailsLoaded = true;
             }
-            FullDetailsLoaded = true;
         }
     }
 }

@@ -82,6 +82,11 @@ namespace MediaBrowser.Library
 
         public virtual void NavigatingInto()
         {
+            var show = BaseItem as Show;
+            if (show != null)
+            {
+                Async.Queue("Detail Load", show.LoadFullDetails);
+            }
         }
 
         public bool IsVideo
