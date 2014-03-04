@@ -659,6 +659,8 @@ namespace MediaBrowser
             set { if (_ScreenSaverActive != value) { _ScreenSaverActive = value; FirePropertyChanged("ScreenSaverActive"); } }
         }
 
+        public bool ScreenSaverTempDisabled { get; set; }
+
         public string CurrentScreenSaver
         {
             get { return Kernel.Instance.ScreenSaverUI; }
@@ -991,7 +993,7 @@ namespace MediaBrowser
         {
             if (LoggedIn && Config.EnableScreenSaver) 
             {
-                if (!IsPlayingVideo && !IsExternalWmcApplicationPlaying)
+                if (!IsPlayingVideo && !IsExternalWmcApplicationPlaying && !ScreenSaverTempDisabled)
                 {
                     if (Helper.SystemIdleTime > Config.ScreenSaverTimeOut * 60000)
                     {

@@ -447,7 +447,7 @@ namespace MediaBrowser.Library.Entities {
         public DateTime PremierDate { get; set; }
 
         [Persist]
-        public int? ProductionYear { get; set; }
+        public virtual int? ProductionYear { get; set; }
 
         public int? ApiRecursiveItemCount { get; set; }
         public int? ApiItemCount { get; set; }
@@ -455,6 +455,11 @@ namespace MediaBrowser.Library.Entities {
         public float? CriticRating { get; set; }
         public string CriticSummary { get; set; }
         public float? MetaScore { get; set; }
+
+        [Persist]
+        public virtual string FirstAired { get; set; }
+
+        public long RuntimeTicks { get; set; }
 
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {

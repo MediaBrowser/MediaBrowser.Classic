@@ -16,9 +16,6 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string SeasonNumber { get; set; }
 
-        [Persist]
-        public string FirstAired { get; set; }
-
         public string SeriesId { get; set; }
         public string SeasonId { get; set; }
 

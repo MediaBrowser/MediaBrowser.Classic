@@ -670,6 +670,27 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets a music artist
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>Task{BaseItemDto}.</returns>
+        /// <exception cref="System.ArgumentNullException">userId</exception>
+        public BaseItemDto GetArtist(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var url = GetApiUrl("Artists/" + name);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<BaseItemDto>(stream);
+            }
+        }
+
+        /// <summary>
         /// Gets a year
         /// </summary>
         /// <param name="year">The year.</param>

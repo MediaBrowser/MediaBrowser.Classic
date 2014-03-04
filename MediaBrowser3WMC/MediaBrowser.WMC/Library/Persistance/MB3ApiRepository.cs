@@ -105,6 +105,12 @@ namespace MediaBrowser.Library.Persistance
             return dto != null ? GetIbnItem(dto, "Person") as Person : null;
         }
 
+        public Person RetrieveArtist(string name)
+        {
+            var dto = Kernel.ApiClient.GetArtist(name);
+            return dto != null ? GetItem(dto, "Person") as Person : null;
+        }
+
         protected BaseItem GetIbnItem(BaseItemDto mb3Item, string itemType)
         {
             var item = InstantiateItem(itemType, mb3Item);
@@ -196,6 +202,7 @@ namespace MediaBrowser.Library.Persistance
                 item.TagLine = mb3Item.Taglines != null && mb3Item.Taglines.Count > 0 ? mb3Item.Taglines[0] : null;
                 item.UserData = mb3Item.UserData;
                 item.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
+                item.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
                 //Logger.ReportInfo("*********** Premier Date for {0} is {1}",item.Name,item.PremierDate);
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
@@ -211,6 +218,7 @@ namespace MediaBrowser.Library.Persistance
                 item.MetaScore = mb3Item.Metascore;
 
                 var runTimeTicks = mb3Item.RunTimeTicks;
+                item.RuntimeTicks = runTimeTicks ?? 0;
 
                 var index = item as IndexFolder;
                 if (index != null)
@@ -381,7 +389,7 @@ namespace MediaBrowser.Library.Persistance
                                                                          Width = vidStream != null ? vidStream.Width ?? 0 : 0,
                                                                          Height = vidStream != null ? vidStream.Height ?? 0 : 0,
                                                                          Subtitles = subtStreams.Any() ? string.Join(", ", subtStreams) : null,
-                                                                         RunTime = runTimeTicks != null ? ConvertToTicksToMinutes(runTimeTicks) : 0
+                                                                         RunTime = runTimeTicks != null ? ConvertTicksToMinutes(runTimeTicks) : 0
                                                                      }
 
                                               };
@@ -401,7 +409,7 @@ namespace MediaBrowser.Library.Persistance
                 {
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
-                    show.RunningTime =  runTimeTicks != null ? (int?)ConvertToTicksToMinutes(runTimeTicks) : null;
+                    show.RunningTime =  runTimeTicks != null ? (int?)ConvertTicksToMinutes(runTimeTicks) : null;
                     show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
@@ -431,7 +439,6 @@ namespace MediaBrowser.Library.Persistance
                     episode.SeasonNumber = mb3Item.ParentIndexNumber != null ? mb3Item.ParentIndexNumber.Value.ToString("#00") : null;
                     episode.SeriesId = mb3Item.SeriesId;
                     episode.SeasonId = mb3Item.SeasonId;
-                    episode.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
                     if (mb3Item.AirsAfterSeasonNumber != null)
                     {
                         episode.SortName = mb3Item.AirsAfterSeasonNumber.Value.ToString("000") + "-999999" + mb3Item.SortName;
@@ -457,6 +464,15 @@ namespace MediaBrowser.Library.Persistance
                     season.SeasonNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
                 }
 
+                var song = item as Song;
+                if (song != null)
+                {
+                    song.Album = mb3Item.Album;
+                    song.AlbumArtist = mb3Item.AlbumArtist;
+                    song.AlbumId = mb3Item.AlbumId;
+                    song.Artist = mb3Item.Artists.FirstOrDefault();
+                }
+
                 // Finally, any custom values
                 item.FillCustomValues(mb3Item);
             }
@@ -469,7 +485,7 @@ namespace MediaBrowser.Library.Persistance
             return item;
         }
 
-        protected int ConvertToTicksToMinutes(long? ticks)
+        protected int ConvertTicksToMinutes(long? ticks)
         {
             if (ticks == null) return 0;
 

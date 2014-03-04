@@ -18,14 +18,7 @@ namespace MediaBrowser.Library {
         }
 
         public string FirstAired {
-            get {
-                string firstAired = null;
-                var episode = baseItem as Episode;
-                if (episode != null) {
-                    firstAired = episode.FirstAired;
-                }
-                return firstAired ?? "";
-            }
+            get { return baseItem.FirstAired ?? ""; }
         }
 
         public string Status {
@@ -150,6 +143,11 @@ namespace MediaBrowser.Library {
             FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
         }
 
+        public long RunTimeTicks
+        {
+            get { return baseItem.RuntimeTicks; }
+        }
+
         protected int? runtime;
         public int RunningTime
         {
@@ -269,18 +267,11 @@ namespace MediaBrowser.Library {
         }
 
         public int ProductionYear {
-            get {
-                int productionYear = -1;
-                var show = baseItem as Show;
-                if (show != null) {
-                    productionYear = show.ProductionYear ?? -1;
-                }
-                return productionYear;
-            }
+            get { return baseItem.ProductionYear ?? -1; }
         }
 
         public string ProductionYearString {
-            get { return ProductionYear == -1 ? "" : ProductionYear.ToString(); }
+            get { return ProductionYear <= 0 ? "" : ProductionYear.ToString(); }
         }
 
         public float ImdbRating {
