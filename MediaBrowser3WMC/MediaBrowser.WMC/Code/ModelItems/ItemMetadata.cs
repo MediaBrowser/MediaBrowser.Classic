@@ -199,39 +199,48 @@ namespace MediaBrowser.Library {
                     }
                     else
                     {
-                        var show = baseItem as IShow;
-                        if (show != null)
+                        var song = baseItem as Song;
+                        if (song != null)
                         {
-                            runtimestr = show.RunningTime == null ? this.MediaInfo.RuntimeString : show.RunningTime.ToString() + " " + Kernel.Instance.StringData.GetString("MinutesStr");
+                            var ts = TimeSpan.FromTicks(song.RuntimeTicks);
+                            runtimestr = string.Format("{0}:{1}", ts.Minutes, ts.Seconds.ToString("00"));
                         }
                         else
                         {
-                            var folder = baseItem as Folder;
-                            if (folder != null)
+                            var show = baseItem as IShow;
+                            if (show != null)
                             {
-                                //this might take a bit...
-                                Async.Queue("runningtimestr calc", () =>
+                                runtimestr = show.RunningTime == null ? this.MediaInfo.RuntimeString : show.RunningTime.ToString() + " " + Kernel.Instance.StringData.GetString("MinutesStr");
+                            }
+                            else
+                            {
+                                var folder = baseItem as Folder;
+                                if (folder != null)
                                 {
-                                    var totalMinutes = folder.RunTime;
-                                    if (totalMinutes > 0)
+                                    //this might take a bit...
+                                    Async.Queue("runningtimestr calc", () =>
                                     {
-                                        if (totalMinutes <= 60)
+                                        var totalMinutes = folder.RunTime;
+                                        if (totalMinutes > 0)
                                         {
-                                            runtimestr = totalMinutes + " " + Kernel.Instance.StringData.GetString("MinutesStr");
+                                            if (totalMinutes <= 60)
+                                            {
+                                                runtimestr = totalMinutes + " " + Kernel.Instance.StringData.GetString("MinutesStr");
+                                            }
+                                            else
+                                            {
+                                                var ts = TimeSpan.FromMinutes(totalMinutes);
+                                                runtimestr = string.Format("{0} {2} {1} {3}", (int)ts.TotalHours, ts.Minutes, Kernel.Instance.StringData.GetString("HoursStr"), Kernel.Instance.StringData.GetString("MinutesStr"));
+                                            }
                                         }
                                         else
                                         {
-                                            var ts = TimeSpan.FromMinutes(totalMinutes);
-                                            runtimestr = string.Format("{0} {2} {1} {3}", (int)ts.TotalHours, ts.Minutes, Kernel.Instance.StringData.GetString("HoursStr"), Kernel.Instance.StringData.GetString("MinutesStr"));
+                                            runtimestr = "";
                                         }
-                                    }
-                                    else
-                                    {
-                                        runtimestr = "";
-                                    }
 
-                                    FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
-                                });
+                                        FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
+                                    });
+                                }
                             }
                         }
                     }
