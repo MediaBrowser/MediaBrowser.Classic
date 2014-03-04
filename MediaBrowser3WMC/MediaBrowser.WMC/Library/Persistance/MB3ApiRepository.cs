@@ -211,7 +211,7 @@ namespace MediaBrowser.Library.Persistance
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 item.ApiItemCount = mb3Item.ChildCount;
                 // playback access
-                item.PlaybackAllowed = mb3Item.PlayAccess == PlayAccess.Full;
+                item.PlaybackAllowed = (mb3Item.PlayAccess == PlayAccess.Full) && !(mb3Item.IsPlaceHolder ?? false);
 
                 //Ratings
                 item.CriticRating = mb3Item.CriticRating;
