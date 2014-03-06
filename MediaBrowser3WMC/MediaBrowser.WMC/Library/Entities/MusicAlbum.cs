@@ -15,6 +15,8 @@ namespace MediaBrowser.Library.Entities
 
         public int? ProductionYear { get; set; }
 
+        public string AlbumArtist { get; set; }
+
         public List<Actor> Actors { get; set; }
         public List<string> Directors { get; set; }
 

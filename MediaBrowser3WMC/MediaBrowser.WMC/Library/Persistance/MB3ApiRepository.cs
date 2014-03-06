@@ -473,6 +473,12 @@ namespace MediaBrowser.Library.Persistance
                     song.Artist = mb3Item.Artists.FirstOrDefault();
                 }
 
+                var album = item as MusicAlbum;
+                if (album != null)
+                {
+                    album.AlbumArtist = mb3Item.AlbumArtist ?? mb3Item.Artists.FirstOrDefault();
+                }
+
                 // Finally, any custom values
                 item.FillCustomValues(mb3Item);
             }

@@ -819,6 +819,8 @@ namespace MediaBrowser.Library
         }
 
         protected FolderModel series;
+        private Item _artist;
+
         public FolderModel Series
         {
             get
@@ -997,6 +999,16 @@ namespace MediaBrowser.Library
             }
         }
 
+        public Item Artist
+        {
+            get
+            {
+                var album = BaseItem as MusicAlbum;
+                if (album == null) return BlankItem;
+
+                return _artist ?? (_artist = album.AlbumArtist != null ? ItemFactory.Instance.Create(Kernel.Instance.MB3ApiRepository.RetrieveArtist(album.AlbumArtist) ?? new BaseItem {Name = "Unknown"}) : BlankItem);
+            }
+        }
     }
         #endregion
 
