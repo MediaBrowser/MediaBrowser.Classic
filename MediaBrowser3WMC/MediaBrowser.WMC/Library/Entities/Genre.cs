@@ -7,7 +7,8 @@ using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
 
 namespace MediaBrowser.Library.Entities {
-    public class Genre : BaseItem {
+    public class Genre : Folder 
+    {
 
         public static Guid GetGenreId(string name) {
             return ("genre" + name.Trim()).GetMD5();
