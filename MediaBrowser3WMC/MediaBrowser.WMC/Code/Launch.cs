@@ -38,79 +38,45 @@ namespace MediaBrowser
             host.MediaCenterEnvironment.Dialog("Attach debugger and hit ok", "debug", DialogButtons.Ok, 100, true); 
 #endif
 
-            using (Mutex mutex = new Mutex(false, Kernel.MBCLIENT_MUTEX_ID))
-            {
-                //set up so everyone can access
-                var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-                var securitySettings = new MutexSecurity();
-                try
-                {
-                    //don't bomb if this fails
-                    securitySettings.AddAccessRule(allowEveryoneRule);
-                    mutex.SetAccessControl(securitySettings);
-                }
-                catch (Exception)
-                {
-                    //we don't want to die here and we don't have a logger yet so just go on
-                }
-                try
-                {
-                    if (mutex.WaitOne(100,false))
-                    {
 
-                        var config = GetConfig();
-                        if (config == null)
+            var config = GetConfig();
+            if (config == null)
+            {
+                AddInHost.Current.ApplicationContext.CloseApplication();
+                return;
+            }
+            //set us up for single instance
+            AddInHost.Current.ApplicationContext.SingleInstance = true;
+
+            Environment.CurrentDirectory = ApplicationPaths.AppProgramPath;
+            using (new Util.Profiler("Total Kernel Init"))
+            {
+                Kernel.Init(config);
+                while (!Kernel.ServerConnected)
+                {
+                    if (!Kernel.ServerConnected)
+                    {
+                        if (host.MediaCenterEnvironment.Dialog("Could not connect to Media Browser 3 Server.  Please be sure it is running on the local network.\n\nWould you like to re-try?", "Error", DialogButtons.Yes | DialogButtons.No, 100, true) != DialogResult.No)
+                        {
+                            Kernel.ConnectToServer(config);
+                        }
+                        else
                         {
                             AddInHost.Current.ApplicationContext.CloseApplication();
                             return;
                         }
-
-                        Environment.CurrentDirectory = ApplicationPaths.AppProgramPath;
-                        using (new Util.Profiler("Total Kernel Init"))
-                        {
-                            Kernel.Init(config);
-                            while (!Kernel.ServerConnected)
-                            {
-                                if (!Kernel.ServerConnected)
-                                {
-                                    if (host.MediaCenterEnvironment.Dialog("Could not connect to Media Browser 3 Server.  Please be sure it is running on the local network.\n\nWould you like to re-try?", "Error", DialogButtons.Yes | DialogButtons.No, 100, true) != DialogResult.No)
-                                    {
-                                        Kernel.ConnectToServer(config);
-                                    }
-                                    else
-                                    {
-                                        AddInHost.Current.ApplicationContext.CloseApplication();
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                        using (new Util.Profiler("Application Init"))
-                        {
-                            App = new Application(new MyHistoryOrientedPageSession(), host);
-
-                            App.Init();
-                        }
-
-                        Kernel.Instance.OnApplicationInitialized();
-
-                        mutex.ReleaseMutex();
                     }
-                    else
-                    {
-                        //another instance running and in initialization - just blow out of here
-                        Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
-                        return;
-                    }
-
-                }
-                catch (AbandonedMutexException)
-                {
-                    // Log the fact the mutex was abandoned in another process, it will still get acquired
-                    Logger.ReportWarning("Previous instance of core ended abnormally...");
-                    mutex.ReleaseMutex();
                 }
             }
+            using (new Util.Profiler("Application Init"))
+            {
+                App = new Application(new MyHistoryOrientedPageSession(), host);
+
+                App.Init();
+            }
+
+            Kernel.Instance.OnApplicationInitialized();
+
         }
 
         private static CommonConfigData GetConfig()
