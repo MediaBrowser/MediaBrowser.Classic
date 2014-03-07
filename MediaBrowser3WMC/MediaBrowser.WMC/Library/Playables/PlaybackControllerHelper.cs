@@ -160,9 +160,14 @@ namespace MediaBrowser.Library.Playables
         }
 
         /// <summary>
-        /// For Bluray folders this will return the largest m2ts file contained within. For the internal wmc player, this is the best we can do
+        /// For Bluray folders return the index.bdmv.  This will work if LAV is installed.
         /// </summary>
         public static string GetBluRayPath(string path)
+        {
+            return Path.Combine(path, @"bdmv\index.bdmv");
+        }
+
+        public static string GetLargestBDFile(string path)
         {
             string folder = Path.Combine(path, "bdmv\\stream");
 

@@ -48,16 +48,6 @@ namespace MediaBrowser.Library.Playables
         /// </summary>
         private bool CanPlay(MediaType type)
         {
-            if (type == MediaType.DVD)
-            {
-                return true;
-            }
-
-            if (Video.IsRippedMedia(type))
-            {
-                return false;
-            }
-
             return true;
         }
 
