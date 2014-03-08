@@ -2605,36 +2605,33 @@ namespace MediaBrowser
                 return;
             }
 
-            //if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
-            //{
-            //    Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
-
-            //    Async.Queue("Access Error", () => MessageBox("ERROR - Could not access media.  Use UNC paths on server and ensure this machine can access them.", true, 10000));
-
-            //}
-            //else
+            if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
+                Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
-                PlayableItem playable = PlayableItemFactory.Instance.Create(item);
+                Async.Queue("Access Error", () => MessageBox("Could not access media. Will attempt to stream.  Use UNC paths or path substitution on server and ensure this machine can access them.", true, 10000));
 
-                // This could happen if both item.IsFolder and item.IsPlayable are false
-                if (playable == null)
-                {
-                    return;
-                }
-
-                if (playIntros.HasValue)
-                {
-                    playable.PlayIntros = playIntros.Value;
-                }
-
-                playable.Resume = resume;
-                if (startPos > 0) playable.StartPositionTicks = startPos;
-                playable.QueueItem = queue;
-                playable.Shuffle = shuffle;
-
-                Play(playable);
             }
+
+            var playable = PlayableItemFactory.Instance.Create(item);
+
+            // This could happen if both item.IsFolder and item.IsPlayable are false
+            if (playable == null)
+            {
+                return;
+            }
+
+            if (playIntros.HasValue)
+            {
+                playable.PlayIntros = playIntros.Value;
+            }
+
+            playable.Resume = resume;
+            if (startPos > 0) playable.StartPositionTicks = startPos;
+            playable.QueueItem = queue;
+            playable.Shuffle = shuffle;
+
+            Play(playable);
         }
 
         /// <summary>
