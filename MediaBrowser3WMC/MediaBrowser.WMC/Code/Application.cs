@@ -2257,7 +2257,8 @@ namespace MediaBrowser
                                                                         PersonTypes = personTypes,
                                                                         Recursive = true
                                                                     };
-                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = name};
+                                                     var person = Kernel.Instance.MB3ApiRepository.RetrievePerson(name) ?? new Person();
+                                                    var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = name, Overview = person.Overview};
                                                     ShowMessage = false;
 
                                                     Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(index)));
