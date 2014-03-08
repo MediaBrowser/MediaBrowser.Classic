@@ -147,6 +147,18 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public override string PrimaryImagePath
+        {
+            get
+            {
+                return base.PrimaryImagePath ?? Season.ThumbnailImagePath ?? Series.ThumbnailImagePath ?? Series.PrimaryImagePath;
+            }
+            set
+            {
+                base.PrimaryImagePath = value;
+            }
+        }
+
         #region IGroupInIndex Members
 
         public IContainer MainContainer
