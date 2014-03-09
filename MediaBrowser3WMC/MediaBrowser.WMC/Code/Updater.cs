@@ -150,7 +150,7 @@ namespace MediaBrowser.Util
                 _appRef.ProgressBox("Updating " + plugin.Name + "...");
                 if (InstallPlugin(new RemotePlugin
                                       {
-                                          SourceFilename = plugin.Versions.OrderBy(v => v.version).Last().sourceUrl,
+                                          SourceFilename = plugin.ValidVersions.OrderBy(v => v.version).Last().sourceUrl,
                                           Filename = plugin.TargetFilename
                                       }))
                 {
