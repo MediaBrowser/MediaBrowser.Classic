@@ -998,6 +998,8 @@ namespace MediaBrowser.Library {
                 MediaBrowser.Library.Network.WebDownload.PluginInstallErrorCB errorCB) {
             string target = Path.Combine(ApplicationPaths.AppPluginPath, targetName);
 
+            Logger.ReportInfo("Installing plugin from {0} to {1}", sourcePath, target);
+
             if (sourcePath.ToLower().StartsWith("http")) {
                 // Initialise Async Web Request
                 var BUFFER_SIZE = 1024;
