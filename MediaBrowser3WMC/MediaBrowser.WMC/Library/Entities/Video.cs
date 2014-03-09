@@ -79,17 +79,22 @@ namespace MediaBrowser.Library.Entities {
                                                                                   {
                                                                                       ItemId = ApiId,
                                                                                       OutputFileExtension = ".wmv",
-                                                                                      MaxHeight = MediaInfo.Height,
-                                                                                      MaxWidth = MediaInfo.Width,
-                                                                                      //AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                                                                                      MaxWidth = 1280,
+                                                                                      VideoBitRate = 5000000,
+                                                                                      AudioBitRate = 128000,
+                                                                                      MaxAudioChannels = 2,
+                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
                                                                                   })
                         : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                   {
                                                                                       ItemId = ApiId,
                                                                                       OutputFileExtension = ".wmv",
-                                                                                      MaxHeight = MediaInfo.Height,
-                                                                                      MaxWidth = MediaInfo.Width,
-                                                                                      VideoCodec = VideoCodecs.Wmv
+                                                                                      MaxWidth = 1280,
+                                                                                      VideoCodec = VideoCodecs.Wmv,
+                                                                                      VideoBitRate = 5000000,
+                                                                                      AudioBitRate = 128000,
+                                                                                      MaxAudioChannels = 2,
+                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
 
                                                                                   });
                     }
