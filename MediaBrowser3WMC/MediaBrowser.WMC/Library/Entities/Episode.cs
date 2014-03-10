@@ -29,7 +29,7 @@ namespace MediaBrowser.Library.Entities {
             get { return LocationType == LocationType.Virtual && PremierDate > DateTime.UtcNow; }
         }
 
-
+        
         public Season Season {
             get { return Parent as Season ?? RetrieveSeason() ?? Season.BlankSeason; }
         }
