@@ -2270,6 +2270,27 @@ namespace MediaBrowser
 
         public void NavigateToGenre(string genre, Item currentMovie)
         {
+            var itemType = "Movie";
+
+            switch (currentMovie.BaseItem.GetType().Name)
+            {
+                case "Series":
+                case "Season":
+                case "Episode":
+                    itemType = "Series";
+                    break;
+
+                case "MusicAlbum":
+                case "MusicArtist":
+                case "Song":
+                    itemType = "MusicAlbum";
+                    break;
+
+                case "Game":
+                    itemType = "Game";
+                    break;
+            }
+
             Async.Queue("Genre navigation", () =>
                                                 {
                                                     ProgressBox(string.Format("Finding items in the {0} genre...", genre));
@@ -2281,7 +2302,7 @@ namespace MediaBrowser
                                                                         Fields = MB3ApiRepository.StandardFields,
                                                                         ParentId = searchStart.ApiId,
                                                                         Genres = new[] {genre},
-                                                                        ExcludeItemTypes = Config.ExcludeRemoteContentInSearch ? new[] {"Episode", "Season", "Trailer"} : new[] {"Episode", "Season"},
+                                                                        IncludeItemTypes = new [] {itemType},
                                                                         Recursive = true
                                                                     };
                                                     var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = genre};
