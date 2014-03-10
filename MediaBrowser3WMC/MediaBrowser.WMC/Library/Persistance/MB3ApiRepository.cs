@@ -203,6 +203,7 @@ namespace MediaBrowser.Library.Persistance
                 item.UserData = mb3Item.UserData;
                 item.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
                 item.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
+                item.ProductionYear = mb3Item.ProductionYear ?? item.PremierDate.Year;
                 //Logger.ReportInfo("*********** Premier Date for {0} is {1}",item.Name,item.PremierDate);
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
@@ -410,7 +411,6 @@ namespace MediaBrowser.Library.Persistance
                     show.MpaaRating = mb3Item.OfficialRating;
                     show.ImdbRating = mb3Item.CommunityRating;
                     show.RunningTime =  runTimeTicks != null ? (int?)ConvertTicksToMinutes(runTimeTicks) : null;
-                    show.ProductionYear = mb3Item.ProductionYear;
 
                     if (mb3Item.Genres != null)
                     {
