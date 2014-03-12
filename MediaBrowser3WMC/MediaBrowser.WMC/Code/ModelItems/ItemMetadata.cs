@@ -280,7 +280,7 @@ namespace MediaBrowser.Library {
         }
 
         public string ProductionYearString {
-            get { return ProductionYear <= 0 ? "" : ProductionYear.ToString(); }
+            get { return ProductionYear <= 1600 ? "" : ProductionYear.ToString(); }
         }
 
         public float ImdbRating {
