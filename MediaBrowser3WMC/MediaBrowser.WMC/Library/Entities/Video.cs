@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Entities.Attributes;
@@ -75,6 +76,8 @@ namespace MediaBrowser.Library.Entities {
                     }
                     else
                     {
+                        Logger.ReportInfo("Unable to access {0}.  Will try to stream.", Path);
+
                         yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                   {
                                                                                       ItemId = ApiId,
@@ -111,6 +114,8 @@ namespace MediaBrowser.Library.Entities {
         protected int FindAudioStream(string lang = "")
         {
             if (string.IsNullOrEmpty(lang)) lang = "eng";
+            if (MediaStreams == null || !MediaStreams.Any()) return 0;
+
             Logging.Logger.ReportVerbose("Looking for audio stream in {0}", lang);
             MediaStream stream = null;
             foreach (var codec in StreamableCodecs)
