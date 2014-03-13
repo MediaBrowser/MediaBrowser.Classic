@@ -333,27 +333,11 @@
 		<CustomAction Id="CA_RegisterMceApp_Rollback" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="rollback" Return="ignore" Impersonate="no"/>
 
     <CustomAction Id="CA_CheckDotNetFramework" BinaryKey="WixCA" ExeCommand="" />
-    <!-- Kill the service action -->
-    <CustomAction Id="KillSvc" Directory="APPROOTDIRECTORY" ExeCommand="taskkill /F /im MediaBrowserService*" Execute="immediate" Return="ignore"/>
 
-
-    <!--
-    
-    <CustomAction Id="CA_StartService_Cmd"
-                  Directory="APPROOTDIRECTORY"
-                  ExeCommand="&quot;[SystemFolder]Net.exe&quot; start MediaBrowserService"
-                  Return="asyncNoWait" />
-    
-    
- 
-    <CustomAction Id="CA_StartService_Cmd" Property="CA_StartService" Value="&quot;[SystemFolder]Net.exe&quot; start MediaBrowserService" />
-    <CustomAction Id="CA_StartService" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="check"/>
-    -->
 
     <!-- The InstallExecuteSequence table describes the order that actions will be executed during       -->
 		<!-- installation, repair and uninstall of this product.                                             -->
 		<InstallExecuteSequence>
-      <!--<Custom Action="KillSvc" Before="InstallValidate">Installed</Custom>-->
       <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
 				<![CDATA[NEWERVERSIONDETECTED]]>
 			</Custom>
