@@ -114,16 +114,32 @@
 				</Actions>
 			</Condition>
 
+      <Binding Source="[Input.KeyFocus]" Target="[Underline.Visible]" />
+
 		</Rules>
 
 		<Content>
-			<Panel>
-				<Layout>
-					<FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
-				</Layout>
+			<Panel Layout="HorizontalFlow">
 				<Children>
 					<Graphic Name="BoxImage" Content="image://i:CheckBoxUncheckedNoFocus" MaximumSize="34,34" ColorFilter="[Color]"/>
-					<Text Name="Lbl" Color="[Color]" Font="[Font]" Margins="5,0,0,0" />
+          <Panel Layout="Anchor" MaximumSize="0,34"  Margins="5,0,0,0" >
+            <Children>
+              <Text Name="Lbl" Color="[Color]" Font="[Font]" >
+                <LayoutInput>
+                  <AnchorLayoutInput Vertical="Near" Horizontal="Near"/>
+                </LayoutInput>
+              </Text>
+              <Clip FadeAmount=".7" FadeSize="10" Layout="Form">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Lbl,1" Left="Lbl,0" Right="Lbl,1" Bottom="Lbl,1,2" ContributesToHeight="false"/>
+                </LayoutInput>
+                <Children>
+                  <ColorFill Name="Underline" Visible="false" Content="[Color]" Layout="Fill" />
+                </Children>
+              </Clip>
+
+            </Children>
+          </Panel>
 				</Children>
 			</Panel>
 		</Content>

@@ -101,41 +101,23 @@
         </Actions>
       </Changed>
 
-      <Binding Target="[Logging.Label]" Source="[Application.LocalStrings.#LoggingConfig!cor:String]">
-        <Transformer>
-          <FormatTransformer Format="{0}                   "/>
-        </Transformer>
-      </Binding>
-
-      <Binding Target="[Updates.Label]" Source="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]">
-        <Transformer>
-          <FormatTransformer Format="{0}                       "/>
-        </Transformer>
-      </Binding>
-
-      <Binding Target="[WOL.Label]" Source="[Application.LocalStrings.#WakeServerConfig!cor:String]">
-        <Transformer>
-          <FormatTransformer Format="{0}                       "/>
-        </Transformer>
-      </Binding>
-
     </Rules>
 
     <Content>
               <Panel Name="Advanced" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group, RememberFocus">
                 <Children>
-                  <Panel Layout="VerticalFlow" >
+                  <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#ServerConfig!cor:String]" />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" />
-                      <cb:CheckBox Name="WOL" Label="[Application.LocalStrings.#WakeServerConfig!cor:String]" Checked="[WakeServer]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35" FocusOrder="0" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35" FocusOrder="1"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <cb:CheckBox Name="WOL" Label="[Application.LocalStrings.#WakeServerConfig!cor:String]" Checked="[WakeServer]" Margins="100,0,0,0" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
                       <cp:TextHeader Text="[Application.LocalStrings.#UpdatesConfig!cor:String]" />
-                      <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont"/>
-                      <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" />
-                      <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" />
+                      <cb:CheckBox Name="Updates" Label="[Application.LocalStrings.#AutomaticUpdatesConfig!cor:String]" Checked="[EnableUpdates]" Margins="100,0,0,0" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont" FocusOrder="3"/>
+                      <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[SystemUpdateClass]" FocusOrder="4" />
+                      <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" FocusOrder="5" />
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" >
@@ -143,7 +125,7 @@
                       <cp:TextHeader Text="[Application.LocalStrings.#MediaOptionsConfig!cor:String]" />
                       <cb:CheckBox Name="Delete" Label="[Application.LocalStrings.#EnableDeleteConfig!cor:String]" Checked="[EnableDelete]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
-                      <cb:CheckBox Name="Logging" Label="" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Name="Logging" Label="[Application.LocalStrings.#LoggingConfig!cor:String]" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>
