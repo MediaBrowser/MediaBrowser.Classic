@@ -176,6 +176,11 @@ namespace MediaBrowser.Library.Entities {
             return Application.CurrentInstance.DisplayPopupPlay = true;
         }
 
+        public override bool IsPlayable
+        {
+            get { return Application.CurrentInstance.PlaybackEnabled; }
+        }
+
         public virtual void RetrieveChildren()
         {
             children = ApiId != null ? new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null)) : new Lazy<List<BaseItem>>(() => new List<BaseItem>(), null);
