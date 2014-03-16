@@ -70,7 +70,7 @@ namespace MediaBrowser.Library.Entities {
                 }
                 else
                 {
-                    if (Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? ""))
+                    if (Path == System.IO.Path.GetPathRoot(Path) || Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? ""))
                     {
                         yield return Path;
                     }
