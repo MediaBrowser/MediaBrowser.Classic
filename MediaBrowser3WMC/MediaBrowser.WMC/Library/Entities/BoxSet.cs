@@ -65,6 +65,14 @@ namespace MediaBrowser.Library.Entities
             {LocalizedStrings.Instance.GetString("NoneDispPref"), ""}
         };
 
+        /// <summary>
+        /// Avoid collpasing into ourselves
+        /// </summary>
+        protected override bool CollapseBoxSets
+        {
+            get { return false; }
+        }
+
         public override Dictionary<string, string> IndexByOptions
         {
             get

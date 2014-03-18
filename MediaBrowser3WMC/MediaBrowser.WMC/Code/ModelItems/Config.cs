@@ -517,6 +517,12 @@ namespace MediaBrowser
             set { if (this.Data.InheritDefaultView != value) { this.Data.InheritDefaultView = value; Save(); FirePropertyChanged("InheritDefaultView"); } }
         }
 
+        public bool CollapseBoxSets
+        {
+            get { return this.Data.CollapseBoxSets; }
+            set { if (this.Data.CollapseBoxSets != value) { this.Data.CollapseBoxSets = value; Save(); FirePropertyChanged("CollapseBoxSets"); } }
+        }
+
         [Comment("Changes the default view index for folders that have not yet been visited.\n\t[Detail|Poster|Thumb]")]
         public ViewType DefaultViewType
         {

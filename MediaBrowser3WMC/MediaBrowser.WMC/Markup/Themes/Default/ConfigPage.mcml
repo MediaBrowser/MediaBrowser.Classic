@@ -73,6 +73,7 @@
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
       <BooleanChoice Name="ShowBackdrop" Value="[Application.Config.ShowBackdrop]" />
+      <BooleanChoice Name="CollapseBoxSets" Value="[Application.Config.CollapseBoxSets]" />
       <BooleanChoice Name="RandomizeBackdrop" Value="[Application.Config.RandomizeBackdrops]" />
       <BooleanChoice Name="RotateBackdrop" Value="[Application.Config.RotateBackdrops]" />
       <BooleanChoice Name="HideFocusFrame" Value="[Application.Config.HideFocusFrame]" />
@@ -371,6 +372,7 @@
       <Binding Source="[AlwaysShowDetailsPage.Value]" Target="[Config.AlwaysShowDetailsPage]" />
       <Binding Source="[ShowRootBackground.Value]" Target="[Config.ShowRootBackground]" />
       <Binding Source="[EnableMouseHook.Value]" Target="[Config.EnableMouseHook]" />
+      <Binding Source="[CollapseBoxSets.Value]" Target="[Config.CollapseBoxSets]" />
 
 
       <Binding Source="[ThemeModel.Chosen!cor:String]" Target="[Config.Theme]" >
@@ -626,6 +628,7 @@
                       <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowMissingItemsConfig!cor:String]" Checked="[ShowMissingItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowUnairedItemsConfig!cor:String]" Checked="[ShowUnairedItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Visible="false" >

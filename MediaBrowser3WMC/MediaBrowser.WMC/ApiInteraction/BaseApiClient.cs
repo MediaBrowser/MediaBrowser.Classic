@@ -332,6 +332,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("sortBy", query.SortBy);
 
             dict.AddIfNotNull("IsPlayed", query.IsPlayed);
+            dict.AddIfNotNull("CollapseBoxSetItems", query.CollapseBoxSetItems);
 
             if (query.SortOrder.HasValue)
             {

@@ -287,6 +287,9 @@ namespace MediaBrowser
         [Comment(@"Show fan art on views that support it.")]
         public bool ShowBackdrop = true;
         [Group("Display")]
+        [Comment(@"Collapse movies into box sets if defined.")]
+        public bool CollapseBoxSets = false;
+        [Group("Display")]
         [Dangerous]
         public string ViewTheme = "Chocolate";
         [Group("Display")]

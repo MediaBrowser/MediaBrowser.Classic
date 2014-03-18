@@ -1063,9 +1063,11 @@ namespace MediaBrowser.Library.Entities {
             //Logger.ReportVerbose("=====FINISHED sorting actual children for " + Name);
         }
 
+        protected virtual bool CollapseBoxSets {get { return Config.Instance.CollapseBoxSets; }}
+
         protected virtual List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId).ToList();
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, CollapseBoxSets).ToList();
         }
 
         public bool HasVideoChildren {

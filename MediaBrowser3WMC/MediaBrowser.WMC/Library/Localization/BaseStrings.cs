@@ -100,6 +100,7 @@ namespace MediaBrowser.Library.Localization
         public string PortConfigDesc = "The configured port for your server. Default 8096.";
         public string PluginsConfigDesc = "Manage Media Browser Classic Plug-ins.";
         public string WakeServerConfigDesc = "Try to wake up the last known server when MBC starts (in case it is in sleep mode).";
+        public string CollapseBoxSetsConfigDesc = "Collapse movies defined into collections (box sets) into those collections in views.";
 
 
         //Config Panel
@@ -216,6 +217,7 @@ namespace MediaBrowser.Library.Localization
         public string WakeServerConfig = "Attempt to Wake";
         public string PluginsConfig = "Plug-ins";
         public string InstalledPluginsConfig = "Installed Plug-ins";
+        public string CollapseBoxSetsConfig = "Collapse Movies into Collections";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";
