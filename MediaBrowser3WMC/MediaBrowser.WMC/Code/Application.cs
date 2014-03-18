@@ -2591,6 +2591,13 @@ namespace MediaBrowser
         /// <param name="playIntros">Whether not not intros should be played. Unless you have a specific reason to set this, leave it null so the core can decide.</param>
         public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos)
         {
+            //if external display a message
+            if (item.IsExternalDisc)
+            {
+                DisplayDialog("Item is an external disc.  Please insert the proper disc.", "Cannot Play");
+                return;
+            }
+
             //if playback is disabled display a message
             if (!PlaybackEnabled)
             {
