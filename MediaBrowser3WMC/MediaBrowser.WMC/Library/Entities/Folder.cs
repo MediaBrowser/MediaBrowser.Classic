@@ -779,7 +779,7 @@ namespace MediaBrowser.Library.Entities {
                 return ret;
             }
 
-            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId, property);
+            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(this.ApiId);
         }
 
         private static BaseItem UnknownItem(IndexType indexType) {

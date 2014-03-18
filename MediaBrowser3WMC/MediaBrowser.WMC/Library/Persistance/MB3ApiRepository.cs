@@ -535,7 +535,7 @@ namespace MediaBrowser.Library.Persistance
         }
 
 
-        public IEnumerable<BaseItem> RetrieveChildren(string id, string indexBy = null, ItemFilter[] filters = null, bool? isPlayed = null)
+        public IEnumerable<BaseItem> RetrieveChildren(string id, ItemFilter[] filters = null, bool? isPlayed = null)
         {
             if (id == Guid.Empty.ToString() || string.IsNullOrEmpty(id)) return new List<BaseItem>();  //some dummy items have blank ids
 
