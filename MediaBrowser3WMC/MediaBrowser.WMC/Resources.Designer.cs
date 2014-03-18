@@ -1850,6 +1850,16 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ExternalDiscBanner {
+            get {
+                object obj = ResourceManager.GetObject("ExternalDiscBanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] ExternalPlayback {
@@ -2936,6 +2946,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("NumberPad", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OfflineBanner {
+            get {
+                object obj = ResourceManager.GetObject("OfflineBanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

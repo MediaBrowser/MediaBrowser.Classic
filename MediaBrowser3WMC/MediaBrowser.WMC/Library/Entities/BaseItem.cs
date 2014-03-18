@@ -309,7 +309,10 @@ namespace MediaBrowser.Library.Entities {
             set { }
         }
 
-        public List<Chapter> Chapters { get; set; } 
+        public List<Chapter> Chapters { get; set; }
+
+        public bool IsOffline { get; set; }
+        public bool IsExternalDisc { get; set; }
 
         public virtual bool CanResume
         {

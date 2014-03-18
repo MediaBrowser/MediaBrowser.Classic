@@ -37,6 +37,8 @@
 	<Image Name="HDLogo720" Source="resx://MediaBrowser/MediaBrowser.Resources/hd720" />
 	<Image Name="MissingBanner" Source="resx://MediaBrowser/MediaBrowser.Resources/MissingBanner" />
 	<Image Name="FutureBanner" Source="resx://MediaBrowser/MediaBrowser.Resources/FutureBanner" />
+	<Image Name="ExternalBanner" Source="resx://MediaBrowser/MediaBrowser.Resources/ExternalDiscBanner" />
+	<Image Name="OfflineBanner" Source="resx://MediaBrowser/MediaBrowser.Resources/OfflineBanner" />
 	
 	<Image Name="StarEmpty" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Empty" />
 	<Image Name="StarFull" Source="resx://MediaBrowser/MediaBrowser.Resources/Star_Full" />

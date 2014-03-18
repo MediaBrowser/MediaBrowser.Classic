@@ -588,6 +588,7 @@
     <Content Include="Images\Root\flashHorT.png" />
     <Content Include="Images\Root\poster-frame.png" />
     <Content Include="Images\Root\rootscrollhilitefocus.png" />
+    <Content Include="Images\Special\ExternalDiscBanner.png" />
     <Content Include="Images\Special\FutureBanner.png" />
     <Content Include="Images\Special\Gears.png" />
     <Content Include="Images\Special\GreenBallDark.png" />
@@ -595,6 +596,7 @@
     <Content Include="Images\Special\GreenBallLight.png" />
     <Content Include="Images\Special\GreenBallShadow.png" />
     <Content Include="Images\Special\MissingBanner.png" />
+    <Content Include="Images\Special\OfflineBanner.png" />
     <Content Include="Images\Special\Starburst.png" />
     <Content Include="Images\Spinner\DecrementFocused.png" />
     <Content Include="Images\Spinner\DecrementNoFocus.png" />

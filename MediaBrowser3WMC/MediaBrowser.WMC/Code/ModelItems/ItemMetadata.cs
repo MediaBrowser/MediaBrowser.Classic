@@ -295,6 +295,9 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public bool IsExternalDisc {get { return baseItem.IsExternalDisc; }}
+        public bool IsOffline {get { return baseItem.IsOffline; }}
+
         public string ImdbRatingString {
             get { return (ImdbRating).ToString("0.##"); }
         }

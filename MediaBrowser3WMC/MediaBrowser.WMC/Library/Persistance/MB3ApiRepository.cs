@@ -211,6 +211,9 @@ namespace MediaBrowser.Library.Persistance
                 // recursive media count
                 item.ApiRecursiveItemCount = mb3Item.RecursiveItemCount;
                 item.ApiItemCount = mb3Item.ChildCount;
+                // disc status
+                item.IsOffline = mb3Item.LocationType == LocationType.Offline;
+                item.IsExternalDisc = mb3Item.IsPlaceHolder ?? false;
                 // playback access
                 item.PlaybackAllowed = (mb3Item.PlayAccess == PlayAccess.Full) && !(mb3Item.IsPlaceHolder ?? false);
 
