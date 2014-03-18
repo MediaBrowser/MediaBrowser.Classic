@@ -54,7 +54,9 @@
       <ClickHandler Name="Clicker" Command="[Command]"/>
     </Locals>
     <Rules>
-      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Binding Target="[Input.KeyInteractive]" Source="[Command.Available]" />
+      <Condition Source="[Command.Available]" SourceValue="false" Target="[Label.Alpha]" Value=".3" />
+      <Default Target="[Label.Alpha]" Value="1" />
       <Condition Source="[Input.KeyFocus]"  SourceValue="true">
         <Actions>
           <Set Target="[Label.Content]" Value="[Focused]" />

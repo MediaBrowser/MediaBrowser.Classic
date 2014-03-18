@@ -44,6 +44,9 @@
         </Actions>
       </Condition>
 
+      <Binding Source="[Model.HasNextValue]" Target="[Next.Available]" />
+      <Binding Source="[Model.HasPreviousValue]" Target="[Previous.Available]" />
+
       <Condition Source="[Model.HasNextValue]" ConditionOp="Equals" SourceValue="false">
         <Conditions>
           <Equality Source="[Input.DeepKeyFocus]" Value="true" />
