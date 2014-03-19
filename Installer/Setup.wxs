@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.142.0" ?>
-<?define Property_ProductCode = "{4F5D91EB-C509-418A-BDF3-4D7287C999B7}" ?>
+<?define Property_ProductVersion = "3.0.143.0" ?>
+<?define Property_ProductCode = "{41250DE9-6420-4C15-AA26-6CC6CEC2F46C}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -96,13 +96,8 @@
                   Target="http://www.mediabrowser3.com"
                   Type="url"/>
         <util:InternetShortcut Id="CommunityTracker"
-                  Name="Media Browser Community Tracker"
-                  Target="http://community.mediabrowser.tv"
-                  Directory="ApplicationHelpAndSupportFolder"
-                  Type="url"/>
-        <util:InternetShortcut Id="CommunityTrackerKnowledgebase"
-                  Name="Knowledge Base"
-                  Target="http://community.mediabrowser.tv/topics?category_id=5&amp;status=published"
+                  Name="Media Browser Community"
+                  Target="http://mediabrowser3.com/community"
                   Directory="ApplicationHelpAndSupportFolder"
                   Type="url"/>
         <RemoveFolder Id="RemoveApplicationHelpAndSupportFolder" Directory="ApplicationHelpAndSupportFolder" On="uninstall"/>
