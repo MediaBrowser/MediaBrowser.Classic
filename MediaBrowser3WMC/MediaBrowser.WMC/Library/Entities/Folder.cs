@@ -800,6 +800,8 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public bool ChildrenLoaded { get { return children != null; } }
+
         /// <summary>
         /// Recursive enumerator that returns recursive children only if they have already been loaded
         /// </summary>
