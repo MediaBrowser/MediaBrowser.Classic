@@ -74,6 +74,8 @@
         </Actions>
       </Changed>
 
+      <Binding Source="[MBPhotoController.Instance.CurrentSlideShowItem.FirstAired]" Target="[ItemInfo.Content]" />
+
       <Binding Source="[MBPhotoController.Instance.CurrentSlideShowItem.BackdropImage]" Target="[MainImage.Content]" />
       <Binding Source="[MainTimer.Enabled]" Target="[PauseIcon.Visible]" >
         <Transformer>
@@ -93,6 +95,31 @@
               <FormLayoutInput Horizontal="Far" Vertical="Far"/>
             </LayoutInput>
             
+          </Graphic>
+          <Graphic Name="NameGraphic" Content="resx://MediaBrowser/MediaBrowser.Resources/smoke" SizingPolicy="SizeToChildren" >
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent, .90" Right="Parent,.80"/>
+            </LayoutInput>
+            <Children>
+              <Text Name="ItemInfo" Content="" Font="Segoe Media Center Semibold, 20, Italic" WordWrap="true" MaximumLines="3" Color="AliceBlue" >
+                <Animations>
+                  <Animation Type="ContentChangeShow">
+                    <Keyframes>
+                      <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="0"/>
+                      <AlphaKeyframe RelativeTo="Final" Time="1" Value="1"/>
+                    </Keyframes>
+                  </Animation>
+              <Animation Type="ContentChangeHide">
+                <Keyframes>
+                  <AlphaKeyframe RelativeTo="Current" Time="0.0" Value="1"/>
+                  <AlphaKeyframe RelativeTo="Current" Time="0.5" Value="1"/>
+                  <AlphaKeyframe RelativeTo="Current" Time="2" Value="0"/>
+                </Keyframes>
+              </Animation>
+
+                </Animations>
+              </Text>
+            </Children>
           </Graphic>
           <Graphic Name="MainImage"  MaintainAspectRatio="true" Content="[MBPhotoController.Instance.CurrentSlideShowItem.BackdropImage]"  >
             <LayoutInput>

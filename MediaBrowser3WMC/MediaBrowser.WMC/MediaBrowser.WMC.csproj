@@ -588,6 +588,7 @@
     <Content Include="Images\Root\flashHorT.png" />
     <Content Include="Images\Root\poster-frame.png" />
     <Content Include="Images\Root\rootscrollhilitefocus.png" />
+    <Content Include="Images\smoke.png" />
     <Content Include="Images\Special\ExternalDiscBanner.png" />
     <Content Include="Images\Special\FutureBanner.png" />
     <Content Include="Images\Special\Gears.png" />
