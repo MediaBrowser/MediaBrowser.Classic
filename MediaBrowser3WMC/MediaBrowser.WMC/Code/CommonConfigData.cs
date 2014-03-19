@@ -35,6 +35,9 @@ namespace MediaBrowser
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
         public bool EnableUpdates = true;
         [Group("Updates")]
+        [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
+        public bool EnableSilentUpdates = true;
+        [Group("Updates")]
         [Comment(@"The class of updates to check (Dev/Beta/Release).")]
         public PackageVersionClass SystemUpdateClass = PackageVersionClass.Release;
         [Group("Updates")]

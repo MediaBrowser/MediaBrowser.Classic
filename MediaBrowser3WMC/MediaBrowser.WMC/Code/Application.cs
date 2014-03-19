@@ -1561,9 +1561,9 @@ namespace MediaBrowser
             PackagesRetrieved = true;
         }
 
-        public void UpdateAllPlugins()
+        public void UpdateAllPlugins(bool silent = false)
         {
-            Async.Queue("Plugin Update", () => new Updater(this).UpdateAllPlugins(InstalledPluginsCollection));
+            Async.Queue("Plugin Update", () => new Updater(this).UpdateAllPlugins(InstalledPluginsCollection, silent));
         }
 
         public void UpdatePlugin(PluginItem plugin)
@@ -1737,6 +1737,18 @@ namespace MediaBrowser
                     WebSocket.SystemCommand += SystemCommand;
                   
                     Updater = new Updater(this);
+
+                    if (Config.EnableUpdates && Config.EnableSilentUpdates && !RunningOnExtender)
+                    {
+                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                                                             {
+                                                                 while (!PackagesRetrieved) {Thread.Sleep(500);}
+                                                                 RefreshPluginCollections();
+                                                                 while (InstalledPluginsCollection == null) {Thread.Sleep(500);}
+                                                                 UpdateAllPlugins(true);
+                                                             });
+                    }
+
                     if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins
                     {
                         // We check config here instead of in the Updater class because the Config class 
@@ -1793,7 +1805,7 @@ namespace MediaBrowser
                                                     }
                                                     SystemUpdateCheckInProgress = true;
                                                     Updater.CheckForUpdate();
-                                                    PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
+                                                    if (!Config.EnableSilentUpdates) PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
                                                     SystemUpdateCheckInProgress = false;
                                                 });
             }

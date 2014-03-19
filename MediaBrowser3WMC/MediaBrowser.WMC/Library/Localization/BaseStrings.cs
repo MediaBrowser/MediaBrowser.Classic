@@ -18,7 +18,7 @@ namespace MediaBrowser.Library.Localization
         public string EnableScreenSaverConfigDesc = "Enable Screen Saver functionality after defined time out.";
         public string SSTimeOutConfigDesc = "Minutes Before Screen Saver is Activated.";
         public string EnableInternetProvidersConfigDesc = "Search the Internet for Cover Art, Backdrops and Metadata.";
-        public string AutomaticUpdatesConfigDesc = "Automatically Download and Install Updates to MediaBrowser and Plug-ins.";
+        public string AutomaticUpdatesConfigDesc = "Automatically Check for Updates to MediaBrowser and Plug-ins for Admin users.";
         public string BetaUpdatesConfigDesc = "Include Beta Versions in Automatic Updates";
         public string EnableEHSConfigDesc = "Enable the Enhanced Home Screen for Top-Level Items.";
         public string ShowClockConfigDesc = "Show the Current Time in MediaBrowser Screens.";
@@ -101,6 +101,7 @@ namespace MediaBrowser.Library.Localization
         public string PluginsConfigDesc = "Manage Media Browser Classic Plug-ins.";
         public string WakeServerConfigDesc = "Try to wake up the last known server when MBC starts (in case it is in sleep mode).";
         public string CollapseBoxSetsConfigDesc = "Collapse movies defined into collections (box sets) into those collections in views.";
+        public string SilentUpdatesConfigDesc = "Update plug-ins automatically in the background for all users.";
 
 
         //Config Panel
@@ -131,7 +132,8 @@ namespace MediaBrowser.Library.Localization
         public string MetadataConfig = "Metadata";
         public string EnableInternetProvidersConfig = "Allow Internet Providers";
         public string UpdatesConfig = "Updates";
-        public string AutomaticUpdatesConfig = "Check For Updates";
+        public string SilentUpdatesConfig = "Silently Update Plug-ins";
+        public string AutomaticUpdatesConfig = "Automatically Check For Updates";
         public string LoggingConfig = "Logging";
         public string BetaUpdatesConfig = "Beta Updates";
         public string GlobalConfig = "Global";

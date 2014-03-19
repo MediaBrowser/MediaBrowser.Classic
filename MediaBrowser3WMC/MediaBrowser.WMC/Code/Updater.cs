@@ -142,12 +142,12 @@ namespace MediaBrowser.Util
         private bool _installInProgress = false;
         private bool _sucessfulUpdate = false;
 
-        public bool UpdateAllPlugins(PluginItemCollection installedPlugins)
+        public bool UpdateAllPlugins(PluginItemCollection installedPlugins, bool silent = false)
         {
             var success = false;
             foreach (var plugin in installedPlugins.Items.Where(p => p.UpdateAvailable))
             {
-                _appRef.ProgressBox("Updating " + plugin.Name + "...");
+                if (!silent) _appRef.ProgressBox("Updating " + plugin.Name + "...");
                 if (InstallPlugin(new RemotePlugin
                                       {
                                           SourceFilename = plugin.ValidVersions.OrderBy(v => v.version).Last().sourceUrl,
@@ -158,7 +158,7 @@ namespace MediaBrowser.Util
                     plugin.UpdatePending = true;
                     success = true;
                 }
-                _appRef.ShowMessage = false;
+                if (!silent) _appRef.ShowMessage = false;
             }
 
             installedPlugins.ResetUpdatesAvailable();

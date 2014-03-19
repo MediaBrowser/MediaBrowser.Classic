@@ -360,6 +360,11 @@ namespace MediaBrowser
             get { return this.CommonData.EnableUpdates; }
             set { if (this.CommonData.EnableUpdates != value) { this.CommonData.EnableUpdates = value; Save(); FirePropertyChanged("EnableUpdates"); } }
         }
+        public bool EnableSilentUpdates
+        {
+            get { return this.CommonData.EnableSilentUpdates; }
+            set { if (this.CommonData.EnableSilentUpdates != value) { this.CommonData.EnableSilentUpdates = value; Save(); FirePropertyChanged("EnableSilentUpdates"); } }
+        }
         public string SystemUpdateClass
         {
             get { return this.CommonData.SystemUpdateClass.ToString(); }
