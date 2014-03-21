@@ -798,7 +798,6 @@ namespace MediaBrowser.Library {
             FirePropertyChanged("SelectedChildIndex");
             FirePropertyChanged("SelectedChild");
             FirePropertyChanged("SelectedCondensedChild");
-            Application.CurrentInstance.OnCurrentItemChanged();
         }
 
         public override void SetWatched(bool value) {
