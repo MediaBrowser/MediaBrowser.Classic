@@ -14,9 +14,9 @@ namespace MediaBrowser.Library.Entities
         /// <summary>
         /// The unknown album
         /// </summary>
-        private static readonly MusicAlbum UnknownAlbum = new MusicAlbum {Name = "<Unknown>"};
+        private static readonly MusicAlbum UnknownAlbum = new MusicAlbum {Name = "<Unknown>", BackdropImagePaths = new List<string>()};
 
-        private static readonly Person UnknownArtist = new Person {Name = "<Unknown>"};
+        private static readonly Person UnknownArtist = new Person {Name = "<Unknown>", BackdropImagePaths = new List<string>()};
 
         /// <summary>
         /// Gets or sets the artist.
@@ -88,7 +88,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return AlbumArtistPerson.BackdropImagePaths;
+                return base.BackdropImagePaths ?? AlbumItem.BackdropImagePaths ?? AlbumArtistPerson.BackdropImagePaths;
             }
             set
             {
