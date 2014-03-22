@@ -293,6 +293,21 @@ namespace MediaBrowser
         }
 
         #endregion
+
+        #region LibraryChanged Notification
+
+        public event EventHandler<LibraryChangedEventArgs> NotifyLibraryChanged;
+
+        public void OnLibraryChanged(LibraryChangedEventArgs args)
+        {
+            if (NotifyLibraryChanged != null)
+            {
+                NotifyLibraryChanged(this, args);
+            }
+        }
+
+        #endregion
+
         private bool showSplash = false;
         public bool ShowSplash
         {
@@ -602,6 +617,9 @@ namespace MediaBrowser
                 top.ResetQuickList();
                 top.OnQuickListChanged(null);
             } 
+
+            //Call any subscribers
+            OnLibraryChanged(args);
 
             //Finally notify if enabled
             if (Config.ShowNewItemNotification)
