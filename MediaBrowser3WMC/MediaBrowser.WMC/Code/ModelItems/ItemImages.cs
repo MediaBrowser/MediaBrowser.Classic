@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using MediaBrowser.Library;
-using Microsoft.MediaCenter.UI;
 using System.Threading;
+using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.ImageManagement;
 using System.Reflection;
 using System.IO;
@@ -16,6 +17,8 @@ using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Threading;
 using System.Runtime.InteropServices;
 using MediaBrowser.Library.Logging;
+using Image = Microsoft.MediaCenter.UI.Image;
+using Size = Microsoft.MediaCenter.UI.Size;
 
 namespace MediaBrowser.Library
 {
@@ -779,7 +782,6 @@ namespace MediaBrowser.Library
         static readonly Image RtFreshImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/RTFresh");
         static readonly Image RtRottenImage = new Image("resx://MediaBrowser/MediaBrowser.Resources/RTRotten");
  
-        
         public Image DefaultImage
         {
             get

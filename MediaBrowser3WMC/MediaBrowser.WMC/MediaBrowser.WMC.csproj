@@ -164,6 +164,7 @@
     <Compile Include="Library\Entities\ApiGenreCollectionFolder.cs" />
     <Compile Include="Library\Entities\MusicGenre.cs" />
     <Compile Include="Library\Entities\MusicVideo.cs" />
+    <Compile Include="Library\Entities\PersonLetterFolder.cs" />
     <Compile Include="Library\Entities\Photo.cs" />
     <Compile Include="Library\Entities\PhotoFolder.cs" />
     <Compile Include="Library\Entities\RemoteVideo.cs" />

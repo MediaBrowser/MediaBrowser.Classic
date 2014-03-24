@@ -408,6 +408,7 @@ namespace MediaBrowser.Library.Localization
         public string Overview = "Overview";
         public string SwitchTo = "Switch To...";
         public string AlsoHere = "Also Here";
+        public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         //Search
         public string IncludeNested = "Include Subfolders";

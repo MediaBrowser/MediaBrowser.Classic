@@ -587,7 +587,7 @@ namespace MediaBrowser.LibraryManagement
             Guid id = ("MiImage" + Config.Instance.ViewTheme + name).GetMD5();
 
             //try to load from image cache first
-            string path = CustomImageCache.Instance.GetImagePath(id);
+            string path = CustomImageCache.Instance.GetImagePath(id, true);
             if (path != null) return new Image(path); //was already cached
 
             //not cached - get it from the server

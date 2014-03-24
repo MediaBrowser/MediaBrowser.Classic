@@ -34,7 +34,7 @@ namespace MediaBrowser.Library.ImageManagement
             ResourceCache[id] = resourceRef;
         }
 
-        public override string GetImagePath(Guid id)
+        public string GetImagePath(Guid id, bool includePrefix)
         {
             if (ResourceCache.ContainsKey(id))
             {
@@ -45,7 +45,7 @@ namespace MediaBrowser.Library.ImageManagement
             {
                 string fn = base.GetImagePath(id);
                 //if (fn != null) Logging.Logger.ReportVerbose("CustomCache returning file " + fn);
-                return fn == null ? null : "file://"+fn;
+                return fn == null ? null : includePrefix ? "file://"+fn : fn;
             }
         }
     }

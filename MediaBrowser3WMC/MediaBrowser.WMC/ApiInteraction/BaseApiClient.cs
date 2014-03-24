@@ -439,6 +439,10 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("Limit", query.Limit);
 
+            dict.AddIfNotNullOrEmpty("NameStartsWith", query.NameStartsWith);
+            dict.AddIfNotNullOrEmpty("NameStartsWithOrGreater", query.NameStartsWithOrGreater);
+            dict.AddIfNotNullOrEmpty("NameLessThan", query.NameLessThan);
+
             dict.AddIfNotNull("SortBy", query.SortBy);
 
             dict.AddIfNotNull("IsPlayed", query.IsPlayed);
