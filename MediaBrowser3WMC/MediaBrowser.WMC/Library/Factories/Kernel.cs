@@ -930,6 +930,22 @@ namespace MediaBrowser.Library {
             return menuItem;
         }
 
+        public MenuItem ReplaceMenuItem(MenuItem menuItem)
+        {
+            var ndx = menuOptions.IndexOf(menuOptions.Find(m => m.Text == menuItem.Text));
+            if (ndx < 0)
+            {
+                menuOptions.Add(menuItem);       
+            }
+            else
+            {
+                menuOptions.RemoveAt(ndx);
+                menuOptions.Insert(ndx, menuItem);
+            }
+
+            return menuItem;
+        }
+
         public MenuItem AddMenuItem(MenuItem menuItem, int position)
         {
             Debug.Assert(position <= menuOptions.Count, "cowboy you are trying to insert a menu item in an invalid position!");

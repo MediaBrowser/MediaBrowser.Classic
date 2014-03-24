@@ -875,9 +875,9 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    if (Application.CurrentInstance.CurrentFolder.SelectedChild != null)
+                    if (CurrentFolder != null && CurrentFolder.SelectedChild != null)
                     {
-                        return Application.CurrentInstance.CurrentFolder.SelectedChild;
+                        return CurrentFolder.SelectedChild;
                     }
                     else return Item.BlankItem;
                 }
