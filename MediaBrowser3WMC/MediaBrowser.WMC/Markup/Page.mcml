@@ -120,7 +120,7 @@
     </Rules>
 
     <Content>
-      <ColorFill Content="Transparent" Layout="Form">
+      <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true">
         <Children>
           <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Folder]" Application="[Application]" >
             <LayoutInput>
