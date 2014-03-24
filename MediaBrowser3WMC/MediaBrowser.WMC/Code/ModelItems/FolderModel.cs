@@ -860,7 +860,7 @@ namespace MediaBrowser.Library {
                 if (!String.IsNullOrEmpty(value) && (LibraryManagement.Helper.IsAlphaNumeric(value))) {
                     var comparer = new BaseItemComparer(SortOrder.Name, StringComparison.InvariantCultureIgnoreCase);
                     var tempItem =  Activator.CreateInstance(this.folder.ChildType) as BaseItem ?? new BaseItem();
-                    if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("NameDispPref") || (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref")))
+                    if (IsIndexed || this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("NameDispPref") || (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref")))
                     {
                         tempItem.Name = baseItem.GetType().Name.Equals("Series", StringComparison.OrdinalIgnoreCase) ? value.PadLeft(4,'0') : value;
                     } else
