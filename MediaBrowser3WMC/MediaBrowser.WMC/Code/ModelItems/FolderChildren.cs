@@ -17,22 +17,6 @@ using MediaBrowser.Util;
 namespace MediaBrowser.Code.ModelItems {
     public class FolderChildren : BaseModelItem, IList, ICollection, IList<Item>, IDisposable{
 
-        static BackgroundProcessor<FolderChildren> childLoader = new BackgroundProcessor<FolderChildren>(2,LoadChildren, "Child loader");
-        static BackgroundProcessor<FolderChildren> childVerifier= new BackgroundProcessor<FolderChildren>(2, VerifyChildren, "Child verifier");
-        static BackgroundProcessor<BaseItem> slowMetadataRefresher = new BackgroundProcessor<BaseItem>(2, SlowMetadataRefresh, "Slow metadata refresher");
-        static BackgroundProcessor<BaseItem> fastMetadataRefresher = new BackgroundProcessor<BaseItem>(2, FastMetadataRefresh, "Fast metadata refresher");
-
-        // our global queue. 
-        // 2 * fast metadata refresher 
-        // 2 * slow metadata refresher 
-        // 2 * child loaders
-        // 2 * child verifier
-
-        // The chain of events is as follow. 
-        // Assign is called, a child loader is triggered
-        //   Once done, it will trigger a child verifier
-        //   Once done, it will trigger a metadata refresh
-
         FolderModel folderModel;
         Folder folder;
         Dictionary<Guid, Item> items = new Dictionary<Guid, Item>();
@@ -55,7 +39,6 @@ namespace MediaBrowser.Code.ModelItems {
                 this.folder = folderModel.Folder;
                 this.sortFunction = folder.SortFunction;  //make sure this is in sync
                 ListenForChanges();
-                //childLoader.Enqueue(this);
             }
 
         }
@@ -63,9 +46,6 @@ namespace MediaBrowser.Code.ModelItems {
         public static void LoadChildren(FolderChildren children) {
             children.folder.EnsureChildrenLoaded();
             
-            // Sam - Queueing a validation is a really bad idea ... as a side effect this could cause a full refresh
-            // Instead we cound on RefreshAsap and daily schedules taking care of verification. 
-            // if (Config.Instance.AutoValidate) childVerifier.Enqueue(children);
         }
 
 
@@ -92,40 +72,14 @@ namespace MediaBrowser.Code.ModelItems {
                 children.folder.ValidateChildren();
                 children.folder.ChildrenChanged -= handler;
 
-                // This makes validation extremely cheap, keep in mind stuff like changes to places that are not in the tree will not be picked up
-                //  by design .... 
-                if (!changed) { return; }
-
-                //fastMetadataRefresher.Inject(children.folder);
-                //bool isSeason = children.folder.GetType() == typeof(Season) && children.folder.Parent != null;
-                //if (isSeason)
-                //{
-                //    fastMetadataRefresher.Inject(children.folder.Parent);
-                //}
             }
         }
 
 
-        public static void FastMetadataRefresh(BaseItem item) {
-            using (new Profiler("Fast Metadata Refresh (UI Triggered)" + item.Name))
-            {
-                item.RefreshMetadata(MetadataRefreshOptions.FastOnly);
-                slowMetadataRefresher.Inject(item);
-            }
-        }
-
-        public static void SlowMetadataRefresh(BaseItem item) {
-            using (new Profiler("Slow Metadata Refresh (UI Triggered)" + item.Name))
-            {
-                item.RefreshMetadata(MetadataRefreshOptions.Default);
-            }
-        }
 
         public void RefreshAsap() {
-            if (!childLoader.PullToFront(this)) {
-                childLoader.Inject(this);
-            }
-
+            LoadChildren(this);
+            RefreshChildren();
         }
 
         public void ListenForChanges() {
@@ -142,7 +96,7 @@ namespace MediaBrowser.Code.ModelItems {
         /// <returns></returns>
         public FolderChildren Clone() {
             lock (this) {
-                FolderChildren clone = new FolderChildren();
+                var clone = new FolderChildren();
                 clone.folderModel = folderModel;
                 clone.folder = folder;
                 clone.items = items;
