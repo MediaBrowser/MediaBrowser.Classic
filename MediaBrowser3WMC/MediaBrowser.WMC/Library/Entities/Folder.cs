@@ -31,7 +31,7 @@ namespace MediaBrowser.Library.Entities {
         public event EventHandler<EventArgs> QuickListChanged;
         public event EventHandler<UnwatchedChangedEventArgs> UnwatchedCountChanged;
 
-        List<BaseItem> children;
+        MediaBrowser.Library.Util.Lazy<List<BaseItem>> children;
         protected IFolderMediaLocation location;
         protected IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
         object validateChildrenLock = new object();
@@ -49,6 +49,7 @@ namespace MediaBrowser.Library.Entities {
 
         public Folder()
             : base() {
+            RetrieveChildren();
         }
 
         public IComparer<BaseItem> SortFunction
@@ -167,7 +168,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public bool ContainsMusic { get { return children != null && children.Any(i => i is MusicAlbum || i is MusicArtist); } }
+        public bool ContainsMusic { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist); } }
 
         public override bool PlayAction(Item item)
         {
@@ -182,8 +183,7 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void RetrieveChildren()
         {
-            children = ApiId != null ? GetChildren(true) : new List<BaseItem>();
-            OnChildrenChanged(null);
+            children = ApiId != null ? new Lazy<List<BaseItem>>(() => GetChildren(true), () => OnChildrenChanged(null)) : new Lazy<List<BaseItem>>(() => new List<BaseItem>(), null);
             mediaCount = null;
         }
 
@@ -242,7 +242,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return children != null ? Children : new List<BaseItem>();
+                return children.HasValue ? Children : new List<BaseItem>();
             }
         }
 
@@ -915,10 +915,8 @@ namespace MediaBrowser.Library.Entities {
         /// Direct access to children 
         /// </summary>
         protected virtual List<BaseItem> ActualChildren {
-            get
-            {
-                if (children == null) RetrieveChildren();
-                return children;
+            get {
+                return children.Value;
             }
         }
 
