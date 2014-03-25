@@ -275,7 +275,7 @@ namespace MediaBrowser.Library.Persistance
                     }
                 }
 
-                if (mb3Item.BackdropImageTags != null)
+                if (mb3Item.BackdropImageTags != null && mb3Item.BackdropCount > 0)
                 {
                     var ndx = 0;
                     item.BackdropImagePaths = new List<string>();
