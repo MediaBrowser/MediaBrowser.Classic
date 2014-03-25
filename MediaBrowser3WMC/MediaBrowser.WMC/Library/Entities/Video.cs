@@ -93,7 +93,7 @@ namespace MediaBrowser.Library.Entities {
                                                                                       ItemId = ApiId,
                                                                                       OutputFileExtension = ".wmv",
                                                                                       MaxWidth = 1280,
-                                                                                      VideoCodec = VideoCodecs.Wmv,
+                                                                                      VideoCodec = "Wmv",
                                                                                       VideoBitRate = 5000000,
                                                                                       AudioBitRate = 128000,
                                                                                       MaxAudioChannels = 2,

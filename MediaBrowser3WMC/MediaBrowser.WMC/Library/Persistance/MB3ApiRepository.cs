@@ -556,7 +556,7 @@ namespace MediaBrowser.Library.Persistance
 
         public static ItemFields[] StandardFields = new[]
                                                         {
-                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, 
+                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
                                                             ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, 
                                                         };
