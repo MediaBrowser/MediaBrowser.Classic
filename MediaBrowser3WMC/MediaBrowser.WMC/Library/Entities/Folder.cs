@@ -190,7 +190,6 @@ namespace MediaBrowser.Library.Entities {
         public void ReloadChildren()
         {
             RetrieveChildren();
-            OnChildrenChanged(null);
         }
 
         public virtual bool PromptForChildRefresh
