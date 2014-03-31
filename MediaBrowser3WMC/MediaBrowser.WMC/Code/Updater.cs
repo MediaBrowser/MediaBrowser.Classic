@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -36,6 +37,46 @@ namespace MediaBrowser.Util
             }
         }
 
+        protected string UpdateLogFileName = Path.Combine(ApplicationPaths.AppProgramPath, "MBCUpdate.log");
+        public void WriteToUpdateLog(string line)
+        {
+            try
+            {
+                File.AppendAllText(UpdateLogFileName,  DateTime.Now.ToShortTimeString() + " " + line);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error writing to update log {0}", e, line);
+            }
+        }
+
+        public void ClearUpdateLog()
+        {
+            try
+            {
+                File.Delete(UpdateLogFileName);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error clearing update log", e);
+            }
+        }
+
+        public string UpdateLogText
+        {
+            get
+            {
+                try
+                {
+                    return String.Join("\n", File.ReadAllLines(UpdateLogFileName));
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Error retrieving update log", e);
+                    return "";
+                }
+            }
+        }
 
         // Blocking call to check the mb admin server to see if we need an update.
         // This must be called as its own thread.
@@ -62,6 +103,7 @@ namespace MediaBrowser.Util
                     if (newVersion != null)
                     {
                         Logger.ReportVerbose("New version {0} found.",newVersion.versionStr);
+                        WriteToUpdateLog("Updating MBC to new version "+newVersion.versionStr);
                         if (_appRef.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
                             _appRef.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
@@ -157,6 +199,7 @@ namespace MediaBrowser.Util
                     plugin.UpdateAvailable = false;
                     plugin.UpdatePending = true;
                     success = true;
+                    WriteToUpdateLog(String.Format("Plug-in {0} Updated to version {1} by user {2}", plugin.Name, plugin.ValidVersions.OrderBy(v => v.version).Last().versionStr, Kernel.CurrentUser.Name));
                 }
                 if (!silent) _appRef.ShowMessage = false;
             }
@@ -179,6 +222,7 @@ namespace MediaBrowser.Util
                     plugin.UpdateAvailable = false;
                     plugin.UpdatePending = true;
                     plugin.NotifyPropertiesChanged();
+                    WriteToUpdateLog(String.Format("Plug-in {0} Updated to version {1} by user {2}", plugin.Name, plugin.ValidVersions.OrderBy(v => v.version).Last().versionStr, Kernel.CurrentUser.Name));
                     success = true;
                 }
                 _appRef.ShowMessage = false;

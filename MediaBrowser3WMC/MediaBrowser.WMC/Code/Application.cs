@@ -1335,6 +1335,8 @@ namespace MediaBrowser
             Helper.Ping("http://www.mb3admin.com/admin/service/registration/ping?feature=MBClassic&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress());
             try
             {
+                Updater = new Updater(this);
+
                 //Check to see if this is the first time this version is run
                 string currentVersion = Kernel.Instance.Version.ToString();
                 if (Config.MBVersion != currentVersion)
@@ -1581,17 +1583,17 @@ namespace MediaBrowser
 
         public void UpdateAllPlugins(bool silent = false)
         {
-            Async.Queue("Plugin Update", () => new Updater(this).UpdateAllPlugins(InstalledPluginsCollection, silent));
+            Async.Queue("Plugin Update", () => Updater.UpdateAllPlugins(InstalledPluginsCollection, silent));
         }
 
         public void UpdatePlugin(PluginItem plugin)
         {
-            Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin));
+            Async.Queue("Plugin Update", () => Updater.UpdatePlugin(plugin));
         }
 
         public void InstallPlugin(PluginItem plugin)
         {
-            Async.Queue("Plugin Update", () => new Updater(this).UpdatePlugin(plugin, "Installing"));
+            Async.Queue("Plugin Update", () => Updater.UpdatePlugin(plugin, "Installing"));
         }
 
         public void RemovePlugin(PluginItem plugin)
@@ -1754,8 +1756,6 @@ namespace MediaBrowser
                     WebSocket.PlaystateCommand += PlayStateRequest;
                     WebSocket.SystemCommand += SystemCommand;
                   
-                    Updater = new Updater(this);
-
                     if (Config.EnableUpdates && Config.EnableSilentUpdates && !RunningOnExtender)
                     {
                         Async.Queue(Async.STARTUP_QUEUE, () =>
@@ -1831,6 +1831,7 @@ namespace MediaBrowser
 
         bool FirstRunForVersion(string thisVersion)
         {
+            Updater.WriteToUpdateLog(String.Format("New MBC Version {0} successfully run for first time.", thisVersion));
             var oldVersion = new System.Version(Config.MBVersion);
             if (oldVersion < new System.Version(2, 0, 0, 0))
             {
