@@ -2639,8 +2639,16 @@ namespace MediaBrowser
             //or if the item is offline
             if (item.BaseItem.LocationType == LocationType.Offline)
             {
-                DisplayDialog("Item is off-line.", "Cannot Play");
-                return;
+                if (!Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+                {
+                    DisplayDialog("Item is off-line.", "Cannot Play");
+                    return;
+                }
+                else
+                {
+                    item.BaseItem.LocationType = LocationType.FileSystem;
+                    item.BaseItem.IsOffline = false;
+                }
             }
 
             //or virtual

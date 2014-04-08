@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Library;
 
 namespace MediaBrowser.Library.Entities {
     public class Show : Video, IShow {
@@ -146,6 +149,20 @@ namespace MediaBrowser.Library.Entities {
                     Genres = temp.Genres;
                     Studios = temp.Studios;
                     Chapters = temp.Chapters;
+                    PlaybackAllowed = temp.PlaybackAllowed;
+                    if (IsOffline)
+                    {
+                        //ensure we are still offline
+                        if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path) ?? ""))
+                        {
+                            LocationType = LocationType.Offline;
+                        }
+                        else
+                        {
+                            LocationType = LocationType.FileSystem;
+                            IsOffline = false;
+                        }
+                    }
                 }
                 FullDetailsLoaded = true;
             }
