@@ -5,11 +5,11 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.148.0" ?>
+<?define Property_ProductVersion = "3.0.149.0" ?>
 <?define Property_ProductCode = "{83B7790F-23A4-44DD-A355-1407800BD6D3}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
-<?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
+<?define Property_UpgradeCode = "{A18A01D8-9928-487E-9CC5-D13DCDE85983}" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
