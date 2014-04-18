@@ -14,6 +14,10 @@ namespace MediaBrowser.Library.Entities
         protected bool UseLessThan { get; set; }
         protected string CompareString { get; set; }
 
+        public PersonLetterFolder()
+        {
+        }
+
         public PersonLetterFolder(string letter, bool? lessThan = null, string searchParentId = null, string[] personTypes = null, string[] includeTypes = null, string[] excludeTypes = null, Folder parent = null) :
             base(new BaseItem {Name = letter, Id = letter.GetMD5()}, searchParentId, includeTypes, excludeTypes, parent)
         {
