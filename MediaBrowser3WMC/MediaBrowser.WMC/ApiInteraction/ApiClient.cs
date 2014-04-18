@@ -518,6 +518,20 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Report our remote control Capabilities
+        /// </summary>
+        /// <returns>Task.</returns>
+        public void ReportRemoteCapabilities()
+        {
+            var url = GetApiUrl("Sessions/Capabilities");
+            var parms = new QueryStringDictionary();
+            parms.Add("PlayableMediaTypes","Video,Audio,Photo");
+            parms.Add("SupportedCommands", "GoHome,Back,DisplayContent,GotoSettings,Mute,UnMute,ToggleMute");
+
+            Post<EmptyRequestResult>(url, parms);
+        }
+
+        /// <summary>
         /// Refresh an item on the server
         /// </summary>
         /// <returns>Task.</returns>

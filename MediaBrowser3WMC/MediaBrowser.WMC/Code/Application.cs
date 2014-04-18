@@ -26,6 +26,7 @@ using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.ApiClient;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
@@ -35,7 +36,11 @@ using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.AddIn;
 using Microsoft.MediaCenter.UI;
 using AddInHost = Microsoft.MediaCenter.Hosting.AddInHost;
+using BrowseRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.BrowseRequestEventArgs;
+using LibraryChangedEventArgs = MediaBrowser.ApiInteraction.WebSocket.LibraryChangedEventArgs;
 using MediaType = Microsoft.MediaCenter.MediaType;
+using PlayRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.PlayRequestEventArgs;
+using PlaystateRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.PlaystateRequestEventArgs;
 using Timer = Microsoft.MediaCenter.UI.Timer;
 
 namespace MediaBrowser
@@ -481,6 +486,42 @@ namespace MediaBrowser
                         Information.AddInformationString("Cannot Browse to "+args.Request.ItemName);
                     }
                     break;
+            }
+        }
+
+        private void GeneralCommand(object sender, GeneralCommandEventArgs args)
+        {
+            switch (args.Command.Name)
+            {
+                case "DisplayContent":
+                    var newArgs = new BrowseRequestEventArgs {Request = new BrowseRequest {ItemType = args.Command.Arguments["ItemType"], ItemId = args.Command.Arguments["ItemId"], ItemName = args.Command.Arguments["ItemName"]}};
+                    BrowseRequest(this, newArgs);
+                    break;
+
+                case "Back":
+                    Back();
+                    break;
+
+                case "GoHome":
+                    BackToRoot();
+                    break;
+
+                case "GoToSettings":
+                    OpenConfiguration(true);
+                    break;
+
+                case "Mute":
+                    WMCMute = true;
+                    break;
+
+                case "Unmute":
+                    WMCMute = false;
+                    break;
+
+                case "ToggleMute":
+                    WMCMute = !WMCMute;
+                    break;
+
             }
         }
 
@@ -1750,11 +1791,13 @@ namespace MediaBrowser
 
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
                     WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
+                    Kernel.ApiClient.ReportRemoteCapabilities();
                     WebSocket.LibraryChanged += LibraryChanged;
                     WebSocket.BrowseCommand += BrowseRequest;
                     WebSocket.PlayCommand += PlayRequest;
                     WebSocket.PlaystateCommand += PlayStateRequest;
                     WebSocket.SystemCommand += SystemCommand;
+                    WebSocket.GeneralCommand += GeneralCommand;
                   
                     if (Config.EnableUpdates && Config.EnableSilentUpdates && !RunningOnExtender)
                     {
