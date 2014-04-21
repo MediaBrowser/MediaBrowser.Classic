@@ -81,8 +81,6 @@ namespace MediaBrowser.Library.Playables.MpcHc
 
             while (!IsDisposing)
             {
-                Thread.Sleep(ProgressInterval); 
-
                 if (_MonitorPlayback)
                 {
                     try
@@ -103,6 +101,8 @@ namespace MediaBrowser.Library.Playables.MpcHc
                         }
                     }
                 }
+
+                Thread.Sleep(ProgressInterval); 
             }
         }
 
