@@ -41,6 +41,7 @@ namespace MediaBrowser.Library.Playables.MpcHc
 
             if (_StatusRequestClient == null)
             {
+                Logger.ReportVerbose("Creating new web client for MPC-HC");
                 _StatusRequestClient = new WebClient();
 
                 // Start up the thread that will perform the monitoring
