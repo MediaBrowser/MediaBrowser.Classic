@@ -19,5 +19,20 @@ namespace MediaBrowser.Library.Entities {
 
         [Persist]
         public string TmdbID { get; set; }
+
+        protected override bool InheritLogo
+        {
+            get { return false; }
+        }
+
+        protected override bool InheritArt
+        {
+            get { return false; }
+        }
+
+        protected override bool InheritThumb
+        {
+            get { return false; }
+        }
     }
 }
