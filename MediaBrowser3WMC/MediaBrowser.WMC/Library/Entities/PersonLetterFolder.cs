@@ -52,6 +52,11 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        protected override bool HideEmptyFolders
+        {
+            get { return false; }
+        }
+
         protected override System.Collections.Generic.List<BaseItem> GetCachedChildren()
         {
             return Kernel.Instance.MB3ApiRepository.RetrievePersons(Query).Select(p => new ApiPersonFolder(p, SearchParentId, PersonTypes, null, null, this)).Cast<BaseItem>().ToList();

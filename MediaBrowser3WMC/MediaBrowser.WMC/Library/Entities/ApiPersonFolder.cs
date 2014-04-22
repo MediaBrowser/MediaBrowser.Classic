@@ -23,6 +23,11 @@ namespace MediaBrowser.Library.Entities
 
         protected string[] PersonTypes { get; set; }
 
+        protected override bool HideEmptyFolders
+        {
+            get { return false; }
+        }
+
         public override ItemQuery Query
         {
             get
