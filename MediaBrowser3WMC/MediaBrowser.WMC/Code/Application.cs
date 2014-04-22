@@ -1791,7 +1791,14 @@ namespace MediaBrowser
 
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
                     WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
-                    Kernel.ApiClient.ReportRemoteCapabilities();
+                    try
+                    {
+                        Kernel.ApiClient.ReportRemoteCapabilities();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error reporting remote capabilities to server.",e);
+                    }
                     WebSocket.LibraryChanged += LibraryChanged;
                     WebSocket.BrowseCommand += BrowseRequest;
                     WebSocket.PlayCommand += PlayRequest;
