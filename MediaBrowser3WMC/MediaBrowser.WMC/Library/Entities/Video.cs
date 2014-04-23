@@ -48,7 +48,7 @@ namespace MediaBrowser.Library.Entities {
 
         public override bool PassesFilter(Query.FilterProperties filters)
         {
-            return (filters.IsUnWatched == null || playbackStatus.WasPlayed == filters.IsUnWatched) && base.PassesFilter(filters);
+            return (playbackStatus.WasPlayed == filters.IsUnWatched) && base.PassesFilter(filters);
         }
 
         public override int RunTime

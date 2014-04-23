@@ -309,7 +309,7 @@ namespace MediaBrowser.Library.Entities {
             set { }
         }
 
-        public List<Chapter> Chapters { get; set; }
+        public virtual List<Chapter> Chapters { get; set; }
 
         public bool IsOffline { get; set; }
         public bool IsExternalDisc { get; set; }
@@ -435,6 +435,9 @@ namespace MediaBrowser.Library.Entities {
         public bool PlaybackAllowed { get; set; }
 
         bool? isTrailer = null;
+        private IEnumerable<BaseItem> _additionalParts;
+        private readonly object _partLock = new object();
+
         public bool IsTrailer
         {
             get
@@ -463,6 +466,12 @@ namespace MediaBrowser.Library.Entities {
         public virtual string FirstAired { get; set; }
 
         public long RuntimeTicks { get; set; }
+        public int PartCount { get; set; }
+
+        public IEnumerable<BaseItem> AdditionalParts
+        {
+            get { return _additionalParts ?? (_additionalParts = GetAdditionalParts()); }
+        }
 
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
@@ -585,5 +594,12 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        protected IEnumerable<BaseItem> GetAdditionalParts()
+        {
+            lock (_partLock)
+            {
+                return Kernel.Instance.MB3ApiRepository.RetrieveAdditionalParts(ApiId);
+            }
+        }
     }
 }

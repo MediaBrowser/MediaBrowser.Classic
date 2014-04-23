@@ -15,7 +15,6 @@ namespace MediaBrowser.Library.Entities {
         public abstract IEnumerable<string> Files {get;}
         protected IMediaLocation location;
 
-
         public override bool PlayAction(Item item)
         {
             Application.CurrentInstance.Play(item, false, false, false, false); //play with no intros
@@ -83,5 +82,6 @@ namespace MediaBrowser.Library.Entities {
                 base.Watched = value;
             }
         }
+
     }
 }

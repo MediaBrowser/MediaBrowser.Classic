@@ -339,6 +339,8 @@ namespace MediaBrowser.Library.Persistance
                 var media = item as Media;
                 if (media != null)
                 {
+                    media.PartCount = mb3Item.PartCount ?? 1;
+
                     if (mb3Item.MediaType == Model.Entities.MediaType.Video)
                     {
                         if (mb3Item.VideoType == VideoType.VideoFile && media.Path != null)
@@ -554,11 +556,17 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
+        public IEnumerable<BaseItem> RetrieveAdditionalParts(string id)
+        {
+            var dtos = Kernel.ApiClient.GetAdditionalParts(Kernel.CurrentUser.ApiId, id);
+            return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        } 
+
         public static ItemFields[] StandardFields = new[]
                                                         {
                                                             ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
-                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, 
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded,
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)

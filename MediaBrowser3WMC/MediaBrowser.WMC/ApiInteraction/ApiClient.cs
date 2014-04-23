@@ -275,6 +275,32 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for additional parts
+        /// </summary>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetAdditionalParts(string userId, string itemId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            if (string.IsNullOrEmpty(itemId))
+            {
+                throw new ArgumentNullException("itemId");
+            }
+
+            var parms = new QueryStringDictionary {{"userId", userId}};
+            var url = GetApiUrl("Videos/" + itemId + "/AdditionalParts", parms);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for genres
         /// </summary>
         /// <param name="query">The query.</param>

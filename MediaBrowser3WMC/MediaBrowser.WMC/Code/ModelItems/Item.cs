@@ -88,6 +88,7 @@ namespace MediaBrowser.Library
             {
                 Async.Queue("Detail Load", show.LoadFullDetails);
             }
+
         }
 
         public bool IsVideo
@@ -249,6 +250,19 @@ namespace MediaBrowser.Library
                 return _specialFeatures;
             }
         }
+
+        public int PartCount
+        {
+            get { return baseItem.PartCount; }
+        }
+
+        private List<Item> _additionalParts;
+        public List<Item> AdditionalParts
+        {
+            get { return _additionalParts ?? (_additionalParts = baseItem.PartCount > 1 ? baseItem.AdditionalParts.Select(p => ItemFactory.Instance.Create(p)).ToList() : new List<Item>()); }
+        }
+
+        public bool HasAdditionalParts { get { return PartCount > 1; } }
 
         private void DetermineVirtualType()
         {
