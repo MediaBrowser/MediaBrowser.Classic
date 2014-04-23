@@ -60,47 +60,38 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public virtual IEnumerable<string> VideoFiles {
-            get {
-                if (!ContainsRippedMedia && MediaLocation is IFolderMediaLocation)
+            get
+            {
+                if (Path == System.IO.Path.GetPathRoot(Path) || Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? ""))
                 {
-                    foreach (var path in GetChildVideos((IFolderMediaLocation)MediaLocation, null))
-                    {
-                        yield return path;
-                    }
+                    yield return Path;
                 }
                 else
                 {
-                    if (Path == System.IO.Path.GetPathRoot(Path) || Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? ""))
-                    {
-                        yield return Path;
-                    }
-                    else
-                    {
-                        Logger.ReportInfo("Unable to access {0}.  Will try to stream.", Path);
+                    Logger.ReportInfo("Unable to access {0}.  Will try to stream.", Path);
 
-                        yield return  ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                                  {
-                                                                                      ItemId = ApiId,
-                                                                                      OutputFileExtension = ".wmv",
-                                                                                      MaxWidth = 1280,
-                                                                                      VideoBitRate = 5000000,
-                                                                                      AudioBitRate = 128000,
-                                                                                      MaxAudioChannels = 2,
-                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-                                                                                  })
-                        : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                                  {
-                                                                                      ItemId = ApiId,
-                                                                                      OutputFileExtension = ".wmv",
-                                                                                      MaxWidth = 1280,
-                                                                                      VideoCodec = "Wmv",
-                                                                                      VideoBitRate = 5000000,
-                                                                                      AudioBitRate = 128000,
-                                                                                      MaxAudioChannels = 2,
-                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                    yield return ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                                              {
+                                                                                                  ItemId = ApiId,
+                                                                                                  OutputFileExtension = ".wmv",
+                                                                                                  MaxWidth = 1280,
+                                                                                                  VideoBitRate = 5000000,
+                                                                                                  AudioBitRate = 128000,
+                                                                                                  MaxAudioChannels = 2,
+                                                                                                  AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                                                                                              })
+                                     : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                              {
+                                                                                  ItemId = ApiId,
+                                                                                  OutputFileExtension = ".wmv",
+                                                                                  MaxWidth = 1280,
+                                                                                  VideoCodec = "Wmv",
+                                                                                  VideoBitRate = 5000000,
+                                                                                  AudioBitRate = 128000,
+                                                                                  MaxAudioChannels = 2,
+                                                                                  AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
 
-                                                                                  });
-                    }
+                                                                              });
                 }
             }
         }
@@ -166,24 +157,6 @@ namespace MediaBrowser.Library.Entities {
                type == MediaType.DVD ||
                type == MediaType.ISO ||
                type == MediaType.HDDVD;
-        }
-
-       public static IEnumerable<string> GetChildVideos(IFolderMediaLocation location, string[] ignore) {
-            if (location.Path.EndsWith("$RECYCLE.BIN")) yield break;
-
-            foreach (var child in location.Children)
-	        {
-                // MCE plays vobs natively 
-                if (child.IsVideo() || child.IsVob()) yield return child.Path;
-                else if (child is IFolderMediaLocation && Kernel.Instance.ConfigData.EnableNestedMovieFolders) {
-                    if (ignore != null && ignore.Any(path => path.ToUpper() == child.Name.ToUpper())) {
-                        continue;
-                    }
-                    foreach (var grandChild in GetChildVideos(child as IFolderMediaLocation, null)) {
-                        yield return grandChild;
-                    }
-                }
-	        }
         }
 
     }
