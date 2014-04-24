@@ -2751,7 +2751,11 @@ namespace MediaBrowser
                 {
                     //build playback options
                     MultiPartOptions = new List<MultiPartPlayOption>();
-                    //first - the main item + resume if available
+                    //first an all parts option
+                    var allparts = new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList());
+                    MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = ItemFactory.Instance.Create(allparts)});
+
+                    //then - the main item + resume if available
                     if (item.CanResumeMain) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = true});
                     MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = false});
 
@@ -2762,10 +2766,6 @@ namespace MediaBrowser
                         if (part.CanResume) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n, ItemToPlay = part, Resume = true});
                         MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n++, ItemToPlay = part, Resume = false});
                     }
-
-                    //and finally an all parts option
-                    var allparts = new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList());
-                    MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = ItemFactory.Instance.Create(allparts)});
 
                     //just display menu - it will take it from there
                     FirePropertyChanged("MultiPartOptions");
