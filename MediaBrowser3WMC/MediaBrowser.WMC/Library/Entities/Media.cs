@@ -55,11 +55,19 @@ namespace MediaBrowser.Library.Entities {
             get { return 0; }
         }
 
-        public override bool CanResume
+        public override bool CanResumeMain
         {
             get
             {
                 return PlaybackStatus != null && PlaybackStatus.CanResume;
+            }
+        }
+
+        public override bool CanResume
+        {
+            get
+            {
+                return CanResumeMain || (PartCount > 1 && AdditionalParts.Any(p => p.CanResume));
             }
         }
 

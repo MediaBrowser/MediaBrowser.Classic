@@ -11,6 +11,7 @@
       xmlns:po="resx://MediaBrowser/MediaBrowser.Resources/SingleItemPopout"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
       xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
+      xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
     xmlns:me="Me"
     >
 
@@ -29,6 +30,7 @@
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseSearch"/>
       <Command Name="CloseMessage"/>
+      <Command Name="CloseMultiPlay"/>
     </Locals>
 
     <Rules>
@@ -83,6 +85,35 @@
         </Actions>
       </Condition>
 
+      <Changed Source="[CloseMultiPlay.Invoked]">
+        <Actions>
+          <Set Target="[Application.DisplayMultiMenu]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Application.DisplayMultiMenu]" >
+        <Conditions>
+          <Equality Source="[Application.DisplayMultiMenu]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Set Target="[MultiPlayMenu.Visible]" Value="true" />
+          <Invoke Target="[MultiPlayMenu.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.DisplayMultiMenu]">
+        <Conditions>
+          <Equality Source="[Application.DisplayMultiMenu]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MultiPlayMenu.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Invoke Target="[ViewDefault.NavigateInto]" />
+        </Actions>
+      </Changed>
+      
+      
       <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
       <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
       <Changed Source="[CloseMessage.Invoked]">
@@ -162,6 +193,8 @@
               </Animation>
             </Animations>
           </msg:MessageBox>
+
+          <cm:MultiPlayMenu Name="MultiPlayMenu" Application="[Application]" Close="[CloseMultiPlay]" Visible="false" />
 
           <search:SearchPane Name="SearchPanel" Application="[Application]" Close="[CloseSearch]" Visible="false" >
             <Animations>

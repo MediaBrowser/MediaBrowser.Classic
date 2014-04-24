@@ -31,6 +31,8 @@
   <Image Name="Pause" Source="resx://MediaBrowser/MediaBrowser.Resources/Pause"/>
   <Image Name="IconChapter" Source="resx://MediaBrowser/MediaBrowser.Resources/Frames"/>
   <Image Name="IconPlus" Source="resx://MediaBrowser/MediaBrowser.Resources/IconPlus"/>
+  <Image Name="IconPlay" Source="resx://MediaBrowser/MediaBrowser.Resources/IconPlay"/>
+  <Image Name="IconResume" Source="resx://MediaBrowser/MediaBrowser.Resources/IconResume"/>
 
   <Image Name="HDLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/HD" />
 	<Image Name="HDLogo1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hd1080" />

@@ -314,12 +314,14 @@ namespace MediaBrowser.Library.Entities {
         public bool IsOffline { get; set; }
         public bool IsExternalDisc { get; set; }
 
+        public virtual bool CanResumeMain
+        {
+            get { return false; }
+        }
+
         public virtual bool CanResume
         {
-            get
-            {
-                return false;
-            }
+            get { return CanResumeMain; }
         }
 
         private bool _parentalAllowed = true;

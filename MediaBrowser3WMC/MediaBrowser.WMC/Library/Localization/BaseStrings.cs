@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0078";
+        const string VERSION = "1.0079";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -239,6 +239,7 @@ namespace MediaBrowser.Library.Localization
         public string CloseCMenu = "Close";
         public string PlayMenuCMenu = "Play Menu";
         public string ItemMenuCMenu = "Item Menu";
+        public string MultiMenuCMenu = "Select Part";
         public string UserMenuCMenu = "Switch User";
         public string PlayAllCMenu = "Play All";
         public string PlayAllFromHereCMenu = "Play All From Here";
@@ -408,6 +409,8 @@ namespace MediaBrowser.Library.Localization
         public string Overview = "Overview";
         public string SwitchTo = "Switch To...";
         public string AlsoHere = "Also Here";
+        public string Part = "Part";
+        public string AllParts = "All Parts";
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         //Search

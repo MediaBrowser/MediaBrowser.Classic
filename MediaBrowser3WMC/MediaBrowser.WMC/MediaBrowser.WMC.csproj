@@ -143,6 +143,7 @@
     <Compile Include="Code\CommonConfigData.cs" />
     <Compile Include="Code\ModelItems\BasePlaybackController.cs" />
     <Compile Include="Code\ModelItems\ChapterItem.cs" />
+    <Compile Include="Code\ModelItems\MultiPartPlayOption.cs" />
     <Compile Include="Code\ModelItems\PluginItem.cs" />
     <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />

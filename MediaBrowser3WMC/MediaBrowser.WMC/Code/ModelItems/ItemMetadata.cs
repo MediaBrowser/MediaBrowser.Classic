@@ -166,7 +166,7 @@ namespace MediaBrowser.Library {
                         var show = baseItem as IShow;
                         if (show != null)
                         {
-                            runtime = show.RunningTime == null ? this.MediaInfo.RunTime : show.RunningTime.Value;
+                            runtime =  show.RunningTime == null ? this.MediaInfo.RunTime : show.RunningTime.Value;
                         }
                         else
                         {
@@ -182,6 +182,11 @@ namespace MediaBrowser.Library {
                             }
                         }
                     }
+
+                    if (PartCount > 1)
+                    {
+                        runtime += AdditionalParts.Sum(p => p.RunningTime);
+                    }
                 }
                 return runtime == null ? 0 : runtime.Value;
             }
@@ -192,58 +197,7 @@ namespace MediaBrowser.Library {
             get {
                 if (runtimestr == null)
                 {
-                    var episode = baseItem as Episode;
-                    if (episode != null)
-                    {
-                        runtimestr = episode.RunTime > 0 ? episode.RunTime.ToString() + " " + Kernel.Instance.StringData.GetString("MinutesStr") : this.MediaInfo.RuntimeString;
-                    }
-                    else
-                    {
-                        var song = baseItem as Song;
-                        if (song != null)
-                        {
-                            var ts = TimeSpan.FromTicks(song.RuntimeTicks);
-                            runtimestr = string.Format("{0}:{1}", ts.Minutes, ts.Seconds.ToString("00"));
-                        }
-                        else
-                        {
-                            var show = baseItem as IShow;
-                            if (show != null)
-                            {
-                                runtimestr = show.RunningTime == null ? this.MediaInfo.RuntimeString : show.RunningTime.ToString() + " " + Kernel.Instance.StringData.GetString("MinutesStr");
-                            }
-                            else
-                            {
-                                var folder = baseItem as Folder;
-                                if (folder != null)
-                                {
-                                    //this might take a bit...
-                                    Async.Queue("runningtimestr calc", () =>
-                                    {
-                                        var totalMinutes = folder.RunTime;
-                                        if (totalMinutes > 0)
-                                        {
-                                            if (totalMinutes <= 60)
-                                            {
-                                                runtimestr = totalMinutes + " " + Kernel.Instance.StringData.GetString("MinutesStr");
-                                            }
-                                            else
-                                            {
-                                                var ts = TimeSpan.FromMinutes(totalMinutes);
-                                                runtimestr = string.Format("{0} {2} {1} {3}", (int)ts.TotalHours, ts.Minutes, Kernel.Instance.StringData.GetString("HoursStr"), Kernel.Instance.StringData.GetString("MinutesStr"));
-                                            }
-                                        }
-                                        else
-                                        {
-                                            runtimestr = "";
-                                        }
-
-                                        FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
-                                    });
-                                }
-                            }
-                        }
-                    }
+                    runtimestr = RunningTime > 0 ? RunningTime + " " + Kernel.Instance.StringData.GetString("MinutesStr") : null;
                 }
                 return runtimestr ?? "";
             }

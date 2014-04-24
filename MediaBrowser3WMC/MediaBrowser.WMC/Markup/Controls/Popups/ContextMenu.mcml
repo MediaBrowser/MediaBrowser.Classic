@@ -81,15 +81,6 @@
         </Conditions>
       </Default>
 
-      <Changed Source="[Input.DeepMouseFocus]" >
-        <Conditions>
-          <Equality Source="[Input.DeepMouseFocus]" Value="false" />
-        </Conditions>
-        <Actions>
-          <Invoke Target="[Close.Invoke]" />
-        </Actions>
-      </Changed>
-
       <Changed Source="[Application.CurrentItem]"  InitialEvaluate="true">
         <Conditions>
           <Equality Source="[MenuType]" Value="Play" />
@@ -147,14 +138,8 @@
       </Changed>
 
 
-      <!--<Changed Source="[Input.DeepKeyFocus]" >
-        <Conditions>
-          <Equality Source="[Input.DeepKeyFocus]" Value="false" />
-        </Conditions>
-        <Actions>
-          <Invoke Target="[Close.Invoke]" />
-        </Actions>
-      </Changed>-->
+      <Condition Source="[Application.Config.Theme]" SourceValue="Black" Target="[Main.Content]" Value="20,20,20"/>
+
     </Rules>
 
     <Content>
@@ -248,6 +233,126 @@
         <Children>
           <ib:ImageButton Name="OptionButton" Text="[option.Text]" Color="color://s:FontColorMedium" Command="[DoAction]"
                           Icon="[option.Icon]" Size="300,50"
+                          Font="[Font]" DisplayText="true" MinSize="300,50" Visible="true"/>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+  <UI Name="MultiPlayMenu">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+      <cor:Int32 Name="ItemCount" Int32="0" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+      <Default Target="[Input.KeyFocusOnMouseEnter]" Value="true" />
+      <Binding Target="[ListRepeater.Source]" Source="[Application.MultiPartOptions]" />
+      <Binding Target="[ItemCount]" Source="[Application.MultiPartOptions.Count]" />
+
+      <Default Target="[Title.Content]" Value="[Application.LocalStrings.#MultiMenuCMenu!cor:String]" />
+
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" ConditionOp="NotEquals" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Application.Config.Theme]" SourceValue="Black" Target="[Main.Content]" Value="20,20,20"/>
+
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="255,0,15,60"  Navigation="ContainAll,Group">
+        <Children>
+          <Graphic Content="image://i:ZoomPane"  SizingPolicy="SizeToChildren"
+                   MaintainAspectRatio="false" Padding="20,20,20,20" >
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+            </Layout>
+            <Children>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                </Layout>
+                <Children>
+                  <Text Name="Title" Font="font://f:CP_ConfigTitleFont" Color="color://s:FontColorLight"/>
+                  <ColorFill Content="DimGray" Alpha="0.8" Layout="Fill" MaximumSize="300,2" />
+                  <Text Content=" "/>
+                  <Text Name="Empty" Content="No Available Options" Font="font://f:MI_NotAvailableFont" Alpha=".7" Color="color://s:FontColorLight" Visible="false" />
+                  <Repeater Name="ListRepeater" Source="[Application.MultiPartOptions]" Layout="VerticalFlow" MinimumSize="200,50">
+                    <Content>
+                      <me:MultiPlayOption option="[RepeatedItem!lib:MultiPartPlayOption]" Close="[Close]" Font="font://f:MI_ButtonFont" Application="[Application]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Panel>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                </Layout>
+                <Children>
+                  <Text Content=" "/>
+                  <vm:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+  <UI Name="MultiPlayOption">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:MultiPartPlayOption Name="option" MultiPartPlayOption="$Required" />
+      <Command Name="Close" Command="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Locals>
+      <Command Name="DoAction"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[DoAction.Invoked]">
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+          <Invoke Target="[Application.PlayMultiItem]"  chosen="[option]"/>
+        </Actions>
+      </Changed>
+
+      <Condition Source="[option.Resume]" SourceValue="true" Target="[OptionButton.Icon]" Value="image://i:IconResume" />
+      <Condition Source="[option.Resume]" SourceValue="false" Target="[OptionButton.Icon]" Value="image://i:IconPlay" />
+      <Binding Target="[OptionButton.Text]" Source="[option.Name]" />
+
+    </Rules>
+
+    <Content>
+      <Panel Layout="HorizontalFlow" >
+        <Children>
+          <ib:ImageButton Name="OptionButton" Text="[option.Name]" Color="color://s:FontColorMedium" Command="[DoAction]"
+                          Size="300,50"
                           Font="[Font]" DisplayText="true" MinSize="300,50" Visible="true"/>
         </Children>
       </Panel>

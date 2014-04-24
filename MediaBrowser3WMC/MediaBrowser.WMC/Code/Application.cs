@@ -979,6 +979,8 @@ namespace MediaBrowser
 
         private MenuManager menuManager;
 
+        public List<MultiPartPlayOption> MultiPartOptions { get; private set; } 
+
         public bool NavigatingForward
         {
             get { return navigatingForward; }
@@ -2061,6 +2063,20 @@ namespace MediaBrowser
             }
         }
 
+        private bool _displayMultiMenu;
+        public bool DisplayMultiMenu
+        {
+            get
+            {
+                return this._displayMultiMenu;
+            }
+            set
+            {
+                this._displayMultiMenu = value;
+                FirePropertyChanged("DisplayMultiMenu");
+            }
+        }
+
         private bool showSearchPanel = false;
         public bool ShowSearchPanel
         {
@@ -2651,6 +2667,11 @@ namespace MediaBrowser
             }
         }
 
+        public void PlayMultiItem(MultiPartPlayOption chosen)
+        {
+            Play(chosen.ItemToPlay, false, false, false, false, chosen.Resume ? chosen.ItemToPlay.PlayState.PositionTicks : 0, true);
+        }
+
         /// <summary>
         /// Play an item starting at a specific position
         /// </summary>
@@ -2666,11 +2687,7 @@ namespace MediaBrowser
                 Play(item, resume, queue, playIntros, shuffle, 0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="playIntros">Whether not not intros should be played. Unless you have a specific reason to set this, leave it null so the core can decide.</param>
-        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos)
+        public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos, bool forceFirstPart = false)
         {
             //if external display a message
             if (item.IsExternalDisc)
@@ -2722,6 +2739,41 @@ namespace MediaBrowser
                 return;
             }
 
+            //multi-part handling
+            if (item.HasAdditionalParts && !forceFirstPart)
+            {
+                //if we are being asked to resume - automatically resume the proper part
+                if (resume)
+                {
+                    if (!item.CanResumeMain) item = item.AdditionalParts.FirstOrDefault(p => p.CanResume) ?? item;
+                }
+                else
+                {
+                    //build playback options
+                    MultiPartOptions = new List<MultiPartPlayOption>();
+                    //first - the main item + resume if available
+                    if (item.CanResumeMain) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = true});
+                    MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = false});
+
+                    //now all additional parts
+                    var n = 2;
+                    foreach (var part in item.AdditionalParts)
+                    {
+                        if (part.CanResume) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n, ItemToPlay = part, Resume = true});
+                        MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n++, ItemToPlay = part, Resume = false});
+                    }
+
+                    //and finally an all parts option
+                    var allparts = new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList());
+                    MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = ItemFactory.Instance.Create(allparts)});
+
+                    //just display menu - it will take it from there
+                    FirePropertyChanged("MultiPartOptions");
+                    DisplayMultiMenu = true;
+                    return;
+                }
+            }
+
             if (!item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
             {
                 Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
@@ -2749,6 +2801,7 @@ namespace MediaBrowser
             playable.Shuffle = shuffle;
 
             Play(playable);
+
         }
 
         /// <summary>

@@ -492,13 +492,8 @@ namespace MediaBrowser.Library
             Play(true);
         }
 
-        public bool CanResume
-        {
-            get
-            {
-                return BaseItem.CanResume;
-            }
-        }
+        public bool CanResume { get { return BaseItem.CanResume; } }
+        public bool CanResumeMain { get { return BaseItem.CanResumeMain; } }
 
         public TimeSpan WatchedTime
         {
