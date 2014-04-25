@@ -42,7 +42,7 @@ namespace MediaBrowser.Util
         {
             try
             {
-                File.AppendAllText(UpdateLogFileName,  DateTime.Now.ToShortTimeString() + " " + line);
+                File.AppendAllText(UpdateLogFileName,  DateTime.Now + " " + line + "\r\n");
             }
             catch (Exception e)
             {
