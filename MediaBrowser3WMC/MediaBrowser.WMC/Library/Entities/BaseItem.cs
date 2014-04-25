@@ -596,7 +596,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        protected IEnumerable<BaseItem> GetAdditionalParts()
+        protected virtual IEnumerable<BaseItem> GetAdditionalParts()
         {
             lock (_partLock)
             {
