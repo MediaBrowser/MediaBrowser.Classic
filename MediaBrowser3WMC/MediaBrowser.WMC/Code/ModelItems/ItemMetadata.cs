@@ -197,7 +197,16 @@ namespace MediaBrowser.Library {
             get {
                 if (runtimestr == null)
                 {
-                    runtimestr = RunningTime > 0 ? RunningTime + " " + Kernel.Instance.StringData.GetString("MinutesStr") : null;
+                    var song = baseItem as Song;
+                    if (song != null)
+                    {
+                        var ts = TimeSpan.FromTicks(song.RuntimeTicks);
+                        runtimestr = string.Format("{0}:{1}", ts.Minutes, ts.Seconds.ToString("00"));
+                    }
+                    else
+                    {
+                        runtimestr = RunningTime > 0 ? RunningTime + " " + Kernel.Instance.StringData.GetString("MinutesStr") : null;
+                    }
                 }
                 return runtimestr ?? "";
             }
