@@ -461,7 +461,7 @@ namespace MediaBrowser.Library.Entities {
         public int? ApiItemCount { get; set; }
 
         public float? CriticRating { get; set; }
-        public string CriticSummary { get; set; }
+        public string CriticRatingSummary { get; set; }
         public float? MetaScore { get; set; }
 
         [Persist]

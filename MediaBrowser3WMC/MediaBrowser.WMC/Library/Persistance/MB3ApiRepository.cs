@@ -219,6 +219,7 @@ namespace MediaBrowser.Library.Persistance
 
                 //Ratings
                 item.CriticRating = mb3Item.CriticRating;
+                item.CriticRatingSummary = mb3Item.CriticRatingSummary;
                 item.MetaScore = mb3Item.Metascore;
 
                 var runTimeTicks = mb3Item.RunTimeTicks;

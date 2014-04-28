@@ -273,6 +273,8 @@ namespace MediaBrowser.Library {
 
         public string CriticRatingString {get { return HasCriticRating ? "(" + CriticRating.ToString("##0") + "%)" : ""; }}
 
+        public string CriticRatingSummary { get { return BaseItem.CriticRatingSummary; } }
+
         public bool HasMetaScore { get { return baseItem.MetaScore != null; } }
         public float MetaScore
         {
