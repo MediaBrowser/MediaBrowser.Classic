@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0079";
+        const string VERSION = "1.0080";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -250,6 +250,19 @@ namespace MediaBrowser.Library.Localization
         public string RemoveFavoriteCMenu = "Remove Favorite";
         public string ShufflePlayCMenu = "Shuffle Play";
         public string UserMenu = "User Menu";
+
+        //Shortcut Legend
+        public string ShortcutsSC = "Remote/Keyboard Shortcuts";
+        public string HomeSC = "Ctl-H";
+        public string SearchSC = "(yellow) / Ctl-S";
+        public string ContextSC = "* / Shft-8";
+        public string PlaySC = "(play) / Ctl-P";
+        public string WatchedSC = "Ctl-W";
+        public string HomeSCDesc = "Return to Home Screen";
+        public string SearchSCDesc = "Search";
+        public string ContextSCDesc = "Context Menu for current item";
+        public string PlaySCDesc = "Quick Play current item";
+        public string WatchedSCDesc = "Toggle Watched Status for current item";
 
         //Media Detail Page
         public string GeneralDetail = "General";
