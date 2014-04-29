@@ -1339,4 +1339,22 @@
   <data name="smoke" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>images\smoke.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BackgroundBlack2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\backgroundblack2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExitMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>markup\controls\popups\exitmenu.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IconButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>markup\controls\buttons\iconbutton.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IconExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\iconexit.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconLogout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\iconlogout.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSleep" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\iconsleep.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

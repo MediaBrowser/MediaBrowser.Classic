@@ -833,6 +833,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BackgroundBlack2 {
+            get {
+                object obj = ResourceManager.GetObject("BackgroundBlack2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BackgroundDefault {
             get {
                 object obj = ResourceManager.GetObject("BackgroundDefault", resourceCulture);
@@ -1842,6 +1852,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] ExitMenu {
+            get {
+                object obj = ResourceManager.GetObject("ExitMenu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ExtendedPagination {
             get {
                 object obj = ResourceManager.GetObject("ExtendedPagination", resourceCulture);
@@ -2210,11 +2230,31 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] IconButton {
+            get {
+                object obj = ResourceManager.GetObject("IconButton", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap IconDelete {
             get {
                 object obj = ResourceManager.GetObject("IconDelete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconExit {
+            get {
+                object obj = ResourceManager.GetObject("IconExit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2265,6 +2305,16 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap IconKeyboardFocus {
             get {
                 object obj = ResourceManager.GetObject("IconKeyboardFocus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconLogout {
+            get {
+                object obj = ResourceManager.GetObject("IconLogout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2375,6 +2425,16 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap IconShuffle {
             get {
                 object obj = ResourceManager.GetObject("IconShuffle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconSleep {
+            get {
+                object obj = ResourceManager.GetObject("IconSleep", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

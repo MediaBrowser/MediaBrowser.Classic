@@ -1,0 +1,104 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      >
+ 
+  <UI Name="IconButton">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <ICommand Name="Command" ICommand="$Required" />
+      <cor:Boolean Name="IsNavigatingCommand" Boolean="false" />
+      <Size Name="Size" Size="135,135" />
+      <Image Name="IconImage" Image="null" />
+      <Image Name="BlankImage" Image="null" />
+      <BooleanChoice Name="HasFocus" Value="false"/>
+      <Color Name="IconColor" Color="255,255,255"/>
+      <EditableText Name="DescriptionField" />
+      <cor:String Name="DescriptionText" String="" />
+    </Properties>
+
+    <Locals>
+      <a:Config Name="Config" Config="[Application.Config]"/>
+      <ClickHandler Name="Clicker" />
+    </Locals>
+
+    <Rules>
+
+      <Binding Source="[Command]" Target="[Clicker.Command]" />
+      <Binding Source="[IconColor]" Target="[Icon.ColorFilter]" />
+      <Binding Source="[Command.Available]" Target="[Input.KeyInteractive]" />
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+        </Actions>
+      </Rule>
+
+      <Rule>
+        <Conditions>
+          <Modified Source="[Clicker.Invoked]"/>
+          <Equality Source="[IsNavigatingCommand]" Value="false"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Rule>
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true"/>
+          <Equality Source="[Command.Available]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[HasFocus.Value]" Value="true"/>
+          <Set Target="[BoxImage.ColorFilter]" Value="3,117,165"/>
+          <Set Target="[DescriptionField.Value]" Value="[DescriptionText]"/>
+          <PlaySound Sound="sound://sounds:Focus" />
+        </Actions>
+      </Rule>
+
+      <Rule ConditionLogicalOp="And">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="false"/>
+          <Equality Source="[Command.Available]" Value="true"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[HasFocus.Value]" Value="false"/>
+          <Set Target="[BoxImage.ColorFilter]" Value="White"/>
+        </Actions>
+      </Rule>
+
+      <Condition Source="[Command.Available]" ConditionOp="Equals" SourceValue="false">
+        <Actions>
+          <Set Target="[BoxImage.Visible]" Value="false" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+      <Panel>
+        <Children>
+          <Graphic Name="BoxImage" Content="[BlankImage]" SizingPolicy="SizeToChildren" Padding="3,3,3,3">
+            <Children>
+              <Panel >
+                <Children>
+                  <Graphic Name="Icon" Content="[IconImage]" MaximumSize="[Size]" MaintainAspectRatio="true" ColorFilter="[IconColor]" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+      </Panel>
+    </Content>
+  </UI> 
+ 
+</Mcml>

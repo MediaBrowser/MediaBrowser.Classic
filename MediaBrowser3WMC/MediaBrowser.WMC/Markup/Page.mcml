@@ -7,6 +7,7 @@
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
+    xmlns:em="resx://MediaBrowser/MediaBrowser.Resources/ExitMenu"      
     xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
       xmlns:po="resx://MediaBrowser/MediaBrowser.Resources/SingleItemPopout"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
@@ -26,6 +27,7 @@
       <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
       <ShortcutHandler Name="SearchShortcut" Handle="true" HandlerStage="Bubbled" Shortcut="Yellow"/>
       <KeyHandler Name="SearchKey" Handle="true" HandlerStage="Bubbled" Key="S" Modifiers="Control"/>
+      <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseSearch"/>
@@ -50,6 +52,13 @@
       <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
       <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" />
       <Binding Source="[Application.NewItem]" Target="[NewItemPopout.Item]" />
+
+      <Changed Source="[Back.Invoked]" >
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.Back]" />
+        </Actions>
+      </Changed>
 
       <Changed Source="[TopShortcut.Invoked]">
         <Actions>
@@ -113,6 +122,28 @@
         </Actions>
       </Changed>
       
+      
+      <Changed Source="[Application.DisplayExitMenu]" >
+        <Conditions>
+          <Equality Source="[Application.DisplayExitMenu]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Set Target="[ExitMenu.Visible]" Value="true" />
+          <Invoke Target="[ExitMenu.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.DisplayExitMenu]">
+        <Conditions>
+          <Equality Source="[Application.DisplayExitMenu]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ExitMenu.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Invoke Target="[ViewDefault.NavigateInto]" />
+        </Actions>
+      </Changed>
       
       <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
       <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
@@ -193,6 +224,8 @@
               </Animation>
             </Animations>
           </msg:MessageBox>
+
+          <em:ExitMenu Name="ExitMenu" Application="[Application]" Visible="false" />
 
           <cm:MultiPlayMenu Name="MultiPlayMenu" Application="[Application]" Close="[CloseMultiPlay]" Visible="false" />
 

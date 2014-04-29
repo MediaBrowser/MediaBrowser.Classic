@@ -373,6 +373,7 @@
   <ItemGroup>
     <Content Include="Images\Background.png" />
     <Content Include="Images\BackgroundBlack.png" />
+    <Content Include="Images\BackgroundBlack2.png" />
     <Content Include="Images\BackgroundDefault.png" />
     <None Include="Images\banner.png" />
     <Content Include="Images\Backlight.png" />
@@ -404,12 +405,15 @@
     <None Include="Images\Icons\IconNext.png" />
     <None Include="Images\Icons\IconPrevious.png" />
     <Content Include="Images\Icons\IconAsterisk.png" />
+    <Content Include="Images\Icons\IconExit.png" />
     <Content Include="Images\Icons\IconFavorite.png" />
     <Content Include="Images\Icons\IconKeyboard.png" />
     <Content Include="Images\Icons\IconKeyboardFocus.png" />
+    <Content Include="Images\Icons\IconLogout.png" />
     <Content Include="Images\Icons\IconPlus.png" />
     <Content Include="Images\Icons\IconRemote.png" />
     <Content Include="Images\Icons\IconSearch.png" />
+    <Content Include="Images\Icons\IconSleep.png" />
     <Content Include="Images\Icons\IconWatched.png" />
     <Content Include="Images\Icons\Pause.png" />
     <Content Include="Images\Icons\RTFresh.png" />
@@ -958,6 +962,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\ChapterButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\IconButton.mcml" />
     <Content Include="Markup\Controls\Buttons\PCIndicatorButton.mcml">
       <SubType>Designer</SubType>
     </Content>
@@ -983,6 +988,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\HeaderButton.mcml" />
+    <Content Include="Markup\Controls\Popups\ExitMenu.mcml" />
     <Content Include="Markup\Controls\Popups\SingleItemPopout.mcml">
       <SubType>Designer</SubType>
     </Content>

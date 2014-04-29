@@ -1,0 +1,96 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/IconButton"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+
+	<UI Name="ExitMenu">
+      <Properties>
+        <a:Application Name="Application" Application="$Required" />
+      </Properties>
+    
+      <Locals>
+        <Command Name="Exit" />
+        <Command Name="Logout" />
+        <Command Name="Sleep" />
+        <EditableText Name="ToolText"/>
+
+        <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
+
+      </Locals>
+    
+      <Rules>
+        <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+        <Default Target="[Input.KeyInteractive]" Value="true" />
+        <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+
+        <Changed Source="[Back.Invoked]" >
+          <Actions>
+            <Set Target="[Application.DisplayExitMenu]" Value="false" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Exit.Invoked]">
+          <Actions>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.Close]" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Logout.Invoked]">
+          <Actions>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.Logout]" force="true" />
+          </Actions>
+        </Changed>
+
+        <Changed Source="[Sleep.Invoked]">
+          <Actions>
+            <PlaySound Sound="sound://sounds:Miniselect" />
+            <Invoke Target="[Application.SleepMachine]" />
+          </Actions>
+        </Changed>
+
+        <Condition Source="[Application.Config.Theme]" SourceValue="Black" Target="[Main.Content]" Value="resx://MediaBrowser/MediaBrowser.Resources/BackgroundBlack2"/>
+        <Binding Source="[ToolText.Value]" Target="[ToolTip.Content]" />
+
+      </Rules>
+    
+      <Content>
+        <Graphic Name="Main" Content="resx://MediaBrowser/MediaBrowser.Resources/Background" Navigation="ContainAll" SizingPolicy="SizeToChildren" Padding="20,20,20,20">
+          <Children>
+            <Graphic  Content="image://i:ZoomPane" SizingPolicy="SizeToChildren" Alpha=".75"
+                     MaintainAspectRatio="false" Padding="10,10,10,10" >
+              <Layout>
+                <FlowLayout Orientation="Vertical" ItemAlignment="Center"/>
+              </Layout>
+              <Children>
+                <Panel >
+                  <Layout>
+                    <FlowLayout Orientation="Horizontal" ItemAlignment="Center" Spacing="10,10"/>
+                  </Layout>
+                  <Children>
+                    <ib:IconButton Name="ExitButton" Application="[Application]"
+                                      DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#ExitApplication!cor:String]"
+                                      IconImage="image://i:IconExit" Command="[Exit]" Size="100,100" />
+                    <ib:IconButton Name="LogoutButton" Application="[Application]"
+                                      DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#Logout!cor:String]"
+                                      IconImage="image://i:IconLogout" Command="[Logout]" Size="100,100" />
+                    <ib:IconButton Name="SleepButton" Application="[Application]"
+                                      DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#SleepMachine!cor:String]"
+                                      IconImage="image://i:IconSleep" Command="[Sleep]" Size="100,100" />
+                  </Children>
+                </Panel>
+                <Text Name="ToolTip" Font="Segoe Media Center Light, 16" Color="color://s:FontColorLight" Margins="0,10,0,0" />
+               </Children>
+            </Graphic>
+          </Children>
+        </Graphic>
+      </Content>
+    </UI>
+</Mcml>

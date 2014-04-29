@@ -424,6 +424,9 @@ namespace MediaBrowser.Library.Localization
         public string AlsoHere = "Also Here";
         public string Part = "Part";
         public string AllParts = "All Parts";
+        public string ExitApplication = "Exit MB Classic";
+        public string Logout = "Logout";
+        public string SleepMachine = "Put Machine to Sleep";
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         //Search

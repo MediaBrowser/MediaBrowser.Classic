@@ -33,6 +33,9 @@
   <Image Name="IconPlus" Source="resx://MediaBrowser/MediaBrowser.Resources/IconPlus"/>
   <Image Name="IconPlay" Source="resx://MediaBrowser/MediaBrowser.Resources/IconPlay"/>
   <Image Name="IconResume" Source="resx://MediaBrowser/MediaBrowser.Resources/IconResume"/>
+  <Image Name="IconExit" Source="resx://MediaBrowser/MediaBrowser.Resources/IconExit"/>
+  <Image Name="IconLogout" Source="resx://MediaBrowser/MediaBrowser.Resources/IconLogout"/>
+  <Image Name="IconSleep" Source="resx://MediaBrowser/MediaBrowser.Resources/IconSleep"/>
 
   <Image Name="HDLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/HD" />
 	<Image Name="HDLogo1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hd1080" />

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.ApiInteraction.WebSocket;
 using MediaBrowser.Code.ModelItems;
@@ -37,8 +38,10 @@ using Microsoft.MediaCenter.AddIn;
 using Microsoft.MediaCenter.UI;
 using AddInHost = Microsoft.MediaCenter.Hosting.AddInHost;
 using BrowseRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.BrowseRequestEventArgs;
+using DialogResult = Microsoft.MediaCenter.DialogResult;
 using LibraryChangedEventArgs = MediaBrowser.ApiInteraction.WebSocket.LibraryChangedEventArgs;
 using MediaType = Microsoft.MediaCenter.MediaType;
+using MenuItem = MediaBrowser.Library.MenuItem;
 using PlayRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.PlayRequestEventArgs;
 using PlaystateRequestEventArgs = MediaBrowser.ApiInteraction.WebSocket.PlaystateRequestEventArgs;
 using Timer = Microsoft.MediaCenter.UI.Timer;
@@ -1266,7 +1269,20 @@ namespace MediaBrowser
 
         public void Back()
         {
-            session.BackPage();
+            if (session.AtRoot)
+            {
+                // show menu
+                DisplayExitMenu = true;
+            }
+            else
+            {
+                session.BackPage();
+            }
+        }
+
+        public void SleepMachine()
+        {
+            System.Windows.Forms.Application.SetSuspendState(PowerState.Suspend, false, false);
         }
 
         public void FinishInitialConfig()
@@ -1437,6 +1453,19 @@ namespace MediaBrowser
         public string CurrentServerAddress { get { return Kernel.ApiClient.ServerHostName; } }
 
         public string ServerAddressOptionString { get { return "Current Server (" + CurrentServerAddress + ")"; } }
+
+        public void Logout(bool force)
+        {
+            if (force)
+            {
+                if (AvailableUsers.Count > 1) Config.StartupParms = "ShowLogin";
+                Restart();
+            }
+            else
+            {
+                Logout();
+            }
+        }
         
         /// <summary>
         /// Logout current user and re-display login screen
@@ -2074,6 +2103,20 @@ namespace MediaBrowser
             {
                 this._displayMultiMenu = value;
                 FirePropertyChanged("DisplayMultiMenu");
+            }
+        }
+
+        private bool _displayExitMenu;
+        public bool DisplayExitMenu
+        {
+            get
+            {
+                return this._displayExitMenu;
+            }
+            set
+            {
+                this._displayExitMenu = value;
+                FirePropertyChanged("DisplayExitMenu");
             }
         }
 
