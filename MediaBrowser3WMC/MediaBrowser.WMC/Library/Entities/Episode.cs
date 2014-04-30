@@ -159,6 +159,18 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public override List<string> BackdropImagePaths
+        {
+            get
+            {
+                return base.BackdropImagePaths ?? Season.BackdropImagePaths ?? Series.BackdropImagePaths;
+            }
+            set
+            {
+                base.BackdropImagePaths = value;
+            }
+        }
+
         #region IGroupInIndex Members
 
         public IContainer MainContainer
