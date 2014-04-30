@@ -1282,6 +1282,7 @@ namespace MediaBrowser
 
         public void SleepMachine()
         {
+            DisplayExitMenu = false; //we probably were called from this - don't want it still there when we wake up
             System.Windows.Forms.Application.SetSuspendState(PowerState.Suspend, false, false);
         }
 
