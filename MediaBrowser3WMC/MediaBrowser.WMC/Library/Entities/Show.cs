@@ -149,6 +149,7 @@ namespace MediaBrowser.Library.Entities {
                     Genres = temp.Genres;
                     Studios = temp.Studios;
                     Chapters = temp.Chapters;
+                    CriticRatingSummary = temp.CriticRatingSummary;
                     PlaybackAllowed = temp.PlaybackAllowed;
                     if (IsOffline)
                     {
