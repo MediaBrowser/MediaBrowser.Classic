@@ -204,6 +204,8 @@
             </Animations>
           </po:SingleItemPopout>
           
+          <em:ExitMenu Name="ExitMenu" Application="[Application]" Visible="false" />
+
           <!--MessageBox-->
           <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
             <LayoutInput>
@@ -224,8 +226,6 @@
               </Animation>
             </Animations>
           </msg:MessageBox>
-
-          <em:ExitMenu Name="ExitMenu" Application="[Application]" Visible="false" />
 
           <cm:MultiPlayMenu Name="MultiPlayMenu" Application="[Application]" Close="[CloseMultiPlay]" Visible="false" />
 
