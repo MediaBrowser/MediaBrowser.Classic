@@ -115,6 +115,10 @@ namespace MediaBrowser
         [Comment("Show now playing for default mode as text")]
         public bool ShowNowPlayingInText = false;
 
+        [Group("Display")]
+        [Comment("Show a menu to confirm exit")]
+        public bool UseExitMenu = true;
+
         [Group("Updates")]
         [Comment("The date auto update last checked for a new version")]
         public DateTime LastAutoUpdateCheck = DateTime.Today.AddYears(-1);

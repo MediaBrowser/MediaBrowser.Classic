@@ -65,6 +65,7 @@
       <BooleanChoice Name="ShowUnwatchedCount" Value="[Application.Config.ShowUnwatchedCount]" />
       <BooleanChoice Name="ShowWatchedTickOnFolders" Value="[Application.Config.ShowWatchedTickOnFolders]" />
       <BooleanChoice Name="ShowWatchTickInPosterView" Value="[Application.Config.ShowWatchTickInPosterView]" />
+      <BooleanChoice Name="UseExitMenu" Value="[Application.Config.UseExitMenu]" />
       <BooleanChoice Name="DimUnselectedPosters" Value="[Application.Config.DimUnselectedPosters]" />
       <BooleanChoice Name="AllowInternetMetadataProviders" Value="[Application.Config.AllowInternetMetadataProviders]" />
       <BooleanChoice Name="RememberIndexing" Value="[Application.Config.RememberIndexing]" />
@@ -357,6 +358,7 @@
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
       <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
+      <Binding Source="[UseExitMenu.Value]" Target="[Config.UseExitMenu]" />
       <Binding Source="[UseAutoPlayForIso.Value]" Target="[Config.UseAutoPlayForIso]" />
       <Binding Source="[RememberIndexing.Value]" Target="[Config.RememberIndexing]" />
       <Binding Source="[RememberFilters.Value]" Target="[Config.RememberFilters]" />
@@ -563,21 +565,21 @@
                   <Panel Layout="VerticalFlow" >
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#GeneralBehaviorConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderFiltersConfig!cor:String]" Checked="[RememberFilters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ConfirmExitConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[UseExitMenu]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Margins="100,0,0,0" >
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#GeneralDisplayConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
@@ -628,6 +630,7 @@
                       <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowMissingItemsConfig!cor:String]" Checked="[ShowMissingItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowUnairedItemsConfig!cor:String]" Checked="[ShowUnairedItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>

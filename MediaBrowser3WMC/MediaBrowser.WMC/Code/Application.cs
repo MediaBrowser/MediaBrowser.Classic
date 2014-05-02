@@ -1269,7 +1269,7 @@ namespace MediaBrowser
 
         public void Back()
         {
-            if (session.AtRoot)
+            if (Config.UseExitMenu && session.AtRoot)
             {
                 // show menu
                 DisplayExitMenu = true;

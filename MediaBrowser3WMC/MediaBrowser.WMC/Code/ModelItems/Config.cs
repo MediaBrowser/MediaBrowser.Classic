@@ -91,6 +91,12 @@ namespace MediaBrowser
             set { if (this.Data.HideEmptyFolders != value) { this.Data.HideEmptyFolders = value; Save(); FirePropertyChanged("HideEmptyFolders"); } }
         }
 
+        public bool UseExitMenu
+        {
+            get { return this.Data.UseExitMenu; }
+            set { if (this.Data.UseExitMenu != value) { this.Data.UseExitMenu = value; Save(); FirePropertyChanged("UseExitMenu"); } }
+        }
+
         [Comment(@"The current version of MB - will be the last version te first time we run so we can do something")]
         public string MBVersion
         {

@@ -161,7 +161,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="handler">The handler.</param>
         /// <returns>System.String.</returns>
         /// <exception cref="System.ArgumentNullException">handler</exception>
-        protected string GetApiUrl(string handler)
+        public string GetApiUrl(string handler)
         {
             return GetApiUrl(handler, new QueryStringDictionary());
         }
@@ -173,7 +173,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="queryString">The query string.</param>
         /// <returns>System.String.</returns>
         /// <exception cref="System.ArgumentNullException">handler</exception>
-        protected string GetApiUrl(string handler, QueryStringDictionary queryString)
+        public string GetApiUrl(string handler, QueryStringDictionary queryString)
         {
             if (string.IsNullOrEmpty(handler))
             {

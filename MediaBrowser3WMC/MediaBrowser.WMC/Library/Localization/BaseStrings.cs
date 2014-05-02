@@ -102,6 +102,7 @@ namespace MediaBrowser.Library.Localization
         public string WakeServerConfigDesc = "Try to wake up the last known server when MBC starts (in case it is in sleep mode).";
         public string CollapseBoxSetsConfigDesc = "Collapse movies defined into collections (box sets) into those collections in views.";
         public string SilentUpdatesConfigDesc = "Update plug-ins automatically in the background for all users.";
+        public string ConfirmExitConfigDesc = "Present a menu when exiting the application to allow other options and prevent accidental exit";
 
 
         //Config Panel
@@ -220,6 +221,7 @@ namespace MediaBrowser.Library.Localization
         public string PluginsConfig = "Plug-ins";
         public string InstalledPluginsConfig = "Installed Plug-ins";
         public string CollapseBoxSetsConfig = "Collapse Movies into Collections";
+        public string ConfirmExitConfig = "Confirm Exit";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";
