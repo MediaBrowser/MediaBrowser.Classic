@@ -2796,7 +2796,7 @@ namespace MediaBrowser
 
                     //now, if we are not in ripped media form, just automatically play the concatenated parts
                     var video = item.BaseItem as Video;
-                    if (video != null && !video.ContainsRippedMedia)
+                    if (video != null && !video.ContainsRippedMedia && !item.ItemTypeString.StartsWith("Game", StringComparison.OrdinalIgnoreCase))
                     {
                         //assemble all parts
                         var allparts = ItemFactory.Instance.Create(new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList()));
