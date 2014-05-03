@@ -4122,6 +4122,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] UserMenu {
+            get {
+                object obj = ResourceManager.GetObject("UserMenu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ViewMenu {
             get {
                 object obj = ResourceManager.GetObject("ViewMenu", resourceCulture);

@@ -35,17 +35,6 @@
     </Content>
   </UI>
 
-  <UI Name="UserMenu">
-    <Properties>
-      <a:Application Name="Application" Application="$Required"/>
-      <Command Name="Close" Command="$Required"/>
-    </Properties>
-
-    <Content>
-      <me:ActionMenu Name="Menu" Close="[Close]" Application="[Application]" MenuType="User"/>
-    </Content>
-  </UI>
-
   <UI Name="ActionMenu">
     <Properties>
       <a:Application Name="Application" Application="$Required"/>
@@ -75,12 +64,6 @@
         </Conditions>
       </Default>
 
-      <Default Target="[Title.Content]" Value="[Application.LocalStrings.#UserMenuCMenu!cor:String]" >
-        <Conditions>
-          <Equality Source="[MenuType]" Value="User" />
-        </Conditions>
-      </Default>
-
       <Changed Source="[Application.CurrentItem]"  InitialEvaluate="true">
         <Conditions>
           <Equality Source="[MenuType]" Value="Play" />
@@ -97,16 +80,6 @@
         <Actions>
           <Set Target="[ListRepeater.Source]" Value="[Application.ContextMenu]" />
           <Set Target="[ItemCount]" Value="[Application.ContextMenu.Count]" />
-        </Actions>
-      </Changed>
-
-      <Changed Source="[Application.DisplayUserMenu]"  InitialEvaluate="true">
-        <Conditions>
-          <Equality Source="[MenuType]" Value="User" />
-        </Conditions>
-        <Actions>
-          <Set Target="[ListRepeater.Source]" Value="[Application.UserMenu]" />
-          <Set Target="[ItemCount]" Value="[Application.UserMenu.Count]" />
         </Actions>
       </Changed>
 

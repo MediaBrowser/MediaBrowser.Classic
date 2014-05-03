@@ -1,0 +1,179 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	    xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+		  xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+  
+  <UI Name="UserMenu">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <Command Name="Close" Command="$Required"/>
+    </Properties>
+
+    <Locals>
+      <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
+      <cor:Int32 Name="ItemCount" Int32="0" />
+      <Color Name="BackgroundColor"/>
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.CreateInterestOnFocus]" Value="true" />
+      <Binding Target="[ListRepeater.Source]" Source="[Application.OtherAvailableUsers]" >
+      </Binding>
+
+      <Default Target="[ItemCount]" Value="[Application.OtherAvailableUsers.Count]" />
+
+      <Default Target="[Title.Content]" Value="[Application.LocalStrings.#UserMenu!cor:String]" >
+      </Default>
+
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[ItemCount]"  InitialEvaluate="true">
+        <Conditions>
+          <Equality Source="[ItemCount]" Value="0" ConditionOp="NotEquals" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Empty.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.Config.AlphaBlending!cor:Byte]" Target="[BackgroundColor.A]">
+        <Transformer>
+          <MathTransformer Multiply="2.55" Type="Byte"/>
+        </Transformer>
+      </Binding>
+
+      <Default Target="[ZoomPane.Content]" Value="image://i:ZoomPane"/>
+      <Default Target="[Main.Content]" Value="200,0,0,0"/>
+
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="255,0,15,60"  Navigation="ContainAll,Group">
+        <Children>
+          <Graphic Name="ZoomPane"  MaximumSize="650,0" MaintainAspectRatio="false" Padding="10,10,10,10" >
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Far"/>
+            </Layout>
+            <Children>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+                </Layout>
+                <Children>
+                  <Text Name="Title" Content="[Application.LocalStrings.#UserMenu!cor:String]" Font="font://f:CP_ConfigTitleFont" Color="color://s:FontColorLight"/>
+                  <ColorFill Content="DimGray" Alpha="0.8" Layout="Fill" MaximumSize="0,2" />
+                  <Text Content=" "/>
+                  <Text Name="Empty" Content="No Available Options" Font="font://f:MI_ButtonFont" Alpha=".7" Color="color://s:FontColorLight" Visible="false" />
+                  <Repeater Name="ListRepeater" Source="[Application.OtherAvailableUsers]" Layout="VerticalFlow" MinimumSize="200,50" >
+                    <Content>
+                      <me:UserItem User="[RepeatedItem!lib:UserItem]" Close="[Close]" Font="font://f:MI_ButtonFont" Application="[Application]" Margins="0,0,0,10" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Panel>
+              <Panel >
+                <Layout>
+                  <FlowLayout Orientation="Vertical" ItemAlignment="Fill"/>
+                </Layout>
+                <Children>
+                  <Text Content=" "/>
+                  <vm:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                </Children>
+              </Panel>
+            </Children>
+          </Graphic>
+        </Children>
+        <Animations>
+          <Animation Type="Show">
+            <Keyframes>
+              <PositionKeyframe Time="0.0" Value="0, 384, 0" RelativeTo="Final" Interpolation="EaseIn, 3.0, 0.2"/>
+              <PositionKeyframe Time="0.6" Value="0, 0, 0" RelativeTo="Final"/>
+              <AlphaKeyframe Time="0.0" Value="0.0" RelativeTo="Absolute"/>
+              <AlphaKeyframe Time="0.6" Value="1.0" RelativeTo="Absolute"/>
+            </Keyframes>
+          </Animation>
+          <Animation Type="Hide">
+            <Keyframes>
+              <PositionKeyframe Time="0.0" Value="0, 0, 0" RelativeTo="Final" Interpolation="Log"/>
+              <PositionKeyframe Time="0.4" Value="0, 384, 0" RelativeTo="Final"/>
+              <AlphaKeyframe Time="0.0" Value="1.0" RelativeTo="Absolute"/>
+              <AlphaKeyframe Time="0.35" Value="0.0" RelativeTo="Absolute"/>
+            </Keyframes>
+          </Animation>
+        </Animations>
+      </ColorFill>
+    </Content>
+  </UI>
+  
+  <UI Name="UserItem">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:UserItem Name="User" UserItem="$Required" />
+      <Command Name="Close" Command="$Required"/>
+      <Font Name="Font" Font="$Required"/>
+    </Properties>
+
+    <Locals>
+      <Command Name="SwitchUser"/>
+      <BooleanChoice Name="AlsoHere" Value="[User.IsAlsoHere]"/>
+    </Locals>
+
+    <Rules>
+      <Changed Source="[SwitchUser.Invoked]">
+        <Actions>
+          <Invoke Target="[Close.Invoke]" />
+          <Invoke Target="[Application.SwitchUser]"  userName="[User.Name]"/>
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Input.DeepKeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Bg.Content]" Value="80,80,80" />
+        </Actions>
+
+      </Changed>
+
+      <Binding Source="[User.PrimaryImage]" Target="[Image.Content]" />
+      <Binding Source="[AlsoHere.Value]" Target="[User.IsAlsoHere]" />
+
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Bg" Content="60,60,60" Layout="HorizontalFlow">
+        <Children>
+          <Graphic Name="Image" Content="[User.PrimaryImage]" MaximumSize="80,80" MaintainAspectRatio="true" />
+          <Text Name="Title" Content="[User.Name]" Font="Segoe Media Center Light, 24" Color="White" Margins="25,3,20,0" MinimumSize="200,0" MaximumSize="200,0" HorizontalAlignment="Near" WordWrap="true" MaximumLines="2" FadeSize="150" />
+          <Panel Layout="HorizontalFlow" MaximumSize="300,0" MinimumSize="300,0" Margins="5,20,0,0" >
+            <Children>
+              <sb:SimpleButton Name="SwitchButton" Text="[Application.LocalStrings.#SwitchTo!cor:String]" Command="[SwitchUser]" Visible="true" Size="150,40" Font="Segoe Media Center Light, 18"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#AlsoHere!cor:String]" Checked="[AlsoHere]" Margins="4,0,0,0"  Font="Segoe Media Center Light, 18"/>
+
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+  </Mcml>

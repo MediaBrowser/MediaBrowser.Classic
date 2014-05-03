@@ -10,6 +10,7 @@
 		xmlns:vm="resx://MediaBrowser/MediaBrowser.Resources/ViewMenu"
 	  xmlns:np="resx://MediaBrowser/MediaBrowser.Resources/NowPlayingViewport"
     xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
+    xmlns:um="resx://MediaBrowser/MediaBrowser.Resources/UserMenu"
 	  xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
 	  xmlns:pda="resx://MediaBrowser/MediaBrowser.Resources/PageDetailArea"
     xmlns:edge="resx://MediaBrowser/MediaBrowser.Resources/EdgeDetection"
@@ -594,7 +595,7 @@
               <cm:PlayMenu Name="PopupPlay" Application="[Application]" Close="[ClosePopupPlay]" Visible="false" />
 
               <!-- User Menu -->
-              <cm:UserMenu Name="UserMenu" Application="[Application]" Close="[CloseUserMenu]" Visible="false" />
+              <um:UserMenu Name="UserMenu" Application="[Application]" Close="[CloseUserMenu]" Visible="false" />
 
               <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
 
