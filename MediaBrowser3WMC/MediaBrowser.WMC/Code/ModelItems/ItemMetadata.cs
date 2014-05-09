@@ -336,70 +336,53 @@ namespace MediaBrowser.Library {
             get {
                 if (_actors == null)
                 {
+                    _actors = new List<ActorItemWrapper>(); // nulls will cause mcml to blow
+                    Async.Queue("Actor Load", () =>
+                                                  {
+                                                      var actors = new List<Actor>();
+                                                      var show = baseItem as IShow;
+                                                      if (show != null)
+                                                      {
 
-                    List<Actor> actors = new List<Actor>();
+                                                          var episode = show as Episode;
+                                                          if (episode != null)
+                                                          {
 
-                    var show = baseItem as IShow;
-                    if (show != null)
-                    {
+                                                              var series = episode.Series;
+                                                              var season = episode.Season;
 
-                        var episode = show as Episode;
-                        if (episode != null)
-                        {
+                                                              if (series != null && series.Actors != null)
+                                                              {
+                                                                  actors.AddRange(series.Actors);
+                                                              }
 
-                            var series = episode.Series;
-                            var season = episode.Season;
+                                                              if (season != null && season.Actors != null)
+                                                              {
+                                                                  actors.AddRange(season.Actors);
+                                                              }
+                                                          }
 
-                            if (series != null && series.Actors != null)
-                            {
-                                actors.AddRange(series.Actors);
-                            }
+                                                          if (show.Actors != null)
+                                                          {
+                                                              actors.AddRange(show.Actors);
+                                                          }
 
-                            if (season != null && season.Actors != null)
-                            {
-                                actors.AddRange(season.Actors);
-                            }
-                        }
+                                                          actors = actors.
+                                                              Where(actor => actor != null && actor.Name != null).
+                                                              Distinct(actor => actor.Name.ToLower().Trim()).
+                                                              Where(actor => actor.Name != null && actor.Name.Trim().Length > 0)
+                                                                         .ToList();
 
-                        if (show.Actors != null)
-                        {
-                            actors.AddRange(show.Actors);
-                        }
+                                                      }
 
-                        actors = actors.
-                            Where(actor => actor != null && actor.Name != null).
-                            Distinct(actor => actor.Name.ToLower().Trim()).
-                            Where(actor => actor.Name != null && actor.Name.Trim().Length > 0)
-                            .ToList();
+                                                      _actors = actors
+                                                          .Select(actor => new ActorItemWrapper(actor, this.PhysicalParent))
+                                                          .ToList();
 
-                        //if (actors.Count > 0)
-                        //{
+                                                      FirePropertyChanged("Actors");
 
-                        //    Async.Queue("Actor Loader", () =>
-                        //    {
-                        //        foreach (var actor in actors.Distinct())
-                        //        {
-                        //            if (actor.Person.RefreshMetadata(MetadataRefreshOptions.FastOnly))
-                        //            {
-                        //                Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
-                        //            }
-                        //        }
+                                                  });
 
-                        //        foreach (var actor in actors.Distinct())
-                        //        {
-                        //            if (actor.Person.RefreshMetadata())
-                        //            {
-                        //                Kernel.Instance.MB3ApiRepository.SaveItem(actor.Person);
-                        //            }
-                        //        }
-                        //    });
-                        //}
-
-                    }
-
-                    _actors = actors
-                        .Select(actor => new ActorItemWrapper(actor, this.PhysicalParent))
-                        .ToList();
                 }
                 return _actors;
             }
