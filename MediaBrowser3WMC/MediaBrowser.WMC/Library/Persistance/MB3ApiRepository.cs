@@ -124,10 +124,10 @@ namespace MediaBrowser.Library.Persistance
                     switch (itemType)
                     {
                         case "Person":
-                            item.PrimaryImagePath = Kernel.ApiClient.GetPersonImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                            item.PrimaryImagePath = Kernel.ApiClient.GetPersonImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary, Tag = mb3Item.ImageTags.First(t => t.Key == ImageType.Primary).Value, MaxWidth = 400});
                             break;
                         case "Genre":
-                            item.PrimaryImagePath = Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary});
+                            item.PrimaryImagePath = Kernel.ApiClient.GetGenreImageUrl(mb3Item.Name, new ImageOptions {ImageType = ImageType.Primary, Tag = mb3Item.ImageTags.First(t => t.Key == ImageType.Primary).Value, MaxWidth = 400});
                             break;
 
                     }
