@@ -514,7 +514,7 @@ namespace MediaBrowser.ApiInteraction
             queryParams.AddIfNotNull("maxHeight", options.MaxHeight);
             queryParams.AddIfNotNull("Quality", options.Quality);
 
-            queryParams.AddIfNotNull("tag", options.Tag);
+            queryParams.AddIfNotNullOrEmpty("tag", options.Tag);
 
             return GetApiUrl(baseUrl, queryParams);
         }
@@ -664,7 +664,7 @@ namespace MediaBrowser.ApiInteraction
             options.ImageType = ImageType.Backdrop;
 
             string backdropItemId;
-            List<Guid> backdropImageTags;
+            List<string> backdropImageTags;
 
             if (item.BackdropCount == 0)
             {

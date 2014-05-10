@@ -85,12 +85,17 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        public BaseItem RetrieveItem(string id)
+        {
+            if (string.IsNullOrEmpty(id) || new Guid(id) == Guid.Empty) return null;
+
+            var dto = Kernel.ApiClient.GetItem(id);
+            return dto != null ? GetItem(dto, dto.Type) : null;
+        }
+
         public BaseItem RetrieveItem(Guid id)
         {
-            if (id == Guid.Empty) return null;
-
-            var dto = Kernel.ApiClient.GetItem(id.ToString());
-            return dto != null ? GetItem(dto, dto.Type) : null;
+            return RetrieveItem(id.ToString());
         }
 
         public Genre RetrieveGenre(string name)

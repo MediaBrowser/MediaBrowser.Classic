@@ -607,7 +607,7 @@ namespace MediaBrowser
         {
             Logger.ReportVerbose("Library Changed...");
             Logger.ReportVerbose("Folders Added to: {0} Items Added: {1} Items Removed: {2} Items Updated: {3}", args.UpdateInfo.FoldersAddedTo.Count, args.UpdateInfo.ItemsAdded.Count, args.UpdateInfo.ItemsRemoved.Count, args.UpdateInfo.ItemsUpdated.Count);
-            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(id)).OfType<Folder>().Where(folder => folder != null).ToList();
+            var changedFolders = args.UpdateInfo.FoldersAddedTo.Concat(args.UpdateInfo.FoldersRemovedFrom).SelectMany(id => Kernel.Instance.FindItems(new Guid(id))).OfType<Folder>().Where(folder => folder != null).ToList();
 
             // Get folders that were reported to us
             foreach (var changedItem in changedFolders)
@@ -620,14 +620,14 @@ namespace MediaBrowser
             //First get all the top folders of removed items
             foreach (var id in args.UpdateInfo.ItemsRemoved)
             {
-                var removed = Kernel.Instance.FindItem(id);
+                var removed = Kernel.Instance.FindItem(new Guid(id));
                 if (removed != null)
                 {
                     // If our parent wasn't included in the updated list - refresh it
                     var parent = removed.Parent;
                     if (parent != null)
                     {
-                        if (!args.UpdateInfo.ItemsUpdated.Contains(parent.Id)) parent.RefreshMetadata();
+                        if (!args.UpdateInfo.ItemsUpdated.Contains(parent.ApiId)) parent.RefreshMetadata();
                     }
                 }
             }
@@ -635,10 +635,10 @@ namespace MediaBrowser
             // Get changed items and update them
             foreach (var id in args.UpdateInfo.ItemsUpdated)
             {
-                var changedItem = Kernel.Instance.FindItem(id);
+                var changedItem = Kernel.Instance.FindItem(new Guid(id));
                 if (changedItem != null)
                 {
-                    if (!args.UpdateInfo.ItemsUpdated.Contains(changedItem.Parent.Id) && !args.UpdateInfo.FoldersAddedTo.Contains(id) && !args.UpdateInfo.FoldersRemovedFrom.Contains(id))
+                    if (!args.UpdateInfo.ItemsUpdated.Contains(changedItem.Parent.ApiId) && !args.UpdateInfo.FoldersAddedTo.Contains(id) && !args.UpdateInfo.FoldersRemovedFrom.Contains(id))
                     {
                         Logger.ReportVerbose("Item changed is: {0}.  Refreshing.", changedItem.Name);
                         changedItem.RefreshMetadata();
@@ -733,7 +733,7 @@ namespace MediaBrowser
         public Item CurrentUser { get; set; }
 
         private List<Item> _availableUsers; 
-        public List<Item> AvailableUsers { get { return _availableUsers ?? (_availableUsers = Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""), Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr(u.LastActivityDate ?? DateTime.MinValue)})).ToList()); } } 
+        public List<Item> AvailableUsers { get { return _availableUsers ?? (_availableUsers = Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""),  Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr(u.LastActivityDate ?? DateTime.MinValue)})).ToList()); } } 
         public List<Item> OtherAvailableUsers { get { return AvailableUsers.Where(u => u.Name != CurrentUser.Name).ToList(); } }
         private bool _multipleUsersHere;
         public bool MultipleUsersHere

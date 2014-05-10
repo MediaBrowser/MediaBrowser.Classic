@@ -199,7 +199,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var dict = new QueryStringDictionary {{"userId", userId}};
+            var dict = new QueryStringDictionary {{"userId", userId.ToString()}};
             var url = GetApiUrl("Items/Counts/", dict);
 
             using (var stream = GetSerializedStream(url))
@@ -224,7 +224,7 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary();
 
-            dict.AddIfNotNull("userId", Kernel.CurrentUser.Id);
+            dict.AddIfNotNullOrEmpty("userId", Kernel.CurrentUser.ApiId);
             dict.Add("client", "MBC");
 
             var url = GetApiUrl("DisplayPreferences/" + prefsId, dict);
@@ -1382,7 +1382,7 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary();
 
-            dict.AddIfNotNull("userId", Kernel.CurrentUser.Id);
+            dict.AddIfNotNullOrEmpty("userId", Kernel.CurrentUser.ApiId);
             dict.Add("client", "MBC");
 
             var url = GetApiUrl("DisplayPreferences/" + prefsId, dict);
