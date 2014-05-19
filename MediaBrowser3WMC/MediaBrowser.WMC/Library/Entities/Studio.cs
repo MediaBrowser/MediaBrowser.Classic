@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MediaBrowser.Library.Logging;
+using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
-using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Dto;
-using MediaBrowser.Model.Web;
 
 namespace MediaBrowser.Library.Entities {
     public class Studio : BaseItem {

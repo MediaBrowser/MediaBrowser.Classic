@@ -14,8 +14,6 @@ using MediaBrowser.Model.System;
 using MediaBrowser.Model.Tasks;
 using MediaBrowser.Model.Updates;
 using MediaBrowser.Model.Users;
-using MediaBrowser.Model.Weather;
-using MediaBrowser.Model.Web;
 using System;
 using System.Collections.Generic;
 using System.IO;
