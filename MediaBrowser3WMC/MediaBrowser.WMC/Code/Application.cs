@@ -95,6 +95,7 @@ namespace MediaBrowser
         private bool navigatingForward;
         private BasePlaybackController currentPlaybackController = null;
         private static Timer ScreenSaverTimer;
+        private static Timer IdleTimer;
         //tracks whether to show recently added or watched items
         public string RecentItemOption { get { return Config.Instance.RecentItemOption; } set { Config.Instance.RecentItemOption = value; Kernel.Instance.ConfigData.RecentItemOption = value; } }
         public string WatchedOptionString { get { return Config.Instance.TreatWatchedAsInProgress ? LocalizedStrings.Instance.GetString("InProgressEHS") : LocalizedStrings.Instance.GetString("WatchedEHS"); }}
@@ -1050,7 +1051,24 @@ namespace MediaBrowser
 
             //initialize screen saver
             ScreenSaverTimer = new Timer() { AutoRepeat = true, Enabled = true, Interval = 60000 };
-            ScreenSaverTimer.Tick += new EventHandler(ScreenSaverTimer_Tick);
+            ScreenSaverTimer.Tick += ScreenSaverTimer_Tick;
+
+            //initialize auto logoff
+            IdleTimer = new Timer() { AutoRepeat = true, Enabled = true, Interval = 60000 };
+            IdleTimer.Tick += IdleTimer_Tick;
+        }
+
+        private void IdleTimer_Tick(object sender, EventArgs e)
+        {
+            if (LoggedIn && Config.EnableAutoLogoff && !IsPlaying)
+            {
+                if (Helper.SystemIdleTime > Config.AutoLogoffTimeOut*60000)
+                {
+                    Logger.ReportInfo("System logging off automatically due to timeout of {0} minutes of inactivity...", Config.AutoLogoffTimeOut);
+                    Config.StartupParms = "ShowLogin";
+                    Restart();
+                }
+            }
         }
 
         void ScreenSaverTimer_Tick(object sender, EventArgs e)

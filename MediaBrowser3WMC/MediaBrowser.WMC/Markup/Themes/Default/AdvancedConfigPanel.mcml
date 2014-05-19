@@ -30,6 +30,7 @@
       <Inset Name="NMargin" Inset="25,10,0,0" />
       <Inset Name="SMargin" Inset="10,0,0,0" />
       <IntRangedValue Name="HttpTimeout" Value="[Application.Config.HttpTimeout]" MaxValue="120000" MinValue="20000" Step="1000" />
+      <IntRangedValue Name="AutoLogoffTimeOut" Value="[Application.Config.AutoLogoffTimeOut]" MaxValue="1440" MinValue="1" Step="1" />
       <Size Name="LabelSize1" Size="250,0" />
       <Size Name="PanelSize" Size="800,400" />
 
@@ -37,6 +38,7 @@
       <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
 
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
+      <BooleanChoice Name="EnableAutoLogoff" Value="[Application.Config.EnableTraceLogging]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
       <BooleanChoice Name="EnableSilentUpdates" Value="[Application.Config.EnableSilentUpdates]" />
       <BooleanChoice Name="EnableDelete" Value="[Application.Config.Advanced_EnableDelete]" />
@@ -77,6 +79,8 @@
       <Binding Source="[EnableUpdates.Value]" Target="[Application.Config.EnableUpdates]" />
       <Binding Source="[EnableSilentUpdates.Value]" Target="[Application.Config.EnableSilentUpdates]" />
       <Binding Source="[EnableDelete.Value]" Target="[Application.Config.Advanced_EnableDelete]" />
+      <Binding Source="[EnableAutoLogoff.Value]" Target="[Application.Config.EnableAutoLogoff]" />
+      <Binding Source="[AutoLogoffTimeOut.Value]" Target="[Application.Config.AutoLogoffTimeOut]" />
       <Binding Source="[ServerPort.Value]" Target="[Application.Config.ServerPort]" />
       <Binding Source="[WakeServer.Value]" Target="[Application.Config.WakeServer]" />
 
@@ -114,11 +118,13 @@
                     <Children>
                       <cp:TextHeader Text="[Application.LocalStrings.#GeneralConfig!cor:String]" />
                       <cb:CheckBox Name="Logging" Label="[Application.LocalStrings.#LoggingConfig!cor:String]" Checked="[EnableTraceLogging]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont" FocusOrder="0"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#AutoLogoffConfig!cor:String]" Checked="[EnableAutoLogoff]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont" FocusOrder="1"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#AutoLogoffTimeOutConfig!cor:String]" Padding="0,10,0,0" Model="[AutoLogoffTimeOut]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="60,0,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
                       <cp:TextHeader Text="[Application.LocalStrings.#ServerConfig!cor:String]" />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35" FocusOrder="1" />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35" FocusOrder="2"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="3" />
-                      <cb:CheckBox Name="WOL" Label="[Application.LocalStrings.#WakeServerConfig!cor:String]" Checked="[WakeServer]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont" FocusOrder="4"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ConnectionConfig!cor:String]" Padding="0,10,0,0" Model="[ServerConnectModel]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMinSize="300,35" ValueMaxSize="300,35" FocusOrder="3" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PortConfig!cor:String]" Padding="0,10,0,0" Model="[ServerPort]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" LabelMinSize="150,35" ValueMaxSize="300,35" FocusOrder="4"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#HttpTimeoutConfig!cor:String]" Padding="0,10,0,0" Model="[HttpTimeout]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="5" />
+                      <cb:CheckBox Name="WOL" Label="[Application.LocalStrings.#WakeServerConfig!cor:String]" Checked="[WakeServer]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont" FocusOrder="6"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" >

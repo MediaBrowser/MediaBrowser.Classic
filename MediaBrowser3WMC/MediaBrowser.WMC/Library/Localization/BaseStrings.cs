@@ -103,6 +103,8 @@ namespace MediaBrowser.Library.Localization
         public string CollapseBoxSetsConfigDesc = "Collapse movies defined into collections (box sets) into those collections in views.";
         public string SilentUpdatesConfigDesc = "Update plug-ins automatically in the background for all users.";
         public string ConfirmExitConfigDesc = "Present a menu when exiting the application to allow other options and prevent accidental exit";
+        public string AutoLogoffConfigDesc = "Automatically log off MBC after the configured period of inactivity";
+        public string AutoLogoffTimeOutConfigDesc = "The minutes of inactivity before MBC will automatically logoff";
 
 
         //Config Panel
@@ -222,6 +224,8 @@ namespace MediaBrowser.Library.Localization
         public string InstalledPluginsConfig = "Installed Plug-ins";
         public string CollapseBoxSetsConfig = "Collapse Movies into Collections";
         public string ConfirmExitConfig = "Confirm Exit";
+        public string AutoLogoffConfig = "Enable Auto Logoff";
+        public string AutoLogoffTimeOutConfig = "After (mins)";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";

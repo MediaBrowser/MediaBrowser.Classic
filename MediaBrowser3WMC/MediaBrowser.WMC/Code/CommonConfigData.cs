@@ -31,6 +31,9 @@ namespace MediaBrowser
 
         public bool WakeServer = true;
 
+        public bool EnableAutoLogoff = true; //enable auto logoff functionality
+        public int AutoLogoffTimeOut = 60; //minutes of inactivity for system to auto logoff
+
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
         public bool EnableUpdates = true;

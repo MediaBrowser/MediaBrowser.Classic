@@ -858,6 +858,18 @@ namespace MediaBrowser
             set { if (this.Data.ScreenSaverTimeOut != value) { this.Data.ScreenSaverTimeOut = value; Save(); FirePropertyChanged("ScreenSaverTimeOut"); } }
         }
 
+        public bool EnableAutoLogoff
+        {
+            get { return this.CommonData.EnableAutoLogoff; }
+            set { if (this.CommonData.EnableAutoLogoff != value) { this.CommonData.EnableAutoLogoff = value; Save(); FirePropertyChanged("EnableAutoLogoff"); } }
+        }
+
+        public int AutoLogoffTimeOut
+        {
+            get { return this.CommonData.AutoLogoffTimeOut; }
+            set { if (this.CommonData.AutoLogoffTimeOut != value) { this.CommonData.AutoLogoffTimeOut = value; Save(); FirePropertyChanged("AutoLogoffTimeOut"); } }
+        }
+
         public Color UserTileColor
         {
             get
