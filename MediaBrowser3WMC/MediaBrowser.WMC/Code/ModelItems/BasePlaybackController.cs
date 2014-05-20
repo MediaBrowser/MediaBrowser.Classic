@@ -24,6 +24,8 @@ namespace MediaBrowser.Code.ModelItems
 
         protected bool IsDisposing { get; private set; }
 
+        public bool IsStreaming { get; protected set; }
+
         /// <summary>
         /// Subclasses can use this to examine the items that are currently in the player.
         /// </summary>
@@ -359,7 +361,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Playing)
             {
                 PauseInternal();
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, true);
+                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, true, IsStreaming);
             }
         }
 
@@ -368,7 +370,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Paused)
             {
                 UnPauseInternal();
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, false);
+                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, false, IsStreaming);
             }
         }
 
@@ -379,7 +381,7 @@ namespace MediaBrowser.Code.ModelItems
             if (playstate == PlaybackControllerPlayState.Playing || playstate == PlaybackControllerPlayState.Paused)
             {
                 SeekInternal(position);
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), position, playstate == PlaybackControllerPlayState.Paused);
+                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), position, playstate == PlaybackControllerPlayState.Paused, IsStreaming);
             }
         }
 

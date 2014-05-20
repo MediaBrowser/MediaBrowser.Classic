@@ -377,7 +377,8 @@ namespace MediaBrowser
                 {
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
-                    if (Playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId);
+                    IsStreaming = Playable.CurrentMedia.Files.First().StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+                    if (Playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId, IsStreaming);
                 }
                 else
                 {

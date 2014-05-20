@@ -1064,9 +1064,10 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <param name="itemId">The item id.</param>
         /// <param name="userId">The user id.</param>
+        /// <param name="playMethod"></param>
         /// <returns>Task{UserItemDataDto}.</returns>
         /// <exception cref="System.ArgumentNullException">itemId</exception>
-        public void ReportPlaybackStart(string itemId, Guid userId)
+        public void ReportPlaybackStart(string itemId, Guid userId, string playMethod = "DirectPlay")
         {
             if (string.IsNullOrEmpty(itemId))
             {
@@ -1080,9 +1081,13 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary();
             dict.Add("CanSeek", true);
+            dict.Add("IsPaused", false);
+            dict.Add("IsMuted", false);
+            dict.Add("ItemId", itemId);
             dict.Add("QueueableMediaTypes", "");
+            dict.Add("PlayMethod", playMethod);
 
-            var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId, dict);
+            var url = GetApiUrl("Sessions/Playing", dict);
 
             Post<EmptyRequestResult>(url, new Dictionary<string, string>());
         }
@@ -1110,9 +1115,10 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="positionTicks">The position ticks.</param>
         /// <param name="isPaused"></param>
         /// <param name="isMuted"></param>
+        /// <param name="playMethod"></param>
         /// <returns>Task{UserItemDataDto}.</returns>
         /// <exception cref="System.ArgumentNullException">itemId</exception>
-        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks, bool isPaused, bool isMuted)
+        public void ReportPlaybackProgress(string itemId, Guid userId, long? positionTicks, bool isPaused, bool isMuted, string playMethod = "DirectPlay")
         {
             if (string.IsNullOrEmpty(itemId))
             {
@@ -1128,8 +1134,10 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("positionTicks", positionTicks);
             dict.AddIfNotNull("isPaused", isPaused);
             dict.AddIfNotNull("isMuted", isMuted);
+            dict.AddIfNotNullOrEmpty("ItemId", itemId);
+            dict.AddIfNotNullOrEmpty("PlayMethod", playMethod);
 
-            var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId + "/Progress", dict);
+            var url = GetApiUrl("Sessions/Playing/Progress", dict);
 
             Post<EmptyRequestResult>(url, new Dictionary<string, string>());
         }
@@ -1156,10 +1164,11 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary();
             dict.AddIfNotNull("positionTicks", positionTicks);
+            dict.AddIfNotNullOrEmpty("ItemId", itemId);
 
-            var url = GetApiUrl("Users/" + userId + "/PlayingItems/" + itemId, dict);
+            var url = GetApiUrl("Sessions/Playing/Stopped", dict);
 
-            HttpClient.Delete(url);
+            Post<EmptyRequestResult>(url, new Dictionary<string, string>());
 
             //Now we have to get the updated playstate from the server.  The only way to do this now is re-retrieve the whole item and grab the playstate
             var updated = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(itemId)) as Library.Entities.Media;

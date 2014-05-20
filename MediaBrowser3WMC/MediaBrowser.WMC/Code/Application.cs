@@ -161,20 +161,20 @@ namespace MediaBrowser
                 MediaCenterEnvironment.AudioMixer.Mute = _isMuted = value;
                 if (currentPlaybackController != null)
                 {
-                    ReportPlaybackProgress(currentPlaybackController.CurrentPlayableItemId.ToString(), currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused);
+                    ReportPlaybackProgress(currentPlaybackController.CurrentPlayableItemId.ToString(), currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused, currentPlaybackController.IsStreaming);
                 }
             }
         }
 
-        public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false)
+        public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false, bool isStreaming = false)
         {
-            Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused, WMCMute);
+            Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused, WMCMute, isStreaming ? "Transcode" : "DirectPlay");
             //WebSocket.SendPlaystateMessage(id, positionTicks, isPaused);
         }
 
-        public void ReportPlaybackStart(string id)
+        public void ReportPlaybackStart(string id, bool isStreaming = false)
         {
-            Kernel.ApiClient.ReportPlaybackStart(id, Kernel.CurrentUser.Id);
+            Kernel.ApiClient.ReportPlaybackStart(id, Kernel.CurrentUser.Id, isStreaming ? "Transcode" : "DirectPlay");
             //WebSocket.SendPlaybackStarted(id);
         }
 
@@ -3156,7 +3156,7 @@ namespace MediaBrowser
         {
             if (saveToDataStore)
             {
-                ReportPlaybackProgress(media.ApiId, playstate.PositionTicks, isPaused);
+                ReportPlaybackProgress(media.ApiId, playstate.PositionTicks, isPaused, currentPlaybackController.IsStreaming);
             }
         }
     }
