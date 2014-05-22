@@ -2092,6 +2092,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GreenCircle {
+            get {
+                object obj = ResourceManager.GetObject("GreenCircle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HD {
             get {
                 object obj = ResourceManager.GetObject("HD", resourceCulture);
@@ -4085,16 +4095,6 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap UnwatchedBase {
             get {
                 object obj = ResourceManager.GetObject("UnwatchedBase", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap UnwatchedNew {
-            get {
-                object obj = ResourceManager.GetObject("UnwatchedNew", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

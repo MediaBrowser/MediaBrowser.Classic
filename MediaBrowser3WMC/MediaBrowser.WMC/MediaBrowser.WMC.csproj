@@ -690,6 +690,7 @@
     <Content Include="Images\Star\Star_Half_Black.png" />
     <Content Include="Images\UnLock1.png" />
     <Content Include="Images\UnLocked.png" />
+    <Content Include="Images\Unwatched\GreenCircle.png" />
     <Content Include="Images\Unwatched\Tick.png" />
     <Content Include="Images\Unwatched\TickPoster.png" />
     <Content Include="Images\Unwatched\TickPosterBase.png" />

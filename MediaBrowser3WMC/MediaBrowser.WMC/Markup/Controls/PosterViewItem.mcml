@@ -298,10 +298,9 @@
 													<AnchorLayoutInput Horizontal="Far" Vertical="Near"/>
 												</LayoutInput>
 												<Children>
-													<Text Name="UnwatchedCount" Content="" Color="color://s:FontColorLight" Font="[UnwatchedCountFont]" Margins="0,0,0,-10"></Text>
-													<Graphic Content="image://i:Unwatched" Layout="Center" >
+													<Text Name="UnwatchedCount" Content="" Color="color://s:FontColorLight" Font="[UnwatchedCountFont]" ></Text>
+													<Graphic Content="image://i:GreenCircle" Layout="Center" >
                           </Graphic>
-                          <ColorFill Layout="Fill" Content="color://s:UnwatchedColor" MinimumSize="40,40" MaximumSize="40,40" Visible="global://s:ShowWatchedMarkerBackgrounds" Alpha="global://s:WatchedAlpha"/>
                         </Children>
 											</Panel>
                       <Panel  Scale="1,1,1" Padding="0,0,0,0" Layout="Anchor" Visible="false" Name="HDIndicator">
