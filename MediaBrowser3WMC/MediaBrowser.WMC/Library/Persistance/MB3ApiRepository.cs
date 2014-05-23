@@ -557,7 +557,7 @@ namespace MediaBrowser.Library.Persistance
                                                          CollapseBoxSetItems = collapseBoxSets,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, 
-                                                            ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines,  }
+                                                            ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines, ItemFields.MediaSources,  }
                                                      });
 
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
@@ -573,7 +573,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
-                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded,
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, 
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)

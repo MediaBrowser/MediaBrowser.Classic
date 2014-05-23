@@ -6,8 +6,10 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Entities.Attributes;
+using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Model.Dlna;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
@@ -23,9 +25,10 @@ namespace MediaBrowser.Library.Entities {
             return changed | base.AssignFromItem(item);
         }
 
+        private List<string> _fileCache; 
         public override IEnumerable<string> Files
         {
-            get { return VideoFiles; }
+            get { return _fileCache ?? (_fileCache = VideoFiles.ToList()); }
         }
         
         public override PlaybackStatus PlaybackStatus {
@@ -69,8 +72,9 @@ namespace MediaBrowser.Library.Entities {
                 else
                 {
                     Logger.ReportInfo("Unable to access {0}.  Will try to stream.", Path);
-
-                    yield return ContainsRippedMedia ? Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                    // build based on WMC profile
+                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = 10000000, Profile = new WindowsMediaCenterProfile()}) : null;
+                    yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                               {
                                                                                                   ItemId = ApiId,
                                                                                                   OutputFileExtension = ".wmv",
@@ -79,24 +83,12 @@ namespace MediaBrowser.Library.Entities {
                                                                                                   AudioBitRate = 128000,
                                                                                                   MaxAudioChannels = 2,
                                                                                                   AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-                                                                                              })
-                                     : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                              {
-                                                                                  ItemId = ApiId,
-                                                                                  OutputFileExtension = ".wmv",
-                                                                                  MaxWidth = 1280,
-                                                                                  VideoCodec = "Wmv",
-                                                                                  VideoBitRate = 5000000,
-                                                                                  AudioBitRate = 128000,
-                                                                                  MaxAudioChannels = 2,
-                                                                                  AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-
-                                                                              });
+                                                                                              });
                 }
             }
         }
 
-        protected static List<string> StreamableCodecs = new List<string> {"DTS", "DTS Express", "AC3", "MP3"}; 
+        protected static List<string> StreamableCodecs = new List<string> {"DTS", "DTS-HD MA", "DTS Express", "AC3", "MP3"}; 
 
         /// <summary>
         /// Find the first streamable audio stream for the specified language
@@ -105,13 +97,13 @@ namespace MediaBrowser.Library.Entities {
         protected int FindAudioStream(string lang = "")
         {
             if (string.IsNullOrEmpty(lang)) lang = "eng";
-            if (MediaStreams == null || !MediaStreams.Any()) return 0;
+            if (MediaSources == null || !MediaSources.Any()) return 0;
 
             Logging.Logger.ReportVerbose("Looking for audio stream in {0}", lang);
             MediaStream stream = null;
             foreach (var codec in StreamableCodecs)
             {
-                stream = MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio && (s.Language == null || s.Language.Equals(lang, StringComparison.OrdinalIgnoreCase)) 
+                stream = MediaSources.First().MediaStreams.OrderBy(s => s.Index).FirstOrDefault(s => s.Type == MediaStreamType.Audio && (s.Language == null || s.Language.Equals(lang, StringComparison.OrdinalIgnoreCase)) 
                     && s.Codec.Equals(codec,StringComparison.OrdinalIgnoreCase));
                 if (stream != null) break;
                 
