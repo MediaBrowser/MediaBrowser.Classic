@@ -25,10 +25,9 @@ namespace MediaBrowser.Library.Entities {
             return changed | base.AssignFromItem(item);
         }
 
-        private List<string> _fileCache; 
         public override IEnumerable<string> Files
         {
-            get { return _fileCache ?? (_fileCache = VideoFiles.ToList()); }
+            get { return VideoFiles; }
         }
         
         public override PlaybackStatus PlaybackStatus {
