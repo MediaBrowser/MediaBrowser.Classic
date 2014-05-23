@@ -507,6 +507,27 @@ namespace MediaBrowser
             }
         }
 
+        public bool WarnOnStream
+        {
+            get { return this.CommonData.WarnOnStream; }
+            set
+            {
+                if (this.CommonData.WarnOnStream != value) { this.CommonData.WarnOnStream = value; Save(); FirePropertyChanged("WarnOnStream"); }
+            }
+        }
+
+        public int LocalMaxBitrate
+        {
+            get { return this.CommonData.LocalMaxBitrate; }
+            set { if (this.CommonData.LocalMaxBitrate != value) { this.CommonData.LocalMaxBitrate = value; Save(); FirePropertyChanged("LocalMaxBitrate"); } }
+        }
+
+        public int RemoteMaxBitrate
+        {
+            get { return this.CommonData.RemoteMaxBitrate; }
+            set { if (this.CommonData.RemoteMaxBitrate != value) { this.CommonData.RemoteMaxBitrate = value; Save(); FirePropertyChanged("RemoteMaxBitrate"); } }
+        }
+
         public string AssumeWatchedBeforeStr
         {
             get { return this.AssumeWatchedBefore.ToString("MMM yyyy"); }

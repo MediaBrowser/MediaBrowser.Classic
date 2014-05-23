@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0080";
+        const string VERSION = "1.0081";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -105,6 +105,9 @@ namespace MediaBrowser.Library.Localization
         public string ConfirmExitConfigDesc = "Present a menu when exiting the application to allow other options and prevent accidental exit";
         public string AutoLogoffConfigDesc = "Automatically log off MBC after the configured period of inactivity";
         public string AutoLogoffTimeOutConfigDesc = "The minutes of inactivity before MBC will automatically logoff";
+        public string WarnOnStreamConfigDesc = "Show a warning message if content is being streamed/transcoded instead of accessed directly";
+        public string LocalMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to the same network as the server";
+        public string RemoteMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to server via a remote network";
 
 
         //Config Panel
@@ -226,6 +229,11 @@ namespace MediaBrowser.Library.Localization
         public string ConfirmExitConfig = "Confirm Exit";
         public string AutoLogoffConfig = "Enable Auto Logoff";
         public string AutoLogoffTimeOutConfig = "After (mins)";
+        public string PlaybackConfig = "Playback";
+        public string StreamingConfig = "Streaming";
+        public string WarnOnStreamConfig = "Warn if Streaming";
+        public string LocalMaxBitrateConfig = "Local Network Max Bitrate (Mb/s)";
+        public string RemoteMaxBitrateConfig = "Remote Network Max Bitrate (Mb/s)";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";

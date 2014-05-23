@@ -540,7 +540,7 @@ namespace MediaBrowser.Library {
             kernel.AddConfigPanel(kernel.StringData.GetString("GeneralConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ViewOptionsConfig"), "");
             kernel.AddConfigPanel(kernel.StringData.GetString("ThemesConfig"), "");
-            //kernel.AddConfigPanel(kernel.StringData.GetString("ParentalControlConfig"), "");
+            kernel.AddConfigPanel(kernel.StringData.GetString("PlaybackConfig"), "");
 
             //kick off log clean up task if needed
             if (config.LastLogCleanup < DateTime.UtcNow.AddDays(-7))

@@ -124,6 +124,11 @@ namespace MediaBrowser.ApiInteraction
             }
         }
 
+        public int GetMaxBitRate()
+        {
+            return ServerHostName.StartsWith("192.168") ? Config.Instance.LocalMaxBitrate * 1000000 : Config.Instance.RemoteMaxBitrate * 1000000;
+        }
+
         /// <summary>
         /// Gets the default data format to request from the server
         /// </summary>

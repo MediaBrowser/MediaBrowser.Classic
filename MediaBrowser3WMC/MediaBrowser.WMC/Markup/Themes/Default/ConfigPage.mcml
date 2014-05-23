@@ -72,6 +72,7 @@
       <BooleanChoice Name="RememberFilters" Value="[Application.Config.RememberFilters]" />
       <BooleanChoice Name="InheritDefaultView" Value="[Application.Config.InheritDefaultView]" />
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
+      <BooleanChoice Name="WarnOnStream" Value="[Application.Config.WarnOnStream]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
       <BooleanChoice Name="ShowBackdrop" Value="[Application.Config.ShowBackdrop]" />
       <BooleanChoice Name="CollapseBoxSets" Value="[Application.Config.CollapseBoxSets]" />
@@ -110,6 +111,8 @@
       <IntRangedValue Name="GridSpacing" Value="[Application.Config.GridSpacingCfg]" MaxValue="50" MinValue="0" Step="2"/>
       <IntRangedValue Name="DefaultPosterSize" Value="[Application.Config.DefaultPosterSizeCfg]" MaxValue="1000" MinValue="60" Step="10" />
       <IntRangedValue Name="ThumbStripPosterWidth" Value="[Application.Config.ThumbStripPosterWidth]" MaxValue="1200" MinValue="200" Step="10" />
+      <IntRangedValue Name="LocalMaxBitrate" Value="[Application.Config.LocalMaxBitrate]" MaxValue="40" MinValue="1" Step="1" />
+      <IntRangedValue Name="RemoteMaxBitrate" Value="[Application.Config.RemoteMaxBitrate]" MaxValue="40" MinValue="1" Step="1" />
 
       <IntRangedValue Name="BackdropRotationInterval" Value="[Application.Config.BackdropRotationInterval]" MaxValue="15" MinValue="1" Step="1"/>
       <RangedValue Name="BackdropTransitionInterval" Value="[Application.Config.BackdropTransitionInterval]" MaxValue="3" MinValue=".1" Step=".1"/>
@@ -274,18 +277,13 @@
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Panel1.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="1" ConditionOp="Equals" Target="[Panel2.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="2" ConditionOp="Equals" Target="[Panel3.Visible]" Value="true" />
-      <!--<Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="3" ConditionOp="Equals" Target="[Panel4.Visible]" Value="true" />-->
-      <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="2" ConditionOp="GreaterThan">
+      <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="3" ConditionOp="Equals" Target="[Panel4.Visible]" Value="true" />
+      <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="3" ConditionOp="GreaterThan">
         <Actions>
           <Set Target="[AddinPanel.Source]" Value="[Application.CurrentConfigPanel]" />
           <Set Target="[Panel99.Visible]" Value="true" />
         </Actions>
       </Condition>
-      <!--<Condition Source="[Model.ChosenIndex]" SourceValue="4" ConditionOp="Equals" Target="[Panel5.Visible]" Value="true" />
-      <Condition Source="[Model.ChosenIndex]" SourceValue="5" ConditionOp="Equals" Target="[Panel6.Visible]" Value="true" />-->
-      <!--<Condition Source="[Model.ChosenIndex]" SourceValue="6" ConditionOp="Equals" Target="[Panel7.Visible]" Value="true" />-->
-      <!--<Condition Source="[Model.ChosenIndex]" SourceValue="7" ConditionOp="Equals" Target="[Panel8.Visible]" Value="true" />-->
-      <!--<Condition Source="[Model.ChosenIndex]" SourceValue="6" ConditionOp="Equals" Target="[Panel9.Visible]" Value="true" />-->
 
       <Changed Source="[Close.Invoked]">
         <Actions>
@@ -375,6 +373,9 @@
       <Binding Source="[ShowRootBackground.Value]" Target="[Config.ShowRootBackground]" />
       <Binding Source="[EnableMouseHook.Value]" Target="[Config.EnableMouseHook]" />
       <Binding Source="[CollapseBoxSets.Value]" Target="[Config.CollapseBoxSets]" />
+      <Binding Source="[RemoteMaxBitrate.Value]" Target="[Config.RemoteMaxBitrate]" />
+      <Binding Source="[LocalMaxBitrate.Value]" Target="[Config.LocalMaxBitrate]" />
+      <Binding Source="[WarnOnStream.Value]" Target="[Config.WarnOnStream]" />
 
 
       <Binding Source="[ThemeModel.Chosen!cor:String]" Target="[Config.Theme]" >
@@ -681,38 +682,19 @@
                 </Children>
               </Graphic>
 
-              <!--<Graphic Name="Panel4" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
+              <Graphic Name="Panel4" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
                        MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
                 <Children>
-                  <Panel Layout="VerticalFlow" >
+                  <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
                     <Children>
-                      --><!--<me:TextHeader Text="Parental Control" />--><!--
-                      <pe:PINEdit Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" Border="image://i:PlainBorder" EndCommand="[PINEntered]" Margins="0,20,0,20" Font="font://f:CP_ConfigHeaderFont"/>
-                      <Panel Name="ParentalUnlockedPanel" Visible="false" Layout="VerticalFlow" >
-                        <Children>
-                          <Text Content="[Application.LocalStrings.#PCUnlockedTxtConfig!cor:String]" MinimumSize="450,90" MaximumSize="450,90" Margins="[CMargin]" Font="Segoe Media Center Bold,14" Color="color://s:FontColorLight" WordWrap="true" />
-                          --><!--<me:TextLine Text=" "/>--><!--
-                          <sb:SimpleButton Text="[Application.LocalStrings.#RelockBtnConfig!cor:String]" Command="[RelockPC]" Size="175,40" Margins="[CMargin]" Visible="true" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont"/>
-                        </Children>
-                      </Panel>
-                      <Panel Name="ParentalPanel" Visible="false" Layout="VerticalFlow" >
-                        <Children>
-                          <cb:CheckBox Label="[Application.LocalStrings.#EnableParentalBlocksConfig!cor:String]" FocusItem="[FocusItem]" Checked="[Enabled]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                          <st:SpinnerText Model="[RatingsStrings]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#MaxAllowedRatingConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[InitialRating]" />
-                          --><!--<Text Name="RatingsDesc" Content="" MinimumSize="450,90" MaximumSize="450,90" Margins="[CMargin]" Font="Segoe Media Center Bold,14" Color="color://s:FontColorLight" WordWrap="true" />--><!--
-                          <cb:CheckBox Label="[Application.LocalStrings.#BlockUnratedContentConfig!cor:String]" Checked="[BlockUnrated]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                          <cb:CheckBox Label="[Application.LocalStrings.#HideBlockedContentConfig!cor:String]" Checked="[HideProtected]" FocusItem="[FocusItem]"  Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                          <cb:CheckBox Label="[Application.LocalStrings.#UnlockonPINEntryConfig!cor:String]" Checked="[AutoUnlock]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                          --><!--<me:TextLine Text=" "/>--><!--
-                          <vm:IntSpin Label="[Application.LocalStrings.#UnlockPeriodHoursConfig!cor:String]" Int="[UnlockPeriod]" Margins="[CMargin]"  />
-                          --><!--<me:TextLine Text=" "/>--><!--
-                          <sb:SimpleButton Text="[Application.LocalStrings.#EnterNewPINConfig!cor:String]" FocusItem="[FocusItem]"  Command="[EnterPIN]" Size="175,40" Margins="[CMargin]" Visible="true" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont"/>
-                        </Children>
-                      </Panel>
+                      <me:TextHeader Text="[Application.LocalStrings.#StreamingConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#WarnOnStreamConfig!cor:String]" Checked="[WarnOnStream]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#LocalMaxBitrateConfig!cor:String]" Model="[LocalMaxBitrate]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#RemoteMaxBitrateConfig!cor:String]" Model="[RemoteMaxBitrate]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                     </Children>
                   </Panel>
                 </Children>
-              </Graphic>-->
+              </Graphic>
 
               <Graphic Name="Panel8" Visible="false" Content="image://me:50AlphaBg" Layout="Center" MinimumSize="500,200" MaximumSize="500,200" Padding="[SMargin]" Navigation="Column">
                 <Children>

@@ -71,15 +71,16 @@ namespace MediaBrowser.Library.Entities {
                 }
                 else
                 {
-                    Logger.ReportInfo("Unable to access {0}.  Will try to stream.", Path);
+                    var bitrate = Kernel.ApiClient.GetMaxBitRate();
+                    Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
                     // build based on WMC profile
-                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = 10000000, Profile = new WindowsMediaCenterProfile()}) : null;
+                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = new WindowsMediaCenterProfile()}) : null;
                     yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                               {
                                                                                                   ItemId = ApiId,
                                                                                                   OutputFileExtension = ".wmv",
                                                                                                   MaxWidth = 1280,
-                                                                                                  VideoBitRate = 5000000,
+                                                                                                  VideoBitRate = bitrate,
                                                                                                   AudioBitRate = 128000,
                                                                                                   MaxAudioChannels = 2,
                                                                                                   AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
