@@ -915,8 +915,6 @@
     <Compile Include="Library\Interfaces\ITrailerProvider.cs" />
     <Compile Include="Library\Persistance\SQLiteRepository.cs" />
     <Compile Include="Library\Registration\MBRegistration.cs" />
-    <Compile Include="Library\ServiceInteraction\IPCCommands.cs" />
-    <Compile Include="Library\ServiceInteraction\MBClientConnector.cs" />
     <Compile Include="Library\Localization\BaseStrings.cs" />
     <Compile Include="Library\Localization\LocalizedStrings.cs" />
     <Compile Include="Library\Network\WebDownload.cs" />
