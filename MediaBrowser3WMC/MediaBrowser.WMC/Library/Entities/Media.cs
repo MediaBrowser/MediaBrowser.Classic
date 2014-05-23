@@ -5,6 +5,7 @@ using System.Text;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Filesystem;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
@@ -14,6 +15,7 @@ namespace MediaBrowser.Library.Entities {
         public virtual PlaybackStatus PlaybackStatus { get { return playbackStatus; } set { playbackStatus = value; } }
         public abstract IEnumerable<string> Files {get;}
         protected IMediaLocation location;
+        public List<MediaSourceInfo> MediaSources { get; set; } 
 
         public override bool PlayAction(Item item)
         {

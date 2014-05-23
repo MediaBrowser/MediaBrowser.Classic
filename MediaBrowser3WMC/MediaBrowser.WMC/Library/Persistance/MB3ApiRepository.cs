@@ -346,6 +346,7 @@ namespace MediaBrowser.Library.Persistance
                 if (media != null)
                 {
                     media.PartCount = mb3Item.PartCount ?? 1;
+                    media.MediaSources = mb3Item.MediaSources;
 
                     if (mb3Item.MediaType == Model.Entities.MediaType.Video)
                     {
