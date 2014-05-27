@@ -1,0 +1,147 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+		xmlns:pd="resx://MediaBrowser/MediaBrowser.Resources/PageDefault"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
+    xmlns:em="resx://MediaBrowser/MediaBrowser.Resources/ExitMenu"      
+    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
+      xmlns:po="resx://MediaBrowser/MediaBrowser.Resources/SingleItemPopout"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
+      xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
+    xmlns:me="Me"
+    >
+
+  <UI Name="CustomPlayer">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Locals>
+      <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
+      <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
+
+      <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
+      <Command Name="CloseMessage"/>
+    </Locals>
+
+    <Rules>
+
+      <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" />
+      <Binding Source="[Application.NewItem]" Target="[NewItemPopout.Item]" />
+
+      <Changed Source="[Back.Invoked]" >
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.Back]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[TopShortcut.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.BackToRoot]"/>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
+      <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
+      <Changed Source="[CloseMessage.Invoked]">
+        <Actions>
+          <Set Target="[Application.ShowMessage]" Value="false" />
+        </Actions>
+      </Changed>
+      
+      <!--Back out when video stops-->
+      <Condition Source="[Application.ShowNowPlaying]" SourceValue="false" >
+        <Actions>
+          <Invoke Target="[Application.Back]" />
+        </Actions>
+      </Condition>
+
+      <Changed Source="[Application.ShowMessage]" >
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[MsgDelay.Start]" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Set Target="[MessageBox.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[MsgDelay.Tick]" >
+        <Actions>
+          <Invoke Target="[MessageBox.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.ShowMessage]">
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true">
+        <Animations>
+          <Animation Animation="animation://an:PageShow"/>
+          <Animation Animation="animation://an:PageHide"/>
+        </Animations>
+        <Children>
+          <!--New Item slide out-->
+          <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
+          <LayoutInput>
+            <FormLayoutInput Left="Parent,0,700" Right="Parent,1" Top="Parent,.3"/>
+          </LayoutInput>
+              
+            <Animations>
+              <Animation Animation="animation://an:NewItemShow"/>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+          </po:SingleItemPopout>
+          
+          <!--MessageBox-->
+          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
+                </Keyframes>
+              </Animation>
+              <Animation Type="Hide" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="1" />
+                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </msg:MessageBox>
+
+          <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
+          <Video Name="MainVideo" Layout="Fill" />
+
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+
+
+
+</Mcml>
