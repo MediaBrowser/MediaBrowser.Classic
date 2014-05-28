@@ -452,38 +452,7 @@ namespace MediaBrowser.Library {
                 }
 
                 var items = Studios.Select(Studio.GetStudio).ToList();
-
-                Async.Queue("Studio Item Loader", () =>
-                {
-                    items.Where(studio => studio.PrimaryImage == null).Select(studio => new Code.ModelItems.AsyncImageLoader(
-                                                                                                                  () => studio.PrimaryImage,
-                                                                                                                  DefaultImage,
-                                                                                                                  () => FirePropertyChanged("PrimaryImage")));
-                });
-
                 return items.Select(s => new StudioItemWrapper(s, this.PhysicalParent)).ToList();
-                    // http://community.mediabrowser.tv/permalinks/1356/studio-icons-in-name-order
-                    // .OrderBy(x => x.Studio.Name);
-
-
-                //if (items.Count > 0) {
-
-                //    Async.Queue("Studio Item Loader", () =>
-                //    {
-                //        foreach (var studio in items.Distinct()) {
-                //            if (studio.RefreshMetadata(MetadataRefreshOptions.FastOnly)) {
-                //                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
-                //            }
-                //        }
-
-                //        foreach (var studio in items.Distinct()) {
-                //            if (studio.RefreshMetadata()) {
-                //                Kernel.Instance.MB3ApiRepository.SaveItem(studio);
-                //            }
-                //        }
-                //    });
-                //}
-
             }
         }
 
