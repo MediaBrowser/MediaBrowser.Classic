@@ -235,6 +235,14 @@ namespace MediaBrowser.Library.Localization
         public string LocalMaxBitrateConfig = "Local Network Max Bitrate (Mb/s)";
         public string RemoteMaxBitrateConfig = "Remote Network Max Bitrate (Mb/s)";
 
+        //JIL
+        public string ThisWeek = "This Week";
+        public string WeekAgo = "A Week Ago";
+        public string MonthAgo = "A Month Ago";
+        public string SixMonthsAgo = "Six Months Ago";
+        public string YearAgo = "A Year Ago";
+        public string Later = "Later";
+
         //EHS        
         public string RecentlyWatchedEHS = "last played";
         public string InProgressEHS = "in progress";

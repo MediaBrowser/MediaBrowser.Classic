@@ -2572,6 +2572,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] JilSelector {
+            get {
+                object obj = ResourceManager.GetObject("JilSelector", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] LastWatched {
             get {
                 object obj = ResourceManager.GetObject("LastWatched", resourceCulture);

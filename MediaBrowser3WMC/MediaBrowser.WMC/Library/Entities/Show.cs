@@ -125,7 +125,7 @@ namespace MediaBrowser.Library.Entities {
             set { Plot = value; }
         }
 
-        public override string OfficialRating { get { return MpaaRating ?? ""; }}
+        public override string OfficialRating { get { return MpaaRating ?? ""; } set { MpaaRating = value; }}
 
         protected List<Video> GetSpecialFeatures()
         {

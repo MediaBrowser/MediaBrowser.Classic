@@ -1363,4 +1363,7 @@
   <data name="UserMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>markup\controls\popups\usermenu.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="JilSelector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>markup\controls\jil\jilselector.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

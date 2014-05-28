@@ -52,13 +52,7 @@ namespace MediaBrowser.Library {
 
                 case SortOrder.Rating:
 
-                    var xImdbRating = x is IShow ? (x as IShow).ImdbRating : null;
-                    var yImdbRating = y is IShow ? (y as IShow).ImdbRating : null;
-
-                    xImdbRating = xImdbRating ?? 0;
-                    yImdbRating = yImdbRating ?? 0;
-
-                    compare = yImdbRating.Value.CompareTo(xImdbRating.Value);
+                    compare = Ratings.Level(x.OfficialRating).CompareTo(Ratings.Level(y.OfficialRating));
                     break;
 
                 case SortOrder.Runtime:

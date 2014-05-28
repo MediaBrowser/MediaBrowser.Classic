@@ -91,6 +91,8 @@ namespace MediaBrowser.Library.Entities
             {
                 return MpaaRating ?? (FirstChild != null ? FirstChild.OfficialRating : "");
             }
+
+            set { MpaaRating = value; }
         }
 
 

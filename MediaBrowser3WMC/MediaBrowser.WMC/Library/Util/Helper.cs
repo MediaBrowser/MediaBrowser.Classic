@@ -631,6 +631,14 @@ namespace MediaBrowser.LibraryManagement
             return first.ToUpper() + theRest.ToLower();
         }
 
+        private static char[] _digits = "0123456789".ToArray();
+        public static string FirstCharOrDefault(string str, bool capitalize = true)
+        {
+            if (str == null) return "<Unknown>";
+            var val = _digits.Contains(str[0]) ? "0" : str.Substring(0, 1);
+            return capitalize ? val.ToUpper() : val;
+        }
+
         /// <summary>
         /// Returns MAC Address from first Network Card in Computer
         /// </summary>

@@ -128,6 +128,7 @@ namespace MediaBrowser.Library.Entities {
             {
                 return MpaaRating ?? "None";
             }
+            set { MpaaRating = value; }
         }
 
         protected void LoadFullDetails()

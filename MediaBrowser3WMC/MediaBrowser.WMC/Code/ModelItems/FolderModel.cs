@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Util;
+using MediaBrowser.LibraryManagement;
 using Microsoft.MediaCenter.UI;
 using System.Diagnostics;
 using System.Linq;
@@ -628,6 +629,9 @@ namespace MediaBrowser.Library {
             FireWatchedChangedEvents();
             if (this.displayPrefs != null)
                 UpdateActualThumbSize();
+
+            JilOptions = null;
+
         }
 
         private void FireWatchedChangedEvents() {
@@ -844,6 +848,39 @@ namespace MediaBrowser.Library {
             });
         }
 
+        private Choice _jilOptions;
+        public Choice JilOptions
+        {
+            get { return _jilOptions ?? (_jilOptions = GetJilOptions()); }
+            set { _jilOptions = value; FirePropertyChanged("JilOptions"); }
+        }
+
+        protected Choice GetJilOptions()
+        {
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("DateDispPref") ||
+                DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
+            {
+                // Dates
+                return new Choice(this, "Jil Options", new List<string>
+                                                           {
+                                                               Localization.LocalizedStrings.Instance.GetString("ThisWeek"),
+                                                               Localization.LocalizedStrings.Instance.GetString("WeekAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("MonthAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("SixMonthsAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("YearAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("Later"),
+
+                                                           });
+            }
+            else if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
+            {
+                return new Choice(this, "Jil Options", Children.Select(c => c.OfficialRating).Distinct().ToList());
+            }
+
+            // default
+            return new Choice(this, "Jil Options", Children.Select(c => c.BaseItem is Season ? c.BaseItem.SortName : Helper.FirstCharOrDefault(c.BaseItem.SortName, true)).Distinct().ToList());
+        }
+
         public int JILShift {
             get {
                 return jilShift;
@@ -857,7 +894,7 @@ namespace MediaBrowser.Library {
         public string TripleTapSelect {
             set {
 
-                if (!String.IsNullOrEmpty(value) && (LibraryManagement.Helper.IsAlphaNumeric(value))) {
+                if (!String.IsNullOrEmpty(value)) {
                     var comparer = new BaseItemComparer(SortOrder.Name, StringComparison.InvariantCultureIgnoreCase);
                     var tempItem =  Activator.CreateInstance(this.folder.ChildType) as BaseItem ?? new BaseItem();
                     if (IsIndexed || this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("NameDispPref") || (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref")))
@@ -866,18 +903,24 @@ namespace MediaBrowser.Library {
                     } else
                         if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("DateDispPref"))
                         {
-                            //no good way to do this
-                            return;
-                        } else
+                            try
+                            {
+                                comparer = new BaseItemComparer(SortOrder.Date);
+                                int year;
+                                tempItem.DateCreated = int.TryParse(value, out year) ? new DateTime(year, 1, 1) : TranslateSpecialDate(value);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.ReportException("Error in custom JIL selection", e);
+                            }
+                        }
+                        else
                             if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
                             {
                             try
                             {
-                                if (tempItem is IShow)
-                                {
                                     comparer = new BaseItemComparer(SortOrder.Rating);
-                                    (tempItem as IShow).ImdbRating = Convert.ToSingle(value);
-                                }
+                                    tempItem.OfficialRating = value;
                             }
                             catch (Exception e)
                             {
@@ -898,22 +941,20 @@ namespace MediaBrowser.Library {
                             {
                                 Logger.ReportException("Error in custom JIL selection", e);
                             }
-                                } else
-                                    if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
+                                } else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
                                     {
                                         try
                                         {
-                                            if (tempItem is IShow)
-                                            {
-                                                comparer = new BaseItemComparer(SortOrder.Year);
-                                                (tempItem as IShow).ProductionYear = Convert.ToInt32(value);
-                                            }
+                                            comparer = new BaseItemComparer(SortOrder.Year);
+                                            int year;
+                                            tempItem.PremierDate = int.TryParse(value, out year) ? new DateTime(year, 1, 1) : TranslateSpecialDate(value);
                                         }
                                         catch (Exception e)
                                         {
                                             Logger.ReportException("Error in custom JIL selection", e);
                                         }
                                     }
+
                                     else
                                     {
                                         try
@@ -928,16 +969,40 @@ namespace MediaBrowser.Library {
                                     }
                 
 
-                    int i = 0; 
-                    foreach (var child in Children) {
-                        if (comparer.Compare(tempItem, child.BaseItem) <= 0) break;
-                        i++; 
-                    }
+                    int i = Children.TakeWhile(child => comparer.Compare(tempItem, child.BaseItem) > 0).Count();
 
                     JILShift = i - SelectedChildIndex;
                 }
                  
             }
+        }
+
+        protected DateTime TranslateSpecialDate(string key)
+        {
+            //translate from our special values
+            if (key == Localization.LocalizedStrings.Instance.GetString("ThisWeek"))
+            {
+                return DateTime.Now;
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("WeekAgo"))
+            {
+                return DateTime.Now.AddDays(-7);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("MonthAgo"))
+            {
+                return DateTime.Now.AddDays(-30);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("SixMonthsAgo"))
+            {
+                return DateTime.Now.AddDays(-180);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("YearAgo"))
+            {
+                return DateTime.Now.AddYears(-1);
+            }
+
+            return DateTime.Now.AddYears(-2);
+
         }
 
         protected virtual void SortOrders_ChosenChanged(object sender, EventArgs e) {

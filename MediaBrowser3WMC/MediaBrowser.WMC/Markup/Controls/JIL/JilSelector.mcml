@@ -1,0 +1,112 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+            xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me"
+      >
+
+  <UI Name="JilSelector">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:FolderModel Name="Folder" FolderModel="$Required" />
+      <Color Name="TextColor" Color="Black"/>
+      <Command Name="LostFocus"/>
+      <cor:Boolean Name="Horizontal" Boolean="true" />
+    </Properties>
+
+    <Rules>
+
+      <!--`Bind the JIL options to our list -->
+      <Binding Source="[Folder.JilOptions.Options]" Target="[MyRepeater.Source]" />
+
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="false" >
+        <Actions>
+          <Invoke Target="[LostFocus.Invoke]" />
+        </Actions>
+      </Condition>
+
+    </Rules>
+
+    <Content>
+
+      <Panel Layout="HorizontalFlow" >
+        <Children>
+          <ColorFill Content="60,60,60"  >
+            <Children>
+              <!-- List Repeater -->
+              <Repeater Name="MyRepeater" DiscardOffscreenVisuals="false" Navigation="RememberFocus">
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" Spacing="2,2" Repeat="Never" ItemAlignment="Center"/>
+                </Layout>
+                <Content>
+                  <me:JilButton Text="[RepeatedItem!cor:String]" Folder="[Folder]" Color="[TextColor]" />
+                </Content>
+              </Repeater>
+              
+            </Children>
+          </ColorFill>
+        </Children>
+
+      </Panel>
+    </Content>
+  </UI>
+
+  <UI Name="JilButton" >
+    <Properties>
+      <cor:String Name="Text" cor:String="$Required"/>
+      <lib:FolderModel Name="Folder" FolderModel="$Required" />
+      <Font Name="Font" Font="Century Gothic, 16"/>
+      <Color Name="Color" Color="Black"/>
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Click" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true" />
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" >
+        <Actions>
+          <Set Target="[imgButton.Scale]" Value="1.4,1.4,1.4" />
+        </Actions>
+      </Condition>
+      
+      <Default Target="[imgButton.Scale]" Value="1,1,1" />
+
+      <Changed Source="[Click.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Set Target="[Folder.TripleTapSelect]" Value="[Text]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Text]" Target="[Label.Content]" />
+
+    </Rules>
+
+    <Content>
+      <Panel MinimumSize="40,40" MaximumSize="300,40">
+        <Children>
+          <ColorFill Name="imgButton"
+                     Content="120,120,120"
+                   CenterPointPercent=".5,.5,.5"
+                   Padding="2,4,2,0"
+                   MouseInteractive="true"
+                   >
+            <Children>
+              <Text Name="Label" Color="[Color]" Content="[Text]" Margins="10,0,10,0" Font="[Font]" HorizontalAlignment="Center" />
+
+            </Children>
+          </ColorFill>
+
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+</Mcml>
