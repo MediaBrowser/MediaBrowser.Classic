@@ -868,7 +868,7 @@ namespace MediaBrowser.Library {
                                                                Localization.LocalizedStrings.Instance.GetString("MonthAgo"),
                                                                Localization.LocalizedStrings.Instance.GetString("SixMonthsAgo"),
                                                                Localization.LocalizedStrings.Instance.GetString("YearAgo"),
-                                                               Localization.LocalizedStrings.Instance.GetString("Later"),
+                                                               Localization.LocalizedStrings.Instance.GetString("Earlier"),
 
                                                            });
             }

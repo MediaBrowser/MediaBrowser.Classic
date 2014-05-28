@@ -241,7 +241,7 @@ namespace MediaBrowser.Library.Localization
         public string MonthAgo = "A Month Ago";
         public string SixMonthsAgo = "Six Months Ago";
         public string YearAgo = "A Year Ago";
-        public string Later = "Later";
+        public string Earlier = "Earlier";
 
         //EHS        
         public string RecentlyWatchedEHS = "last played";
