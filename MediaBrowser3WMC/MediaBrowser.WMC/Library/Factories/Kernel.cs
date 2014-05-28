@@ -447,7 +447,7 @@ namespace MediaBrowser.Library {
             {
                 ServerHostName = address,
                 ServerApiPort = port,
-                DeviceId = ("MBCLASSIC"+Environment.MachineName+Environment.UserName).GetMD5().ToString().Replace("-",""),
+                DeviceId = Helper.GetMACAddress(),
                 ClientType = "MB-Classic",
                 DeviceName = Environment.MachineName+"/"+Environment.UserName,
                 Timeout = timeout
