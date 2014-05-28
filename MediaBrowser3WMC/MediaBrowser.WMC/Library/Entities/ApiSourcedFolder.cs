@@ -16,6 +16,7 @@ namespace MediaBrowser.Library.Entities
         public virtual string[] ExcludeItemTypes { get; set; }
         protected string SearchParentId { get; set; }
         protected bool PrimaryImageChecked { get; set; }
+        protected bool ThumbImageChecked { get; set; }
         protected bool BackdropImageChecked { get; set; }
         protected bool HasShadowItem { get; set; }
 
@@ -38,6 +39,7 @@ namespace MediaBrowser.Library.Entities
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
             BannerImagePath = item.BannerImagePath;
+            ThumbnailImagePath = item.ThumbnailImagePath;
             DisplayMediaType = item.DisplayMediaType;
             IncludeItemTypes = includeTypes;
             ExcludeItemTypes = excludeTypes;
@@ -88,6 +90,15 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override string ThumbnailImagePath
+        {
+            get { return HasShadowItem ? base.ThumbnailImagePath : base.ThumbnailImagePath ?? (base.ThumbnailImagePath = !ThumbImageChecked ? GetImagePath(ImageType.Thumb) : null); }
+            set
+            {
+                base.ThumbnailImagePath = value;
+            }
+        }
+
         public override List<string> BackdropImagePaths
         {
             get
@@ -112,9 +123,12 @@ namespace MediaBrowser.Library.Entities
                 case ImageType.Primary:
                     PrimaryImageChecked = true;
                     break;
+                case ImageType.Thumb:
+                    ThumbImageChecked = true;
+                    break;
             }
             //Look for it on the server IBN
-            return Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = imageType });
+            return  Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = imageType });
 
         }
     }
