@@ -284,30 +284,31 @@ namespace MediaBrowser.Library.Playables
         /// </summary>
         private bool HasUpdatedPlayState { get; set; }
 
-        private bool _EnablePlayStateSaving = true;
         /// <summary>
         /// Determines playstate should be saved for this item
         /// </summary>
-        public bool EnablePlayStateSaving { get { return _EnablePlayStateSaving; } set { _EnablePlayStateSaving = value; } }
+        public bool EnablePlayStateSaving { get; set; }
 
-        private bool _RaiseGlobalPlaybackEvents = true;
         /// <summary>
         /// Determines if global pre/post play events should fire
         /// </summary>
-        public bool RaiseGlobalPlaybackEvents { get { return _RaiseGlobalPlaybackEvents; } set { _RaiseGlobalPlaybackEvents = value; } }
+        public bool RaiseGlobalPlaybackEvents { get; set; }
 
-        private bool _ShowNowPlayingView = true;
         /// <summary>
         /// Determines whether or not the PlaybackController should show the now playing view during playback
         /// Note that this depends on PlaybackController implementation and support
         /// </summary>
-        public bool ShowNowPlayingView { get { return _ShowNowPlayingView; } set { _ShowNowPlayingView = value; } }
+        public bool ShowNowPlayingView { get; set; }
 
-        private bool _GoFullScreen = true;
         /// <summary>
         /// Determines whether or not the PlaybackController should go full screen upon beginning playback
         /// </summary>
-        public bool GoFullScreen { get { return _GoFullScreen; } set { _GoFullScreen = value; } }
+        public bool GoFullScreen { get; set; }
+
+        /// <summary>
+        /// Determines whether or not the PlaybackController should use our custom player UI upon beginning playback
+        /// </summary>
+        public bool UseCustomPlayer { get; set; }
 
         private BasePlaybackController _PlaybackController = null;
         /// <summary>
@@ -495,6 +496,16 @@ namespace MediaBrowser.Library.Playables
         }
 
         private bool? _PlayIntros;
+
+        public PlayableItem()
+        {
+            EnablePlayStateSaving = true;
+            RaiseGlobalPlaybackEvents = true;
+            ShowNowPlayingView = true;
+            UseCustomPlayer = Config.Instance.UseCustomPlayerInterface;
+            GoFullScreen = !UseCustomPlayer;
+        }
+
         /// <summary>
         /// Determines whether or not intros should be played before the main feature
         /// </summary>
@@ -676,6 +687,7 @@ namespace MediaBrowser.Library.Playables
 
                 // This is for music
                 GoFullScreen = false;
+                UseCustomPlayer = false;
             }
 
             // Always force this to false regardless of what the caller asks for

@@ -48,7 +48,7 @@ namespace MediaBrowser.Library.Input
         {
             this.mouseMoveTimer = new System.Timers.Timer();
             this.mouseMoveTimer.Elapsed += new System.Timers.ElapsedEventHandler(mouseMoveTimer_Elapsed);
-            this.mouseMoveTimer.Interval = 5000;
+            this.mouseMoveTimer.Interval = 10000;
             this.mouseMoveTimer.AutoReset = false;
             _mouseHookID = SetMouseHook(_proc);
             _kbHookID = SetKBHook(_proc);
@@ -61,6 +61,7 @@ namespace MediaBrowser.Library.Input
             {
                 MouseActiveEventArgs TOT = new MouseActiveEventArgs();
                 TOT.MouseActive = false;
+                MouseActive(this, TOT);
             }
         }
 
@@ -69,7 +70,7 @@ namespace MediaBrowser.Library.Input
             this.mouseMoveTimer.Stop();
             if (e.MouseActive == true)
             {
-                this.mouseMoveTimer.Interval = 5000;
+                this.mouseMoveTimer.Interval = 10000;
                 if (MouseActive != null)
                 {
                     MouseActiveEventArgs TOT = new MouseActiveEventArgs();
@@ -137,7 +138,7 @@ namespace MediaBrowser.Library.Input
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 &&
-                MouseMessages.WM_MOUSEMOVE == (MouseMessages)wParam)
+                (MouseMessages.WM_MOUSEMOVE == (MouseMessages)wParam || wParam == (IntPtr)WM_KEYDOWN))
             {
                 if (Tick != null)
                 {
@@ -147,16 +148,6 @@ namespace MediaBrowser.Library.Input
                 }
             }
 
-            //if the kb is pressed we clear the mousemovement 
-            else if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
-            {
-                if (Tick != null)
-                {
-                    MouseActiveEventArgs args = new MouseActiveEventArgs();
-                    args.MouseActive = false;
-                    Tick(null, args);
-                }
-            }
             return CallNextHookEx(_mouseHookID, nCode, wParam, lParam);
         }
 

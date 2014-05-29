@@ -351,7 +351,8 @@ namespace MediaBrowser
 
         public bool AskIncludeChildrenRefresh = true; //prompt to include children on a folder refresh
         public bool DefaultIncludeChildrenRefresh = true; //if we don't prompt, are children included?
-        
+
+        public bool UseCustomPlayerInterface = true; //use our custom player with overlays
 
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;

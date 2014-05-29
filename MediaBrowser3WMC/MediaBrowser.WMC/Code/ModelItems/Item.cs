@@ -264,6 +264,69 @@ namespace MediaBrowser.Library
 
         public bool HasAdditionalParts { get { return PartCount > 1; } }
 
+        public List<SeekPositionItem> SeekPoints
+        {
+            get { return _seekPoints ?? (_seekPoints = CreateSeekPoints()); }
+            set { _seekPoints = value; }
+        }
+
+        /// <summary>
+        /// Create a list of seek points based on percentage of the running time
+        /// </summary>
+        /// <returns></returns>
+        private List<SeekPositionItem> CreateSeekPoints()
+        {
+            return new List<SeekPositionItem>(GetSeekPoints(this, 200));
+        }
+
+        private IEnumerable<SeekPositionItem> GetSeekPoints(Item item, int numPoints)
+        {
+            var nextChapterIndex = 1;
+            var nextChapter = Chapters.Count > nextChapterIndex ? Chapters[nextChapterIndex] : null;
+
+            for (var i = 0; i <= numPoints; i++)
+            {
+                var pos = RunTimeTicks/numPoints*i;
+                var seek = new SeekPositionItem(pos, item);
+                if (nextChapter != null && pos >= nextChapter.PositionTicks)
+                {
+                    seek.PositionTicks = nextChapter.PositionTicks;
+                    seek.ChapterIndex = nextChapterIndex;
+                    nextChapterIndex++;
+                    nextChapter = Chapters.Count > nextChapterIndex ? Chapters[nextChapterIndex] : null;
+                }
+
+                yield return seek;
+            }
+        }
+
+        public long CurrentPlaybackPosition
+        {
+            get { return _currentPlaybackPosition; }
+            set
+            {
+                if (_currentPlaybackPosition != value)
+                {
+                    _currentPlaybackPosition = value;
+                    FirePropertiesChanged("CurrentPlaybackPosition","CurrentPositionString","CurrentEndTimeString");
+                }
+            }
+        }
+
+        public string CurrentPositionString { get { return Helper.TicksToFriendlyTime(CurrentPlaybackPosition); } }
+        public string CurrentEndTimeString { get { return DateTime.Now.AddTicks(RunTimeTicks - CurrentPlaybackPosition).ToString("t"); } }
+
+        public void SetNextChapterSeekIndex()
+        {
+            SeekPositionIndex = SeekPoints.FindIndex(SeekPositionIndex + 1, i => i.IsChapterPoint);
+        }
+
+        public int SeekPositionIndex
+        {
+            get { return _seekPositionIndex; }
+            set { _seekPositionIndex = value; FirePropertyChanged("SeekPositionIndex"); }
+        }
+
         private void DetermineVirtualType()
         {
             if (baseItem.LocationType != Model.Entities.LocationType.Virtual)
@@ -829,6 +892,9 @@ namespace MediaBrowser.Library
 
         protected FolderModel series;
         private Item _artist;
+        private List<SeekPositionItem> _seekPoints;
+        private long _currentPlaybackPosition;
+        private int _seekPositionIndex;
 
         public FolderModel Series
         {

@@ -937,6 +937,29 @@ namespace MediaBrowser
             }
         }
 
+        public Guid CurrentlyPlayingItemId
+        {
+            get { return _currentlyPlayingItemId; }
+            set { 
+                _currentlyPlayingItemId = value;
+                CurrentlyPlayingItem = null;
+            }
+        }
+
+        public Item CurrentlyPlayingItem
+        {
+            get { return _currentlyPlayingItem ?? (_currentlyPlayingItem = GetCurrentlyPlayingItem()); }
+            set { _currentlyPlayingItem = value; FirePropertyChanged("CurrentlyPlayingItem"); }
+        }
+
+        private Item GetCurrentlyPlayingItem()
+        {
+            var baseItem = Kernel.Instance.FindItem(_currentlyPlayingItemId) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(_currentlyPlayingItemId) ?? new BaseItem {Id = _currentlyPlayingItemId, Name = "<Unknown>"};
+            var item = ItemFactory.Instance.Create(baseItem);
+            TVHelper.CreateEpisodeParents(item);
+            return item;
+        }
+
         public string CurrentMenuOption { get; set; }
 
         private List<MenuItem> currentContextMenu;
@@ -1042,10 +1065,8 @@ namespace MediaBrowser
             }
             singleApplicationInstance = this;
             //wire up our mouseActiveHooker if enabled so we can know if the mouse is active over us
-            if (Config.Instance.EnableMouseHook)
-            {
-                Kernel.Instance.MouseActiveHooker.MouseActive += new IsMouseActiveHooker.MouseActiveHandler(mouseActiveHooker_MouseActive);
-            }
+            Kernel.Instance.MouseActiveHooker.MouseActive += mouseActiveHooker_MouseActive;
+            
             //initialize our menu manager
             menuManager = new MenuManager();
 
@@ -2230,7 +2251,7 @@ namespace MediaBrowser
 
         void mouseActiveHooker_MouseActive(IsMouseActiveHooker m, MouseActiveEventArgs e)
         {
-            this.IsMouseActive = e.MouseActive;
+            IsMouseActive = e.MouseActive;
         }
 
         public string BreadCrumbs
@@ -2601,6 +2622,13 @@ namespace MediaBrowser
             session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ParentalPINEntry", properties);
         }
 
+        public void OpenCustomPlayerUi()
+        {
+            var properties = new Dictionary<string, object>();
+            properties["Application"] = this;
+            session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
+        }
+
         public void OpenMCMLPage(string page, Dictionary<string, object> properties)
         {
             if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
@@ -2886,6 +2914,8 @@ namespace MediaBrowser
 
         public void Play(PlayableItem playable)
         {
+            CurrentlyPlayingItemId = playable.CurrentMedia.Id;
+
             PlaySecure(playable);
         }
 
@@ -3002,6 +3032,8 @@ namespace MediaBrowser
         }
 
         private Information _information = new Information();
+        private Item _currentlyPlayingItem;
+        private Guid _currentlyPlayingItemId;
 
         public Information Information
         {

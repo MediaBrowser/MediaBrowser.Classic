@@ -123,6 +123,11 @@ namespace MediaBrowser
                         Logger.ReportVerbose("Going fullscreen");
                         exp.GoToFullScreen();
                     }
+                    else if (playable.UseCustomPlayer)
+                    {
+                        Logger.ReportVerbose("Using custom player interface");
+                        Application.CurrentInstance.OpenCustomPlayerUi();
+                    }
 
                 }
                 else
@@ -389,6 +394,7 @@ namespace MediaBrowser
             // protect against really agressive calls
             if (property == "Position")
             {
+                Application.CurrentInstance.CurrentlyPlayingItem.CurrentPlaybackPosition = positionTicks;
                 var diff = (DateTime.Now - _LastTransportUpdateTime).TotalMilliseconds;
 
                 // Only cancel out Position reports
@@ -510,17 +516,25 @@ namespace MediaBrowser
         /// </summary>
         public override void GoToFullScreen()
         {
-            var mce = MediaExperience ?? PlaybackControllerHelper.GetMediaExperienceUsingReflection();
-
-            if (mce != null)
+            if (Playable != null && Playable.UseCustomPlayer)
             {
-                Logger.ReportVerbose("Going fullscreen...");
-                mce.GoToFullScreen();
+                Application.CurrentInstance.OpenCustomPlayerUi();
             }
             else
             {
-                Logger.ReportError("AddInHost.Current.MediaCenterEnvironment.MediaExperience is null, we have no way to go full screen!");
-                AddInHost.Current.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("CannotMaximizeDial"), "", Microsoft.MediaCenter.DialogButtons.Ok, 0, true);
+                var mce = MediaExperience ?? PlaybackControllerHelper.GetMediaExperienceUsingReflection();
+
+                if (mce != null)
+                {
+                    Logger.ReportVerbose("Going fullscreen...");
+                    mce.GoToFullScreen();
+                }
+                else
+                {
+                    Logger.ReportError("AddInHost.Current.MediaCenterEnvironment.MediaExperience is null, we have no way to go full screen!");
+                    AddInHost.Current.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("CannotMaximizeDial"), "", Microsoft.MediaCenter.DialogButtons.Ok, 0, true);
+                }
+                
             }
         }
 

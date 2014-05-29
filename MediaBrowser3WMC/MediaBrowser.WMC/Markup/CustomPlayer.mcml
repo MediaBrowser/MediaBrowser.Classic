@@ -13,6 +13,9 @@
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
       xmlns:search="resx://MediaBrowser/MediaBrowser.Resources/SearchPane"
       xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
+      xmlns:mp="resx://MediaBrowser/MediaBrowser.Resources/MPAARating"
+    xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+    xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SeekBar"
     xmlns:me="Me"
     >
 
@@ -24,17 +27,28 @@
     <Locals>
       <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
       <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
+      <ShortcutHandler Name="Skip" Handle="true" HandlerStage="Bubbled" Shortcut="SkipForward"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
+
+      <lib:Item Name="Item" Item="[Application.CurrentlyPlayingItem]" />
+      <a:Clock Name="Clock"/>
+
+      <cor:Boolean Name="ShowOverlay" />
     </Locals>
 
     <Rules>
 
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      
       <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" />
       <Binding Source="[Application.NewItem]" Target="[NewItemPopout.Item]" />
+      <Binding Source="[Application.CurrentlyPlayingItem]" Target="[Item]" />
 
-      <Changed Source="[Back.Invoked]" >
+      <Binding Source="[Clock.Time]" Target="[Time.Content]" />
+
+        <Changed Source="[Back.Invoked]" >
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.Back]" />
@@ -47,6 +61,52 @@
           <PlaySound Sound="sound://sounds:Miniselect" />
         </Actions>
       </Changed>
+
+      <Changed Source="[Skip.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Item.SetNextChapterSeekIndex]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.IsMouseActive]" Target="[ShowOverlay]" />
+      <Binding Source="[ShowOverlay]" Target="[TopPanel.Visible]" />
+      <Binding Source="[ShowOverlay]" Target="[BottomPanel.Visible]" />
+
+      <Binding Target="[MPAARating.Value]" Source="[Item.MpaaRating]"></Binding>
+      <Binding Target="[StarRating.Value]" Source="[Item.ImdbRating]"></Binding>
+      <Binding Target="[CriticScore.Content]" Source="[Item.CriticRatingString]" />
+      <Binding Target="[RTIcon.Content]" Source="[Item.RottenTomatoImage]" />
+      <Binding Target="[Runtime.Content]" Source="[Item.RunningTimeString]"></Binding>
+      <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
+      <Rule>
+        <Conditions>
+          <Equality Source="[Item.HDType]" ConditionOp="Equals" Value="1080" />
+        </Conditions>
+        <Actions>
+          <Set Target="[HDType.Visible]" Value="true" />
+          <Set Target="[HDType.Content]" Value="image://i:Icon1080" />
+        </Actions>
+      </Rule>
+      <Rule>
+        <Conditions>
+          <Equality Source="[Item.HDType]" ConditionOp="Equals" Value="720" />
+        </Conditions>
+        <Actions>
+          <Set Target="[HDType.Visible]" Value="true" />
+          <Set Target="[HDType.Content]" Value="image://i:Icon720" />
+        </Actions>
+      </Rule>
+      <Binding Source="[Item.PreferredImage]" Target="[PosterImage.Content]" >
+        <Conditions>
+          <Equality Source="[Item.ItemTypeString]" ConditionOp="NotEquals" Value="Episode" />
+        </Conditions>
+      </Binding>
+      <Binding Source="[Item.Series.PrimaryImage]" Target="[PosterImage.Content]" >
+        <Conditions>
+          <Equality Source="[Application.CurrentlyPlayingItem.ItemTypeString]" Value="Episode" />
+        </Conditions>
+      </Binding>
 
       <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
       <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
@@ -132,7 +192,96 @@
 
           <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
 
+          <Panel Name="TopPanel" Layout="Form" Visible="false" >
+            <LayoutInput>
+              <FormLayoutInput Top="Parent, 0"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+                  <PositionKeyframe Time="0.0" Value="0,-50,0" />
+                  <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+            <Children>
+              <Graphic Name="LogoImage" MaximumSize="300,0" MaintainAspectRatio="true" Margins="0,20,20,0" >
+                <LayoutInput>
+                  <FormLayoutInput Horizontal="Far" Vertical="Near"/>
+                </LayoutInput>
+              </Graphic>
+            </Children>
+            
+          </Panel>
+
+          <Panel Name="BottomPanel" Layout="Form" >
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent, 1"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+                  <PositionKeyframe Time="0.0" Value="0,150,0" />
+                  <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+            <Children>
+
+              <Text Name="Time" Font="Century Gothic, 18" Color="White" Alpha=".9" >
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent, 1, -20" Top="Backing, 0, 10"/>
+                </LayoutInput>
+              </Text>
+
+              <Graphic Name="PosterImage" MaximumSize="200,0" MaintainAspectRatio="true" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent, 0, 40" Top="Backing, 0, -60"/>
+                </LayoutInput>
+              </Graphic>
+              <Text  Name="Title" Margins="0,2,0,-3" Content="[Item.LongName]" Font="Segoe UI Light, 24, bold" Color="White" Alpha=".9" >
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterImage, 1, 10" Top="Backing, 0" Right="Time, 0, -10"/>
+                </LayoutInput>
+              </Text>
+              <Panel Name="InfoPanel" Layout="HorizontalFlow" Margins="5,0,0,0">
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterImage, 1, 10" Top="Title, 1"/>
+                </LayoutInput>
+                <Children>
+                  <sr:StarRating Margins="0,6,0,0" MaximumSize="0,20" Name="StarRating" ></sr:StarRating>
+                  <Graphic Name="RTIcon" Margins="10,6,0,0" MaintainAspectRatio="true" MaximumSize="0,20" />
+                  <Text Name="CriticScore" Font="Segoe UI Light, 14, bold" Color="White" Margins="2,2,10,0" />
+                  <Text Name="Year" Font="Segoe UI Light, 16, bold" Color="White" Margins="0,0,10,0" />
+                  <Text Name="Runtime" Font="Segoe UI Light, 16, bold" Color="White" Margins="0,0,10,0" />
+                  <mp:MPAARating Name="MPAARating" MaximumSize="0,21" Margins="0,6,12,0" />
+                  <Graphic Name="HDType" Margins="0,7,0,0" Content="image://i:Icon1080" MaximumSize="0,20" MaintainAspectRatio="true" Visible="false"/>
+                </Children>
+
+              </Panel>
+
+              <sb:SeekBar Application="[Application]" Item="[Item]" Layout="Scale" Margins="20,20,20,20" >
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterImage, 1, 10" Top="InfoPanel, 1" Right="Parent, 1"/>
+                </LayoutInput>
+              </sb:SeekBar>
+              
+              <ColorFill Name="Backing" Content="Black" Alpha=".65" MaximumSize="0,200" MinimumSize="0,200" >
+                <LayoutInput>
+                  <FormLayoutInput Bottom="Parent, 1" Horizontal="Fill"/>
+                </LayoutInput>
+              </ColorFill>
+            </Children>
+          </Panel>
+
           <Video Name="MainVideo" Layout="Fill" />
+          <ColorFill Name="Background" Content="Black" Layout="Fill" />
 
 
         </Children>

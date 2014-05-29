@@ -1501,6 +1501,16 @@ namespace MediaBrowser {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] CustomPlayer {
+            get {
+                object obj = ResourceManager.GetObject("CustomPlayer", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap d_aspect_169 {
@@ -2205,6 +2215,26 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap heart {
             get {
                 object obj = ResourceManager.GetObject("heart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon1080 {
+            get {
+                object obj = ResourceManager.GetObject("Icon1080", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon720 {
+            get {
+                object obj = ResourceManager.GetObject("Icon720", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3722,6 +3752,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] SeekBar {
+            get {
+                object obj = ResourceManager.GetObject("SeekBar", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] SimpleButton {
             get {
                 object obj = ResourceManager.GetObject("SimpleButton", resourceCulture);
@@ -4056,6 +4096,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("TitleSet", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UnderlayBlack {
+            get {
+                object obj = ResourceManager.GetObject("UnderlayBlack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

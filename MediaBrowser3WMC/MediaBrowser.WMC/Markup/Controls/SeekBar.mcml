@@ -1,0 +1,131 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+            xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:me="Me"
+      >
+
+  <UI Name="SeekBar">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:Item Name="Item" Item="$Required" />
+    </Properties>
+
+    <Rules>
+
+      <!--`Bind the Seek Positions to our list -->
+      <Binding Source="[Item.SeekPoints]" Target="[MyRepeater.Source]" />
+
+      <Binding Source="[Item.CurrentPositionString]" Target="[Current.Content]" />
+      <Binding Source="[Item.CurrentEndTimeString]" Target="[End.Content]" />
+
+      <Changed Source="[Item.SeekPositionIndex]" >
+        <Actions>
+          <Invoke Target="[MyRepeater.NavigateIntoIndex]" index="[Item.SeekPositionIndex]" />
+        </Actions>
+
+      </Changed>
+
+    </Rules>
+
+    <Content>
+
+      <Panel Layout="HorizontalFlow" >
+        <Layout>
+          <FlowLayout Orientation="Horizontal" Spacing="10,0" Repeat="Never" ItemAlignment="Center"/>
+        </Layout>
+        <Children>
+          <Text Name="Current" Content="[Item.CurrentPositionString]" Font="Segoe Media Center Light, 24, Bold" Color="White" />
+          <!-- List Repeater -->
+          <Repeater Name="MyRepeater" DiscardOffscreenVisuals="false" Navigation="RememberFocus">
+            <Layout>
+              <FlowLayout Orientation="Horizontal" Spacing="0,0" Repeat="Never" ItemAlignment="Center"/>
+            </Layout>
+            <Content>
+              <me:SeekButton Application="[Application]" SeekItem="[RepeatedItem!lib:SeekPositionItem]" Parent="[Item]" Index="[RepeatedItemIndex]" />
+            </Content>
+          </Repeater>
+          <Text Name="End" Content="[Item.CurrentEndTimeString]" Font="Segoe Media Center Light, 24, Bold" Color="White" />
+        </Children>
+
+      </Panel>
+    </Content>
+  </UI>
+
+  <UI Name="SeekButton" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:SeekPositionItem Name="SeekItem" SeekPositionItem="$Required" />
+      <lib:Item Name="Parent" Item="$Required" />
+      <Index Name="Index" Index="$Required"/>
+      <Font Name="Font" Font="Century Gothic, 16"/>
+      <Color Name="Color" Color="Black"/>
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Click" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true" />
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" >
+        <Actions>
+          <Set Target="[Legend.Visible]" Value="true" />
+          <Set Target="[Parent.SeekPositionIndex]" Value="[Index.Value]" />
+        </Actions>
+      </Condition>
+
+      <Changed Source="[Parent.CurrentPlaybackPosition]" >
+        <Conditions>
+          <Equality ConditionOp="GreaterThan" Source="[Parent.CurrentPlaybackPosition]" Value="[SeekItem.PositionTicks]" />
+        </Conditions>
+        <Actions>
+          <Set  Target="[imgButton.Content]" Value="120,200,120" />
+        </Actions>
+      </Changed>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[SeekItem.IsChapterPoint]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[imgButton.MaximumSize]" Value="2,25" />
+          <Set Target="[imgButton.MinimumSize]" Value="2,25" />
+        </Actions>
+      </Rule>
+      
+      <Default Target="[Legend.Visible]" Value="false" />
+
+      <Changed Source="[Click.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Application.PlaybackController.Seek]" position="[SeekItem.PositionTicks]" />
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+    <Content>
+      <Panel MouseInteractive="true">
+        <Children>
+          <ColorFill Name="Legend" Content="220,220,220" Padding="2,4,2,0" Visible="false" MinimumSize="0,40" >
+            <Children>
+              <Text Name="PositionString" Content="[SeekItem.PositionString]" Color="Black" Font="Segoe Media Center Light, 16, Bold" />
+            </Children>
+          </ColorFill>
+          <ColorFill Name="imgButton" MaximumSize="8,10" MinimumSize="8,10" Margins="0,2,0,0"
+                     Content="120,120,120"
+                   CenterPointPercent=".5,.5,.5"
+                   >
+          </ColorFill>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+</Mcml>

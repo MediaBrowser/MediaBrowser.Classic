@@ -117,6 +117,7 @@ namespace MediaBrowser.Library.Factories
 
             playable.UnmountISOAfterPlayback = unmountISOAfterPlayback;
             playable.UseAutoPlay = useAutoPlay;
+            playable.GoFullScreen = media is Song;
 
             return playable;
         }
@@ -161,6 +162,7 @@ namespace MediaBrowser.Library.Factories
             PlayableItem playable = Create(folder.RecursiveMedia);
 
             playable.Folder = folder;
+            playable.GoFullScreen = folder.ContainsMusic;
 
             return playable;
         }

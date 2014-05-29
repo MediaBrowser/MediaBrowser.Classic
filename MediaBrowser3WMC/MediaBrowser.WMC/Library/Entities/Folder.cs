@@ -168,7 +168,7 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        public bool ContainsMusic { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist); } }
+        public bool ContainsMusic { get { return children != null && children.Value.Any(i => i is MusicAlbum || i is MusicArtist || i is Song); } }
 
         public override bool PlayAction(Item item)
         {

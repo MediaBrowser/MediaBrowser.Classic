@@ -149,6 +149,7 @@
     <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
     <Compile Include="Code\ModelItems\PluginItemCollection.cs" />
+    <Compile Include="Code\ModelItems\SeekPositionItem.cs" />
     <Compile Include="Code\ModelItems\UserItem.cs" />
     <Compile Include="Code\PowerSettings.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
@@ -404,6 +405,8 @@
     <Content Include="Images\FavTV.png" />
     <Content Include="Images\heart.png" />
     <Content Include="Images\Icons\Frames.png" />
+    <Content Include="Images\Icons\Icon1080.png" />
+    <Content Include="Images\Icons\Icon720.png" />
     <Content Include="Images\Icons\IconAdded.png" />
     <None Include="Images\Icons\IconNext.png" />
     <None Include="Images\Icons\IconPrevious.png" />
@@ -690,6 +693,7 @@
     <Content Include="Images\Star\Star_Full_Black.png" />
     <Content Include="Images\Star\Star_Half.png" />
     <Content Include="Images\Star\Star_Half_Black.png" />
+    <Content Include="Images\UnderlayBlack.png" />
     <Content Include="Images\UnLock1.png" />
     <Content Include="Images\UnLocked.png" />
     <Content Include="Images\Unwatched\GreenCircle.png" />
@@ -990,6 +994,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\HeaderButton.mcml" />
+    <Content Include="Markup\Controls\SeekBar.mcml" />
     <Content Include="Markup\Controls\JIL\JilSelector.mcml" />
     <Content Include="Markup\Controls\Popups\ExitMenu.mcml" />
     <Content Include="Markup\Controls\Popups\SingleItemPopout.mcml">
@@ -1065,6 +1070,9 @@
     </Content>
     <Content Include="Markup\Controls\Weather.mcml" />
     <Content Include="Markup\Controls\Writers.mcml" />
+    <Content Include="Markup\CustomPlayer.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\LoginPage.mcml">
       <SubType>Designer</SubType>
     </Content>

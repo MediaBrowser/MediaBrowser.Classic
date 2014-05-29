@@ -507,6 +507,15 @@ namespace MediaBrowser
             }
         }
 
+        public bool UseCustomPlayerInterface
+        {
+            get { return this.Data.UseCustomPlayerInterface; }
+            set
+            {
+                if (this.Data.UseCustomPlayerInterface != value) { this.Data.UseCustomPlayerInterface = value; Save(); FirePropertyChanged("UseCustomPlayerInterface"); }
+            }
+        }
+
         public bool WarnOnStream
         {
             get { return this.CommonData.WarnOnStream; }
