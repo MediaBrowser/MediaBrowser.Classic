@@ -38,7 +38,7 @@
       <cor:String Name="PluginUpdateClass" String="[Application.Config.PluginUpdateClass]" />
 
       <BooleanChoice Name="EnableTraceLogging" Value="[Application.Config.EnableTraceLogging]" />
-      <BooleanChoice Name="EnableAutoLogoff" Value="[Application.Config.EnableTraceLogging]" />
+      <BooleanChoice Name="EnableAutoLogoff" Value="[Application.Config.EnableAutoLogoff]" />
       <BooleanChoice Name="EnableUpdates" Value="[Application.Config.EnableUpdates]" />
       <BooleanChoice Name="EnableSilentUpdates" Value="[Application.Config.EnableSilentUpdates]" />
       <BooleanChoice Name="EnableDelete" Value="[Application.Config.Advanced_EnableDelete]" />
