@@ -811,27 +811,12 @@ namespace MediaBrowser.Library {
             {
                 lock (this)
                 {
-                    if (_mouseActiveHooker == null)
-                    {
-                        _mouseActiveHooker = new IsMouseActiveHooker();
-                    }
-                    return _mouseActiveHooker;
+                    return _mouseActiveHooker ?? (_mouseActiveHooker = new IsMouseActiveHooker());
                 }
             }
         }
         
         
-        //private ParentalControl parentalControls;
-        //public ParentalControl ParentalControls
-        //{
-        //    get
-        //    {
-        //        if (this.parentalControls == null)
-        //            this.parentalControls = new ParentalControl();
-        //        return this.parentalControls;
-        //    }
-
-        //}
         public MBPropertySet LocalStrings
         {
             get

@@ -516,6 +516,15 @@ namespace MediaBrowser
             }
         }
 
+        public int InputActivityTimeout
+        {
+            get { return this.Data.InputActivityTimeout; }
+            set
+            {
+                if (this.Data.InputActivityTimeout != value) { this.Data.InputActivityTimeout = value; Save(); FirePropertyChanged("InputActivityTimeout"); }
+            }
+        }
+
         public int DefaultSkipSeconds
         {
             get { return this.Data.DefaultSkipSeconds; }
