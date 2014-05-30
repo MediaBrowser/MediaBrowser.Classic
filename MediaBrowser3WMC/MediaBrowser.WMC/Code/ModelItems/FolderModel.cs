@@ -895,6 +895,11 @@ namespace MediaBrowser.Library {
             {
                 return new Choice(this, "Jil Options", Children.Select(c => c.OfficialRating).Distinct().ToList());
             }
+            else if (displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref") ||
+                     displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RuntimeDispPref"))
+            {
+                return new Choice(this, "Jil Options", new List<string>());
+            }
 
             // default
             return new Choice(this, "Jil Options", Children.Select(c => c.BaseItem is Season ? c.BaseItem.SortName : Helper.FirstCharOrDefault(c.BaseItem.SortName, true)).Distinct().ToList());
