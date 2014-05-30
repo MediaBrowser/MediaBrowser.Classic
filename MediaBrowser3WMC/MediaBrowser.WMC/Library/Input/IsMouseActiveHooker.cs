@@ -48,7 +48,7 @@ namespace MediaBrowser.Library.Input
         {
             this.mouseMoveTimer = new System.Timers.Timer();
             this.mouseMoveTimer.Elapsed += mouseMoveTimer_Elapsed;
-            this.mouseMoveTimer.Interval = Kernel.Instance.ConfigData.InputActivityTimeout * 1000;
+            this.mouseMoveTimer.Interval = 10000;
             this.mouseMoveTimer.AutoReset = false;
             _mouseHookID = SetMouseHook(_proc);
             _kbHookID = SetKBHook(_proc);
@@ -70,7 +70,7 @@ namespace MediaBrowser.Library.Input
             this.mouseMoveTimer.Stop();
             if (e.MouseActive == true)
             {
-                this.mouseMoveTimer.Interval = Kernel.Instance.ConfigData.InputActivityTimeout * 1000;
+                this.mouseMoveTimer.Interval = 10000;
                 if (MouseActive != null)
                 {
                     MouseActiveEventArgs TOT = new MouseActiveEventArgs();

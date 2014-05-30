@@ -1064,7 +1064,10 @@ namespace MediaBrowser
                 this.session.Application = this;
             }
             singleApplicationInstance = this;
-            
+
+            //wire up our mouseActiveHooker so we can know if the mouse is active over us
+            Kernel.Instance.MouseActiveHooker.MouseActive += mouseActiveHooker_MouseActive;
+
             //initialize our menu manager
             menuManager = new MenuManager();
 
@@ -1628,9 +1631,6 @@ namespace MediaBrowser
 
             // load user config
             Kernel.Instance.LoadUserConfig();
-
-            //wire up our mouseActiveHooker so we can know if the mouse is active over us
-            Kernel.Instance.MouseActiveHooker.MouseActive += mouseActiveHooker_MouseActive;
 
             // setup styles and fonts with user options
             try
@@ -2253,7 +2253,7 @@ namespace MediaBrowser
         void mouseActiveHooker_MouseActive(IsMouseActiveHooker m, MouseActiveEventArgs e)
         {
             IsMouseActive = e.MouseActive;
-            Logger.ReportVerbose("************* Mouse Active {0}", e.MouseActive);
+            //Logger.ReportVerbose("************* Mouse Active {0}", e.MouseActive);
         }
 
         public string BreadCrumbs
