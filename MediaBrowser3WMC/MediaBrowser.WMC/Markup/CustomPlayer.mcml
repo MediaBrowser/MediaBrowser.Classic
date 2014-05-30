@@ -30,6 +30,9 @@
       <ShortcutHandler Name="Skip" Handle="true" HandlerStage="Bubbled" Shortcut="SkipForward"/>
       <ShortcutHandler Name="FF" Handle="true" HandlerStage="Bubbled" Shortcut="FastForward"/>
       <ShortcutHandler Name="Rew" Handle="true" HandlerStage="Bubbled" Shortcut="Rewind" />
+      <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
+      <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
+      <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
@@ -72,6 +75,18 @@
         </Actions>
       </Changed>
 
+      <!--Normal keyboard/mouse trap doesn't see these-->
+      <Rule>
+        <Conditions>
+          <Modified Source="[Play.Invoked]"/>
+          <Modified Source="[Pause.Invoked]"/>
+          <Modified Source="[PlayPause.Invoked]"/>
+        </Conditions>
+        <Actions>
+          <Set Target="[ShowOverlay]" Value="true" />
+        </Actions>
+      </Rule>
+      
       <Changed Source="[Skip.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
