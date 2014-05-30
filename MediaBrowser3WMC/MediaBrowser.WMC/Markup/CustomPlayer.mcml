@@ -184,7 +184,7 @@
         </Actions>
       </Condition>
 
-      <Changed Source="[Application.ShowMessage]" >
+      <Changed Source="[Application.ShowMessage]" InitialEvaluate="true" >
         <Conditions>
           <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
         </Conditions>
