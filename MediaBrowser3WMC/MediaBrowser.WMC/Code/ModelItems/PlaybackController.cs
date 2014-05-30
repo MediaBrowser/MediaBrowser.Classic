@@ -427,6 +427,7 @@ namespace MediaBrowser
                 string title = eventArgs.Item == null ? metadataTitle : (eventArgs.Item.HasMediaItems ? eventArgs.Item.MediaItems.ElementAt(eventArgs.CurrentMediaIndex).Name : eventArgs.Item.Files.ElementAt(eventArgs.CurrentFileIndex));
 
                 Logger.ReportVerbose("Playstate changed to {0} for {1}, PositionTicks:{2}, Playlist Index:{3}", state, title, positionTicks, eventArgs.CurrentFileIndex);
+                //Logger.ReportVerbose("Refresh rate is {0}", DisplayUtil.GetCurrentRefreshRate());
 
                 PlayStateChanged();
                 Logger.ReportVerbose("Back from PlayStateChanged");

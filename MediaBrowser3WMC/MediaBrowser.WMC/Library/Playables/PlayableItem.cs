@@ -143,6 +143,8 @@ namespace MediaBrowser.Library.Playables
 
             PlayState = PlayableItemPlayState.Stopped;
 
+            //DisplayUtil.RevertRefreshRate();
+
             // Fire finished event
             if (_PlaybackFinished != null)
             {
@@ -667,6 +669,7 @@ namespace MediaBrowser.Library.Playables
             }
             else
             {
+                //AdjustRefreshRate();
                 PlaybackController.Play(this);
             }
         }
