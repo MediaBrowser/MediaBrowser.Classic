@@ -931,7 +931,8 @@ namespace MediaBrowser.Library {
         public string TripleTapSelect {
             set {
 
-                if (!String.IsNullOrEmpty(value)) {
+                if (!String.IsNullOrEmpty(value) && !value.Contains("*")) 
+                {
                     var comparer = new BaseItemComparer(SortOrder.Name, StringComparison.InvariantCultureIgnoreCase);
                     var tempItem =  Activator.CreateInstance(this.folder.ChildType) as BaseItem ?? new BaseItem();
                     if (IsIndexed || this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("NameDispPref") || (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref")))
