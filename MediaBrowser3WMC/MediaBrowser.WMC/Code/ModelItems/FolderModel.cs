@@ -876,8 +876,7 @@ namespace MediaBrowser.Library {
 
         protected Choice GetJilOptions()
         {
-            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("DateDispPref") ||
-                DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("DateDispPref"))
             {
                 // Dates
                 return new Choice(this, "Jil Options", new List<string>
@@ -891,11 +890,25 @@ namespace MediaBrowser.Library {
 
                                                            });
             }
-            else if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
+            {
+                // Years
+                return new Choice(this, "Jil Options", new List<string>
+                                                           {
+                                                               Localization.LocalizedStrings.Instance.GetString("ThisYear"),
+                                                               Localization.LocalizedStrings.Instance.GetString("LastYear"),
+                                                               Localization.LocalizedStrings.Instance.GetString("FiveYearsAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("TenYearsAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("TwentyYearsAgo"),
+                                                               Localization.LocalizedStrings.Instance.GetString("Longer"),
+
+                                                           });
+            }
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
             {
                 return new Choice(this, "Jil Options", Children.Select(c => c.OfficialRating).Distinct().ToList());
             }
-            else if (displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref") ||
+            if (displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref") ||
                      displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RuntimeDispPref"))
             {
                 return new Choice(this, "Jil Options", new List<string>());
@@ -1023,6 +1036,34 @@ namespace MediaBrowser.Library {
             else if (key == Localization.LocalizedStrings.Instance.GetString("YearAgo"))
             {
                 return DateTime.Now.AddYears(-1);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("Earlier"))
+            {
+                return DateTime.Now.AddYears(-2);
+            }
+            if (key == Localization.LocalizedStrings.Instance.GetString("ThisYear"))
+            {
+                return DateTime.Now;
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("LastYear"))
+            {
+                return new DateTime(DateTime.Now.Year, 1, 1);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("FiveYearsAgo"))
+            {
+                return new DateTime(DateTime.Now.Year - 5, 1, 1);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("TenYearsAgo"))
+            {
+                return new DateTime(DateTime.Now.Year - 10, 1, 1);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("TwentyYearsAgo"))
+            {
+                return new DateTime(DateTime.Now.Year - 20, 1, 1);
+            }
+            else if (key == Localization.LocalizedStrings.Instance.GetString("Longer"))
+            {
+                return new DateTime(DateTime.Now.Year - 30, 1, 1);
             }
 
             return DateTime.Now.AddYears(-2);
