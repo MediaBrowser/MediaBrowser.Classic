@@ -19,6 +19,13 @@
       <cor:Boolean Name="Horizontal" Boolean="true" />
     </Properties>
 
+    <Locals>
+      <ShortcutHandler Name="ChannelUp" Handle="true" HandlerStage="Bubbled" Shortcut="ChannelUp"/>
+      <KeyHandler Name="PageUp" Handle="true" HandlerStage="Bubbled" Key="PageUp"/>
+      <ShortcutHandler Name="ChannelDn" Handle="true" HandlerStage="Bubbled" Shortcut="ChannelDown"/>
+      <KeyHandler Name="PageDn" Handle="true" HandlerStage="Bubbled" Key="PageDown"/>
+    </Locals>
+
     <Rules>
 
       <!--`Bind the JIL options to our list -->
@@ -29,6 +36,32 @@
           <Invoke Target="[LostFocus.Invoke]" />
         </Actions>
       </Condition>
+      
+      <!-- Paging keys -->
+      <Rule ConditionLogicalOp="Or">
+        <Conditions >
+          <Modified Source="[ChannelDn.Invoked]" />
+          <Modified Source="[PageDn.Invoked]" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Folder.PageDownJilButtons]" />
+
+        </Actions>
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions >
+          <Modified Source="[ChannelUp.Invoked]" />
+          <Modified Source="[PageUp.Invoked]" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Folder.PageUpJilButtons]" />
+        </Actions>
+      </Rule>
+      <Changed Source="[Folder.CurrentJilButtonIndex]" >
+        <Actions>
+          <Invoke Target="[MyRepeater.NavigateIntoIndex]" index="[Folder.CurrentJilButtonIndex]" />
+        </Actions>
+      </Changed>
 
     </Rules>
 
@@ -44,7 +77,7 @@
                   <FlowLayout Orientation="Horizontal" Spacing="2,2" Repeat="Never" ItemAlignment="Center"/>
                 </Layout>
                 <Content>
-                  <me:JilButton Text="[RepeatedItem!cor:String]" Folder="[Folder]" Color="[TextColor]" />
+                  <me:JilButton Text="[RepeatedItem!cor:String]" Folder="[Folder]" Color="[TextColor]" Index="[RepeatedItemIndex]" />
                 </Content>
               </Repeater>
               
@@ -60,6 +93,7 @@
     <Properties>
       <cor:String Name="Text" cor:String="$Required"/>
       <lib:FolderModel Name="Folder" FolderModel="$Required" />
+      <Index Name="Index" Index ="$Required"/>
       <Font Name="Font" Font="Century Gothic, 16"/>
       <Color Name="Color" Color="Black"/>
     </Properties>
@@ -74,6 +108,7 @@
       <Condition Source="[Input.KeyFocus]" SourceValue="true" >
         <Actions>
           <Set Target="[imgButton.Scale]" Value="1.4,1.4,1.4" />
+          <Set Target="[Folder.CurrentJilButtonIndex]" Value="[Index.Value]" />
         </Actions>
       </Condition>
       

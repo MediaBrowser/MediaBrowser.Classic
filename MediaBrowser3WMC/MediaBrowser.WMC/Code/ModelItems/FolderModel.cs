@@ -848,6 +848,25 @@ namespace MediaBrowser.Library {
             });
         }
 
+        public int CurrentJilButtonIndex { get; set; }
+        public void PageDownJilButtons()
+        {
+            var max = JilOptions.Options.Count;
+            var step = max/4;
+            var ndx = CurrentJilButtonIndex + step;
+            CurrentJilButtonIndex = Math.Min(ndx, max - 1);
+            FirePropertyChanged("CurrentJilButtonIndex");
+        }
+
+        public void PageUpJilButtons()
+        {
+            var max = JilOptions.Options.Count;
+            var step = max/4;
+            var ndx = CurrentJilButtonIndex - step;
+            CurrentJilButtonIndex = Math.Max(ndx, 0);
+            FirePropertyChanged("CurrentJilButtonIndex");
+        }
+
         private Choice _jilOptions;
         public Choice JilOptions
         {
