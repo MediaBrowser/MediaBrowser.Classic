@@ -421,6 +421,8 @@ namespace MediaBrowser
 
             if (playstateChanged)
             {
+                FirePropertyChanged("IsPaused");
+
                 // Get the title from the PlayableItem, if it's available. Otherwise use MediaMetadata
                 string title = eventArgs.Item == null ? metadataTitle : (eventArgs.Item.HasMediaItems ? eventArgs.Item.MediaItems.ElementAt(eventArgs.CurrentMediaIndex).Name : eventArgs.Item.Files.ElementAt(eventArgs.CurrentFileIndex));
 

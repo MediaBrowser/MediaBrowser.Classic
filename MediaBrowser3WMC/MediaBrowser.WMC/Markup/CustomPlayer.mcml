@@ -61,7 +61,9 @@
 
       <Binding Source="[Clock.Time]" Target="[Time.Content]" />
 
-        <Changed Source="[Back.Invoked]" >
+      <Binding Source="[Application.PlaybackController.IsPaused]" Target="[PausedPanel.Visible]" />
+      
+      <Changed Source="[Back.Invoked]" >
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.Back]" />
@@ -351,6 +353,13 @@
             </Children>
           </Panel>
 
+          <Panel Name="PausedPanel" Visible="false" Layout="Center" >
+            <Children>
+              <Graphic Content="resx://MediaBrowser/MediaBrowser.Resources/IconPaused" MaximumSize="256,256" MinimumSize="256,256" Margins="0,0,0,100" Alpha=".6" />
+              <ColorFill Content="Black" Alpha=".6" Layout="Fill" />
+            </Children>
+          </Panel>
+          
           <Video Name="MainVideo" Layout="Fill" />
           <ColorFill Name="Background" Content="Black" Layout="Fill" />
 

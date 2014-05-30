@@ -416,6 +416,7 @@
     <Content Include="Images\Icons\IconKeyboard.png" />
     <Content Include="Images\Icons\IconKeyboardFocus.png" />
     <Content Include="Images\Icons\IconLogout.png" />
+    <Content Include="Images\Icons\IconPaused.png" />
     <Content Include="Images\Icons\IconPlus.png" />
     <Content Include="Images\Icons\IconRemote.png" />
     <Content Include="Images\Icons\IconSearch.png" />

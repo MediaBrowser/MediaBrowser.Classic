@@ -1375,6 +1375,9 @@
   <data name="Icon720" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>images\icons\icon720.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconPaused" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\iconpaused.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="SeekBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>markup\controls\seekbar.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
