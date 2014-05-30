@@ -28,6 +28,8 @@
       <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
       <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
       <ShortcutHandler Name="Skip" Handle="true" HandlerStage="Bubbled" Shortcut="SkipForward"/>
+      <ShortcutHandler Name="FF" Handle="true" HandlerStage="Bubbled" Shortcut="FastForward"/>
+      <ShortcutHandler Name="Rew" Handle="true" HandlerStage="Bubbled" Shortcut="Rewind" />
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
@@ -36,6 +38,14 @@
       <a:Clock Name="Clock"/>
 
       <cor:Boolean Name="ShowOverlay" />
+
+      <Timer Name="HideDirectSkip" Interval="3000" AutoRepeat="false"/>
+      <TypingHandler Name="TypingHandler" HandlerStage="Bubbled" TypingPolicy="Default"  >
+        <EditableText>
+          <EditableText Value="" />
+        </EditableText>
+      </TypingHandler>
+
     </Locals>
 
     <Rules>
@@ -66,6 +76,20 @@
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetNextChapterSeekIndex]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[FF.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[TypingHandler.DisplayValue]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Rew.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[TypingHandler.DisplayValue]" />
         </Actions>
       </Changed>
 
@@ -107,6 +131,26 @@
           <Equality Source="[Application.CurrentlyPlayingItem.ItemTypeString]" Value="Episode" />
         </Conditions>
       </Binding>
+
+      <!--Direct Skip-->
+      <Binding Source="[TypingHandler.DisplayValue]" Target="[DirectSkip.Content]" />
+      <Changed Source="[TypingHandler.DisplayValue]">
+        <Conditions>
+          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[HideDirectSkip.Tick]">
+        <Actions>
+          <Set Target="[TypingHandler.EditableText.Value]" Value="" />
+          <Set Target="[DirectSkipPanel.Visible]" Value="false" />
+        </Actions>
+      </Changed>
+
+
 
       <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
       <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
@@ -264,6 +308,18 @@
                   <Graphic Name="HDType" Margins="0,7,0,0" Content="image://i:Icon1080" MaximumSize="0,20" MaintainAspectRatio="true" Visible="false"/>
                 </Children>
 
+              </Panel>
+
+              <!-- Direct Seek -->
+              <Panel Name="DirectSkipPanel" Layout="HorizontalFlow" Visible="false" >
+                <LayoutInput>
+                  <FormLayoutInput Bottom="InfoPanel,1" Right="Parent,1,-100"/>
+                </LayoutInput>
+                <Children>
+                  <Text Content="Skip" Color="220,220,250" Font="Segoe Media Center Light, 16, Bold" />
+                  <Text Name="DirectSkip" Font="Segoe Media Center Light, 16, Bold" Content="" Color="220,220,250" Margins="4,0,0,0"  />
+                  <Text Content="Seconds (hit FF or Rew)" Color="220,220,250" Font="Segoe Media Center Light, 16, Bold" Margins="4,0,0,0" />
+                </Children>
               </Panel>
 
               <sb:SeekBar Application="[Application]" Item="[Item]" Layout="Scale" Margins="20,20,20,20" >

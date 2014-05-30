@@ -354,6 +354,8 @@ namespace MediaBrowser
 
         public bool UseCustomPlayerInterface = true; //use our custom player with overlays
 
+        public int DefaultSkipSeconds = 30; //default number of seconds to skip ahead or back in custom player
+
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;
 

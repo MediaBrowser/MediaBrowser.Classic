@@ -374,6 +374,22 @@ namespace MediaBrowser.Code.ModelItems
             }
         }
 
+        public void SkipAhead(string value)
+        {
+            int seconds;
+            if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
+            var pos = Math.Min(CurrentFilePositionTicks + TimeSpan.FromSeconds(seconds).Ticks, CurrentFileDurationTicks);
+            Seek(pos);
+        }
+
+        public void SkipBack(string value)
+        {
+            int seconds;
+            if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
+            var pos = Math.Max(CurrentFilePositionTicks - TimeSpan.FromSeconds(seconds).Ticks, 0);
+            Seek(pos);
+        }
+
         public void Seek(long position)
         {
             var playstate = PlayState;

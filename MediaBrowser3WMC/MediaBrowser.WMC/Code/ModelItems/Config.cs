@@ -516,6 +516,15 @@ namespace MediaBrowser
             }
         }
 
+        public int DefaultSkipSeconds
+        {
+            get { return this.Data.DefaultSkipSeconds; }
+            set
+            {
+                if (this.Data.DefaultSkipSeconds != value) { this.Data.DefaultSkipSeconds = value; Save(); FirePropertyChanged("DefaultSkipSeconds"); }
+            }
+        }
+
         public bool WarnOnStream
         {
             get { return this.CommonData.WarnOnStream; }
