@@ -78,7 +78,7 @@
       </Changed>
 
       <!--Normal keyboard/mouse trap doesn't see these-->
-      <Rule>
+      <Rule ConditionLogicalOp="Or">
         <Conditions>
           <Modified Source="[Play.Invoked]"/>
           <Modified Source="[Pause.Invoked]"/>
