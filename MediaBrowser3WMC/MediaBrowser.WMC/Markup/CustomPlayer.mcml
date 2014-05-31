@@ -140,6 +140,7 @@
       <Binding Target="[MPAARating.Value]" Source="[Item.MpaaRating]"></Binding>
       <Binding Target="[StarRating.Value]" Source="[Item.ImdbRating]"></Binding>
       <Binding Target="[CriticScore.Content]" Source="[Item.CriticRatingString]" />
+      <Binding Target="[Year.Content]" Source="[Item.FirstAired]" />
       <Binding Target="[RTIcon.Content]" Source="[Item.RottenTomatoImage]" />
       <Binding Target="[Runtime.Content]" Source="[Item.RunningTimeString]"></Binding>
       <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
@@ -402,8 +403,8 @@
                   <FormLayoutInput Left="PosterImage, 1, 10" Top="Title, 1"/>
                 </LayoutInput>
                 <Children>
-                  <sr:StarRating Margins="0,6,0,0" MaximumSize="0,20" Name="StarRating" ></sr:StarRating>
-                  <Graphic Name="RTIcon" Margins="10,6,0,0" MaintainAspectRatio="true" MaximumSize="0,20" />
+                  <sr:StarRating Margins="0,6,10,0" MaximumSize="0,20" Name="StarRating" ></sr:StarRating>
+                  <Graphic Name="RTIcon" Margins="0,6,0,0" MaintainAspectRatio="true" MaximumSize="0,20" />
                   <Text Name="CriticScore" Font="Segoe UI Light, 14, bold" Color="White" Margins="2,2,10,0" />
                   <Text Name="Year" Font="Segoe UI Light, 16, bold" Color="White" Margins="0,0,10,0" />
                   <Text Name="Runtime" Font="Segoe UI Light, 16, bold" Color="White" Margins="0,0,10,0" />
