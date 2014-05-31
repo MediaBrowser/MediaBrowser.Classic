@@ -86,7 +86,7 @@
           <Modified Source="[PlayPause.Invoked]"/>
         </Conditions>
         <Actions>
-          <Set Target="[ShowOverlay]" Value="true" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Rule>
       
@@ -118,7 +118,7 @@
         </Actions>
       </Changed>
 
-      <Binding Source="[Application.IsMouseActive]" Target="[ShowOverlay]" />
+      <Binding Source="[Application.RecentUserInput]" Target="[ShowOverlay]" />
       <Binding Source="[ShowOverlay]" Target="[TopPanel.Visible]" />
       <Binding Source="[ShowOverlay]" Target="[BottomPanel.Visible]" />
 

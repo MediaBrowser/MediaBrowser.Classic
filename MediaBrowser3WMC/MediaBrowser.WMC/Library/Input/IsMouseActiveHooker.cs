@@ -8,27 +8,17 @@ using System.Text;
 namespace MediaBrowser.Library.Input
 
     //class borrowed from OML - thx MSBob
+    // re-worked for MB by ebr
 {
     /// <summary> 
     /// simple boolean eventargs for our mouseactive hooker 
     /// </summary> 
     public class MouseActiveEventArgs : EventArgs
     {
-        private bool mouseActive;
         /// <summary> 
         /// is the mouse active in the mce window 
         /// </summary> 
-        public bool MouseActive
-        {
-            set
-            {
-                mouseActive = value;
-            }
-            get
-            {
-                return this.mouseActive;
-            }
-        }
+        public bool MouseActive { get; set; }
     }
 
     /// <summary> 
@@ -42,69 +32,49 @@ namespace MediaBrowser.Library.Input
         private static event TickHandler Tick;
         private delegate void TickHandler(object o, MouseActiveEventArgs e);
 
-        private System.Timers.Timer mouseMoveTimer;
-
         public IsMouseActiveHooker()
         {
-            this.mouseMoveTimer = new System.Timers.Timer();
-            this.mouseMoveTimer.Elapsed += mouseMoveTimer_Elapsed;
-            this.mouseMoveTimer.Interval = 10000;
-            this.mouseMoveTimer.AutoReset = false;
             _mouseHookID = SetMouseHook(_proc);
             _kbHookID = SetKBHook(_proc);
-            Tick += new TickHandler(IsMouseActiveHooker_Tick);
-        }
-
-        void mouseMoveTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (MouseActive != null)
-            {
-                MouseActiveEventArgs TOT = new MouseActiveEventArgs();
-                TOT.MouseActive = false;
-                MouseActive(this, TOT);
-            }
+            Tick += IsMouseActiveHooker_Tick;
         }
 
         void IsMouseActiveHooker_Tick(object o, MouseActiveEventArgs e)
         {
-            this.mouseMoveTimer.Stop();
-            if (e.MouseActive == true)
+            if (e.MouseActive)
             {
-                this.mouseMoveTimer.Interval = 10000;
                 if (MouseActive != null)
                 {
-                    MouseActiveEventArgs TOT = new MouseActiveEventArgs();
-                    TOT.MouseActive = true;
-                    MouseActive(this, TOT);
+                    var args = new MouseActiveEventArgs {MouseActive = true};
+                    MouseActive(this, args);
                 }
-                this.mouseMoveTimer.Start();
             }
             else
             {
                 if (MouseActive != null)
                 {
-                    MouseActiveEventArgs TOT = new MouseActiveEventArgs();
-                    TOT.MouseActive = false;
-                    MouseActive(this, TOT);
+                    var args = new MouseActiveEventArgs {MouseActive = false};
+                    MouseActive(this, args);
                 }
             }
 
         }
 
         /// <summary>Gets a reference to the Process instance for the running ehshell.exe</summary> 
-        private Process GetEhShellProcess()
+        private static Process GetEhShellProcess()
         {
             // Get the current terminal services session ID 
             int currentSessionId;
             using (Process currentProcess = Process.GetCurrentProcess()) currentSessionId = currentProcess.SessionId;
 
             // Get all ehome processes on the machine, and find the one in the current session 
-            Process[] procs = Process.GetProcessesByName("ehshell");
+            var procs = Process.GetProcessesByName("ehshell");
             Process ehshell = null;
-            for (int i = 0; i < procs.Length; i++)
+            foreach (var proc in procs)
             {
-                if (ehshell == null && procs[i].SessionId == currentSessionId) ehshell = procs[i];
-                else procs[i].Dispose();
+                Logging.Logger.ReportVerbose("*************** found ehshell proc sess ID: {0} curr id: {1}", proc.SessionId, currentSessionId);
+                if (ehshell == null && proc.SessionId == currentSessionId) ehshell = proc;
+                else proc.Dispose();
             }
             return ehshell;
         }
@@ -115,7 +85,7 @@ namespace MediaBrowser.Library.Input
 
         private static IntPtr SetMouseHook(LowLevelMouseProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
+            using (Process curProcess = GetEhShellProcess() ?? Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx(WH_MOUSE_LL, proc,
@@ -125,7 +95,7 @@ namespace MediaBrowser.Library.Input
 
         private static IntPtr SetKBHook(LowLevelMouseProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
+            using (Process curProcess = GetEhShellProcess() ?? Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
@@ -142,8 +112,7 @@ namespace MediaBrowser.Library.Input
             {
                 if (Tick != null)
                 {
-                    MouseActiveEventArgs args = new MouseActiveEventArgs();
-                    args.MouseActive = true;
+                    var args = new MouseActiveEventArgs {MouseActive = true};
                     Tick(null, args);
                 }
             }

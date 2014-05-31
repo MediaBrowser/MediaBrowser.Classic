@@ -1632,6 +1632,10 @@ namespace MediaBrowser
             // load user config
             Kernel.Instance.LoadUserConfig();
 
+            // init activity timer
+            ActivityTimerInterval = Config.InputActivityTimeout * 1000;
+            _inputActivityTimer.Elapsed += _activityTimerElapsed;
+
             // setup styles and fonts with user options
             try
             {
@@ -2236,23 +2240,45 @@ namespace MediaBrowser
             }
         }
 
-        private Boolean isMouseActive = false;
-        public Boolean IsMouseActive
+        private readonly System.Timers.Timer _inputActivityTimer = new System.Timers.Timer {AutoReset = false, Enabled = false, Interval = 8000};
+        public double ActivityTimerInterval 
         {
-            get { return isMouseActive; }
+            get { return _inputActivityTimer.Interval; }
+            set { _inputActivityTimer.Interval = value; }
+        }
+
+        private void _activityTimerElapsed(object sender, System.Timers.ElapsedEventArgs args)
+        {
+            RecentUserInput = false;
+        }
+
+        public bool RecentUserInput
+        {
+            get { return _recentUserInput; }
             set
             {
-                if (isMouseActive != value)
+                if (value)
                 {
-                    isMouseActive = value;
-                    FirePropertyChanged("IsMouseActive");
+                    //restart the timer if we had input
+                    _inputActivityTimer.Stop();
+                    _inputActivityTimer.Start();
+                }
+                if (_recentUserInput != value)
+                {
+                    _recentUserInput = value;
+                    FirePropertyChanged("RecentUserInput");
                 }
             }
         }
 
+        /// <summary>
+        /// Legacy support - does not bind
+        /// </summary>
+        public bool IsMouseActive { get; set; }
+
         void mouseActiveHooker_MouseActive(IsMouseActiveHooker m, MouseActiveEventArgs e)
         {
-            IsMouseActive = e.MouseActive;
+            RecentUserInput = e.MouseActive;
             //Logger.ReportVerbose("************* Mouse Active {0}", e.MouseActive);
         }
 
@@ -3036,6 +3062,7 @@ namespace MediaBrowser
         private Information _information = new Information();
         private Item _currentlyPlayingItem;
         private Guid _currentlyPlayingItemId;
+        private bool _recentUserInput;
 
         public Information Information
         {
