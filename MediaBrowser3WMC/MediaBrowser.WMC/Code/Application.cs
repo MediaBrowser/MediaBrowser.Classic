@@ -1268,6 +1268,17 @@ namespace MediaBrowser
             }
         }
 
+        /// <summary>
+        /// MCML helper
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool IsNumeric(string value)
+        {
+            int num;
+            return int.TryParse(value, out num);
+        }
+
         public AggregateFolder RootFolder
         {
             get

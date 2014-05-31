@@ -44,11 +44,20 @@
       <cor:Boolean Name="ShowOverlay" />
 
       <Timer Name="HideDirectSkip" Interval="3000" AutoRepeat="false"/>
-      <TypingHandler Name="TypingHandler" HandlerStage="Bubbled" TypingPolicy="Default"  >
-        <EditableText>
-          <EditableText Value="" />
-        </EditableText>
-      </TypingHandler>
+      <!-- Use specific key handlers instead of typing handler so we can do different things with different types of entry-->
+      <EditableText Name="InputHolder" Value=""/>
+      <KeyHandler Name="0" Key="D0" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="1" Key="D1" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="2" Key="D2" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="3" Key="D3" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="4" Key="D4" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="5" Key="D5" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="6" Key="D6" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="7" Key="D7" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="8" Key="D8" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="9" Key="D9" Handle="true" HandlerStage="Bubbled"/>
+
+      <KeyHandler Name="Space" Key="Space" Handle="true" HandlerStage="Bubbled"/>
 
     </Locals>
 
@@ -107,14 +116,20 @@
       <Changed Source="[FF.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[TypingHandler.DisplayValue]" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[DirectSkip.Content]" />
         </Actions>
       </Changed>
 
       <Changed Source="[Rew.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[TypingHandler.DisplayValue]" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[DirectSkip.Content]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Space.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.PlaybackController.TogglePause]" />
         </Actions>
       </Changed>
 
@@ -158,23 +173,86 @@
       </Binding>
 
       <!--Direct Skip-->
-      <Binding Source="[TypingHandler.DisplayValue]" Target="[DirectSkip.Content]" />
-      <Changed Source="[TypingHandler.DisplayValue]">
-        <Conditions>
-          <Equality Source="[TypingHandler.DisplayValue]" ConditionOp="NotEquals" Value="" />
-        </Conditions>
+      <Binding Source="[InputHolder.Value]" Target="[DirectSkip.Content]" />
+      <Changed Source="[0.Invoked]">
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="0" />
         </Actions>
       </Changed>
+      <Changed Source="[1.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="1" />
+        </Actions>
+      </Changed>
+      <Changed Source="[2.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="2" />
+        </Actions>
+      </Changed>
+      <Changed Source="[3.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="3" />
+        </Actions>
+      </Changed>
+      <Changed Source="[4.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="4" />
+        </Actions>
+      </Changed>
+      <Changed Source="[5.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="5" />
+        </Actions>
+      </Changed>
+      <Changed Source="[6.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="6" />
+        </Actions>
+      </Changed>
+      <Changed Source="[7.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="7" />
+        </Actions>
+      </Changed>
+      <Changed Source="[8.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="8" />
+        </Actions>
+      </Changed>
+      <Changed Source="[9.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="9" />
+        </Actions>
+      </Changed>
+      
       <Changed Source="[HideDirectSkip.Tick]">
         <Actions>
-          <Set Target="[TypingHandler.EditableText.Value]" Value="" />
+          <Set Target="[InputHolder.Value]" Value="" />
           <Set Target="[DirectSkipPanel.Visible]" Value="false" />
         </Actions>
       </Changed>
 
+      <!--End Direct Skip-->
 
 
       <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />

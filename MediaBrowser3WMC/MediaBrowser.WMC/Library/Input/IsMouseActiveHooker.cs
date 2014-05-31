@@ -72,7 +72,6 @@ namespace MediaBrowser.Library.Input
             Process ehshell = null;
             foreach (var proc in procs)
             {
-                Logging.Logger.ReportVerbose("*************** found ehshell proc sess ID: {0} curr id: {1}", proc.SessionId, currentSessionId);
                 if (ehshell == null && proc.SessionId == currentSessionId) ehshell = proc;
                 else proc.Dispose();
             }

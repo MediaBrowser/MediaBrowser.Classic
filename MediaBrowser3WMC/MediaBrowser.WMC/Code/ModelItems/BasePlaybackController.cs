@@ -374,6 +374,12 @@ namespace MediaBrowser.Code.ModelItems
             }
         }
 
+        public void TogglePause()
+        {
+            if (PlayState == PlaybackControllerPlayState.Playing) Pause();
+            else if (PlayState == PlaybackControllerPlayState.Paused) UnPause();
+        }
+
         public void SkipAhead(string value)
         {
             int seconds;
