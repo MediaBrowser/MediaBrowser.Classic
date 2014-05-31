@@ -13,6 +13,7 @@ using MediaBrowser.Library.UserInput;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
+using Microsoft.MediaCenter.UI;
 
 namespace MediaBrowser.Library
 {
@@ -320,6 +321,7 @@ namespace MediaBrowser.Library
         {
             var ndx = SeekPoints.FindIndex(SeekPositionIndex + 1, i => i.IsChapterPoint);
             SeekPositionIndex = ndx >= 0 ? ndx : 0;
+            FirePropertyChanged("CurrentDisplayChapter");
         }
 
         public void SetPrevChapterSeekIndex()
@@ -327,12 +329,36 @@ namespace MediaBrowser.Library
             var count = SeekPositionIndex > 0 ? SeekPositionIndex - 1 : SeekPoints.Count - 1;
             var ndx = SeekPoints.FindLastIndex(count, count, i => i.IsChapterPoint);
             SeekPositionIndex = ndx >= 0 ? ndx : 0;
+            FirePropertyChanged("CurrentDisplayChapter");
+        }
+
+        public bool ShowChapterImage
+        {
+            get { return _showChapterImage; }
+            set
+            {
+                if (_showChapterImage != value)
+                {
+                    _showChapterImage = value;
+                    FirePropertiesChanged("ShowChapterImage","CurrentDisplayChapter");
+                }
+            }
+        }
+
+        public ChapterItem CurrentDisplayChapter
+        {
+            get { return SeekPoints[SeekPositionIndex].IsChapterPoint ? Chapters[SeekPoints[SeekPositionIndex].ChapterIndex.Value] : ChapterItem.Create(new Chapter {Name = "Unknown"}, this); }
         }
 
         public int SeekPositionIndex
         {
             get { return _seekPositionIndex; }
-            set { _seekPositionIndex = value; FirePropertyChanged("SeekPositionIndex"); }
+            set
+            {
+                _seekPositionIndex = value; 
+                FirePropertyChanged("SeekPositionIndex");
+                ShowChapterImage = SeekPoints[value].IsChapterPoint;
+            }
         }
 
         private void DetermineVirtualType()
@@ -903,6 +929,7 @@ namespace MediaBrowser.Library
         private List<SeekPositionItem> _seekPoints;
         private long _currentPlaybackPosition;
         private int _seekPositionIndex;
+        private bool _showChapterImage;
 
         public FolderModel Series
         {

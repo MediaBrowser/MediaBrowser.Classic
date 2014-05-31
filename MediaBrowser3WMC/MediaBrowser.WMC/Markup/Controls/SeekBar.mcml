@@ -31,6 +31,8 @@
 
       </Changed>
 
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="false" Target="[Item.ShowChapterImage]" Value="false" />
+
     </Rules>
 
     <Content>

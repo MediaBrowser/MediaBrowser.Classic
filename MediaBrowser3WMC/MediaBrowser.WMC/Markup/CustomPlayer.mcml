@@ -172,6 +172,10 @@
           <Equality Source="[Application.CurrentlyPlayingItem.ItemTypeString]" Value="Episode" />
         </Conditions>
       </Binding>
+      
+      <!--Chapter Info-->
+      <Binding Source="[Item.ShowChapterImage]" Target="[ChapterInfo.Visible]" />
+      <Binding Source="[Item.CurrentDisplayChapter]" Target="[ChapterInfo.Chapter]" />
 
       <!--Direct Skip-->
       <Binding Source="[InputHolder.Value]" Target="[DirectSkip.Content]" />
@@ -381,6 +385,13 @@
               <Animation Animation="animation://an:PageHide"/>
             </Animations>
             <Children>
+              
+              <!--Chapter Info-->
+              <me:ChapterItem Name="ChapterInfo" Chapter="[Item.CurrentDisplayChapter]" >
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent, 1, -20" Bottom="Backing, 0, -10"/>
+                </LayoutInput>
+              </me:ChapterItem>
 
               <Text Name="Time" Font="Century Gothic, 18" Color="White" Alpha=".9" >
                 <LayoutInput>
@@ -456,6 +467,43 @@
 
     </Content>
 
+  </UI>
+
+  <UI Name="ChapterItem" >
+    <Properties>
+      <lib:ChapterItem Name="Chapter" ChapterItem="$Required" />
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Chapter.Position]" Target="[ChapterPos.Content]" />
+      <Binding Source="[Chapter.Name]" Target="[ChapterName.Content]" />
+      <Binding Source="[Chapter.PrimaryImage]" Target="[ChapterImage.Content]" />
+
+    </Rules>
+
+    <Content>
+      <ColorFill Name="ChapterInfo" Content="Black" Padding="5,5,5,5" >
+        <Layout>
+          <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+        </Layout>
+        <Children>
+          <ColorFill Content="100,250,250,250" Padding="3,3,3,3" >
+            <Children>
+              <Text Name="ChapterPos" Font="Segoe UI Light, 16, bold" Color="White" Margins="3,0,3,0" />
+              <Graphic Name="ChapterImage" SizingPolicy="SizeToConstraint" MaximumSize="300,150" MaintainAspectRatio="true"/>
+            </Children>
+          </ColorFill>
+          <Panel Margins="0,0,0,0"  >
+            <Layout>
+              <FlowLayout Orientation="Vertical" ItemAlignment="Near"/>
+            </Layout>
+            <Children>
+              <Text Name="ChapterName" Font="Segoe UI Light, 16, bold" Color="White" />
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
   </UI>
 
 
