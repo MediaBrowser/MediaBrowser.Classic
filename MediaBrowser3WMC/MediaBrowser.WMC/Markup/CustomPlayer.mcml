@@ -28,6 +28,7 @@
       <KeyHandler Name="TopShortcut" Handle="true" Key="H" Modifiers="Control" HandlerStage="Bubbled"/>
       <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
       <ShortcutHandler Name="Skip" Handle="true" HandlerStage="Bubbled" Shortcut="SkipForward"/>
+      <ShortcutHandler Name="SkipBack" Handle="true" HandlerStage="Bubbled" Shortcut="SkipBack"/>
       <ShortcutHandler Name="FF" Handle="true" HandlerStage="Bubbled" Shortcut="FastForward"/>
       <ShortcutHandler Name="Rew" Handle="true" HandlerStage="Bubbled" Shortcut="Rewind" />
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
@@ -93,6 +94,13 @@
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetNextChapterSeekIndex]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[SkipBack.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Item.SetPrevChapterSeekIndex]" />
         </Actions>
       </Changed>
 

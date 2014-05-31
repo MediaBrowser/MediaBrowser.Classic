@@ -318,7 +318,15 @@ namespace MediaBrowser.Library
 
         public void SetNextChapterSeekIndex()
         {
-            SeekPositionIndex = SeekPoints.FindIndex(SeekPositionIndex + 1, i => i.IsChapterPoint);
+            var ndx = SeekPoints.FindIndex(SeekPositionIndex + 1, i => i.IsChapterPoint);
+            SeekPositionIndex = ndx >= 0 ? ndx : 0;
+        }
+
+        public void SetPrevChapterSeekIndex()
+        {
+            var count = SeekPositionIndex > 0 ? SeekPositionIndex - 1 : SeekPoints.Count - 1;
+            var ndx = SeekPoints.FindLastIndex(count, count, i => i.IsChapterPoint);
+            SeekPositionIndex = ndx >= 0 ? ndx : 0;
         }
 
         public int SeekPositionIndex
