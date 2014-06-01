@@ -62,6 +62,14 @@ namespace MediaBrowser.Library.Entities
             set { base.ProductionYear = value; }
         }
 
+        public override string LongName
+        {
+            get
+            {
+                return string.Format("{0} - {1} - {2}",Artist ?? UnknownArtist.Name, Album ?? UnknownAlbum.Name, Name);
+            }
+        }
+
         protected MusicAlbum RetrieveAlbum()
         {
             return !string.IsNullOrEmpty(AlbumId) ? Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(AlbumId)) as MusicAlbum : null;
