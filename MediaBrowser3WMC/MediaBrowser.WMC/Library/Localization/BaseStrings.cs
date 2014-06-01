@@ -108,6 +108,9 @@ namespace MediaBrowser.Library.Localization
         public string WarnOnStreamConfigDesc = "Show a warning message if content is being streamed/transcoded instead of accessed directly";
         public string LocalMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to the same network as the server";
         public string RemoteMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to server via a remote network";
+        public string InputActivityTimeoutConfigDesc = "The number of seconds of no mouse or key activity to consider idle and hide the player overlay";
+        public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead or back when FF is pressed without a specific number entered";
+        public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
 
 
         //Config Panel
@@ -234,6 +237,10 @@ namespace MediaBrowser.Library.Localization
         public string WarnOnStreamConfig = "Warn if Streaming";
         public string LocalMaxBitrateConfig = "Local Network Max Bitrate (Mb/s)";
         public string RemoteMaxBitrateConfig = "Remote Network Max Bitrate (Mb/s)";
+        public string InputActivityTimeoutConfig = "Input Activity Timeout (seconds)";
+        public string DefaultSkipSecondsConfig = "Default Skip Amount (seconds)";
+        public string UseCustomPlayerConfig = "Use Custom Player Interface";
+        public string PlayerConfig = "Player";
 
         //JIL
         public string ThisWeek = "This Week";

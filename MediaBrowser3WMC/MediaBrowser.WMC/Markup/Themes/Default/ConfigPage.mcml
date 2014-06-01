@@ -73,6 +73,7 @@
       <BooleanChoice Name="InheritDefaultView" Value="[Application.Config.InheritDefaultView]" />
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
       <BooleanChoice Name="WarnOnStream" Value="[Application.Config.WarnOnStream]" />
+      <BooleanChoice Name="UseCustomPlayerInterface" Value="[Application.Config.UseCustomPlayerInterface]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
       <BooleanChoice Name="ShowBackdrop" Value="[Application.Config.ShowBackdrop]" />
       <BooleanChoice Name="CollapseBoxSets" Value="[Application.Config.CollapseBoxSets]" />
@@ -113,6 +114,8 @@
       <IntRangedValue Name="ThumbStripPosterWidth" Value="[Application.Config.ThumbStripPosterWidth]" MaxValue="1200" MinValue="200" Step="10" />
       <IntRangedValue Name="LocalMaxBitrate" Value="[Application.Config.LocalMaxBitrate]" MaxValue="40" MinValue="1" Step="1" />
       <IntRangedValue Name="RemoteMaxBitrate" Value="[Application.Config.RemoteMaxBitrate]" MaxValue="40" MinValue="1" Step="1" />
+      <IntRangedValue Name="DefaultSkipSeconds" Value="[Application.Config.DefaultSkipSeconds]" MaxValue="600" MinValue="1" Step="1" />
+      <IntRangedValue Name="InputActivityTimeout" Value="[Application.Config.InputActivityTimeout]" MaxValue="600" MinValue="1" Step="1" />
 
       <IntRangedValue Name="BackdropRotationInterval" Value="[Application.Config.BackdropRotationInterval]" MaxValue="15" MinValue="1" Step="1"/>
       <RangedValue Name="BackdropTransitionInterval" Value="[Application.Config.BackdropTransitionInterval]" MaxValue="3" MinValue=".1" Step=".1"/>
@@ -376,6 +379,9 @@
       <Binding Source="[RemoteMaxBitrate.Value]" Target="[Config.RemoteMaxBitrate]" />
       <Binding Source="[LocalMaxBitrate.Value]" Target="[Config.LocalMaxBitrate]" />
       <Binding Source="[WarnOnStream.Value]" Target="[Config.WarnOnStream]" />
+      <Binding Source="[UseCustomPlayerInterface.Value]" Target="[Config.UseCustomPlayerInterface]" />
+      <Binding Source="[DefaultSkipSeconds.Value]" Target="[Config.DefaultSkipSeconds]" />
+      <Binding Source="[InputActivityTimeout.Value]" Target="[Config.InputActivityTimeout]" />
 
 
       <Binding Source="[ThemeModel.Chosen!cor:String]" Target="[Config.Theme]" >
@@ -687,6 +693,10 @@
                 <Children>
                   <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
                     <Children>
+                      <me:TextHeader Text="[Application.LocalStrings.#PlayerConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#InputActivityTimeoutConfig!cor:String]" Model="[InputActivityTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <me:TextHeader Text="[Application.LocalStrings.#StreamingConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#WarnOnStreamConfig!cor:String]" Checked="[WarnOnStream]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#LocalMaxBitrateConfig!cor:String]" Model="[LocalMaxBitrate]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />

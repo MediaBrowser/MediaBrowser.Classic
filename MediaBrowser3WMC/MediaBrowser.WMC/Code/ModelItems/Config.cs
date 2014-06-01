@@ -521,7 +521,8 @@ namespace MediaBrowser
             get { return this.Data.InputActivityTimeout; }
             set
             {
-                if (this.Data.InputActivityTimeout != value) { this.Data.InputActivityTimeout = value; Save(); FirePropertyChanged("InputActivityTimeout"); }
+                if (this.Data.InputActivityTimeout != value) { this.Data.InputActivityTimeout = value; Save();
+                    Application.CurrentInstance.ActivityTimerInterval = value * 1000; FirePropertyChanged("InputActivityTimeout"); }
             }
         }
 
