@@ -1,0 +1,28 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor ="assembly://mscorlib/System"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      >
+
+  <UI Name="Studio">
+
+    <Properties>
+      <cor:Boolean Name="IsNavigatingCommand" Boolean="false" />
+      <cor:Boolean Name="LeftAlign" Boolean="true" />
+      <lib:StudioItemWrapper Name="StudioItem" StudioItemWrapper="$Required" />
+    </Properties>
+
+    <Rules>
+      <Binding Source="[StudioItem.Item.PrimaryImage]" Target="[SImage.Content]" />
+    </Rules>
+
+    <Content>
+      <Panel>
+        <Children>
+          <Graphic Name="SImage" MaximumSize="250,70" MinimumSize="0,0" MaintainAspectRatio="true"/>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

@@ -3962,6 +3962,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] StudioImages {
+            get {
+                object obj = ResourceManager.GetObject("StudioImages", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] StylesBlack {
             get {
                 object obj = ResourceManager.GetObject("StylesBlack", resourceCulture);
