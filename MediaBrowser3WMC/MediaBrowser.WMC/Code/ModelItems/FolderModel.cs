@@ -65,6 +65,9 @@ namespace MediaBrowser.Library {
             // metadata should be refreshed in a higher priority
             if (Config.Instance.AutoValidate) folderChildren.RefreshAsap();
 
+            // see if this will help get first unwatched index in time
+            var ignore = FirstUnwatchedIndex;
+
             base.NavigatingInto();
         }
 
