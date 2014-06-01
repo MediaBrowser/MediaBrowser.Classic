@@ -25,6 +25,9 @@
       <Binding Source="[Item.CurrentEndTimeString]" Target="[End.Content]" />
 
       <Changed Source="[Item.SeekPositionIndex]" >
+        <Conditions>
+          <Equality Source="[Item.SeekPositionIndex]" ConditionOp="GreaterThanOrEquals" Value="0" />
+        </Conditions>
         <Actions>
           <Invoke Target="[MyRepeater.NavigateIntoIndex]" index="[Item.SeekPositionIndex]" />
         </Actions>

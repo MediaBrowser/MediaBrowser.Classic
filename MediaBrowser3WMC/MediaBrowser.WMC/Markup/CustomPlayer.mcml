@@ -17,6 +17,7 @@
     xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
     xmlns:si="resx://MediaBrowser/MediaBrowser.Resources/StudioImages"
     xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SeekBar"
+    xmlns:dum="resx://MediaBrowser/MediaBrowser.Resources/DummyItem"
     xmlns:me="Me"
     >
 
@@ -42,6 +43,7 @@
       <lib:Item Name="Item" Item="[Application.CurrentlyPlayingItem]" />
       <a:Clock Name="Clock"/>
 
+      <Timer Name="NavTimer" AutoRepeat="false" Interval="500" Enabled="true"/>
       <cor:Boolean Name="ShowOverlay" />
 
       <Timer Name="HideDirectSkip" Interval="3000" AutoRepeat="false"/>
@@ -65,7 +67,6 @@
     <Rules>
 
       <Default Target="[Input.KeyInteractive]" Value="true" />
-      
       <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" />
       <Binding Source="[Application.NewItem]" Target="[NewItemPopout.Item]" />
       <Binding Source="[Application.CurrentlyPlayingItem]" Target="[Item]" />
@@ -312,15 +313,30 @@
           <Set Target="[MouseBlocker.Visible]" Value="false" />
         </Actions>
       </Changed>
+      
+      <Changed Source="[NavTimer.Tick]">
+        <Actions>
+          <Invoke Target="[Dummy.NavigateInto]" />
+        </Actions>
+      </Changed>
+
     </Rules>
 
     <Content>
-      <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true">
+      <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true" >
         <Animations>
           <Animation Animation="animation://an:PageShow"/>
           <Animation Animation="animation://an:PageHide"/>
         </Animations>
         <Children>
+          <!--Dummy item to have focus initially-->
+          <dum:Dummy Name="Dummy" >
+          <LayoutInput>
+            <FormLayoutInput Left="Parent,0,100"/>
+          </LayoutInput>
+            
+          </dum:Dummy>
+
           <!--New Item slide out-->
           <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
           <LayoutInput>
@@ -397,7 +413,7 @@
               <Animation Animation="animation://an:PageHide"/>
             </Animations>
             <Children>
-              
+
               <!--Chapter Info-->
               <me:ChapterItem Name="ChapterInfo" Chapter="[Item.CurrentDisplayChapter]" >
                 <LayoutInput>

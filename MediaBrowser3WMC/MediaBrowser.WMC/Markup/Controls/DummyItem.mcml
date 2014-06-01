@@ -1,0 +1,19 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:me="Me">
+
+  
+
+  <UI Name="Dummy">
+    <Rules>
+
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+    </Rules>
+
+    <Content>
+      <Text Name="Dummy" Content=" " />
+    </Content>
+  </UI>
+
+
+</Mcml>

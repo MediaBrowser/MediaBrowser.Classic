@@ -957,6 +957,7 @@ namespace MediaBrowser
             var baseItem = Kernel.Instance.FindItem(_currentlyPlayingItemId) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(_currentlyPlayingItemId) ?? new BaseItem {Id = _currentlyPlayingItemId, Name = "<Unknown>"};
             var item = ItemFactory.Instance.Create(baseItem);
             TVHelper.CreateEpisodeParents(item);
+            item.SeekPositionIndex = -1;
             return item;
         }
 

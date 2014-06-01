@@ -1002,6 +1002,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Popups\UserMenu.mcml" />
+    <Content Include="Markup\Controls\DummyItem.mcml" />
     <Content Include="Markup\Controls\StudioImages.mcml" />
     <Content Include="Markup\Controls\UserIndicator.mcml" />
     <Content Include="Markup\Controls\DiamondPagination.mcml" />

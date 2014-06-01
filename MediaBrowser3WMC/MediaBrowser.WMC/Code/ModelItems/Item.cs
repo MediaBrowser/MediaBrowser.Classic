@@ -347,7 +347,7 @@ namespace MediaBrowser.Library
 
         public ChapterItem CurrentDisplayChapter
         {
-            get { return SeekPoints[SeekPositionIndex].IsChapterPoint ? Chapters[SeekPoints[SeekPositionIndex].ChapterIndex.Value] : ChapterItem.Create(new Chapter {Name = "Unknown"}, this); }
+            get { return SeekPositionIndex >= 0 && SeekPoints[SeekPositionIndex].IsChapterPoint ? Chapters[SeekPoints[SeekPositionIndex].ChapterIndex.Value] : ChapterItem.Create(new Chapter {Name = "Unknown"}, this); }
         }
 
         public int SeekPositionIndex
@@ -357,7 +357,7 @@ namespace MediaBrowser.Library
             {
                 _seekPositionIndex = value; 
                 FirePropertyChanged("SeekPositionIndex");
-                ShowChapterImage = SeekPoints[value].IsChapterPoint;
+                ShowChapterImage = (value >= 0 && value < SeekPoints.Count) && SeekPoints[value].IsChapterPoint;
             }
         }
 
