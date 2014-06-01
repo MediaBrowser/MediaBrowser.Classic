@@ -24,6 +24,7 @@
       <KeyHandler Name="PageUp" Handle="true" HandlerStage="Bubbled" Key="PageUp"/>
       <ShortcutHandler Name="ChannelDn" Handle="true" HandlerStage="Bubbled" Shortcut="ChannelDown"/>
       <KeyHandler Name="PageDn" Handle="true" HandlerStage="Bubbled" Key="PageDown"/>
+      <cor:Boolean Name="HasHadFocus" Boolean="false" />
     </Locals>
 
     <Rules>
@@ -31,7 +32,12 @@
       <!--`Bind the JIL options to our list -->
       <Binding Source="[Folder.JilOptions.Options]" Target="[MyRepeater.Source]" />
 
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="true" Target="[HasHadFocus]" Value="true" />
+
       <Condition Source="[Input.DeepKeyFocus]" SourceValue="false" >
+        <Conditions>
+          <Equality Source="[HasHadFocus]" Value="true" />
+        </Conditions>
         <Actions>
           <Invoke Target="[LostFocus.Invoke]" />
         </Actions>
