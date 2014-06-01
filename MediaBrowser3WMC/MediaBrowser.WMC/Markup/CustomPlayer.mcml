@@ -15,6 +15,7 @@
       xmlns:cm="resx://MediaBrowser/MediaBrowser.Resources/ContextMenu"
       xmlns:mp="resx://MediaBrowser/MediaBrowser.Resources/MPAARating"
     xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
+    xmlns:si="resx://MediaBrowser/MediaBrowser.Resources/StudioImages"
     xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SeekBar"
     xmlns:me="Me"
     >
@@ -172,7 +173,18 @@
           <Equality Source="[Application.CurrentlyPlayingItem.ItemTypeString]" Value="Episode" />
         </Conditions>
       </Binding>
-      
+
+      <Binding Target="[StudioRepeater.Source]"    Source="[Item.StudioItems]">
+        <Conditions>
+          <Equality Source="[Item.ItemTypeString]" ConditionOp="NotEquals" Value="Episode"/>
+        </Conditions>
+      </Binding>
+      <Binding Target="[StudioRepeater.Source]"    Source="[Item.Series.StudioItems]">
+        <Conditions>
+          <Equality Source="[Item.ItemTypeString]" Value="Episode"/>
+        </Conditions>
+      </Binding>
+
       <!--Chapter Info-->
       <Binding Source="[Item.ShowChapterImage]" Target="[ChapterInfo.Visible]" />
       <Binding Source="[Item.CurrentDisplayChapter]" Target="[ChapterInfo.Chapter]" />
@@ -442,7 +454,31 @@
                   <FormLayoutInput Left="PosterImage, 1, 10" Top="InfoPanel, 1" Right="Parent, 1"/>
                 </LayoutInput>
               </sb:SeekBar>
-              
+
+              <Panel Name="Studios" Layout="HorizontalFlow" Padding="0,0,0,0" Margins="20,20,20,15" Alpha=".6">
+                <LayoutInput>
+                  <FormLayoutInput Vertical="Far" Horizontal="Far"/>
+                </LayoutInput>
+                <Layout>
+                  <FlowLayout ItemAlignment="Center" Orientation="Vertical"/>
+                </Layout>
+                <Children>
+
+                  <Panel Name="Studio" MaximumSize="0,40" Layout="Scale" >
+                    <Children>
+                      <Repeater Name="StudioRepeater" Source="[Item.StudioItems]">
+                        <Layout>
+                          <FlowLayout Orientation="Horizontal" ItemAlignment="Center" Spacing="10,10" />
+                        </Layout>
+                        <Content>
+                          <si:Studio StudioItem="[RepeatedItem!lib:StudioItemWrapper]" Name="StudioLogo"/>
+                        </Content>
+                      </Repeater>
+                    </Children>
+                  </Panel>
+
+                </Children>
+              </Panel>
               <ColorFill Name="Backing" Content="Black" Alpha=".65" MaximumSize="0,200" MinimumSize="0,200" >
                 <LayoutInput>
                   <FormLayoutInput Bottom="Parent, 1" Horizontal="Fill"/>
