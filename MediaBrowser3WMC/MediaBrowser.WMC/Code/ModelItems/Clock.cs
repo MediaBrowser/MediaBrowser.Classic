@@ -32,11 +32,7 @@ namespace MediaBrowser {
 
         // Try to update the time.
         private void RefreshTime() {
-            // todo (decide if we want to localize) 
-            // this forces the format, and I tested every possibility for a hang. 
-            Time = DateTime.Now.ToString("h:mm tt");
-            //time = time.AddMinutes(1);
-            //Time = time.ToString("h:mm tt"); ; 
+            Time = DateTime.Now.ToString("t");
         }
     }
 
