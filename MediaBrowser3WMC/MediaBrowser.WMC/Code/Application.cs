@@ -734,7 +734,7 @@ namespace MediaBrowser
         public Item CurrentUser { get; set; }
 
         private List<Item> _availableUsers; 
-        public List<Item> AvailableUsers { get { return _availableUsers ?? (_availableUsers = Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""),  Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr(u.LastActivityDate ?? DateTime.MinValue)})).ToList()); } } 
+        public List<Item> AvailableUsers { get { return _availableUsers ?? (_availableUsers = Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""),  Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr((u.LastActivityDate ?? DateTime.MinValue).ToLocalTime())})).ToList()); } } 
         public List<Item> OtherAvailableUsers { get { return AvailableUsers.Where(u => u.Name != CurrentUser.Name).ToList(); } }
         private bool _multipleUsersHere;
         public bool MultipleUsersHere
