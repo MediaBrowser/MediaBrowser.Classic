@@ -9,6 +9,12 @@ namespace MediaBrowser.Library.Playables
     /// </summary>
     public class PlayableInternal : PlayableItem
     {
+        public PlayableInternal()
+        {
+            UseCustomPlayer = Config.Instance.UseCustomPlayerInterface;
+            GoFullScreen = !UseCustomPlayer;
+        }
+
         /// <summary>
         /// Determines whether this PlayableItem can play a list of Media objects
         /// </summary>

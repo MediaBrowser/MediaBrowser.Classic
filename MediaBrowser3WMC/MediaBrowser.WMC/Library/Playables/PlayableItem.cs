@@ -504,8 +504,6 @@ namespace MediaBrowser.Library.Playables
             EnablePlayStateSaving = true;
             RaiseGlobalPlaybackEvents = true;
             ShowNowPlayingView = true;
-            UseCustomPlayer = Config.Instance.UseCustomPlayerInterface;
-            GoFullScreen = !UseCustomPlayer;
         }
 
         /// <summary>

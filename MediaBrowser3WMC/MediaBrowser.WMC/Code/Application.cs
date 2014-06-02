@@ -1156,11 +1156,11 @@ namespace MediaBrowser
         {
             get
             {
-                if (!_RunningOnExtender.HasValue)
+                if (!_RunningOnExtender.HasValue && AddInHost.Current != null)
                 {
                     try
                     {
-                        Dictionary<string, object> capabilities = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.Capabilities;
+                        Dictionary<string, object> capabilities = AddInHost.Current.MediaCenterEnvironment.Capabilities;
 
                         bool isLocal = capabilities.ContainsKey("Console") && (bool)capabilities["Console"];
 
@@ -1174,7 +1174,7 @@ namespace MediaBrowser
                     }
                 }
 
-                return _RunningOnExtender.Value;
+                return _RunningOnExtender ?? false;
 
             }
         }
