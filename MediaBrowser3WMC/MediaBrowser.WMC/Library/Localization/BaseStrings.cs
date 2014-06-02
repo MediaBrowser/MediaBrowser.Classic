@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0081";
+        const string VERSION = "1.0082";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -292,7 +292,7 @@ namespace MediaBrowser.Library.Localization
         public string SearchSC = "(yellow) / Ctl-S";
         public string ContextSC = "* / Shft-8";
         public string PlaySC = "(play) / Ctl-P";
-        public string WatchedSC = "Ctl-W";
+        public string WatchedSC = "(clear) Ctl-W";
         public string HomeSCDesc = "Return to Home Screen";
         public string SearchSCDesc = "Search";
         public string ContextSCDesc = "Context Menu for current item";
