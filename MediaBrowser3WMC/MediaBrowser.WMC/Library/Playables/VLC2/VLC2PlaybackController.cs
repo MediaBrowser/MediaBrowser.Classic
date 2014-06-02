@@ -227,20 +227,28 @@ namespace MediaBrowser.Library.Playables.VLC2
             {
                 return;
             }
-
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(e.Result);
-            XmlElement docElement = doc.DocumentElement;
-
-            XmlNode leafNode = docElement.SelectSingleNode("node/leaf[@current='current']");
-
-            if (leafNode != null)
+            
+            try
             {
-                long currentDurationTicks = TimeSpan.FromSeconds(int.Parse(leafNode.Attributes["duration"].Value)).Ticks;
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(e.Result);
+                XmlElement docElement = doc.DocumentElement;
 
-                int currrentPlayingFileIndex = IndexOfNode(leafNode.ParentNode.ChildNodes, leafNode);
+                XmlNode leafNode = docElement.SelectSingleNode("node/leaf[@current='current']");
 
-                OnProgress(GetPlaybackState(_CurrentPositionTicks, currentDurationTicks, currrentPlayingFileIndex));
+                if (leafNode != null)
+                {
+                    long currentDurationTicks = TimeSpan.FromSeconds(int.Parse(leafNode.Attributes["duration"].Value)).Ticks;
+
+                    int currrentPlayingFileIndex = IndexOfNode(leafNode.ParentNode.ChildNodes, leafNode);
+
+                    OnProgress(GetPlaybackState(_CurrentPositionTicks, currentDurationTicks, currrentPlayingFileIndex));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.ReportException("Error in VLC communications", ex);
             }
         }
 
