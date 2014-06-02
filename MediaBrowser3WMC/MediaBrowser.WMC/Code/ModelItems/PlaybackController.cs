@@ -118,7 +118,7 @@ namespace MediaBrowser
                         Logger.ReportWarning("PlayPlayableItem: MediaTransport is null");
                     }
 
-                    if (playable.GoFullScreen)
+                    if (playable.GoFullScreen || !playable.HasMediaItems)
                     {
                         Logger.ReportVerbose("Going fullscreen");
                         exp.GoToFullScreen();
@@ -382,7 +382,7 @@ namespace MediaBrowser
                 {
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
-                    IsStreaming = Playable.CurrentMedia.Files.First().StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+                    IsStreaming = Playable.CurrentFile.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
                     if (Playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId, IsStreaming);
                 }
                 else

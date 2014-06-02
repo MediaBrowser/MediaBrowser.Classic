@@ -954,7 +954,7 @@ namespace MediaBrowser
 
         private Item GetCurrentlyPlayingItem()
         {
-            var baseItem = Kernel.Instance.FindItem(_currentlyPlayingItemId) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(_currentlyPlayingItemId) ?? new BaseItem {Id = _currentlyPlayingItemId, Name = "<Unknown>"};
+            var baseItem = Kernel.Instance.FindItem(_currentlyPlayingItemId) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(_currentlyPlayingItemId) ?? new Movie {Id = _currentlyPlayingItemId, Name = "<Unknown>"};
             var item = ItemFactory.Instance.Create(baseItem);
             TVHelper.CreateEpisodeParents(item);
             item.SeekPositionIndex = -1;
@@ -2954,7 +2954,7 @@ namespace MediaBrowser
 
         public void Play(PlayableItem playable)
         {
-            CurrentlyPlayingItemId = playable.CurrentMedia.Id;
+            CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
 
             PlaySecure(playable);
         }

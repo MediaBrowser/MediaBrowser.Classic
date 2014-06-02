@@ -579,6 +579,19 @@ namespace MediaBrowser.LibraryManagement
             return HtmlRegex.Replace(source, string.Empty);
         }
 
+        private static Dictionary<string, string> _serverMediaInfoImages;
+        public static Dictionary<string, string> ServerMediaInfoImages
+        {
+            get { return _serverMediaInfoImages ?? (_serverMediaInfoImages = GetServerMediaInfoImages()); }
+        }
+
+        private static Dictionary<string, string> GetServerMediaInfoImages()
+        {
+            var dict = new Dictionary<string, string>();
+            //todo
+            return dict;
+        }
+
         public static Microsoft.MediaCenter.UI.Image GetMediaInfoImage(string name)
         {
             if (name.EndsWith("_")) return null; //blank codec or other type
