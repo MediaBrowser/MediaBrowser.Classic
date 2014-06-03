@@ -117,7 +117,7 @@ namespace MediaBrowser.Library.Factories
 
             playable.UnmountISOAfterPlayback = unmountISOAfterPlayback;
             playable.UseAutoPlay = useAutoPlay;
-            playable.GoFullScreen = media is Song;
+            playable.GoFullScreen = playable.GoFullScreen || media is Song;
 
             return playable;
         }
