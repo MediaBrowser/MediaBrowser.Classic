@@ -14,6 +14,18 @@ namespace MediaBrowser.Library.ImageManagement
         public new static CustomImageCache Instance {
             get {
                 if (_instance == null) {
+                    //Clear out on each start
+                    try
+                    {
+                        foreach (var file in new DirectoryInfo(ApplicationPaths.CustomImagePath).GetFiles())
+                        {
+                            file.Delete();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.Logger.ReportException("Error clearing custom Image path {0}", e, ApplicationPaths.CustomImagePath);
+                    }
                     _instance = new CustomImageCache(ApplicationPaths.CustomImagePath);
                 }
                 return _instance;

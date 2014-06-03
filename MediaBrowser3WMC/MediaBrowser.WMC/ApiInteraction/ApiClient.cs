@@ -252,6 +252,21 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets all available MediaInfo Images
+        /// </summary>
+        /// <returns>Task{UserDto[]}.</returns>
+        public ImageByNameInfo[] GetMediaInfoImages()
+        {
+
+            var url = GetApiUrl("Images/MediaInfo");
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ImageByNameInfo[]>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for items
         /// </summary>
         /// <param name="query">The query.</param>

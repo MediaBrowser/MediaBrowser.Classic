@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using MediaBrowser.Interop;
@@ -579,62 +580,80 @@ namespace MediaBrowser.LibraryManagement
             return HtmlRegex.Replace(source, string.Empty);
         }
 
-        private static Dictionary<string, string> _serverMediaInfoImages;
-        public static Dictionary<string, string> ServerMediaInfoImages
+        private static HashSet<string> _serverMediaInfoImages;
+        public static HashSet<string> ServerMediaInfoImages
         {
             get { return _serverMediaInfoImages ?? (_serverMediaInfoImages = GetServerMediaInfoImages()); }
         }
 
-        private static Dictionary<string, string> GetServerMediaInfoImages()
+        private static HashSet<string> GetServerMediaInfoImages()
         {
-            var dict = new Dictionary<string, string>();
-            //todo
-            return dict;
+            var hash = new HashSet<string>();
+            foreach (var image in Kernel.ApiClient.GetMediaInfoImages())
+            {
+                hash.Add((image.Theme ?? "all").ToLower() + image.Name.ToLower());
+            }
+            return hash;
         }
 
-        public static Microsoft.MediaCenter.UI.Image GetMediaInfoImage(string name)
+        public static Image GetMediaInfoImage(string name)
         {
             if (name.EndsWith("_")) return null; //blank codec or other type
             name = name.ToLower().Replace("-", "_");
             name = name.Replace('/', '-');
-            Guid id = ("MiImage" + Config.Instance.ViewTheme + name).GetMD5();
+            var themeName = Config.Instance.ViewTheme.ToLower();
+            var id = ("MiImage" + themeName + name).GetMD5();
 
             //try to load from image cache first
-            string path = CustomImageCache.Instance.GetImagePath(id, true);
+            var path = CustomImageCache.Instance.GetImagePath(id, true);
             if (path != null) return new Image(path); //was already cached
 
-            //not cached - get it from the server
-            path = Kernel.ApiClient.GetMediaInfoImageUrl(name, Config.Instance.ViewTheme, new ImageOptions());
-            var serverImage = new RemoteImage { Path = path};
+            //not cached - get it from the server if it is there
+            if (ServerMediaInfoImages.Contains(themeName+name) || ServerMediaInfoImages.Contains("all"+name))
+            {
+                path = Kernel.ApiClient.GetMediaInfoImageUrl(name, Config.Instance.ViewTheme, new ImageOptions());
+                var serverImage = new RemoteImage { Path = path};
 
-            try
-            {
-                var image = serverImage.DownloadImage();
-                Logger.ReportVerbose("===CustomImage " + path + " being cached on first access.  Shouldn't have to do this again...");
-                //cache it and return resulting cached image
-                return new Image("file://" + CustomImageCache.Instance.CacheImage(id, image));
-            }
-            catch (WebException)
-            {
-                //not there, get it from resources in default or the current theme if it exists
-                string resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
-                //Logger.ReportInfo("============== Current Theme: " + Application.CurrentInstance.CurrentTheme.Name);
-                System.Reflection.Assembly assembly = Kernel.Instance.FindPluginAssembly(Application.CurrentInstance.CurrentTheme.Name);
-                if (assembly != null)
+                try
                 {
-                    //Logger.ReportInfo("============== Found Assembly. ");
-                    if (assembly.GetManifestResourceInfo(name) != null)
-                    {
-                        //Logger.ReportInfo("============== Found Resource: " + name);
-                        //cheap way to grab a valid reference to the current themes resources...
-                        resourceRef = Application.CurrentInstance.CurrentTheme.PageArea.Substring(0, Application.CurrentInstance.CurrentTheme.PageArea.LastIndexOf("/") + 1);
-                    }
+                    var image = serverImage.DownloadImage();
+                    Logger.ReportVerbose("===CustomImage " + path + " being cached on first access.  Shouldn't have to do this again...");
+                    //cache it and return resulting cached image
+                    return new Image("file://" + CustomImageCache.Instance.CacheImage(id, image));
                 }
-                //cache it
-                Logger.ReportVerbose("===CustomImage " + resourceRef + name + " being cached on first access.  Should only have to do this once per session...");
-                CustomImageCache.Instance.CacheResource(id, resourceRef + name);
-                return new Image(resourceRef + name);
+                catch (WebException)
+                {
+                    return GetImageFromResources(name, id);
+                }
+                
             }
+            else
+            {
+                return GetImageFromResources(name, id);
+            }
+        }
+
+        public static Image GetImageFromResources(string name, Guid id)
+        {
+            //not there, get it from resources in default or the current theme if it exists
+            var resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
+            //Logger.ReportInfo("============== Current Theme: " + Application.CurrentInstance.CurrentTheme.Name);
+            var assembly = Kernel.Instance.FindPluginAssembly(Application.CurrentInstance.CurrentTheme.Name);
+            if (assembly != null)
+            {
+                //Logger.ReportInfo("============== Found Assembly. ");
+                if (assembly.GetManifestResourceInfo(name) != null)
+                {
+                    //Logger.ReportInfo("============== Found Resource: " + name);
+                    //cheap way to grab a valid reference to the current themes resources...
+                    resourceRef = Application.CurrentInstance.CurrentTheme.PageArea.Substring(0, Application.CurrentInstance.CurrentTheme.PageArea.LastIndexOf("/") + 1);
+                }
+            }
+            //cache it
+            Logger.ReportVerbose("===CustomImage " + resourceRef + name + " being cached on first access.  Should only have to do this once per session...");
+            CustomImageCache.Instance.CacheResource(id, resourceRef + name);
+            return new Image(resourceRef + name);
+
         }
 
         public static string FirstCap(string aStr)
