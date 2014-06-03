@@ -38,6 +38,8 @@ namespace MediaBrowser
         public int LocalMaxBitrate = 10; //max bitrate (Mb/s) when attached locally
         public int RemoteMaxBitrate = 2; //max bitrate (Mb/s) when attached remotely
 
+        public bool DisableMcConflictingOperations = false; // disable some items in player interface that conflict with Media Control
+
 
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]

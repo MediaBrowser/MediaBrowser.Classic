@@ -116,6 +116,9 @@
       </Changed>
 
       <Changed Source="[FF.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[DirectSkip.Content]" />
@@ -123,6 +126,9 @@
       </Changed>
 
       <Changed Source="[Rew.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.PlaybackController.SkipBack]" value="[DirectSkip.Content]" />
@@ -193,6 +199,9 @@
       <!--Direct Skip-->
       <Binding Source="[InputHolder.Value]" Target="[DirectSkip.Content]" />
       <Changed Source="[0.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -200,6 +209,9 @@
         </Actions>
       </Changed>
       <Changed Source="[1.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -207,6 +219,9 @@
         </Actions>
       </Changed>
       <Changed Source="[2.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -214,6 +229,9 @@
         </Actions>
       </Changed>
       <Changed Source="[3.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -221,6 +239,9 @@
         </Actions>
       </Changed>
       <Changed Source="[4.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -228,6 +249,9 @@
         </Actions>
       </Changed>
       <Changed Source="[5.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -235,6 +259,9 @@
         </Actions>
       </Changed>
       <Changed Source="[6.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -242,6 +269,9 @@
         </Actions>
       </Changed>
       <Changed Source="[7.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -249,6 +279,9 @@
         </Actions>
       </Changed>
       <Changed Source="[8.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -256,6 +289,9 @@
         </Actions>
       </Changed>
       <Changed Source="[9.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />

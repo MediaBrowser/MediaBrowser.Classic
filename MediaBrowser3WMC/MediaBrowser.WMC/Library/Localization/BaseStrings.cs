@@ -111,6 +111,7 @@ namespace MediaBrowser.Library.Localization
         public string InputActivityTimeoutConfigDesc = "The number of seconds of no mouse or key activity to consider idle and hide the player overlay";
         public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead or back when FF is pressed without a specific number entered";
         public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
+        public string DisableMcConflictingOperationsConfigDesc = "Disable controls that conflict with the Media Control MCE Add-in";
 
 
         //Config Panel
@@ -240,6 +241,7 @@ namespace MediaBrowser.Library.Localization
         public string InputActivityTimeoutConfig = "Input Activity Timeout (seconds)";
         public string DefaultSkipSecondsConfig = "Default Skip Amount (seconds)";
         public string UseCustomPlayerConfig = "Use Custom Player Interface";
+        public string DisableMcConflictingOperationsConfig = "Disable Functions that Conflict with Media Control";
         public string PlayerConfig = "Player";
 
         //JIL

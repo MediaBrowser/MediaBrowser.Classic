@@ -516,6 +516,15 @@ namespace MediaBrowser
             }
         }
 
+        public bool DisableMcConflictingOperations
+        {
+            get { return this.CommonData.DisableMcConflictingOperations; }
+            set
+            {
+                if (this.CommonData.DisableMcConflictingOperations != value) { this.CommonData.DisableMcConflictingOperations = value; Save(); FirePropertyChanged("DisableMcConflictingOperations"); }
+            }
+        }
+
         public int InputActivityTimeout
         {
             get { return this.Data.InputActivityTimeout; }
