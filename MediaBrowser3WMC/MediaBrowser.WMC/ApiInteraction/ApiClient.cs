@@ -267,6 +267,21 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Gets all available General IBN Images
+        /// </summary>
+        /// <returns>Task{UserDto[]}.</returns>
+        public ImageByNameInfo[] GetGeneralIbnImages()
+        {
+
+            var url = GetApiUrl("Images/General");
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ImageByNameInfo[]>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for items
         /// </summary>
         /// <param name="query">The query.</param>
@@ -1648,8 +1663,25 @@ namespace MediaBrowser.ApiInteraction
             return GetStudioImageUrl(item.Name, options);
         }
 
+        private HashSet<string> _generalIbnImages;
+        protected HashSet<string> GeneralIbnImages
+        {
+            get { return _generalIbnImages ?? (_generalIbnImages = GetAvailableGeneralIbnImages()); }
+        }
+
+        private HashSet<string> GetAvailableGeneralIbnImages()
+        {
+            var hash = new HashSet<string>();
+            foreach (var image in GetGeneralIbnImages())
+            {
+                hash.Add((image.Context ?? "").ToLower() + image.Name.ToLower());
+            }
+            return hash;
+        }
+
         /// <summary>
         /// Gets an image url that can be used to download an image from the api
+        /// Return null if there is no such image on the server
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="options">The options.</param>
@@ -1662,6 +1694,8 @@ namespace MediaBrowser.ApiInteraction
                 return null;
             }
 
+            var filename = "folder";
+
             switch (options.ImageType)
             {
                 case ImageType.Primary:
@@ -1669,11 +1703,18 @@ namespace MediaBrowser.ApiInteraction
                     break;
                 case ImageType.Backdrop:
                     options.MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth;
+                    filename = "backdrop";
                     break;
                 case ImageType.Logo:
                     options.MaxWidth = Kernel.Instance.CommonConfigData.MaxLogoWidth;
+                    filename = "logo";
+                    break;
+                case ImageType.Thumb:
+                    filename = "thumb";
                     break;
             }
+
+            if (!GeneralIbnImages.Contains(name.ToLower() + filename)) return null;
 
             options.Quality = Kernel.Instance.CommonConfigData.JpgImageQuality;
 
