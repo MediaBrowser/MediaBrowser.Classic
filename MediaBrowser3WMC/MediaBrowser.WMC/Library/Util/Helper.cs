@@ -32,6 +32,17 @@ namespace MediaBrowser.LibraryManagement
 
         public static Dictionary<string, bool> perceivedTypeCache = new Dictionary<string, bool>();
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern PowerSettings.EXECUTION_STATE SetThreadExecutionState(PowerSettings.EXECUTION_STATE esFlags);
+        
+        public static void PreventSleep()
+        {
+            SetThreadExecutionState(PowerSettings.EXECUTION_STATE.ES_CONTINUOUS
+                                    | PowerSettings.EXECUTION_STATE.ES_DISPLAY_REQUIRED
+                                    | PowerSettings.EXECUTION_STATE.ES_SYSTEM_REQUIRED
+                                    | PowerSettings.EXECUTION_STATE.ES_AWAYMODE_REQUIRED);
+        }
+        
         public static bool IsExtenderNativeVideo(string filename)
         {
             string extension = System.IO.Path.GetExtension(filename).ToLower();

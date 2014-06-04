@@ -9,6 +9,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Util;
+using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dto;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
@@ -403,6 +404,9 @@ namespace MediaBrowser
                     return;
                 }
             }
+
+            // Prevent sleep/screen saver
+            Helper.PreventSleep();
 
             _LastTransportUpdateTime = DateTime.Now;
 
