@@ -2664,6 +2664,7 @@ namespace MediaBrowser
 
         public void OpenCustomPlayerUi()
         {
+            ShowNowPlaying = true;
             var properties = new Dictionary<string, object>();
             properties["Application"] = this;
             session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
