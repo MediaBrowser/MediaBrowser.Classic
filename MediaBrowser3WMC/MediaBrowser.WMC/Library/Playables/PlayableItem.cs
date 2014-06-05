@@ -90,12 +90,12 @@ namespace MediaBrowser.Library.Playables
                             Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent.Name));
                             media.PlaybackStatus.LastPlayed = PlaybackStartTime;
                             item.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
-                            if (newStatus.WasPlayed && !item.PlaybackStatus.WasPlayed)
-                            {
-                                //update our parent's unwatched count
-                                item.Parent.AdjustUnwatched(-1);
-                            }
                             item.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
+                        }
+                        if (newStatus.WasPlayed && !media.PlaybackStatus.WasPlayed)
+                        {
+                            //update our parent's unwatched count
+                            media.Parent.AdjustUnwatched(-1);
                         }
                         media.PlaybackStatus.LastPlayed = PlaybackStartTime;
                         media.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
