@@ -56,6 +56,32 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        /// <summary>
+        /// Finds a parent of a given type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>``0.</returns>
+        public T FindParent<T>()
+            where T : Folder
+        {
+            var parent = Parent;
+
+            while (parent != null)
+            {
+                var result = parent as T;
+                if (result != null)
+                {
+                    return result;
+                }
+
+                parent = parent.Parent;
+            }
+
+            return null;
+        }
+
+
+
         #region Images
 
         [Persist]
@@ -411,7 +437,7 @@ namespace MediaBrowser.Library.Entities {
             get
             {
                 if (isRemoteContent == null) { 
-                    isRemoteContent = Path != null && Path.ToLower().StartsWith("http://");
+                    isRemoteContent = LocationType == LocationType.Remote || Path != null && Path.ToLower().StartsWith("http://");
                 }
                 return isRemoteContent.Value;
             }

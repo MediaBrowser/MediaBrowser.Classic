@@ -25,6 +25,8 @@ namespace MediaBrowser.Library.Persistance
             public static Dictionary<string, Type> TypeMap = new Dictionary<string, Type>
                                                                  {
                                                                      {"Folder", typeof (Folder)},
+                                                                     {"ChannelFolderItem", typeof (ChannelFolder)},
+                                                                     {"Channel", typeof (Channel)},
                                                                      {"PhotoFolder", typeof (PhotoFolder)},
                                                                      {"Photo", typeof (Photo)},
                                                                      {"Movie", typeof (Movie)},
@@ -34,6 +36,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"Season", typeof (Season)},
                                                                      {"Episode", typeof (Episode)},
                                                                      {"Video", typeof (Movie)},
+                                                                     {"ChannelVideoItem", typeof (Movie)},
                                                                      {"BoxSet", typeof (BoxSet)},
                                                                      {"Person", typeof (Person)},
                                                                      {"Genre", typeof (Genre)},
@@ -45,6 +48,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"MusicAlbumDisc", typeof(MusicAlbum)},
                                                                      {"MusicArtist", typeof(MusicArtist)},
                                                                      {"Audio", typeof(Song)},
+                                                                     {"ChannelAudioItem", typeof(Song)},
                                                                      {"MusicVideo", typeof(MusicVideo)},
                                                                      {"AggregateFolder", typeof (AggregateFolder)},
                                                                      {"CollectionFolder", typeof (Folder)},
@@ -646,6 +650,18 @@ namespace MediaBrowser.Library.Persistance
         {
             var dtos = Kernel.ApiClient.GetIntros(id, Kernel.CurrentUser.Id);
             return dtos == null ? new Media[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null).Cast<Media>();
+        }
+
+        public IEnumerable<BaseItem> RetrieveChannels()
+        {
+            var dtos = Kernel.ApiClient.GetChannels(Kernel.CurrentUser.ApiId);
+            return dtos == null ? new BaseItem[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        }
+
+        public IEnumerable<BaseItem> RetrieveChannelChildren(string channelId, string folderId = null)
+        {
+            var dtos = Kernel.ApiClient.GetChannelItems(Kernel.CurrentUser.ApiId, channelId, folderId);
+            return dtos == null ? new BaseItem[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
         public IEnumerable<Video> RetrieveSpecialFeatures(string id)

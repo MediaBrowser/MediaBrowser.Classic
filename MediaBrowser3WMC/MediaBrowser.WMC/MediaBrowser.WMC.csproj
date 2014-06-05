@@ -159,7 +159,10 @@
     <Compile Include="Library\Entities\ApiYearFolder.cs" />
     <Compile Include="Library\Entities\ApiStudioFolder.cs" />
     <Compile Include="Library\Entities\ApiAlbumCollectionFolder.cs" />
+    <Compile Include="Library\Entities\Channel.cs" />
     <Compile Include="Library\Entities\Chapter.cs" />
+    <Compile Include="Library\Entities\ChannelFolder.cs" />
+    <Compile Include="Library\Entities\ChannelCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
     <Compile Include="Library\Entities\IbnSourcedFolder.cs" />

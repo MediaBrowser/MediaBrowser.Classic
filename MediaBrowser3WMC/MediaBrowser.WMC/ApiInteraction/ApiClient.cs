@@ -303,6 +303,53 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for channels
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetChannels(string userId)
+        {
+            if (userId == null)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var url = GetApiUrl("/Channels", new QueryStringDictionary {{"userid",userId}});
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
+        /// Queries for channel items
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="channelId"></param>
+        /// <param name="folderId"></param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetChannelItems(string userId, string channelId, string folderId)
+        {
+            if (userId == null)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var dict = new QueryStringDictionary {{"userid", userId}};
+            dict.AddIfNotNullOrEmpty("folderid", folderId);
+
+            var url = GetApiUrl("/Channels/"+channelId+"/Items", dict);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for additional parts
         /// </summary>
         /// <returns>Task{ItemsResult}.</returns>

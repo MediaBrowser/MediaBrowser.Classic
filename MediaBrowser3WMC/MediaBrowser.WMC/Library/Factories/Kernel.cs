@@ -610,6 +610,7 @@ namespace MediaBrowser.Library {
         public Guid MovieGenreFolderGuid = new Guid("B01F6DAC-28BA-4EDE-849C-C6716437B2C0");
         public Guid MusicGenreFolderGuid = new Guid("3EBE8C41-289F-40C6-A82C-5621428F9D0F");
         public Guid MusicAlbumFolderGuid = new Guid("6153369B-AC3B-4638-973F-850B625CB8D2");
+        public Guid ChannelsFolderGuid = new Guid("629C0FF7-3139-4BDC-874E-CF84688E7C7C");
 
         public void ReLoadRoot()
         {
@@ -625,12 +626,19 @@ namespace MediaBrowser.Library {
 
             if (kernel.RootFolder != null)
             {
+                //Create Channels
+                var channels = new ChannelCollectionFolder {Id = ChannelsFolderGuid, DisplayMediaType = "ChannelsFolder", Name = LocalizedStrings.Instance.GetString("ChannelsFolderName")};
+                channels.AddChildren(MB3ApiRepository.RetrieveChannels().ToList());
+                kernel.RootFolder.AddVirtualChild(channels);
+
                 if (ConfigData.ShowFavoritesCollection)
                 {
                     //Create Favorites
                     FavoritesFolder = new FavoritesCollectionFolder {Id = FavoriteFolderGuid, DisplayMediaType = "FavoritesFolder"};
                     FavoritesFolder.AddChildren(new List<BaseItem> { new FavoritesTypeFolder(new string[] { "Movie", "Video", "BoxSet", "AdultVideo" }, "Movies"), new FavoritesTypeFolder(new[] { "Series", "Season", "Episode" }, "TV"), new FavoritesTypeFolder(new[] { "Audio", "MusicAlbum", "MusicArtist", "MusicVideo" }, "Music"), new FavoritesTypeFolder(new[] { "Game", "GameConsole" }, "Games"), new FavoritesTypeFolder(new[] { "Book" }, "Books") });
                     kernel.RootFolder.AddVirtualChild(FavoritesFolder);
+
+
                 }
                 
                 if (ConfigData.ShowMovieGenreCollection)

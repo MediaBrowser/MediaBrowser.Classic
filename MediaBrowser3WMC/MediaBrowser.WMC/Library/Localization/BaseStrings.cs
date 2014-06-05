@@ -465,6 +465,7 @@ namespace MediaBrowser.Library.Localization
         public string Logout = "Logout";
         public string SleepMachine = "Put Machine to Sleep";
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public string ChannelsFolderName = "Channels";
 
         //Search
         public string IncludeNested = "Include Subfolders";
