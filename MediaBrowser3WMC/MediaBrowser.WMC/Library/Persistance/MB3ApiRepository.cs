@@ -102,6 +102,12 @@ namespace MediaBrowser.Library.Persistance
             return RetrieveItem(id.ToString());
         }
 
+        public int? RetrieveUnwatchedCount(string id)
+        {
+            var dto = Kernel.ApiClient.GetItem(id);
+            return dto != null ? dto.RecursiveUnplayedItemCount : null;
+        }
+
         public Genre RetrieveGenre(string name)
         {
             var dto = Kernel.ApiClient.GetGenre(name);
@@ -321,8 +327,6 @@ namespace MediaBrowser.Library.Persistance
                     // we want our created date to be the date of last item we contain
                     folder.DateCreated = mb3Item.DateLastMediaAdded ?? folder.DateCreated;
 
-                    // don't replace this with ?? until after the server implementing this has been released...
-                    if (mb3Item.RecursiveUnplayedItemCount != null) folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                 }
 
                 var video = item as Video;
