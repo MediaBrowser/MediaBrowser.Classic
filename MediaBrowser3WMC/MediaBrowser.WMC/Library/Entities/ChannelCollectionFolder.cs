@@ -11,5 +11,18 @@ namespace MediaBrowser.Library.Entities
                 return false;
             }
         }
+
+        public override string[] RalIncludeTypes
+        {
+            get
+            {
+                return new string[] { "ChannelVideoItem", "ChannelAudioItem" };
+            }
+            set
+            {
+                base.RalIncludeTypes = value;
+            }
+        }
+
     }
 }
