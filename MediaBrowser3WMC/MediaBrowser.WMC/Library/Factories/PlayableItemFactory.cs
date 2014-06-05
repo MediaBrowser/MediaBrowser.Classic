@@ -162,7 +162,7 @@ namespace MediaBrowser.Library.Factories
             PlayableItem playable = Create(folder.RecursiveMedia);
 
             playable.Folder = folder;
-            playable.GoFullScreen = folder.ContainsMusic;
+            playable.GoFullScreen = playable.GoFullScreen || folder.ContainsMusic;
 
             return playable;
         }
