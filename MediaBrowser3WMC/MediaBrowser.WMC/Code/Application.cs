@@ -23,6 +23,7 @@ using MediaBrowser.Library.Localization;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Playables;
+using MediaBrowser.Library.Registration;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
@@ -346,6 +347,27 @@ namespace MediaBrowser
             }
         }
 
+        private Timer _popoutMessageTimer = new Timer {AutoRepeat = false, Enabled = false, Interval = 8000};
+        private void _popoutMessageTimerTick(object sender, EventArgs args)
+        {
+            ShowMessagePopout = false;
+        }
+
+        private bool showMessagePopout = false;
+        public bool ShowMessagePopout
+        {
+            get { return showMessagePopout; }
+            set
+            {
+                if (showMessagePopout != value)
+                {
+                    showMessagePopout = value;
+                    if (value) _popoutMessageTimer.Start();
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowMessagePopout"));
+                }
+            }
+        }
+
         public string MessageResponse { get; set; }
         private string messageText = "";
         public string MessageText
@@ -360,6 +382,23 @@ namespace MediaBrowser
                 {
                     messageText = value;
                     Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageText"));
+                }
+            }
+        }
+
+        private string messageTitle = "";
+        public string MessageTitle
+        {
+            get
+            {
+                return messageTitle;
+            }
+            set
+            {
+                if (messageTitle != value)
+                {
+                    messageTitle = value;
+                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageTitle"));
                 }
             }
         }
@@ -410,6 +449,13 @@ namespace MediaBrowser
             }
 
             ShowMessage = false;
+        }
+
+        public void PopoutMessage(string header, string message)
+        {
+            MessageTitle = header;
+            MessageText = message;
+            ShowMessagePopout = true;
         }
 
         public string MessageBox(string msg)
@@ -1482,6 +1528,8 @@ namespace MediaBrowser
 
                 IntroController = new IntrosPlaybackController();
 
+                _popoutMessageTimer.Tick += _popoutMessageTimerTick;
+
                 Login();
             }
             catch (Exception e)
@@ -1707,6 +1755,26 @@ namespace MediaBrowser
                 });
                 
             }
+
+            //supporter nag
+            if (Kernel.Instance.CommonConfigData.LastNagDate == DateTime.MinValue || 
+                Kernel.Instance.CommonConfigData.LastNagDate > DateTime.Now || 
+                DateTime.Now > Kernel.Instance.CommonConfigData.LastNagDate.AddDays(2))
+            {
+                Async.Queue("Supporter Check", () =>
+                                                   {
+                                                       var supporter = MBRegistration.GetRegistrationStatus("mbsupporter", Kernel.Instance.Version);
+                                                       while (!supporter.RegChecked) { Thread.Sleep(500);}
+
+                                                       if (!supporter.IsRegistered)
+                                                       {
+                                                           PopoutMessage("Please Support Media Browser", "Please become a Media Browser Supporter.  Go to your server dashboard Help/Become a Supporter.  Thanks!");
+                                                           Kernel.Instance.CommonConfigData.LastNagDate = DateTime.Now;
+                                                           Kernel.Instance.CommonConfigData.Save();
+                                                       }
+                                                   },10000);
+            }            
+                
             return true;
         }
 

@@ -40,6 +40,7 @@ namespace MediaBrowser
 
         public bool DisableMcConflictingOperations = false; // disable some items in player interface that conflict with Media Control
 
+        public DateTime LastNagDate = DateTime.MinValue;
 
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]

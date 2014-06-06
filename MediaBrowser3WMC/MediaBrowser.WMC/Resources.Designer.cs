@@ -3002,6 +3002,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] MessagePopout {
+            get {
+                object obj = ResourceManager.GetObject("MessagePopout", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] MetroLoginPage {
             get {
                 object obj = ResourceManager.GetObject("MetroLoginPage", resourceCulture);

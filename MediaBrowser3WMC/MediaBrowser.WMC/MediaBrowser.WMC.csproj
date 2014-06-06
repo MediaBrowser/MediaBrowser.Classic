@@ -998,6 +998,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\HeaderButton.mcml" />
+    <Content Include="Markup\Controls\Popups\MessagePopout.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\SeekBar.mcml" />
     <Content Include="Markup\Controls\JIL\JilSelector.mcml" />
     <Content Include="Markup\Controls\Popups\ExitMenu.mcml" />

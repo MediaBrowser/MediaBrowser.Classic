@@ -1,0 +1,36 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	    xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	    xmlns:s="file://Styles_DoNotEdit.mcml"
+	    xmlns:f="file://Fonts_DoNotEdit.mcml"
+	    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+	    xmlns:me="Me"
+	  >
+
+  <UI Name="MessagePopout">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <cor:String Name="Heading" String="$Required"/>
+      <cor:String Name="Message" String="$Required"/>
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Heading]" Target="[Title.Content]" />
+      <Binding Source="[Message]" Target="[Text.Content]" />
+      
+    </Rules>
+
+    <Content>
+      <ColorFill Content="40,80,40" Layout="VerticalFlow" Padding="20,10,10,20">
+        <Children>
+              <Text Name="Title" Font="font://f:PD_TitleFont" Color="color://s:FontColorLight" Margins="0,0,0,5" />
+              <Text Name="Text" Font="font://f:PD_SummaryFont" WordWrap="true" MaximumLines="10" Color="color://s:FontColorLight" Margins="0,10,0,5" />
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+
+</Mcml>
