@@ -548,6 +548,10 @@ namespace MediaBrowser
                     BrowseRequest(this, newArgs);
                     break;
 
+                case "DisplayMessage":
+                    PopoutMessage(args.Command.Arguments["Header"], args.Command.Arguments["Text"]);
+                    break;
+
                 case "Back":
                     Back();
                     break;

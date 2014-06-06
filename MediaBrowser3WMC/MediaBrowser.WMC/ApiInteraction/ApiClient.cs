@@ -627,7 +627,7 @@ namespace MediaBrowser.ApiInteraction
             var url = GetApiUrl("Sessions/Capabilities");
             var parms = new QueryStringDictionary();
             parms.Add("PlayableMediaTypes","Video,Audio,Photo");
-            parms.Add("SupportedCommands", "GoHome,Back,DisplayContent,GotoSettings,Mute,UnMute,ToggleMute");
+            parms.Add("SupportedCommands", "GoHome,Back,DisplayContent,DisplayMessage,GotoSettings,Mute,UnMute,ToggleMute");
 
             Post<EmptyRequestResult>(url, parms);
         }

@@ -18,6 +18,7 @@
     xmlns:si="resx://MediaBrowser/MediaBrowser.Resources/StudioImages"
     xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SeekBar"
     xmlns:dum="resx://MediaBrowser/MediaBrowser.Resources/DummyItem"
+      xmlns:mpo="resx://MediaBrowser/MediaBrowser.Resources/MessagePopout"
     xmlns:me="Me"
     >
 
@@ -74,7 +75,11 @@
       <Binding Source="[Clock.Time]" Target="[Time.Content]" />
 
       <Binding Source="[Application.PlaybackController.IsPaused]" Target="[PausedPanel.Visible]" />
-      
+
+      <Binding Source="[Application.ShowMessagePopout]" Target="[MessagePopout.Visible]" />
+      <Binding Source="[Application.MessageText]" Target="[MessagePopout.Message]" />
+      <Binding Source="[Application.MessageTitle]" Target="[MessagePopout.Heading]" />
+
       <Changed Source="[Back.Invoked]" >
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
@@ -374,6 +379,18 @@
           </LayoutInput>
             
           </dum:Dummy>
+
+          <!--Message slide out-->
+          <mpo:MessagePopout Name="MessagePopout" Application="[Application]" Heading="[Application.MessageTitle]" Message="[Application.MessageText]" Visible="false" MaximumSize="450,450" >
+            <LayoutInput>
+              <FormLayoutInput Right="Parent,1" Top="Parent,.3"/>
+            </LayoutInput>
+
+            <Animations>
+              <Animation Animation="animation://an:NewItemShow"/>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+          </mpo:MessagePopout>
 
           <!--New Item slide out-->
           <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
