@@ -151,6 +151,8 @@
       <Binding Target="[Year.Content]" Source="[Item.FirstAired]" />
       <Binding Target="[RTIcon.Content]" Source="[Item.RottenTomatoImage]" />
       <Binding Target="[Runtime.Content]" Source="[Item.RunningTimeString]"></Binding>
+      <Binding Target="[SeekBar.Item]" Source="[Item]" />
+      <Binding Target="[Title.Content]" Source="[Item.LongName]" />
       <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
       <Rule>
         <Conditions>
@@ -501,7 +503,7 @@
                 </Children>
               </Panel>
 
-              <sb:SeekBar Application="[Application]" Item="[Item]" Layout="Scale" Margins="20,20,20,20" >
+              <sb:SeekBar Name="SeekBar" Application="[Application]" Item="[Item]" Layout="Scale" Margins="20,20,20,20" >
                 <LayoutInput>
                   <FormLayoutInput Left="PosterImage, 1, 10" Top="InfoPanel, 1" Right="Parent, 1"/>
                 </LayoutInput>

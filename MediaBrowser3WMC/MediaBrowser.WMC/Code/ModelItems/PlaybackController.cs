@@ -350,6 +350,8 @@ namespace MediaBrowser
             HandlePropertyChange(env, exp, transport, property);
         }
 
+        private Guid lastItemId;
+
         private void HandlePropertyChange(MediaCenterEnvironment env, MediaExperience exp, MediaTransport transport, string property)
         {
             PlayState state;
@@ -384,7 +386,11 @@ namespace MediaBrowser
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
                     IsStreaming = Playable.CurrentFile.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
-                    if (Playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId, IsStreaming);
+                    if (Playable.HasMediaItems)
+                    {
+                        Application.CurrentInstance.CurrentlyPlayingItemId = lastItemId = Playable.CurrentMedia.Id;
+                        Application.CurrentInstance.ReportPlaybackStart(Playable.CurrentMedia.ApiId, IsStreaming);
+                    }
                 }
                 else
                 {
@@ -420,6 +426,13 @@ namespace MediaBrowser
 
             // Only fire the progress handler while playback is still active, because once playback stops position will be reset to 0
             OnProgress(eventArgs);
+
+            if (eventArgs.Item != null && eventArgs.Item.HasMediaItems && eventArgs.Item.CurrentMedia.Id != lastItemId)
+            {
+                // started playing a new item - update
+                Application.CurrentInstance.CurrentlyPlayingItemId = lastItemId = eventArgs.Item.MediaItems.ElementAt(eventArgs.CurrentMediaIndex).Id;
+            }
+
 
             Application.CurrentInstance.ShowNowPlaying = eventArgs.Item == null || eventArgs.Item.ShowNowPlayingView;
 
