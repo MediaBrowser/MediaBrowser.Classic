@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web;
 using MediaBrowser.Library;
+using MediaBrowser.Library.Persistance;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
@@ -340,6 +341,7 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary {{"userid", userId}};
             dict.AddIfNotNullOrEmpty("folderid", folderId);
+            dict.Add("fields", MB3ApiRepository.StandardFields.Select(f => f.ToString()));
 
             var url = GetApiUrl("/Channels/"+channelId+"/Items", dict);
 
