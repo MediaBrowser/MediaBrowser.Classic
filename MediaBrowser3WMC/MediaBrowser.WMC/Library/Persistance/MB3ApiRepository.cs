@@ -323,6 +323,11 @@ namespace MediaBrowser.Library.Persistance
                     {
                         folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
                     }
+                    // it is just too slow to try and gather these as channels are dynamic and potentially large
+                    else if (mb3Item.Type == "Channel" || mb3Item.Type == "ChannelFolder")
+                    {
+                        folder.UnwatchedCount = 0;
+                    }
 
                     // we want our created date to be the date of last item we contain
                     folder.DateCreated = mb3Item.DateLastMediaAdded ?? folder.DateCreated;
