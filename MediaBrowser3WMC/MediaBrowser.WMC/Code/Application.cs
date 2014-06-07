@@ -993,7 +993,7 @@ namespace MediaBrowser
             set { 
                 if (_currentlyPlayingItemId != value)
                 {
-                    Logger.ReportVerbose("************* Updating currently playing item to {0}",value);
+                    //Logger.ReportVerbose("************* Updating currently playing item to {0}",value);
                     _currentlyPlayingItemId = value;
                     CurrentlyPlayingItem = null;
                     FirePropertyChanged("CurrentlyPlayingItem");
@@ -1011,7 +1011,6 @@ namespace MediaBrowser
         {
             var baseItem = Kernel.Instance.FindItem(_currentlyPlayingItemId) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(_currentlyPlayingItemId) ?? new Movie {Id = _currentlyPlayingItemId, Name = "<Unknown>"};
             var item = ItemFactory.Instance.Create(baseItem);
-            Logger.ReportVerbose("**************** Getting new currently playing item {0}", baseItem.Name);
             TVHelper.CreateEpisodeParents(item);
             item.SeekPositionIndex = -1;
             return item;

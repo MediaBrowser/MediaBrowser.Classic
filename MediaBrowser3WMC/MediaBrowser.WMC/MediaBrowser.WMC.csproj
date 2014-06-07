@@ -1036,7 +1036,9 @@
     <Content Include="Markup\Controls\MPAARating.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Controls\NowPlayingViewport.mcml" />
+    <Content Include="Markup\Controls\NowPlayingViewport.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\PINEdit.mcml">
       <SubType>Designer</SubType>
     </Content>
