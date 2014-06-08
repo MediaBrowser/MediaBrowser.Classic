@@ -223,14 +223,14 @@ namespace MediaBrowser.Library
             }
         }
 
-        public bool HasSpecialFeatures { get { return SpecialFeatures.Any(); } }
+        public bool HasSpecialFeatures { get { return baseItem.SpecialFeatureCount > 0; } }
 
         private List<Item> _specialFeatures; 
         public List<Item> SpecialFeatures
         {
             get
             {
-                if (_specialFeatures == null)
+                if (HasSpecialFeatures && _specialFeatures == null)
                 {
                     var show = baseItem as Show;
                     if (show != null)

@@ -304,6 +304,8 @@ namespace MediaBrowser.Library.Entities {
         public UserItemDataDto UserData { get; set; }
         public string ApiParentId { get; set; }
 
+        public int SpecialFeatureCount { get; set; }
+
         public virtual string OfficialRating
         {
             get
