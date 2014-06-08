@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.175.0" ?>
-<?define Property_ProductCode = "{9A46635F-625B-485D-8578-8BEB02E2BE75}" ?>
+<?define Property_ProductVersion = "3.0.176.0" ?>
+<?define Property_ProductCode = "{D8003786-D246-440C-B537-FBEBE7725089}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
