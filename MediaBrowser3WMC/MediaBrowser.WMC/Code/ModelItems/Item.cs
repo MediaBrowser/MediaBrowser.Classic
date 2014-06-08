@@ -230,10 +230,10 @@ namespace MediaBrowser.Library
         {
             get
             {
-                if (HasSpecialFeatures && _specialFeatures == null)
+                if (_specialFeatures == null)
                 {
                     var show = baseItem as Show;
-                    if (show != null)
+                    if (HasSpecialFeatures && show != null)
                     {
                         _specialFeatures = new List<Item>();
                         Async.Queue("Special Feature Load", () =>
