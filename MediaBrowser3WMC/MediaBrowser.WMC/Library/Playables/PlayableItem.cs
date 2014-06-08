@@ -308,6 +308,11 @@ namespace MediaBrowser.Library.Playables
         public bool GoFullScreen { get; set; }
 
         /// <summary>
+        /// Determines whether or not the PlaybackController should allow this to play without going full screen and not in the custom player
+        /// </summary>
+        public bool PlayInBackground { get; set; }
+
+        /// <summary>
         /// Determines whether or not the PlaybackController should use our custom player UI upon beginning playback
         /// </summary>
         public bool UseCustomPlayer { get; set; }

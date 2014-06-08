@@ -119,7 +119,7 @@ namespace MediaBrowser
                         Logger.ReportWarning("PlayPlayableItem: MediaTransport is null");
                     }
 
-                    if (playable.GoFullScreen || !playable.HasMediaItems)
+                    if (playable.GoFullScreen || (!playable.HasMediaItems && !playable.PlayInBackground))
                     {
                         Logger.ReportVerbose("Going fullscreen");
                         exp.GoToFullScreen();
