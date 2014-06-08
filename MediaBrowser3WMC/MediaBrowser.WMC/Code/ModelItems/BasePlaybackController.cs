@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
@@ -26,6 +27,12 @@ namespace MediaBrowser.Code.ModelItems
         protected bool IsDisposing { get; private set; }
 
         public bool IsStreaming { get; protected set; }
+
+        public BasePlaybackController()
+        {
+            SkipTimer = new System.Timers.Timer() { AutoReset = false, Enabled = false, Interval = 600};
+            SkipTimer.Elapsed += SkipTimerExpired;
+        }
 
         /// <summary>
         /// Subclasses can use this to examine the items that are currently in the player.
@@ -387,20 +394,46 @@ namespace MediaBrowser.Code.ModelItems
             else if (PlayState == PlaybackControllerPlayState.Paused) UnPause();
         }
 
+        protected int SkipAmount = 0;
+        protected System.Timers.Timer SkipTimer;
+
+        private void SkipTimerExpired(object sender, EventArgs args)
+        {
+            if (SkipAmount != 0)
+            {
+                lock (SkipTimer)
+                {
+                    Application.CurrentInstance.RecentUserInput = true;
+                    var pos = SkipAmount > 0 ? Math.Min(CurrentFilePositionTicks + TimeSpan.FromSeconds(SkipAmount).Ticks, CurrentFileDurationTicks)
+                                  : Math.Max(CurrentFilePositionTicks - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
+                    SkipAmount = 0;
+                    Seek(pos);
+                }
+            }
+        }
+
         public void SkipAhead(string value)
         {
-            int seconds;
-            if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
-            var pos = Math.Min(CurrentFilePositionTicks + TimeSpan.FromSeconds(seconds).Ticks, CurrentFileDurationTicks);
-            Seek(pos);
+            lock (SkipTimer)
+            {
+                SkipTimer.Stop();
+                int seconds;
+                if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
+                SkipAmount += seconds;
+                SkipTimer.Start();
+            }
         }
 
         public void SkipBack(string value)
         {
+            lock (SkipTimer)
+            {
+            SkipTimer.Stop();
             int seconds;
             if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
-            var pos = Math.Max(CurrentFilePositionTicks - TimeSpan.FromSeconds(seconds).Ticks, 0);
-            Seek(pos);
+            SkipAmount -= seconds;
+            SkipTimer.Start();
+            }
         }
 
         public void Seek(long position)
@@ -711,6 +744,8 @@ namespace MediaBrowser.Code.ModelItems
             if (isDisposing)
             {
                 Logger.ReportVerbose(ControllerName + " is disposing");
+                SkipTimer.Elapsed -= SkipTimerExpired;
+                SkipTimer.Dispose();
             }
 
             IsDisposing = IsDisposing;
