@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
@@ -204,6 +205,12 @@ namespace MediaBrowser.Code.ModelItems
             {
                 playable.PlayState = stage;
             }
+        }
+
+        public void PlayAndWait(PlayableItem playable)
+        {
+            Play(playable);
+            while (PlayState != PlaybackControllerPlayState.Idle) { Thread.Sleep(500);}
         }
 
         /// <summary>

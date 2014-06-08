@@ -97,6 +97,18 @@ namespace MediaBrowser.Library.Factories
         }
 
         /// <summary>
+        /// Creates a PlayableItem based using the internal player
+        /// </summary>
+        public PlayableItem CreateForInternalPlayer(IEnumerable<Media> media)
+        {
+            PlayableItem playable = new PlayableInternal();
+
+            playable.MediaItems = media;
+
+            return playable;
+        }
+
+        /// <summary>
         /// Creates a PlayableItem based on a Media object
         /// </summary>
         public PlayableItem Create(Media media)
