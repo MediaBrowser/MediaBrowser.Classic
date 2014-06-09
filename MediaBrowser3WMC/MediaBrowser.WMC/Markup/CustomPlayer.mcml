@@ -68,7 +68,11 @@
     <Rules>
 
       <Default Target="[Input.KeyInteractive]" Value="true" />
-      <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" />
+      <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" >
+        <Conditions>
+          <Equality Source="[Application.Config.ShowNewItemNotificationInPlayer]" Value="true" />
+        </Conditions>
+      </Binding>
       <Binding Source="[Application.NewItem]" Target="[NewItemPopout.Item]" />
       <Binding Source="[Application.CurrentlyPlayingItem]" Target="[Item]" />
 

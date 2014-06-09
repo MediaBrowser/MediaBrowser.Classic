@@ -112,7 +112,7 @@ namespace MediaBrowser.Library.Localization
         public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead or back when FF is pressed without a specific number entered";
         public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
         public string DisableMcConflictingOperationsConfigDesc = "Disable controls that conflict with the Media Control MCE Add-in";
-
+        public string ShowNewItemNotificationInPlayerConfigDesc = "Allow a small new item notification on top of playing video";
 
         //Config Panel
         public string AdvancedConfig = "Advanced";
@@ -243,6 +243,7 @@ namespace MediaBrowser.Library.Localization
         public string UseCustomPlayerConfig = "Use Custom Player Interface";
         public string DisableMcConflictingOperationsConfig = "Disable Functions that Conflict with Media Control";
         public string PlayerConfig = "Player";
+        public string ShowNewItemNotificationInPlayerConfig = "Allow New Item Notifications";
 
         //JIL
         public string ThisWeek = "This Week";

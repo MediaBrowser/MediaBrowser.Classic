@@ -58,6 +58,7 @@
       <BooleanChoice Name="ShowUnairedItems" Value="[Application.Config.ShowUnairedItems]" />
       <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
       <BooleanChoice Name="ShowNewItemNotification" Value="[Application.Config.ShowNewItemNotification]" />
+      <BooleanChoice Name="ShowNewItemNotificationInPlayer" Value="[Application.Config.ShowNewItemNotificationInPlayer]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
       <BooleanChoice Name="EnableAlphanumericSorting" Value="[Application.Config.EnableAlphanumericSorting]" />
@@ -357,6 +358,7 @@
       <Binding Source="[ShowMissingItems.Value]" Target="[Config.ShowMissingItems]" />
       <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
+      <Binding Source="[ShowNewItemNotificationInPlayer.Value]" Target="[Config.ShowNewItemNotificationInPlayer]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
       <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
@@ -698,6 +700,7 @@
                       <me:TextHeader Text="[Application.LocalStrings.#PlayerConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DisableMcConflictingOperationsConfig!cor:String]" Checked="[DisableMcConflictingOperations]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationInPlayerConfig!cor:String]" Checked="[ShowNewItemNotificationInPlayer]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#InputActivityTimeoutConfig!cor:String]" Model="[InputActivityTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <me:TextHeader Text="[Application.LocalStrings.#StreamingConfig!cor:String]" />

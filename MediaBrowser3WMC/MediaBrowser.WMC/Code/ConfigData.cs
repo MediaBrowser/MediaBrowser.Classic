@@ -147,6 +147,7 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Show notifications of new items.")]
         public bool ShowNewItemNotification = true;
+        public bool ShowNewItemNotificationInPlayer = true;
         [Group("Display")]
         [Comment(@"Name of favorite collection folder.")]
         public string FavoriteFolderName = "Favorites";

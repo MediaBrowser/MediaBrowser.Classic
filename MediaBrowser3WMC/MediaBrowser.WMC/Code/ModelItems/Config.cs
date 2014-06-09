@@ -165,6 +165,12 @@ namespace MediaBrowser
             set { if (this.Data.ShowNewItemNotification != value) { this.Data.ShowNewItemNotification = value; Save(); FirePropertyChanged("ShowNewItemNotification"); } }
         }
 
+        public bool ShowNewItemNotificationInPlayer
+        {
+            get { return this.Data.ShowNewItemNotificationInPlayer; }
+            set { if (this.Data.ShowNewItemNotificationInPlayer != value) { this.Data.ShowNewItemNotificationInPlayer = value; Save(); FirePropertyChanged("ShowNewItemNotificationInPlayer"); } }
+        }
+
         [Comment("Dim all unselected posters in poster and thumbstrib views")]
         public bool DimUnselectedPosters
         {
