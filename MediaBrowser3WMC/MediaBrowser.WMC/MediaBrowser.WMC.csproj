@@ -1102,7 +1102,9 @@
     </Content>
     <Content Include="Markup\Themes\Default\PluginCatalog.mcml" />
     <Content Include="Markup\Themes\Default\ExternalPlayback.mcml" />
-    <Content Include="Markup\Themes\Default\LayoutCoverflow.mcml" />
+    <Content Include="Markup\Themes\Default\LayoutCoverflow.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\LayoutRoot.mcml">
       <SubType>Designer</SubType>
     </Content>
