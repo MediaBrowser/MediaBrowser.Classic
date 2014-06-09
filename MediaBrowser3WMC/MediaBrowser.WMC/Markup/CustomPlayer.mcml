@@ -560,7 +560,7 @@
 
           <Panel Name="PausedPanel" Visible="false" Layout="Center" >
             <Children>
-              <Graphic Content="resx://MediaBrowser/MediaBrowser.Resources/IconPaused" MaximumSize="256,256" MinimumSize="256,256" Margins="0,0,0,100" Alpha=".6" />
+              <Graphic Content="resx://MediaBrowser/MediaBrowser.Resources/IconPaused" MaximumSize="256,256" MinimumSize="256,256" Margins="0,0,0,100" Alpha=".35" />
               <ColorFill Content="Black" Alpha=".6" Layout="Fill" />
             </Children>
           </Panel>
