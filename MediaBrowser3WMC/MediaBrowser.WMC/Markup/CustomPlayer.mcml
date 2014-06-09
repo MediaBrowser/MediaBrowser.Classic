@@ -393,16 +393,16 @@
           </mpo:MessagePopout>
 
           <!--New Item slide out-->
-          <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
+          <po:SmallItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,250" >
           <LayoutInput>
-            <FormLayoutInput Left="Parent,0,700" Right="Parent,1" Top="Parent,.3"/>
+            <FormLayoutInput Right="Parent,1" Top="Parent,.8"/>
           </LayoutInput>
               
             <Animations>
               <Animation Animation="animation://an:NewItemShow"/>
               <Animation Animation="animation://an:PageHide"/>
             </Animations>
-          </po:SingleItemPopout>
+          </po:SmallItemPopout>
           
           <!--MessageBox-->
           <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >

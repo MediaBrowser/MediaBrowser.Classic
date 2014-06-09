@@ -10,6 +10,7 @@
 			<lib:Item Name="ModelFast" Item="$Required"/>
 			<Font Name="Font" Font="$Required"/>
 			<Font Name="SubFont" Font="$Required"/>
+      <Color Name="Color" Color="color://s:FontColorLight" />
       <cor:Boolean Name="UseLongName" cor:Boolean="false" />
 		</Properties>
 		<Rules>
@@ -27,7 +28,7 @@
 		<Content>
 			<Panel Name="UpperSection" Layout="VerticalFlow">
 				<Children>
-					<Text Name="Title1" Color="color://s:FontColorLight" Font="[Font]" WordWrap="true"></Text>
+					<Text Name="Title1" Color="[Color]" Font="[Font]" WordWrap="true"></Text>
 				</Children>
 			</Panel>
 		</Content>

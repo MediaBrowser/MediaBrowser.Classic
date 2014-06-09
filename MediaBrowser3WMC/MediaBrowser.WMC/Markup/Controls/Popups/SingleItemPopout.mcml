@@ -48,5 +48,33 @@
     </Content>
   </UI>
 
+  <UI Name="SmallItemPopout">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <lib:Item Name="Item" Item="$Required"/>
+    </Properties>
+
+    <Rules>
+      <Binding Source="[Item.LongName]" Target="[Title.Content]" />
+      <Binding Source="[Item.PrimaryImageSmall]" Target="[Poster.Content]" />
+      
+    </Rules>
+
+    <Content>
+      <ColorFill Content="210,210,210" Layout="HorizontalFlow" Padding="10,10,10,10" MinimumSize="450,0">
+        <Children>
+          <Graphic Name="Poster" Content="[Item.PrimaryImageSmall]" MaximumSize="0,90" MaintainAspectRatio="true" />
+          <Panel Name="InfoPanel" Layout="VerticalFlow" Margins="5,0,0,0" >
+            <Children>
+              <Text Content="Item Added:" Font="font://f:PD_TitleFont" Color="color://s:FontColorDark" Margins="0,0,0,5" />
+              <Text Name="Title" Content="[Item.LongName]" Font="Segoe Media Center Light, 12, Bold" Color="color://s:FontColorDark" Margins="0,0,0,5" WordWrap="true" MaximumLines="3" />
+
+            </Children>
+          </Panel>
+
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
 
 </Mcml>
