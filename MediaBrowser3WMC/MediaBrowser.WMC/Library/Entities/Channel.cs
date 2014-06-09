@@ -8,5 +8,27 @@ namespace MediaBrowser.Library.Entities
         {
             return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ApiId).ToList();
         }
+
+        //until there is an API for this we don't have recent items
+        public override Folder QuickList
+        {
+            get
+            {
+                return new Folder();
+            }
+        }
+
+        public override string[] RalIncludeTypes
+        {
+            get
+            {
+                return new string[] { "ChannelVideoItem", "ChannelAudioItem" };
+            }
+            set
+            {
+                base.RalIncludeTypes = value;
+            }
+        }
+
     }
 }
