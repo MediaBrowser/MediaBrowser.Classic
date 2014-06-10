@@ -9,6 +9,14 @@ namespace MediaBrowser.Library.Entities
             return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ApiId).ToList();
         }
 
+        protected override bool HideEmptyFolders
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         //until there is an API for this we don't have recent items
         public override Folder QuickList
         {
