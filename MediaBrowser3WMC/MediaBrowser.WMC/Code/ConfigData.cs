@@ -145,6 +145,8 @@ namespace MediaBrowser
         [Comment(@"Show collection of Albums.")]
         public bool ShowMusicAlbumCollection = true;
         [Group("Display")]
+        public bool ShowChannels = true;
+        public bool GroupChannelsTogether = false;
         [Comment(@"Show notifications of new items.")]
         public bool ShowNewItemNotification = true;
         public bool ShowNewItemNotificationInPlayer = true;

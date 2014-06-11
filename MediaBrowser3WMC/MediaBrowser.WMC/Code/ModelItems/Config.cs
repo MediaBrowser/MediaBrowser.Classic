@@ -159,6 +159,18 @@ namespace MediaBrowser
             set { if (this.Data.GroupAlbumsByArtist != value) { this.Data.GroupAlbumsByArtist = value; Save(); FirePropertyChanged("GroupAlbumsByArtist"); } }
         }
 
+        public bool ShowChannels
+        {
+            get { return this.Data.ShowChannels; }
+            set { if (this.Data.ShowChannels != value) { this.Data.ShowChannels = value; Save(); FirePropertyChanged("ShowChannels"); } }
+        }
+
+        public bool GroupChannelsTogether
+        {
+            get { return this.Data.GroupChannelsTogether; }
+            set { if (this.Data.GroupChannelsTogether != value) { this.Data.GroupChannelsTogether = value; Save(); FirePropertyChanged("GroupChannelsTogether"); } }
+        }
+
         public bool ShowNewItemNotification
         {
             get { return this.Data.ShowNewItemNotification; }

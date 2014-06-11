@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0082";
+        const string VERSION = "1.0084";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -113,6 +113,8 @@ namespace MediaBrowser.Library.Localization
         public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
         public string DisableMcConflictingOperationsConfigDesc = "Disable controls that conflict with the Media Control MCE Add-in";
         public string ShowNewItemNotificationInPlayerConfigDesc = "Allow a small new item notification on top of playing video";
+        public string ShowChannelsConfigDesc = "Include 'Channel' Items in MBC.  Restart MBC to see changes.";
+        public string GroupChannelsTogetherConfigDesc = "Group All Channels Under One Top-Level 'Channels' Item.  Restart MBC to see changes.";
 
         //Config Panel
         public string AdvancedConfig = "Advanced";
@@ -244,6 +246,8 @@ namespace MediaBrowser.Library.Localization
         public string DisableMcConflictingOperationsConfig = "Disable Functions that Conflict with Media Control";
         public string PlayerConfig = "Player";
         public string ShowNewItemNotificationInPlayerConfig = "Allow New Item Notifications";
+        public string ShowChannelsConfig = "Show Channels";
+        public string GroupChannelsTogetherConfig = "Group All Together";
 
         //JIL
         public string ThisWeek = "This Week";

@@ -626,10 +626,22 @@ namespace MediaBrowser.Library {
 
             if (kernel.RootFolder != null)
             {
-                //Create Channels
-                foreach (var channel in MB3ApiRepository.RetrieveChannels())
+                if (ConfigData.ShowChannels)
                 {
-                    kernel.RootFolder.AddVirtualChild(channel);
+                    //Create Channels
+                    if (ConfigData.GroupChannelsTogether)
+                    {
+                        var channels = new ChannelCollectionFolder { Id = ChannelsFolderGuid, DisplayMediaType = "ChannelsFolder", Name = LocalizedStrings.Instance.GetString("ChannelsFolderName") };
+                        channels.AddChildren(MB3ApiRepository.RetrieveChannels().ToList());
+                        kernel.RootFolder.AddVirtualChild(channels);
+                    }
+                    else
+                    {
+                        foreach (var channel in MB3ApiRepository.RetrieveChannels())
+                        {
+                            kernel.RootFolder.AddVirtualChild(channel);
+                        }
+                    }
                 }
 
                 if (ConfigData.ShowFavoritesCollection)

@@ -54,6 +54,8 @@
       <BooleanChoice Name="ShowMusicAlbumCollection" Value="[Application.Config.ShowMusicAlbumCollection]" />
       <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
       <BooleanChoice Name="ShowMusicGenresCollection" Value="[Application.Config.ShowMusicGenreCollection]" />
+      <BooleanChoice Name="ShowChannels" Value="[Application.Config.ShowChannels]" />
+      <BooleanChoice Name="GroupChannelsTogether" Value="[Application.Config.GroupChannelsTogether]" />
       <BooleanChoice Name="ShowMissingItems" Value="[Application.Config.ShowMissingItems]" />
       <BooleanChoice Name="ShowUnairedItems" Value="[Application.Config.ShowUnairedItems]" />
       <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
@@ -354,6 +356,8 @@
       <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
       <Binding Source="[ShowMusicGenresCollection.Value]" Target="[Config.ShowMusicGenreCollection]" />
       <Binding Source="[ShowMusicAlbumCollection.Value]" Target="[Config.ShowMusicAlbumCollection]" />
+      <Binding Source="[ShowChannels.Value]" Target="[Config.ShowChannels]" />
+      <Binding Source="[GroupChannelsTogether.Value]" Target="[Config.GroupChannelsTogether]" />
       <Binding Source="[ShowUnairedItems.Value]" Target="[Config.ShowUnairedItems]" />
       <Binding Source="[ShowMissingItems.Value]" Target="[Config.ShowMissingItems]" />
       <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
@@ -616,6 +620,8 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="40,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowChannelsConfig!cor:String]" Checked="[ShowChannels]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#GroupChannelsTogetherConfig!cor:String]" Padding="40,0,0,0" Checked="[GroupChannelsTogether]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                     </Children>
                   </Panel>
