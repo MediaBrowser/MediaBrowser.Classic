@@ -69,6 +69,7 @@
       <Binding Source="[Item]" Target="[CommandButtons.Item]" />
       <Binding Source="[Item]" Target="[Info.Item]" />
       <Binding Source="[Item]" Target="[ActorScroller.Item]" />
+      <Binding Source="[Item]" Target="[ChapterScroller.Item]" />
       <Binding Source="[Item]" Target="[Backdrop.Item]" />
       <Binding Source="[Item.PrimaryImage]" Target="[Preview.Content]" />
       <Binding Source="[Item.Name]" Target="[TitleName.Content]" />
