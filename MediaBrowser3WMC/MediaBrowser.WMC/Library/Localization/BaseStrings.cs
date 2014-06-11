@@ -115,6 +115,10 @@ namespace MediaBrowser.Library.Localization
         public string ShowNewItemNotificationInPlayerConfigDesc = "Allow a small new item notification on top of playing video";
         public string ShowChannelsConfigDesc = "Include 'Channel' Items in MBC.  Restart MBC to see changes.";
         public string GroupChannelsTogetherConfigDesc = "Group All Channels Under One Top-Level 'Channels' Item.  Restart MBC to see changes.";
+        public string BottomConfigDesc = "Adust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
+        public string TopConfigDesc = "Adust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
+        public string LeftConfigDesc = "Adust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
+        public string RightConfigDesc = "Adust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
 
         //Config Panel
         public string AdvancedConfig = "Advanced";
@@ -248,6 +252,11 @@ namespace MediaBrowser.Library.Localization
         public string ShowNewItemNotificationInPlayerConfig = "Allow New Item Notifications";
         public string ShowChannelsConfig = "Show Channels";
         public string GroupChannelsTogetherConfig = "Group All Together";
+        public string OverUnderScanConfig = "Over/Underscan";
+        public string BottomConfig = "Bottom";
+        public string TopConfig = "Top";
+        public string LeftConfig = "Left";
+        public string RightConfig = "Right";
 
         //JIL
         public string ThisWeek = "This Week";

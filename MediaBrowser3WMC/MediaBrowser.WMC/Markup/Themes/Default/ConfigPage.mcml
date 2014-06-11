@@ -453,13 +453,14 @@
       </Condition>
       <Binding Source="[Application.CurrentPluginItem]" Target="[PluginDetail.Item]" />
 
+      <Binding Source="[Application.Config.OverScanPadding]" Target="[MainClip.Padding]" />
 
     </Rules>
 
     <Content>
       <Panel Layout="Form">
         <Children>
-          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+          <Clip Name="MainClip" Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
             <Children>
               <!--MessageBox-->
               <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >

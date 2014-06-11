@@ -370,7 +370,7 @@
     </Rules>
 
     <Content>
-      <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true" >
+      <ColorFill Content="Transparent" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" Layout="Form" TouchInteractive="true" >
         <Animations>
           <Animation Animation="animation://an:PageShow"/>
           <Animation Animation="animation://an:PageHide"/>

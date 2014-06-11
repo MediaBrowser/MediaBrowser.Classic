@@ -45,6 +45,10 @@
       <BooleanChoice Name="WakeServer" Value="[Application.Config.WakeServer]" />
 
       <IntRangedValue Name="ServerPort" Value="[Application.Config.ServerPort]" MaxValue="9999" MinValue="0" Step="1" />
+      <IntRangedValue Name="OverScanPaddingBottom" Value="[Application.Config.OverScanPaddingBottom]" MaxValue="200" MinValue="-200" Step="1" />
+      <IntRangedValue Name="OverScanPaddingTop" Value="[Application.Config.OverScanPaddingTop]" MaxValue="200" MinValue="-200" Step="1" />
+      <IntRangedValue Name="OverScanPaddingLeft" Value="[Application.Config.OverScanPaddingLeft]" MaxValue="200" MinValue="-200" Step="1" />
+      <IntRangedValue Name="OverScanPaddingRight" Value="[Application.Config.OverScanPaddingRight]" MaxValue="200" MinValue="-200" Step="1" />
 
       <Choice Name="SystemClassModel">
         <Options>
@@ -83,6 +87,11 @@
       <Binding Source="[AutoLogoffTimeOut.Value]" Target="[Application.Config.AutoLogoffTimeOut]" />
       <Binding Source="[ServerPort.Value]" Target="[Application.Config.ServerPort]" />
       <Binding Source="[WakeServer.Value]" Target="[Application.Config.WakeServer]" />
+
+      <Binding Source="[OverScanPaddingBottom.Value]" Target="[Application.Config.OverScanPaddingBottom]" />
+      <Binding Source="[OverScanPaddingTop.Value]" Target="[Application.Config.OverScanPaddingTop]" />
+      <Binding Source="[OverScanPaddingLeft.Value]" Target="[Application.Config.OverScanPaddingLeft]" />
+      <Binding Source="[OverScanPaddingRight.Value]" Target="[Application.Config.OverScanPaddingRight]" />
 
       <Default Target="[ServerConnectModel.ChosenIndex]" Value="1">
         <Conditions>
@@ -136,6 +145,15 @@
                       <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" FocusOrder="5" />
                       <cp:TextHeader Text="[Application.LocalStrings.#MediaOptionsConfig!cor:String]" />
                       <cb:CheckBox Name="Delete" Label="[Application.LocalStrings.#EnableDeleteConfig!cor:String]" Checked="[EnableDelete]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                    </Children>
+                  </Panel>
+                  <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
+                    <Children>
+                      <cp:TextHeader Text="[Application.LocalStrings.#OverUnderScanConfig!cor:String]" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#LeftConfig!cor:String]" Padding="0,10,0,0" Model="[OverScanPaddingLeft]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="100,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#RightConfig!cor:String]" Padding="0,10,0,0" Model="[OverScanPaddingRight]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="100,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#TopConfig!cor:String]" Padding="0,10,0,0" Model="[OverScanPaddingTop]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="100,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#BottomConfig!cor:String]" Padding="0,10,0,0" Model="[OverScanPaddingBottom]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="100,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
                     </Children>
                   </Panel>
                 </Children>

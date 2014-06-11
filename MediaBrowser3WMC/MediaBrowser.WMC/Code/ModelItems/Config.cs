@@ -225,6 +225,55 @@ namespace MediaBrowser
                 }
             }
         }
+
+        public int OverScanPaddingBottom
+        {
+            get { return OverScanPadding.Bottom; }
+            set
+            {
+                var current = OverScanPadding;
+                current.Bottom = value;
+                OverScanPadding = current;
+                FirePropertyChanged("OverScanPaddingBottom");
+            }
+        }
+
+        public int OverScanPaddingTop
+        {
+            get { return OverScanPadding.Top; }
+            set
+            {
+                var current = OverScanPadding;
+                current.Top = value;
+                OverScanPadding = current;
+                FirePropertyChanged("OverScanPaddingTop");
+            }
+        }
+
+        public int OverScanPaddingLeft
+        {
+            get { return OverScanPadding.Left; }
+            set
+            {
+                var current = OverScanPadding;
+                current.Left = value;
+                OverScanPadding = current;
+                FirePropertyChanged("OverScanPaddingLeft");
+            }
+        }
+
+        public int OverScanPaddingRight
+        {
+            get { return OverScanPadding.Right; }
+            set
+            {
+                var current = OverScanPadding;
+                current.Right = value;
+                OverScanPadding = current;
+                FirePropertyChanged("OverScanPaddingRight");
+            }
+        }
+
         [Comment(@"Enables the writing of trace log files in a production environment to assist with problem solving")]
         public bool EnableTraceLogging
         {
