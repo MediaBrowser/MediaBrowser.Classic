@@ -59,19 +59,7 @@ namespace MediaBrowser.Library {
     /// </summary>
     public class Kernel {
 
-        /**** Version extension is used to provide for specific versions between current releases without having to actually change the 
-         * actual assembly version number.  Suggested Values:
-         * "R" Released major version
-         * "R+" Trunk build (not released as a build to anyone but modified since last true release)
-         * "SP1", "SP2", "SPn" Service release without major version change
-         * "SPn+" Trunk build after a service release
-         * "A1", "A2", "An" Alpha versions
-         * "B1", "B2", "Bn" Beta versions
-         * 
-         * This should be set to "R" (or "SPn") with each official release and then immediately changed back to "R+" (or "SPn+")
-         * so future trunk builds will indicate properly.
-         * */
-        private const string versionExtension = "6-10.1";
+        private const string versionExtension = "6-11.1";
 
         public const string MBSERVICE_MUTEX_ID = "Global\\{E155D5F4-0DDA-47bb-9392-D407018D24B1}";
         public const string MBCLIENT_MUTEX_ID = "Global\\{9F043CB3-EC8E-41bf-9579-81D5F6E641B9}";
