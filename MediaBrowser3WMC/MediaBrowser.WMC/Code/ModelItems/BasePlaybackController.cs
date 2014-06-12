@@ -403,6 +403,7 @@ namespace MediaBrowser.Code.ModelItems
             {
                 lock (SkipTimer)
                 {
+                    Logger.ReportVerbose("================ Skipping {0} seconds", SkipAmount);
                     Application.CurrentInstance.RecentUserInput = true;
                     var pos = SkipAmount > 0 ? Math.Min(CurrentFilePositionTicks + TimeSpan.FromSeconds(SkipAmount).Ticks, CurrentFileDurationTicks)
                                   : Math.Max(CurrentFilePositionTicks - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
@@ -420,6 +421,7 @@ namespace MediaBrowser.Code.ModelItems
                 int seconds;
                 if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
                 SkipAmount += seconds;
+                Logger.ReportVerbose("================ Skip ahead {0} seconds", seconds);
                 SkipTimer.Start();
             }
         }
@@ -428,11 +430,12 @@ namespace MediaBrowser.Code.ModelItems
         {
             lock (SkipTimer)
             {
-            SkipTimer.Stop();
-            int seconds;
-            if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
-            SkipAmount -= seconds;
-            SkipTimer.Start();
+                SkipTimer.Stop();
+                int seconds;
+                if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
+                SkipAmount -= seconds;
+                Logger.ReportVerbose("================ Skip back {0} seconds", seconds);
+                SkipTimer.Start();
             }
         }
 
