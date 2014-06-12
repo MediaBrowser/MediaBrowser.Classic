@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0084";
+        const string VERSION = "1.0085";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -109,8 +109,10 @@ namespace MediaBrowser.Library.Localization
         public string LocalMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to the same network as the server";
         public string RemoteMaxBitrateConfigDesc = "The maximum bitrate to use when streaming content when attached to server via a remote network";
         public string InputActivityTimeoutConfigDesc = "The number of seconds of no mouse or key activity to consider idle and hide the player overlay";
-        public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead or back when FF is pressed without a specific number entered";
+        public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead when FF is pressed without a specific number entered";
+        public string DefaultSkipBackSecondsConfigDesc = "The number of seconds to skip back when Rew is pressed without a specific number entered";
         public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
+        public string DisableCustomPlayerForDvdConfigDesc = "Don't use custom interface for DVD Rips.  Enable this if your rips have DVD menus.";
         public string DisableMcConflictingOperationsConfigDesc = "Disable controls that conflict with the Media Control MCE Add-in";
         public string ShowNewItemNotificationInPlayerConfigDesc = "Allow a small new item notification on top of playing video";
         public string ShowChannelsConfigDesc = "Include 'Channel' Items in MBC.  Restart MBC to see changes.";
@@ -245,8 +247,10 @@ namespace MediaBrowser.Library.Localization
         public string LocalMaxBitrateConfig = "Local Network Max Bitrate (Mb/s)";
         public string RemoteMaxBitrateConfig = "Remote Network Max Bitrate (Mb/s)";
         public string InputActivityTimeoutConfig = "Input Activity Timeout (seconds)";
-        public string DefaultSkipSecondsConfig = "Default Skip Amount (seconds)";
+        public string DefaultSkipSecondsConfig = "Default Skip Forward Amount (seconds)";
+        public string DefaultSkipBackSecondsConfig = "Default Skip Back Amount (seconds)";
         public string UseCustomPlayerConfig = "Use Custom Player Interface";
+        public string DisableCustomPlayerForDvdConfig = "Disable for DVD Rips";
         public string DisableMcConflictingOperationsConfig = "Disable Functions that Conflict with Media Control";
         public string PlayerConfig = "Player";
         public string ShowNewItemNotificationInPlayerConfig = "Allow New Item Notifications";

@@ -119,7 +119,8 @@ namespace MediaBrowser
                         Logger.ReportWarning("PlayPlayableItem: MediaTransport is null");
                     }
 
-                    if (playable.GoFullScreen || (!playable.HasMediaItems && !playable.PlayInBackground))
+                    if (playable.GoFullScreen || (!playable.HasMediaItems && !playable.PlayInBackground) 
+                        || ( Config.Instance.DisableCustomPlayerForDvd && playable.CurrentMedia.MediaType == Library.MediaType.DVD))
                     {
                         Logger.ReportVerbose("Going fullscreen");
                         exp.GoToFullScreen();

@@ -611,6 +611,21 @@ namespace MediaBrowser
             }
         }
 
+        public int DefaultSkipBackSeconds
+        {
+            get { return this.Data.DefaultSkipBackSeconds; }
+            set
+            {
+                if (this.Data.DefaultSkipBackSeconds != value) { this.Data.DefaultSkipBackSeconds = value; Save(); FirePropertyChanged("DefaultSkipBackSeconds"); }
+            }
+        }
+
+        public bool DisableCustomPlayerForDvd
+        {
+            get { return this.CommonData.DisableCustomPlayerForDvd; }
+            set { if (this.CommonData.DisableCustomPlayerForDvd != value) { this.CommonData.DisableCustomPlayerForDvd = value; Save(); FirePropertyChanged("DisableCustomPlayerForDvd"); } }
+        }
+
         public bool WarnOnStream
         {
             get { return this.CommonData.WarnOnStream; }

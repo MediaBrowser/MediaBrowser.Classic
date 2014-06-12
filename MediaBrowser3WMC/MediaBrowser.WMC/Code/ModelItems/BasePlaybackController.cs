@@ -432,7 +432,7 @@ namespace MediaBrowser.Code.ModelItems
             {
                 SkipTimer.Stop();
                 int seconds;
-                if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipSeconds;
+                if (!int.TryParse(value, out seconds)) seconds = Config.Instance.DefaultSkipBackSeconds;
                 SkipAmount -= seconds;
                 Logger.ReportVerbose("================ Skip back {0} seconds", seconds);
                 SkipTimer.Start();

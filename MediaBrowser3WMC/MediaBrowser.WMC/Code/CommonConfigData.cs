@@ -39,6 +39,7 @@ namespace MediaBrowser
         public int RemoteMaxBitrate = 2; //max bitrate (Mb/s) when attached remotely
 
         public bool DisableMcConflictingOperations = false; // disable some items in player interface that conflict with Media Control
+        public bool DisableCustomPlayerForDvd = false; // disable custom player for DVD rips (because menus don't work)
 
         public DateTime LastNagDate = DateTime.MinValue;
 
