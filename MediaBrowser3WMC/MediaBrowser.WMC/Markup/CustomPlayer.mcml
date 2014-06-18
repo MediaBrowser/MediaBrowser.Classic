@@ -32,11 +32,17 @@
       <ShortcutHandler Name="Back" Handle="true" HandlerStage="Bubbled" Shortcut="Back"/>
       <ShortcutHandler Name="Skip" Handle="true" HandlerStage="Bubbled" Shortcut="SkipForward"/>
       <ShortcutHandler Name="SkipBack" Handle="true" HandlerStage="Bubbled" Shortcut="SkipBack"/>
+      <ShortcutHandler Name="ChannelUp" Handle="true" HandlerStage="Bubbled" Shortcut="ChannelUp" />
+      <ShortcutHandler Name="ChannelDown" Handle="true" HandlerStage="Bubbled" Shortcut="ChannelDown" />
       <ShortcutHandler Name="FF" Handle="true" HandlerStage="Bubbled" Shortcut="FastForward"/>
       <ShortcutHandler Name="Rew" Handle="true" HandlerStage="Bubbled" Shortcut="Rewind" />
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
       <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
       <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
+      <KeyHandler Name="CtlP" Key="P" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
+      <KeyHandler Name="CtlF" Key="F" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
+      <KeyHandler Name="CtlR" Key="R" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
+      <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
@@ -110,14 +116,48 @@
         </Actions>
       </Rule>
       
+      <Changed Source="[Play.Invoked]">
+        <Conditions>
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.DirectSeek]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CtlP.Invoked]">
+        <Conditions>
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.DirectSeek]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
       <Changed Source="[Skip.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[SkipBack.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ChannelDown.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetNextChapterSeekIndex]" />
         </Actions>
       </Changed>
 
-      <Changed Source="[SkipBack.Invoked]">
+      <Changed Source="[ChannelUp.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetPrevChapterSeekIndex]" />
@@ -127,20 +167,88 @@
       <Changed Source="[FF.Invoked]">
         <Conditions>
           <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" Value="" />
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[DirectSkip.Content]" />
+          <Invoke Target="[Application.PlaybackController.FastForward]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CtlF.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.FastForward]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[FF.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CtlF.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
         </Actions>
       </Changed>
 
       <Changed Source="[Rew.Invoked]">
         <Conditions>
           <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[DirectSkip.Content]" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CtlR.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Rew.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.Rewind]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[CtlR.Invoked]">
+        <Conditions>
+          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
+          <Equality Source="[InputHolder.Value]" Value="" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.Rewind]" />
         </Actions>
       </Changed>
 
@@ -209,10 +317,14 @@
 
       <!--Direct Skip-->
       <Binding Source="[InputHolder.Value]" Target="[DirectSkip.Content]" />
+      <Changed Source="[Period.Invoked]">
+        <Actions>
+          <Set Target="[DirectSkipPanel.Visible]" Value="true" />
+          <Invoke Target="[HideDirectSkip.Start]" />
+          <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="." />
+        </Actions>
+      </Changed>
       <Changed Source="[0.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -220,9 +332,6 @@
         </Actions>
       </Changed>
       <Changed Source="[1.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -230,9 +339,6 @@
         </Actions>
       </Changed>
       <Changed Source="[2.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -240,9 +346,6 @@
         </Actions>
       </Changed>
       <Changed Source="[3.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -250,9 +353,6 @@
         </Actions>
       </Changed>
       <Changed Source="[4.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -260,9 +360,6 @@
         </Actions>
       </Changed>
       <Changed Source="[5.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -270,9 +367,6 @@
         </Actions>
       </Changed>
       <Changed Source="[6.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -280,9 +374,6 @@
         </Actions>
       </Changed>
       <Changed Source="[7.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -290,9 +381,6 @@
         </Actions>
       </Changed>
       <Changed Source="[8.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -300,9 +388,6 @@
         </Actions>
       </Changed>
       <Changed Source="[9.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
@@ -514,13 +599,15 @@
 
               <!-- Direct Seek -->
               <Panel Name="DirectSkipPanel" Layout="HorizontalFlow" Visible="false" >
+                <Layout>
+                  <FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
+                </Layout>
                 <LayoutInput>
-                  <FormLayoutInput Bottom="InfoPanel,1" Right="Parent,1,-100"/>
+                  <FormLayoutInput Bottom="SeekBar,1, 20" Right="SeekBar, .7"/>
                 </LayoutInput>
                 <Children>
-                  <Text Content="Skip" Color="220,220,250" Font="Segoe Media Center Light, 16, Bold" />
-                  <Text Name="DirectSkip" Font="Segoe Media Center Light, 16, Bold" Content="" Color="220,220,250" Margins="4,0,0,0"  />
-                  <Text Content="Seconds (hit FF or Rew)" Color="220,220,250" Font="Segoe Media Center Light, 16, Bold" Margins="4,0,0,0" />
+                  <Text Name="DirectSkip" Font="Segoe Media Center Light, 20, Bold" Content="" Color="220,250,220" Margins="4,0,10,0"  />
+                  <Text Content="[Application.LocalStrings.#DirectSkipString!cor:String]" Color="220,220,250" Font="Segoe Media Center Light, 16, Bold" Margins="4,0,0,0" />
                 </Children>
               </Panel>
 

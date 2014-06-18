@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0085";
+        const string VERSION = "1.0086";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -484,6 +484,7 @@ namespace MediaBrowser.Library.Localization
         public string SleepMachine = "Put Machine to Sleep";
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public string ChannelsFolderName = "Channels";
+        public string DirectSkipString = ">| or |< to skip seconds 'Play' to go to exact point";
 
         //Search
         public string IncludeNested = "Include Subfolders";

@@ -658,6 +658,53 @@ namespace MediaBrowser
             }
         }
 
+        public override void FastForward()
+        {
+            var rate = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate;
+            if (rate.Equals(2))
+            {
+                rate = 3;
+            } else if (rate < 5)
+            {
+                rate++;
+            } else if (rate > 6 && rate < 9)
+            {
+                rate--;
+            }
+            else
+            {
+                rate = 2;
+            }
+
+            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = rate;
+        }
+
+        public override void Rewind()
+        {
+            var rate = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate;
+            if (rate.Equals(2))
+            {
+                rate = 6;
+            } else if (rate > 3 && rate < 5)
+            {
+                rate--;
+            } else if (rate > 5 && rate < 8)
+            {
+                rate++;
+            }
+            else
+            {
+                rate = 2;
+            }
+
+            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = rate;
+        }
+
+        public override void ResetPlayRate()
+        {
+            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = 2;
+        }
+
         /// <summary>
         /// Moves the player to a given position
         /// </summary>

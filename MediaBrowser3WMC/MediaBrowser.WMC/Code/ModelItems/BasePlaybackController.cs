@@ -11,6 +11,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UserInput;
+using Microsoft.MediaCenter.Hosting;
 
 namespace MediaBrowser.Code.ModelItems
 {
@@ -394,6 +395,47 @@ namespace MediaBrowser.Code.ModelItems
             else if (PlayState == PlaybackControllerPlayState.Paused) UnPause();
         }
 
+        public virtual void ResetPlayRate()
+        {
+        }
+
+        public virtual void FastForward()
+        {
+        }
+
+        public virtual void Rewind()
+        {
+        }
+
+        public void DirectSeek(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+
+            var hours = 0;
+            var minutes = 0;
+            var seconds = 0;
+
+            var values = value.Split('.');
+            if (values.Length >= 3)
+            {
+                // hours, minutes, seconds
+                Int32.TryParse(values[0], out hours);
+                Int32.TryParse(values[1], out minutes);
+                Int32.TryParse(values[2], out seconds);
+            } else if (values.Length >= 2)
+            {
+                Int32.TryParse(values[0], out minutes);
+                Int32.TryParse(values[1], out seconds);
+            } else if (values.Length >= 1)
+            {
+                Int32.TryParse(values[0], out minutes);
+            }
+
+            var ticks = new TimeSpan(hours, minutes, seconds).Ticks;
+
+            if (ticks < CurrentFileDurationTicks) Seek(ticks);
+        }
+
         protected int SkipAmount = 0;
         protected System.Timers.Timer SkipTimer;
 
@@ -405,8 +447,9 @@ namespace MediaBrowser.Code.ModelItems
                 {
                     Logger.ReportVerbose("================ Skipping {0} seconds", SkipAmount);
                     Application.CurrentInstance.RecentUserInput = true;
-                    var pos = SkipAmount > 0 ? Math.Min(CurrentFilePositionTicks + TimeSpan.FromSeconds(SkipAmount).Ticks, CurrentFileDurationTicks)
-                                  : Math.Max(CurrentFilePositionTicks - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
+                    var current = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.Position.Ticks;
+                    var pos = SkipAmount > 0 ? Math.Min(current + TimeSpan.FromSeconds(SkipAmount).Ticks, CurrentFileDurationTicks)
+                                  : Math.Max(current - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
                     SkipAmount = 0;
                     Seek(pos);
                 }
