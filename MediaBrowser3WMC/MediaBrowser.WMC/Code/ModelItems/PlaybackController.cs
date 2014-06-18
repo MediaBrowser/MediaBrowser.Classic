@@ -67,6 +67,9 @@ namespace MediaBrowser
         /// </summary>
         protected virtual void PlayPlayableItem(PlayableItem playable)
         {
+            // Prevent sleep/screen saver
+            Helper.PreventSleep();
+
             this.Playable = playable;
             _HasStartedPlaying = false;
 
@@ -412,9 +415,6 @@ namespace MediaBrowser
                 }
             }
 
-            // Prevent sleep/screen saver
-            Helper.PreventSleep();
-
             _LastTransportUpdateTime = DateTime.Now;
 
             // Get metadata from player
@@ -493,6 +493,8 @@ namespace MediaBrowser
             {
                 Logger.ReportVerbose("Not turning off NPV because Live TV is playing.");
             }
+
+            Helper.AllowSleep();
 
             // Fire the OnFinished event for each item
             Async.Queue("Playback Finished", () => OnPlaybackFinished(e));

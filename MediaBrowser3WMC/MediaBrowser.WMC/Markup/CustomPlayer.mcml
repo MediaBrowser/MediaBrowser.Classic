@@ -110,6 +110,8 @@
           <Modified Source="[Play.Invoked]"/>
           <Modified Source="[Pause.Invoked]"/>
           <Modified Source="[PlayPause.Invoked]"/>
+          <Modified Source="[ChannelUp.Invoked]"/>
+          <Modified Source="[ChannelDown.Invoked]"/>
         </Conditions>
         <Actions>
           <Set Target="[Application.RecentUserInput]" Value="true" />

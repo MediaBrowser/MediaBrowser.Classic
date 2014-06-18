@@ -43,6 +43,11 @@ namespace MediaBrowser.LibraryManagement
                                     | PowerSettings.EXECUTION_STATE.ES_AWAYMODE_REQUIRED);
         }
         
+        public static void AllowSleep()
+        {
+            SetThreadExecutionState(PowerSettings.EXECUTION_STATE.ES_CONTINUOUS);
+        }
+        
         public static bool IsExtenderNativeVideo(string filename)
         {
             string extension = System.IO.Path.GetExtension(filename).ToLower();
