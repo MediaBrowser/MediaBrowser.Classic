@@ -59,7 +59,7 @@ namespace MediaBrowser.Library {
     /// </summary>
     public class Kernel {
 
-        private const string versionExtension = "6-12.1";
+        private const string versionExtension = "6-18.1";
 
         public const string MBSERVICE_MUTEX_ID = "Global\\{E155D5F4-0DDA-47bb-9392-D407018D24B1}";
         public const string MBCLIENT_MUTEX_ID = "Global\\{9F043CB3-EC8E-41bf-9579-81D5F6E641B9}";
