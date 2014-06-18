@@ -152,14 +152,14 @@
         </Actions>
       </Changed>
 
-      <Changed Source="[ChannelDown.Invoked]">
+      <Changed Source="[ChannelUp.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetNextChapterSeekIndex]" />
         </Actions>
       </Changed>
 
-      <Changed Source="[ChannelUp.Invoked]">
+      <Changed Source="[ChannelDown.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Item.SetPrevChapterSeekIndex]" />
