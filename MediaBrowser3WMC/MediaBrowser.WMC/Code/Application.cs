@@ -2131,6 +2131,7 @@ namespace MediaBrowser
                     break;
 
                 case "3.0.185.0":
+                case "3.0.186.0":
                     Kernel.Instance.CommonConfigData.LocalMaxBitrate = 30;
                     Kernel.Instance.CommonConfigData.Save();
                     break;
