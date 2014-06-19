@@ -39,7 +39,6 @@
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
       <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
       <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
-      <KeyHandler Name="CtlP" Key="P" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
       <KeyHandler Name="CtlF" Key="F" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
       <KeyHandler Name="CtlR" Key="R" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
@@ -119,16 +118,6 @@
       </Rule>
       
       <Changed Source="[Play.Invoked]">
-        <Conditions>
-          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.DirectSeek]" value="[InputHolder.Value]" />
-        </Actions>
-      </Changed>
-
-      <Changed Source="[CtlP.Invoked]">
         <Conditions>
           <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
         </Conditions>
