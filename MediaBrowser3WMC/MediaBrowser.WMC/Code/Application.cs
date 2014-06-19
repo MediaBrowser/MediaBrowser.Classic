@@ -1144,7 +1144,8 @@ namespace MediaBrowser
                 {
                     Logger.ReportInfo("System logging off automatically due to timeout of {0} minutes of inactivity...", Config.AutoLogoffTimeOut);
                     Config.StartupParms = "ShowLogin";
-                    Restart();
+                    if (AddInHost.Current.ApplicationContext.IsCurrentlyVisible) Restart();
+                    else Close();
                 }
             }
         }
