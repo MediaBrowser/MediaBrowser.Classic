@@ -292,6 +292,7 @@
     <Compile Include="Library\Query\FilterProperties.cs" />
     <Compile Include="Library\Sorting\BaseItemEqualityComparer.cs" />
     <Compile Include="Library\Sorting\SortHelper.cs" />
+    <Compile Include="Library\Streaming\WindowsExtenderProfile.cs" />
     <Compile Include="Library\Streaming\DefaultProfile.cs" />
     <Compile Include="Library\Threading\Async.cs" />
     <Compile Include="Library\Threading\BackgroundProcessor.cs" />

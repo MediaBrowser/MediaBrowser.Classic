@@ -4,9 +4,9 @@ using MediaBrowser.Model.Dlna;
 namespace MediaBrowser.Library.Streaming
 {
     [XmlRoot("Profile")]
-    public class WindowsMediaCenterProfile : DefaultProfile
+    public class WindowsExtenderProfile : DefaultProfile
     {
-        public WindowsMediaCenterProfile()
+        public WindowsExtenderProfile()
         {
             Name = "Windows Media Center";
 
@@ -172,7 +172,7 @@ namespace MediaBrowser.Library.Streaming
                         {
                             Condition = ProfileConditionType.LessThanEqual,
                             Property = ProfileConditionValue.VideoBitrate,
-                            Value = "30000000",
+                            Value = "10240000",
                             IsRequired = false
                         }
                     }

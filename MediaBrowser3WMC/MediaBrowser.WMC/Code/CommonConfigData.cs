@@ -35,7 +35,7 @@ namespace MediaBrowser
         public int AutoLogoffTimeOut = 180; //minutes of inactivity for system to auto logoff
 
         public bool WarnOnStream = true; //show warning if streaming instead of direct playing
-        public int LocalMaxBitrate = 10; //max bitrate (Mb/s) when attached locally
+        public int LocalMaxBitrate = 30; //max bitrate (Mb/s) when attached locally
         public int RemoteMaxBitrate = 2; //max bitrate (Mb/s) when attached remotely
 
         public bool DisableMcConflictingOperations = false; // disable some items in player interface that conflict with Media Control

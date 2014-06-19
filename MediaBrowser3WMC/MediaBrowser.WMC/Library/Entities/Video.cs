@@ -73,7 +73,8 @@ namespace MediaBrowser.Library.Entities {
                     var bitrate = Kernel.ApiClient.GetMaxBitRate();
                     Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
                     // build based on WMC profile
-                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = new WindowsMediaCenterProfile()}) : null;
+                    var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
+                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = profile}) : null;
                     yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
                                                                                               {
                                                                                                   ItemId = ApiId,
