@@ -31,7 +31,7 @@ namespace MediaBrowser
 
         public bool WakeServer = true;
 
-        public bool EnableAutoLogoff = true; //enable auto logoff functionality
+        public bool EnableAutoLogoff = false; //enable auto logoff functionality
         public int AutoLogoffTimeOut = 180; //minutes of inactivity for system to auto logoff
 
         public bool WarnOnStream = true; //show warning if streaming instead of direct playing
