@@ -39,8 +39,6 @@
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
       <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
       <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
-      <KeyHandler Name="CtlF" Key="F" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
-      <KeyHandler Name="CtlR" Key="R" Handle="true" HandlerStage="Bubbled" Modifiers="Control"/>
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
@@ -166,17 +164,6 @@
         </Actions>
       </Changed>
 
-      <Changed Source="[CtlF.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-          <Equality Source="[InputHolder.Value]" Value="" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.FastForward]" />
-        </Actions>
-      </Changed>
-
       <Changed Source="[FF.Invoked]">
         <Conditions>
           <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
@@ -188,17 +175,6 @@
         </Actions>
       </Changed>
 
-      <Changed Source="[CtlF.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
-        </Actions>
-      </Changed>
-
       <Changed Source="[Rew.Invoked]">
         <Conditions>
           <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
@@ -210,29 +186,7 @@
         </Actions>
       </Changed>
 
-      <Changed Source="[CtlR.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-          <Equality Source="[InputHolder.Value]" ConditionOp="NotEquals" Value="" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
-        </Actions>
-      </Changed>
-
       <Changed Source="[Rew.Invoked]">
-        <Conditions>
-          <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
-          <Equality Source="[InputHolder.Value]" Value="" />
-        </Conditions>
-        <Actions>
-          <PlaySound Sound="sound://sounds:Select" />
-          <Invoke Target="[Application.PlaybackController.Rewind]" />
-        </Actions>
-      </Changed>
-
-      <Changed Source="[CtlR.Invoked]">
         <Conditions>
           <Equality Source="[Application.Config.DisableMcConflictingOperations]" Value="false" />
           <Equality Source="[InputHolder.Value]" Value="" />
