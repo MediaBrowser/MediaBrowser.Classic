@@ -39,6 +39,10 @@
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
       <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
       <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
+      <KeyHandler Name="Right" Handle="true" HandlerStage="Bubbled" Key="Right" />
+      <KeyHandler Name="Left" Handle="true" HandlerStage="Bubbled" Key="Left" />
+      <KeyHandler Name="Up" Handle="true" HandlerStage="Bubbled" Key="Up" />
+      <KeyHandler Name="Down" Handle="true" HandlerStage="Bubbled" Key="Down" />
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
@@ -71,6 +75,13 @@
     <Rules>
 
       <Default Target="[Input.KeyInteractive]" Value="true" />
+      <!--This will show the overlay when we first come up-->
+      <Changed Source="[Application]" InitialEvaluate="true" >
+        <Actions>
+          <Set Target="[Application.RecentUserInput]" Value="true" />
+        </Actions>
+      </Changed>
+      
       <Binding Source="[Application.ShowNewItemPopout]" Target="[NewItemPopout.Visible]" >
         <Conditions>
           <Equality Source="[Application.Config.ShowNewItemNotificationInPlayer]" Value="true" />
@@ -88,9 +99,21 @@
       <Binding Source="[Application.MessageTitle]" Target="[MessagePopout.Heading]" />
 
       <Changed Source="[Back.Invoked]" >
+        <Conditions>
+          <Equality Source="[ShowOverlay]" Value="false" />
+        </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.Back]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[Back.Invoked]" >
+        <Conditions>
+          <Equality Source="[ShowOverlay]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[Application.RecentUserInput]" Value="false" />
         </Actions>
       </Changed>
 
@@ -109,6 +132,10 @@
           <Modified Source="[PlayPause.Invoked]"/>
           <Modified Source="[ChannelUp.Invoked]"/>
           <Modified Source="[ChannelDown.Invoked]"/>
+          <Modified Source="[Right.Invoked]"/>
+          <Modified Source="[Left.Invoked]"/>
+          <Modified Source="[Up.Invoked]"/>
+          <Modified Source="[Down.Invoked]"/>
         </Conditions>
         <Actions>
           <Set Target="[Application.RecentUserInput]" Value="true" />
@@ -142,6 +169,7 @@
       <Changed Source="[ChannelUp.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Item.SetNextChapterSeekIndex]" />
         </Actions>
       </Changed>
@@ -149,6 +177,7 @@
       <Changed Source="[ChannelDown.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Item.SetPrevChapterSeekIndex]" />
         </Actions>
       </Changed>
@@ -160,6 +189,7 @@
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Application.PlaybackController.FastForward]" />
         </Actions>
       </Changed>
@@ -171,6 +201,7 @@
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
         </Actions>
       </Changed>
@@ -182,6 +213,7 @@
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
         </Actions>
       </Changed>
@@ -193,12 +225,14 @@
         </Conditions>
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Application.PlaybackController.Rewind]" />
         </Actions>
       </Changed>
 
       <Changed Source="[Space.Invoked]">
         <Actions>
+          <Set Target="[Application.RecentUserInput]" Value="true" />
           <Invoke Target="[Application.PlaybackController.TogglePause]" />
         </Actions>
       </Changed>
@@ -267,6 +301,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="." />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[0.Invoked]">
@@ -274,6 +309,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="0" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[1.Invoked]">
@@ -281,6 +317,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="1" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[2.Invoked]">
@@ -288,6 +325,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="2" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[3.Invoked]">
@@ -295,6 +333,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="3" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[4.Invoked]">
@@ -302,6 +341,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="4" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[5.Invoked]">
@@ -309,6 +349,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="5" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[6.Invoked]">
@@ -316,6 +357,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="6" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[7.Invoked]">
@@ -323,6 +365,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="7" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[8.Invoked]">
@@ -330,6 +373,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="8" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       <Changed Source="[9.Invoked]">
@@ -337,6 +381,7 @@
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="9" />
+          <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
       

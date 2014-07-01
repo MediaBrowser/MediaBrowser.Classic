@@ -106,8 +106,7 @@ namespace MediaBrowser.Library.Input
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 &&
-                (MouseMessages.WM_MOUSEMOVE == (MouseMessages)wParam || wParam == (IntPtr)WM_KEYDOWN))
+            if (nCode >= 0 && MouseMessages.WM_MOUSEMOVE == (MouseMessages)wParam)
             {
                 if (Tick != null)
                 {

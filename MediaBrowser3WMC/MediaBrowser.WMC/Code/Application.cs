@@ -2359,6 +2359,11 @@ namespace MediaBrowser
                     _inputActivityTimer.Stop();
                     _inputActivityTimer.Start();
                 }
+                else
+                {
+                    //stop timer if we are turning off manually
+                    _inputActivityTimer.Stop();
+                }
                 if (_recentUserInput != value)
                 {
                     _recentUserInput = value;
