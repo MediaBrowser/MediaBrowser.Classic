@@ -162,6 +162,11 @@ namespace MediaBrowser.Library.Persistance
                     return new AppleTrailer();
                 }
 
+                if (itemType.Equals("channel", StringComparison.OrdinalIgnoreCase) && mb3Item.Name == "Trailers")
+                {
+                    return new TrailersChannel();
+                }
+
                 Type typ;
                 if (Mb3Translator.TypeMap.TryGetValue(itemType, out typ))
                 {

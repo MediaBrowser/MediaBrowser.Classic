@@ -25,6 +25,15 @@ namespace MediaBrowser.Library.Entities {
             return changed | base.AssignFromItem(item);
         }
 
+        public bool ForceStaticStream
+        {
+            get
+            {
+                var channel = FindParent<Channel>();
+                return channel != null && channel.ForceStaticStream;
+            }
+        }
+
         public override IEnumerable<string> Files
         {
             get { return VideoFiles; }
@@ -71,20 +80,34 @@ namespace MediaBrowser.Library.Entities {
                 else
                 {
                     var bitrate = Kernel.ApiClient.GetMaxBitRate();
-                    Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
-                    // build based on WMC profile
-                    var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
-                    var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = profile}) : null;
-                    yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                                              {
-                                                                                                  ItemId = ApiId,
-                                                                                                  OutputFileExtension = ".wmv",
-                                                                                                  MaxWidth = 1280,
-                                                                                                  VideoBitRate = bitrate,
-                                                                                                  AudioBitRate = 128000,
-                                                                                                  MaxAudioChannels = 2,
-                                                                                                  AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-                                                                                              });
+                    if (ForceStaticStream && bitrate > 10000000)
+                    {
+                        Logger.ReportInfo("Unable to access {0}.  Will try to stream statically.", Path);
+                        yield return Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                              {
+                                                                  ItemId = ApiId,
+                                                                  Static = true
+
+                                                              });
+                    }
+                    else
+                    {
+                        Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
+                        // build based on WMC profile
+                        var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
+                        var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = profile}) : null;
+                        yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+                                                                                                  {
+                                                                                                      ItemId = ApiId,
+                                                                                                      OutputFileExtension = ".wmv",
+                                                                                                      MaxWidth = 1280,
+                                                                                                      VideoBitRate = bitrate,
+                                                                                                      AudioBitRate = 128000,
+                                                                                                      MaxAudioChannels = 2,
+                                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+                                                                                                  });
+                    }
+
                 }
             }
         }

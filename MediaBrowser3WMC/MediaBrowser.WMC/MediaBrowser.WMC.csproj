@@ -179,6 +179,7 @@
     <Compile Include="Library\Entities\MusicAlbum.cs" />
     <Compile Include="Library\Entities\MusicArtist.cs" />
     <Compile Include="Library\Entities\StaticFolder.cs" />
+    <Compile Include="Library\Entities\TrailersChannel.cs" />
     <Compile Include="Library\Entities\User.cs" />
     <Compile Include="Library\Entities\PodCastAudio.cs" />
     <Compile Include="Library\Events\GenericEventArgs.cs" />

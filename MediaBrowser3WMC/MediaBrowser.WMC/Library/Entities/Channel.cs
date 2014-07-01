@@ -17,6 +17,8 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public virtual bool ForceStaticStream { get { return false; } }
+
         //until there is an API for this we don't have recent items
         public override Folder QuickList
         {
