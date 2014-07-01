@@ -352,6 +352,35 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Queries for latest channel items
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="channelId"></param>
+        /// <param name="filters"></param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetLatestChannelItems(string userId, string channelId, ItemFilter[] filters )
+        {
+            if (userId == null)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var dict = new QueryStringDictionary {{"userid", userId}};
+            dict.AddIfNotNullOrEmpty("channelIds", channelId);
+            dict.Add("fields", MB3ApiRepository.StandardFields.Select(f => f.ToString()));
+            if (filters != null)
+                dict.AddIfNotNull("filters", filters.Select(f => f.ToString()));
+
+            var url = GetApiUrl("/Channels/Items/Latest", dict);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+        }
+
+        /// <summary>
         /// Queries for additional parts
         /// </summary>
         /// <returns>Task{ItemsResult}.</returns>

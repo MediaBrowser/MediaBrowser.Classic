@@ -30,7 +30,7 @@ namespace MediaBrowser.Library.Entities {
 
         public bool FullDetailsLoaded = false;
 
-        public virtual string ApiId { get { return Id.ToString(); } }
+        public virtual string ApiId { get { return Id.ToString("N"); } }
 
         public EventHandler<MetadataChangedEventArgs> MetadataChanged;
 

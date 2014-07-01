@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
     public class Channel : Folder
     {
-        protected override System.Collections.Generic.List<BaseItem> GetCachedChildren()
+        protected override List<BaseItem> GetCachedChildren()
         {
             return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ApiId).ToList();
         }
@@ -19,24 +22,20 @@ namespace MediaBrowser.Library.Entities
 
         public virtual bool ForceStaticStream { get { return false; } }
 
-        //until there is an API for this we don't have recent items
-        public override Folder QuickList
+        protected override IEnumerable<BaseItem> GetLatestItems(string recentItemOption, int maxItems)
         {
-            get
+            switch (recentItemOption)
             {
-                return new Folder();
-            }
-        }
+                case "watched":
+                    return Kernel.Instance.MB3ApiRepository.RetrieveLatestChannelItems(ApiId, new [] {ItemFilter.IsPlayed, }).ToList();
 
-        public override string[] RalIncludeTypes
-        {
-            get
-            {
-                return new string[] { "ChannelVideoItem", "ChannelAudioItem" };
-            }
-            set
-            {
-                base.RalIncludeTypes = value;
+
+                case "unwatched":
+                    return Kernel.Instance.MB3ApiRepository.RetrieveLatestChannelItems(ApiId, new [] {ItemFilter.IsUnplayed, }).ToList();
+
+                default:
+                    return Kernel.Instance.MB3ApiRepository.RetrieveLatestChannelItems(ApiId).ToList();
+
             }
         }
 

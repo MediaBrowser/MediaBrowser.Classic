@@ -681,6 +681,12 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? new BaseItem[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
+        public IEnumerable<BaseItem> RetrieveLatestChannelItems(string channelId = null, ItemFilter[] filters = null)
+        {
+            var dtos = Kernel.ApiClient.GetLatestChannelItems(Kernel.CurrentUser.ApiId, channelId, filters);
+            return dtos == null ? new BaseItem[] { } : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        }
+
         public IEnumerable<Video> RetrieveSpecialFeatures(string id)
         {
             var dtos = Kernel.ApiClient.GetSpecialFeatures(Kernel.CurrentUser.Id, id);

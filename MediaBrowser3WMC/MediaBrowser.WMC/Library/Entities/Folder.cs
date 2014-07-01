@@ -339,6 +339,63 @@ namespace MediaBrowser.Library.Entities {
         {
         }
 
+        protected virtual IEnumerable<BaseItem> GetLatestItems(string recentItemOption, int maxItems)
+        {
+            
+            switch (recentItemOption)
+            {
+                case "watched":
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                {
+                                                                                    UserId = Kernel.CurrentUser.ApiId,
+                                                                                    ParentId = RalParentId,
+                                                                                    Limit = maxItems,
+                                                                                    Recursive = true,
+                                                                                    ExcludeItemTypes = RalExcludeTypes,
+                                                                                    IncludeItemTypes = RalIncludeTypes,
+                                                                                    ExcludeLocationTypes = new[] { LocationType.Virtual },
+                                                                                    Fields = MB3ApiRepository.StandardFields,
+                                                                                    Filters = (new[] {Config.Instance.TreatWatchedAsInProgress ? ItemFilter.IsResumable : ItemFilter.IsPlayed, }).Concat(AdditionalRalFilters).ToArray(),
+                                                                                    SortBy = new[] {ItemSortBy.DatePlayed},
+                                                                                    SortOrder = Model.Entities.SortOrder.Descending
+                                                                                }).ToList();
+
+
+                case "unwatched":
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                {
+                                                                                    UserId = Kernel.CurrentUser.ApiId,
+                                                                                    ParentId = RalParentId,
+                                                                                    Limit = maxItems,
+                                                                                    Recursive = true,
+                                                                                    Fields = MB3ApiRepository.StandardFields,
+                                                                                    ExcludeItemTypes = RalExcludeTypes,
+                                                                                    IncludeItemTypes = RalIncludeTypes,
+                                                                                    ExcludeLocationTypes = new[] { LocationType.Virtual },
+                                                                                    Filters = (new[] { ItemFilter.IsUnplayed, }).Concat(AdditionalRalFilters).ToArray(),
+                                                                                    SortBy = new[] {ItemSortBy.DateCreated},
+                                                                                    SortOrder = Model.Entities.SortOrder.Descending
+                                                                                }).ToList();
+
+                default:
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                                                                                {
+                                                                                    UserId = Kernel.CurrentUser.ApiId,
+                                                                                    ParentId = RalParentId,
+                                                                                    Limit = maxItems,
+                                                                                    Recursive = true,
+                                                                                    Filters = AdditionalRalFilters,
+                                                                                    ExcludeItemTypes = RalExcludeTypes,
+                                                                                    IncludeItemTypes = RalIncludeTypes,
+                                                                                    ExcludeLocationTypes = new[] { LocationType.Virtual },
+                                                                                    Fields = MB3ApiRepository.StandardFields,
+                                                                                    SortBy = new[] {ItemSortBy.DateCreated},
+                                                                                    SortOrder = Model.Entities.SortOrder.Descending
+                                                                                }).ToList();
+
+            }
+        }
+
         public virtual IndexFolder UpdateQuickList(string recentItemOption) 
         {
             //rebuild the proper list
@@ -347,62 +404,9 @@ namespace MediaBrowser.Library.Entities {
             int maxItems = this.ActualChildren.Count > 0 ? (this.ActualChildren[0] is IContainer || this.ActualChildren[0] is MusicArtist) && Kernel.Instance.ConfigData.RecentItemCollapseThresh <= 6 ? Kernel.Instance.ConfigData.RecentItemContainerCount : Kernel.Instance.ConfigData.RecentItemCount : Kernel.Instance.ConfigData.RecentItemCount;
             using (new Profiler(string.Format("RAL child retrieval for {0} option {1}", Name, recentItemOption)))
             {
-                switch (recentItemOption)
-                {
-                    case "watched":
-                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                                                                                   {
-                                                                                       UserId = Kernel.CurrentUser.ApiId,
-                                                                                       ParentId = RalParentId,
-                                                                                       Limit = maxItems,
-                                                                                       Recursive = true,
-                                                                                       ExcludeItemTypes = RalExcludeTypes,
-                                                                                       IncludeItemTypes = RalIncludeTypes,
-                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
-                                                                                       Fields = MB3ApiRepository.StandardFields,
-                                                                                       Filters = (new[] {Config.Instance.TreatWatchedAsInProgress ? ItemFilter.IsResumable : ItemFilter.IsPlayed, }).Concat(AdditionalRalFilters).ToArray(),
-                                                                                       SortBy = new[] {ItemSortBy.DatePlayed},
-                                                                                       SortOrder = Model.Entities.SortOrder.Descending
-                                                                                   }).ToList();
-
-                        break;
-
-                    case "unwatched":
-                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                                                                                   {
-                                                                                       UserId = Kernel.CurrentUser.ApiId,
-                                                                                       ParentId = RalParentId,
-                                                                                       Limit = maxItems,
-                                                                                       Recursive = true,
-                                                                                       Fields = MB3ApiRepository.StandardFields,
-                                                                                       ExcludeItemTypes = RalExcludeTypes,
-                                                                                       IncludeItemTypes = RalIncludeTypes,
-                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
-                                                                                       Filters = (new[] { ItemFilter.IsUnplayed, }).Concat(AdditionalRalFilters).ToArray(),
-                                                                                       SortBy = new[] {ItemSortBy.DateCreated},
-                                                                                       SortOrder = Model.Entities.SortOrder.Descending
-                                                                                   }).ToList();
-                        break;
-
-                    default:
-                        items = Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                                                                                   {
-                                                                                       UserId = Kernel.CurrentUser.ApiId,
-                                                                                       ParentId = RalParentId,
-                                                                                       Limit = maxItems,
-                                                                                       Recursive = true,
-                                                                                       Filters = AdditionalRalFilters,
-                                                                                       ExcludeItemTypes = RalExcludeTypes,
-                                                                                       IncludeItemTypes = RalIncludeTypes,
-                                                                                       ExcludeLocationTypes = new[] { LocationType.Virtual },
-                                                                                       Fields = MB3ApiRepository.StandardFields,
-                                                                                       SortBy = new[] {ItemSortBy.DateCreated},
-                                                                                       SortOrder = Model.Entities.SortOrder.Descending
-                                                                                   }).ToList();
-                        break;
-
-                }
+                items = GetLatestItems(recentItemOption, maxItems).ToList();
             }
+
             Logger.ReportVerbose(recentItemOption + " list for " + this.Name + " loaded with " + items.Count + " items.");
                 var folderChildren = new List<BaseItem>();
                 //now collapse anything that needs to be and create the child list for the list folder
