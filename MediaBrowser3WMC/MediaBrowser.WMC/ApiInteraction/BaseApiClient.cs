@@ -126,7 +126,7 @@ namespace MediaBrowser.ApiInteraction
 
         public int GetMaxBitRate()
         {
-            return ServerHostName.StartsWith("192.168") || ServerHostName.StartsWith("127.0") || ServerHostName.Equals("localhost", StringComparison.OrdinalIgnoreCase) ? Config.Instance.LocalMaxBitrate * 1000000 : Config.Instance.RemoteMaxBitrate * 1000000;
+            return ServerHostName.StartsWith("192.168") || ServerHostName.StartsWith("127.0") || !ServerHostName.Contains('.') ? Config.Instance.LocalMaxBitrate * 1000000 : Config.Instance.RemoteMaxBitrate * 1000000;
         }
 
         /// <summary>
