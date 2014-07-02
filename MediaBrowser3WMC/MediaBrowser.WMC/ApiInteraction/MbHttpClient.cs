@@ -71,6 +71,15 @@ namespace MediaBrowser.ApiInteraction
             }
             catch (WebException ex)
             {
+                if (ex.Status == WebExceptionStatus.ProtocolError && ((HttpWebResponse) ex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    if (Application.CurrentInstance != null)
+                    {
+                        Logger.Error("Unauthorized Request received from server - logging out");
+                        Application.CurrentInstance.Logout(true);
+                    }
+                }
+
                 Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
                 return null;
 
