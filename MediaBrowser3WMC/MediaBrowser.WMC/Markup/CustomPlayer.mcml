@@ -67,6 +67,16 @@
       <KeyHandler Name="7" Key="D7" Handle="true" HandlerStage="Bubbled"/>
       <KeyHandler Name="8" Key="D8" Handle="true" HandlerStage="Bubbled"/>
       <KeyHandler Name="9" Key="D9" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num0" Key="NumPad0" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num1" Key="NumPad1" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num2" Key="NumPad2" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num3" Key="NumPad3" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num4" Key="NumPad4" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num5" Key="NumPad5" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num6" Key="NumPad6" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num7" Key="NumPad7" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num8" Key="NumPad8" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="Num9" Key="NumPad9" Handle="true" HandlerStage="Bubbled"/>
 
       <KeyHandler Name="Space" Key="Space" Handle="true" HandlerStage="Bubbled"/>
 
@@ -304,86 +314,126 @@
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
       </Changed>
-      <Changed Source="[0.Invoked]">
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[0.Invoked]" />
+          <Modified Source="[Num0.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="0" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[1.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[1.Invoked]" />
+          <Modified Source="[Num1.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="1" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[2.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[2.Invoked]" />
+          <Modified Source="[Num2.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="2" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[3.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[3.Invoked]" />
+          <Modified Source="[Num3.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="3" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[4.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[4.Invoked]" />
+          <Modified Source="[Num4.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="4" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[5.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[5.Invoked]" />
+          <Modified Source="[Num5.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="5" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[6.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[6.Invoked]" />
+          <Modified Source="[Num6.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="6" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[7.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[7.Invoked]" />
+          <Modified Source="[Num7.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="7" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[8.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[8.Invoked]" />
+          <Modified Source="[Num8.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="8" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
-      <Changed Source="[9.Invoked]">
+      </Rule>
+      <Rule ConditionLogicalOp="Or">
+        <Conditions>
+          <Modified Source="[9.Invoked]" />
+          <Modified Source="[Num9.Invoked]" />
+        </Conditions>
         <Actions>
           <Set Target="[DirectSkipPanel.Visible]" Value="true" />
           <Invoke Target="[HideDirectSkip.Start]" />
           <Invoke Target="[InputHolder.Value.Concat]" ResultTarget="[InputHolder.Value]" str0="[InputHolder.Value]" str1="9" />
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
-      </Changed>
+      </Rule>
       
       <Changed Source="[HideDirectSkip.Tick]">
         <Actions>
