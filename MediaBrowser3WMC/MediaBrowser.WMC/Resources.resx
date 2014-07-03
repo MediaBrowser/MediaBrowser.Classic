@@ -1393,4 +1393,16 @@
   <data name="MessagePopout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>markup\controls\popups\messagepopout.mcml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="FZoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\fzoom.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HStretch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\hstretch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NZoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\nzoom.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VStretch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\icons\vstretch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

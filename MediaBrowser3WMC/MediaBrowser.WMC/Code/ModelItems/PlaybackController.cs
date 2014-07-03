@@ -37,6 +37,26 @@ namespace MediaBrowser
             get { return "Internal Player"; }
         }
 
+        public override Vector3 Zoom
+        {
+            get
+            {
+                switch (ZoomMode)
+                {
+                    case 0:
+                        return new Vector3(1,1,1);
+                    case 1:
+                        return new Vector3(1.33f,1,1);
+                    case 2:
+                        return new Vector3(1,1.33f,1);
+                    case 3:
+                        return new Vector3(1.33f,1.33f,1);
+                }
+
+                return new Vector3(1,1,1);
+            }
+        }
+
         protected override void ResetPlaybackProperties()
         {
             base.ResetPlaybackProperties();

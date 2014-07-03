@@ -344,12 +344,12 @@
     <Compile Include="Library\Streaming\WindowsMediaCenterProfile.cs" />
     <Compile Include="Library\VideoFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Library\Util\Profiler.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Library\Util\Profiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -410,6 +410,8 @@
     <Content Include="Images\FavTV.png" />
     <Content Include="Images\heart.png" />
     <Content Include="Images\Icons\Frames.png" />
+    <Content Include="Images\Icons\FZoom.png" />
+    <Content Include="Images\Icons\HStretch.png" />
     <Content Include="Images\Icons\Icon1080.png" />
     <Content Include="Images\Icons\Icon720.png" />
     <Content Include="Images\Icons\IconAdded.png" />
@@ -427,9 +429,11 @@
     <Content Include="Images\Icons\IconSearch.png" />
     <Content Include="Images\Icons\IconSleep.png" />
     <Content Include="Images\Icons\IconWatched.png" />
+    <Content Include="Images\Icons\NZoom.png" />
     <Content Include="Images\Icons\Pause.png" />
     <Content Include="Images\Icons\RTFresh.png" />
     <Content Include="Images\Icons\RTRotten.png" />
+    <Content Include="Images\Icons\VStretch.png" />
     <Content Include="Images\Lock.png" />
     <Content Include="Images\Locked.png" />
     <Content Include="Images\Application.png" />
@@ -974,7 +978,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Buttons\ChapterButton.mcml" />
-    <Content Include="Markup\Controls\Buttons\IconButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\IconButton.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Buttons\PCIndicatorButton.mcml">
       <SubType>Designer</SubType>
     </Content>

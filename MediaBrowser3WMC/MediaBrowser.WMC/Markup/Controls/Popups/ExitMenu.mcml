@@ -64,7 +64,7 @@
       <Content>
         <Graphic Name="Main" Content="resx://MediaBrowser/MediaBrowser.Resources/Background" Navigation="ContainAll" SizingPolicy="SizeToChildren" Padding="20,20,20,20">
           <Children>
-            <Graphic  Content="image://i:ZoomPane" SizingPolicy="SizeToChildren" Alpha=".75"
+            <Graphic  Content="image://i:ZoomPane" SizingPolicy="SizeToChildren"
                      MaintainAspectRatio="false" Padding="10,10,10,10" >
               <Layout>
                 <FlowLayout Orientation="Vertical" ItemAlignment="Center"/>

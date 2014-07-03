@@ -17,6 +17,7 @@
     xmlns:sr="resx://MediaBrowser/MediaBrowser.Resources/StarRating"
     xmlns:si="resx://MediaBrowser/MediaBrowser.Resources/StudioImages"
     xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SeekBar"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/IconButton"
     xmlns:dum="resx://MediaBrowser/MediaBrowser.Resources/DummyItem"
       xmlns:mpo="resx://MediaBrowser/MediaBrowser.Resources/MessagePopout"
     xmlns:me="Me"
@@ -39,10 +40,10 @@
       <ShortcutHandler Name="Pause" Handle="false" HandlerStage="Bubbled" Shortcut="Pause"/>
       <ShortcutHandler Name="Play" Handle="false" HandlerStage="Bubbled" Shortcut="Play" />
       <ShortcutHandler Name="PlayPause" Handle="false" HandlerStage="Bubbled" Shortcut="PlayPause" />
-      <KeyHandler Name="Right" Handle="true" HandlerStage="Bubbled" Key="Right" />
-      <KeyHandler Name="Left" Handle="true" HandlerStage="Bubbled" Key="Left" />
-      <KeyHandler Name="Up" Handle="true" HandlerStage="Bubbled" Key="Up" />
-      <KeyHandler Name="Down" Handle="true" HandlerStage="Bubbled" Key="Down" />
+      <KeyHandler Name="Right"  Handle="false" HandlerStage="Routed" Key="Right" />
+      <KeyHandler Name="Left" Handle="false" HandlerStage="Routed" Key="Left" />
+      <KeyHandler Name="Up" Handle="false" HandlerStage="Routed" Key="Up" />
+      <KeyHandler Name="Down" Handle="false" HandlerStage="Routed" Key="Down" />
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
@@ -260,6 +261,10 @@
       <Binding Target="[SeekBar.Item]" Source="[Item]" />
       <Binding Target="[Title.Content]" Source="[Item.LongName]" />
       <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
+      
+      <!--Zoom Levels-->
+      <Binding Source="[Application.PlaybackController.Zoom]" Target="[MainVideo.Scale]" />
+      
       <Rule>
         <Conditions>
           <Equality Source="[Item.HDType]" ConditionOp="Equals" Value="1080" />
@@ -657,6 +662,12 @@
                 </LayoutInput>
               </sb:SeekBar>
 
+              <me:ZoomBar Name="ZoomBar" Application="[Application]" >
+                <LayoutInput>
+                  <FormLayoutInput Left="PosterImage, 1, 30" Top="Parent,1, -45"/>
+                </LayoutInput>
+              </me:ZoomBar>
+
               <Panel Name="Studios" Layout="HorizontalFlow" Padding="0,0,0,0" Margins="20,20,20,15" Alpha=".6">
                 <LayoutInput>
                   <FormLayoutInput Vertical="Far" Horizontal="Far"/>
@@ -696,7 +707,7 @@
             </Children>
           </Panel>
           
-          <Video Name="MainVideo" Layout="Fill" />
+          <Video Name="MainVideo" Layout="Fill"  Scale="[Application.PlaybackController.Zoom]" CenterPointPercent=".5,.5,.5" />
           <ColorFill Name="Background" Content="Black" Layout="Fill" />
 
 
@@ -707,6 +718,85 @@
 
   </UI>
 
+  <UI Name="ZoomBar" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+    </Properties>
+
+    <Locals>
+      <Command Name="NormalZoom"/>
+      <Command Name="HStretch"/>
+      <Command Name="VStretch"/>
+      <Command Name="FullZoom"/>
+      <EditableText Name="ToolText"/>
+
+    </Locals>
+
+    <Rules>
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="false" Target="[ToolTip.Content]" Value="" />
+      <Binding Source="[ToolText.Value]" Target="[ToolTip.Content]" />
+
+      <Changed Source="[NormalZoom.Invoked]" >
+        <Actions>
+          <Set Target="[Application.PlaybackController.ZoomMode]" Value="0" />
+        </Actions>
+      </Changed>
+      <Changed Source="[HStretch.Invoked]" >
+        <Actions>
+          <Set Target="[Application.PlaybackController.ZoomMode]" Value="1" />
+        </Actions>
+      </Changed>
+      <Changed Source="[VStretch.Invoked]" >
+        <Actions>
+          <Set Target="[Application.PlaybackController.ZoomMode]" Value="2" />
+        </Actions>
+      </Changed>
+      <Changed Source="[FullZoom.Invoked]" >
+        <Actions>
+          <Set Target="[Application.PlaybackController.ZoomMode]" Value="3" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.PlaybackController.IsFullZoom]" Target="[FullButton.Selected]" />
+      <Binding Source="[Application.PlaybackController.IsNormalZoom]" Target="[NormalButton.Selected]" />
+      <Binding Source="[Application.PlaybackController.IsHorizontalStretch]" Target="[HorizontalButton.Selected]" />
+      <Binding Source="[Application.PlaybackController.IsVerticalStretch]" Target="[VerticalButton.Selected]" />
+
+    </Rules>
+
+    <Content>
+      <Panel Name="ZoomPanel" Padding="5,5,5,5" Navigation="PreferFocusOrder" >
+        <Layout>
+          <FlowLayout Orientation="Horizontal" ItemAlignment="Center"/>
+        </Layout>
+        <Children>
+          <Text Font="Segoe Media Center Light, 12, Bold" Content="[Application.LocalStrings.#ZoomMode!cor:String]" Color="200,200,200" Margins="0,0,10,0" />
+          <Panel >
+            <Layout>
+              <FlowLayout Orientation="Horizontal" ItemAlignment="Center" Spacing="4,4"/>
+            </Layout>
+            <Children>
+              <ib:IconButton Name="NormalButton" Application="[Application]"
+                                DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#NZoom!cor:String]"
+                                Selected="[Application.PlaybackController.IsNormalZoom]" IconImage="image://i:NZoom" Command="[NormalZoom]" Size="34,0" />
+              <ib:IconButton Name="HorizontalButton" Application="[Application]"
+                                DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#HStretch!cor:String]"
+                                Selected="[Application.PlaybackController.IsHorizontalStretch]" IconImage="image://i:HStretch" Command="[HStretch]" Size="34,0" />
+              <ib:IconButton Name="VerticalButton" Application="[Application]"
+                                DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#VStretch!cor:String]"
+                                Selected="[Application.PlaybackController.IsVerticalStretch]" IconImage="image://i:VStretch" Command="[VStretch]" Size="34,0" />
+              <ib:IconButton Name="FullButton" Application="[Application]"
+                                DescriptionField="[ToolText]" DescriptionText="[Application.LocalStrings.#FZoom!cor:String]"
+                                Selected="[Application.PlaybackController.IsFullZoom]" IconImage="image://i:FZoom" Command="[FullZoom]" Size="34,0" />
+            </Children>
+          </Panel>
+          <Text Name="ToolTip" Font="Segoe Media Center Light, 12, Bold" Color="200,200,200" Margins="10,0,0,0" />
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+  
   <UI Name="ChapterItem" >
     <Properties>
       <lib:ChapterItem Name="Chapter" ChapterItem="$Required" />

@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0088";
+        const string VERSION = "1.0089";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -485,6 +485,11 @@ namespace MediaBrowser.Library.Localization
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public string ChannelsFolderName = "Channels";
         public string DirectSkipString = ">| or |< to skip seconds 'Play' to go to exact point";
+        public string NZoom = "Normal";
+        public string FZoom = "Full Zoom";
+        public string HStretch = "Horizontal Stretch";
+        public string VStretch = "Vertical Stretch";
+        public string ZoomMode = "Zoom";
 
         //Search
         public string IncludeNested = "Include Subfolders";

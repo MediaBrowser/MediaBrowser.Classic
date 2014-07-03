@@ -12,6 +12,7 @@ using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UserInput;
 using Microsoft.MediaCenter.Hosting;
+using Microsoft.MediaCenter.UI;
 
 namespace MediaBrowser.Code.ModelItems
 {
@@ -80,6 +81,26 @@ namespace MediaBrowser.Code.ModelItems
             }
         }
         #endregion
+
+        public int ZoomMode
+        {
+            get { return _zoomMode; }
+            set
+            {
+                if (_zoomMode != value)
+                {
+                    _zoomMode = value;
+                    FirePropertiesChanged("Zoom","IsNormalZoom","IsFullZoom","IsHorizontalStretch","IsVerticalStretch");
+                }
+            }
+        }
+
+        public virtual Vector3 Zoom {get {return new Vector3(1,1,1);}}
+
+        public bool IsNormalZoom { get { return ZoomMode == 0; } }
+        public bool IsHorizontalStretch { get { return ZoomMode == 1; } }
+        public bool IsVerticalStretch { get { return ZoomMode == 2; } }
+        public bool IsFullZoom { get { return ZoomMode == 3; } }
 
         /// <summary>
         /// This updates Playstates and fires the Progress event
@@ -438,6 +459,7 @@ namespace MediaBrowser.Code.ModelItems
 
         protected int SkipAmount = 0;
         protected System.Timers.Timer SkipTimer;
+        private int _zoomMode;
 
         private void SkipTimerExpired(object sender, EventArgs args)
         {

@@ -2042,6 +2042,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FZoom {
+            get {
+                object obj = ResourceManager.GetObject("FZoom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gears {
             get {
                 object obj = ResourceManager.GetObject("Gears", resourceCulture);
@@ -2225,6 +2235,16 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap heart {
             get {
                 object obj = ResourceManager.GetObject("heart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HStretch {
+            get {
+                object obj = ResourceManager.GetObject("HStretch", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3086,6 +3106,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("NumberPad", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NZoom {
+            get {
+                object obj = ResourceManager.GetObject("NZoom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -4266,6 +4296,16 @@ namespace MediaBrowser {
             get {
                 object obj = ResourceManager.GetObject("ViewMovieMinimal", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VStretch {
+            get {
+                object obj = ResourceManager.GetObject("VStretch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

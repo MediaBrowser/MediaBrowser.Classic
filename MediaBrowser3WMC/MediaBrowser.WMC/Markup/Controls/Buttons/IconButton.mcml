@@ -18,6 +18,7 @@
       <Color Name="IconColor" Color="255,255,255"/>
       <EditableText Name="DescriptionField" />
       <cor:String Name="DescriptionText" String="" />
+      <cor:Boolean Name="Selected" Boolean="false" />
     </Properties>
 
     <Locals>
@@ -80,6 +81,9 @@
           <Set Target="[BoxImage.Visible]" Value="false" />
         </Actions>
       </Condition>
+
+      <Condition Source="[Selected]" SourceValue="true" Target="[Icon.Alpha]" Value="1" />
+      <Default Target="[Icon.Alpha]" Value=".75" />
 
     </Rules>
 
