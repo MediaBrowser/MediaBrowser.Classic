@@ -138,10 +138,10 @@ namespace MediaBrowser.ApiInteraction
         /// <summary>
         /// Resets the authorization header.
         /// </summary>
-        private void ResetAuthorizationHeader()
+        public void ResetAuthorizationHeader()
         {
-            var header = CurrentUserId.HasValue ? string.Format("UserId=\"{0}\", Client=\"{1}\", Version=\"{2}\"", CurrentUserId.Value, ClientType, Kernel.Instance.VersionStr)
-                             : string.Format("Client=\"{0}\", Version=\"{1}\"", ClientType, Kernel.Instance.VersionStr);
+            var header = CurrentUserId.HasValue ? string.Format("UserId=\"{0}\", Client=\"{1}\", Version=\"{2}\"", CurrentUserId.Value, ClientType, System.Reflection.Assembly.GetExecutingAssembly().GetName().Version)
+                             : string.Format("Client=\"{0}\", Version=\"{1}\"", ClientType, System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
 
             header += string.Format(", DeviceId=\"{0}\"", DeviceId);
             

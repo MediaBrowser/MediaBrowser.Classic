@@ -30,6 +30,7 @@ using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.ApiClient;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
 using MediaBrowser.Model.Updates;
@@ -1721,6 +1722,11 @@ namespace MediaBrowser
 
             // load root
             Kernel.Instance.ReLoadRoot();
+
+            // get server plug-ins
+            var plugins = Kernel.ApiClient.GetServerPlugins();
+            Kernel.ServerPlugins = plugins != null ? plugins.ToList() : new List<PluginInfo>();
+
 
             LoadPluginsAndModels();
 
