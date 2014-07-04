@@ -95,6 +95,10 @@ namespace MediaBrowser.Code.ModelItems
             }
         }
 
+        public virtual void ToggleZoomMode()
+        {
+        }
+
         public virtual Vector3 Zoom {get {return new Vector3(1,1,1);}}
 
         public bool IsNormalZoom { get { return ZoomMode == 0; } }

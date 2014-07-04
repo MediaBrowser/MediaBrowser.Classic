@@ -37,6 +37,19 @@ namespace MediaBrowser
             get { return "Internal Player"; }
         }
 
+        public override void ToggleZoomMode()
+        {
+            var current = ZoomMode;
+            if (current < 3)
+            {
+                ZoomMode++;
+            }
+            else
+            {
+                ZoomMode = 0;
+            }
+        }
+
         public override Vector3 Zoom
         {
             get

@@ -45,6 +45,7 @@
       <KeyHandler Name="Up" Handle="false" HandlerStage="Routed" Key="Up" />
       <KeyHandler Name="Down" Handle="false" HandlerStage="Routed" Key="Down" />
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="ZoomToggle" Key="Z" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled"/>
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
@@ -131,6 +132,13 @@
       <Changed Source="[TopShortcut.Invoked]">
         <Actions>
           <Invoke Target="[Application.BackToRoot]"/>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ZoomToggle.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.PlaybackController.ToggleZoomMode]"/>
           <PlaySound Sound="sound://sounds:Miniselect" />
         </Actions>
       </Changed>
