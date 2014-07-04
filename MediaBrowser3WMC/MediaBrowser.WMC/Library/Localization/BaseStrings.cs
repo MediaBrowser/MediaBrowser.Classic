@@ -121,6 +121,8 @@ namespace MediaBrowser.Library.Localization
         public string TopConfigDesc = "Adjust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
         public string LeftConfigDesc = "Adjust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
         public string RightConfigDesc = "Adjust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
+        public string WeatherLocationConfigDesc = "Enter Yahoo weather feed code for weather display in themes that support it";
+        public string WeatherUnitConfigDesc = "Fahrenheit or Celsius";
 
         //Config Panel
         public string AdvancedConfig = "Advanced";
@@ -261,6 +263,8 @@ namespace MediaBrowser.Library.Localization
         public string TopConfig = "Top";
         public string LeftConfig = "Left";
         public string RightConfig = "Right";
+        public string WeatherLocationConfig = "Weather Location";
+        public string WeatherUnitConfig = "Units";
 
         //JIL
         public string ThisWeek = "This Week";

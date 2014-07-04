@@ -15,8 +15,9 @@
 			<cor:String Name="Label" String="$Required" />
 			<!-- EditableText is a required parameter. -->
 			<EditableText Name="EditableText" EditableText="$Required"/>
+      <EditableText Name="FocusItem" />
 
-			<!-- Limit the number of characters allowed. -->
+      <!-- Limit the number of characters allowed. -->
 			<cor:Int32 Name="MaxChars" Int32="500"/>
 
 			
@@ -65,7 +66,8 @@
 					<Set Target="[Caret.Visible]" Value="true"/>
 					<Set Target="[Image.Content]" Value="image://i:TextEditBorder" />
 					<Set Target="[DisplayText.HorizontalAlignment]" Value="Far" />
-				</Actions>
+          <Set Target="[FocusItem.Value]" Value="[Label]" />
+        </Actions>
 			</Condition>
 
 			<!-- Stop typing when the maximum number of characters has been reached. -->
@@ -91,7 +93,7 @@
 					<Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="[EditSize]">
 						<Children>
 							<!-- Display the current value. -->
-							<Text Name="DisplayText" Color="[LabelColor]" Font="[Font]" HorizontalAlignment="Near" Margins="0,0,10,-2" MinimumSize="0,34" />
+							<Text Name="DisplayText" Color="[LabelColor]" Font="[Font]" HorizontalAlignment="Near" Margins="0,0,20,-2" MinimumSize="0,34" />
 							<!-- Display the caret. -->
 							<ColorFill Name="Caret" Content="[LabelColor]" Visible="false" MinimumSize="12,4">
 								<LayoutInput>

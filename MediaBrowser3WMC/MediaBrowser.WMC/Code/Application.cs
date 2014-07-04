@@ -1727,7 +1727,6 @@ namespace MediaBrowser
             var plugins = Kernel.ApiClient.GetServerPlugins();
             Kernel.ServerPlugins = plugins != null ? plugins.ToList() : new List<PluginInfo>();
 
-
             LoadPluginsAndModels();
 
             // build switch user menu

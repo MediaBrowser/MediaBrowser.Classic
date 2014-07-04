@@ -41,6 +41,9 @@ namespace MediaBrowser
         public bool DisableMcConflictingOperations = false; // disable some items in player interface that conflict with Media Control
         public bool DisableCustomPlayerForDvd = false; // disable custom player for DVD rips (because menus don't work)
 
+        public string WeatherLocation = "";
+        public string WeatherUnit = "";
+
         public DateTime LastNagDate = DateTime.MinValue;
 
         [Group("Updates")]
