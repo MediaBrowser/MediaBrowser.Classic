@@ -35,7 +35,6 @@ namespace MediaBrowser.Library.Input
         public IsMouseActiveHooker()
         {
             _mouseHookID = SetMouseHook(_proc);
-            _kbHookID = SetKBHook(_proc);
             Tick += IsMouseActiveHooker_Tick;
         }
 
@@ -80,7 +79,6 @@ namespace MediaBrowser.Library.Input
 
         private static LowLevelMouseProc _proc = HookCallback;
         private static IntPtr _mouseHookID = IntPtr.Zero;
-        private static IntPtr _kbHookID = IntPtr.Zero;
 
         private static IntPtr SetMouseHook(LowLevelMouseProc proc)
         {
@@ -88,16 +86,6 @@ namespace MediaBrowser.Library.Input
             using (ProcessModule curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx(WH_MOUSE_LL, proc,
-                    GetModuleHandle(curModule.ModuleName), 0);
-            }
-        }
-
-        private static IntPtr SetKBHook(LowLevelMouseProc proc)
-        {
-            using (Process curProcess = GetEhShellProcess() ?? Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
-            {
-                return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
                     GetModuleHandle(curModule.ModuleName), 0);
             }
         }
@@ -169,7 +157,6 @@ namespace MediaBrowser.Library.Input
         public void Dispose()
         {
             UnhookWindowsHookEx(_mouseHookID);
-            UnhookWindowsHookEx(_kbHookID);
         }
 
         #endregion
