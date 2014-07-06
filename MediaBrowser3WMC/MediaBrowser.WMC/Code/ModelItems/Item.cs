@@ -87,9 +87,17 @@ namespace MediaBrowser.Library
             var show = BaseItem as Show;
             if (show != null)
             {
-                Async.Queue("Detail Load", show.LoadFullDetails);
+                Async.Queue("Detail Load", show.LoadFullDetails, DetailsChanged);
             }
 
+        }
+
+        protected void DetailsChanged()
+        {
+            _chapters = null;
+            _actors = null;
+            
+            FirePropertiesChanged("Chapters","HasChapterInfo","Actors");
         }
 
         public bool IsVideo
