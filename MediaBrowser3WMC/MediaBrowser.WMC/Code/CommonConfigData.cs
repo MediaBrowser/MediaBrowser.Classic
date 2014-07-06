@@ -82,7 +82,7 @@ namespace MediaBrowser
         [Comment(@"Identifies if this is the very first time MB has been run.  Causes an initial setup routine to be performed.")]
         public bool IsFirstRun = true;
 
-        public bool EnableMouseHook = false;
+        public bool EnableMouseHook = true;
 
         public bool AutoValidate = true; //automatically validate and refresh items as we access them
 

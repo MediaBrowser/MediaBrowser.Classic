@@ -852,8 +852,7 @@ namespace MediaBrowser
         {
             get
             {
-                return false; // try eliminating this...
-                //return this.CommonData.EnableMouseHook; 
+                return this.CommonData.EnableMouseHook; 
             }
             set { if (this.CommonData.EnableMouseHook != value) { this.CommonData.EnableMouseHook = value; Save(); FirePropertyChanged("EnableMouseHook"); } }
         }

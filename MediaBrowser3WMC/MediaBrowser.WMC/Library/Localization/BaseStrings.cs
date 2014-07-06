@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0089";
+        const string VERSION = "1.0090";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -65,7 +65,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowThemeBackgroundConfigDesc = "Display theme background. [TIER 3] Highest tier background effect takes precedence.";
         public string ShowInitialFolderBackgroundConfigDesc = "Display initial backdrop in all views (backdrop.png or backdrop.jpg sourced from your initial folder). [TIER 2] Highest tier background effect takes precedence.";
         public string ShowFanArtonViewsConfigDesc = "Display fan art as a Background in views that support this capability. [TIER 1] Highest tier background effect takes precedence.";
-        public string EnhancedMouseSupportConfigDesc = "Enable better scrolling support with the mouse.  Leave OFF if you don't use a mouse.  Won't take effect until MediaBrowser is restarted.";
+        public string EnableMouseHookConfigDesc = "Show the player overlay on any mouse movement.  Disable this if in windowed mode as any mouse movement will produce the overlay. Restart to take effect.";
         public string ShowHDOverlayonPostersConfigDesc = "Show 'HD' or resolution overlay on Hi-def items in Poster views";
         public string ShowIcononRemoteContentConfigDesc = "Show an indicator on items from the web in Poster views";
         public string ExcludeRemoteContentInSearchesConfigDesc = "Don't show content from the web when searching entire library";
@@ -163,7 +163,7 @@ namespace MediaBrowser.Library.Localization
         public string HideFocusFrameConfig = "Hide Focus Frame";
         public string AlwaysShowDetailsConfig = "Always Show Details";
         public string ExcludeRemoteContentInSearchesConfig = "Exclude Remote Content In Searches";
-        public string EnhancedMouseSupportConfig = "Enhanced Mouse Support";
+        public string EnableMouseHookConfig = "Show Overlay on Mouse Movement";
         public string ShowFavoritesCollectionConfig = "Show Favorites Folder";
         public string ShowGenresCollectionConfig = "Show Movie Genres Folder";
         public string ShowMusicGenresCollectionConfig = "Show Music Genres Folder";

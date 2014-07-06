@@ -1122,8 +1122,11 @@ namespace MediaBrowser
             }
             singleApplicationInstance = this;
 
-            //wire up our mouseActiveHooker so we can know if the mouse is active over us
-            Kernel.Instance.MouseActiveHooker.MouseActive += mouseActiveHooker_MouseActive;
+            //wire up our mouseActiveHooker so we can know if the mouse is active
+            if (Config.EnableMouseHook)
+            {
+                Kernel.Instance.MouseActiveHooker.MouseActive += mouseActiveHooker_MouseActive;
+            }
 
             //initialize our menu manager
             menuManager = new MenuManager();
