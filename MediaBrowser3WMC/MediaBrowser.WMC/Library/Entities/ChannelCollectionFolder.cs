@@ -31,5 +31,19 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override int MediaCount
+        {
+            get { return ApiRecursiveItemCount ?? (int)(ApiRecursiveItemCount = GetItemCount()); }
+        }
+
+        protected int GetItemCount()
+        {
+            return 0;
+            //var counts = Kernel.ApiClient.GetItemCounts(Kernel.CurrentUser.Id);
+            //return counts.ChannelCount;
+
+        }
+
+
     }
 }
