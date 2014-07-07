@@ -1158,7 +1158,7 @@ namespace MediaBrowser
         {
             if (LoggedIn && Config.EnableScreenSaver) 
             {
-                if (!IsPlayingVideo && !IsExternalWmcApplicationPlaying && !ScreenSaverTempDisabled)
+                if ((!IsPlayingVideo || PlaybackController.IsPaused) && !IsExternalWmcApplicationPlaying && !ScreenSaverTempDisabled)
                 {
                     if (Helper.SystemIdleTime > Config.ScreenSaverTimeOut * 60000)
                     {
@@ -2366,6 +2366,8 @@ namespace MediaBrowser
                     //restart the timer if we had input
                     _inputActivityTimer.Stop();
                     _inputActivityTimer.Start();
+                    //and be sure screensaver not going
+                    ScreenSaverActive = false;
                 }
                 else
                 {

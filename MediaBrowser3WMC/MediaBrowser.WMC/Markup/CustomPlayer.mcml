@@ -505,6 +505,14 @@
         </Actions>
       </Changed>
 
+      <Default Target="[ScreenSaver.Source]" Value="[Application.CurrentScreenSaver]" >
+        <Conditions>
+          <Equality Source="[Application.CurrentScreenSaver]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+      </Default>
+
+      <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
+
     </Rules>
 
     <Content>
@@ -514,6 +522,14 @@
           <Animation Animation="animation://an:PageHide"/>
         </Animations>
         <Children>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+
+          </ss:DefaultScreenSaver>
+
           <!--Dummy item to have focus initially-->
           <dum:Dummy Name="Dummy" >
           <LayoutInput>

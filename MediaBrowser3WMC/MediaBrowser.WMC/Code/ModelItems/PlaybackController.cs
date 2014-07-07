@@ -474,6 +474,17 @@ namespace MediaBrowser
             {
                 FirePropertyChanged("IsPaused");
 
+                if (state == Microsoft.MediaCenter.PlayState.Paused)
+                {
+                    // allow screensavers/sleep
+                    Helper.AllowSleep();
+                }
+                else if (state == Microsoft.MediaCenter.PlayState.Playing || state == Microsoft.MediaCenter.PlayState.Buffering)
+                {
+                    // disallow again
+                    Helper.PreventSleep();
+                }
+
                 // Get the title from the PlayableItem, if it's available. Otherwise use MediaMetadata
                 string title = eventArgs.Item == null ? metadataTitle : (eventArgs.Item.HasMediaItems ? eventArgs.Item.MediaItems.ElementAt(eventArgs.CurrentMediaIndex).Name : eventArgs.Item.Files.ElementAt(eventArgs.CurrentFileIndex));
 
