@@ -583,7 +583,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                return baseItem.ThumbnailImagePath != null || (PhysicalParent != null && PhysicalParent.HasThumbnailImage);
+                return baseItem.ThumbnailImagePath != null || (PhysicalParent != null && PhysicalParent != TopParent && PhysicalParent.HasThumbnailImage);
             }
         }
 
