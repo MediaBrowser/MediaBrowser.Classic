@@ -383,9 +383,9 @@
 				<![CDATA[NOT REMOVE]]>
 			</Custom>
 
-      <!--<Custom Action="CA_Migrate" After="InstallFinalize">
+      <Custom Action="CA_Migrate" After="InstallFinalize">
          <![CDATA[NOT REMOVE]]>
-      </Custom>-->
+      </Custom>
 
 		</InstallExecuteSequence>
 
