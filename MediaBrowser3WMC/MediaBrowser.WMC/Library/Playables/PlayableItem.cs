@@ -6,6 +6,8 @@ using MediaBrowser.Code.ModelItems;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Events;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Playables.ExternalPlayer;
+using MediaBrowser.Library.Playables.TMT5;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
@@ -660,6 +662,7 @@ namespace MediaBrowser.Library.Playables
                         Application.CurrentInstance.IntroController.Play();
                         //mark them watched
                         Async.Queue("Mark watched", () => { foreach (var i in introItems) Kernel.ApiClient.UpdatePlayedStatus(i.ApiId, Kernel.CurrentUser.Id, true); });
+                        if (this is PlayableTMT5AddInForWMC) Thread.Sleep(1000); // try waiting a beat before kicking this off
                     }
                 }
             }
