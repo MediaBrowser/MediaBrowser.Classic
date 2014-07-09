@@ -188,7 +188,7 @@
       <Component Id="MediaBrowserIcon.ico" Guid="25C6DD59-8881-42b4-B302-A616F747C99E" DiskId="1">
         <File Id="MediaBrowserIcon.ico" Name="MediaBrowserIcon.ico" Source="MediaBrowserIcon.ico" Checksum="no" />
       </Component>
-      <!--<Component Id="MBMigrate.exe" Guid="D66E860A-24F2-44A5-B9E1-BD24BF3D7146" DiskId="1">
+      <Component Id="MBMigrate.exe" Guid="D66E860A-24F2-44A5-B9E1-BD24BF3D7146" DiskId="1">
         <File Id="MBMigrate.exe" Name="MBMigrate.exe" Source="..\MBMigrate\bin\$(var.BuildType)\MBMigrate.exe" Checksum="no"/>
       </Component>
       <Component Id="MBMigrate81.exe.config" Guid="977CC054-D24E-47D1-B4E1-2916263BA60D" DiskId="1">
@@ -198,7 +198,7 @@
       <Component Id="MBMigrate.exe.config" Guid="46359E77-B137-4DB2-B2CB-E38CF5F9447F" DiskId="1">
         <Condition>VersionNT = 602</Condition>
         <File Id="MBMigrate.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
-      </Component>-->
+      </Component>
       <Component Id="MediaBrowser.Classic.Installer.exe" Guid="2FA65C5D-8CBA-428E-953B-082871924BEA" DiskId="1">
         <File Id="MediaBrowser.Classic.Installer.exe" Name="MediaBrowser.Classic.Installer.exe" Source="..\..\MediaBrowser\Installation\MediaBrowser.Classic.Installer.exe" Checksum="no"/>
       </Component>
@@ -268,9 +268,9 @@
       <ComponentRef Id="Configurator.exe.config" />
       <ComponentRef Id="Configurator81.exe.config" />
       <ComponentRef Id="MediaBrowser.dll" />
-      <!--<ComponentRef Id="MBMigrate.exe" />
+      <ComponentRef Id="MBMigrate.exe" />
       <ComponentRef Id="MBMigrate.exe.config" />
-      <ComponentRef Id="MBMigrate81.exe.config" />-->
+      <ComponentRef Id="MBMigrate81.exe.config" />
       <ComponentRef Id="MediaBrowser.Classic.Installer.exe" />
       <ComponentRef Id="MediaBrowser.InstallUtil.dll" />
       <ComponentRef Id="ServiceStack.Text.dll" />
@@ -482,7 +482,7 @@
     <Property Id="LAUNCHAPPONEXIT">1</Property>
 
     <!-- CustomAction to run migration after the setup finishes -->
-    <!--<CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>-->
+    <CustomAction Id="CA_Migrate" FileKey="MBMigrate.exe" ExeCommand="" Execute="immediate" Return="check" Impersonate="yes"/>
     
     <!-- CustomAction to condtionally launch the configurator after the setup finishes -->
     <CustomAction Id="StartAppOnExit" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="check" Impersonate="yes"/>
