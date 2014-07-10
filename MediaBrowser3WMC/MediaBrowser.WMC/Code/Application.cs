@@ -2899,7 +2899,7 @@ namespace MediaBrowser
 
         public void PlayMultiItem(MultiPartPlayOption chosen)
         {
-            Play(chosen.ItemToPlay, false, false, false, false, chosen.Resume ? chosen.ItemToPlay.PlayState.PositionTicks : 0, true);
+            Play(chosen.ItemToPlay, false, false, chosen.PlayIntros, false, chosen.Resume ? chosen.ItemToPlay.PlayState.PositionTicks : 0, true);
         }
 
         /// <summary>
@@ -2986,7 +2986,7 @@ namespace MediaBrowser
                     {
                         //assemble all parts
                         var allparts = ItemFactory.Instance.Create(new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList()));
-                        PlayMultiItem(new MultiPartPlayOption { Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = allparts });
+                        PlayMultiItem(new MultiPartPlayOption { Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = allparts, PlayIntros = playIntros});
                         return;
                     }
                     else

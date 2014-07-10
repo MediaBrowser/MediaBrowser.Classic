@@ -8,6 +8,7 @@ namespace MediaBrowser.Library
         private string _name;
         private Item _itemToPlay;
         public bool Resume { get; set; }
+        public bool? PlayIntros { get; set; }
 
         public string Name
         {
