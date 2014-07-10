@@ -26,6 +26,7 @@ using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
+using MediaBrowser.Model.Updates;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter.UI;
 
@@ -367,7 +368,7 @@ namespace MediaBrowser.Library {
 
         public IEnumerable<RemotePlugin> GetAvailablePlugins()
         {
-            foreach (var package in ApiClient.GetPackages())
+            foreach (var package in ApiClient.GetPackages() ?? new List<PackageInfo>())
             {
                 foreach (var ver in package.versions.Where(v => new System.Version((string.IsNullOrEmpty(v.requiredVersionStr) ? "3.0" : v.requiredVersionStr)) <= Kernel.Instance.Version
                     && v.classification <= CommonConfigData.PluginUpdateClass))
