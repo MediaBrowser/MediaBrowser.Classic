@@ -707,13 +707,13 @@ namespace MediaBrowser.LibraryManagement
                     catch
                     {
                         mo.Dispose();
-                        return "";
+                        return Guid.NewGuid().ToString("N");
                     }
                 }
                 mo.Dispose();
             }
             MACAddress = MACAddress.Replace(":", "");
-            return MACAddress;
+            return !string.IsNullOrEmpty(MACAddress) ? MACAddress : Guid.NewGuid().ToString("N");
         }
 
         /// <summary>
