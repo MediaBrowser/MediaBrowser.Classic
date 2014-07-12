@@ -84,7 +84,7 @@ namespace Configurator
             }
             else
             {
-                var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault();
+                var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault() ?? new UserDto {Name = "Unknown", Id = Guid.NewGuid().ToString("N")};
                 Kernel.CurrentUser = new User { Name = user.Name, Id = new Guid(user.Id ?? ""), Dto = user, ParentalAllowed = user.HasPassword };
             }
             //Kernel.Instance.LoadUserConfig();
