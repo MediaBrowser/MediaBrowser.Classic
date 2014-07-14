@@ -474,7 +474,15 @@ namespace MediaBrowser.Code.ModelItems
                     Logger.ReportVerbose("================ Skipping {0} seconds", SkipAmount);
                     Application.CurrentInstance.RecentUserInput = true;
                     var current = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.Position.Ticks;
-                    var pos = SkipAmount > 0 ? Math.Min(current + TimeSpan.FromSeconds(SkipAmount).Ticks, CurrentFileDurationTicks)
+                    var duration = CurrentFileDurationTicks > 0 ? CurrentFileDurationTicks : PlaybackControllerHelper.GetDurationOfCurrentlyPlayingMedia(AddInHost.Current.MediaCenterEnvironment.MediaExperience.MediaMetadata);
+                    if (duration == 0)
+                    {
+                        // last ditch get from our metadata
+                        var playable = GetCurrentPlayableItem();
+                        duration = playable != null ? playable.CurrentMedia.RuntimeTicks : long.MaxValue;
+                    }
+                    
+                    var pos = SkipAmount > 0 ? Math.Min(current + TimeSpan.FromSeconds(SkipAmount).Ticks, duration)
                                   : Math.Max(current - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
                     SkipAmount = 0;
                     Seek(pos);
