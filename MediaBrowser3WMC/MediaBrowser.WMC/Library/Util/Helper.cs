@@ -355,11 +355,11 @@ namespace MediaBrowser.LibraryManagement
 
         public static int DaysAgo(DateTime date)
         {
-            var daysAgo = DateTime.UtcNow.DayOfYear - date.DayOfYear;
+            var daysAgo = DateTime.Now.DayOfYear - date.DayOfYear;
             if (daysAgo < 0)
             {
                 //crossed years
-                daysAgo = (365 - date.DayOfYear) + DateTime.UtcNow.DayOfYear - 1;
+                daysAgo = (365 - date.DayOfYear) + DateTime.Now.DayOfYear - 1;
             }
             return daysAgo;
         }
