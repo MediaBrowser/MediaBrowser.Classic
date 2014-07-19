@@ -103,112 +103,131 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         protected void OnMessageReceived(byte[] bytes)
         {
             var json = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            WebSocketMessage<object> message = null;
 
-            var message = _jsonSerializer.DeserializeFromString<WebSocketMessage<object>>(json);
+            try
+            {
+                message = _jsonSerializer.DeserializeFromString<WebSocketMessage<object>>(json);
 
-            Logger.ReportInfo("Received web socket message: {0}", message.MessageType);
+                Logger.ReportInfo("Received web socket message: {0}", message.MessageType);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error interpreting Websocket message",e);
+                Logger.ReportError("Message received was {0}", json);
+                return;
+            }
 
-            if (string.Equals(message.MessageType, "LibraryChanged"))
+
+            try
             {
-                FireEvent(LibraryChanged, this, new LibraryChangedEventArgs
+                if (string.Equals(message.MessageType, "LibraryChanged"))
                 {
-                    UpdateInfo = _jsonSerializer.DeserializeFromString<LibraryUpdateInfo>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "RestartRequired"))
-            {
-                FireEvent(RestartRequired, this, EventArgs.Empty);
-            }
-            else if (string.Equals(message.MessageType, "UserDeleted"))
-            {
-                FireEvent(UserDeleted, this, new UserDeletedEventArgs
+                    FireEvent(LibraryChanged, this, new LibraryChangedEventArgs
+                                                        {
+                                                            UpdateInfo = _jsonSerializer.DeserializeFromString<LibraryUpdateInfo>(message.Data.ToString())
+                                                        });
+                }
+                else if (string.Equals(message.MessageType, "RestartRequired"))
                 {
-                    Id = message.Data.ToString()
-                });
-            }
-            else if (string.Equals(message.MessageType, "ScheduledTaskStarted"))
-            {
-                FireEvent(ScheduledTaskStarted, this, new ScheduledTaskStartedEventArgs
+                    FireEvent(RestartRequired, this, EventArgs.Empty);
+                }
+                else if (string.Equals(message.MessageType, "UserDeleted"))
                 {
-                    Name = message.Data.ToString()
-                });
-            }
-            else if (string.Equals(message.MessageType, "ScheduledTaskEnded"))
-            {
-                FireEvent(ScheduledTaskEnded, this, new ScheduledTaskEndedEventArgs
+                    FireEvent(UserDeleted, this, new UserDeletedEventArgs
+                                                     {
+                                                         Id = message.Data.ToString()
+                                                     });
+                }
+                else if (string.Equals(message.MessageType, "ScheduledTaskStarted"))
                 {
-                    Result = _jsonSerializer.DeserializeFromString<TaskResult>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "PackageInstalling"))
-            {
-                FireEvent(PackageInstalling, this, new PackageInstallationEventArgs
+                    FireEvent(ScheduledTaskStarted, this, new ScheduledTaskStartedEventArgs
+                                                              {
+                                                                  Name = message.Data.ToString()
+                                                              });
+                }
+                else if (string.Equals(message.MessageType, "ScheduledTaskEnded"))
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "PackageInstallationFailed"))
-            {
-                FireEvent(PackageInstallationFailed, this, new PackageInstallationEventArgs
+                    FireEvent(ScheduledTaskEnded, this, new ScheduledTaskEndedEventArgs
+                                                            {
+                                                                Result = _jsonSerializer.DeserializeFromString<TaskResult>(message.Data.ToString())
+                                                            });
+                }
+                else if (string.Equals(message.MessageType, "PackageInstalling"))
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "PackageInstallationCompleted"))
-            {
-                FireEvent(PackageInstallationCompleted, this, new PackageInstallationEventArgs
+                    FireEvent(PackageInstalling, this, new PackageInstallationEventArgs
+                                                           {
+                                                               InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
+                                                           });
+                }
+                else if (string.Equals(message.MessageType, "PackageInstallationFailed"))
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "PackageInstallationCancelled"))
-            {
-                FireEvent(PackageInstallationCancelled, this, new PackageInstallationEventArgs
+                    FireEvent(PackageInstallationFailed, this, new PackageInstallationEventArgs
+                                                                   {
+                                                                       InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
+                                                                   });
+                }
+                else if (string.Equals(message.MessageType, "PackageInstallationCompleted"))
                 {
-                    InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "UserUpdated"))
-            {
-                FireEvent(UserUpdated, this, new UserUpdatedEventArgs
+                    FireEvent(PackageInstallationCompleted, this, new PackageInstallationEventArgs
+                                                                      {
+                                                                          InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
+                                                                      });
+                }
+                else if (string.Equals(message.MessageType, "PackageInstallationCancelled"))
                 {
-                    User = _jsonSerializer.DeserializeFromString<UserDto>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "Browse"))
-            {
-                FireEvent(BrowseCommand, this, new BrowseRequestEventArgs
+                    FireEvent(PackageInstallationCancelled, this, new PackageInstallationEventArgs
+                                                                      {
+                                                                          InstallationInfo = _jsonSerializer.DeserializeFromString<InstallationInfo>(message.Data.ToString())
+                                                                      });
+                }
+                else if (string.Equals(message.MessageType, "UserUpdated"))
                 {
-                    Request = _jsonSerializer.DeserializeFromString<BrowseRequest>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "Play"))
-            {
-                FireEvent(PlayCommand, this, new PlayRequestEventArgs
+                    FireEvent(UserUpdated, this, new UserUpdatedEventArgs
+                                                     {
+                                                         User = _jsonSerializer.DeserializeFromString<UserDto>(message.Data.ToString())
+                                                     });
+                }
+                else if (string.Equals(message.MessageType, "Browse"))
                 {
-                    Request = _jsonSerializer.DeserializeFromString<PlayRequest>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "Playstate"))
-            {
-                FireEvent(PlaystateCommand, this, new PlaystateRequestEventArgs
+                    FireEvent(BrowseCommand, this, new BrowseRequestEventArgs
+                                                       {
+                                                           Request = _jsonSerializer.DeserializeFromString<BrowseRequest>(message.Data.ToString())
+                                                       });
+                }
+                else if (string.Equals(message.MessageType, "Play"))
                 {
-                    Request = _jsonSerializer.DeserializeFromString<PlaystateRequest>(message.Data.ToString())
-                });
-            }
-            else if (string.Equals(message.MessageType, "SystemCommand"))
-            {
-                FireEvent(SystemCommand, this, new SystemRequestEventArgs()
+                    FireEvent(PlayCommand, this, new PlayRequestEventArgs
+                                                     {
+                                                         Request = _jsonSerializer.DeserializeFromString<PlayRequest>(message.Data.ToString())
+                                                     });
+                }
+                else if (string.Equals(message.MessageType, "Playstate"))
                 {
-                    Command = message.Data.ToString()
-                });
-            }
-            else if (string.Equals(message.MessageType, "GeneralCommand"))
-            {
-                FireEvent(GeneralCommand, this, new GeneralCommandEventArgs()
+                    FireEvent(PlaystateCommand, this, new PlaystateRequestEventArgs
+                                                          {
+                                                              Request = _jsonSerializer.DeserializeFromString<PlaystateRequest>(message.Data.ToString())
+                                                          });
+                }
+                else if (string.Equals(message.MessageType, "SystemCommand"))
                 {
-                    Command = _jsonSerializer.DeserializeFromString<WebSocketMessage<GeneralCommand>>(json).Data
-                });
+                    FireEvent(SystemCommand, this, new SystemRequestEventArgs()
+                                                       {
+                                                           Command = message.Data.ToString()
+                                                       });
+                }
+                else if (string.Equals(message.MessageType, "GeneralCommand"))
+                {
+                    FireEvent(GeneralCommand, this, new GeneralCommandEventArgs()
+                                                        {
+                                                            Command = _jsonSerializer.DeserializeFromString<WebSocketMessage<GeneralCommand>>(json).Data
+                                                        });
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error Interpreting Websocket message data",e);
+                Logger.ReportError("Message data received was {0}",message.Data.ToString());
             }
         }
 
