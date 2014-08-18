@@ -113,6 +113,23 @@ namespace MediaBrowser.Library.Entities {
             set { _writers = value; }
         }
 
+        public override List<Chapter> Chapters
+        {
+            get
+            {
+                if (!FullDetailsLoaded)
+                {
+                    LoadFullDetails();
+                }
+
+                return base.Chapters;
+            }
+            set
+            {
+                base.Chapters = value;
+            }
+        }
+
         [Persist]
         public override string TagLine { get; set; }
 
