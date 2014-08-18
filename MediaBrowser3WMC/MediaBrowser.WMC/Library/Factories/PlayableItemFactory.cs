@@ -8,6 +8,7 @@ using MediaBrowser.Library.Playables.ExternalPlayer;
 using MediaBrowser.Library.Playables.MpcHc;
 using MediaBrowser.Library.Playables.TMT5;
 using MediaBrowser.Library.Playables.VLC2;
+using MediaBrowser.LibraryManagement;
 
 namespace MediaBrowser.Library.Factories
 {
@@ -142,6 +143,7 @@ namespace MediaBrowser.Library.Factories
             PlayableItem playable = GetAllKnownPlayables().FirstOrDefault(p => p.CanPlay(mediaList)) ?? new PlayableInternal();
 
             playable.MediaItems = mediaList;
+            playable.GoFullScreen = playable.GoFullScreen || mediaList.Any(i => i is Song);
 
             return playable;
         }
