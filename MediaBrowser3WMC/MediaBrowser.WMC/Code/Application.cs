@@ -2931,131 +2931,143 @@ namespace MediaBrowser
                 Play(item, resume, queue, playIntros, shuffle, 0);
         }
 
+        private object _playLock = new object();
+
         public void Play(Item item, bool resume, bool queue, bool? playIntros, bool shuffle, long startPos, bool forceFirstPart = false)
         {
-            //if external display a message
-            if (item.IsExternalDisc)
+            lock(_playLock)
             {
-                DisplayDialog("Item is an external disc.  Please insert the proper disc.", "Cannot Play");
-                return;
-            }
-
-            //if playback is disabled display a message
-            if (!PlaybackEnabled)
-            {
-                DisplayDialog("Playback is disabled.  You may need to register your current theme.", "Cannot Play");
-                return;
-            }
-
-            //or if the item is offline
-            if (item.BaseItem.LocationType == LocationType.Offline)
-            {
-                if (!Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+                //hack to stop bad behavior on remote key bounce or other repeated requests
+                if (PlaybackController.IsPlaying && item.Id == CurrentlyPlayingItemId)
                 {
-                    DisplayDialog("Item is off-line.", "Cannot Play");
+                    Logger.ReportWarning("Repeat attempt to play {0}/{1} ignored", item.Name, item.Path);
                     return;
                 }
-                else
+
+                //if external display a message
+                if (item.IsExternalDisc)
                 {
-                    item.BaseItem.LocationType = LocationType.FileSystem;
-                    item.BaseItem.IsOffline = false;
+                    DisplayDialog("Item is an external disc.  Please insert the proper disc.", "Cannot Play");
+                    return;
                 }
-            }
 
-            //or virtual
-            if (item.BaseItem.LocationType == LocationType.Virtual)
-            {
-                DisplayDialog("Item is not actually in your collection.", "Cannot Play");
-                return;
-            }
-
-            //or otherwise disabled
-            if (!item.IsPlayable)
-            {
-                DisplayDialog("Item is not playable at this time.", "Cannot Play");
-                return;
-            }
-
-            //special handling for photos
-            if (item.BaseItem is Photo || item.BaseItem is PhotoFolder)
-            {
-                MBPhotoController.Instance.SlideShow(item);
-                return;
-            }
-
-            //multi-part handling
-            if (item.HasAdditionalParts && !forceFirstPart)
-            {
-                //if we are being asked to resume - automatically resume the proper part
-                if (resume)
+                //if playback is disabled display a message
+                if (!PlaybackEnabled)
                 {
-                    if (!item.CanResumeMain) item = item.AdditionalParts.FirstOrDefault(p => p.CanResume) ?? item;
+                    DisplayDialog("Playback is disabled.  You may need to register your current theme.", "Cannot Play");
+                    return;
                 }
-                else
-                {
 
-                    //now, if we are not in ripped media form, just automatically play the concatenated parts
-                    var video = item.BaseItem as Video;
-                    if (video != null && !video.ContainsRippedMedia && !item.ItemTypeString.StartsWith("Game", StringComparison.OrdinalIgnoreCase))
+                //or if the item is offline
+                if (item.BaseItem.LocationType == LocationType.Offline)
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
                     {
-                        //assemble all parts
-                        var allparts = ItemFactory.Instance.Create(new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList()));
-                        PlayMultiItem(new MultiPartPlayOption { Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = allparts, PlayIntros = playIntros});
+                        DisplayDialog("Item is off-line.", "Cannot Play");
                         return;
                     }
                     else
                     {
-                        //build playback options
-                        MultiPartOptions = new List<MultiPartPlayOption>();
-                        
-                        //then - the main item + resume if available
-                        if (item.CanResumeMain) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = true});
-                        MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = false});
-
-                        //now all additional parts
-                        var n = 2;
-                        foreach (var part in item.AdditionalParts)
-                        {
-                            if (part.CanResume) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n, ItemToPlay = part, Resume = true});
-                            MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n++, ItemToPlay = part, Resume = false});
-                        }
-
-                        //just display menu - it will take it from there
-                        FirePropertyChanged("MultiPartOptions");
-                        DisplayMultiMenu = true;
-                        return;
+                        item.BaseItem.LocationType = LocationType.FileSystem;
+                        item.BaseItem.IsOffline = false;
                     }
                 }
+
+                //or virtual
+                if (item.BaseItem.LocationType == LocationType.Virtual)
+                {
+                    DisplayDialog("Item is not actually in your collection.", "Cannot Play");
+                    return;
+                }
+
+                //or otherwise disabled
+                if (!item.IsPlayable)
+                {
+                    DisplayDialog("Item is not playable at this time.", "Cannot Play");
+                    return;
+                }
+
+                //special handling for photos
+                if (item.BaseItem is Photo || item.BaseItem is PhotoFolder)
+                {
+                    MBPhotoController.Instance.SlideShow(item);
+                    return;
+                }
+
+                //multi-part handling
+                if (item.HasAdditionalParts && !forceFirstPart)
+                {
+                    //if we are being asked to resume - automatically resume the proper part
+                    if (resume)
+                    {
+                        if (!item.CanResumeMain) item = item.AdditionalParts.FirstOrDefault(p => p.CanResume) ?? item;
+                    }
+                    else
+                    {
+
+                        //now, if we are not in ripped media form, just automatically play the concatenated parts
+                        var video = item.BaseItem as Video;
+                        if (video != null && !video.ContainsRippedMedia && !item.ItemTypeString.StartsWith("Game", StringComparison.OrdinalIgnoreCase))
+                        {
+                            //assemble all parts
+                            var allparts = ItemFactory.Instance.Create(new IndexFolder((new List<BaseItem> {item.BaseItem}).Concat(item.BaseItem.AdditionalParts).ToList()));
+                            PlayMultiItem(new MultiPartPlayOption { Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("AllParts"), ItemToPlay = allparts, PlayIntros = playIntros});
+                            return;
+                        }
+                        else
+                        {
+                            //build playback options
+                            MultiPartOptions = new List<MultiPartPlayOption>();
+                        
+                            //then - the main item + resume if available
+                            if (item.CanResumeMain) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = true});
+                            MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " 1", ItemToPlay = item, Resume = false});
+
+                            //now all additional parts
+                            var n = 2;
+                            foreach (var part in item.AdditionalParts)
+                            {
+                                if (part.CanResume) MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("ResumeDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n, ItemToPlay = part, Resume = true});
+                                MultiPartOptions.Add(new MultiPartPlayOption {Name = LocalizedStrings.Instance.GetString("PlayDetail") + " " + LocalizedStrings.Instance.GetString("Part") + " " + n++, ItemToPlay = part, Resume = false});
+                            }
+
+                            //just display menu - it will take it from there
+                            FirePropertyChanged("MultiPartOptions");
+                            DisplayMultiMenu = true;
+                            return;
+                        }
+                    }
+                }
+
+                if (Config.WarnOnStream && !item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+                {
+                    Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
+
+                    Async.Queue("Access Error", () => MessageBox("Could not access media. Will attempt to stream.  Use UNC paths or path substitution on server and ensure this machine can access them.", true, 10000));
+
+                }
+
+                var playable = PlayableItemFactory.Instance.Create(item);
+
+                // This could happen if both item.IsFolder and item.IsPlayable are false
+                if (playable == null)
+                {
+                    return;
+                }
+
+                if (playIntros.HasValue)
+                {
+                    playable.PlayIntros = playIntros.Value;
+                }
+
+                playable.Resume = resume;
+                if (startPos > 0) playable.StartPositionTicks = startPos;
+                playable.QueueItem = queue;
+                playable.Shuffle = shuffle;
+
+                Play(playable);
+                
             }
-
-            if (Config.WarnOnStream && !item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
-            {
-                Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
-
-                Async.Queue("Access Error", () => MessageBox("Could not access media. Will attempt to stream.  Use UNC paths or path substitution on server and ensure this machine can access them.", true, 10000));
-
-            }
-
-            var playable = PlayableItemFactory.Instance.Create(item);
-
-            // This could happen if both item.IsFolder and item.IsPlayable are false
-            if (playable == null)
-            {
-                return;
-            }
-
-            if (playIntros.HasValue)
-            {
-                playable.PlayIntros = playIntros.Value;
-            }
-
-            playable.Resume = resume;
-            if (startPos > 0) playable.StartPositionTicks = startPos;
-            playable.QueueItem = queue;
-            playable.Shuffle = shuffle;
-
-            Play(playable);
-
         }
 
         /// <summary>
