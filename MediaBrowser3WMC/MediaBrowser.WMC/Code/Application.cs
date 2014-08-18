@@ -1964,7 +1964,7 @@ namespace MediaBrowser
                     this.RootFolderModel = (FolderModel)ItemFactory.Instance.Create(EntryPointResolver.EntryPoint(this.EntryPointPath));
 
                     WebSocket = new ApiWebSocket(new WebSocket4NetClientWebSocket());
-                    WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ServerInfo.WebSocketPortNumber, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
+                    WebSocket.Connect(Kernel.ApiClient.ServerHostName, Kernel.ApiClient.ServerApiPort, Kernel.ApiClient.ClientType, Kernel.ApiClient.DeviceId);
                     try
                     {
                         Kernel.ApiClient.ReportRemoteCapabilities();
