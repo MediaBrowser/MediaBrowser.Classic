@@ -332,9 +332,9 @@ namespace MediaBrowser.Library.Persistance
                     }
 
                     // unwatched count
-                    if (mb3Item.RecursiveUnplayedItemCount != null)
+                    if (mb3Item.UserData != null && mb3Item.UserData.UnplayedItemCount.HasValue)
                     {
-                        folder.UnwatchedCount = mb3Item.RecursiveUnplayedItemCount.Value;
+                        folder.UnwatchedCount = mb3Item.UserData.UnplayedItemCount.Value;
                     }
                     // it is just too slow to try and gather these as channels are dynamic and potentially large
                     else if (mb3Item.Type == "Channel" || mb3Item.Type == "ChannelFolder")
