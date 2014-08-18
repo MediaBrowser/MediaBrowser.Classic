@@ -282,7 +282,7 @@ namespace MediaBrowser.Library {
             get {
                 if (unwatchedCountCache == -1) {
                     unwatchedCountCache = 0;
-                    Async.Queue("Unwatched Counter", () =>
+                    Async.Queue("Unwatched Counter for " + Name, () =>
                     { 
                         unwatchedCountCache = folder.UnwatchedCount;
                         FireWatchedChangedEvents();
