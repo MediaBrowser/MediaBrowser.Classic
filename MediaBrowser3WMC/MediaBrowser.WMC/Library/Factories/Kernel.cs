@@ -484,7 +484,6 @@ namespace MediaBrowser.Library {
             {
                 Logger.ReportInfo("====== Connected to server {0}:{1}", ApiClient.ServerHostName, ApiClient.ServerApiPort);
                 AvailableUsers = ApiClient.GetAllUsers().ToList();
-                config.LastServerMacAddress = ServerInfo.MacAddress;
                 config.ServerPort = ApiClient.ServerApiPort;
                 config.Save();
             }

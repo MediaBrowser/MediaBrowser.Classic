@@ -1714,6 +1714,8 @@ namespace MediaBrowser
 
             // re-load server info now that we have authorization for the whole thing
             Kernel.ServerInfo = Kernel.ApiClient.GetSystemInfo();
+            Kernel.Instance.CommonConfigData.LastServerMacAddress = Kernel.ServerInfo.MacAddress;
+            Kernel.Instance.CommonConfigData.Save();
 
             // load user config
             Kernel.Instance.LoadUserConfig();
