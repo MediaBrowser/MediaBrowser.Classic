@@ -1702,6 +1702,18 @@ namespace MediaBrowser
 
             LoggedIn = true;
 
+            // load server config
+            try
+            {
+                Kernel.ServerConfig = Kernel.ApiClient.GetServerConfiguration();
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error getting server configuration", e);
+            }
+
+            // re-load server info now that we have authorization for the whole thing
+            Kernel.ServerInfo = Kernel.ApiClient.GetSystemInfo();
 
             // load user config
             Kernel.Instance.LoadUserConfig();

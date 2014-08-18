@@ -17,12 +17,18 @@ namespace MediaBrowser.ApiInteraction
     public class MbHttpClient : IHttpClient
     {
         private string AuthHeader;
+        private string AuthToken;
 
         /// <summary>
         /// Gets or sets the logger.
         /// </summary>
         /// <value>The logger.</value>
         private ILogger Logger { get; set; }
+
+        public void SetAuthorizationToken(string token)
+        {
+            AuthToken = token;
+        }
 
         public int Timeout { get; set; }
 
@@ -50,6 +56,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
+                req.Headers.Add("X-MediaBrowser-Token", AuthToken);
                 var ms = new MemoryStream();
                 req.Timeout = Timeout > 0 ? Timeout : 30000;
                 using (var resp = (HttpWebResponse)req.GetResponse())
@@ -108,6 +115,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 httpClient.Headers["Content-type"] = contentType;
                 httpClient.Headers["Authorization"] = AuthHeader;
+                httpClient.Headers.Add("X-MediaBrowser-Token", AuthToken);
 
                 try
                 {
@@ -143,7 +151,8 @@ namespace MediaBrowser.ApiInteraction
                 {
                     httpClient.Headers["Content-type"] = "application/x-www-form-urlencoded";
                     httpClient.Headers["Authorization"] = AuthHeader;
-                    httpClient.UploadData(url, "DELETE", new byte[] {});
+                    httpClient.Headers.Add("X-MediaBrowser-Token", AuthToken);
+                    httpClient.UploadData(url, "DELETE", new byte[] { });
                 }
             }
             catch (WebException ex)

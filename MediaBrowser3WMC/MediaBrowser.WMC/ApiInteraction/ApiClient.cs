@@ -687,9 +687,9 @@ namespace MediaBrowser.ApiInteraction
         /// Gets the system status async.
         /// </summary>
         /// <returns>Task{SystemInfo}.</returns>
-        public SystemInfo GetSystemInfo()
+        public SystemInfo GetSystemInfo(string suffix = "")
         {
-            var url = GetApiUrl("System/Info");
+            var url = GetApiUrl("System/Info"+suffix);
 
             using (var stream = GetSerializedStream(url))
             {
@@ -1376,6 +1376,8 @@ namespace MediaBrowser.ApiInteraction
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;
+            AuthToken = result.AccessToken;
+            HttpClient.SetAuthorizationToken(AuthToken);
         }
 
         /// <summary>
@@ -1435,6 +1437,8 @@ namespace MediaBrowser.ApiInteraction
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;
+            AuthToken = result.AccessToken;
+            HttpClient.SetAuthorizationToken(AuthToken);
         }
 
         /// <summary>

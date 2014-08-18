@@ -1,4 +1,5 @@
-﻿using MediaBrowser.Library;
+﻿using System.IO;
+using MediaBrowser.Library;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Model.ApiClient;
@@ -265,7 +266,11 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         {
             var msg = new WebSocketMessage<T> { MessageType = messageName, Data = data };
 
-            return _jsonSerializer.SerializeToBytes(msg);
+            using (var stream = new MemoryStream())
+            {
+                _jsonSerializer.SerializeToStream(msg, stream);
+                return stream.ToArray();
+            }
         }
 
         /// <summary>

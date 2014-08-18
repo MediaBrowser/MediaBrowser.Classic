@@ -444,20 +444,12 @@ namespace MediaBrowser.Library {
             try
             {
                 ApiClient.ResetAuthorizationHeader();
-                ServerInfo = ApiClient.GetSystemInfo();
+                ServerInfo = ApiClient.GetSystemInfo("/Public");
             }
             catch (Exception e)
             {
                 Logger.ReportException("Unable to connect to server at {0}:{1}", e, address,port);
                 return false;
-            }
-            try
-            {
-                ServerConfig = ApiClient.GetServerConfiguration();
-            }
-            catch (Exception e)
-            {
-                Logger.ReportException("Error getting server configuration",e);
             }
 
             return (ServerConnected = ServerInfo != null);

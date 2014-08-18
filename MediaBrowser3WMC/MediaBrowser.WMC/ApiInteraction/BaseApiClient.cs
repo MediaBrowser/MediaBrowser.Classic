@@ -79,6 +79,12 @@ namespace MediaBrowser.ApiInteraction
         public string DeviceName { get; set; }
 
         /// <summary>
+        /// Gets or sets the auth token.
+        /// </summary>
+        /// <value>The token.</value>
+        public string AuthToken { get; set; }
+
+        /// <summary>
         /// Gets or sets the device id.
         /// </summary>
         /// <value>The device id.</value>

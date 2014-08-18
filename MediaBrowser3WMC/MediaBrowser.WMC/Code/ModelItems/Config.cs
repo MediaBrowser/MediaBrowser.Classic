@@ -822,12 +822,12 @@ namespace MediaBrowser
         }
         public string YahooWeatherFeed
         {
-            get { return string.IsNullOrEmpty(CommonData.WeatherLocation) ? ServerData.WeatherLocation : this.CommonData.WeatherLocation; }
+            get { return this.CommonData.WeatherLocation; }
             set { if (this.CommonData.WeatherLocation != value) { this.CommonData.WeatherLocation = value; Save(); FirePropertyChanged("YahooWeatherFeed"); } }
         }
         public string YahooWeatherUnit
         {
-            get { return string.IsNullOrEmpty(CommonData.WeatherUnit) ? this.ServerData.WeatherUnit == WeatherUnits.Fahrenheit ? "f" : "c" : this.CommonData.WeatherUnit; }
+            get { return this.CommonData.WeatherUnit; }
             set { if (this.CommonData.WeatherUnit != value) { this.CommonData.WeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
         }
         public string SupporterKey

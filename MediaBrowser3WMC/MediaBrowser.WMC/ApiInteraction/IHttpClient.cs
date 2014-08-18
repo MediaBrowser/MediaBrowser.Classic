@@ -14,6 +14,12 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="header"></param>
         void SetAuthorizationHeader(string header);
 
+        /// <summary>
+        /// Sets the authorization token that should be supplied on every request
+        /// </summary>
+        /// <param name="token"></param>
+        void SetAuthorizationToken(string token);
+
         int Timeout { get; set; }
 
         /// <summary>
