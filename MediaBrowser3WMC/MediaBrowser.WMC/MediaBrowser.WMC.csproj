@@ -173,6 +173,7 @@
     <Compile Include="Library\Entities\PersonLetterFolder.cs" />
     <Compile Include="Library\Entities\Photo.cs" />
     <Compile Include="Library\Entities\PhotoFolder.cs" />
+    <Compile Include="Library\Entities\Playlist.cs" />
     <Compile Include="Library\Entities\PodcastsChannel.cs" />
     <Compile Include="Library\Entities\RemoteVideo.cs" />
     <Compile Include="Library\Entities\Song.cs" />
