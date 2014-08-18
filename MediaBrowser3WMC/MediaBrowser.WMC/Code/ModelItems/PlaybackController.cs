@@ -756,10 +756,17 @@ namespace MediaBrowser
         /// </summary>
         protected override void SeekInternal(long position)
         {
-            var mce = AddInHost.Current.MediaCenterEnvironment;
-            Logger.ReportVerbose("Trying to seek position :" + new TimeSpan(position).ToString());
-            PlaybackControllerHelper.WaitForStream(mce);
-            mce.MediaExperience.Transport.Position = new TimeSpan(position);
+            try
+            {
+                var mce = AddInHost.Current.MediaCenterEnvironment;
+                Logger.ReportVerbose("Trying to seek position :" + new TimeSpan(position).ToString());
+                PlaybackControllerHelper.WaitForStream(mce);
+                mce.MediaExperience.Transport.Position = new TimeSpan(position);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error attempting to seek",e);
+            }
         }
 
         public override bool IsPaused

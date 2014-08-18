@@ -1011,7 +1011,9 @@
     <Content Include="Markup\Controls\Popups\MessagePopout.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Controls\SeekBar.mcml" />
+    <Content Include="Markup\Controls\SeekBar.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\JIL\JilSelector.mcml" />
     <Content Include="Markup\Controls\Popups\ExitMenu.mcml" />
     <Content Include="Markup\Controls\Popups\SingleItemPopout.mcml">

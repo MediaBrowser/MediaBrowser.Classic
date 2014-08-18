@@ -518,12 +518,19 @@ namespace MediaBrowser.Code.ModelItems
 
         public void Seek(long position)
         {
-            var playstate = PlayState;
-
-            if (playstate == PlaybackControllerPlayState.Playing || playstate == PlaybackControllerPlayState.Paused)
+            try
             {
-                SeekInternal(position);
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), position, playstate == PlaybackControllerPlayState.Paused, IsStreaming);
+                var playstate = PlayState;
+
+                if (playstate == PlaybackControllerPlayState.Playing || playstate == PlaybackControllerPlayState.Paused)
+                {
+                    SeekInternal(position);
+                    Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), position, playstate == PlaybackControllerPlayState.Paused, IsStreaming);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error Seeking",e);
             }
         }
 
