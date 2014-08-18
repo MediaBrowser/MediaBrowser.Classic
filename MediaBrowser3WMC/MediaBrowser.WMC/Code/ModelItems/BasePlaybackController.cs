@@ -11,8 +11,10 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UserInput;
+using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter.UI;
+using MediaType = MediaBrowser.Library.MediaType;
 
 namespace MediaBrowser.Code.ModelItems
 {
@@ -464,6 +466,14 @@ namespace MediaBrowser.Code.ModelItems
         protected int SkipAmount = 0;
         protected System.Timers.Timer SkipTimer;
         private int _zoomMode;
+        public MediaCollection CurrentMediaCollection { get; set; }
+
+        public int CurrentCollectionIndex { get { return CurrentMediaCollection != null ? CurrentMediaCollection.CurrentIndex + 1 : 0; } }
+
+        public virtual void SkipToNextInCollection()
+        {}
+
+        public bool CanSkipInCollection { get { return CurrentMediaCollection != null && CurrentCollectionIndex < CurrentMediaCollection.Count; } }
 
         private void SkipTimerExpired(object sender, EventArgs args)
         {

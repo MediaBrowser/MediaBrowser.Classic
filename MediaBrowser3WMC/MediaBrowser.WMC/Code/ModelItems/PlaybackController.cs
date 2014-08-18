@@ -27,7 +27,6 @@ namespace MediaBrowser
         // After calling MediaCenterEnvironment.PlayMedia, playback will begin with a state of Stopped and position 0
         // We'll record it when we see it so we don't get tripped up into thinking playback has actually stopped
         private bool _HasStartedPlaying = false;
-        private MediaCollection _CurrentMediaCollection;
         private DateTime _LastTransportUpdateTime = DateTime.Now;
         private Microsoft.MediaCenter.PlayState _CurrentPlayState;
         protected PlayableItem Playable { get; set; }
@@ -74,7 +73,7 @@ namespace MediaBrowser
         {
             base.ResetPlaybackProperties();
 
-            _CurrentMediaCollection = null;
+            CurrentMediaCollection = null;
             _HasStartedPlaying = false;
             _CurrentPlayState = Microsoft.MediaCenter.PlayState.Undefined;
             _LastTransportUpdateTime = DateTime.Now;
@@ -136,7 +135,7 @@ namespace MediaBrowser
                         transport.PropertyChanged += MediaTransport_PropertyChanged;
 
                         // If using the legacy api we have to resume manually
-                        if (_CurrentMediaCollection == null)
+                        if (CurrentMediaCollection == null)
                         {
                             long startPosition = playable.StartPositionTicks;
 
@@ -187,7 +186,7 @@ namespace MediaBrowser
             if (PlaybackControllerHelper.UseLegacyApi(playable))
             {
                 bool success = CallPlayMediaLegacy(mediaCenterEnvironment, playable);
-                _CurrentMediaCollection = null;
+                CurrentMediaCollection = null;
                 return success;
             }
             else
@@ -198,7 +197,7 @@ namespace MediaBrowser
 
         private bool CallPlayMediaUsingMediaCollection(MediaCenterEnvironment mediaCenterEnvironment, PlayableItem playable)
         {
-            MediaCollection coll = new MediaCollection();
+            var coll = new MediaCollection();
 
             // Create a MediaCollectionItem for each file to play
             if (playable.HasMediaItems)
@@ -219,13 +218,13 @@ namespace MediaBrowser
                 coll[playstate.PlaylistPosition].Start = new TimeSpan(playstate.PositionTicks);
             }
 
-            _CurrentMediaCollection = coll;
+            CurrentMediaCollection = coll;
 
-            bool success = PlaybackControllerHelper.CallPlayMedia(mediaCenterEnvironment, MediaType.MediaCollection, _CurrentMediaCollection, false);
+            bool success = PlaybackControllerHelper.CallPlayMedia(mediaCenterEnvironment, MediaType.MediaCollection, CurrentMediaCollection, false);
 
             if (!success)
             {
-                _CurrentMediaCollection = null;
+                CurrentMediaCollection = null;
             }
 
             return success;
@@ -289,7 +288,7 @@ namespace MediaBrowser
 
         protected virtual void QueuePlayableItem(PlayableItem playable)
         {
-            if (_CurrentMediaCollection == null)
+            if (CurrentMediaCollection == null)
             {
                 QueuePlayableItemLegacy(playable);
             }
@@ -306,11 +305,11 @@ namespace MediaBrowser
                 // Create a MediaCollectionItem for each file to play
                 if (playable.HasMediaItems)
                 {
-                    PlaybackControllerHelper.PopulateMediaCollectionUsingMediaItems(this, _CurrentMediaCollection, playable);
+                    PlaybackControllerHelper.PopulateMediaCollectionUsingMediaItems(this, CurrentMediaCollection, playable);
                 }
                 else
                 {
-                    PlaybackControllerHelper.PopulateMediaCollectionUsingFiles(_CurrentMediaCollection, playable);
+                    PlaybackControllerHelper.PopulateMediaCollectionUsingFiles(CurrentMediaCollection, playable);
                 }
             }
             catch (Exception ex)
@@ -517,7 +516,7 @@ namespace MediaBrowser
             // This will prevent us from getting in here twice after playback stops and calling post-play processes more than once.
             _HasStartedPlaying = false;
 
-            _CurrentMediaCollection = null;
+            CurrentMediaCollection = null;
 
             var mediaType = exp.MediaType;
 
@@ -553,13 +552,13 @@ namespace MediaBrowser
             int currentMediaIndex;
             PlayableItem currentPlayableItem;
 
-            if (_CurrentMediaCollection == null)
+            if (CurrentMediaCollection == null)
             {
                 currentPlayableItem = PlaybackControllerHelper.GetCurrentPlaybackItemUsingMetadataTitle(this, CurrentPlayableItems, metadataTitle, out filePlaylistPosition, out currentMediaIndex);
             }
             else
             {
-                currentPlayableItem = PlaybackControllerHelper.GetCurrentPlaybackItemFromMediaCollection(CurrentPlayableItems, _CurrentMediaCollection, out filePlaylistPosition, out currentMediaIndex);
+                currentPlayableItem = PlaybackControllerHelper.GetCurrentPlaybackItemFromMediaCollection(CurrentPlayableItems, CurrentMediaCollection, out filePlaylistPosition, out currentMediaIndex);
 
                 // When playing multiple files with MediaCollections, if you allow playback to finish, CurrentIndex will be reset to 0, but transport.Position will be equal to the duration of the last item played
                 if (filePlaylistPosition == 0 && positionTicks >= metadataDuration)
@@ -744,6 +743,19 @@ namespace MediaBrowser
             }
 
             AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = rate;
+        }
+
+        /// <summary>
+        /// Skip to next item in collection playback
+        /// </summary>
+        public override void SkipToNextInCollection()
+        {
+            if (CanSkipInCollection)
+            {
+                // fake this by skipping to the end of the current item - I can't find an api call to actually skip ahead in the collection
+                Seek(CurrentFileDurationTicks-15000000);
+
+            }
         }
 
         public override void ResetPlayRate()

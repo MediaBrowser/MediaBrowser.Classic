@@ -26,6 +26,7 @@
   <UI Name="CustomPlayer">
     <Properties>
       <a:Application Name="Application" Application="$Required"/>
+      <Command Name="NextInQueue" />
     </Properties>
 
     <Locals>
@@ -51,6 +52,7 @@
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
       <Command Name="CloseMessage"/>
+
 
       <lib:Item Name="Item" Item="[Application.CurrentlyPlayingItem]" />
       <a:Clock Name="Clock"/>
@@ -83,6 +85,7 @@
       <KeyHandler Name="Num9" Key="NumPad9" Handle="true" HandlerStage="Bubbled"/>
 
       <KeyHandler Name="Space" Key="Space" Handle="true" HandlerStage="Bubbled"/>
+      <KeyHandler Name="NextItem" Key="N" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled" Command="[NextInQueue]"/>
 
     </Locals>
 
@@ -513,11 +516,31 @@
         </Actions>
       </Changed>
 
+      <Changed Source="[NextInQueue.Invoked]">
+        <Actions>
+          <Invoke Target="[Application.PlaybackController.SkipToNextInCollection]" />
+        </Actions>
+      </Changed>
+
       <Default Target="[ScreenSaver.Source]" Value="[Application.CurrentScreenSaver]" >
         <Conditions>
           <Equality Source="[Application.CurrentScreenSaver]" ConditionOp="NotEquals" Value="" />
         </Conditions>
       </Default>
+      <Changed Source="[Application.PlaybackController.CurrentMediaCollection.CurrentIndex]" InitialEvaluate="true">
+        <Conditions>
+          <IsValid Source="[Application.PlaybackController.CurrentMediaCollection]" />
+          <Equality Source="[Application.PlaybackController.CurrentMediaCollection.Count]" ConditionOp="GreaterThan" Value="1" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MultiInfo.Visible]" Value="true" />
+          <Set Target="[MultiNext.Visible]" Value="[Application.PlaybackController.CanSkipInCollection]" />
+          <Set Target="[MultiCurrent.Content]" Value="[Application.PlaybackController.CurrentCollectionIndex.ToString]" />
+          <Set Target="[MultiTotal.Content]" Value="[Application.PlaybackController.CurrentMediaCollection.Count.ToString]" />
+        </Actions>
+      </Changed>
+
+      <Default Target="[MultiInfo.Visible]" Value="false" />
 
       <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
 
@@ -699,6 +722,20 @@
                   <FormLayoutInput Left="PosterImage, 1, 30" Top="Parent,1, -45"/>
                 </LayoutInput>
               </me:ZoomBar>
+
+              <Panel Name="MultiInfo" Layout="HorizontalFlow" Alpha=".7" Margins="20,0,0,0" >
+                <LayoutInput>
+                  <FormLayoutInput Horizontal="Center" Top="Parent,1, -42" />
+                </LayoutInput>
+                <Children>
+                  <Text Name="MultiCurrent"  Color="220,220,250" Font="Segoe Media Center Light, 14, Bold" />
+                  <Text Content=" of " Color="220,220,250" Font="Segoe Media Center Light, 14, Bold" />
+                  <Text Name="MultiTotal"  Color="220,220,250" Font="Segoe Media Center Light, 14, Bold" />
+                  <ib:IconButton Name="MultiNext" Command="[NextInQueue]" Application="[Application]"
+                                  IconImage="resx://MediaBrowser/MediaBrowser.Resources/IconNext" Size="25,25"
+                                  Margins="5,0,0,0" />
+                </Children>
+              </Panel>
 
               <Panel Name="Studios" Layout="HorizontalFlow" Padding="0,0,0,0" Margins="20,20,20,15" Alpha=".6">
                 <LayoutInput>
