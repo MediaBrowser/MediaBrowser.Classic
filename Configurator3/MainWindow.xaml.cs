@@ -871,7 +871,7 @@ namespace Configurator
             this.Cursor = Cursors.Wait;
             try
             {
-                var systemInfo = Kernel.ApiClient.GetSystemInfo();
+                var systemInfo = Kernel.ApiClient.GetSystemInfo("/Public");
                 var serverVersion = new System.Version(systemInfo.Version ?? "3.0");
 
 
