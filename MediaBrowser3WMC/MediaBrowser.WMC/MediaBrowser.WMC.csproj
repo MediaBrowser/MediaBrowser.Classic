@@ -422,6 +422,7 @@
     <Content Include="Images\Icons\IconAsterisk.png" />
     <Content Include="Images\Icons\IconExit.png" />
     <Content Include="Images\Icons\IconFavorite.png" />
+    <Content Include="Images\Icons\IconInfo.png" />
     <Content Include="Images\Icons\IconKeyboard.png" />
     <Content Include="Images\Icons\IconKeyboardFocus.png" />
     <Content Include="Images\Icons\IconLogout.png" />

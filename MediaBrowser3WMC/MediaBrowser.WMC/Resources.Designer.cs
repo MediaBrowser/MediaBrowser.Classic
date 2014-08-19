@@ -2362,6 +2362,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconInfo {
+            get {
+                object obj = ResourceManager.GetObject("IconInfo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconKeyboard {
             get {
                 object obj = ResourceManager.GetObject("IconKeyboard", resourceCulture);

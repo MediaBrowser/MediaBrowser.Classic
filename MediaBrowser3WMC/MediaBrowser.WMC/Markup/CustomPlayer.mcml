@@ -27,6 +27,7 @@
     <Properties>
       <a:Application Name="Application" Application="$Required"/>
       <Command Name="NextInQueue" />
+      <Command Name="ShowInfo" />
     </Properties>
 
     <Locals>
@@ -86,6 +87,7 @@
 
       <KeyHandler Name="Space" Key="Space" Handle="true" HandlerStage="Bubbled"/>
       <KeyHandler Name="NextItem" Key="N" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled" Command="[NextInQueue]"/>
+      <KeyHandler Name="InfoButton" Key="I" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled" Command="[ShowInfo]"/>
 
     </Locals>
 
@@ -160,6 +162,7 @@
           <Modified Source="[Left.Invoked]"/>
           <Modified Source="[Up.Invoked]"/>
           <Modified Source="[Down.Invoked]"/>
+          <Modified Source="[InfoButton.Invoked]"/>
         </Conditions>
         <Actions>
           <Set Target="[Application.RecentUserInput]" Value="true" />
@@ -280,6 +283,7 @@
       <Binding Target="[SeekBar.Item]" Source="[Item]" />
       <Binding Target="[Title.Content]" Source="[Item.LongName]" />
       <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
+      <Binding Source="[Item.Overview]" Target="[Overview.Content]" />
       
       <!--Zoom Levels-->
       <Binding Source="[Application.PlaybackController.Zoom]" Target="[MainVideo.Scale]" />
@@ -522,6 +526,16 @@
         </Actions>
       </Changed>
 
+      <Changed Source="[ShowInfo.Invoked]">
+        <Actions>
+          <Set Target="[OverviewPanel.Visible]" Value="[OverviewPanel.Visible]" >
+            <Transformer>
+              <BooleanTransformer Inverse="true" />
+            </Transformer>
+          </Set>
+        </Actions>
+      </Changed>
+
       <Default Target="[ScreenSaver.Source]" Value="[Application.CurrentScreenSaver]" >
         <Conditions>
           <Equality Source="[Application.CurrentScreenSaver]" ConditionOp="NotEquals" Value="" />
@@ -658,6 +672,44 @@
             </Animations>
             <Children>
 
+              <Graphic Name="PosterImage" MaximumSize="200,0" MaintainAspectRatio="true" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent, 0, 40" Top="Backing, 0, -60"/>
+                </LayoutInput>
+              </Graphic>
+              
+              <!--Overview-->
+              <Panel Name="OverviewPanel" Layout="Form" Visible="false" >
+                <LayoutInput>
+                  <FormLayoutInput Bottom="Backing, 0"/>
+                </LayoutInput>
+                <Animations>
+                  <Animation Type="Show" >
+                    <Keyframes>
+                      <AlphaKeyframe Time="0.0" Value="0" />
+                      <AlphaKeyframe Time="0.4" Value="1" Interpolation="SCurve" />
+                      <PositionKeyframe Time="0.0" Value="0,150,0" />
+                      <PositionKeyframe Time="0.4" Value="0,0,0" Interpolation="SCurve" />
+                    </Keyframes>
+                  </Animation>
+                  <Animation Animation="animation://an:PageHide"/>
+                </Animations>
+                <Children>
+                  <Text Name="Overview" Font="Segoe Media Center Light, 16, Bold" Color="White" WordWrap="true" Margins="250,5,20,10" >
+                    <LayoutInput>
+                      <FormLayoutInput Top="OvBacking, 0" Bottom="Parent, 1"/>
+                    </LayoutInput>
+                    
+                  </Text>
+                  <ColorFill Name="OvBacking" Content="Black" Alpha=".45" MaximumSize="0,200" MinimumSize="0,200" >
+                    <LayoutInput>
+                      <FormLayoutInput Bottom="Parent, 1" Horizontal="Fill"/>
+                    </LayoutInput>
+                  </ColorFill>
+
+                </Children>
+              </Panel>
+
               <!--Chapter Info-->
               <me:ChapterItem Name="ChapterInfo" Chapter="[Item.CurrentDisplayChapter]" >
                 <LayoutInput>
@@ -671,11 +723,6 @@
                 </LayoutInput>
               </Text>
 
-              <Graphic Name="PosterImage" MaximumSize="200,0" MaintainAspectRatio="true" >
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent, 0, 40" Top="Backing, 0, -60"/>
-                </LayoutInput>
-              </Graphic>
               <Text  Name="Title" Margins="0,2,0,-3" Content="[Item.LongName]" Font="Segoe UI Light, 24, bold" Color="White" Alpha=".9" >
                 <LayoutInput>
                   <FormLayoutInput Left="PosterImage, 1, 10" Top="Backing, 0" Right="Time, 0, -10"/>
@@ -717,9 +764,18 @@
                 </LayoutInput>
               </sb:SeekBar>
 
-              <me:ZoomBar Name="ZoomBar" Application="[Application]" >
+              <ib:IconButton Name="Info" Command="[ShowInfo]" Application="[Application]"
+                              IconImage="resx://MediaBrowser/MediaBrowser.Resources/IconInfo" Size="20,20"
+                              Margins="5,5,0,0" >
+                    
                 <LayoutInput>
                   <FormLayoutInput Left="PosterImage, 1, 30" Top="Parent,1, -45"/>
+                </LayoutInput>
+              </ib:IconButton>
+              
+              <me:ZoomBar Name="ZoomBar" Application="[Application]" >
+                <LayoutInput>
+                  <FormLayoutInput Left="Info, 1, 15" Top="Parent,1, -45"/>
                 </LayoutInput>
               </me:ZoomBar>
 
