@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Configurator.ExternalPlayerForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ExternalPlayerForm" Height="480" Width="640" ResizeMode="CanMinimize">
+        Title="ExternalPlayerForm" Height="521.791" Width="640" ResizeMode="CanMinimize">
     <Grid>
         
         <Label Name="lblPlayerType" Margin="20,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">External Player Type:</Label>
@@ -65,7 +65,7 @@
         <Label Name="lblTipsHeader" Margin="20,335,0,0" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left">Tips:</Label>
 
         <TextBlock Name="txtTips" Margin="25,360,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="405" TextWrapping="Wrap">Tips will go here</TextBlock>
-        <TextBlock Name="lbConfigureMyPlayer" Margin="25,415,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <TextBlock Name="lbConfigureMyPlayer" Margin="26,450.831,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Hyperlink Name="lnkConfigureMyPlayer">Configure my player</Hyperlink>
         </TextBlock>
 

@@ -34,19 +34,19 @@ namespace MediaBrowser.Library.Playables.MpcHc
             return config;
         }
 
-        public override bool SupportsConfiguringUserSettings
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public override string PlayerTips
         {
             get
             {
-                return "A number of settings need to be configured. Please click configure my player for more information.";
+                var msg = "Please be sure these options are set in MPC-HC:\n";
+                msg += "\n-Disable: Remember file position";
+                msg += "  -Disable: Remember DVD position";
+                msg += "\n-Enable: Web interface on port " + MpcHcPlaybackController.HttpPort;
+                msg += "  -Enable: Use global media keys";
+                msg += "\n-Enable: Don't use 'search in folder' on commands 'Skip back/forward' when only one item in playlist";
+                msg += "\n-Set medium jump size to 30 seconds (for rewind/ff buttons)";
+
+                return msg;
             }
         }
 
