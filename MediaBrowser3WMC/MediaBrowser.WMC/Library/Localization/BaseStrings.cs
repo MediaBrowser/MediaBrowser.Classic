@@ -317,11 +317,13 @@ namespace MediaBrowser.Library.Localization
         public string ContextSC = "* / Shft-8";
         public string PlaySC = "(play) / Ctl-P";
         public string WatchedSC = "(clear) Ctl-W";
+        public string JumpSC = "(blue) Ctl-J";
         public string HomeSCDesc = "Return to Home Screen";
         public string SearchSCDesc = "Search";
         public string ContextSCDesc = "Context Menu for current item";
         public string PlaySCDesc = "Quick Play current item";
         public string WatchedSCDesc = "Toggle Watched Status for current item";
+        public string JumpSCDesc = "Show Jump in List";
 
         //Media Detail Page
         public string GeneralDetail = "General";
