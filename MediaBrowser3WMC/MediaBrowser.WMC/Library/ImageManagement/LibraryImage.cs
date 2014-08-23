@@ -90,6 +90,10 @@ namespace MediaBrowser.Library.ImageManagement {
                             }
                             ImageCache.Instance.CacheImage(Id, ProcessImage(image));
                         }
+                        //else
+                        //{
+                        //    Logger.ReportVerbose("=================== Image {0} obtained from local cache.", Path);
+                        //}
                         info = ImageCache.Instance.GetPrimaryImageInfo(Id);
                         if (info != null) {
                             _width = info.Width;
@@ -98,19 +102,6 @@ namespace MediaBrowser.Library.ImageManagement {
                             if (Debugger.IsAttached) Debugger.Break();
                             Corrupt = true;
                         }
-
-                        Async.Queue("Validate Image Thread", () =>
-                        {
-                            if (info != null)
-                            {
-                                if (ImageOutOfDate(info.Date + TimeSpan.FromMinutes(2)))  //fudge this to account for descrepancies between systems
-                                {
-                                    Logger.ReportVerbose("Image out of date for " + item.Name + " mod date: " + info.Date);
-                                    ClearLocalImages();
-                                    EnsureLoaded(); //and cause to re-cache
-                                }
-                            }
-                        });
 
                     }
                 } catch (Exception e) {
