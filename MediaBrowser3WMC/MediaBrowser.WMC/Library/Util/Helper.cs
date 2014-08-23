@@ -664,6 +664,10 @@ namespace MediaBrowser.LibraryManagement
                     //cheap way to grab a valid reference to the current themes resources...
                     resourceRef = Application.CurrentInstance.CurrentTheme.PageArea.Substring(0, Application.CurrentInstance.CurrentTheme.PageArea.LastIndexOf("/") + 1);
                 }
+                else
+                {
+                    Logger.ReportVerbose("Could not find resource '{0}' in theme {1}", name, Application.CurrentInstance.CurrentTheme.Name);
+                }
             }
             //cache it
             Logger.ReportVerbose("===CustomImage " + resourceRef + name + " being cached on first access.  Should only have to do this once per session...");
