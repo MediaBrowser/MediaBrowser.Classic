@@ -1412,6 +1412,12 @@ namespace MediaBrowser
             // we don't want to tie up the ui when we call sleep
             Async.Queue("DeleteMediaItem", () =>
             {
+                if (!Kernel.CurrentUser.Dto.Configuration.EnableContentDeletion)
+                {
+                    MessageBox("User not allowed to delete content.");
+                    return;
+                }
+
                 // Setup variables
                 MediaCenterEnvironment mce = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
                 var msg = CurrentInstance.StringData("DeleteMediaDial");
@@ -1426,7 +1432,7 @@ namespace MediaBrowser
                     return;
                 }
 
-                if (dr == DialogResult.Yes && this.Config.Advanced_EnableDelete && this.Config.EnableAdvancedCmds)
+                if (dr == DialogResult.Yes)
                 {
                     Item parent = Item.PhysicalParent;
                     string path = Item.Path;

@@ -790,15 +790,16 @@ namespace MediaBrowser
         }
 
         [Comment(@"Enable more advanced commands.")]
+        //defunct
         public bool EnableAdvancedCmds
         {
-            get { return Kernel.CurrentUser.Dto.Configuration.IsAdministrator; }
+            get { return true; }
         }
 
         [Comment(@"Advanced Command: Enable Delete")]
         public bool Advanced_EnableDelete
         {
-            get { return this.Data.Advanced_EnableDelete; }
+            get { return Kernel.CurrentUser.Dto.Configuration.EnableContentDeletion; }
             set { if (this.Data.Advanced_EnableDelete != value) { this.Data.Advanced_EnableDelete = value; Save(); FirePropertyChanged("Advanced_EnableDelete"); } }
         }
 
