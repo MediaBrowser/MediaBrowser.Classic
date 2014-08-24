@@ -342,7 +342,6 @@ namespace MediaBrowser.ApiInteraction
             var dict = new QueryStringDictionary {{"userid", userId}};
             dict.AddIfNotNullOrEmpty("folderid", folderId);
             dict.Add("fields", MB3ApiRepository.StandardFields.Select(f => f.ToString()));
-            dict.Add("limit", 500); // limit channel content to 500 items to be sure we don't thrash
 
             var url = GetApiUrl("/Channels/"+channelId+"/Items", dict);
 
