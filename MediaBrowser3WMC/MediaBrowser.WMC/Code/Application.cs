@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -30,6 +31,7 @@ using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.ApiClient;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Session;
@@ -1612,8 +1614,8 @@ namespace MediaBrowser
         public void Login()
         {
             var user = !string.IsNullOrEmpty(Config.StartupParms) ? Config.StartupParms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
-                        Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) :
-                           Kernel.AvailableUsers.Count == 1 ? AvailableUsers.FirstOrDefault() : null;
+                        Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) 
+                        : null;
 
             Config.StartupParms = null;
 
@@ -1626,24 +1628,41 @@ namespace MediaBrowser
             }
             else
             {
-                // validate that we actually have some users
-                if (!Kernel.AvailableUsers.Any())
-                {
-                    AddInHost.Current.MediaCenterEnvironment.Dialog("No user profiles are available.  Please ensure all users are not hidden on the server.", "No Users Found", DialogButtons.Ok, 100, true);
-                    Close();
-                }
                 // show login screen
                 session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application",this}});
             }
         }
 
-        public void LoginUser(Item user)
+        public void LoginUser(string name, string pw)
+        {
+            try
+            {
+                var result = Kernel.ApiClient.AuthenticateUserByName(name, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry ?? ""))));
+                LoginUser(ItemFactory.Instance.Create(new User { Name = result.User.Name, Dto = result.User, Id = new Guid(result.User.Id ?? ""), ParentalAllowed = !result.User.HasPassword }), false);
+            }
+            catch (HttpException e)
+            {
+                if (((WebException)e.InnerException).Status == WebExceptionStatus.ProtocolError)
+                {
+                    if (!UsingDirectEntry)
+                    {
+                        AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect User or Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                    }
+                    UsingDirectEntry = false;
+                    ShowSplash = false;
+                    return;
+                }
+                throw;
+            }
+        }
+
+        public void LoginUser(Item user, bool authenticate = true)
         {
             Kernel.CurrentUser = user.BaseItem as User;
             CurrentUser = user;
             var ignore = CurrentUser.PrimaryImage; // force this to load
             FirePropertyChanged("CurrentUser");
-            if (Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
+            if (authenticate && Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
             {
                 // Try with saved pw
                 if (!Kernel.Instance.CommonConfigData.LogonAutomatically || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
@@ -1654,8 +1673,8 @@ namespace MediaBrowser
             }
             else
             {
-                // just log in as we don't have a pw 
-                Async.Queue("Load user", () => LoadUser(user.BaseItem as User, ""));
+                // just log in as we don't have a pw or we've already authenticated manually
+                Async.Queue("Load user", () => LoadUser(user.BaseItem as User, "", authenticate));
             }
         }
 
@@ -1672,38 +1691,41 @@ namespace MediaBrowser
             SwitchUser(CurrentMenuOption);
         }
 
-        protected bool LoadUser(User user, string pw)
+        protected bool LoadUser(User user, string pw, bool authenticate = true)
         {
             ShowSplash = true;
             Kernel.ApiClient.CurrentUserId = user.Id;
 
-            try
+            if (authenticate)
             {
-                if (!string.IsNullOrEmpty(pw))
+                try
                 {
-                    //Logger.ReportVerbose("Authenticating with pw: {0} ({1})",CustomPINEntry, pw);
-                    Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
-                    //If we get here the pw was correct - save it so we can use it if automatically logging in
-                    user.PwHash = pw;
-                }
-                else
-                {
-                    Kernel.ApiClient.AuthenticateUser(user.ApiId, pw);
-                }
-            }
-            catch (Model.Net.HttpException e)
-            {
-                if (((System.Net.WebException)e.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
-                {
-                    if (!UsingDirectEntry)
+                    if (!string.IsNullOrEmpty(pw))
                     {
-                        AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                        //Logger.ReportVerbose("Authenticating with pw: {0} ({1})",CustomPINEntry, pw);
+                        Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
+                        //If we get here the pw was correct - save it so we can use it if automatically logging in
+                        user.PwHash = pw;
                     }
-                    UsingDirectEntry = false;
-                    ShowSplash = false;
-                    return false;
+                    else
+                    {
+                        Kernel.ApiClient.AuthenticateUser(user.ApiId, pw);
+                    }
                 }
-                throw;
+                catch (HttpException e)
+                {
+                    if (((WebException)e.InnerException).Status == WebExceptionStatus.ProtocolError)
+                    {
+                        if (!UsingDirectEntry)
+                        {
+                            AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                        }
+                        UsingDirectEntry = false;
+                        ShowSplash = false;
+                        return false;
+                    }
+                    throw;
+                }
             }
 
             LoggedIn = true;

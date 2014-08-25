@@ -496,6 +496,10 @@ namespace MediaBrowser.Library.Localization
         public string HStretch = "Horizontal Stretch";
         public string VStretch = "Vertical Stretch";
         public string ZoomMode = "Zoom";
+        public string ManualLogin = "Manual Login";
+        public string User = "User: ";
+        public string Password = "Password: ";
+        public string Login = "Login";
 
         //Search
         public string IncludeNested = "Include Subfolders";

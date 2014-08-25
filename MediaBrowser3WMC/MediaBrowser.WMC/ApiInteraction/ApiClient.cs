@@ -1442,6 +1442,30 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Authenticates a user and returns the result
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="sha1Hash">The sha1 hash.</param>
+        /// <returns>AuthenticationResult.</returns>
+        /// <exception cref="System.ArgumentNullException">userId</exception>
+        public AuthenticationResult AuthenticateUserByName(string name, string sha1Hash)
+        {
+            var password = sha1Hash.Replace("-", string.Empty);
+            var url = GetApiUrl("Users/AuthenticateByName");
+
+            var args = new Dictionary<string, string>();
+
+            args["username"] = name;
+            args["password"] = password;
+
+            var result = Post<AuthenticationResult>(url, args);
+            CurrentSessionInfo = result.SessionInfo;
+            AuthToken = result.AccessToken;
+            HttpClient.SetAuthorizationToken(AuthToken);
+            return result;
+        }
+
+        /// <summary>
         /// Uploads the user image async.
         /// </summary>
         /// <param name="userId">The user id.</param>

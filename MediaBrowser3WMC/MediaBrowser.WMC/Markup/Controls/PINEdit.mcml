@@ -23,9 +23,6 @@
 
     <Locals>
       <TypingHandler Name="TypingHandler" EditableText="[EditableText]" PasswordMasked="true" HandlerStage="Bubbled"/>
-      <!-- PIN is 4 characters. -->
-      <!--<cor:Int32 Name="MaxChars" Int32="4"/>
-      <cor:String Name="DotText" String="●●●●●"/>-->
       <ClickHandler Name="Clicker" />
     </Locals>
 
@@ -65,30 +62,6 @@
       </Rule>
 
 
-      <!--Mask entry-->
-      <!--<Changed Source="[EditableText.Activity]">
-        <Actions>
-            <Invoke Target="[DotText.Substring]" ResultTarget="[DisplayText.Content]" startIndex="0" length="[EditableText.Value.Length]"/>
-        </Actions>
-      </Changed>-->
-      
-      <!-- We're done when the maximum number of characters has been reached. -->
-      <!--<Changed Source="[EditableText.Value]">
-        <Conditions>
-          <Equality Source="[EditableText.Value.Length]" ConditionOp="Equals" Value="[MaxChars]"/>
-        </Conditions>
-        <Actions>
-          <Invoke Target="[EndCommand.Invoke]"/>
-        </Actions>
-      </Changed>
-      <Changed Source="[EditableText.Value]">
-        <Conditions>
-          <Equality Source="[EditableText.Value.Length]" ConditionOp="GreaterThan" Value="[MaxChars]"/>
-        </Conditions>
-        <Actions>
-          <Invoke Target="[EditableText.Value.Substring]" ResultTarget="[EditableText.Value]" startIndex="0" length="[MaxChars]"/>
-        </Actions>
-      </Changed>-->
       <Changed Source="[EditableText.Value]">
         <Actions>
           <PlaySound Sound="sound://sounds:Miniselect" />
@@ -103,7 +76,7 @@
           <FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
         </Layout>
         <Children>
-          <Text Name="Lbl" Color="255, 147,212,250" Font="[Font]" Margins="5,0,5,0" ></Text>
+          <Text Name="Lbl" Color="[LabelColor]" Font="[Font]" Margins="5,0,5,0" ></Text>
           <!-- Solid background color. -->
           <Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="100,34">
             <Children>

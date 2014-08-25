@@ -86,7 +86,7 @@
               <FormLayoutInput Top="Parent,.40" Horizontal="Center"/>
             </LayoutInput>
             <Children>
-              <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
+              <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#SecurityPINConfig!cor:String]" LabelColor="147,212,250" EditableText="[PIN]" EndCommand="[PINEntered]" Font="Segoe MediaCenter, 22">
               </pe:PINEdit>
               <me:ImageBtn Name="OSKBtn" Command="[OSK]" Focused="image://i:KeyFocus" NonFocused="image://i:Key"  />              
             </Children>

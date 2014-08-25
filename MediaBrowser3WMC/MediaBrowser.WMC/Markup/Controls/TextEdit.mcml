@@ -88,7 +88,7 @@
 					<FlowLayout Orientation="Horizontal" FillStrip="true" ItemAlignment="Center" />
 				</Layout>
 				<Children>
-					<Text Name="Lbl" Color="color://s:FontColorMedium" Font="[Font]" Margins="5,0,0,0" ></Text>
+					<Text Name="Lbl" Color="[LabelColor]" Font="[Font]" Margins="5,0,0,0" ></Text>
 					<!-- Solid background color. -->
 					<Graphic Name="Image" Content="image://i:BlankImage" MouseInteractive="true" Padding="4,4,4,4" Layout="Anchor" MinimumSize="[EditSize]">
 						<Children>

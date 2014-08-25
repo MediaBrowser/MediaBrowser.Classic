@@ -7,6 +7,9 @@
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
     xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
       xmlns:spl="resx://Mediabrowser/MediaBrowser.Resources/Splash"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+	  xmlns:te="resx://MediaBrowser/MediaBrowser.Resources/TextEdit"
+    xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
     xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
     xmlns:me="Me"
@@ -24,6 +27,11 @@
 
       <ScrollingData Name="ScrollingData" EndPadding="50" BeginPadding="50" EndPaddingRelativeTo="Far" />
 
+      <Command Name="ShowManualLogin" />
+      <Command Name="ManualLogin" />
+      <EditableText Name="UserName" />
+      <EditableText Name="PIN" />
+      <ClickHandler Name="Clicker" />
     </Locals>
 
     <Rules>
@@ -46,8 +54,39 @@
       <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
 
       <Binding Source="[Application.AvailableUsers]" Target="[Repeater.Source]" />
+      
+      <Default Target="[NoUsers.Visible]" Value="true" >
+        <Conditions>
+          <Equality Source="[Application.AvailableUsers.Count]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ShowManualLogin.Invoke]" />
+        </Actions>
+      </Default>
 
+      <!--Manual Login-->
+      <Changed Source="[Clicker.Invoked]" >
+        <Conditions>
+          <Equality Source="[UserName.Value]" ConditionOp="NotEquals" Value="" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ManualLogin.Invoke]" />
+        </Actions>
+      </Changed>
 
+      <Changed Source="[ManualLogin.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.LoginUser]" name="[UserName.Value]" pw="[PIN.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowManualLogin.Invoked]" >
+        <Actions>
+          <Set Target="[ManualLoginPanel.Visible]" Value="true" />
+          <Set Target="[ShowManualBtn.Visible]" Value="false" />
+          <Invoke Target="[ManualLoginPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
 
     </Rules>
 
@@ -102,12 +141,35 @@
               </Repeater>
             </Children>
             </Scroller>
+          <Text Name="NoUsers" Content="No Public Users Found" Font="Segoe Media Center Light, 42, Bold" Color="White" Alpha=".5" Visible="false" />
           <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="400,0" MaintainAspectRatio="true">
             <LayoutInput>
               <FormLayoutInput Bottom="Parent,1" Right="Parent,1"/>
             </LayoutInput>
 
           </Graphic>
+
+          <sb:SimpleButton  Name="ShowManualBtn" Text="[Application.LocalStrings.#ManualLogin!cor:String]" Alpha=".7" Margins="20,0,0,20"  Command="[ShowManualLogin]" Size="200,40" Font="Segoe Media Center Light, 14, Bold">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Far"/>
+            </LayoutInput>
+            
+          </sb:SimpleButton>
+
+
+          <Panel Name="ManualLoginPanel" Layout="HorizontalFlow" Visible="false"  >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0, 220" Bottom="Parent,1,-20"/>
+            </LayoutInput>
+            <Children>
+              <te:TextEdit Label="[Application.LocalStrings.#User!cor:String]" EditableText="[UserName]" MaximumSize="300,0" EditSize="200,34" 
+                           Font="Segoe Media Center Light, 16, Bold" MaxChars="60" />
+              <pe:PINEdit Name="PINBox" Label="[Application.LocalStrings.#Password!cor:String]" EditableText="[PIN]" EndCommand="[ManualLogin]" 
+                          Font="Segoe Media Center Light, 16, Bold" >
+              </pe:PINEdit>
+              <sb:SimpleButton  Name="ManualBtn" Text="[Application.LocalStrings.#Login!cor:String]" Margins="10,0,0,0"  Command="[ManualLogin]" Size="100,40" Font="Segoe Media Center Light, 16, Bold" />
+            </Children>
+          </Panel>
               <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
           <!--<Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>-->
         </Children>

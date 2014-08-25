@@ -1060,7 +1060,9 @@
     <Content Include="Markup\Controls\Tabs\TabItem.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Controls\TextEdit.mcml" />
+    <Content Include="Markup\Controls\TextEdit.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\TitleSet.mcml" />
     <Content Include="Markup\Controls\ViewMenu.mcml">
       <SubType>Designer</SubType>
