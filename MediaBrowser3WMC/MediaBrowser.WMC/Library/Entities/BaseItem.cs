@@ -503,6 +503,11 @@ namespace MediaBrowser.Library.Entities {
             get { return _additionalParts ?? (_additionalParts = GetAdditionalParts()); }
         }
 
+        public bool IsChannelItem
+        {
+            get { return !(this is Channel) && !(Parent is Channel) && !(Parent is ChannelFolder); }
+        }
+
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
             // we should never reasign identity 
