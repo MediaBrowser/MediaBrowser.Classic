@@ -317,13 +317,14 @@ namespace MediaBrowser.Library
                 if (_currentPlaybackPosition != value)
                 {
                     _currentPlaybackPosition = value;
-                    FirePropertiesChanged("CurrentPlaybackPosition","CurrentPositionString","CurrentEndTimeString");
+                    FirePropertiesChanged("CurrentPlaybackPosition","CurrentPositionString","CurrentEndTimeString", "CurrentTimeRemainingString");
                 }
             }
         }
 
         public string CurrentPositionString { get { return Helper.TicksToFriendlyTime(CurrentPlaybackPosition); } }
         public string CurrentEndTimeString { get { return DateTime.Now.AddTicks(RunTimeTicks - CurrentPlaybackPosition).ToString("t"); } }
+        public string CurrentTimeRemainingString { get { return "-" + Helper.TicksToFriendlyTime(Math.Abs(CurrentPlaybackPosition - RunTimeTicks)); } }
 
         public void SetNextChapterSeekIndex()
         {

@@ -284,6 +284,7 @@
       <Binding Target="[Title.Content]" Source="[Item.LongName]" />
       <Binding Source="[Item.LogoImage]" Target="[LogoImage.Content]" />
       <Binding Source="[Item.Overview]" Target="[Overview.Content]" />
+      <Binding Source="[Item.CurrentEndTimeString]" Target="[EndTime.Content]" />
       
       <!--Zoom Levels-->
       <Binding Source="[Application.PlaybackController.Zoom]" Target="[MainVideo.Scale]" />
@@ -722,6 +723,16 @@
                   <FormLayoutInput Right="Parent, 1, -20" Top="Backing, 0, 10"/>
                 </LayoutInput>
               </Text>
+
+              <Panel Name="EndTimePanel" Layout="HorizontalFlow" >
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent, 1, -20" Top="Time, 1"/>
+                </LayoutInput>
+                <Children>
+                  <Text Content="[Application.LocalStrings.#EndsStr!cor:String]" Font="Century Gothic, 16" Color="White" Alpha=".5" />
+                  <Text Name="EndTime" Font="Century Gothic, 18" Color="White" Alpha=".5" Margins="4,0,0,0" />
+                </Children>
+              </Panel>
 
               <Text  Name="Title" Margins="0,2,0,-3" Content="[Item.LongName]" Font="Segoe UI Light, 24, bold" Color="White" Alpha=".9" >
                 <LayoutInput>

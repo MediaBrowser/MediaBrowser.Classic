@@ -22,7 +22,7 @@
       <Binding Source="[Item.SeekPoints]" Target="[MyRepeater.Source]" />
 
       <Binding Source="[Item.CurrentPositionString]" Target="[Current.Content]" />
-      <Binding Source="[Item.CurrentEndTimeString]" Target="[End.Content]" />
+      <Binding Source="[Item.CurrentTimeRemainingString]" Target="[Remaining.Content]" />
 
       <Changed Source="[Item.SeekPositionIndex]" >
         <Conditions>
@@ -55,7 +55,7 @@
               <me:SeekButton Application="[Application]" SeekItem="[RepeatedItem!lib:SeekPositionItem]" Parent="[Item]" Index="[RepeatedItemIndex]" />
             </Content>
           </Repeater>
-          <Text Name="End" Content="[Item.CurrentEndTimeString]" Font="Segoe Media Center Light, 24, Bold" Color="White" />
+          <Text Name="Remaining" Content="[Item.CurrentTimeRemainingString]" Font="Segoe Media Center Light, 24, Bold" Color="White" />
         </Children>
 
       </Panel>
