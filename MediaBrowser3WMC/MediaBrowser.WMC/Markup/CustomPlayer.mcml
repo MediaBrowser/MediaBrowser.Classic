@@ -761,7 +761,7 @@
                   <FlowLayout Orientation="Horizontal" ItemAlignment="Center" />
                 </Layout>
                 <LayoutInput>
-                  <FormLayoutInput Bottom="SeekBar,1, 20" Right="SeekBar, .7"/>
+                  <FormLayoutInput Bottom="SeekBar,1, 13" Right="SeekBar, .7"/>
                 </LayoutInput>
                 <Children>
                   <Text Name="DirectSkip" Font="Segoe Media Center Light, 20, Bold" Content="" Color="220,250,220" Margins="4,0,10,0"  />
@@ -771,7 +771,7 @@
 
               <sb:SeekBar Name="SeekBar" Application="[Application]" Item="[Item]" Layout="Scale" Margins="20,20,20,20" >
                 <LayoutInput>
-                  <FormLayoutInput Left="PosterImage, 1, 10" Top="InfoPanel, 1" Right="Parent, 1"/>
+                  <FormLayoutInput Left="PosterImage, 1, 10" Top="Backing, 0,73" Right="Parent, 1"/>
                 </LayoutInput>
               </sb:SeekBar>
 
