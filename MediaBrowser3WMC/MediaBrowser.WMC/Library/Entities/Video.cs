@@ -19,6 +19,8 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string VideoFormat { get; set; }
 
+        public bool Is3D { get; set; }
+
         public override bool AssignFromItem(BaseItem item) {
             bool changed = this.MediaType != ((Video)item).MediaType;
             this.MediaType = ((Video)item).MediaType;

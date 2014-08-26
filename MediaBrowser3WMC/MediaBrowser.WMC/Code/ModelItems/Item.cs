@@ -431,6 +431,15 @@ namespace MediaBrowser.Library
             }
         }
 
+        public bool Is3D
+        {
+            get
+            {
+                var video = baseItem as Video;
+                return video != null && video.Is3D;
+            }
+        }
+
         public Microsoft.MediaCenter.UI.Image MediaTypeImage
         {
             get

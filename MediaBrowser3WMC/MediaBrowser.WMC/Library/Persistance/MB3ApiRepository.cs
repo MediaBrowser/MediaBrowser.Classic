@@ -355,6 +355,7 @@ namespace MediaBrowser.Library.Persistance
                     if (mb3Item.Video3DFormat != null)
                     {
                         video.VideoFormat = mb3Item.Video3DFormat == Video3DFormat.FullSideBySide || mb3Item.Video3DFormat == Video3DFormat.HalfSideBySide ? "Sbs3D" : "Digital3D";
+                        video.Is3D = true;
                     }
                     else
                     {
