@@ -2965,12 +2965,6 @@ namespace MediaBrowser
         {
             lock(_playLock)
             {
-                //hack to stop bad behavior on remote key bounce or other repeated requests
-                if (PlaybackController.IsPlaying && item.Id == CurrentlyPlayingItemId)
-                {
-                    Logger.ReportWarning("Repeat attempt to play {0}/{1} ignored", item.Name, item.Path);
-                    return;
-                }
 
                 //if external display a message
                 if (item.IsExternalDisc)
