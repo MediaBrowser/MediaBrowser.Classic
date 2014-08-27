@@ -31,7 +31,6 @@
       <Command Name="ManualLogin" />
       <EditableText Name="UserName" />
       <EditableText Name="PIN" />
-      <ClickHandler Name="Clicker" />
     </Locals>
 
     <Rules>
@@ -65,15 +64,6 @@
       </Default>
 
       <!--Manual Login-->
-      <Changed Source="[Clicker.Invoked]" >
-        <Conditions>
-          <Equality Source="[UserName.Value]" ConditionOp="NotEquals" Value="" />
-        </Conditions>
-        <Actions>
-          <Invoke Target="[ManualLogin.Invoke]" />
-        </Actions>
-      </Changed>
-
       <Changed Source="[ManualLogin.Invoked]" >
         <Actions>
           <Invoke Target="[Application.LoginUser]" name="[UserName.Value]" pw="[PIN.Value]" />
