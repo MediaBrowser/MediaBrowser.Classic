@@ -828,7 +828,7 @@ namespace MediaBrowser
         }
         public string YahooWeatherUnit
         {
-            get { return this.CommonData.WeatherUnit; }
+            get { return string.IsNullOrEmpty(this.CommonData.WeatherUnit) ? "f" : this.CommonData.WeatherUnit; }
             set { if (this.CommonData.WeatherUnit != value) { this.CommonData.WeatherUnit = value; Save(); FirePropertyChanged("YahooWeatherUnit"); } }
         }
         public string SupporterKey

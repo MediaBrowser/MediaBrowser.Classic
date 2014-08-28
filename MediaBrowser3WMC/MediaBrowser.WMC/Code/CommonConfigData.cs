@@ -42,7 +42,7 @@ namespace MediaBrowser
         public bool DisableCustomPlayerForDvd = false; // disable custom player for DVD rips (because menus don't work)
 
         public string WeatherLocation = "";
-        public string WeatherUnit = "";
+        public string WeatherUnit = "f";
 
         public DateTime LastNagDate = DateTime.MinValue;
 
