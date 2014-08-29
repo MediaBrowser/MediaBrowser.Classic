@@ -356,6 +356,7 @@ namespace MediaBrowser
         public bool DefaultIncludeChildrenRefresh = true; //if we don't prompt, are children included?
 
         public bool UseCustomPlayerInterface = true; //use our custom player with overlays
+        public bool ShowPauseIndicator = true; //show pause icon and dim the screen on pause
 
         public int DefaultSkipSeconds = 30; //default number of seconds to skip ahead in custom player
         public int DefaultSkipBackSeconds = 10; //default number of seconds to skip back in custom player

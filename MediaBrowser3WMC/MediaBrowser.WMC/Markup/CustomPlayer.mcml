@@ -111,7 +111,11 @@
 
       <Binding Source="[Clock.Time]" Target="[Time.Content]" />
 
-      <Binding Source="[Application.PlaybackController.IsPaused]" Target="[PausedPanel.Visible]" />
+      <Binding Source="[Application.PlaybackController.IsPaused]" Target="[PausedPanel.Visible]" >
+        <Conditions>
+          <Equality Source="[Application.Config.ShowPauseIndicator]" Value="true" />
+        </Conditions>
+      </Binding>
 
       <Binding Source="[Application.ShowMessagePopout]" Target="[MessagePopout.Visible]" />
       <Binding Source="[Application.MessageText]" Target="[MessagePopout.Message]" />

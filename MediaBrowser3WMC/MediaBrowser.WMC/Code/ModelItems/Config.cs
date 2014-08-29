@@ -583,6 +583,15 @@ namespace MediaBrowser
             }
         }
 
+        public bool ShowPauseIndicator
+        {
+            get { return this.Data.ShowPauseIndicator; }
+            set
+            {
+                if (this.Data.ShowPauseIndicator != value) { this.Data.ShowPauseIndicator = value; Save(); FirePropertyChanged("ShowPauseIndicator"); }
+            }
+        }
+
         public bool DisableMcConflictingOperations
         {
             get { return this.CommonData.DisableMcConflictingOperations; }

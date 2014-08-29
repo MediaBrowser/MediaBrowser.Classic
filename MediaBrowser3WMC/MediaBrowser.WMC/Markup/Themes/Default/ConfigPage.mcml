@@ -82,6 +82,7 @@
       <BooleanChoice Name="ShowClock" Value="[Application.Config.ShowClock]" />
       <BooleanChoice Name="WarnOnStream" Value="[Application.Config.WarnOnStream]" />
       <BooleanChoice Name="UseCustomPlayerInterface" Value="[Application.Config.UseCustomPlayerInterface]" />
+      <BooleanChoice Name="ShowPauseIndicator" Value="[Application.Config.ShowPauseIndicator]" />
       <BooleanChoice Name="DisableCustomPlayerForDvd" Value="[Application.Config.DisableCustomPlayerForDvd]" />
       <BooleanChoice Name="DisableMcConflictingOperations" Value="[Application.Config.DisableMcConflictingOperations]" />
       <cor:String Name="ThemeInitial" String="[Application.Config.Theme]" />
@@ -415,6 +416,7 @@
       <Binding Source="[LocalMaxBitrate.Value]" Target="[Config.LocalMaxBitrate]" />
       <Binding Source="[WarnOnStream.Value]" Target="[Config.WarnOnStream]" />
       <Binding Source="[UseCustomPlayerInterface.Value]" Target="[Config.UseCustomPlayerInterface]" />
+      <Binding Source="[ShowPauseIndicator.Value]" Target="[Config.ShowPauseIndicator]" />
       <Binding Source="[DisableMcConflictingOperations.Value]" Target="[Config.DisableMcConflictingOperations]" />
       <Binding Source="[DefaultSkipSeconds.Value]" Target="[Config.DefaultSkipSeconds]" />
       <Binding Source="[DefaultSkipBackSeconds.Value]" Target="[Config.DefaultSkipBackSeconds]" />
@@ -749,6 +751,7 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DisableMcConflictingOperationsConfig!cor:String]" Checked="[DisableMcConflictingOperations]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationInPlayerConfig!cor:String]" Checked="[ShowNewItemNotificationInPlayer]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowPauseIndicatorConfig!cor:String]" Checked="[ShowPauseIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#DisableCustomPlayerForDvdConfig!cor:String]" Checked="[DisableCustomPlayerForDvd]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#EnableMouseHookConfig!cor:String]" Checked="[EnableMouseHook]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />

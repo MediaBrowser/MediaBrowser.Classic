@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0091";
+        const string VERSION = "1.0092";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -112,6 +112,7 @@ namespace MediaBrowser.Library.Localization
         public string DefaultSkipSecondsConfigDesc = "The number of seconds to skip ahead when FF is pressed without a specific number entered";
         public string DefaultSkipBackSecondsConfigDesc = "The number of seconds to skip back when Rew is pressed without a specific number entered";
         public string UseCustomPlayerConfigDesc = "Use a custom interface on the internal WMC player giving a more modern look and better control";
+        public string ShowPauseIndicatorConfigDesc = "Dim the screen and show an icon when video is paused";
         public string DisableCustomPlayerForDvdConfigDesc = "Don't use custom interface for DVD rips.  Enable this if your rips have DVD menus.";
         public string DisableMcConflictingOperationsConfigDesc = "Disable controls that conflict with the Media Control MCE Add-in";
         public string ShowNewItemNotificationInPlayerConfigDesc = "Allow a small new item notification on top of playing video";
@@ -252,6 +253,7 @@ namespace MediaBrowser.Library.Localization
         public string DefaultSkipSecondsConfig = "Default Skip Forward Amount (seconds)";
         public string DefaultSkipBackSecondsConfig = "Default Skip Back Amount (seconds)";
         public string UseCustomPlayerConfig = "Use Custom Player Interface";
+        public string ShowPauseIndicatorConfig = "Show Pause Indication";
         public string DisableCustomPlayerForDvdConfig = "Disable for DVD Rips";
         public string DisableMcConflictingOperationsConfig = "Disable Functions that Conflict with Media Control";
         public string PlayerConfig = "Player";
