@@ -116,7 +116,7 @@
                 <TabItem Header="plug-ins" x:Name="plugins" Foreground="#FF323232" FontSize="14" FontWeight="Normal" IsSelected="True">
                     <Grid DataContext="{DynamicResource PluginManager}" >
                         <Label Height="34" HorizontalAlignment="Left" Margin="20,6,0,0" Name="label6" VerticalAlignment="Top" Width="260">Installed Plug-ins:</Label>
-                        <ListView IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="20,45,0,60" Width="260" ItemTemplate="{DynamicResource PluginListTemplate}" SelectionChanged="pluginList_SelectionChanged" x:Name="pluginList" OverridesDefaultStyle="False" ToolTip="Items shown in red have updates available" >
+                        <ListView IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="20,59.34,0,60" Width="260" ItemTemplate="{DynamicResource PluginListTemplate}" SelectionChanged="pluginList_SelectionChanged" x:Name="pluginList" OverridesDefaultStyle="False" ToolTip="Items shown in red have updates available" >
                             <ListView.GroupStyle>
                                 <GroupStyle>
                                     <GroupStyle.ContainerStyle>
@@ -154,6 +154,7 @@
                             <Button Margin="0,0,0,6" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
                             <ProgressBar VerticalAlignment="Bottom" Margin="0,0,0,0" x:Name="progress" Visibility="Hidden" Height="32"/>
                         </Grid>
+                        <Label Content="(Plug-ins are installed in the MBC Config pages)" HorizontalAlignment="Left" Margin="20,28.38,0,0" VerticalAlignment="Top" Width="261.993" FontSize="12"/>
                     </Grid>
                 </TabItem>
 
