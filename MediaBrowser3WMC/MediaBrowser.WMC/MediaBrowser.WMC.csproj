@@ -976,7 +976,9 @@
     </Content>
     <Content Include="Markup\Controls\Buttons\PersonButton.mcml" />
     <Content Include="Markup\Controls\Buttons\PluginUpdateButton.mcml" />
-    <Content Include="Markup\Controls\Buttons\SimpleButton.mcml" />
+    <Content Include="Markup\Controls\Buttons\SimpleButton.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Buttons\SpinImageButton.mcml" />
     <Content Include="Markup\Controls\CheckBox.mcml">
       <SubType>Designer</SubType>

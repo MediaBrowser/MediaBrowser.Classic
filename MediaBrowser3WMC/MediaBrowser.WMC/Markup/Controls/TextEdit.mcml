@@ -1,7 +1,6 @@
 <Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
 	  xmlns:cor="assembly://MSCorLib/System"
 	  xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
-	  xmlns:s="file://Styles_DoNotEdit.mcml"
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
       xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
 	  >
@@ -22,8 +21,8 @@
 
 			
 			<!-- Label color. -->
-			<Color Name="LabelColor" Color="color://s:FontColorLight"/>
-			<Color Name="LabelFocusedColor" Color="color://s:FontColorLight"/>
+			<Color Name="LabelColor" Color="White"/>
+			<Color Name="LabelFocusedColor" Color="White"/>
 			<Font Name="Font" Font="$Required"/>
 		</Properties>
 

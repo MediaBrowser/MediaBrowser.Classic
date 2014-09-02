@@ -4,7 +4,6 @@
       xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:sd="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
     xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
-      xmlns:s="file://Styles_DoNotEdit.mcml"
       xmlns:me="Me">
 
   
@@ -19,8 +18,8 @@
       <cor:String Name="Text" String="" />
       <Size Name="Size" Size="0,0" />
       <Font Name="Font" Font="$Required" />
-      <Color Name="Color" Color="color://s:FontColorLight"/>
-      <Color Name="FocusColor" Color="color://s:FontColorLight"/>
+      <Color Name="Color" Color="White"/>
+      <Color Name="FocusColor" Color="White"/>
       <Image Name="ImageFocus" Image="image://i:ZoomPane" />
       <Image Name="ImageNoFocus" Image="image://me:ButtonNoFocus" />
       <Image Name="ImageDormant" Image="image://me:ButtonDormant" />
