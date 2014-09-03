@@ -656,9 +656,12 @@ namespace MediaBrowser.ApiInteraction
         public void ReportRemoteCapabilities()
         {
             var url = GetApiUrl("Sessions/Capabilities");
-            var parms = new QueryStringDictionary();
-            parms.Add("PlayableMediaTypes","Video,Audio,Photo");
-            parms.Add("SupportedCommands", "GoHome,Back,DisplayContent,DisplayMessage,GotoSettings,Mute,UnMute,ToggleMute");
+            var parms = new QueryStringDictionary
+                            {
+                                {"PlayableMediaTypes", "Video,Audio,Photo"}, 
+                                {"QueueableMediaTypes", "Video,Audio"}, 
+                                {"SupportedCommands", "GoHome,Back,DisplayContent,DisplayMessage,GotoSettings,Mute,UnMute,ToggleMute"}
+                            };
 
             Post<EmptyRequestResult>(url, parms);
         }
@@ -1192,7 +1195,7 @@ namespace MediaBrowser.ApiInteraction
             dict.Add("IsPaused", false);
             dict.Add("IsMuted", false);
             dict.Add("ItemId", itemId);
-            dict.Add("QueueableMediaTypes", "");
+            dict.Add("QueueableMediaTypes", "Audio");
             dict.Add("PlayMethod", playMethod);
 
             var url = GetApiUrl("Sessions/Playing", dict);

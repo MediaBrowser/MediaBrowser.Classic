@@ -619,7 +619,7 @@ namespace MediaBrowser
             {
                 var items = args.Request.ItemIds.Select(i => Kernel.Instance.MB3ApiRepository.RetrieveItem(i));
                 Logger.ReportInfo("Playing multiple items by request from remote client");
-                Play(ItemFactory.Instance.Create(new IndexFolder(items.Where(i => i != null).ToList())));
+                Play(ItemFactory.Instance.Create(new IndexFolder(items.Where(i => i != null).ToList())), false, args.Request.PlayCommand != PlayCommand.PlayNow, false, false);
             }
             else
             {
