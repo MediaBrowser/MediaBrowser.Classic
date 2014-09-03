@@ -615,17 +615,27 @@ namespace MediaBrowser
         {
             ScreenSaverActive = false;
 
-            var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(args.Request.ItemIds.FirstOrDefault() ?? ""));
-                    if (item != null)
-                    {
-                        Logger.ReportInfo("Playing {0} by request from remote client", item.Name);
-                        Play(ItemFactory.Instance.Create(item),false, args.Request.PlayCommand != PlayCommand.PlayNow, false, false, args.Request.StartPositionTicks ?? 0);
-                    }
-                    else
-                    {
-                        Logger.ReportWarning("Unable to play item {0}", args.Request.ItemIds.FirstOrDefault());
-                        Information.AddInformationString("Unable to play requested item");
-                    }
+            if (args.Request.ItemIds.Length > 1)
+            {
+                var items = args.Request.ItemIds.Select(i => Kernel.Instance.MB3ApiRepository.RetrieveItem(i));
+                Logger.ReportInfo("Playing multiple items by request from remote client");
+                Play(ItemFactory.Instance.Create(new IndexFolder(items.Where(i => i != null).ToList())));
+            }
+            else
+            {
+                var item = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(args.Request.ItemIds.FirstOrDefault() ?? ""));
+                if (item != null)
+                {
+                    Logger.ReportInfo("Playing {0} by request from remote client", item.Name);
+                    Play(ItemFactory.Instance.Create(item),false, args.Request.PlayCommand != PlayCommand.PlayNow, false, false, args.Request.StartPositionTicks ?? 0);
+                }
+                else
+                {
+                    Logger.ReportWarning("Unable to play item {0}", args.Request.ItemIds.FirstOrDefault());
+                    Information.AddInformationString("Unable to play requested item");
+                }
+                
+            }
         }
 
         private void PlayStateRequest(object sender, PlaystateRequestEventArgs args)
