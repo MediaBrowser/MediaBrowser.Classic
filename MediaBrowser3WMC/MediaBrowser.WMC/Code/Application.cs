@@ -170,6 +170,16 @@ namespace MediaBrowser
             }
         }
 
+        public void WmcVolumeUp()
+        {
+            MediaCenterEnvironment.AudioMixer.VolumeUp();
+        }
+
+        public void WmcVolumeDown()
+        {
+            MediaCenterEnvironment.AudioMixer.VolumeDown();
+        }
+
         public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false, bool isStreaming = false)
         {
             Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused, WMCMute, isStreaming ? "Transcode" : "DirectPlay");
@@ -573,6 +583,14 @@ namespace MediaBrowser
 
                 case "Unmute":
                     WMCMute = false;
+                    break;
+
+                case "VolumeUp":
+                    WmcVolumeUp();
+                    break;
+
+                case "VolumeDown":
+                    WmcVolumeDown();
                     break;
 
                 case "ToggleMute":

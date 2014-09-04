@@ -658,9 +658,22 @@ namespace MediaBrowser.ApiInteraction
             var url = GetApiUrl("Sessions/Capabilities");
             var parms = new QueryStringDictionary
                             {
-                                {"PlayableMediaTypes", "Video,Audio,Photo"}, 
-                                {"QueueableMediaTypes", "Video,Audio"}, 
-                                {"SupportedCommands", "GoHome,Back,DisplayContent,DisplayMessage,GotoSettings,Mute,UnMute,ToggleMute"}
+                                {"PlayableMediaTypes", "Video,Audio,Photo"},
+                                {
+                                    "SupportedCommands", string.Join(",", new[]
+                                                                              {
+                                                                                  GeneralCommandType.VolumeDown.ToString(),
+                                                                                  GeneralCommandType.VolumeUp.ToString(),
+                                                                                  GeneralCommandType.GoHome.ToString(),
+                                                                                  GeneralCommandType.Back.ToString(),
+                                                                                  GeneralCommandType.DisplayContent.ToString(),
+                                                                                  GeneralCommandType.DisplayMessage.ToString(),
+                                                                                  GeneralCommandType.GoToSettings.ToString(),
+                                                                                  GeneralCommandType.Mute.ToString(),
+                                                                                  GeneralCommandType.Unmute.ToString(),
+                                                                                  GeneralCommandType.ToggleMute.ToString(),
+                                                                              })
+                                }
                             };
 
             Post<EmptyRequestResult>(url, parms);
