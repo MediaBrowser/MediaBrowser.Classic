@@ -597,6 +597,98 @@ namespace MediaBrowser
                     WMCMute = !WMCMute;
                     break;
 
+                case "MoveLeft":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyLeft();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending left key",e);
+                    }
+                    break;
+
+                case "MoveRight":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyRight();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending right key",e);
+                    }
+                    break;
+
+                case "MoveUp":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyUp();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending up key",e);
+                    }
+                    break;
+
+                case "MoveDown":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyDown();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending down key",e);
+                    }
+                    break;
+
+                case "PageUp":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyPageUp();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending page up key",e);
+                    }
+                    break;
+
+                case "PageDown":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyPageDown();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending page down key",e);
+                    }
+                    break;
+
+                case "Select":
+                    Helper.ActivateMediaCenter();
+                    Thread.Sleep(50);
+                    try
+                    {
+                        Helper.SendKeyEnter();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error sending enter key",e);
+                    }
+                    break;
+
+
             }
         }
 

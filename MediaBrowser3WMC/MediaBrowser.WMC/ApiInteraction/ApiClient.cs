@@ -672,6 +672,13 @@ namespace MediaBrowser.ApiInteraction
                                                                                   GeneralCommandType.Mute.ToString(),
                                                                                   GeneralCommandType.Unmute.ToString(),
                                                                                   GeneralCommandType.ToggleMute.ToString(),
+                                                                                  GeneralCommandType.MoveLeft.ToString(),
+                                                                                  GeneralCommandType.MoveRight.ToString(),
+                                                                                  GeneralCommandType.MoveUp.ToString(),
+                                                                                  GeneralCommandType.MoveDown.ToString(),
+                                                                                  GeneralCommandType.Select.ToString(),
+                                                                                  GeneralCommandType.PageDown.ToString(),
+                                                                                  GeneralCommandType.PageUp.ToString(),
                                                                               })
                                 }
                             };
