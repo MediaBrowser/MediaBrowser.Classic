@@ -28,7 +28,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"Playlist", typeof (Playlist)},
                                                                      {"ChannelFolderItem", typeof (ChannelFolder)},
                                                                      {"Channel", typeof (Channel)},
-                                                                     {"PhotoFolder", typeof (PhotoFolder)},
+                                                                     {"PhotoAlbum", typeof (PhotoFolder)},
                                                                      {"Photo", typeof (Photo)},
                                                                      {"Movie", typeof (Movie)},
                                                                      {"Trailer", typeof (Movie)},
@@ -180,7 +180,7 @@ namespace MediaBrowser.Library.Persistance
                 }
                 else
                 {
-                    if (itemType.EndsWith("Folder", StringComparison.OrdinalIgnoreCase))
+                    if (itemType.EndsWith("Folder", StringComparison.OrdinalIgnoreCase) || mb3Item.IsFolder)
                     {
                         return new Folder();
                     }
