@@ -743,29 +743,6 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
-        /// Gets the url needed to stream an audio file
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <returns>System.String.</returns>
-        /// <exception cref="System.ArgumentNullException">options</exception>
-        public string GetAudioStreamUrl(StreamOptions options)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-
-            var handler = "Audio/" + options.ItemId + "/stream";
-
-            if (!string.IsNullOrEmpty(options.OutputFileExtension))
-            {
-                handler += "." + options.OutputFileExtension.TrimStart('.');
-            }
-
-            return GetMediaStreamUrl(handler, options, new QueryStringDictionary());
-        }
-
-        /// <summary>
         /// Gets the url needed to stream a video file
         /// </summary>
         /// <param name="options">The options.</param>
@@ -786,38 +763,6 @@ namespace MediaBrowser.ApiInteraction
             }
 
             return GetVideoStreamUrl(handler, options);
-        }
-
-        /// <summary>
-        /// Formulates a url for streaming audio using the HLS protocol
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <returns>System.String.</returns>
-        /// <exception cref="System.ArgumentNullException">options</exception>
-        public string GetHlsAudioStreamUrl(StreamOptions options)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-
-            return GetMediaStreamUrl("audio.m3u8", options, new QueryStringDictionary());
-        }
-
-        /// <summary>
-        /// Formulates a url for streaming video using the HLS protocol
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <returns>System.String.</returns>
-        /// <exception cref="System.ArgumentNullException">options</exception>
-        public string GetHlsVideoStreamUrl(VideoStreamOptions options)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-
-            return GetVideoStreamUrl("video.m3u8", options);
         }
 
         /// <summary>

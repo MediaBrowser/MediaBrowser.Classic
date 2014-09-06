@@ -68,9 +68,9 @@
     <StartProgram>C:\Windows\ehome\ehshell.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MediaBrowser.Model, Version=3.0.5338.24791, Culture=neutral, PublicKeyToken=6cde51960597a7f9, processorArchitecture=MSIL">
+    <Reference Include="MediaBrowser.Model, Version=3.0.5361.21269, Culture=neutral, PublicKeyToken=6cde51960597a7f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MediaBrowser.Common.3.0.426\lib\net35\MediaBrowser.Model.dll</HintPath>
+      <HintPath>..\packages\MediaBrowser.Common.3.0.431\lib\net35\MediaBrowser.Model.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.MediaCenter, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,6 +136,8 @@
     <Compile Include="ApiInteraction\QueryStringDictionary.cs" />
     <Compile Include="ApiInteraction\SerializationFormats.cs" />
     <Compile Include="ApiInteraction\ServerLocator.cs" />
+    <Compile Include="ApiInteraction\StreamOptions.cs" />
+    <Compile Include="ApiInteraction\VideoOptions.cs" />
     <Compile Include="ApiInteraction\WebSocket\ApiWebSocket.cs" />
     <Compile Include="ApiInteraction\WebSocket\BaseApiWebSocket.cs" />
     <Compile Include="ApiInteraction\WebSocket\ClientWebSocketFactory.cs" />

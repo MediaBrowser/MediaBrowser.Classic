@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.ApiInteraction;
 using MediaBrowser.Model.Dto;
 
 namespace MediaBrowser.Library.Entities

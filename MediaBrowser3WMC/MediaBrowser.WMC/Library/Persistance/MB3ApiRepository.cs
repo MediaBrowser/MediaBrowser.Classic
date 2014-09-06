@@ -519,6 +519,27 @@ namespace MediaBrowser.Library.Persistance
                     album.AlbumArtist = mb3Item.AlbumArtist ?? mb3Item.Artists.FirstOrDefault();
                 }
 
+                var photo = item as Photo;
+                if (photo != null)
+                {
+                    if (mb3Item.HasPrimaryImage)
+                    {
+                        //Make the photo itself also the backdrop so it can preview large and play back at full-res
+                        item.BackdropImagePaths = new List<string> {Kernel.ApiClient.GetImageUrl(mb3Item.Id, new ImageOptions {ImageType = ImageType.Primary, Quality = Kernel.Instance.CommonConfigData.JpgImageQuality, MaxWidth = Kernel.Instance.CommonConfigData.MaxBackgroundWidth, Tag = mb3Item.ImageTags[ImageType.Primary]})};
+                    }
+
+                    if (string.IsNullOrEmpty(photo.Overview))
+                    {
+                        if (photo.DateTaken != DateTime.MinValue || !string.IsNullOrEmpty(mb3Item.CameraMake) || !string.IsNullOrEmpty(mb3Item.CameraModel))
+                        {
+                            photo.Overview = string.Format("Taken {0} with a {1} {2}\n", photo.DateTaken > DateTime.MinValue ? photo.DateTaken.ToShortTimeString() : "", mb3Item.CameraMake, mb3Item.CameraModel);
+                        }
+                        photo.Overview += string.Format("Original Resolution {0}x{1}", mb3Item.Width, mb3Item.Height);
+                        if (mb3Item.ShutterSpeed != null) photo.Overview += string.Format(" Shutter Speed {0}\n", mb3Item.ShutterSpeed);
+                    }
+
+                }
+
                 // Finally, any custom values
                 item.FillCustomValues(mb3Item);
             }

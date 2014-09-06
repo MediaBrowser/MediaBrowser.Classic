@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
-using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
-using MediaBrowser.Library.Extensions;
 using MediaBrowser.Model.Dlna;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using VideoOptions = MediaBrowser.Model.Dlna.VideoOptions;
 
 namespace MediaBrowser.Library.Entities {
     public class Video : Media {
