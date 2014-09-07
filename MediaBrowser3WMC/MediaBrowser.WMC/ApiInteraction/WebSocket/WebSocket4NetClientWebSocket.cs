@@ -35,7 +35,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         }
 
         /// <summary>
-        /// Connects the async.
+        /// Connects.
         /// </summary>
         /// <param name="url">The URL.</param>
         public void Connect(string url)
@@ -56,7 +56,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         {
             if (OnReceiveDelegate != null)
             {
-                OnReceiveDelegate(Encoding.UTF8.GetBytes(e.Message));
+                OnReceiveDelegate(e.Message);
             }
         }
 
@@ -64,7 +64,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// Gets or sets the receive action.
         /// </summary>
         /// <value>The receive action.</value>
-        public Action<byte[]> OnReceiveDelegate { get; set; }
+        public Action<string> OnReceiveDelegate { get; set; }
 
         /// <summary>
         /// Sends the async.

@@ -24,7 +24,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// Gets or sets the receive action.
         /// </summary>
         /// <value>The receive action.</value>
-        Action<byte[]> OnReceiveDelegate { get; set; }
+        Action<string> OnReceiveDelegate { get; set; }
         
         /// <summary>
         /// Sends the async.

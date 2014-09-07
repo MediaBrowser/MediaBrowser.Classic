@@ -100,10 +100,9 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         /// <summary>
         /// Called when [message received].
         /// </summary>
-        /// <param name="bytes">The bytes.</param>
-        protected void OnMessageReceived(byte[] bytes)
+        /// <param name="json"></param>
+        protected void OnMessageReceived(string json)
         {
-            var json = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
             WebSocketMessage<object> message = null;
 
             try
