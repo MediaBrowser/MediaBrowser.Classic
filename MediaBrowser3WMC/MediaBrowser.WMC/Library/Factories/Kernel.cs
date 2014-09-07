@@ -21,6 +21,7 @@ using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Plugins;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
+using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
@@ -436,7 +437,7 @@ namespace MediaBrowser.Library {
             {
                 ServerHostName = address,
                 ServerApiPort = port,
-                DeviceId = Helper.GetMACAddress(),
+                DeviceId = new DeviceId().Value,
                 ClientType = "MB-Classic",
                 DeviceName = Environment.MachineName+"/"+Environment.UserName,
                 Timeout = timeout

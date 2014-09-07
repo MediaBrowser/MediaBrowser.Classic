@@ -328,6 +328,7 @@
     <Compile Include="Library\TripleTapIndex.cs" />
     <Compile Include="Library\UserInput\KeyboardListener.cs" />
     <Compile Include="Library\UserInput\RemoteCommand.cs" />
+    <Compile Include="Library\Util\DeviceId.cs" />
     <Compile Include="Library\Util\DisplayUtil.cs" />
     <Compile Include="Library\Util\Helper.cs">
       <SubType>Code</SubType>

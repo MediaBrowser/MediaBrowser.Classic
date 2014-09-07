@@ -112,6 +112,7 @@ namespace MediaBrowser
         private PowerSettings _powerSetings;
 
         public PowerSettings PowerSettings { get { return _powerSetings ?? (_powerSetings = new PowerSettings()); } }
+        public DeviceId DeviceId = new DeviceId();
 
         #region CurrentItemChanged EventHandler
         volatile EventHandler<GenericEventArgs<Item>> _CurrentItemChanged;
@@ -1664,8 +1665,6 @@ namespace MediaBrowser
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
-            //Need to track who is still using us
-            Helper.Ping("http://www.mb3admin.com/admin/service/registration/ping?feature=MBClassic&ver=" + Kernel.Instance.VersionStr + "&mac=" + Helper.GetMACAddress());
             try
             {
                 Updater = new Updater(this);
