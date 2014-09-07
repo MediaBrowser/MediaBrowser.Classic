@@ -180,6 +180,34 @@ namespace MediaBrowser
             MediaCenterEnvironment.AudioMixer.VolumeDown();
         }
 
+        /// <summary>
+        /// Don't use this - leaving it here just in case we ever figure out a way to make it work reliably
+        /// WMC hangs after repeated attempts to access volume information
+        /// </summary>
+        /// <param name="amt"></param>
+        public void WmcVolume(int amt)
+        {
+            //There is no method to do this directly so we have to fake it
+            var diff = MediaCenterEnvironment.AudioMixer.Volume - amt;
+            if (diff > 0)
+            {
+                for (var i = 0; i < diff; i++)
+                {
+                    MediaCenterEnvironment.AudioMixer.VolumeDown();
+                    Thread.Sleep(50);
+                }
+            }
+            else
+            {
+                diff = Math.Abs(diff);
+                for (var i = 0; i < diff; i++)
+                {
+                    MediaCenterEnvironment.AudioMixer.VolumeUp();
+                    Thread.Sleep(50);
+                }
+            }
+        }
+
         public void ReportPlaybackProgress(string id, long positionTicks, bool isPaused = false, bool isStreaming = false)
         {
             Kernel.ApiClient.ReportPlaybackProgress(id, Kernel.CurrentUser.Id, positionTicks, isPaused, WMCMute, isStreaming ? "Transcode" : "DirectPlay");
@@ -592,6 +620,11 @@ namespace MediaBrowser
                 case "VolumeDown":
                     WmcVolumeDown();
                     break;
+
+                //case "SetVolume":
+                //    var amt = args.Command.Arguments["Volume"];
+                //    WmcVolume(Convert.ToInt32(amt)/2);
+                //    break;
 
                 case "ToggleMute":
                     WMCMute = !WMCMute;
