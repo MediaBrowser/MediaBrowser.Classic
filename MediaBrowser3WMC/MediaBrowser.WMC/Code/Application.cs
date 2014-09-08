@@ -164,38 +164,41 @@ namespace MediaBrowser
             set
             {
                 MediaCenterEnvironment.AudioMixer.Mute = _isMuted = value;
-                if (currentPlaybackController != null)
-                {
-                    ReportPlaybackProgress(currentPlaybackController.CurrentPlayableItemId.ToString(), currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused, currentPlaybackController.IsStreaming);
-                }
+                UpdateProgress();
             }
         }
 
         public void WmcVolumeUp()
         {
             MediaCenterEnvironment.AudioMixer.VolumeUp();
+            UpdateProgress();
         }
 
         public void WmcVolumeDown()
         {
             MediaCenterEnvironment.AudioMixer.VolumeDown();
+            UpdateProgress();
+        }
+
+        public int VolumePct
+        {
+            get { return (int) (MediaCenterEnvironment.AudioMixer.Volume/655.35); }
         }
 
         /// <summary>
-        /// Don't use this - leaving it here just in case we ever figure out a way to make it work reliably
-        /// WMC hangs after repeated attempts to access volume information
+        /// Set volume to specific level 0-50
         /// </summary>
         /// <param name="amt"></param>
-        public void WmcVolume(int amt)
+        public void SetWmcVolume(int amt)
         {
             //There is no method to do this directly so we have to fake it
-            var diff = MediaCenterEnvironment.AudioMixer.Volume - amt;
+            var diff = ((int)MediaCenterEnvironment.AudioMixer.Volume / 1310.7) - amt;
             if (diff > 0)
             {
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeDown();
-                    Thread.Sleep(50);
+                    Thread.Sleep(25);
                 }
             }
             else
@@ -204,8 +207,18 @@ namespace MediaBrowser
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeUp();
-                    Thread.Sleep(50);
+                    Thread.Sleep(25);
                 }
+            }
+
+            UpdateProgress();
+        }
+
+        protected void UpdateProgress()
+        {
+            if (currentPlaybackController != null && currentPlaybackController.IsPlaying)
+            {
+                ReportPlaybackProgress(currentPlaybackController.GetCurrentPlayableItem().CurrentMedia.ApiId, currentPlaybackController.CurrentFilePositionTicks, currentPlaybackController.IsPaused, currentPlaybackController.IsStreaming);
             }
         }
 
@@ -622,10 +635,10 @@ namespace MediaBrowser
                     WmcVolumeDown();
                     break;
 
-                //case "SetVolume":
-                //    var amt = args.Command.Arguments["Volume"];
-                //    WmcVolume(Convert.ToInt32(amt)/2);
-                //    break;
+                case "SetVolume":
+                    var amt = args.Command.Arguments["Volume"];
+                    SetWmcVolume(Convert.ToInt32(amt) / 2);
+                    break;
 
                 case "ToggleMute":
                     WMCMute = !WMCMute;

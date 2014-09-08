@@ -403,7 +403,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Playing)
             {
                 PauseInternal();
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, true, IsStreaming);
+                Application.CurrentInstance.ReportPlaybackProgress(GetCurrentPlayableItem().CurrentMedia.ApiId, CurrentFilePositionTicks, true, IsStreaming);
             }
         }
 
@@ -412,7 +412,7 @@ namespace MediaBrowser.Code.ModelItems
             if (PlayState == PlaybackControllerPlayState.Paused)
             {
                 UnPauseInternal();
-                Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), CurrentFilePositionTicks, false, IsStreaming);
+                Application.CurrentInstance.ReportPlaybackProgress(GetCurrentPlayableItem().CurrentMedia.ApiId, CurrentFilePositionTicks, false, IsStreaming);
             }
         }
 

@@ -664,6 +664,7 @@ namespace MediaBrowser.ApiInteraction
                                                                               {
                                                                                   GeneralCommandType.VolumeDown.ToString(),
                                                                                   GeneralCommandType.VolumeUp.ToString(),
+                                                                                  GeneralCommandType.SetVolume.ToString(),
                                                                                   GeneralCommandType.GoHome.ToString(),
                                                                                   GeneralCommandType.Back.ToString(),
                                                                                   GeneralCommandType.DisplayContent.ToString(),
@@ -1267,6 +1268,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("isMuted", isMuted);
             dict.AddIfNotNullOrEmpty("ItemId", itemId);
             dict.AddIfNotNullOrEmpty("PlayMethod", playMethod);
+            dict.Add("VolumeLevel", Application.CurrentInstance.VolumePct);
 
             var url = GetApiUrl("Sessions/Playing/Progress", dict);
 
