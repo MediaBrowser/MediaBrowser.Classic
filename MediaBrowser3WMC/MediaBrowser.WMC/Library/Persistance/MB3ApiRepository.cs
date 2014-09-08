@@ -180,19 +180,22 @@ namespace MediaBrowser.Library.Persistance
                 }
                 else
                 {
-                    if (itemType.EndsWith("Folder", StringComparison.OrdinalIgnoreCase) || mb3Item.IsFolder)
+                    // Try media type
+                    if (Mb3Translator.TypeMap.TryGetValue(mb3Item.MediaType, out typ))
                     {
-                        return new Folder();
+                        Logger.ReportVerbose("============ Creating {0} for {1} based on media type", typ.FullName, itemType);
+                        return (BaseItem)Activator.CreateInstance(typ);
                     }
                     else
                     {
-                        // Try media type
-                        if (Mb3Translator.TypeMap.TryGetValue(mb3Item.MediaType, out typ))
+                        if (itemType.EndsWith("Folder", StringComparison.OrdinalIgnoreCase) || mb3Item.IsFolder)
                         {
-                            return (BaseItem)Activator.CreateInstance(typ);
+                            Logger.ReportVerbose("============ Creating folder for {0}", itemType);
+                            return new Folder();
                         }
 
                         // fallback
+                        Logger.ReportVerbose("============ Falling back to serializer for {0}", itemType);
                         return Serializer.Instantiate<BaseItem>(itemType);
                     }
                 }
