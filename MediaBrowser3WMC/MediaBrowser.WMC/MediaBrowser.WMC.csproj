@@ -200,6 +200,7 @@
     <Compile Include="Library\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Library\Factories\Kernel.cs" />
     <Compile Include="Library\Filesystem\AttributedContents.cs" />
+    <Compile Include="Library\Filesystem\CacheCleanUp.cs" />
     <Compile Include="Library\Filesystem\VirtualFolder.cs" />
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />

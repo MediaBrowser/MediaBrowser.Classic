@@ -532,7 +532,7 @@ namespace MediaBrowser.Library {
             kernel.AddConfigPanel(kernel.StringData.GetString("PlaybackConfig"), "");
 
             //kick off log clean up task if needed
-            if (config.LastLogCleanup < DateTime.UtcNow.AddDays(-7))
+            if (config.LastFileCleanup < DateTime.UtcNow.AddDays(-7))
             {
                 Async.Queue("Logfile cleanup", () =>
                 {
@@ -551,9 +551,11 @@ namespace MediaBrowser.Library {
                         }                                   
                     }
 
-                    config.LastLogCleanup = DateTime.UtcNow;
+                    config.LastFileCleanup = DateTime.UtcNow;
                     config.Save();
                 });
+
+                Async.Queue("Cache cleanup", () => CacheCleanUp.DeleteCacheFilesFromDirectory(ApplicationPaths.AppImagePath, DateTime.UtcNow.AddDays(-(Kernel.Instance.CommonConfigData.CacheFileRetentionDays))));
             }
 
             return kernel;
