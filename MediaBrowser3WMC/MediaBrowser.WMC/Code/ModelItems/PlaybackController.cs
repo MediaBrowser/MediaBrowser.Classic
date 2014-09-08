@@ -441,7 +441,7 @@ namespace MediaBrowser
                 var diff = (DateTime.Now - _LastTransportUpdateTime).TotalMilliseconds;
 
                 // Only cancel out Position reports
-                if (diff < 5000 && diff >= 0)
+                if (diff < 3000 && diff >= 0)
                 {
                     return;
                 }
