@@ -1212,7 +1212,7 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var dict = new QueryStringDictionary();
-            dict.Add("CanSeek", true);
+            dict.Add("CanSeek", Application.CurrentInstance.CanSeek);
             dict.Add("IsPaused", false);
             dict.Add("IsMuted", false);
             dict.Add("ItemId", itemId);
@@ -1266,6 +1266,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("positionTicks", positionTicks);
             dict.AddIfNotNull("isPaused", isPaused);
             dict.AddIfNotNull("isMuted", isMuted);
+            dict.Add("CanSeek", Application.CurrentInstance.CanSeek);
             dict.AddIfNotNullOrEmpty("ItemId", itemId);
             dict.AddIfNotNullOrEmpty("PlayMethod", playMethod);
             dict.Add("VolumeLevel", Application.CurrentInstance.VolumePct);

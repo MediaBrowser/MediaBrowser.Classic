@@ -1498,6 +1498,16 @@ namespace MediaBrowser
             }
         }
 
+        public bool CanSeek
+        {
+            get { return currentPlaybackController != null && currentPlaybackController.CanSeek; }
+        }
+
+        public bool CanPause
+        {
+            get { return currentPlaybackController != null && currentPlaybackController.CanPause; }
+        }
+
         /// <summary>
         /// MCML helper
         /// </summary>

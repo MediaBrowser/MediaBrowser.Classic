@@ -535,7 +535,7 @@ namespace MediaBrowser.Code.ModelItems
                 if (playstate == PlaybackControllerPlayState.Playing || playstate == PlaybackControllerPlayState.Paused)
                 {
                     SeekInternal(position);
-                    Application.CurrentInstance.ReportPlaybackProgress(CurrentPlayableItemId.ToString(), position, playstate == PlaybackControllerPlayState.Paused, IsStreaming);
+                    Application.CurrentInstance.ReportPlaybackProgress(GetCurrentPlayableItem().CurrentMedia.ApiId, position, playstate == PlaybackControllerPlayState.Paused, IsStreaming);
                 }
             }
             catch (Exception e)
