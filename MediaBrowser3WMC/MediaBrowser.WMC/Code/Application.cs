@@ -180,10 +180,7 @@ namespace MediaBrowser
             UpdateProgress();
         }
 
-        public int VolumePct
-        {
-            get { return (int) (MediaCenterEnvironment.AudioMixer.Volume/655.35); }
-        }
+        public int VolumePct { get; private set; }
 
         /// <summary>
         /// Set volume to specific level 0-50
@@ -1721,12 +1718,23 @@ namespace MediaBrowser
 
                 _popoutMessageTimer.Tick += _popoutMessageTimerTick;
 
+                MediaCenterEnvironment.AudioMixer.PropertyChanged += AudioMixerPropertyChanged;
+                VolumePct = (int)(MediaCenterEnvironment.AudioMixer.Volume / 655.35);
+
                 Login();
             }
             catch (Exception e)
             {
                 AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("CriticalErrorDial") + e + " " + e.StackTrace, CurrentInstance.StringData("CriticalErrorCapDial"), DialogButtons.Ok, 60, true);
                 AddInHost.Current.ApplicationContext.CloseApplication();
+            }
+        }
+
+        void AudioMixerPropertyChanged(IPropertyObject sender, string property)
+        {
+            if (property.Equals("volume", StringComparison.OrdinalIgnoreCase))
+            {
+                VolumePct = (int)(MediaCenterEnvironment.AudioMixer.Volume / 655.35);
             }
         }
 
