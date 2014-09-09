@@ -189,13 +189,13 @@ namespace MediaBrowser
         public void SetWmcVolume(int amt)
         {
             //There is no method to do this directly so we have to fake it
-            var diff = ((int)MediaCenterEnvironment.AudioMixer.Volume / 1310.7) - amt;
+            var diff = (int)(MediaCenterEnvironment.AudioMixer.Volume / 1310.7) - amt;
             if (diff > 0)
             {
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeDown();
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                 }
             }
             else
@@ -204,7 +204,7 @@ namespace MediaBrowser
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeUp();
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                 }
             }
 
