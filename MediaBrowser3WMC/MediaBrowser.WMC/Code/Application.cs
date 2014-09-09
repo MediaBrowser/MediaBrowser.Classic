@@ -198,7 +198,7 @@ namespace MediaBrowser
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeDown();
-                    Thread.Sleep(25);
+                    Thread.Sleep(10);
                 }
             }
             else
@@ -207,7 +207,7 @@ namespace MediaBrowser
                 for (var i = 0; i < diff; i++)
                 {
                     MediaCenterEnvironment.AudioMixer.VolumeUp();
-                    Thread.Sleep(25);
+                    Thread.Sleep(10);
                 }
             }
 
