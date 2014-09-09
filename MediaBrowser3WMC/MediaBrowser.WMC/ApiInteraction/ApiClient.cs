@@ -1269,7 +1269,7 @@ namespace MediaBrowser.ApiInteraction
             dict.Add("CanSeek", Application.CurrentInstance.CanSeek);
             dict.AddIfNotNullOrEmpty("ItemId", itemId);
             dict.AddIfNotNullOrEmpty("PlayMethod", playMethod);
-            dict.Add("VolumeLevel", Application.CurrentInstance.VolumePct);
+            //dict.Add("VolumeLevel", Application.CurrentInstance.VolumePct);
 
             var url = GetApiUrl("Sessions/Playing/Progress", dict);
 
