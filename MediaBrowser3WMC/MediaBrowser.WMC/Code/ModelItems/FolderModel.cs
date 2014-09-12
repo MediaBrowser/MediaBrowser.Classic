@@ -1283,7 +1283,7 @@ namespace MediaBrowser.Library {
                 }
                 else
                 {
-                    Folder.ReloadChildren();
+                    folderChildren.RefreshChildren();
                 }
                 FirePropertyChanged("FilterFavorite");
             }
