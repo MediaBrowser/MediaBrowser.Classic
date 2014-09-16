@@ -873,12 +873,16 @@ namespace MediaBrowser
                 }
             }
 
-            //And reset the recent list for each top folder - just do them all
-            foreach (var top in RootFolder.Children.OfType<Folder>())
+            //And reset the recent list for and reload each top folder if anything was added or removed - just do them all
+            if (args.UpdateInfo.ItemsAdded.Any() || args.UpdateInfo.ItemsRemoved.Any())
             {
-                top.ResetQuickList();
-                top.OnQuickListChanged(null);
-            } 
+                foreach (var top in RootFolder.Children.OfType<Folder>())
+                {
+                    top.ReloadChildren();
+                    top.ResetQuickList();
+                    top.OnQuickListChanged(null);
+                }
+            }
 
             //Call any subscribers
             OnLibraryChanged(args);
