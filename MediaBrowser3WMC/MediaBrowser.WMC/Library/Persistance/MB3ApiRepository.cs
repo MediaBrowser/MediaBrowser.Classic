@@ -25,6 +25,7 @@ namespace MediaBrowser.Library.Persistance
             public static Dictionary<string, Type> TypeMap = new Dictionary<string, Type>
                                                                  {
                                                                      {"Folder", typeof (Folder)},
+                                                                     {"PlaylistsFolder", typeof (Folder)},
                                                                      {"Playlist", typeof (Playlist)},
                                                                      {"ChannelFolderItem", typeof (ChannelFolder)},
                                                                      {"Channel", typeof (Channel)},
@@ -181,7 +182,7 @@ namespace MediaBrowser.Library.Persistance
                 else
                 {
                     // Try media type
-                    if (Mb3Translator.TypeMap.TryGetValue(mb3Item.MediaType, out typ))
+                    if (Mb3Translator.TypeMap.TryGetValue(mb3Item.MediaType ?? "", out typ))
                     {
                         Logger.ReportVerbose("============ Creating {0} for {1} based on media type", typ.FullName, itemType);
                         return (BaseItem)Activator.CreateInstance(typ);
