@@ -243,7 +243,7 @@ namespace MediaBrowser.Library
         Random randomizer = new Random();
         public void GetNextBackDropImage()
         {
-            if (!Config.Instance.RotateBackdrops || Application.CurrentInstance.IsExternalWmcApplicationPlaying) return; // only do this if we want to rotate
+            if (!Config.Instance.RotateBackdrops) return; // only do this if we want to rotate
 
             EnsureAllBackdropsAreLoaded();
             var images = new List<AsyncImageLoader>();
