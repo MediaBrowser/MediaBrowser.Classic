@@ -33,7 +33,13 @@ namespace MediaBrowser.Library.Entities
         {
             Name = item.Name;
             ApiRecursiveItemCount = item.ApiRecursiveItemCount;
+            var folder = item as Folder;
+            if (folder != null)
+            {
+                UnwatchedCount = folder.UnwatchedCount;
+            }
             Id = item.Id;
+            DateCreated = item.DateCreated;
             SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
             Overview = item.Overview;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
