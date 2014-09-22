@@ -1328,7 +1328,7 @@ namespace MediaBrowser
         {
             if (LoggedIn && Config.EnableScreenSaver) 
             {
-                if ((!IsPlayingVideo || PlaybackController.IsPaused) && !IsExternalWmcApplicationPlaying && !ScreenSaverTempDisabled)
+                if ((!IsPlayingVideo || PlaybackController.IsPaused) && !ScreenSaverTempDisabled)
                 {
                     if (Helper.SystemIdleTime > Config.ScreenSaverTimeOut * 60000)
                     {
@@ -2555,11 +2555,6 @@ namespace MediaBrowser
                         {
                             return controller.NowPlayingTitle;
                         }
-                    }
-
-                    if (IsExternalWmcApplicationPlaying)
-                    {
-                        return PlaybackControllerHelper.GetNowPlayingTextForExternalWmcApplication();
                     }
 
                 }
