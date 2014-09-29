@@ -6,7 +6,7 @@ using System.Text;
 namespace MediaBrowser.Library.Logging {
     public struct LogRow {
 
-        const string TimePattern = "yyy-MM-dd hh:mm:ss.ffff";
+        const string TimePattern = "yyy-MM-dd HH:mm:ss.ffff";
 
 
         public LogSeverity Severity { get; set; }
