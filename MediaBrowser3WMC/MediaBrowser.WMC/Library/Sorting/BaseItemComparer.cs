@@ -36,6 +36,9 @@ namespace MediaBrowser.Library {
 
             switch (order) {
 
+                case SortOrder.None:
+                    return -1;
+
                 case SortOrder.Date:
                     compare = -x.DateCreated.CompareTo(y.DateCreated);
                     break;

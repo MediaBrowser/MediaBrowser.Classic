@@ -11,6 +11,7 @@ namespace MediaBrowser.Library {
         Runtime,
         Unwatched,
         Year,
-        Custom
+        Custom,
+        None
     }
 }

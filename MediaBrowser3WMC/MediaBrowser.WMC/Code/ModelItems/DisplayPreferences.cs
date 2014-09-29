@@ -96,8 +96,8 @@ namespace MediaBrowser.Library
             }
             catch (ArgumentException)
             {
-                Logging.Logger.ReportError("Invalid sort by stored for {0}.  Setting to Name.", folder.Name ?? folder.GetType().Name);
-                sortOrders.Chosen = Localization.LocalizedStrings.Instance.GetString("NameDispPref");
+                Logging.Logger.ReportError("Invalid sort by stored for {0}.  Setting to first available.", folder.Name ?? folder.GetType().Name);
+                sortOrders.Chosen = folder.SortOrderOptions.Any() ? folder.SortOrderOptions.FirstOrDefault().Key : Localization.LocalizedStrings.Instance.GetString("NameDispPref");
             }
 
             ListenForChanges();

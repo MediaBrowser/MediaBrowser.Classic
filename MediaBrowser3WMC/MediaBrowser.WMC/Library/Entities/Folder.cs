@@ -33,7 +33,7 @@ namespace MediaBrowser.Library.Entities {
 
         MediaBrowser.Library.Util.Lazy<List<BaseItem>> children;
         protected IFolderMediaLocation location;
-        protected IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
+        protected IComparer<BaseItem> sortFunction;
         object validateChildrenLock = new object();
         public MBDirectoryWatcher directoryWatcher;
         Type childType;
@@ -1044,19 +1044,20 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
-        protected virtual void Sort(IComparer<BaseItem> sortFunction, bool notifyChange) {
-            this.sortFunction = sortFunction;
+        protected virtual void Sort(IComparer<BaseItem> function, bool notifyChange)
+        {
+            if (function == null) return;
+
+            this.sortFunction = function;
             if (ActualChildren == null) return;
 
             lock (ActualChildren) {
-                //Logger.ReportVerbose("=====sorting actual children for " + Name + " Sort function: "+sortFunction);
-                ActualChildren.Sort(sortFunction);
+                ActualChildren.Sort(function);
             }
             if (notifyChange && ChildrenChanged != null)
                 {
                     ChildrenChanged(this, null);
                 }
-            //Logger.ReportVerbose("=====FINISHED sorting actual children for " + Name);
         }
 
         protected virtual bool CollapseBoxSets {get { return Config.Instance.CollapseBoxSets; }}

@@ -24,7 +24,7 @@ namespace MediaBrowser.Code.ModelItems {
         Action onChildrenChanged;
         public bool FolderIsIndexed = false;
         float childImageAspect = 1;
-        IComparer<BaseItem> sortFunction = new BaseItemComparer(SortOrder.Name);
+        private IComparer<BaseItem> sortFunction;
 
         public void Assign(FolderModel folderModel, Action onChildrenChanged) {
 
@@ -127,15 +127,14 @@ namespace MediaBrowser.Code.ModelItems {
 
         // trigger a re-sort
         public void Sort() {
-            Sort(sortFunction);
+            if (sortFunction != null) Sort(sortFunction);
         }
 
-        public void Sort(IComparer<BaseItem> sortFunction)
+        public void Sort(IComparer<BaseItem> function)
         {
-            if (folder != null && !FolderIsIndexed) {
-                this.sortFunction = sortFunction;
-                Logger.ReportVerbose("Sorting " + folder.Name);
-                Async.Queue("Background Sorter", () => folder.Sort(sortFunction));
+            if (folder != null && !FolderIsIndexed && function != null) {
+                this.sortFunction = function;
+                Async.Queue("Background Sorter", () => folder.Sort(function));
             }
         }
 
