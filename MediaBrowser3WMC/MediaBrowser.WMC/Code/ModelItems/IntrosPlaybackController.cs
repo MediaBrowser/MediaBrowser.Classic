@@ -232,8 +232,9 @@ namespace MediaBrowser.Code.ModelItems
                         StoppedByUser = true;
                     }
                 }
-                _finished = true;
                 Logger.ReportInfo("Playback finished. " + _finished);
+                Thread.Sleep(200); // give the player time to exit
+                _finished = true;
             }
         }
     }
