@@ -233,7 +233,7 @@ namespace MediaBrowser.Code.ModelItems
                     }
                 }
                 Logger.ReportInfo("Playback finished. " + _finished);
-                Thread.Sleep(200); // give the player time to exit
+                Thread.Sleep(500); // give the player time to exit
                 _finished = true;
             }
         }
