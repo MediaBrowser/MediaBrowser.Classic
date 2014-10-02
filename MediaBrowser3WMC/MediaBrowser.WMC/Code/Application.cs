@@ -2987,10 +2987,17 @@ namespace MediaBrowser
 
         public void OpenCustomPlayerUi()
         {
-            ShowNowPlaying = true;  // be sure this is set when we enter so we don't just back right out
-            var properties = new Dictionary<string, object>();
-            properties["Application"] = this;
-            session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+            {
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenCustomPlayerUi());
+            }
+            else
+            {
+                ShowNowPlaying = true; // be sure this is set when we enter so we don't just back right out
+                var properties = new Dictionary<string, object>();
+                properties["Application"] = this;
+                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
+            }
         }
 
         public void OpenMCMLPage(string page, Dictionary<string, object> properties)
