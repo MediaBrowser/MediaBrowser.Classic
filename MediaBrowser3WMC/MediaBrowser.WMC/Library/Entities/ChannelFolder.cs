@@ -14,7 +14,8 @@ namespace MediaBrowser.Library.Entities
 
         protected override System.Collections.Generic.List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ParentChannel.ApiId, ApiId).ToList();
+            //protect against channel providing ourselves as a child
+            return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ParentChannel.ApiId, ApiId).Where(c => c.Id != Id && Parent != null && c.Id != Parent.Id).ToList();
         }
 
         private BaseItem _parentChannel;

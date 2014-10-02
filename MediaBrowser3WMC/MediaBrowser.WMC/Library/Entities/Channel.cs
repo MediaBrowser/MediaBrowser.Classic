@@ -9,7 +9,8 @@ namespace MediaBrowser.Library.Entities
     {
         protected override List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ApiId).ToList();
+            //protect against channel providing loopback to ourselves or parent
+            return Kernel.Instance.MB3ApiRepository.RetrieveChannelChildren(ApiId).Where(c => c.Id != Id).ToList();
         }
 
         protected override bool HideEmptyFolders
