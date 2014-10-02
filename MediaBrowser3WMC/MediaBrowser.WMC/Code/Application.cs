@@ -1460,8 +1460,6 @@ namespace MediaBrowser
             }
         }
 
-        public IntrosPlaybackController IntroController { get; set; }
-
         /// <summary>
         /// Determines whether or not a PlaybackController is currently playing
         /// </summary>
@@ -1717,8 +1715,6 @@ namespace MediaBrowser
                 // setup image to use in login splash screen
                 splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "loginsplash.png");
                 LogonSplashImage = File.Exists(splashFilename) ? new Image("file://"+splashFilename) : new Image("resx://MediaBrowser/MediaBrowser.Resources/mblogo1000");
-
-                IntroController = new IntrosPlaybackController();
 
                 _popoutMessageTimer.Tick += _popoutMessageTimerTick;
 
@@ -3258,17 +3254,36 @@ namespace MediaBrowser
 
                 }
 
-                var playable = PlayableItemFactory.Instance.Create(item);
+                PlayableItem playable;
+
+                if (!resume && !queue && playIntros != false)
+                {
+                    // Get intros for this item
+                    var introItems = Kernel.Instance.MB3ApiRepository.RetrieveIntros(item.BaseItem.ApiId).Cast<BaseItem>().ToList();
+                    if (introItems.Any())
+                    {
+                        //convert our playable into a collection and play them together
+                        Logger.ReportInfo("Playing {0} Intros before {1}", introItems.Count, item.Name);
+                        var allItems = introItems.Concat(new[] {item.BaseItem}).ToList();
+                        playable = PlayableItemFactory.Instance.Create(ItemFactory.Instance.Create(new IndexFolder(allItems)));
+                    }
+                    else
+                    {
+                        Logger.ReportInfo("No intros found for {0}", item.Name);
+                        playable = PlayableItemFactory.Instance.Create(item);
+                    }
+                }
+                else
+                {
+                    Logger.ReportVerbose("Not playing intros for {0}", item.Name);
+                    playable = PlayableItemFactory.Instance.Create(item);
+                }
+
 
                 // This could happen if both item.IsFolder and item.IsPlayable are false
                 if (playable == null)
                 {
                     return;
-                }
-
-                if (playIntros.HasValue)
-                {
-                    playable.PlayIntros = playIntros.Value;
                 }
 
                 playable.Resume = resume;
@@ -3293,11 +3308,6 @@ namespace MediaBrowser
         {
             CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
 
-            PlaySecure(playable);
-        }
-
-        internal void PlaySecure(PlayableItem playable)
-        {
             Async.Queue("Play Action", () =>
             {
                 currentPlaybackController = playable.PlaybackController;

@@ -473,7 +473,7 @@ namespace MediaBrowser.Code.ModelItems
         public virtual void SkipToNextInCollection()
         {}
 
-        public bool CanSkipInCollection { get { return CurrentMediaCollection != null && CurrentCollectionIndex < CurrentMediaCollection.Count; } }
+        public bool CanSkipInCollection { get { return CurrentMediaCollection != null && CurrentCollectionIndex < CurrentMediaCollection.Count && CanSeek; } }
 
         private void SkipTimerExpired(object sender, EventArgs args)
         {

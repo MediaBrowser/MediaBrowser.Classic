@@ -796,7 +796,11 @@ namespace MediaBrowser
 
         public override bool CanSeek
         {
-            get { return true; }
+            get
+            {
+                var playable = GetCurrentPlayableItem();
+                return playable != null && playable.CurrentMedia != null && playable.CurrentMedia.RuntimeTicks > 0;
+            }
         }
 
         public override void DisplayMessage(string header, string message, int timeout)

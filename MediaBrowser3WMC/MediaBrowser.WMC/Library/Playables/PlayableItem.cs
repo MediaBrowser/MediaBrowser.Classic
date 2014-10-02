@@ -468,7 +468,7 @@ namespace MediaBrowser.Library.Playables
             {
                 BaseItem item = PrimaryBaseItem;
 
-                return item == null ? true : item.ParentalAllowed;
+                return item == null || item.ParentalAllowed;
             }
         }
 
@@ -494,44 +494,21 @@ namespace MediaBrowser.Library.Playables
             {
                 if (HasMediaItems)
                 {
-                    return MediaItems.Any(m => IsVideo(m));
+                    return MediaItems.Any(IsVideo);
                 }
                 else
                 {
                     // File-based playback - use new api if there are any videos found
-                    return Files.Any(m => IsVideo(m));
+                    return Files.Any(IsVideo);
                 }
             }
         }
-
-        private bool? _PlayIntros;
 
         public PlayableItem()
         {
             EnablePlayStateSaving = true;
             RaiseGlobalPlaybackEvents = true;
             ShowNowPlayingView = true;
-        }
-
-        /// <summary>
-        /// Determines whether or not intros should be played before the main feature
-        /// </summary>
-        public bool PlayIntros
-        {
-            get
-            {
-                // If it was expliticly set
-                if (_PlayIntros.HasValue)
-                {
-                    return _PlayIntros.Value;
-                }
-
-                return !Resume && HasMediaItems && StartPositionTicks == 0 && StartPlaylistPosition == 0 && HasVideo; 
-            }
-            set
-            {
-                _PlayIntros = value;
-            }
         }
 
         #region AddMedia
@@ -645,28 +622,6 @@ namespace MediaBrowser.Library.Playables
                 StopAllApplicationPlayback();
             }
 
-            // Play Intros if specified
-            if (PlayIntros && HasMediaItems)
-            {
-                var item = MediaItems.First();
-                if (item is Movie && (item.DisplayMediaType == null || !item.DisplayMediaType.Equals("trailer", StringComparison.OrdinalIgnoreCase)))
-                {
-                    // Get intros for this item
-                    var introItems = Kernel.Instance.MB3ApiRepository.RetrieveIntros(MediaItems.First().ApiId).OfType<Video>().ToList();
-                    var intros = introItems.Select(i => i.Files.FirstOrDefault()).ToList();
-
-                    // Kick off our intro playback controller
-                    if (intros.Any())
-                    {
-                        Application.CurrentInstance.IntroController.Init(intros);
-                        Application.CurrentInstance.IntroController.Play();
-                        //mark them watched
-                        Async.Queue("Mark watched", () => { foreach (var i in introItems) Kernel.ApiClient.UpdatePlayedStatus(i.ApiId, Kernel.CurrentUser.Id, true); });
-                        if (this is PlayableTMT5AddInForWMC) Thread.Sleep(1000); // try waiting a beat before kicking this off
-                    }
-                }
-            }
-
             if (UseAutoPlay)
             {
                 Logger.ReportVerbose("Playing with autoplay. Marking watched since we have no way of getting status on this.");
@@ -697,12 +652,6 @@ namespace MediaBrowser.Library.Playables
                 // This is for music
                 GoFullScreen = false;
                 UseCustomPlayer = false;
-            }
-
-            // Always force this to false regardless of what the caller asks for
-            if (QueueItem)
-            {
-                PlayIntros = false;
             }
 
             // Filter for IsPlaylistCapable

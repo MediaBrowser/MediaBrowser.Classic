@@ -149,7 +149,6 @@
     <Compile Include="Code\ModelItems\ChapterItem.cs" />
     <Compile Include="Code\ModelItems\MultiPartPlayOption.cs" />
     <Compile Include="Code\ModelItems\PluginItem.cs" />
-    <Compile Include="Code\ModelItems\IntrosPlaybackController.cs" />
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
     <Compile Include="Code\ModelItems\PluginItemCollection.cs" />
     <Compile Include="Code\ModelItems\SeekPositionItem.cs" />
