@@ -159,9 +159,9 @@ namespace MediaBrowser.Library.Persistance
             try
             {
                 // Special handling for Apple trailers
-                if (itemType.Equals("trailer", StringComparison.OrdinalIgnoreCase) && mb3Item.Path != null && mb3Item.Path.IndexOf("apple.com", StringComparison.OrdinalIgnoreCase) != -1)
+                if (itemType.Equals("ChannelVideoItem", StringComparison.OrdinalIgnoreCase) && mb3Item.Path != null && (mb3Item.Path.IndexOf("apple.com", StringComparison.OrdinalIgnoreCase) != -1 || mb3Item.Path.IndexOf("movie-list.com", StringComparison.OrdinalIgnoreCase) != -1))
                 {
-                    return new AppleTrailer();
+                    return new StreamingTrailer();
                 }
 
                 if (itemType.Equals("channel", StringComparison.OrdinalIgnoreCase) && mb3Item.Name == "Trailers")

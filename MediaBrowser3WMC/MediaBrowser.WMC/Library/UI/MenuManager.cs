@@ -69,7 +69,7 @@ namespace MediaBrowser.Library
         private void addDefaultMenuItems()
         {
             //build a list of types that support the play/resume menu options so external plugin types can work with this too
-            var playableItems = new List<Type>() { typeof(Movie), typeof(Episode), typeof(Song), typeof(AppleTrailer), typeof(RemoteVideo), typeof(Photo) };
+            var playableItems = new List<Type>() { typeof(Movie), typeof(Episode), typeof(Song), typeof(StreamingTrailer), typeof(RemoteVideo), typeof(Photo) };
             playableItems.AddRange(Kernel.Instance.ExternalPlayableItems);
             //and the folder-type queue options
             var playableFolders = new List<Type>() { typeof(Folder), typeof(Series), typeof(Season), typeof(Index), typeof(BoxSet), typeof(MusicAlbum), typeof(MusicArtist), typeof(IbnSourcedFolder), typeof(PhotoFolder), typeof(ApiGenreFolder), typeof(ApiPersonFolder), typeof(ApiYearFolder) };

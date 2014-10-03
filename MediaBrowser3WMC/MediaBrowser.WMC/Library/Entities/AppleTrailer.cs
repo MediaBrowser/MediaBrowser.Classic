@@ -7,7 +7,7 @@ using MediaBrowser.Model.Dto;
 
 namespace MediaBrowser.Library.Entities
 {
-    class AppleTrailer : Movie
+    class StreamingTrailer : Movie
     {
         /// <summary>
         /// This will override our standard playback logic and force us to stream this statically through the server
