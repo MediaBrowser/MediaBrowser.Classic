@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0092";
+        const string VERSION = "1.0093";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -194,7 +194,7 @@ namespace MediaBrowser.Library.Localization
         public string DefaultToFirstUnwatchedItemConfig = "Default To First Unplayed Item";
         public string GeneralBehaviorConfig = "General Behavior";
         public string AllowNestedMovieFoldersConfig = "Allow Nested Movie Folders";
-        public string AutoEnterSingleFolderItemsConfig = "Auto Enter Single Folder Items";
+        public string AutoEnterSingleFolderItemsConfig = "Auto Enter Single Item Folders";
         public string MultipleFileBehaviorConfig = "Multiple File Behavior";
         public string TreatMultipleFilesAsSingleMovieConfig = "Treat Multiple Files As Single Movie";
         public string MultipleFileSizeLimitConfig = "Multiple File Size Limit";
