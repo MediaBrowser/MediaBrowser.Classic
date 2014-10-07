@@ -24,5 +24,13 @@ namespace MediaBrowser.Library.Entities
         {
             return;
         }
+
+        protected override bool CollapseBoxSets
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

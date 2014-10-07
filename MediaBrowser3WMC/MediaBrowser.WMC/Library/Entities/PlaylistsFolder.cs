@@ -5,6 +5,9 @@ namespace MediaBrowser.Library.Entities
 {
     public class PlaylistsFolder : Folder
     {
-
+        protected override bool CollapseBoxSets
+        {
+            get { return false; }
+        }
     }
 }
