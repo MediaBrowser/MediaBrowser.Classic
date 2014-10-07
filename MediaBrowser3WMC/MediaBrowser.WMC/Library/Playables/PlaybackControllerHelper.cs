@@ -5,12 +5,17 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
+using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.Dlna;
+using MediaBrowser.Model.Entities;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
+using VideoOptions = MediaBrowser.Model.Dlna.VideoOptions;
 
 namespace MediaBrowser.Library.Playables
 {
@@ -19,7 +24,49 @@ namespace MediaBrowser.Library.Playables
     /// </summary>
     public static class PlaybackControllerHelper
     {
-        static MediaBrowser.Library.Transcoder transcoder;
+        static Transcoder transcoder;
+
+        public static string BuildStreamingUrl(Media item, int bitrate)
+        {
+            // build based on WMC profile
+            var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
+            var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
+            return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+            {
+                ItemId = item.ApiId,
+                OutputFileExtension = ".wmv",
+                MaxWidth = 1280,
+                VideoBitRate = bitrate,
+                AudioBitRate = 128000,
+                MaxAudioChannels = 2,
+                AudioStreamIndex = FindAudioStream(item, Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
+            });
+            
+        }
+
+        private static readonly List<string> StreamableCodecs = new List<string> { "DTS", "DTS-HD MA", "DTS Express", "AC3", "MP3" };
+
+        /// <summary>
+        /// Find the first streamable audio stream for the specified language
+        /// </summary>
+        /// <returns></returns>
+        public static int FindAudioStream(Media item, string lang = "")
+        {
+            if (string.IsNullOrEmpty(lang)) lang = "eng";
+            if (item.MediaSources == null || !item.MediaSources.Any()) return 0;
+
+            Logging.Logger.ReportVerbose("Looking for audio stream in {0}", lang);
+            MediaStream stream = null;
+            foreach (var codec in StreamableCodecs)
+            {
+                stream = item.MediaSources.First().MediaStreams.OrderBy(s => s.Index).FirstOrDefault(s => s.Type == MediaStreamType.Audio && (s.Language == null || s.Language.Equals(lang, StringComparison.OrdinalIgnoreCase))
+                    && s.Codec.Equals(codec, StringComparison.OrdinalIgnoreCase));
+                if (stream != null) break;
+
+            }
+            Logger.ReportVerbose("Requesting audio stream #{0}", stream != null ? stream.Index : 0);
+            return stream != null ? stream.Index : 0;
+        }
 
         public static bool UseLegacyApi(PlayableItem item)
         {

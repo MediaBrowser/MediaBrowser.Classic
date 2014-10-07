@@ -1,4 +1,5 @@
 ﻿using System;
+using MediaBrowser.Library.Playables;
 using MediaBrowser.Model.Entities;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -106,7 +107,7 @@ namespace MediaBrowser.Library.Entities
 
         public override IEnumerable<string> Files
         {
-            get { return new[] {Path}; }
+            get { return new[] {Path ?? PlaybackControllerHelper.BuildStreamingUrl(this, Kernel.ApiClient.GetMaxBitRate())}; }
         }
     }
 }

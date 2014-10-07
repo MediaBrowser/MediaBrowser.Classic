@@ -6,6 +6,7 @@ using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Filesystem;
+using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dlna;
@@ -94,47 +95,11 @@ namespace MediaBrowser.Library.Entities {
                     else
                     {
                         Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
-                        // build based on WMC profile
-                        var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
-                        var info = MediaSources != null && MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions {DeviceId = Kernel.ApiClient.DeviceId, ItemId = ApiId, MediaSources = MediaSources, MaxBitrate = bitrate, Profile = profile}) : null;
-                        yield return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                                                                  {
-                                                                                                      ItemId = ApiId,
-                                                                                                      OutputFileExtension = ".wmv",
-                                                                                                      MaxWidth = 1280,
-                                                                                                      VideoBitRate = bitrate,
-                                                                                                      AudioBitRate = 128000,
-                                                                                                      MaxAudioChannels = 2,
-                                                                                                      AudioStreamIndex = FindAudioStream(Kernel.CurrentUser.Dto.Configuration.AudioLanguagePreference)
-                                                                                                  });
+                        yield return PlaybackControllerHelper.BuildStreamingUrl(this, bitrate);
                     }
 
                 }
             }
-        }
-
-        protected static List<string> StreamableCodecs = new List<string> {"DTS", "DTS-HD MA", "DTS Express", "AC3", "MP3"}; 
-
-        /// <summary>
-        /// Find the first streamable audio stream for the specified language
-        /// </summary>
-        /// <returns></returns>
-        protected int FindAudioStream(string lang = "")
-        {
-            if (string.IsNullOrEmpty(lang)) lang = "eng";
-            if (MediaSources == null || !MediaSources.Any()) return 0;
-
-            Logging.Logger.ReportVerbose("Looking for audio stream in {0}", lang);
-            MediaStream stream = null;
-            foreach (var codec in StreamableCodecs)
-            {
-                stream = MediaSources.First().MediaStreams.OrderBy(s => s.Index).FirstOrDefault(s => s.Type == MediaStreamType.Audio && (s.Language == null || s.Language.Equals(lang, StringComparison.OrdinalIgnoreCase)) 
-                    && s.Codec.Equals(codec,StringComparison.OrdinalIgnoreCase));
-                if (stream != null) break;
-                
-            }
-            Logging.Logger.ReportVerbose("Requesting audio stream #{0}", stream != null ? stream.Index : 0);
-            return stream != null ? stream.Index : 0;
         }
 
         /// <summary>
