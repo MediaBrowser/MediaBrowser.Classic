@@ -78,6 +78,8 @@
         </Actions>
       </Changed>
 
+      <Binding Source="[PIN.Value]" Target="[Application.CustomPINEntry]" />
+        
     </Rules>
 
     <Content>
