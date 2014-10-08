@@ -113,7 +113,7 @@ namespace MediaBrowser
         public DateTime LastFileCleanup = DateTime.MinValue;
 
         public string UserTileColor = "DarkBlue";
-        public string LoginBgColor = "DarkGray";
+        public string LoginBgColor = "Black";
 
         public int MaxPrimaryWidth = 350;
         public int MaxThumbWidth = 500;
