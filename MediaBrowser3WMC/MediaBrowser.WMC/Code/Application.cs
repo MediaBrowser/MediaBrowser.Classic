@@ -3254,7 +3254,7 @@ namespace MediaBrowser
 
                 }
 
-                PlayableItem playable;
+                PlayableItem introPlayable = null;
 
                 if (!resume && !queue && playIntros != false)
                 {
@@ -3264,21 +3264,19 @@ namespace MediaBrowser
                     {
                         //convert our playable into a collection and play them together
                         Logger.ReportInfo("Playing {0} Intros before {1}", introItems.Count, item.Name);
-                        var allItems = introItems.Concat(new[] {item.BaseItem}).ToList();
-                        playable = PlayableItemFactory.Instance.Create(ItemFactory.Instance.Create(new IndexFolder(allItems)));
+                        introPlayable = PlayableItemFactory.Instance.Create(ItemFactory.Instance.Create(new IndexFolder(introItems)));
                     }
                     else
                     {
                         Logger.ReportInfo("No intros found for {0}", item.Name);
-                        playable = PlayableItemFactory.Instance.Create(item);
                     }
                 }
                 else
                 {
                     Logger.ReportVerbose("Not playing intros for {0}", item.Name);
-                    playable = PlayableItemFactory.Instance.Create(item);
                 }
 
+                var playable = PlayableItemFactory.Instance.Create(item);
 
                 // This could happen if both item.IsFolder and item.IsPlayable are false
                 if (playable == null)
@@ -3291,7 +3289,7 @@ namespace MediaBrowser
                 playable.QueueItem = queue;
                 playable.Shuffle = shuffle;
 
-                Play(playable);
+                Play(playable, introPlayable);
                 
             }
         }
@@ -3302,6 +3300,48 @@ namespace MediaBrowser
         public void Resume(Item item)
         {
             Play(item, true, false, null, false);
+        }
+
+        private void IntroPlaybackFinished(object sender, PlaybackStateEventArgs e)
+        {
+            // unhook us
+            currentPlaybackController.PlaybackFinished -= IntroPlaybackFinished;
+
+            // and kick off main item
+            if (MainPlayable != null) Play(MainPlayable);
+        }
+
+        private PlayableItem MainPlayable { get; set; }
+
+        /// <summary>
+        /// Play with intros - this is an overload in order not to break sig with existing mcml
+        /// </summary>
+        /// <param name="playable"></param>
+        /// <param name="introPlayable"></param>
+        public void Play(PlayableItem playable, PlayableItem introPlayable)
+        {
+            if (introPlayable == null)
+            {
+                // Simulate optional param
+                Play(playable);
+            }
+            else
+            {
+                CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
+
+                Async.Queue("Play Intros", () =>
+                {
+                    // save the main playable so we can play it when we're finished
+                    MainPlayable = playable;
+                    currentPlaybackController = introPlayable.PlaybackController;
+
+                    // hook to finished event so we can kick off the main
+                    introPlayable.PlaybackController.PlaybackFinished += IntroPlaybackFinished;
+
+                    introPlayable.Play();
+
+                });
+            }
         }
 
         public void Play(PlayableItem playable)
