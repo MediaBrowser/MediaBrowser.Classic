@@ -3347,6 +3347,7 @@ namespace MediaBrowser
         public void Play(PlayableItem playable)
         {
             CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
+            MainPlayable = null; // just make sure this doesn't hang around
 
             Async.Queue("Play Action", () =>
             {
