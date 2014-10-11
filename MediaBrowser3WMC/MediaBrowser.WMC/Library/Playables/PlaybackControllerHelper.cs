@@ -12,6 +12,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dlna;
+using MediaBrowser.Model.Dlna.Profiles;
 using MediaBrowser.Model.Entities;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;

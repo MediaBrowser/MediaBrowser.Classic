@@ -591,8 +591,10 @@ namespace MediaBrowser
             }
         }
 
-        private void GeneralCommand(object sender, GeneralCommandEventArgs args)
+        private void GeneralCommand(object sender, Model.Events.GenericEventArgs<GeneralCommandEventArgs> generic)
         {
+            var args = generic.Argument;
+
             switch (args.Command.Name)
             {
                 case "DisplayContent":

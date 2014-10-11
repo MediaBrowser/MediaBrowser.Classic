@@ -5,6 +5,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Model.ApiClient;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Events;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Serialization;
@@ -66,7 +67,7 @@ namespace MediaBrowser.ApiInteraction.WebSocket
         public event EventHandler<PlayRequestEventArgs> PlayCommand;
         public event EventHandler<PlaystateRequestEventArgs> PlaystateCommand;
         public event EventHandler<SystemRequestEventArgs> SystemCommand;
-        public event EventHandler<GeneralCommandEventArgs> GeneralCommand;
+        public event EventHandler<GenericEventArgs<GeneralCommandEventArgs>> GeneralCommand;
 
         /// <summary>
         /// Occurs when [restart required].
@@ -218,10 +219,13 @@ namespace MediaBrowser.ApiInteraction.WebSocket
                 }
                 else if (string.Equals(message.MessageType, "GeneralCommand"))
                 {
-                    FireEvent(GeneralCommand, this, new GeneralCommandEventArgs()
-                                                        {
-                                                            Command = _jsonSerializer.DeserializeFromString<WebSocketMessage<GeneralCommand>>(json).Data
-                                                        });
+                    if (GeneralCommand != null)
+                    {
+                        GeneralCommand(this, new GenericEventArgs<GeneralCommandEventArgs>(new GeneralCommandEventArgs()
+                                                 {
+                                                     Command = _jsonSerializer.DeserializeFromString<WebSocketMessage<GeneralCommand>>(json).Data
+                                                 }));
+                    }
                 }
             }
             catch (Exception e)
