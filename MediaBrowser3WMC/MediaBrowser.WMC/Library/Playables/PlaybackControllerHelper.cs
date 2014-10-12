@@ -14,6 +14,7 @@ using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dlna;
 using MediaBrowser.Model.Dlna.Profiles;
 using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.MediaInfo;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using VideoOptions = MediaBrowser.Model.Dlna.VideoOptions;
@@ -25,14 +26,21 @@ namespace MediaBrowser.Library.Playables
     /// </summary>
     public static class PlaybackControllerHelper
     {
-        static Transcoder transcoder;
+        static Transcoder _transcoder;
 
         public static string BuildStreamingUrl(Media item, int bitrate)
         {
             // build based on WMC profile
             var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
             var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
-            return info != null ? info.ToUrl(Kernel.ApiClient.ApiUrl) : Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
+            if (info != null)
+            {
+                //Further optimize for direct play if possible
+                return info.MediaSource.Protocol == MediaProtocol.Http && !string.IsNullOrEmpty(info.MediaSource.Path) && !info.MediaSource.RequiredHttpHeaders.Any() ? info.MediaSource.Path : info.ToUrl(Kernel.ApiClient.ApiUrl);
+            }
+
+            // fallback to legacy
+            return Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
             {
                 ItemId = item.ApiId,
                 OutputFileExtension = ".wmv",
@@ -539,12 +547,12 @@ namespace MediaBrowser.Library.Playables
             }
             else
             {
-                if (transcoder == null)
+                if (_transcoder == null)
                 {
-                    transcoder = new MediaBrowser.Library.Transcoder();
+                    _transcoder = new MediaBrowser.Library.Transcoder();
                 }
 
-                string bufferpath = transcoder.BeginTranscode(path);
+                string bufferpath = _transcoder.BeginTranscode(path);
 
                 // if bufferpath comes back null, that means the transcoder i) failed to start or ii) they
                 // don't even have it installed

@@ -27,33 +27,17 @@ namespace MediaBrowser.Library.Entities {
             return changed | base.AssignFromItem(item);
         }
 
-        public bool ForceStaticStream
-        {
-            get
-            {
-                var channel = FindParent<Channel>();
-                return channel != null && channel.ForceStaticStream;
-            }
-        }
-
         public override IEnumerable<string> Files
         {
             get { return VideoFiles; }
         }
         
         public override PlaybackStatus PlaybackStatus {
-            get {
-
+            get
+            {
                 if (playbackStatus != null) return playbackStatus;
 
-                //playbackStatus = Kernel.Instance.ItemRepository.RetrievePlayState(this.Id);
-                if (playbackStatus == null) {
-                    playbackStatus = PlaybackStatusFactory.Instance.Create(Id); // initialise an empty version that items can bind to
-                    if (DateCreated <= Config.Instance.AssumeWatchedBefore || !IsPlayable)
-                        playbackStatus.PlayCount = 1;
-                    //Kernel.Instance.SavePlayState(this, playbackStatus);  //removed this so we don't create files until we actually play something -ebr
-                }
-                return playbackStatus;
+                return playbackStatus ?? (playbackStatus = PlaybackStatusFactory.Instance.Create(Id));
             }
 
             set { base.PlaybackStatus = value; }
@@ -82,22 +66,7 @@ namespace MediaBrowser.Library.Entities {
                 else
                 {
                     var bitrate = Kernel.ApiClient.GetMaxBitRate();
-                    if (ForceStaticStream && bitrate > 10000000)
-                    {
-                        Logger.ReportInfo("Unable to access {0}.  Will try to stream statically.", Path);
-                        yield return Kernel.ApiClient.GetVideoStreamUrl(new VideoStreamOptions
-                                                              {
-                                                                  ItemId = ApiId,
-                                                                  Static = true
-
-                                                              });
-                    }
-                    else
-                    {
-                        Logger.ReportInfo("Unable to access {0}.  Will try to stream at {1}bps.", Path, bitrate);
-                        yield return PlaybackControllerHelper.BuildStreamingUrl(this, bitrate);
-                    }
-
+                    yield return PlaybackControllerHelper.BuildStreamingUrl(this, bitrate);
                 }
             }
         }

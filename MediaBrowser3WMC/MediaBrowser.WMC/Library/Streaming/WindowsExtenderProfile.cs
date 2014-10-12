@@ -11,6 +11,9 @@ namespace MediaBrowser.Library.Streaming
         {
             Name = "Windows Media Center";
 
+            SupportsCustomHttpHeaders = true;
+            SupportsDirectRemoteContent = true;
+            
             TranscodingProfiles = new[]
             {
                 new TranscodingProfile

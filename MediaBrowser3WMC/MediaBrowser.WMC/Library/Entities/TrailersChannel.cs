@@ -2,9 +2,5 @@
 {
     class TrailersChannel : Channel
     {
-        public override bool ForceStaticStream
-        {
-            get { return true; }
-        }
     }
 }

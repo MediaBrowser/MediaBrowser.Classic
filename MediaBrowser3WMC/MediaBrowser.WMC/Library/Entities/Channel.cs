@@ -21,8 +21,6 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
-        public virtual bool ForceStaticStream { get { return false; } }
-
         protected override IEnumerable<BaseItem> GetLatestItems(string recentItemOption, int maxItems)
         {
             switch (recentItemOption)
