@@ -52,6 +52,15 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public bool WillStream
+        {
+            get
+            {
+                var files = Files.ToList();
+                return files.Any() && files.First().StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
         public virtual int RunTime
         {
             get { return 0; }

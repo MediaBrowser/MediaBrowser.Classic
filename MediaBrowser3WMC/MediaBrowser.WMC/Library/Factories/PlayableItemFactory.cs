@@ -114,6 +114,13 @@ namespace MediaBrowser.Library.Factories
         /// </summary>
         public PlayableItem Create(Media media)
         {
+            // Force any streaming item into internal player
+            if (media.WillStream)
+            {
+                Logging.Logger.ReportInfo("Forcing streamed item {0}/{1} into internal player", media.Name, media.Path);
+                return CreateForInternalPlayer(new [] {media});
+            }
+
             Video video = media as Video;
 
             bool unmountISOAfterPlayback = false;
