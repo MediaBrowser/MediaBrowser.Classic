@@ -139,6 +139,25 @@ namespace MediaBrowser.ApiInteraction
         }
 
         /// <summary>
+        /// Make a generic call to the MB Api
+        /// </summary>
+        /// <param name="url">must be fully paramatized url</param>
+        /// <returns>ItemsResult</returns>
+        public ItemsResult GenericApiQuery(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+
+        }
+
+        /// <summary>
         /// Gets the intros async.
         /// </summary>
         /// <param name="itemId">The item id.</param>

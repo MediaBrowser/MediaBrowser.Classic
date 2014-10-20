@@ -53,5 +53,7 @@ namespace MediaBrowser.Library.Entities {
             this.name = name;
             this.Id = id;
         }
+
+        
     }
 }

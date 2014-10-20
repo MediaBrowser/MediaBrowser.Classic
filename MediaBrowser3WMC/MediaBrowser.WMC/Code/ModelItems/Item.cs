@@ -260,6 +260,15 @@ namespace MediaBrowser.Library
             }
         }
 
+        public int MovieCount { get { return baseItem.MovieCount; } }
+        public int SeriesCount { get { return baseItem.SeriesCount; } }
+        public int EpisodeCount { get { return baseItem.EpisodeCount; } }
+        public int GameCount { get { return baseItem.GameCount; } }
+        public int TrailerCount { get { return baseItem.TrailerCount; } }
+        public int SongCount { get { return baseItem.SongCount; } }
+        public int AlbumCount { get { return baseItem.AlbumCount; } }
+        public int MusicVideoCount { get { return baseItem.MusicVideoCount; } }
+
         public int PartCount
         {
             get { return baseItem.PartCount; }

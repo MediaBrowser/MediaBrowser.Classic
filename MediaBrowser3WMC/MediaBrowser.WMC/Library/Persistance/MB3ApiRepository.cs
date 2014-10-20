@@ -119,7 +119,7 @@ namespace MediaBrowser.Library.Persistance
         public Person RetrievePerson(string name)
         {
             var dto = Kernel.ApiClient.GetPerson(name);
-            return dto != null ? GetIbnItem(dto, "Person") as Person : null;
+            return dto != null ? GetItem(dto, "Person") as Person : null;
         }
 
         public Person RetrieveArtist(string name)
@@ -233,7 +233,9 @@ namespace MediaBrowser.Library.Persistance
                 item.UserData = mb3Item.UserData;
                 item.PremierDate = mb3Item.PremiereDate ?? DateTime.MinValue;
                 item.FirstAired = mb3Item.PremiereDate != null ? mb3Item.PremiereDate.Value.ToLocalTime().ToString("ddd d MMM, yyyy") : null;
+                item.EndDate = mb3Item.EndDate ?? DateTime.MinValue;
                 item.ProductionYear = mb3Item.ProductionYear ?? item.PremierDate.Year;
+                item.ProductionLocations = mb3Item.ProductionLocations;
                 //Logger.ReportInfo("*********** Premier Date for {0} is {1}",item.Name,item.PremierDate);
                 item.ApiParentId = mb3Item.ParentId;
                 //if (item.ApiParentId == null) Logger.ReportVerbose("Parent Id is null for {0}",item.Name);
@@ -254,6 +256,17 @@ namespace MediaBrowser.Library.Persistance
 
                 //SpecialFeatures
                 item.SpecialFeatureCount = mb3Item.SpecialFeatureCount ?? 0;
+
+                //Counts
+                item.MovieCount = mb3Item.MovieCount ?? 0;
+                item.SeriesCount = mb3Item.SeriesCount ?? 0;
+                item.EpisodeCount = mb3Item.EpisodeCount ?? 0;
+                item.TrailerCount = mb3Item.TrailerCount ?? 0;
+                item.GameCount = mb3Item.GameCount ?? 0;
+                item.SongCount = mb3Item.SongCount ?? 0;
+                item.AlbumCount = mb3Item.AlbumCount ?? 0;
+                item.MusicVideoCount = mb3Item.MusicVideoCount ?? 0;
+
 
                 var runTimeTicks = mb3Item.RunTimeTicks;
                 item.RuntimeTicks = runTimeTicks ?? 0;

@@ -481,6 +481,19 @@ namespace MediaBrowser.Library.Entities {
         }
 
         public DateTime PremierDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public bool HasEndDate { get { return EndDate > DateTime.MinValue; }}
+        public List<string> ProductionLocations { get; set; }
+
+        //counts
+        public int MovieCount { get; set; }
+        public int EpisodeCount { get; set; }
+        public int SeriesCount { get; set; }
+        public int GameCount { get; set; }
+        public int TrailerCount { get; set; }
+        public int SongCount { get; set; }
+        public int AlbumCount { get; set; }
+        public int MusicVideoCount { get; set; }
 
         [Persist]
         public virtual int? ProductionYear { get; set; }

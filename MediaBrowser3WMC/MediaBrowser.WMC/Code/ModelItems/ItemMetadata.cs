@@ -21,6 +21,9 @@ namespace MediaBrowser.Library {
             get { return baseItem.FirstAired ?? ""; }
         }
 
+        public bool HasEndDate { get { return baseItem.HasEndDate; } }
+        public string EndDate { get { return baseItem.EndDate.ToLocalTime().ToString("ddd d MMM, yyyy"); } }
+
         public string Status {
             get {
                 string status = null;
