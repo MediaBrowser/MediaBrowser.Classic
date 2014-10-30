@@ -22,6 +22,11 @@ namespace MediaBrowser.Library.Playables.VLC2
             }
         }
 
+        public override bool SupportsStreamedContent
+        {
+            get { return true; }
+        }
+
         protected override bool IsPlaylistCapable(Media media)
         {
             // VLC seems to handle everything in a playlist
