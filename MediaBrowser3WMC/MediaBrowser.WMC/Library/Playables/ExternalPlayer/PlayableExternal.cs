@@ -32,7 +32,12 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
             return CanPlay(new string[] { path });
         }
         #endregion
-        
+
+        public override bool SupportsStreamedContent
+        {
+            get { return false; }
+        }
+
         /// <summary>
         /// Gets the ExternalPlayer configuration for this instance
         /// </summary>

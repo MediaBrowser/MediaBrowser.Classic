@@ -176,6 +176,8 @@ namespace MediaBrowser.Library.Playables
         /// </summary>
         public Guid Id { get { return _Id; } }
 
+        public virtual bool SupportsStreamedContent { get { return true; } }
+
         private IEnumerable<Media> _MediaItems = new List<Media>();
         /// <summary>
         /// If playback is based on Media items, this will hold the list of them

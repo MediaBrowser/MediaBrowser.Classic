@@ -13,6 +13,14 @@ namespace MediaBrowser.Library.Playables.MpcHc
             }
         }
 
+        public override bool SupportsStreamedContent
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override Type ConfiguratorType
         {
             get
