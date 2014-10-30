@@ -3261,7 +3261,10 @@ namespace MediaBrowser
                 if (!resume && !queue && playIntros != false)
                 {
                     // Get intros for this item
-                    var introItems = Kernel.Instance.MB3ApiRepository.RetrieveIntros(item.BaseItem.ApiId).Cast<BaseItem>().ToList();
+                    // if we're playing multiples, look for intros for the first one
+                    var container = item.BaseItem as Folder;
+                    var baseId = container != null ? container.FirstChild.ApiId : item.BaseItem.ApiId; 
+                    var introItems = Kernel.Instance.MB3ApiRepository.RetrieveIntros(baseId ?? Guid.Empty.ToString("N")).Cast<BaseItem>().ToList();
                     if (introItems.Any())
                     {
                         //convert our playable into a collection and play them together
