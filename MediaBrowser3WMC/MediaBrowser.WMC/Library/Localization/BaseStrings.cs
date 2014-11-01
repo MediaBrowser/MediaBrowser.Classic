@@ -370,6 +370,8 @@ namespace MediaBrowser.Library.Localization
         public string NameDispPref = "Name";
         public string DateDispPref = "Date";
         public string RatingDispPref = "Rating";
+        public string CriticRatingDispPref = "Critic Rating";
+        public string UserRatingDispPref = "User Rating";
         public string OfficialRatingDispPref = "Rating";
         public string RuntimeDispPref = "Runtime";
         public string UnWatchedDispPref = "Unplayed";

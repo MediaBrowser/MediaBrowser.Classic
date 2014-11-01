@@ -12,6 +12,8 @@ namespace MediaBrowser.Library {
         Unwatched,
         Year,
         Custom,
-        None
+        None,
+        CriticRating,
+        UserRating
     }
 }

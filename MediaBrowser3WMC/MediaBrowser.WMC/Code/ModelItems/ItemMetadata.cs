@@ -250,15 +250,7 @@ namespace MediaBrowser.Library {
         }
 
         public float ImdbRating {
-            get {
-                float rating = -1;
-                var show = baseItem as IShow;
-                if (show != null) {
-                    rating = show.ImdbRating ?? -1;
-                    if (rating < 0.1) rating = -1;
-                }
-                return rating;
-            }
+            get { return baseItem.ImdbRating ?? -1; }
         }
 
         public bool IsExternalDisc {get { return baseItem.IsExternalDisc; }}

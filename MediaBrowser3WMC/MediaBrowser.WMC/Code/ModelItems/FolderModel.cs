@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
+using System.Globalization;
 using MediaBrowser.Library.Query;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
@@ -911,6 +912,45 @@ namespace MediaBrowser.Library {
             {
                 return new Choice(this, "Jil Options", Children.Select(c => c.OfficialRating).Distinct().ToList());
             }
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("CriticRatingDispPref"))
+            {
+                return new Choice(this, "Jil Options", new List<string>
+                                                           {
+                                                               "100",
+                                                               "90",
+                                                               "80",
+                                                               "70",
+                                                               "60",
+                                                               "50",
+                                                               "40",
+                                                               "30",
+                                                               "20",
+                                                               "10",
+                                                               "0"
+                                                           });
+            }
+            if (DisplayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UserRatingDispPref"))
+            {
+                return new Choice(this, "Jil Options", new List<string>
+                                                           {
+                                                               "10",
+                                                               "9.5",
+                                                               "9.0",
+                                                               "8.5",
+                                                               "8.0",
+                                                               "7.5",
+                                                               "7.0",
+                                                               "6.5",
+                                                               "6.0",
+                                                               "5.5",
+                                                               "5.0",
+                                                               "4.0",
+                                                               "3.0",
+                                                               "2.0",
+                                                               "1.0",
+                                                               "0"
+                                                           });
+            }
             if (displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UnWatchedDispPref") ||
                      displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RuntimeDispPref"))
             {
@@ -955,21 +995,44 @@ namespace MediaBrowser.Library {
                                 Logger.ReportException("Error in custom JIL selection", e);
                             }
                         }
-                        else
-                            if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
-                            {
+                        else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RatingDispPref"))
+                        {
                             try
                             {
-                                    comparer = new BaseItemComparer(SortOrder.Rating);
-                                    tempItem.OfficialRating = value;
+                                comparer = new BaseItemComparer(SortOrder.Rating);
+                                tempItem.OfficialRating = value;
                             }
                             catch (Exception e)
                             {
                                 Logger.ReportException("Error in custom JIL selection", e);
                             }
-                            } else
-                                if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RuntimeDispPref"))
-                                {
+                        }
+                        else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("CriticRatingDispPref"))
+                        {
+                            try
+                            {
+                                comparer = new BaseItemComparer(SortOrder.CriticRating);
+                                tempItem.CriticRating = Convert.ToSingle(value);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.ReportException("Error in custom JIL selection", e);
+                            }
+                        }
+                        else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("UserRatingDispPref"))
+                        {
+                            try
+                            {
+                                comparer = new BaseItemComparer(SortOrder.UserRating);
+                                tempItem.ImdbRating = Convert.ToSingle(value);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.ReportException("Error in custom JIL selection", e);
+                            }
+                        }
+                        else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("RuntimeDispPref"))
+                        {
                             try
                             {
                                 if (tempItem is IShow)
@@ -982,33 +1045,34 @@ namespace MediaBrowser.Library {
                             {
                                 Logger.ReportException("Error in custom JIL selection", e);
                             }
-                                } else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
-                                    {
-                                        try
-                                        {
-                                            comparer = new BaseItemComparer(SortOrder.Year);
-                                            int year;
-                                            tempItem.PremierDate = int.TryParse(value, out year) ? new DateTime(year, 1, 1) : TranslateSpecialDate(value);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Logger.ReportException("Error in custom JIL selection", e);
-                                        }
-                                    }
+                        }
+                        else if (this.displayPrefs.SortOrder == Localization.LocalizedStrings.Instance.GetString("YearDispPref"))
+                        {
+                            try
+                            {
+                                comparer = new BaseItemComparer(SortOrder.Year);
+                                int year;
+                                tempItem.PremierDate = int.TryParse(value, out year) ? new DateTime(year, 1, 1) : TranslateSpecialDate(value);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.ReportException("Error in custom JIL selection", e);
+                            }
+                        }
 
-                                    else
-                                    {
-                                        try
-                                        {
-                                            comparer = new BaseItemComparer(this.displayPrefs.SortOrder); //this won't work if these have been localized...no way around it now
-                                            tempItem.GetType().GetProperty(this.displayPrefs.SortOrder).SetValue(tempItem, value, null);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Logger.ReportException("Error in custom JIL selection", e);
-                                        }
-                                    }
-                
+                        else
+                        {
+                            try
+                            {
+                                comparer = new BaseItemComparer(this.displayPrefs.SortOrder); //this won't work if these have been localized...no way around it now
+                                tempItem.GetType().GetProperty(this.displayPrefs.SortOrder).SetValue(tempItem, value, null);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.ReportException("Error in custom JIL selection", e);
+                            }
+                        }
+
 
                     int i = Children.TakeWhile(child => comparer.Compare(tempItem, child.BaseItem) > 0).Count();
 

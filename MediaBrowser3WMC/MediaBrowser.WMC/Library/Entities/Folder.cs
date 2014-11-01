@@ -64,6 +64,8 @@ namespace MediaBrowser.Library.Entities {
             {LocalizedStrings.Instance.GetString("NameDispPref"), new BaseItemComparer(SortOrder.Name)},
             {LocalizedStrings.Instance.GetString("DateDispPref"), new BaseItemComparer(SortOrder.Date)},
             {LocalizedStrings.Instance.GetString("RatingDispPref"), new BaseItemComparer(SortOrder.Rating)},
+            {LocalizedStrings.Instance.GetString("CriticRatingDispPref"), new BaseItemComparer(SortOrder.CriticRating)},
+            {LocalizedStrings.Instance.GetString("UserRatingDispPref"), new BaseItemComparer(SortOrder.UserRating)},
             {LocalizedStrings.Instance.GetString("RuntimeDispPref"), new BaseItemComparer(SortOrder.Runtime)},
             {LocalizedStrings.Instance.GetString("UnWatchedDispPref"), new BaseItemComparer(SortOrder.Unwatched)},
             {LocalizedStrings.Instance.GetString("YearDispPref"), new BaseItemComparer(SortOrder.Year)}

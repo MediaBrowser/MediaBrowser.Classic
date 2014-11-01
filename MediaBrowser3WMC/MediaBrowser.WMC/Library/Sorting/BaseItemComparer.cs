@@ -58,6 +58,20 @@ namespace MediaBrowser.Library {
                     compare = Ratings.Level(x.OfficialRating).CompareTo(Ratings.Level(y.OfficialRating));
                     break;
 
+                case SortOrder.CriticRating:
+                    // we want a descending sort
+                    var firstCritic = y.CriticRating ?? 0;
+                    var secondCritic = x.CriticRating ?? 0;
+                    compare = firstCritic.CompareTo(secondCritic);
+                    break;
+
+                case SortOrder.UserRating:
+                    // we want a descending sort
+                    var firstUser = y.ImdbRating ?? 0;
+                    var secondUser = x.ImdbRating ?? 0;
+                    compare = firstUser.CompareTo(secondUser);
+                    break;
+
                 case SortOrder.Runtime:
                     var xRuntime = x is IShow ? (x as IShow).RunningTime : null;
                     var yRuntime = y is IShow ? (y as IShow).RunningTime : null;

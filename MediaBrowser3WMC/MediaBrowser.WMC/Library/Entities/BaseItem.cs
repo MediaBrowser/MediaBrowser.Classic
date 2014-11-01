@@ -256,6 +256,9 @@ namespace MediaBrowser.Library.Entities {
         public string Path { get; set; }
 
         [Persist]
+        public Single? ImdbRating { get; set; }
+
+        [Persist]
         string name;
 
         public virtual string Name {
