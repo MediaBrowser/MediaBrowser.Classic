@@ -1808,6 +1808,18 @@ namespace MediaBrowser
 
             Config.StartupParms = null;
 
+            if (user == null && Kernel.Instance.CommonConfigData.LogonAutomatically)
+            {
+                //Must be a hidden user configured
+                if (LoginUser(Kernel.Instance.CommonConfigData.AutoLogonUserName, Kernel.Instance.CommonConfigData.AutoLogonPw, true))
+                {
+                    // we're in - if this fails, we'll fall through to the login screen
+                    UsingDirectEntry = true;
+                    OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application",this}});
+                    return;
+                }
+            }
+
             if (user != null)
             {
                 // only one user or specified - log in automatically
@@ -1824,10 +1836,17 @@ namespace MediaBrowser
 
         public void LoginUser(string name, string pw)
         {
+            LoginUser(name, pw, false);
+        }
+
+        public bool LoginUser(string name, string pw, bool isPwHashed)
+        {
             try
             {
-                var result = Kernel.ApiClient.AuthenticateUserByName(name, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry ?? ""))));
-                LoginUser(ItemFactory.Instance.Create(new User { Name = result.User.Name, Dto = result.User, Id = new Guid(result.User.Id ?? ""), ParentalAllowed = !result.User.HasPassword }), false);
+                var pwHash = isPwHashed ? pw : BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(pw ?? CustomPINEntry ?? "")));
+                var result = Kernel.ApiClient.AuthenticateUserByName(name, pwHash);
+                LoginUser(ItemFactory.Instance.Create(new User { Name = result.User.Name, Dto = result.User, Id = new Guid(result.User.Id ?? ""), PwHash = pwHash, ParentalAllowed = !result.User.HasPassword }), false);
+                return true;
             }
             catch (HttpException e)
             {
@@ -1839,7 +1858,7 @@ namespace MediaBrowser
                     }
                     UsingDirectEntry = false;
                     ShowSplash = false;
-                    return;
+                    return false;
                 }
                 throw;
             }
