@@ -8,6 +8,8 @@ using MediaBrowser.Model.Net;
 using System;
 using System.IO;
 using System.Text;
+using Microsoft.MediaCenter;
+using Microsoft.MediaCenter.Hosting;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -82,6 +84,11 @@ namespace MediaBrowser.ApiInteraction
                 {
                     if (Application.CurrentInstance != null)
                     {
+                        var header = ex.Response.Headers["X-Application-Error-Code"];
+                        if (header == "ParentalControl")
+                        {
+                            AddInHost.Current.MediaCenterEnvironment.Dialog("User Access is Restricted at This Time", "Parental Control.", DialogButtons.Ok, 100, true);
+                        }
                         Logger.Error("Unauthorized Request received from server - logging out");
                         Application.CurrentInstance.Logout(true);
                     }
