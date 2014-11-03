@@ -816,6 +816,10 @@ namespace MediaBrowser
                     currentPlaybackController.Stop();
                     break;
 
+                case PlaystateCommand.NextTrack:
+                    currentPlaybackController.NextTrack();
+                    break;
+
                 case PlaystateCommand.Seek:
                     Logger.ReportVerbose("Got seek message: {0}", args.Request.SeekPositionTicks);
                     currentPlaybackController.Seek(args.Request.SeekPositionTicks ?? currentPlaybackController.CurrentFilePositionTicks);

@@ -758,6 +758,22 @@ namespace MediaBrowser
             }
         }
 
+        public override void NextTrack()
+        {
+            if (IsPlayingVideo && CanSkipInCollection)
+            {
+                SkipToNextInCollection();
+            }
+            else
+            {
+                if (IsPlaying && !IsPlayingVideo)
+                {
+                    // This should skip ahead in music
+                    AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.SkipForward();
+                }
+            }
+        }
+
         public override void ResetPlayRate()
         {
             AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = 2;

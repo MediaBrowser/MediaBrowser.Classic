@@ -470,6 +470,10 @@ namespace MediaBrowser.Code.ModelItems
 
         public int CurrentCollectionIndex { get { return CurrentMediaCollection != null ? CurrentMediaCollection.CurrentIndex + 1 : 0; } }
 
+        public virtual void NextTrack()
+        {
+        }
+
         public virtual void SkipToNextInCollection()
         {}
 
