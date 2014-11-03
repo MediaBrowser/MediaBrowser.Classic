@@ -1802,13 +1802,16 @@ namespace MediaBrowser
         /// </summary>
         public void Login()
         {
-            var user = !string.IsNullOrEmpty(Config.StartupParms) ? Config.StartupParms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
+            var parms = Config.StartupParms ?? "";
+            // reset these
+            Config.StartupParms = null;
+
+            var user = !string.IsNullOrEmpty(parms) ? parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
                         Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) 
                         : null;
 
-            Config.StartupParms = null;
 
-            if (user == null && Kernel.Instance.CommonConfigData.LogonAutomatically)
+            if (user == null && Kernel.Instance.CommonConfigData.LogonAutomatically && !parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase))
             {
                 //Must be a hidden user configured
                 if (LoginUser(Kernel.Instance.CommonConfigData.AutoLogonUserName, Kernel.Instance.CommonConfigData.AutoLogonPw, true))
