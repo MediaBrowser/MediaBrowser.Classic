@@ -455,6 +455,8 @@ namespace MediaBrowser.Library.Entities {
                                              LogoImagePath = currentSeries != null ? currentSeries.LogoImagePath : null,
                                              ArtImagePath = currentSeries != null ? currentSeries.ArtImagePath : null,
                                              ThumbnailImagePath = currentSeries != null ? currentSeries.ThumbnailImagePath : null,
+                                             ThemeSongs = currentSeries != null ? currentSeries.ThemeSongs : null,
+                                             ThemeVideos = currentSeries != null ? currentSeries.ThemeVideos : null,
                                              DisplayMediaType = currentContainer.DisplayMediaType,
                                              DateCreated = container.First().DateCreated,
                                              Parent = this
