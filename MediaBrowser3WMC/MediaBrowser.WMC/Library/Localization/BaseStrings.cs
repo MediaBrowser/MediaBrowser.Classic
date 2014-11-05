@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0093";
+        const string VERSION = "1.0095";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -268,12 +268,12 @@ namespace MediaBrowser.Library.Localization
         public string WeatherLocationConfig = "Weather Location";
         public string WeatherUnitConfig = "Units";
         public string ThemeBackgroundRepeatConfig = "Play Count";
-        public string ThemeBackgroundsConfig = "Theme Backgrounds";
-        public string EnableThemeBackgroundsConfig = "Play Theme Backgrounds";
+        public string ThemeBackgroundsConfig = "Active Backgrounds";
+        public string EnableThemeBackgroundsConfig = "Enable Active Backgrounds";
         public string PlayTrailerAsBackgroundConfig = "Play Local Trailers as Background";
         public string PlayTrailerAsBackgroundConfigDesc = "Play local trailers as background if no video or audio background exists";
-        public string EnableThemeBackgroundsConfigDesc = "Play a theme video or song in the backdrop in themes that support this. See server docs for how to supply themes.";
-        public string ThemBackgroundRepeatConfigDesc = "The number of times to play the theme videos or songs";
+        public string EnableThemeBackgroundsConfigDesc = "Play a theme video or song in the backdrop in themes that support this. See server docs for how to supply content.";
+        public string ThemeBackgroundRepeatConfigDesc = "The number of times to play the theme videos or songs";
 
         //JIL
         public string ThisWeek = "This Week";
