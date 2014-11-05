@@ -12,7 +12,7 @@ namespace MediaBrowser.Library.Util
 
         private static string CachePath
         {
-            get { return Path.Combine(ApplicationPaths.AppProgramPath, "device.txt"); }
+            get { return Path.Combine(ApplicationPaths.CommonConfigPath, "device.txt"); }
         }
 
         private string GetCachedId()
@@ -21,6 +21,8 @@ namespace MediaBrowser.Library.Util
             {
                 lock (_syncLock)
                 {
+                    MigrateId();
+
                     var value = File.ReadAllText(CachePath, Encoding.UTF8);
 
                     try
@@ -44,6 +46,23 @@ namespace MediaBrowser.Library.Util
             }
 
             return null;
+        }
+
+        private void MigrateId()
+        {
+            try
+            {
+                var oldFile = Path.Combine(ApplicationPaths.AppProgramPath, "device.txt");
+                if (!Application.RunningOnExtender && File.Exists(oldFile))
+                {
+                    File.Move(oldFile, CachePath);
+                    Logger.ReportInfo("Device file migrated");
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error migrating device.txt",e);
+            }
         }
 
         private void SaveId(string id)
