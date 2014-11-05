@@ -510,6 +510,20 @@ namespace MediaBrowser.ApiInteraction
             }
         }
 
+        public AllThemeMediaResult GetAllThemeMedia(string userId, string itemId, bool inherit = false)
+        {
+            var queryString = new QueryStringDictionary();
+
+            queryString.Add("InheritFromParent", inherit);
+            queryString.AddIfNotNullOrEmpty("UserId", userId);
+
+            var url = GetApiUrl("Items/" + itemId + "/ThemeMedia", queryString);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<AllThemeMediaResult>(stream);
+            }
+        }
 
         /// <summary>
         /// Queries for music artists

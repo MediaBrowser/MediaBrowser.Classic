@@ -474,6 +474,10 @@ namespace MediaBrowser.Code.ModelItems
         {
         }
 
+        public virtual void PrevTrack()
+        {
+        }
+
         public virtual void SkipToNextInCollection()
         {}
 

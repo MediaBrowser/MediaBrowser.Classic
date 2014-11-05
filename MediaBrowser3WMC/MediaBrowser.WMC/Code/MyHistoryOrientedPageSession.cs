@@ -53,6 +53,9 @@ namespace MediaBrowser
                     Application.CurrentInstance.CurrentFolder = folder; 
                     
                 }
+
+                //stop backdrops if out of scope
+                if (currentItem != null) Application.CurrentInstance.BackdropController.StopIfOutOfScope(currentItem.BaseItem);
             }
             
             base.LoadPage(target, source, sourceData, uiProperties, navigateForward);

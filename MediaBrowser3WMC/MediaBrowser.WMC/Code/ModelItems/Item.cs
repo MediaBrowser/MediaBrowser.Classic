@@ -84,7 +84,7 @@ namespace MediaBrowser.Library
 
         public virtual void NavigatingInto()
         {
-            var show = BaseItem as Show;
+            var show = BaseItem as IDetailLoad;
             if (show != null)
             {
                 Async.Queue("Detail Load", show.LoadFullDetails, DetailsChanged);

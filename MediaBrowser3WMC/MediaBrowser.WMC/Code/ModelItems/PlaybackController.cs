@@ -774,6 +774,19 @@ namespace MediaBrowser
             }
         }
 
+        public override void PrevTrack()
+        {
+            if (IsPlayingVideo)
+            {
+                Seek(0);
+            }
+            else if (IsPlaying)
+            {
+                // This should skip back in music
+                AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.SkipBack();
+            }
+        }
+
         public override void ResetPlayRate()
         {
             AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = 2;

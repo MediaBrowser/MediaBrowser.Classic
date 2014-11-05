@@ -411,6 +411,31 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public virtual List<ThemeItem> ThemeSongs { get; set; }
+        public virtual List<ThemeItem> ThemeVideos { get; set; }
+
+        protected void LoadThemes()
+        {
+            try
+            {
+                var result = Kernel.ApiClient.GetAllThemeMedia(Kernel.CurrentUser.ApiId, ApiId);
+                if (result == null) return;
+
+                if (result.ThemeSongsResult.TotalRecordCount > 0)
+                {
+                    ThemeSongs = result.ThemeSongsResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList();
+                }
+                if (result.ThemeVideosResult.TotalRecordCount > 0)
+                {
+                    ThemeVideos = result.ThemeVideosResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error trying to load theme media", e);
+            }
+        }
+
         public virtual bool PlayAction(Item item)
         {
             //this will be overridden by sub-classes to perform the proper action for that item type
@@ -652,5 +677,6 @@ namespace MediaBrowser.Library.Entities {
                 return Kernel.Instance.MB3ApiRepository.RetrieveAdditionalParts(ApiId);
             }
         }
+
     }
 }

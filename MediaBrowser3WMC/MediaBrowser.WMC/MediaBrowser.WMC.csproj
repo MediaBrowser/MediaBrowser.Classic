@@ -152,6 +152,7 @@
     <Compile Include="Code\ModelItems\MBPhotoController.cs" />
     <Compile Include="Code\ModelItems\PluginItemCollection.cs" />
     <Compile Include="Code\ModelItems\SeekPositionItem.cs" />
+    <Compile Include="Code\ModelItems\ThemeBackdropController.cs" />
     <Compile Include="Code\ModelItems\UserItem.cs" />
     <Compile Include="Code\PowerSettings.cs" />
     <Compile Include="Library\Entities\ApiSourcedFolder.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Library\Entities\MusicAlbum.cs" />
     <Compile Include="Library\Entities\MusicArtist.cs" />
     <Compile Include="Library\Entities\StaticFolder.cs" />
+    <Compile Include="Library\Entities\ThemeItem.cs" />
     <Compile Include="Library\Entities\TrailersChannel.cs" />
     <Compile Include="Library\Entities\User.cs" />
     <Compile Include="Library\Entities\PodCastAudio.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
     <Compile Include="Library\ImageManagement\ResxImage.cs" />
+    <Compile Include="Library\Interfaces\IDetailLoad.cs" />
     <Compile Include="Library\Interfaces\ISupportsTrailers.cs" />
     <Compile Include="Library\Logging\FileLogger.cs" />
     <Compile Include="Library\Logging\ILogger.cs" />

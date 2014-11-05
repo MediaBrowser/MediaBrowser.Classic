@@ -820,6 +820,10 @@ namespace MediaBrowser
                     currentPlaybackController.NextTrack();
                     break;
 
+                case PlaystateCommand.PreviousTrack:
+                    currentPlaybackController.PrevTrack();
+                    break;
+
                 case PlaystateCommand.Seek:
                     Logger.ReportVerbose("Got seek message: {0}", args.Request.SeekPositionTicks);
                     currentPlaybackController.Seek(args.Request.SeekPositionTicks ?? currentPlaybackController.CurrentFilePositionTicks);
@@ -2397,6 +2401,21 @@ namespace MediaBrowser
                     Kernel.Instance.CommonConfigData.Save();
                     break;
 
+                case "3.0.228.0":
+                    try
+                    {
+                        var oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "ThemeVideoBackdrops.dll");
+                        if (File.Exists(oldPlugin))
+                        {
+                            Logger.ReportInfo("Removing old theme video backdrop plug-in");
+                            File.Delete(oldPlugin);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ReportException("Error trying to remove theme backdrops plugin", e);
+                    }
+                    break;
             }
             return true;
         }
@@ -2944,6 +2963,8 @@ namespace MediaBrowser
             return i => i is IShow ? func((i as IShow)) : false;
         }
 
+        public ThemeBackdropController BackdropController = new ThemeBackdropController();
+
         public void Navigate(Item item)
         {
             currentContextMenu = null; //any sort of navigation should reset our context menu so it will properly re-evaluate on next ref
@@ -2952,6 +2973,11 @@ namespace MediaBrowser
             {
                 NavigateToActor(item);
                 return;
+            }
+
+            if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
+            {
+                BackdropController.Play(item.BaseItem);
             }
 
             if (item.BaseItem is Show)
@@ -3351,6 +3377,8 @@ namespace MediaBrowser
         /// <param name="introPlayable"></param>
         public void Play(PlayableItem playable, PlayableItem introPlayable)
         {
+            if (BackdropController.IsPlaying) PlaybackControllerHelper.Stop();
+
             if (introPlayable == null)
             {
                 // Simulate optional param

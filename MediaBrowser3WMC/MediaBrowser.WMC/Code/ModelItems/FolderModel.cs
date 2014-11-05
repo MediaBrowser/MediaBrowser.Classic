@@ -747,6 +747,11 @@ namespace MediaBrowser.Library {
                 }
                 SelectedChildChanged();
                 SelectedChild.NavigatingInto();
+                if (Config.Instance.EnableThemeBackgrounds && !Application.CurrentInstance.IsPlaying)
+                {
+                    Application.CurrentInstance.BackdropController.StopIfOutOfScope(SelectedChild.BaseItem);
+                    Application.CurrentInstance.BackdropController.Play(SelectedChild.BaseItem);
+                }
                 return SelectedChild;
             }
         }
@@ -766,6 +771,11 @@ namespace MediaBrowser.Library {
                 }
                 SelectedChildChanged();
                 SelectedChild.NavigatingInto();
+                if (Config.Instance.EnableThemeBackgrounds && !Application.CurrentInstance.IsPlaying)
+                {
+                    Application.CurrentInstance.BackdropController.StopIfOutOfScope(SelectedChild.BaseItem);
+                    Application.CurrentInstance.BackdropController.Play(SelectedChild.BaseItem);
+                }
                 return SelectedChild;
             }
         }

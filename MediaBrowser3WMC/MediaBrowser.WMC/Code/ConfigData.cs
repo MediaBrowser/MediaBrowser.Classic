@@ -362,7 +362,9 @@ namespace MediaBrowser
         public int DefaultSkipBackSeconds = 10; //default number of seconds to skip back in custom player
         public int InputActivityTimeout = 8; //default number of seconds to wait before firing no input (mouse/keyboard) event
 
-        
+        public bool EnableThemeBackgrounds = true;
+        public int ThemeBackgroundRepeat = 1;
+        public bool PlayTrailerAsBackground = false;
 
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;

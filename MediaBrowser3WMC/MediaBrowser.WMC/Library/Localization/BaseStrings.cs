@@ -267,6 +267,13 @@ namespace MediaBrowser.Library.Localization
         public string RightConfig = "Right";
         public string WeatherLocationConfig = "Weather Location";
         public string WeatherUnitConfig = "Units";
+        public string ThemeBackgroundRepeatConfig = "Play Count";
+        public string ThemeBackgroundsConfig = "Theme Backgrounds";
+        public string EnableThemeBackgroundsConfig = "Play Theme Backgrounds";
+        public string PlayTrailerAsBackgroundConfig = "Play Local Trailers as Background";
+        public string PlayTrailerAsBackgroundConfigDesc = "Play local trailers as background if no video or audio background exists";
+        public string EnableThemeBackgroundsConfigDesc = "Play a theme video or song in the backdrop in themes that support this. See server docs for how to supply themes.";
+        public string ThemBackgroundRepeatConfigDesc = "The number of times to play the theme videos or songs";
 
         //JIL
         public string ThisWeek = "This Week";

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Localization;
 
 namespace MediaBrowser.Library.Entities {
-    public class Series : Folder, IContainer {
+    public class Series : Folder, IContainer, IDetailLoad {
+
+        private readonly object _detailLock = new object();
 
         [Persist]
         public string MpaaRating { get; set; }
@@ -131,20 +134,56 @@ namespace MediaBrowser.Library.Entities {
             set { MpaaRating = value; }
         }
 
-        protected void LoadFullDetails()
+        public override List<ThemeItem> ThemeSongs
         {
-            if (FullDetailsLoaded) return;
-
-            var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Series;
-            if (temp != null)
+            get
             {
-                temp.FullDetailsLoaded = true;
-                Actors = temp.Actors;
-                Directors = temp.Directors;
-                Genres = temp.Genres;
-                Studios = temp.Studios;
+                if (!FullDetailsLoaded) LoadFullDetails();
+                return base.ThemeSongs;
             }
-            FullDetailsLoaded = true;
+            set
+            {
+                base.ThemeSongs = value;
+            }
+        }
+
+        public override List<ThemeItem> ThemeVideos
+        {
+            get
+            {
+                if (!FullDetailsLoaded) LoadFullDetails();
+                return base.ThemeVideos;
+            }
+            set
+            {
+                base.ThemeVideos = value;
+            }
+        }
+
+        public void LoadFullDetails()
+        {
+            lock (_detailLock)
+            {
+                if (FullDetailsLoaded) return;
+
+                var temp = Kernel.Instance.MB3ApiRepository.RetrieveItem(this.Id) as Series;
+                if (temp != null)
+                {
+                    temp.FullDetailsLoaded = true;
+                    Actors = temp.Actors;
+                    Directors = temp.Directors;
+                    Genres = temp.Genres;
+                    Studios = temp.Studios;
+                }
+
+                // and themes if enabled
+                if (Config.Instance.EnableThemeBackgrounds)
+                {
+                    LoadThemes();
+                }
+
+                FullDetailsLoaded = true;
+            }
         }
 
         //used as a valid blank item so MCML won't blow chow

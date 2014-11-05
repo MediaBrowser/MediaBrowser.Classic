@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Library;
 
 namespace MediaBrowser.Library.Entities {
-    public class Show : Video, IShow {
+    public class Show : Video, IShow, IDetailLoad {
 
         [Persist]
         public string MpaaRating { get; set; }
@@ -146,6 +147,32 @@ namespace MediaBrowser.Library.Entities {
             return Kernel.Instance.MB3ApiRepository.RetrieveSpecialFeatures(ApiId).ToList();
         }
 
+        public override List<ThemeItem> ThemeSongs
+        {
+            get
+            {
+                if (!FullDetailsLoaded) LoadFullDetails();
+                return base.ThemeSongs;
+            }
+            set
+            {
+                base.ThemeSongs = value;
+            }
+        }
+
+        public override List<ThemeItem> ThemeVideos
+        {
+            get
+            {
+                if (!FullDetailsLoaded) LoadFullDetails();
+                return base.ThemeVideos;
+            }
+            set
+            {
+                base.ThemeVideos = value;
+            }
+        }
+
         public void LoadFullDetails()
         {
             lock (_detailLock)
@@ -179,6 +206,13 @@ namespace MediaBrowser.Library.Entities {
                         }
                     }
                 }
+
+                // and themes if enabled
+                if (Config.Instance.EnableThemeBackgrounds)
+                {
+                    LoadThemes();
+                }
+
                 FullDetailsLoaded = true;
             }
         }

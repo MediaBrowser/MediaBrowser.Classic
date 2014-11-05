@@ -68,6 +68,8 @@
       <BooleanChoice Name="ShowNewItemNotificationInPlayer" Value="[Application.Config.ShowNewItemNotificationInPlayer]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
       <BooleanChoice Name="EnableMoviePlaylists" Value="[Application.Config.EnableMoviePlaylists]" />
+      <BooleanChoice Name="EnableThemeBackgrounds" Value="[Application.Config.EnableThemeBackgrounds]" />
+      <BooleanChoice Name="PlayTrailerAsBackground" Value="[Application.Config.PlayTrailerAsBackground]" />
       <BooleanChoice Name="EnableAlphanumericSorting" Value="[Application.Config.EnableAlphanumericSorting]" />
       <BooleanChoice Name="EnableListViewTicks" Value="[Application.Config.EnableListViewTicks]" />
       <BooleanChoice Name="ShowUnwatchedCount" Value="[Application.Config.ShowUnwatchedCount]" />
@@ -129,6 +131,7 @@
       <IntRangedValue Name="DefaultSkipSeconds" Value="[Application.Config.DefaultSkipSeconds]" MaxValue="600" MinValue="1" Step="1" />
       <IntRangedValue Name="DefaultSkipBackSeconds" Value="[Application.Config.DefaultSkipBackSeconds]" MaxValue="600" MinValue="1" Step="1" />
       <IntRangedValue Name="InputActivityTimeout" Value="[Application.Config.InputActivityTimeout]" MaxValue="600" MinValue="1" Step="1" />
+      <IntRangedValue Name="ThemeBackgroundRepeat" Value="[Application.Config.ThemeBackgroundRepeat]" MaxValue="100" MinValue="1" Step="1" />
 
       <IntRangedValue Name="BackdropRotationInterval" Value="[Application.Config.BackdropRotationInterval]" MaxValue="15" MinValue="1" Step="1"/>
       <RangedValue Name="BackdropTransitionInterval" Value="[Application.Config.BackdropTransitionInterval]" MaxValue="3" MinValue=".1" Step=".1"/>
@@ -372,6 +375,8 @@
       <Binding Source="[EnableTranscode360.Value]" Target="[Config.EnableTranscode360]" />
       <Binding Source="[ShowThemeBackground.Value]" Target="[Config.ShowThemeBackground]" />
       <Binding Source="[EnableNestedMovieFolders.Value]" Target="[Config.EnableNestedMovieFolders]" />
+      <Binding Source="[EnableThemeBackgrounds.Value]" Target="[Config.EnableThemeBackgrounds]" />
+      <Binding Source="[PlayTrailerAsBackground.Value]" Target="[Config.PlayTrailerAsBackground]" />
       <Binding Source="[EnableMoviePlaylists.Value]" Target="[Config.EnableMoviePlaylists]" />
       <Binding Source="[EnableAlphanumericSorting.Value]" Target="[Config.EnableAlphanumericSorting]" />
       <Binding Source="[EnableListViewTicks.Value]" Target="[Config.EnableListViewTicks]" />
@@ -423,6 +428,7 @@
       <Binding Source="[DisableCustomPlayerForDvd.Value]" Target="[Config.DisableCustomPlayerForDvd]" />
       <Binding Source="[InputActivityTimeout.Value]" Target="[Config.InputActivityTimeout]" />
       <Binding Source="[WeatherLocation.Value]" Target="[Config.YahooWeatherFeed]" />
+      <Binding Source="[ThemeBackgroundRepeat.Value]" Target="[Config.ThemeBackgroundRepeat]" />
 
       <Binding Source="[ThemeModel.Chosen!cor:String]" Target="[Config.Theme]" >
         <Conditions>
@@ -693,6 +699,10 @@
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowUnairedItemsConfig!cor:String]" Checked="[ShowUnairedItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <me:TextHeader Text="[Application.LocalStrings.#ThemeBackgroundsConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#EnableThemeBackgroundsConfig!cor:String]" Checked="[EnableThemeBackgrounds]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ThemeBackgroundRepeatConfig!cor:String]" Padding="0,10,0,0" Model="[ThemeBackgroundRepeat]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                      <cb:CheckBox Label="[Application.LocalStrings.#PlayTrailerAsBackgroundConfig!cor:String]" Checked="[PlayTrailerAsBackground]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Visible="false" >

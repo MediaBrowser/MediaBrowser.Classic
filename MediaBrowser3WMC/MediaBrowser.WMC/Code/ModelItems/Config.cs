@@ -798,6 +798,24 @@ namespace MediaBrowser
             set { if (this.Data.ShowClock != value) { this.Data.ShowClock = value; Save(); FirePropertyChanged("ShowClock"); } }
         }
 
+        public bool EnableThemeBackgrounds
+        {
+            get { return this.Data.EnableThemeBackgrounds; }
+            set { if (this.Data.EnableThemeBackgrounds != value) { this.Data.EnableThemeBackgrounds = value; Save(); FirePropertyChanged("EnableThemeBackgrounds"); } }
+        }
+
+        public bool PlayTrailerAsBackground
+        {
+            get { return this.Data.PlayTrailerAsBackground; }
+            set { if (this.Data.PlayTrailerAsBackground != value) { this.Data.PlayTrailerAsBackground = value; Save(); FirePropertyChanged("PlayTrailerAsBackground"); } }
+        }
+
+        public int ThemeBackgroundRepeat
+        {
+            get { return this.Data.ThemeBackgroundRepeat; }
+            set { if (this.Data.ThemeBackgroundRepeat != value) { this.Data.ThemeBackgroundRepeat = value; Save(); FirePropertyChanged("ThemBackgroundRepeat"); } }
+        }
+
         [Comment(@"Enable more advanced commands.")]
         //defunct
         public bool EnableAdvancedCmds
