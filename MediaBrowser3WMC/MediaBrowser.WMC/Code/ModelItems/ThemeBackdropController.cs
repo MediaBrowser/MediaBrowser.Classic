@@ -142,7 +142,7 @@ namespace MediaBrowser.Code.ModelItems
         {
             if (potential == null || potential == Kernel.Instance.RootFolder || parent == null) return false;
 
-            return IsParent(parent, potential.Parent);
+            return parent == potential || IsParent(parent, potential.Parent);
         }
     }
 }
