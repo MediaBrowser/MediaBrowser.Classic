@@ -1810,7 +1810,7 @@ namespace MediaBrowser
             // reset these
             Config.StartupParms = null;
 
-            var user = !string.IsNullOrEmpty(parms) ? parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(Config.StartupParms, StringComparison.OrdinalIgnoreCase)) : 
+            var user = !string.IsNullOrEmpty(parms) ? parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(parms, StringComparison.OrdinalIgnoreCase)) : 
                         Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) 
                         : null;
 
