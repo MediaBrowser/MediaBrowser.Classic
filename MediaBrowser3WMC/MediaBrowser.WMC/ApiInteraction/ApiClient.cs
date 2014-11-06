@@ -41,6 +41,8 @@ namespace MediaBrowser.ApiInteraction
             set { HttpClient.Timeout = value; }
         }
 
+        protected Dictionary<string, DisplayPreferences> DisplayPrefsCache = new Dictionary<string, DisplayPreferences>(); 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiClient" /> class.
         /// </summary>
@@ -240,6 +242,12 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("prefsId");
             }
 
+            lock (DisplayPrefsCache)
+            {
+                DisplayPreferences cached;
+                if (DisplayPrefsCache.TryGetValue(prefsId, out cached)) return cached;
+            }
+
             var dict = new QueryStringDictionary();
 
             dict.AddIfNotNullOrEmpty("userId", Kernel.CurrentUser.ApiId);
@@ -249,7 +257,12 @@ namespace MediaBrowser.ApiInteraction
 
             using (var stream = GetSerializedStream(url))
             {
-                return DeserializeFromStream<DisplayPreferences>(stream);
+                var prefs = DeserializeFromStream<DisplayPreferences>(stream);
+                lock (DisplayPrefsCache)
+                {
+                    DisplayPrefsCache[prefsId] = prefs;
+                }
+                return prefs;
             }
         }
 
@@ -335,7 +348,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var url = GetApiUrl("/Channels", new QueryStringDictionary {{"userid",userId}});
+            var url = GetApiUrl("Channels", new QueryStringDictionary {{"userid",userId}});
 
             using (var stream = GetSerializedStream(url))
             {
@@ -362,7 +375,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNullOrEmpty("folderid", folderId);
             dict.Add("fields", MB3ApiRepository.StandardFields.Select(f => f.ToString()));
 
-            var url = GetApiUrl("/Channels/"+channelId+"/Items", dict);
+            var url = GetApiUrl("Channels/"+channelId+"/Items", dict);
 
             using (var stream = GetSerializedStream(url))
             {
@@ -391,7 +404,7 @@ namespace MediaBrowser.ApiInteraction
             if (filters != null)
                 dict.AddIfNotNull("filters", filters.Select(f => f.ToString()));
 
-            var url = GetApiUrl("/Channels/Items/Latest", dict);
+            var url = GetApiUrl("Channels/Items/Latest", dict);
 
             using (var stream = GetSerializedStream(url))
             {
@@ -1580,6 +1593,12 @@ namespace MediaBrowser.ApiInteraction
             if (displayPreferences == null)
             {
                 throw new ArgumentNullException("displayPreferences");
+            }
+
+            //Save in cache
+            lock (DisplayPrefsCache)
+            {
+                DisplayPrefsCache[prefsId] = displayPreferences;
             }
 
             var dict = new QueryStringDictionary();
