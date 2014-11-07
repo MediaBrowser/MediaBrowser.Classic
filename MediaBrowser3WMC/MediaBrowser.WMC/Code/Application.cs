@@ -2403,7 +2403,7 @@ namespace MediaBrowser
 
                 case "3.0.228.0":
                 case "3.0.231.0":
-                    Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1280;
+                    Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1270;
                     Kernel.Instance.CommonConfigData.Save();
                     
                     try
