@@ -2402,6 +2402,10 @@ namespace MediaBrowser
                     break;
 
                 case "3.0.228.0":
+                case "3.0.231.0":
+                    Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1280;
+                    Kernel.Instance.CommonConfigData.Save();
+                    
                     try
                     {
                         var oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "ThemeVideoBackdrops.dll");

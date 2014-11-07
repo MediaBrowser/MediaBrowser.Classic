@@ -48,6 +48,9 @@
       <IntRangedValue Name="OverScanPaddingTop" Value="[Application.Config.OverScanPaddingTop]" MaxValue="200" MinValue="-200" Step="1" />
       <IntRangedValue Name="OverScanPaddingLeft" Value="[Application.Config.OverScanPaddingLeft]" MaxValue="200" MinValue="-200" Step="1" />
       <IntRangedValue Name="OverScanPaddingRight" Value="[Application.Config.OverScanPaddingRight]" MaxValue="200" MinValue="-200" Step="1" />
+      <IntRangedValue Name="MaxPrimaryWidth" Value="[Application.Config.MaxPrimaryWidth]" MaxValue="1000" MinValue="100" Step="10" />
+      <IntRangedValue Name="MaxThumbWidth" Value="[Application.Config.MaxThumbWidth]" MaxValue="1000" MinValue="100" Step="10" />
+      <IntRangedValue Name="MaxBackgroundWidth" Value="[Application.Config.MaxBackgroundWidth]" MaxValue="1920" MinValue="720" Step="50" />
 
       <Choice Name="SystemClassModel">
         <Options>
@@ -90,6 +93,9 @@
       <Binding Source="[OverScanPaddingTop.Value]" Target="[Application.Config.OverScanPaddingTop]" />
       <Binding Source="[OverScanPaddingLeft.Value]" Target="[Application.Config.OverScanPaddingLeft]" />
       <Binding Source="[OverScanPaddingRight.Value]" Target="[Application.Config.OverScanPaddingRight]" />
+      <Binding Source="[MaxBackgroundWidth.Value]" Target="[Application.Config.MaxBackgroundWidth]" />
+      <Binding Source="[MaxThumbWidth.Value]" Target="[Application.Config.MaxThumbWidth]" />
+      <Binding Source="[MaxPrimaryWidth.Value]" Target="[Application.Config.MaxPrimaryWidth]" />
 
       <Default Target="[ServerConnectModel.ChosenIndex]" Value="1">
         <Conditions>
@@ -141,6 +147,10 @@
                       <cb:CheckBox Name="SilentUpdate" Label="[Application.LocalStrings.#SilentUpdatesConfig!cor:String]" Checked="[EnableSilentUpdates]" Margins="[CMargin]" FocusItem="[FocusItem]"   Font="font://f:CP_ConfigItemFont" FocusOrder="1"/>
                       <st:SpinnerText Model="[SystemClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#SystemClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[NMargin]" DefaultString="[SystemUpdateClass]" FocusOrder="4" />
                       <st:SpinnerText Model="[PluginClassModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#PluginClassConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[PluginUpdateClass]" FocusOrder="5" />
+                      <cp:TextHeader Text="[Application.LocalStrings.#ImageSizesConfig!cor:String]" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#MaxPrimaryWidthConfig!cor:String]" Padding="0,10,0,0" Model="[MaxPrimaryWidth]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="300,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#MaxThumbWidthConfig!cor:String]" Padding="0,0,0,0" Model="[MaxThumbWidth]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="300,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
+                      <ss:SimpleSpinner Label="[Application.LocalStrings.#MaxBackgroundWidthConfig!cor:String]" Padding="0,0,0,0" Model="[MaxBackgroundWidth]" FocusItem="[FocusItem]" Color="color://s:FontColorMedium"  Margins="20,0,0,0" Font="font://f:CP_ConfigItemFont" LabelMinSize="300,35" ValueFont="font://f:CP_ConfigItemFont" FocusOrder="2" />
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >

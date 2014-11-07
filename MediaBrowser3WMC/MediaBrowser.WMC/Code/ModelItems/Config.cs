@@ -816,6 +816,24 @@ namespace MediaBrowser
             set { if (this.Data.ThemeBackgroundRepeat != value) { this.Data.ThemeBackgroundRepeat = value; Save(); FirePropertyChanged("ThemBackgroundRepeat"); } }
         }
 
+        public int MaxPrimaryWidth
+        {
+            get { return this.CommonData.MaxPrimaryWidth; }
+            set { if (this.CommonData.MaxPrimaryWidth != value) { this.CommonData.MaxPrimaryWidth = value; Save(); FirePropertyChanged("MaxPrimaryWidth"); } }
+        }
+
+        public int MaxThumbWidth
+        {
+            get { return this.CommonData.MaxThumbWidth; }
+            set { if (this.CommonData.MaxThumbWidth != value) { this.CommonData.MaxThumbWidth = value; Save(); FirePropertyChanged("MaxThumbWidth"); } }
+        }
+
+        public int MaxBackgroundWidth
+        {
+            get { return this.CommonData.MaxBackgroundWidth; }
+            set { if (this.CommonData.MaxBackgroundWidth != value) { this.CommonData.MaxBackgroundWidth = value; Save(); FirePropertyChanged("MaxBackgroundWidth"); } }
+        }
+
         [Comment(@"Enable more advanced commands.")]
         //defunct
         public bool EnableAdvancedCmds

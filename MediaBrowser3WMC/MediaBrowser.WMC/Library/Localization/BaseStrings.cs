@@ -274,6 +274,13 @@ namespace MediaBrowser.Library.Localization
         public string PlayTrailerAsBackgroundConfigDesc = "Play local trailers as background if no video or audio background exists";
         public string EnableThemeBackgroundsConfigDesc = "Play a theme video or song in the backdrop in themes that support this. See server docs for how to supply content.";
         public string ThemeBackgroundRepeatConfigDesc = "The number of times to play the theme videos or songs";
+        public string ImageSizesConfig = "Image Sizes";
+        public string MaxPrimaryWidthConfig = "Max Primary Image Width";
+        public string MaxPrimaryWidthConfigDesc = "Maximum width of primary images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
+        public string MaxThumbWidthConfig = "Max Thumb Image Width";
+        public string MaxThumbWidthConfigDesc = "Maximum width of thumb images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
+        public string MaxBackgroundWidthConfig = "Max Backdrop Width";
+        public string MaxBackgroundWidthConfigDesc = "Maximum width of backdrop images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
 
         //JIL
         public string ThisWeek = "This Week";
