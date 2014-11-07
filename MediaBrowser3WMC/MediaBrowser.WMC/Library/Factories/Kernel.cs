@@ -555,7 +555,7 @@ namespace MediaBrowser.Library {
                     config.Save();
                 });
 
-                Async.Queue("Cache cleanup", () => CacheCleanUp.DeleteCacheFilesFromDirectory(ApplicationPaths.AppImagePath, DateTime.UtcNow.AddDays(-(Kernel.Instance.CommonConfigData.CacheFileRetentionDays))));
+                //Async.Queue("Cache cleanup", () => CacheCleanUp.DeleteCacheFilesFromDirectory(ApplicationPaths.AppImagePath, DateTime.UtcNow.AddDays(-(Kernel.Instance.CommonConfigData.CacheFileRetentionDays))));
             }
 
             return kernel;
