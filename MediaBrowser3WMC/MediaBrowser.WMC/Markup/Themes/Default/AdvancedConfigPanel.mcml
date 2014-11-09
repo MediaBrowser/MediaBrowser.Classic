@@ -50,7 +50,7 @@
       <IntRangedValue Name="OverScanPaddingRight" Value="[Application.Config.OverScanPaddingRight]" MaxValue="200" MinValue="-200" Step="1" />
       <IntRangedValue Name="MaxPrimaryWidth" Value="[Application.Config.MaxPrimaryWidth]" MaxValue="1000" MinValue="100" Step="10" />
       <IntRangedValue Name="MaxThumbWidth" Value="[Application.Config.MaxThumbWidth]" MaxValue="1000" MinValue="100" Step="10" />
-      <IntRangedValue Name="MaxBackgroundWidth" Value="[Application.Config.MaxBackgroundWidth]" MaxValue="1920" MinValue="720" Step="50" />
+      <IntRangedValue Name="MaxBackgroundWidth" Value="[Application.Config.MaxBackgroundWidth]" MaxValue="1920" MinValue="720" Step="40" />
 
       <Choice Name="SystemClassModel">
         <Options>

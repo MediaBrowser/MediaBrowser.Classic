@@ -2320,7 +2320,7 @@ namespace MediaBrowser
                 return true;  //new install, don't need to migrate
             }
 
-            Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1270;
+            Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1280;
             Kernel.Instance.CommonConfigData.Save();
 
             try
