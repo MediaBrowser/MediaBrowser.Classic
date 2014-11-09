@@ -2300,7 +2300,7 @@ namespace MediaBrowser
             {
                 Async.Queue("UPDATE CHECK", () =>
                                                 {
-                                                    if (RunningOnExtender)
+                                                    if (prompt && RunningOnExtender)
                                                     {
                                                         Information.AddInformationString("Cannot update from an extender.");
                                                         return;
