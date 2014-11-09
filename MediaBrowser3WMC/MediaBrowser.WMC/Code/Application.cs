@@ -2319,107 +2319,22 @@ namespace MediaBrowser
                 //FullRefresh();
                 return true;  //new install, don't need to migrate
             }
-            switch (thisVersion)
+
+            Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1270;
+            Kernel.Instance.CommonConfigData.Save();
+
+            try
             {
-                case "2.2.4.0":
-                    //set cacheAllImages to "false" - user can change it back if they wish or are directed to
-                    Config.CacheAllImagesInMemory = false;
-                    //anything else...?
-                    break;
-                case "2.2.6.0":
-                case "2.2.7.0":
-                case "2.2.8.0":
-                case "2.2.9.0":
-                    //set validationDelay to "0" - user can change it back if they wish or are directed to
-                    //Config.ValidationDelay = 0; removed in future version
-                    break;
-                case "2.3.0.0":
-                    //re-set plugin source if not already done by configurator...
-                    MigratePluginSource();
-                    break;
-                case "2.3.1.0":
-                case "2.3.2.0":
-                case "2.5.0.0":
-                case "2.5.1.0":
-                case "2.5.2.0":
-                case "2.5.3.0":
-                case "2.6.0.0":
-                case "2.6.1.0":
-                case "2.6.2.0":
-                    Config.EnableNestedMovieFolders = false;  //turn this off - it is what causes all the "small library" issues
-                    Config.EnableTranscode360 = false; //no longer need transcoding and it just causes problems
-                    Kernel.Instance.ConfigData.Save();
-                    if (oldVersion <= new System.Version(2, 3, 0, 0))
-                    {
-                        MigratePluginSource(); //still may need to do this (if we came from earlier version than 2.3
-                    }
-                    if (oldVersion <= new System.Version(2, 3, 1, 0))
-                    {
-                        Config.EnableTraceLogging = true; //turn this on by default since we now have levels and retention/clearing
-                    }
-                    else
-                    if (oldVersion < new System.Version(2,5,0,0))
-                    {
-                        //upgrading from 2.3.2 - item migration should have already occurred...
-                        Config.EnableTraceLogging = true; //turn this on by default since we now have levels and retention/clearing
-                        var oldRepo = new ItemRepository();
-                        Kernel.Instance.MB3ApiRepository.MigrateDisplayPrefs(oldRepo);
-                        //Async.Queue("Playstate Migration",() => Kernel.Instance.ItemRepository.MigratePlayState(oldRepo),15000); //delay to allow repo to load
-                    }
-                    break;
-
-                case "3.0.52.0":
-                    //Clear the image cache out
-                    Logger.ReportInfo("Clearing image cache...");
-                    try
-                    {
-                        Directory.Delete(ApplicationPaths.AppImagePath, true);
-                        Thread.Sleep(1000); //wait for the delete to fiinish
-                    }
-                    catch (Exception e) { Logger.ReportException("Error trying to clear image cache.", e); } //just log it
-                    try
-                    {
-                        Directory.CreateDirectory(ApplicationPaths.AppImagePath);
-                        Thread.Sleep(500); //wait for the directory to create
-                        Directory.CreateDirectory(ApplicationPaths.CustomImagePath);
-                    }
-                    catch (Exception e) { Logger.ReportException("Error trying to create image cache.", e); } //just log it
-                    break;
-
-                case "3.0.83.0":
-                case "3.0.86.0":
-                case "3.0.87.0":
-                case "3.0.88.0":
-                    // Re-set login background
-                    Kernel.Instance.CommonConfigData.LoginBgColor = "Black";
-                    Kernel.Instance.CommonConfigData.Save();
-                    break;
-
-                case "3.0.185.0":
-                case "3.0.186.0":
-                    Kernel.Instance.CommonConfigData.LocalMaxBitrate = 30;
-                    Kernel.Instance.CommonConfigData.Save();
-                    break;
-
-                case "3.0.228.0":
-                case "3.0.231.0":
-                    Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1270;
-                    Kernel.Instance.CommonConfigData.Save();
-                    
-                    try
-                    {
-                        var oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "ThemeVideoBackdrops.dll");
-                        if (File.Exists(oldPlugin))
-                        {
-                            Logger.ReportInfo("Removing old theme video backdrop plug-in");
-                            File.Delete(oldPlugin);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.ReportException("Error trying to remove theme backdrops plugin", e);
-                    }
-                    break;
+                var oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "ThemeVideoBackdrops.dll");
+                if (File.Exists(oldPlugin))
+                {
+                    Logger.ReportInfo("Removing old theme video backdrop plug-in");
+                    File.Delete(oldPlugin);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error trying to remove theme backdrops plugin", e);
             }
             return true;
         }
