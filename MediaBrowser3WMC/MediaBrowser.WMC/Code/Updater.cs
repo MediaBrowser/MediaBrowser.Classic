@@ -80,7 +80,7 @@ namespace MediaBrowser.Util
 
         // Blocking call to check the mb admin server to see if we need an update.
         // This must be called as its own thread.
-        public void CheckForUpdate()
+        public bool CheckForUpdate(bool prompt)
         {
 
             if ((DateTime.Now - Kernel.Instance.ConfigData.LastAutoUpdateCheck).TotalDays > 2)
@@ -103,9 +103,9 @@ namespace MediaBrowser.Util
                     if (newVersion != null)
                     {
                         Logger.ReportVerbose("New version {0} found.",newVersion.versionStr);
-                        WriteToUpdateLog("Updating MBC to new version "+newVersion.versionStr);
-                        if (_appRef.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
+                        if (prompt && _appRef.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
+                            WriteToUpdateLog("Updating MBC to new version "+newVersion.versionStr);
                             _appRef.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
                             //Kick off the installer and shut us down
                             try
@@ -132,11 +132,13 @@ namespace MediaBrowser.Util
                             {
                                 Logger.ReportException("Error attempting to update.",e);
                                 Async.Queue("error", () => _appRef.MessageBox("Error attempting to update.  Please update manually."));
+                                return true;
                             }
                         }
                         else
                         {
-                            Logger.ReportVerbose("Not updating.  User refused or timed out.");
+                            Logger.ReportVerbose("Not updating.  User refused or not requested.");
+                            return true;
                         }
 
                     }
@@ -144,6 +146,7 @@ namespace MediaBrowser.Util
                     {
                         _appRef.Information.AddInformationString("MB Classic is up to date");
                         Logger.ReportInfo("==== MB Classic is up to date.");
+                        return false;
                     }
                 }
             }
@@ -152,6 +155,8 @@ namespace MediaBrowser.Util
                 // No biggie, just return out.
                 Logger.ReportException("Error attempting to check for an update to Media Browser Classic", e);
             }
+
+            return false;
 
         }
 

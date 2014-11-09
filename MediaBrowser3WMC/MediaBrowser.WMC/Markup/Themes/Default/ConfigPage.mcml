@@ -352,7 +352,7 @@
       </Changed>
       <Changed Source="[UpdateCheck.Invoked]">
         <Actions>
-          <Invoke Target="[Application.CheckForSystemUpdate]" />
+          <Invoke Target="[Application.CheckForSystemUpdate]" prompt="true" />
         </Actions>
       </Changed>
 

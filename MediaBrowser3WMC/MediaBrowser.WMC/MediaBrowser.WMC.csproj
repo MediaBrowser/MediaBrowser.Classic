@@ -438,6 +438,7 @@
     <Content Include="Images\Icons\IconRemote.png" />
     <Content Include="Images\Icons\IconSearch.png" />
     <Content Include="Images\Icons\IconSleep.png" />
+    <Content Include="Images\Icons\IconUpdate.png" />
     <Content Include="Images\Icons\IconWatched.png" />
     <Content Include="Images\Icons\NZoom.png" />
     <Content Include="Images\Icons\Pause.png" />

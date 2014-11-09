@@ -111,6 +111,12 @@ namespace MediaBrowser
         private Updater Updater;
         private PowerSettings _powerSetings;
 
+        public bool UpdateAvailable
+        {
+            get { return _updateAvailable; }
+            set { _updateAvailable = value; FirePropertyChanged("UpdateAvailable"); }
+        }
+
         public PowerSettings PowerSettings { get { return _powerSetings ?? (_powerSetings = new PowerSettings()); } }
         public DeviceId DeviceId = new DeviceId();
 
@@ -2248,15 +2254,12 @@ namespace MediaBrowser
                                                              });
                     }
 
+                    // We check config here instead of in the Updater class because the Config class 
+                    // CANNOT be instantiated outside of the application thread.
+                    Async.Queue(Async.STARTUP_QUEUE, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender), 10000);
+
                     if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins
                     {
-                        // We check config here instead of in the Updater class because the Config class 
-                        // CANNOT be instantiated outside of the application thread.
-                        if (Config.EnableUpdates && !RunningOnExtender)
-                        {
-                            Async.Queue(Async.STARTUP_QUEUE, CheckForSystemUpdate, 10000);
-                        }
-
                         // Let the user know if the server needs to be restarted
                         // Put it on the same thread as the update checks so it will be behind them
                         Async.Queue(Async.STARTUP_QUEUE, () =>
@@ -2291,7 +2294,7 @@ namespace MediaBrowser
             }
         }
 
-        public void CheckForSystemUpdate()
+        public void CheckForSystemUpdate(bool prompt)
         {
             if (!systemUpdateCheckInProgress)
             {
@@ -2303,7 +2306,7 @@ namespace MediaBrowser
                                                         return;
                                                     }
                                                     SystemUpdateCheckInProgress = true;
-                                                    Updater.CheckForUpdate();
+                                                    UpdateAvailable = Updater.CheckForUpdate(prompt);
                                                     if (!Config.EnableSilentUpdates) PluginUpdatesAvailable = Updater.PluginUpdatesAvailable();
                                                     SystemUpdateCheckInProgress = false;
                                                 });
@@ -3441,6 +3444,7 @@ namespace MediaBrowser
         private Item _currentlyPlayingItem;
         private Guid _currentlyPlayingItemId;
         private bool _recentUserInput;
+        private bool _updateAvailable;
 
         public Information Information
         {
