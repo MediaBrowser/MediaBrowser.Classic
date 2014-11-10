@@ -1056,7 +1056,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Markup\Controls\Spinners\ColorSpinner.mcml" />
-    <Content Include="Markup\Controls\Spinners\SimpleSpinner.mcml" />
+    <Content Include="Markup\Controls\Spinners\SimpleSpinner.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Controls\Spinners\SpinnerText.mcml">
       <SubType>Designer</SubType>
     </Content>
