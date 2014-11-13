@@ -48,6 +48,8 @@
       <KeyHandler Name="Down" Handle="false" HandlerStage="Routed" Key="Down" />
       <KeyHandler Name="Period" Key="Period" Handle="true" HandlerStage="Bubbled"/>
       <KeyHandler Name="ZoomToggle" Key="Z" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled"/>
+      <KeyHandler Name="SkipBackKey" Key="B" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled"/>
+      <KeyHandler Name="SkipForwardKey" Key="F" Handle="true" Modifiers="Control,Shift" HandlerStage="Bubbled"/>
 
       <ClickHandler Name="Clicker" HandlerStage="Bubbled" HandleEnterSpaceKeys="false"/>
 
@@ -196,7 +198,21 @@
         </Actions>
       </Changed>
 
+      <Changed Source="[SkipForwardKey.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipAhead]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
       <Changed Source="[SkipBack.Invoked]">
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[SkipBackKey.Invoked]">
         <Actions>
           <PlaySound Sound="sound://sounds:Select" />
           <Invoke Target="[Application.PlaybackController.SkipBack]" value="[InputHolder.Value]" />
