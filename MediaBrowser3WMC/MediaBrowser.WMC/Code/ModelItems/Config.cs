@@ -694,7 +694,7 @@ namespace MediaBrowser
                 }
                 catch
                 {
-                    return ViewType.Poster;
+                    return ViewType.CoverFlow;
                 }
             }
             set { if (this.Data.DefaultViewType != value.ToString()) { this.Data.DefaultViewType = value.ToString(); Save(); FirePropertyChanged("DefaultViewType"); } }
