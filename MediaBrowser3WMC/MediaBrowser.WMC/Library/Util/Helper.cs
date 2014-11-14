@@ -1192,7 +1192,7 @@ namespace MediaBrowser.LibraryManagement
             name = name.ToLower().Replace("-", "_");
             name = name.Replace('/', '-');
             var themeName = Config.Instance.ViewTheme.ToLower();
-            var id = ("MiImage" + themeName + name).GetMD5();
+            var id = "MiImage" + themeName + name;
 
             //try to load from image cache first
             var path = CustomImageCache.Instance.GetImagePath(id, true);
@@ -1209,7 +1209,7 @@ namespace MediaBrowser.LibraryManagement
                     var image = serverImage.DownloadImage();
                     Logger.ReportVerbose("===CustomImage " + path + " being cached on first access.  Shouldn't have to do this again...");
                     //cache it and return resulting cached image
-                    return new Image("file://" + CustomImageCache.Instance.CacheImage(id, image));
+                    return new Image("file://" + CustomImageCache.Instance.CacheImage(serverImage.Path, image));
                 }
                 catch (WebException)
                 {
@@ -1223,7 +1223,7 @@ namespace MediaBrowser.LibraryManagement
             }
         }
 
-        public static Image GetImageFromResources(string name, Guid id)
+        public static Image GetImageFromResources(string name, string id)
         {
             //not there, get it from resources in default or the current theme if it exists
             var resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
@@ -1257,11 +1257,11 @@ namespace MediaBrowser.LibraryManagement
             return first.ToUpper() + theRest.ToLower();
         }
 
-        private static char[] _digits = "0123456789".ToArray();
+        private static readonly char[] Digits = "0123456789".ToArray();
         public static string FirstCharOrDefault(string str, bool capitalize = true)
         {
             if (str == null) return "<Unknown>";
-            var val = _digits.Contains(str[0]) ? "0" : str.Substring(0, 1);
+            var val = Digits.Contains(str[0]) ? "0" : str.Substring(0, 1);
             return capitalize ? val.ToUpper() : val;
         }
 

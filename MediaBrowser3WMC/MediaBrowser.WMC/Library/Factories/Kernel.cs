@@ -555,7 +555,13 @@ namespace MediaBrowser.Library {
                     config.Save();
                 });
 
-                //Async.Queue("Cache cleanup", () => CacheCleanUp.DeleteCacheFilesFromDirectory(ApplicationPaths.AppImagePath, DateTime.UtcNow.AddDays(-(Kernel.Instance.CommonConfigData.CacheFileRetentionDays))));
+                Async.Queue("Image Cache cleanup", () =>
+                                             {
+                                                 foreach (var directory in Directory.GetDirectories(ApplicationPaths.AppImagePath))
+                                                 {
+                                                     CacheCleanUp.DeleteCacheFilesFromDirectory(directory, DateTime.UtcNow.AddDays(-(Instance.CommonConfigData.CacheFileRetentionDays)));
+                                                 }
+                                             });
             }
 
             return kernel;
@@ -812,8 +818,6 @@ namespace MediaBrowser.Library {
         public IItemRepository ItemRepository { get { return LocalRepo; }}
         public IItemRepository LocalRepo { get; set; }
         public IMediaLocationFactory MediaLocationFactory { get; set; }
-        public delegate System.Drawing.Image ImageProcessorRoutine(System.Drawing.Image image, BaseItem item);
-        public ImageProcessorRoutine ImageProcessor;
 
 
         IsMouseActiveHooker _mouseActiveHooker;

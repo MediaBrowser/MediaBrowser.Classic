@@ -78,8 +78,8 @@ namespace MediaBrowser.Library.ImageManagement {
             lock (Lock) {
                 try {
                     if (!loaded) {
-                        var info = !ReAcquireOnStart && !AcquiredOnce ? ImageCache.Instance.GetPrimaryImageInfo(Id) : null;
-                        if (info == null)
+                        var cached = !ReAcquireOnStart && !AcquiredOnce ? ImageCache.Instance.GetImagePath(Path) : null;
+                        if (cached == null)
                         {
                             AcquiredOnce = true;
                             var image = OriginalImage;
@@ -88,20 +88,14 @@ namespace MediaBrowser.Library.ImageManagement {
                                 //if (Debugger.IsAttached) Debugger.Break();
                                 return;
                             }
-                            ImageCache.Instance.CacheImage(Id, ProcessImage(image));
+                            _width = image.Width;
+                            _height = image.Height;
+                            ImageCache.Instance.CacheImage(Path, image);
                         }
                         //else
                         //{
                         //    Logger.ReportVerbose("=================== Image {0} obtained from local cache.", Path);
                         //}
-                        info = ImageCache.Instance.GetPrimaryImageInfo(Id);
-                        if (info != null) {
-                            _width = info.Width;
-                            _height = info.Height;
-                        } else {
-                            if (Debugger.IsAttached) Debugger.Break();
-                            Corrupt = true;
-                        }
 
                     }
                 } catch (Exception e) {
@@ -133,14 +127,14 @@ namespace MediaBrowser.Library.ImageManagement {
         /// <returns></returns>
         public string GetLocalImagePath() {
             EnsureLoaded();
-            string path = ImageCache.Instance.GetImagePath(Id);
+            var path = ImageCache.Instance.GetImagePath(Path);
             if (String.IsNullOrEmpty(path)) this.Corrupt = true;
             return path;
         }
 
         public string GetLocalImagePath(int width, int height) {
             EnsureLoaded();
-            string path = ImageCache.Instance.GetImagePath(Id, width, height);
+            var path = ImageCache.Instance.GetImagePath(Path);
             if (String.IsNullOrEmpty(path)) this.Corrupt = true;
             return path;
         }
@@ -174,40 +168,15 @@ namespace MediaBrowser.Library.ImageManagement {
         /// </summary>
         public bool IsCached {
             get {
-                return ImageCache.Instance.GetImagePath(Id) != null;
+                return ImageCache.Instance.GetImagePath(Path) != null;
             }
         } 
 
         // will clear all local copies
         public void ClearLocalImages() {
-            ImageCache.Instance.ClearCache(Id);
+            ImageCache.Instance.ClearCache(Path);
             loaded = false;
         }
-
-
-       
-        System.Drawing.Image ProcessImage(System.Drawing.Image image)
-        {
-            if (canBeProcessed && Kernel.Instance.ImageProcessor != null && System.Threading.Thread.CurrentThread.Name != "Application") //never allow processor on app thread - just have to catch it next time
-            {
-                return Kernel.Instance.ImageProcessor(image, item);
-            } else {
-                return image;
-            }
-        }
-
-        /*
-        protected string ConvertRemotePathToLocal(string remotePath) {
-            string localPath = remotePath;
-
-            if (localPath.ToLower().Contains("http://"))
-                localPath = localPath.Replace("http://", "");
-
-            localPath = System.IO.Path.Combine(cachePath, localPath.Replace('/', '\\'));
-
-            return localPath;
-
-        }*/
 
     }
 }

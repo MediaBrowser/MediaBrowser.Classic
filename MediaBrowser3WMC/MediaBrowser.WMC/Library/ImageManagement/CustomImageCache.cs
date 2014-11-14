@@ -32,30 +32,28 @@ namespace MediaBrowser.Library.ImageManagement
             }
         }
 
-        public CustomImageCache(string path)
+        public CustomImageCache(string path) : base(path)
         {
-            this.Path = path;
-            LoadInfo();
         }
 
-        protected Dictionary<Guid, string> ResourceCache = new Dictionary<Guid, string>();
+        protected Dictionary<string, string> ResourceCache = new Dictionary<string, string>();
 
-        public void CacheResource(Guid id, string resourceRef)
+        public void CacheResource(string name, string resourceRef)
         {
             //Logging.Logger.ReportVerbose("CustomCache Caching resource " + resourceRef);
-            ResourceCache[id] = resourceRef;
+            ResourceCache[name] = resourceRef;
         }
 
-        public string GetImagePath(Guid id, bool includePrefix)
+        public string GetImagePath(string name, bool includePrefix)
         {
-            if (ResourceCache.ContainsKey(id))
+            if (ResourceCache.ContainsKey(name))
             {
                 //Logging.Logger.ReportVerbose("CustomCache returning resource " + ResourceCache[id]);
-                return ResourceCache[id];
+                return ResourceCache[name];
             }
             else
             {
-                string fn = base.GetImagePath(id);
+                string fn = base.GetImagePath(name);
                 //if (fn != null) Logging.Logger.ReportVerbose("CustomCache returning file " + fn);
                 return fn == null ? null : includePrefix ? "file://"+fn : fn;
             }

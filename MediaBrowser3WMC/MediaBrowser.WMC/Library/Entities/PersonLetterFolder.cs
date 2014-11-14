@@ -65,7 +65,7 @@ namespace MediaBrowser.Library.Entities
         protected string GetCustomImagePath(string letter)
         {
             // see if we already have the image created in our cache
-            var id = ("MBLETTERIMAGE" + letter).GetMD5();
+            var id = "MBLETTERIMAGE" + letter;
             var path = CustomImageCache.Instance.GetImagePath(id, false);
             if (path != null) return path; //was already cached
 

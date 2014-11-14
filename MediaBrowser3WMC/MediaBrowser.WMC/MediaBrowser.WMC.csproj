@@ -203,6 +203,7 @@
     <Compile Include="Library\Factories\Kernel.cs" />
     <Compile Include="Library\Filesystem\AttributedContents.cs" />
     <Compile Include="Library\Filesystem\CacheCleanUp.cs" />
+    <Compile Include="Library\Filesystem\FileSystemCache.cs" />
     <Compile Include="Library\Filesystem\VirtualFolder.cs" />
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
@@ -908,9 +909,7 @@
     <Compile Include="Library\Extensions\BinaryLineReader.cs" />
     <Compile Include="Library\Filesystem\MBDirectoryWatcher.cs" />
     <None Include="Library\ImageManagement\FilesystemProcessedImage.cs" />
-    <Compile Include="Library\ImageManagement\IImageCache.cs" />
     <Compile Include="Library\ImageManagement\ImageCache.cs" />
-    <Compile Include="Library\ImageManagement\SQLiteImageCache.cs" />
     <Compile Include="Library\Input\IsMouseActiveHooker.cs" />
     <Compile Include="Library\Interfaces\ITrailerProvider.cs" />
     <Compile Include="Library\Persistance\SQLiteRepository.cs" />

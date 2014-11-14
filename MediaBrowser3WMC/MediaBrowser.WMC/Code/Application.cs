@@ -2324,7 +2324,23 @@ namespace MediaBrowser
             }
 
             Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1280;
+            Kernel.Instance.CommonConfigData.CacheFileRetentionDays = 90;
             Kernel.Instance.CommonConfigData.Save();
+
+            //Clear old ImageCache
+            Logger.ReportInfo("=========== Clearing old image cache...");
+            try
+            {
+                foreach (var file in new DirectoryInfo(ApplicationPaths.AppImagePath).GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error clearing custom Image path {0}", e, ApplicationPaths.CustomImagePath);
+            }
+
 
             try
             {
