@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Caching;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Library.Extensions;
@@ -92,10 +93,17 @@ namespace MediaBrowser.Library.ImageManagement {
                             _height = image.Height;
                             ImageCache.Instance.CacheImage(Path, image);
                         }
-                        //else
-                        //{
-                        //    Logger.ReportVerbose("=================== Image {0} obtained from local cache.", Path);
-                        //}
+                        else
+                        {
+                            //Logger.ReportVerbose("=================== Image {0} obtained from local cache.", Path);
+                            
+                            //Need to load the image to determine width and height
+                            using (var temp = Image.FromFile(cached))
+                            {
+                                _height = temp.Height;
+                                _width = temp.Width;
+                            }
+                        }
 
                     }
                 } catch (Exception e) {
