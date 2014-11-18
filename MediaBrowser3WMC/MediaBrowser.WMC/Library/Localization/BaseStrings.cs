@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0095";
+        const string VERSION = "1.0096";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -91,8 +91,6 @@ namespace MediaBrowser.Library.Localization
         public string CheckForUpdateConfigDesc = "Check for updates to MB Classic";
         public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an 'In-Progress' list instead.  Anything resumable will appear instead of fully-watched items.";
         public string SlideShowIntervalConfigDesc = "The number of seconds to show each item in a photo slide show";
-        public string ShowUnairedItemsConfigDesc = "Enable to show TV episodes that have information but have yet to actually air";
-        public string ShowMissingItemsConfigDesc = "Enable to show TV episodes that exist but are not actually in your collection";
         public string HttpTimeoutConfigDesc = "The maximum amount of time to wait for the server to respond to a request. 1000 = 1 second.";
         public string StartUpConfigDesc = "Whether to show the user profile screen or automatically log in at start up";
         public string EnableDeleteConfigDesc = "Allow Admin users to delete media items. WARNING! - This will DELETE actual media files from your system.";
@@ -169,8 +167,6 @@ namespace MediaBrowser.Library.Localization
         public string ShowGenresCollectionConfig = "Show Movie Genres Folder";
         public string ShowMusicGenresCollectionConfig = "Show Music Genres Folder";
         public string ShowMusicAlbumCollectionConfig = "Show Music Albums Folder";
-        public string ShowUnairedItemsConfig = "Show Un-aired Items";
-        public string ShowMissingItemsConfig = "Show Missing Items";
         public string GroupAlbumsByArtistConfig = "Group by Artist";
         public string ShowNewItemNotificationConfig = "Show New Item Notification";
         public string ViewsConfig = "Views";

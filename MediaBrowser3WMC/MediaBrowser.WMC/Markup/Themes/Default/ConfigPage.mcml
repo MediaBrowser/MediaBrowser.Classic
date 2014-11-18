@@ -61,8 +61,6 @@
       <BooleanChoice Name="ShowMusicGenresCollection" Value="[Application.Config.ShowMusicGenreCollection]" />
       <BooleanChoice Name="ShowChannels" Value="[Application.Config.ShowChannels]" />
       <BooleanChoice Name="GroupChannelsTogether" Value="[Application.Config.GroupChannelsTogether]" />
-      <BooleanChoice Name="ShowMissingItems" Value="[Application.Config.ShowMissingItems]" />
-      <BooleanChoice Name="ShowUnairedItems" Value="[Application.Config.ShowUnairedItems]" />
       <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
       <BooleanChoice Name="ShowNewItemNotification" Value="[Application.Config.ShowNewItemNotification]" />
       <BooleanChoice Name="ShowNewItemNotificationInPlayer" Value="[Application.Config.ShowNewItemNotificationInPlayer]" />
@@ -392,8 +390,6 @@
       <Binding Source="[ShowMusicAlbumCollection.Value]" Target="[Config.ShowMusicAlbumCollection]" />
       <Binding Source="[ShowChannels.Value]" Target="[Config.ShowChannels]" />
       <Binding Source="[GroupChannelsTogether.Value]" Target="[Config.GroupChannelsTogether]" />
-      <Binding Source="[ShowUnairedItems.Value]" Target="[Config.ShowUnairedItems]" />
-      <Binding Source="[ShowMissingItems.Value]" Target="[Config.ShowMissingItems]" />
       <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ShowNewItemNotificationInPlayer.Value]" Target="[Config.ShowNewItemNotificationInPlayer]" />
@@ -695,8 +691,6 @@
                   <Panel Layout="VerticalFlow" Margins="40,0,20,0"  >
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMissingItemsConfig!cor:String]" Checked="[ShowMissingItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowUnairedItemsConfig!cor:String]" Checked="[ShowUnairedItems]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <me:TextHeader Text="[Application.LocalStrings.#ThemeBackgroundsConfig!cor:String]" />

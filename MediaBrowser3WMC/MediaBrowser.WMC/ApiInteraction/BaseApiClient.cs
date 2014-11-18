@@ -376,8 +376,6 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNullOrEmpty("person", query.Person);
             dict.AddIfNotNull("personTypes", query.PersonTypes);
-            if (!Config.Instance.ShowMissingItems) dict.AddIfNotNull("IsMissing", false);
-            if (!Config.Instance.ShowUnairedItems) dict.AddIfNotNull("IsVirtualUnaired", false);
 
             dict.AddIfNotNull("years", query.Years);
 

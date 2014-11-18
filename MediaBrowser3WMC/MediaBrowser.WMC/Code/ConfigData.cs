@@ -213,12 +213,6 @@ namespace MediaBrowser
         [Comment(@"Show an indicator on the poster if an item has been played.")]
         public bool ShowWatchTickInPosterView = true;
         [Group("Display")]
-        [Comment(@"Show missing items.")]
-        public bool ShowMissingItems = true;
-        [Group("Display")]
-        [Comment(@"Show unaired items.")]
-        public bool ShowUnairedItems = true;
-        [Group("Display")]
         [Comment(@"Scroll to the first unplayed item when entering a view.")]
         public bool DefaultToFirstUnwatched = false;
         [Group("Display")]
