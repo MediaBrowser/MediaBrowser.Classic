@@ -45,7 +45,7 @@ namespace MediaBrowser.Library.ImageManagement {
 
                 using (var fs = ProtectedFileStream.OpenExclusiveWriter(fn))
                 {
-                    image.Save(fs, image.RawFormat);
+                    image.Save(fs, image.RawFormat.Equals(ImageFormat.MemoryBmp) ? ImageFormat.Png : image.RawFormat);
                 }
             }
             catch(Exception e)
