@@ -1179,8 +1179,11 @@ namespace MediaBrowser.LibraryManagement
         private static HashSet<string> GetServerMediaInfoImages()
         {
             var hash = new HashSet<string>();
-            foreach (var image in Kernel.ApiClient.GetMediaInfoImages())
+            var info = Kernel.ApiClient.GetMediaInfoImages();
+            Logger.ReportVerbose("********** MI Images: {0}", info.Length);
+            foreach (var image in info)
             {
+                Logger.ReportVerbose("********* MI Image: {0} / {1}", image.Theme ?? "null", image.Name ?? "null");
                 hash.Add((image.Theme ?? "all").ToLower() + image.Name.ToLower());
             }
             return hash;
