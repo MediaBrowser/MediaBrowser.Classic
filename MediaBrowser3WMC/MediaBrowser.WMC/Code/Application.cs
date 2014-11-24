@@ -556,6 +556,10 @@ namespace MediaBrowser
                     Logger.ReportInfo("Navigating to genre {0} by request from remote client", args.Request.ItemName);
                     NavigateToGenre(args.Request.ItemName, CurrentItem);
                     break;
+                case "MusicGenre":
+                    Logger.ReportInfo("Navigating to music genre {0} by request from remote client", args.Request.ItemName);
+                    NavigateToGenre(args.Request.ItemName, CurrentItem, "MusicAlbum");
+                    break;
                 case "Artist":
                 case "Person":
                     var actor = Kernel.Instance.MB3ApiRepository.RetrievePerson(args.Request.ItemName);
@@ -2794,8 +2798,11 @@ namespace MediaBrowser
 
         public void NavigateToGenre(string genre, Item currentMovie)
         {
-            var itemType = "Movie";
+            this.NavigateToGenre(genre, currentMovie, "Movie");
+        }
 
+        public void NavigateToGenre(string genre, Item currentMovie, string itemType)
+        {
             switch (currentMovie.BaseItem.GetType().Name)
             {
                 case "Series":
@@ -2806,6 +2813,7 @@ namespace MediaBrowser
 
                 case "MusicAlbum":
                 case "MusicArtist":
+                case "MusicGenre":
                 case "Song":
                     itemType = "MusicAlbum";
                     break;
