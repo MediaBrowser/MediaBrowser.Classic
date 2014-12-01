@@ -10,7 +10,7 @@ using MediaBrowser.Library.Configuration;
 
 namespace MediaBrowser.Library
 {
-    public static class Ratings
+    public class Ratings
     {
         private static Dictionary<string, int> ratings;
         private static Dictionary<int, string> ratingsStrings = new Dictionary<int, string>();
@@ -20,7 +20,27 @@ namespace MediaBrowser.Library
             get { return _config ?? (_config = Kernel.Instance.ConfigData); }
         }
 
-        public static void Initialize(bool blockUnrated)
+        public Ratings(bool blockUnrated)
+        {
+            if (ratings == null) Initialize(blockUnrated);
+        }
+
+        public Ratings()
+        {
+            this.Initialize(false);
+        }
+
+        /// <summary>
+        /// Use this constructor when calling before kernel is initialized
+        /// </summary>
+        /// <param name="cfg"></param>
+        public Ratings(ConfigData cfg)
+        {
+            _config = cfg;
+            this.Initialize(false);
+        }
+
+        public void Initialize(bool blockUnrated)
         {
             //We get our ratings from the server
             ratings = new Dictionary<string, int>();
@@ -67,6 +87,18 @@ namespace MediaBrowser.Library
 
         }
 
+        public void SwitchUnrated(bool block)
+        {
+            ratings.Remove("");
+            if (block)
+            {
+                ratings.Add("", 1000);
+            }
+            else
+            {
+                ratings.Add("", 0);
+            }
+        }
         public static int Level(string ratingStr)
         {
             if (ratingStr != null && ratings.ContainsKey(ratingStr))
