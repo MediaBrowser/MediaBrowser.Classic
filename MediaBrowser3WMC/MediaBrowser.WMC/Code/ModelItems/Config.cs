@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Updates;
-using MediaBrowser.Model.Weather;
 using Microsoft.MediaCenter.UI;
 using MediaBrowser.Library;
 using MediaBrowser.Attributes;
-using Microsoft.MediaCenter;
-using MediaBrowser.Library.Configuration;
 using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser
