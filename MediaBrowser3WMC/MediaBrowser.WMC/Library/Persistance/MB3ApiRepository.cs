@@ -104,12 +104,6 @@ namespace MediaBrowser.Library.Persistance
             return RetrieveItem(id.ToString());
         }
 
-        public int? RetrieveUnwatchedCount(string id)
-        {
-            var dto = Kernel.ApiClient.GetItem(id);
-            return dto != null ? dto.RecursiveUnplayedItemCount : null;
-        }
-
         public Genre RetrieveGenre(string name)
         {
             var dto = Kernel.ApiClient.GetGenre(name);
