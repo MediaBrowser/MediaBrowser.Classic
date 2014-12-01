@@ -622,7 +622,7 @@ namespace MediaBrowser.Library.Persistance
                                                          IsPlayed = isPlayed,
                                                          CollapseBoxSetItems = collapseBoxSets,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, 
+                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, ItemFields.Metascore,
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines, ItemFields.MediaSources,  }
                                                      });
 
@@ -638,7 +638,7 @@ namespace MediaBrowser.Library.Persistance
         public static ItemFields[] StandardFields = new[]
                                                         {
                                                             ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
-                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, 
+                                                            ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, ItemFields.Metascore, 
                                                             ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, 
                                                         };
 
