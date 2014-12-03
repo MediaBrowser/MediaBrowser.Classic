@@ -95,13 +95,13 @@ namespace MediaBrowser.ApiInteraction
                 }
 
                 Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
-                return null;
+                return new MemoryStream();
 
             }
             catch (Exception ex)
             {
                 Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
-                return null;
+                return new MemoryStream();
                 //throw;
             }
         }
