@@ -778,7 +778,12 @@ namespace MediaBrowser.Library
 
         public bool ShowUnwatched
         {
-            get { return ((Config.Instance.ShowUnwatchedCount) && (this.UnwatchedCountString.Length > 0)); }
+            get { return ((Config.Instance.ShowUnwatchedCount) && baseItem.ShowUnwatchedCount && (this.UnwatchedCountString.Length > 0)); }
+        }
+
+        public virtual bool ShowWatched
+        {
+            get { return ((Config.Instance.ShowWatchTickInPosterView) && baseItem.ShowUnwatchedCount); }
         }
 
         public string UnwatchedCountString

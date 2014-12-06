@@ -279,6 +279,11 @@ namespace MediaBrowser.Library {
             }
         }
 
+        public override bool ShowWatched
+        {
+            get { return ((Config.Instance.ShowWatchedTickOnFolders) && baseItem.ShowUnwatchedCount); }
+        }
+
         public override int UnwatchedCount {
             get {
                 if (unwatchedCountCache == -1) {

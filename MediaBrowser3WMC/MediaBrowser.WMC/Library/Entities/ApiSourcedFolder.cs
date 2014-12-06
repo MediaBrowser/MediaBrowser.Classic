@@ -33,7 +33,7 @@ namespace MediaBrowser.Library.Entities
         {
             Name = item.Name;
             ApiRecursiveItemCount = item.ApiRecursiveItemCount;
-            UnwatchedCount = item.UserData.UnplayedItemCount ?? 0;
+            UnwatchedCount = item.UserData != null ? item.UserData.UnplayedItemCount ?? 0 : 0;
             Id = item.Id;
             DateCreated = item.DateCreated;
             SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
@@ -47,6 +47,11 @@ namespace MediaBrowser.Library.Entities
             ExcludeItemTypes = excludeTypes;
             HasShadowItem = true;
             Parent = parent;
+        }
+
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
         }
 
         public override string ApiId

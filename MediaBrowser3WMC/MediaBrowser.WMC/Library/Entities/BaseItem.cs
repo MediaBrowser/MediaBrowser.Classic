@@ -549,6 +549,8 @@ namespace MediaBrowser.Library.Entities {
             get { return !(this is Channel) && !(Parent is Channel) && !(Parent is ChannelFolder); }
         }
 
+        public virtual bool ShowUnwatchedCount {get { return true; }}
+
         // we may want to do this automatically, somewhere down the line
         public virtual bool AssignFromItem(BaseItem item) {
             // we should never reasign identity 

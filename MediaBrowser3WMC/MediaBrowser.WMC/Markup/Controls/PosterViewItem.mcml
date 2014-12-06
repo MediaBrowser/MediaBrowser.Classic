@@ -72,7 +72,7 @@
       
       <Changed Source="[Item.HaveWatched]">
         <Conditions>
-          <Equality Source="[Application.Config.ShowWatchTickInPosterView]" ConditionOp="Equals" Value="true" />
+          <Equality Source="[Item.ShowWatched]" ConditionOp="Equals" Value="true" />
         </Conditions>
         <Actions>
           <Set Target="[TickIndicatorPanel.Visible]" Value="[Application.Config.ShowWatchTickInPosterView]" />
@@ -83,7 +83,7 @@
 					<Equality Source="[Item.IsPlayable]" Value="false" />
 				</Conditions>
 				<Actions>
-					<Set Target="[TickIndicatorPanel.Visible]" Value="[Application.Config.ShowWatchedTickOnFolders]" />
+					<Set Target="[TickIndicatorPanel.Visible]" Value="[Item.ShowWatched]" />
 				</Actions>
 			</Changed>
 
@@ -92,7 +92,7 @@
 					<Equality Source="[Item.IsPlayable]" Value="true" />
 				</Conditions>
 				<Actions>
-					<Set Target="[TickIndicatorPanel.Visible]" Value="[Application.Config.ShowWatchTickInPosterView]" />
+					<Set Target="[TickIndicatorPanel.Visible]" Value="[Item.ShowWatched]" />
 				</Actions>
 			</Changed>
 
