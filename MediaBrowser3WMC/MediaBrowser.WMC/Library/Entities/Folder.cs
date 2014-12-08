@@ -734,17 +734,8 @@ namespace MediaBrowser.Library.Entities {
             } else if (property == LocalizedStrings.Instance.GetString("DirectorDispPref"))
             {
                 var personTypes = new[] {PersonType.Director};
-                var query = new PersonsQuery
-                                {
-                                    UserId = Kernel.CurrentUser.ApiId,
-                                    ParentId = ApiId,
-                                    Recursive = true,
-                                    Fields = new[] { ItemFields.SortName },
-                                    SortBy = new[] {"SortName"},
-                                    PersonTypes = personTypes
-
-                                };
-                var ret = Kernel.Instance.MB3ApiRepository.RetrievePersons(query).Select(p => new ApiPersonFolder(p, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
+                var ret = LocalizedStrings.Instance.GetString("StartingLetters").Select(c => new PersonLetterFolder(c.ToString(), false, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
+                ret.Add(new PersonLetterFolder("#", true, ApiId, personTypes, null, null, this));
                 ApiRecursiveItemCount = ret.Count;
                 return ret;
             } else if (property == LocalizedStrings.Instance.GetString("YearDispPref"))
