@@ -439,7 +439,7 @@ namespace MediaBrowser.Library {
                 ServerApiPort = port,
                 DeviceId = new DeviceId().Value,
                 ClientType = "MB-Classic",
-                DeviceName = Environment.MachineName+"/"+Environment.UserName,
+                DeviceName = Uri.EscapeDataString(Environment.MachineName)+"/"+Uri.EscapeDataString(Environment.UserName),
                 Timeout = timeout
             };
             try
