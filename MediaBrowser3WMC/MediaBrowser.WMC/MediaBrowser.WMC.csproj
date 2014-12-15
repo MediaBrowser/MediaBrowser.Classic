@@ -495,6 +495,7 @@
     <Content Include="Images\MediaInfo\codec_flac.png" />
     <Content Include="Images\MediaInfo\codec_h262.png" />
     <Content Include="Images\MediaInfo\codec_h264.png" />
+    <Content Include="Images\MediaInfo\codec_h265.png" />
     <Content Include="Images\MediaInfo\codec_mp3.png" />
     <Content Include="Images\MediaInfo\codec_mpeg1video.png" />
     <Content Include="Images\MediaInfo\codec_mpeg4visual.png" />

@@ -41,6 +41,7 @@
   <Image Name="HDLogo" Source="resx://MediaBrowser/MediaBrowser.Resources/HD" />
 	<Image Name="HDLogo1080" Source="resx://MediaBrowser/MediaBrowser.Resources/hd1080" />
 	<Image Name="HDLogo720" Source="resx://MediaBrowser/MediaBrowser.Resources/hd720" />
+	<Image Name="Media3d" Source="resx://MediaBrowser/MediaBrowser.Resources/media_3d" />
 	<Image Name="Icon1080" Source="resx://MediaBrowser/MediaBrowser.Resources/Icon1080" />
 	<Image Name="Icon720" Source="resx://MediaBrowser/MediaBrowser.Resources/Icon720" />
 	<Image Name="MissingBanner" Source="resx://MediaBrowser/MediaBrowser.Resources/MissingBanner" />

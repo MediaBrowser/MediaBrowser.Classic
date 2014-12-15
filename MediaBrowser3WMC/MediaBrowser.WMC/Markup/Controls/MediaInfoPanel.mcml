@@ -20,6 +20,7 @@
           <Set Target="[AspectImage.Content]" Value="[Item.AspectRatioImage]"/>
           <Set Target="[HDImage.Content]" Value="[Item.HDTypeImage]"/>
           <Set Target="[MediaImage.Content]" Value="[Item.MediaTypeImage]"/>
+          <Set Target="[Media3d.Visible]" Value="[Item.Is3D]"/>
         </Actions>
       </Changed>      
     </Rules>
@@ -31,6 +32,7 @@
         </Layout>
         <Children>
           <Graphic Name="MediaImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
+          <Graphic Name="Media3d" Visible="true" SizingPolicy="SizeToContent" Content="image://i:Media3d" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
           <Graphic Name="VideoImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
 
           <Graphic Name="HDImage" Visible="true" SizingPolicy="SizeToContent" MaintainAspectRatio="true" MaximumSize="[MaxIconSize]" />
