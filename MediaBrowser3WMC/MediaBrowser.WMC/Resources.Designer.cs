@@ -1313,9 +1313,9 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap codec_h265 {
+        internal static System.Drawing.Bitmap codec_hevc {
             get {
-                object obj = ResourceManager.GetObject("codec_h265", resourceCulture);
+                object obj = ResourceManager.GetObject("codec_hevc", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
