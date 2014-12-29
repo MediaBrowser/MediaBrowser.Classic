@@ -1703,7 +1703,6 @@ namespace MediaBrowser
             Config.IsFirstRun = false;
             Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
             Logger.ReportInfo("Startup parameters: "+ Config.StartupParms);
-            Logger.ReportInfo("Server version: "+ Kernel.ServerInfo.Version);
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)
                 Logger.ReportWarning("*** AutoValidate is OFF.");
@@ -1811,11 +1810,60 @@ namespace MediaBrowser
 
         }
 
+        bool ConnectAutomatically(int timeout)
+        {
+            var endPoint = new ServerLocator().FindServer();
+            return endPoint != null && Kernel.ConnectToServer(endPoint.Address.ToString(), endPoint.Port, timeout);
+        }
+
+        public bool ConnectToServer(CommonConfigData config)
+        {
+            var connected = false;
+
+            if (config.FindServerAutomatically)
+            {
+                connected = ConnectAutomatically(config.HttpTimeout);
+            }
+            else
+            {
+                //server specified
+                connected = Kernel.ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
+                if (!connected)
+                {
+                    Logger.ReportWarning("Unable to connect to configured server {0}:{1}. Will try automatic detection", config.ServerAddress, config.ServerPort);
+                    connected = ConnectAutomatically(config.HttpTimeout);
+                }
+            }
+
+            if (connected)
+            {
+                config.ServerPort = Kernel.ApiClient.ServerApiPort;
+                config.Save();
+
+            }
+
+            return connected;
+        }
         /// <summary>
         /// Log in to default or show a login screen with choices
         /// </summary>
         public void Login()
         {
+            if (!Kernel.ServerConnected)
+            {
+                if (ConnectToServer(Kernel.Instance.CommonConfigData))
+                {
+                    Logger.ReportInfo("Connected to server {0} at {1}", Kernel.ServerInfo.ServerName, Kernel.ServerInfo.LocalAddress);
+                    Logger.ReportInfo("Server version: " + Kernel.ServerInfo.Version);
+                }
+                else
+                {
+                    //Unable to connect...
+                    Close();
+                }
+
+            }
+
             var parms = Config.StartupParms ?? "";
             // reset these
             Config.StartupParms = null;

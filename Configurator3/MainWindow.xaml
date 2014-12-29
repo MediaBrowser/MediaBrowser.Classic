@@ -71,118 +71,6 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="tabGrid1">
             <TabControl Margin="10,54,10,0" x:Name="tabMain" Background="{x:Null}" Height="469" VerticalAlignment="Top" >
-
-                <TabItem Header="system" x:Name="displayTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" IsSelected="True" Height="25.62" VerticalAlignment="Bottom">
-                    <Grid Height="432.38" VerticalAlignment="Top">
-                        <GroupBox Header="Connection" HorizontalAlignment="Left" Margin="20,23,0,12" Name="groupBox1" Width="270">
-                            <Grid Margin="0,0,0,-4">
-                                <RadioButton x:Name="rbServerConnectAuto" Content="Find the server automatically" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="RbServerConnectAuto_OnChecked"/>
-                                <RadioButton x:Name="rbServerConnectManual" Content="Connect to this server" HorizontalAlignment="Left" Margin="10,28.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="server" Checked="rbServerConnectManual_Checked"/>
-                                <TextBox x:Name="tbxServerAddress" HorizontalAlignment="Left" Height="23" Margin="29,81.24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" ToolTip="IP address or Machine name of MB 3 Server machine"/>
-                                <RadioButton x:Name="rbShowUserSelection" Content="Present User Login Page" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="RbShowUserSelection_OnChecked"/>
-                                <RadioButton x:Name="rbLogonAuto" Content="Automatically Login As" HorizontalAlignment="Left" Margin="10,190.62,0,0" VerticalAlignment="Top" Width="207.897" GroupName="user" Checked="rbLogonAuto_Checked"/>
-                                <ComboBox x:Name="ddlUserProfile" HorizontalAlignment="Left" Margin="27,0,0,108.14" VerticalAlignment="Bottom" Width="207" SelectionChanged="DdlUserProfile_OnSelectionChanged"/>
-                                <PasswordBox x:Name="tbxUserPassword" HorizontalAlignment="Left" Margin="28,0,0,54.9" VerticalAlignment="Bottom" Width="206"/>
-                                <Button x:Name="btnSaveConnection" Content="Validate and Save" HorizontalAlignment="Left" Margin="101,0,0,10" Width="134" Click="btnSaveConnection_Click" Height="28.62" VerticalAlignment="Bottom" IsDefault="True"/>
-                                <TextBox x:Name="tbxPort" HorizontalAlignment="Left" Height="23" Margin="187.653,109.24,0,0" TextWrapping="Wrap" PreviewTextInput="tbxNumericOnly_PreviewTextInput" VerticalAlignment="Top" Width="47.347" ToolTip="IP address or Machine name of MB 3 Server machine"/>
-                                <Label Content="Address" HorizontalAlignment="Left" Margin="10,52.24,0,0" VerticalAlignment="Top"/>
-                                <Label Content="Port" HorizontalAlignment="Left" Margin="146.999,104.24,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.169,0.529"/>
-                                <CheckBox x:Name="cbxWakeServer" Content="Attempt to Wake Server" Click="cbxWakeServer_Checked" HorizontalAlignment="Left" Margin="10,140.38,0,0" VerticalAlignment="Top"/>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="Updates" HorizontalAlignment="Left" Margin="355,35,0,0" Name="groupBox2" Width="347" Height="199" VerticalAlignment="Top">
-                            <Grid>
-                                <CheckBox x:Name="cbxCheckForUpdates" Content="Check for Updates at Log-in (admin profiles only)"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.364,-0.376" Checked="cbxCheckForUpdates_Checked" Unchecked="cbxCheckForUpdates_Checked"/>
-                                <ComboBox x:Name="ddlSystemUpdateLevel" HorizontalAlignment="Left" Margin="38,91.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlSystemUpdateLevel_SelectionChanged"/>
-                                <ComboBox x:Name="ddlPluginUpdateLevel" HorizontalAlignment="Left" Margin="190,91.24,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddlPluginUpdateLevel_SelectionChanged"/>
-                                <Label Content="System Level" HorizontalAlignment="Left" Margin="25,62.62,0,0" VerticalAlignment="Top" Width="105.653"/>
-                                <Label Content="Plug-in Level" HorizontalAlignment="Left" Margin="175,62.62,0,0" VerticalAlignment="Top" Width="105.653"/>
-                            </Grid>
-                        </GroupBox>
-                        <CheckBox Height="22" Margin="306,0,0,12" Name="cbxAutoValidate" VerticalAlignment="Bottom" Click="cbxAutoValidate_Click" ToolTip="WARNING! Turning this option off may mean you will have to manually refresh for changes to appear." Visibility="Hidden" HorizontalAlignment="Left" Width="224">Validate Items Automatically</CheckBox>
-                        <Label Content="User" HorizontalAlignment="Left" Margin="36,255.38,0,0" VerticalAlignment="Top"/>
-                        <Label x:Name="lblPw" Content="Password" HorizontalAlignment="Left" Margin="36,311.38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.477,1.398"/>
-                        <GroupBox Header="Logging" Margin="355,255.38,0,10" Width="347" FontSize="14" HorizontalAlignment="Left">
-                            <Grid>
-                                <CheckBox Margin="10,26,0,0" Content="Enable Logging" IsChecked="False" x:Name="cbxEnableLogging" Click="enableLogging_Click" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" />
-                                <Button Margin="139,0,23,24" Content="Open logfile folder" x:Name="openLogsFolder" Click="openLogsFolder_Click" Height="29.38" VerticalAlignment="Bottom" RenderTransformOrigin="0.504,1.458" />
-                                <ComboBox Margin="201,26,23,0" x:Name="ddlLoglevel" Height="24.38" VerticalAlignment="Top" SelectionChanged="ddlLoglevel_SelectionChanged" />
-                                <Label Margin="152,23,0,0" x:Name="label14" HorizontalAlignment="Left" Width="43" Height="27.38" VerticalAlignment="Top" Content="Level"/>
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
-                </TabItem>
-
-                <TabItem Header="plug-ins" x:Name="plugins" Foreground="#FF323232" FontSize="14" FontWeight="Normal" IsSelected="True">
-                    <Grid DataContext="{DynamicResource PluginManager}" >
-                        <Label Height="34" HorizontalAlignment="Left" Margin="20,6,0,0" Name="label6" VerticalAlignment="Top" Width="260">Installed Plug-ins:</Label>
-                        <ListView IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="20,59.34,0,60" Width="260" ItemTemplate="{DynamicResource PluginListTemplate}" SelectionChanged="pluginList_SelectionChanged" x:Name="pluginList" OverridesDefaultStyle="False" ToolTip="Items shown in red have updates available" >
-                            <ListView.GroupStyle>
-                                <GroupStyle>
-                                    <GroupStyle.ContainerStyle>
-                                        <Style TargetType="{x:Type GroupItem}">
-                                            <Setter Property="Margin" Value="0,0,0,5"/>
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                        <Expander IsExpanded="True" BorderBrush="#FFA4B97F" BorderThickness="0,0,0,1">
-                                                            <Expander.Header>
-                                                                <DockPanel>
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
-                                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
-                                                                </DockPanel>
-                                                            </Expander.Header>
-                                                            <Expander.Content>
-                                                                <ItemsPresenter />
-                                                            </Expander.Content>
-                                                        </Expander>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </GroupStyle.ContainerStyle>
-                                </GroupStyle>
-                            </ListView.GroupStyle>
-
-                        </ListView>
-                        <Button HorizontalAlignment="Left" Margin="200,0,0,20" VerticalAlignment="Bottom" Width="80" Height="32" Content="Remove" x:Name="removePlugin" Click="removePlugin_Click" Visibility="Visible" IsEnabled="False" />
-                        <Grid Margin="300,0,20,20" x:Name="pluginPanel">
-                            <Label Margin="0,10,0,0" VerticalAlignment="Top" Height="35" Content="{Binding Path=SelectedItem.Name, ElementName=pluginList, Mode=Default}" FontWeight="Normal" FontSize="20" FontFamily="Trebuchet MS" x:Name="pluginName"/>
-                            <TextBlock Margin="0,45,0,56" Text="{Binding Path=SelectedItem.Description, ElementName=pluginList}" TextWrapping="Wrap" x:Name="pluginDescription" />
-                            <Label Margin="102.99,0,210,6" VerticalAlignment="Bottom" Height="32" Content="Installed Version:" HorizontalContentAlignment="Right" />
-                            <Label HorizontalAlignment="Right" Margin="0,0,114,6" VerticalAlignment="Bottom" Width="90" Height="32" Content="{Binding Path=SelectedItem.Version, ElementName=pluginList, Mode=Default}" x:Name="installedPluginVersion"/>
-                            <Button Margin="0,0,0,6" VerticalAlignment="Bottom" Height="32" Content="Configure" Width="80" HorizontalAlignment="Right" x:Name="configPlugin"  Click="configurePlugin_Click" Visibility="Visible"/>
-                            <ProgressBar VerticalAlignment="Bottom" Margin="0,0,0,0" x:Name="progress" Visibility="Hidden" Height="32"/>
-                        </Grid>
-                        <Label Content="(Plug-ins are installed in the MBC Config pages)" HorizontalAlignment="Left" Margin="20,28.38,0,0" VerticalAlignment="Top" Width="261.993" FontSize="12"/>
-                    </Grid>
-                </TabItem>
-
-                <TabItem Header="extenders + iso" x:Name="extendersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" >
-                    <Grid >
-                        <GroupBox Header="Extender Settings" Margin="20,35,0,20" Name="groupBox6" HorizontalAlignment="Left" Width="270">
-                            <Grid>
-                                <ListBox IsSynchronizedWithCurrentItem="True" Margin="10,75,10,50" x:Name="extenderFormats" />
-                                <Label Margin="10,45,10,0" VerticalAlignment="Top" Height="28" Content="Extender formats" />
-                                <Button HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="80" Height="32" Content="Add" x:Name="addExtenderFormat" Click="addExtenderFormat_Click" FontSize="14" />
-                                <Button Margin="0,0,10,10" VerticalAlignment="Bottom" Height="32" Content="Remove" x:Name="removeExtenderFormat" Click="removeExtenderFormat_Click" FontSize="14" HorizontalAlignment="Right" Width="80" />
-                                <CheckBox Margin="10,10,0,0" VerticalAlignment="Top" Height="22" Content="Enable Transcode360" x:Name="enableTranscode360" Click="enableTranscode360_Click" HorizontalAlignment="Left" Width="160" />
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="ISO Mounting Settings" Name="groupBox5" Margin="300,35,20,20" VerticalAlignment="Top" Height="180">
-                            <Grid>
-                                <Label Margin="10,90,10,0" Content="Drive Letter:" Height="28" VerticalAlignment="Top" ToolTip="Enter drive for mounting tool to use" />
-                                <TextBox Margin="10,45,10,0" Height="28" VerticalAlignment="Top" x:Name="daemonToolsLocation" IsReadOnly="True" />
-                                <!--<Label Margin="10,40,10,0" VerticalAlignment="Top" Height="28" Content="C:\DaemonTools\Somewhere\" x:Name="daemonToolsLocation" FontSize="12" />-->
-                                <Label Margin="10,10,10,0" VerticalAlignment="Top" Height="28" Content="Path to ISO mounter:" />
-                                <Button Margin="0,10,10,0" HorizontalAlignment="Right" Content="Change Location..." x:Name="changeDaemonToolsLocation" Click="changeDaemonToolsLocation_Click" FontSize="14" ToolTip="Enter the location of your ISO mounting tool" Height="28" Width="130" VerticalAlignment="Top" />
-                                <ComboBox IsSynchronizedWithCurrentItem="True" Margin="0,90,10,0" x:Name="daemonToolsDrive" SelectionChanged="daemonToolsDrive_SelectionChanged" FontSize="14" Height="28" HorizontalAlignment="Right" VerticalAlignment="Top" Width="60" />
-                                <CheckBox Margin="10,130,0,0" Content="Use Autoplay" x:Name="useAutoPlay" Click="useAutoPlay_Click" Height="22" Width="110" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
-                </TabItem>
-
                 <TabItem Header="external players" x:Name="externalPlayersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" >
                     <DockPanel Margin="20 20 20 20" LastChildFill="True">
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0 20 0 0" VerticalAlignment="Bottom" >
@@ -209,23 +97,46 @@
                         </ListView>
                     </DockPanel>
                 </TabItem>
+                <TabItem Header="extenders + iso" x:Name="extendersTab" Foreground="#FF323232" FontSize="14" FontWeight="Normal" Visibility="Visible" >
+                    <Grid >
+                        <GroupBox Header="Extender Formats" Margin="20,35,0,20" Name="groupBox6" HorizontalAlignment="Left" Width="270">
+                            <Grid>
+                                <ListBox IsSynchronizedWithCurrentItem="True" Margin="10,10,10,50" x:Name="extenderFormats" />
+                                <Button HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="80" Height="32" Content="Add" x:Name="addExtenderFormat" Click="addExtenderFormat_Click" FontSize="14" />
+                                <Button Margin="0,0,10,10" VerticalAlignment="Bottom" Height="32" Content="Remove" x:Name="removeExtenderFormat" Click="removeExtenderFormat_Click" FontSize="14" HorizontalAlignment="Right" Width="80" />
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Header="ISO Mounting Settings" Name="groupBox5" Margin="300,35,20,20" VerticalAlignment="Top" Height="180">
+                            <Grid>
+                                <Label Margin="10,90,10,0" Content="Drive Letter:" Height="28" VerticalAlignment="Top" ToolTip="Enter drive for mounting tool to use" />
+                                <TextBox Margin="10,45,10,0" Height="28" VerticalAlignment="Top" x:Name="daemonToolsLocation" IsReadOnly="True" />
+                                <!--<Label Margin="10,40,10,0" VerticalAlignment="Top" Height="28" Content="C:\DaemonTools\Somewhere\" x:Name="daemonToolsLocation" FontSize="12" />-->
+                                <Label Margin="10,10,10,0" VerticalAlignment="Top" Height="28" Content="Path to ISO mounter:" />
+                                <Button Margin="0,10,10,0" HorizontalAlignment="Right" Content="Change Location..." x:Name="changeDaemonToolsLocation" Click="changeDaemonToolsLocation_Click" FontSize="14" ToolTip="Enter the location of your ISO mounting tool" Height="28" Width="130" VerticalAlignment="Top" />
+                                <ComboBox IsSynchronizedWithCurrentItem="True" Margin="0,90,10,0" x:Name="daemonToolsDrive" SelectionChanged="daemonToolsDrive_SelectionChanged" FontSize="14" Height="28" HorizontalAlignment="Right" VerticalAlignment="Top" Width="60" />
+                                <CheckBox Margin="10,130,0,0" Content="Use Autoplay" x:Name="useAutoPlay" Click="useAutoPlay_Click" Height="22" Width="110" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+
                 <TabItem Header="help" Name="helpTab" FontSize="14" Visibility="Visible">
                     <Grid>
                         <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="192" Height="25">Version 0.0.0.0</Label>
                         <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
                             <Grid>
-                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community/index.php?/topic/733-mb-classic-setup-and-configuration/" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Classic Guide</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community/index.php?/topic/733-mb-classic-setup-and-configuration/" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Classic Guide</Hyperlink></TextBlock>
                                 <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to learn how to setup Media Browser Classic...</TextBlock>
-                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community/index.php?/forum/23-knowledge-base/" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community/index.php?/forum/23-knowledge-base/" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
                                 <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find helpful information and guides for the various Media Browser components...</TextBlock>
-                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser3.com/community" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community</Hyperlink></TextBlock>
                                 <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
                             </Grid>
                         </GroupBox>
 
                         <GroupBox Header="About Media Browser" Margin="20,277,20,0" Height="142" FontSize="14" VerticalAlignment="Top">
                             <Grid>
-                                <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://www.mediabrowser3.com" RequestNavigate="HandleRequestNavigate" Name="h5">www.mediabrowser3.com</Hyperlink></TextBlock>
+                                <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h5">mediabrowser.tv</Hyperlink></TextBlock>
                                 <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
                                 <TextBlock Margin="282.045,0,0,42.591" VerticalAlignment="Bottom" Height="44.789" HorizontalAlignment="Left" Width="198.955" TextWrapping="Wrap">Server side configuration is done via the  
                                         <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleDashboardNavigate">

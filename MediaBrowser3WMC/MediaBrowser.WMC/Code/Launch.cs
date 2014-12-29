@@ -52,21 +52,6 @@ namespace MediaBrowser
             using (new Util.Profiler("Total Kernel Init"))
             {
                 Kernel.Init(config);
-                while (!Kernel.ServerConnected)
-                {
-                    if (!Kernel.ServerConnected)
-                    {
-                        if (host.MediaCenterEnvironment.Dialog("Could not connect to Media Browser 3 Server.  Please be sure it is running on the local network.\n\nWould you like to re-try?", "Error", DialogButtons.Yes | DialogButtons.No, 100, true) != DialogResult.No)
-                        {
-                            Kernel.ConnectToServer(config);
-                        }
-                        else
-                        {
-                            AddInHost.Current.ApplicationContext.CloseApplication();
-                            return;
-                        }
-                    }
-                }
             }
             using (new Util.Profiler("Application Init"))
             {

@@ -76,27 +76,11 @@ namespace Configurator
             Instance = this;
             InitializeComponent();
             Kernel.Init(KernelLoadDirective.ShadowPlugins);
-            if (!Kernel.ServerConnected)
-            {
-                Async.Queue("error", () => MessageBox.Show("Cannot connect to the MB3 server.  Please start it or configure address.", "Cannot find server"));
-                // Hide plug-in tab because we can't get to them
-                plugins.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                var user = Kernel.AvailableUsers.OrderBy(u => u.Name).FirstOrDefault() ?? new UserDto {Name = "Unknown", Id = Guid.NewGuid().ToString("N")};
-                Kernel.CurrentUser = new User { Name = user.Name, Id = new Guid(user.Id ?? ""), Dto = user, ParentalAllowed = user.HasPassword };
-            }
-            //Kernel.Instance.LoadUserConfig();
-            Kernel.Instance.LoadPlugins();
             Logger.ReportVerbose("======= Kernel intialized. Building window...");
             commonConfig = Kernel.Instance.CommonConfigData;
-            pluginList.MouseDoubleClick += pluginList_DoubleClicked;
             PopUpMsg = new PopupMsg(alertText);
-            //config = Kernel.Instance.ConfigData;
 
             //Logger.ReportVerbose("======= Loading combo boxes...");
-            LoadComboBoxes();
             lblVersion.Content = lblVersion2.Content = "Version " + Kernel.Instance.VersionStr;
 
             //Logger.ReportVerbose("======= Refreshing Ext Players...");
@@ -127,27 +111,7 @@ namespace Configurator
             //Logger.ReportVerbose("======= Saving Config...");
             SaveConfig();
 
-            LoadAvailablePlugins();
-
             //Logger.ReportVerbose("======= Initialize Finised.");
-        }
-
-        private void LoadAvailablePlugins()
-        {
-            if (Kernel.ServerConnected)
-            {
-                Cursor = Cursors.Wait;
-                //Logger.ReportVerbose("======= Initializing Plugin Manager...");
-                PluginManager.Instance.Init();
-                //Logger.ReportVerbose("======= Loading Plugin List...");
-                var src = new CollectionViewSource();
-                src.Source = PluginManager.Instance.InstalledPlugins;
-                src.GroupDescriptions.Add(new PropertyGroupDescription("PluginClass"));
-
-                pluginList.ItemsSource = src.View;
-
-                Cursor = Cursors.Arrow;
-            }
         }
 
         public void ValidateMBAppDataFolderPermissions()
@@ -244,59 +208,7 @@ namespace Configurator
         #region Config Loading / Saving        
         private void LoadConfigurationSettings()
         {
-            enableTranscode360.IsChecked = commonConfig.EnableTranscode360;
             useAutoPlay.IsChecked = commonConfig.UseAutoPlayForIso;
-            cbxWakeServer.IsChecked = commonConfig.WakeServer;
-
-            ddlLoglevel.SelectedItem = commonConfig.MinLoggingSeverity;
-
-            if (commonConfig.FindServerAutomatically)
-            {
-                rbServerConnectAuto.IsChecked = true;
-            }
-            else
-            {
-                rbServerConnectManual.IsChecked = true;
-            }
-            
-            if (commonConfig.LogonAutomatically)
-            {
-                rbLogonAuto.IsChecked = true;
-                ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
-            }
-            else
-            {
-                rbShowUserSelection.IsChecked = true;
-            }
-
-            if (Kernel.ServerConnected)
-            {
-                tbxServerAddress.Text = Kernel.ApiClient.ServerHostName;
-                tbxPort.Text = Kernel.ApiClient.ServerApiPort.ToString(CultureInfo.InvariantCulture);
-                if (rbServerConnectManual.IsChecked == true)
-                {
-                    //Be sure we have the proper IP and port saved - we may have discovered them automatically
-                    commonConfig.ServerAddress = Kernel.ApiClient.ServerHostName;
-                    commonConfig.ServerPort = Kernel.ApiClient.ServerApiPort;
-                    SaveConfig();
-                }
-            }
-            else
-            {
-                tbxPort.Text = commonConfig.ServerPort.ToString(CultureInfo.InvariantCulture);
-                tbxServerAddress.Text = commonConfig.ServerAddress;
-            }
-
-            //logging
-            cbxEnableLogging.IsChecked = commonConfig.EnableTraceLogging;
-
-            //library validation
-            cbxAutoValidate.IsChecked = commonConfig.AutoValidate;
-
-            //updates
-            cbxCheckForUpdates.IsChecked = commonConfig.EnableUpdates;
-            ddlSystemUpdateLevel.SelectedItem = commonConfig.SystemUpdateClass.ToString();
-            ddlPluginUpdateLevel.SelectedItem = commonConfig.PluginUpdateClass.ToString();
 
         }
 
@@ -320,19 +232,6 @@ namespace Configurator
         }
 
         private List<string> folderSettings;
-        private void LoadComboBoxes()
-        {
-            ddlSystemUpdateLevel.ItemsSource = ddlPluginUpdateLevel.ItemsSource = Enum.GetNames(typeof(PackageVersionClass));
-            ddlLoglevel.ItemsSource = Enum.GetValues(typeof(LogSeverity));
-            RefreshUsers();
-
-        }
-
-        private void RefreshUsers()
-        {
-            if (Kernel.AvailableUsers != null) ddlUserProfile.ItemsSource = Kernel.AvailableUsers.OrderBy(u => u.Name);
-        }
-
         #endregion
 
         private void RefreshExtenderFormats()
@@ -365,30 +264,6 @@ namespace Configurator
 
         #region events
 
-
-        private void pluginList_DoubleClicked(object sender, RoutedEventArgs e)
-        {
-            configurePlugin_Click(sender, e);
-        }
-
-        private void pluginList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pluginList.SelectedItem != null)
-            {
-                //enable the remove button if a plugin is selected.
-                removePlugin.IsEnabled = true;
-
-                //show conf button if needed
-                configPlugin.Visibility = (pluginList.SelectedItem as IPlugin).IsConfigurable ? Visibility.Visible : Visibility.Hidden;
-
-                //show the pluginPanel
-                pluginPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                pluginPanel.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void addExtenderFormat_Click(object sender, RoutedEventArgs e)
         {
@@ -564,26 +439,6 @@ namespace Configurator
             commonConfig.UseAutoPlayForIso = (bool)useAutoPlay.IsChecked;
             SaveConfig();
         }
-        private void enableTranscode360_Click(object sender, RoutedEventArgs e)
-        {
-            commonConfig.EnableTranscode360 = (bool)enableTranscode360.IsChecked;
-            SaveConfig();
-        }
-
-
-        private void cbxAutoValidate_Click(object sender, RoutedEventArgs e)
-        {
-            commonConfig.AutoValidate = (bool)cbxAutoValidate.IsChecked;
-            if (!commonConfig.AutoValidate) PopUpMsg.DisplayMessage("Warning! Media Changes May Not Be Reflected in Library.");
-            SaveConfig();
-        }
-
-        private void enableLogging_Click(object sender, RoutedEventArgs e)
-        {
-            commonConfig.EnableTraceLogging = (bool)cbxEnableLogging.IsChecked;
-            SaveConfig();
-        }
-
         #endregion
 
         #region ComboBox Events
@@ -592,29 +447,6 @@ namespace Configurator
         #region Header Selection Methods
         #endregion
 
-
-        private void removePlugin_Click(object sender, RoutedEventArgs e) {
-            var plugin = pluginList.SelectedItem as IPlugin;
-            if (plugin != null)
-            {
-                var message = "Would you like to remove the plugin " + plugin.Name + "?";
-                if (
-                      MessageBox.Show(message, "Remove plugin", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    PluginManager.Instance.RemovePlugin(plugin);
-                    PluginManager.Instance.UpdateAvailableAttributes(plugin, false);
-                }
-            }
-        }
-
-        private void configurePlugin_Click(object sender, RoutedEventArgs e)
-        {
-            if (pluginList.SelectedItem != null && (pluginList.SelectedItem as Plugin).IsConfigurable)
-            {
-                ((Plugin)pluginList.SelectedItem).Configure();
-                KernelModified = true;
-            }
-        }
 
         void HandleRequestNavigate(object sender, RoutedEventArgs e)
         {
@@ -652,276 +484,10 @@ namespace Configurator
             base.OnPreviewTextInput(e);
         }
 
-
-        private void btnRollback_Click(object sender, RoutedEventArgs e)
-        {
-            var plugin = pluginList.SelectedItem as IPlugin;
-            if (plugin == null) return;
-            if (MessageBox.Show("Are you sure you want to overwrite your current version of "+plugin.Name, "Rollback Plug-in", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                this.Cursor = Cursors.Wait;
-                if (PluginManager.Instance.RollbackPlugin(plugin))
-                {
-                    PluginManager.Instance.RefreshInstalledPlugins();
-                    pluginList.SelectedIndex = 0;
-                    this.Cursor = Cursors.Arrow;
-                    Logger.ReportInfo(plugin.Name + " rolled back.");
-                    PopUpMsg.DisplayMessage("Plugin " + plugin.Name + " rolled back.");
-                }
-                else
-                {
-                    Logger.ReportError("Error attempting to rollback plugin " + plugin.Name);
-                    this.Cursor = Cursors.Arrow;
-                    MessageBox.Show("Error attempting to rollback plugin " + plugin.Name, "Rollback Failed");
-                }
-            }
-        }
-
         private void Window_Closing(object sender, EventArgs e)
         {
         }
 
-        private void ddlLoglevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlLoglevel.SelectedItem != null)
-            {
-                commonConfig.MinLoggingSeverity = (LogSeverity)ddlLoglevel.SelectedItem;
-                SaveConfig();
-            }
-        }
-
-        private void DdlUserProfile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var user = ddlUserProfile.SelectedItem as UserDto;
-            if (user != null)
-            {
-                if (user.HasPassword)
-                {
-                    lblPw.Visibility = tbxUserPassword.Visibility = Visibility.Visible;
-                    tbxUserPassword.IsEnabled = true;
-                }
-                else
-                {
-                    lblPw.Visibility = tbxUserPassword.Visibility = Visibility.Hidden;
-                    tbxUserPassword.IsEnabled = false;
-                    tbxUserPassword.Password = "";
-                }
-            }
-        }
-
-        private void RbServerConnectAuto_OnChecked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.FindServerAutomatically = true;
-            tbxServerAddress.IsEnabled = tbxPort.IsEnabled = false;
-        }
-
-        private void RbShowUserSelection_OnChecked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.LogonAutomatically = false;
-            ddlUserProfile.IsEnabled = false;
-            tbxUserPassword.Visibility = Visibility.Hidden;
-            lblPw.Visibility = Visibility.Hidden;
-        }
-
-        private void rbServerConnectManual_Checked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.FindServerAutomatically = false;
-            tbxServerAddress.IsEnabled = tbxPort.IsEnabled = true;
-        }
-
-        private void rbLogonAuto_Checked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.LogonAutomatically = true;
-            ddlUserProfile.IsEnabled = true;
-            if (ddlUserProfile.SelectedItem == null && ddlUserProfile.Items.Count > 0) ddlUserProfile.SelectedIndex = 0;
-            DdlUserProfile_OnSelectionChanged(this, null);
-        }
-
-        private void btnSaveConnection_Click(object sender, RoutedEventArgs e)
-        {
-            //Validate server address
-            if (rbServerConnectAuto.IsChecked == true)
-            {
-                var endpoint = new ServerLocator().FindServer();
-                if (endpoint == null)
-                {
-                    MessageBox.Show("Unable to find server.  Please specify an address or start the server.", "Error locating server");
-                    return;
-                }
-                tbxServerAddress.Text = endpoint.Address.ToString();
-                tbxPort.Text = endpoint.Port.ToString();
-            }
-            PopUpMsg.DisplayMessage("Attempting to contact server...");
-            var address = tbxServerAddress.Text;
-            var port = 8096;
-            try
-            {
-                port = Convert.ToInt32(tbxPort.Text);
-            }
-            catch (Exception)
-            {
-                //let default through
-            }
-            this.Cursor = Cursors.AppStarting;
-            btnSaveConnection.IsEnabled = false;
-            Async.Queue("ConnectionCheck", () => Kernel.ConnectToServer(address, port, 20000), () => Dispatcher.Invoke(DispatcherPriority.Background,(System.Windows.Forms.MethodInvoker)ConnectionValidationDone));
-        }
-
-        public void ConnectionValidationDone()
-        {
-            this.Cursor = Cursors.Arrow;
-            btnSaveConnection.IsEnabled = true;
-            if (!Kernel.ServerConnected)
-            {
-                if (MessageBox.Show("Could not connect to server. Please verify address and port.\n\nSave information anyway?", "Error", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    commonConfig.FindServerAutomatically = rbServerConnectAuto.IsChecked == true;
-                    commonConfig.ServerAddress = tbxServerAddress.Text;
-                    commonConfig.ServerPort = Convert.ToInt32(tbxPort.Text);
-                    SaveConfig();
-                    PopUpMsg.DisplayMessage("Connection Information Saved but NOT Valid at this time.");
-                }
-                else
-                {
-                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
-                }
-
-                return;
-            }
-            //RefreshUsers();
-            //if (commonConfig.LogonAutomatically)
-            //{
-            //    ddlUserProfile.SelectedItem = Kernel.AvailableUsers.FirstOrDefault(u => u.Name.Equals(commonConfig.AutoLogonUserName, StringComparison.OrdinalIgnoreCase));
-            //}
-
-            //Validate user
-            var user = ddlUserProfile.SelectedItem as UserDto;
-            var pw = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(tbxUserPassword.Password ?? string.Empty));
-            if (rbLogonAuto.IsChecked == true)
-            {
-                try
-                {
-                    Kernel.AvailableUsers = Kernel.ApiClient.GetAllUsers().ToList();
-                }
-                catch (Exception ex)
-                {
-                    Logger.ReportException("Unable to get users from server",ex);
-                    MessageBox.Show("Error connecting to get users.  Please check server address.", "Cannot get users");
-                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
-                    return;
-                }
-                try
-                {
-                    if (user != null)
-                    {
-                        Kernel.ApiClient.CurrentUserId = new Guid(user.Id);
-                        Kernel.ApiClient.AuthenticateUser(user.Id, pw);
-                    }
-                }
-                catch (MediaBrowser.Model.Net.HttpException ex)
-                {
-                    if (((System.Net.WebException)ex.InnerException).Status == System.Net.WebExceptionStatus.ProtocolError)
-                    {
-                        MessageBox.Show(string.Format("Incorrect password for user {0}", user) , "Error");
-                        PopUpMsg.DisplayMessage("Connection Information NOT Saved");
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.ReportException("Error validating user", ex);
-                    PopUpMsg.DisplayMessage("Connection Information NOT Saved");
-                    return;
-                }
-            }
-
-            //Everything validated - change settings and save
-            commonConfig.FindServerAutomatically = rbServerConnectAuto.IsChecked == true;
-            commonConfig.ServerAddress = tbxServerAddress.Text;
-            commonConfig.ServerPort = Convert.ToInt32(tbxPort.Text);
-            commonConfig.LogonAutomatically = rbLogonAuto.IsChecked == true;
-            commonConfig.AutoLogonUserName = user != null ? user.Name : null;
-            commonConfig.AutoLogonPw = BitConverter.ToString(pw);
-
-            SaveConfig();
-            PopUpMsg.DisplayMessage("Connection information validated and saved.");
-        }
-
-        private void ddlSystemUpdateLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlSystemUpdateLevel.SelectedItem != null)
-            {
-                commonConfig.SystemUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlSystemUpdateLevel.SelectedItem.ToString());
-                SaveConfig();
-            }
-        }
-
-        private void ddlPluginUpdateLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ddlPluginUpdateLevel.SelectedItem != null)
-            {
-                commonConfig.PluginUpdateClass = (PackageVersionClass)Enum.Parse(typeof(PackageVersionClass), ddlPluginUpdateLevel.SelectedItem.ToString());
-                SaveConfig();
-            }
-
-        }
-
-        private void btnCheckForUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            this.Cursor = Cursors.Wait;
-            try
-            {
-                var systemInfo = Kernel.ApiClient.GetSystemInfo("/Public");
-                var serverVersion = new System.Version(systemInfo.Version ?? "3.0");
-
-
-                var mbClassic = Kernel.ApiClient.GetPackageInfo("MBClassic");
-                if (mbClassic != null)
-                {
-                    var newVersion = mbClassic.versions.FirstOrDefault(v => v.classification <= Kernel.Instance.CommonConfigData.SystemUpdateClass
-                                                                            && new System.Version(!string.IsNullOrEmpty(v.requiredVersionStr) ? v.requiredVersionStr : "3.0") <= serverVersion && v.version > Kernel.Instance.Version);
-                    if (newVersion != null)
-                    {
-                        if (MessageBox.Show(string.Format("Update to Version {0} found.  Update now?", newVersion.versionStr), "Update Found", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        {
-                            MessageBox.Show("Configurator will close to execute update.");
-                            // execute update and close us
-                            var info = new ProcessStartInfo
-                                           {
-                                               FileName = ApplicationPaths.UpdaterExecutableFile,
-                                               Arguments = "product=mbc class=" + commonConfig.SystemUpdateClass + " admin=true",
-                                               Verb = "runas"
-                                           };
-
-                            Process.Start(info);
-                            Close();
-                        }
-                    }
-                    else
-                    {
-                        PopUpMsg.DisplayMessage("MB Classic is up to date.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error checking for update: " + ex.Message);
-            }
-
-            this.Cursor = Cursors.Arrow;
-        }
-
-        private void cbxCheckForUpdates_Checked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.EnableUpdates = cbxCheckForUpdates.IsChecked == true;
-            SaveConfig();
-        }
-
-        private void cbxWakeServer_Checked(object sender, RoutedEventArgs e)
-        {
-            commonConfig.WakeServer = cbxWakeServer.IsChecked == true;
-            SaveConfig();
-        }
     }
 
     #region FormatParser Class

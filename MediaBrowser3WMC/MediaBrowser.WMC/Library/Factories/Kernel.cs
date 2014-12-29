@@ -453,49 +453,21 @@ namespace MediaBrowser.Library {
                 return false;
             }
 
-            return (ServerConnected = ServerInfo != null);
-        }
-
-        static bool ConnectAutomatically(int timeout)
-        {
-            var endPoint = new ServerLocator().FindServer();
-            return endPoint != null && ConnectToServer(endPoint.Address.ToString(), endPoint.Port, timeout);
-        }
-
-        public static bool ConnectToServer(CommonConfigData config)
-        {
-            var connected = false;
-
-            if (config.FindServerAutomatically)
+            ServerConnected = ServerInfo != null;
+            if (ServerConnected)
             {
-                connected = ConnectAutomatically(config.HttpTimeout);
-            }
-            else
-            {
-                //server specified
-                connected = ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
-                if (!connected)
-                {
-                    Logger.ReportWarning("Unable to connect to configured server {0}:{1}. Will try automatic detection", config.ServerAddress, config.ServerPort);
-                    connected = ConnectAutomatically(config.HttpTimeout);
-                }
-            }
-
-            if (connected)
-            {
-                Logger.ReportInfo("====== Connected to server {0}:{1}", ApiClient.ServerHostName, ApiClient.ServerApiPort);
                 AvailableUsers = ApiClient.GetAllUsers().ToList();
-                config.ServerPort = ApiClient.ServerApiPort;
-                config.Save();
             }
 
-            return connected;
+
+            return ServerConnected;
         }
+
 
         static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
 
             //Find MB 3 server
-            ConnectToServer(config);
+            //ConnectToServer(config);
             var repository = new MB3ApiRepository();
             var localRepo = GetLocalRepository();
 
