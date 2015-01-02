@@ -255,7 +255,7 @@ namespace MediaBrowser.Library.Persistance
                 item.MovieCount = mb3Item.MovieCount ?? 0;
                 item.SeriesCount = mb3Item.SeriesCount ?? 0;
                 item.EpisodeCount = mb3Item.EpisodeCount ?? 0;
-                item.TrailerCount = mb3Item.TrailerCount ?? 0;
+                item.TrailerCount = mb3Item.LocalTrailerCount ?? 0;
                 item.GameCount = mb3Item.GameCount ?? 0;
                 item.SongCount = mb3Item.SongCount ?? 0;
                 item.AlbumCount = mb3Item.AlbumCount ?? 0;
@@ -617,7 +617,7 @@ namespace MediaBrowser.Library.Persistance
                                                          CollapseBoxSetItems = collapseBoxSets,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
                                                             ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, ItemFields.Metascore,
-                                                            ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines, ItemFields.MediaSources,  }
+                                                            ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines, ItemFields.MediaSources, ItemFields.SpecialEpisodeNumbers }
                                                      });
 
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
@@ -633,7 +633,7 @@ namespace MediaBrowser.Library.Persistance
                                                         {
                                                             ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, ItemFields.Metascore, 
-                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, 
+                                                            ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, ItemFields.SpecialEpisodeNumbers
                                                         };
 
         public IEnumerable<BaseItem> RetrieveItems(ItemQuery query)
