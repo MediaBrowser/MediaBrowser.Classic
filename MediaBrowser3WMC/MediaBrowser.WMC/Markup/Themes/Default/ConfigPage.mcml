@@ -74,7 +74,7 @@
       <BooleanChoice Name="ShowWatchedTickOnFolders" Value="[Application.Config.ShowWatchedTickOnFolders]" />
       <BooleanChoice Name="ShowWatchTickInPosterView" Value="[Application.Config.ShowWatchTickInPosterView]" />
       <BooleanChoice Name="UseExitMenu" Value="[Application.Config.UseExitMenu]" />
-      <BooleanChoice Name="DimUnselectedPosters" Value="[Application.Config.DimUnselectedPosters]" />
+      <BooleanChoice Name="SavePassword" Value="[Application.Config.SavePassword]" />
       <BooleanChoice Name="AllowInternetMetadataProviders" Value="[Application.Config.AllowInternetMetadataProviders]" />
       <BooleanChoice Name="RememberIndexing" Value="[Application.Config.RememberIndexing]" />
       <BooleanChoice Name="RememberFilters" Value="[Application.Config.RememberFilters]" />
@@ -245,6 +245,8 @@
         </Actions>
       </Default>
 
+      <Binding Source="[AutoLogin.Visible]" Target="[SavePasswordCbx.Visible]" />
+
       <Changed Source="[StartUp.Chosen]" >
         <Conditions>
           <Equality Source="[StartUp.ChosenIndex]" Value="0" />
@@ -394,7 +396,7 @@
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ShowNewItemNotificationInPlayer.Value]" Target="[Config.ShowNewItemNotificationInPlayer]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
-      <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
+      <Binding Source="[SavePassword.Value]" Target="[Config.SavePassword]" />
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
       <Binding Source="[UseExitMenu.Value]" Target="[Config.UseExitMenu]" />
       <Binding Source="[UseAutoPlayForIso.Value]" Target="[Config.UseAutoPlayForIso]" />
@@ -641,13 +643,13 @@
                       <me:TextHeader Text="[Application.LocalStrings.#GeneralDisplayConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#ShowClockConfig!cor:String]" Checked="[ShowClock]" Margins="[CMargin]"  FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DimUnselectedPostersConfig!cor:String]" Checked="[DimUnselectedPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <me:TextHeader Text="[Application.LocalStrings.#LoginConfig!cor:String]" />
                       <ss:SimpleSpinner Name="AutoLogin" Label="[Application.LocalStrings.#StartUpConfig!cor:String]"  Model="[StartUp]" ValueMinSize="230,35" ValueMaxSize="230,35" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                       <Text Name="LoginAsOther" Content="Configured to Login as"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" Color="color://s:FontColorMedium" Alpha=".6" Visible="false"/>
+                      <cb:CheckBox Name="SavePasswordCbx" Label="[Application.LocalStrings.#SavePasswordConfig!cor:String]" Checked="[SavePassword]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                 </Children>

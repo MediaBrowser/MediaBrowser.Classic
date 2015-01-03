@@ -30,6 +30,7 @@ using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.ApiClient;
+using MediaBrowser.Model.Connect;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Plugins;
@@ -55,18 +56,6 @@ namespace MediaBrowser
 
     public class Application : ModelItem
     {
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // reset config stuff - be sure and grab the current config file
-                var config = ConfigData.FromFile(ApplicationPaths.ConfigFile);
-                config.InvalidateRecentLists = false;
-                config.Save();
-            }
-            base.Dispose(disposing);
-        }
-
         public Config Config
         {
             get
@@ -477,7 +466,7 @@ namespace MediaBrowser
 
         protected string MessageBox(string msg, bool modal, int timeout, string ui)
         {
-            MessageUI = !string.IsNullOrEmpty(ui) ? ui : CurrentTheme.MsgBox;
+            MessageUI = !string.IsNullOrEmpty(ui) ? ui : LoggedIn ? CurrentTheme.MsgBox : MessageUI;
             MessageResponse = "";
             MessageText = msg;
             ShowMessage = true;
@@ -974,6 +963,8 @@ namespace MediaBrowser
 
         public Item CurrentUser { get; set; }
 
+        private List<Item> _availableServers;
+        public List<Item> AvailableServers { get { return _availableServers ?? (_availableServers = Kernel.KnownServers.Values.Select(s => ItemFactory.Instance.Create(new Server { Name = s.Name, Id = new Guid(s.Id), Info = s, TagLine = s.UserLinkType != null ? s.RemoteAddress : s.LocalAddress })).ToList()); } } 
         private List<Item> _availableUsers; 
         public List<Item> AvailableUsers { get { return _availableUsers ?? (_availableUsers = Kernel.AvailableUsers.Select(u =>ItemFactory.Instance.Create(new User {Name=u.Name, Id = new Guid(u.Id ?? ""),  Dto = u, ParentalAllowed = !u.HasPassword, TagLine = "last seen" + Helper.FriendlyDateStr((u.LastActivityDate ?? DateTime.MinValue).ToLocalTime())})).ToList()); } } 
         public List<Item> OtherAvailableUsers { get { return AvailableUsers.Where(u => u.Name != CurrentUser.Name).ToList(); } }
@@ -1579,7 +1570,7 @@ namespace MediaBrowser
 
         public void Back()
         {
-            if (Config.UseExitMenu && session.AtRoot)
+            if (LoggedIn && Config.UseExitMenu && session.AtRoot)
             {
                 // show menu
                 DisplayExitMenu = true;
@@ -1766,7 +1757,7 @@ namespace MediaBrowser
                 {
                     Kernel.Instance.CommonConfigData.LogonAutomatically = value;
                     Kernel.Instance.CommonConfigData.AutoLogonUserName = Kernel.CurrentUser.Name;
-                    Kernel.Instance.CommonConfigData.AutoLogonPw = Kernel.CurrentUser.PwHash;
+                    Kernel.Instance.CommonConfigData.AutoLogonPw = Kernel.Instance.CommonConfigData.SavePassword ? Kernel.CurrentUser.PwHash : null;
                     Kernel.Instance.CommonConfigData.Save();
                     FirePropertyChanged("AutoLogin");
                 }
@@ -1810,10 +1801,65 @@ namespace MediaBrowser
 
         }
 
+        public bool IsRemoteConnection { get { return Kernel.ApiClient.IsRemoteConnection; }}
+
         bool ConnectAutomatically(int timeout)
         {
-            var endPoint = new ServerLocator().FindServer();
-            return endPoint != null && Kernel.ConnectToServer(endPoint.Address.ToString(), endPoint.Port, timeout);
+            var info = new ServerLocator().FindServer();
+            if (info != null)
+            {
+                var fullAddress = info.UserLinkType != null ? info.RemoteAddress : info.LocalAddress;
+                fullAddress = fullAddress.Substring(fullAddress.IndexOf("//", StringComparison.Ordinal) + 2);
+                var parts = fullAddress.Split(':');
+                var address = parts[0];
+                var port = parts.Length > 1 ? parts[1] : "8096";
+                int intPort;
+                Int32.TryParse(port, out intPort);
+                return Kernel.ConnectToServer(address, intPort > 0 ? intPort : 8096, timeout);
+            }
+
+            return false;
+        }
+
+        public void ConnectToServer(string address, string port)
+        {
+            ConnectToServer(address, port, null);
+        }
+
+        public void ConnectToServer(string address, string port, ServerInfo info)
+        {
+            //Manually connect
+            int intPort;
+            Int32.TryParse(port, out intPort);
+            if (!Kernel.ConnectToServer(address, intPort, 10000, info))
+            {
+                DisplayDialog(String.Format("Unable to connect to server at {0}:{1}", address, port), "Connect Failed");
+            }
+            else
+            {
+                Logger.ReportInfo("Connected to server {0} at {1}:{2}", Kernel.ServerInfo.ServerName, address, port);
+                Logger.ReportInfo("Server version: " + Kernel.ServerInfo.Version);
+                Login();
+            }
+        }
+
+        public void ConnectToServer(Item serverItem)
+        {
+            var server = serverItem.BaseItem as Server;
+            if (server != null)
+            {
+                var fullAddress = server.Info.UserLinkType != null ? server.Info.RemoteAddress : server.Info.LocalAddress;
+                fullAddress = fullAddress.Substring(fullAddress.IndexOf("//", StringComparison.Ordinal) + 2);
+                var parts = fullAddress.Split(':');
+                var address = parts[0];
+                var port = parts.Length > 1 ? parts[1] : "8096";
+                ConnectToServer(address, port, server.Info);
+            }
+            else
+            {
+                Logger.ReportError("Attempt to connect to invalid server item");
+                throw new ApplicationException("Attempt to connect to invalid server item");
+            }
         }
 
         public bool ConnectToServer(CommonConfigData config)
@@ -1826,6 +1872,8 @@ namespace MediaBrowser
             }
             else
             {
+                if (config.ShowServerSelection) return false;
+
                 //server specified
                 connected = Kernel.ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
                 if (!connected)
@@ -1844,6 +1892,22 @@ namespace MediaBrowser
 
             return connected;
         }
+
+        public string NewPin
+        {
+            get
+            {
+                var result = Kernel.ConnectApiClient.CreatePin(new DeviceId().Value);
+                if (result != null)
+                {
+                    return result.Pin;
+                }
+
+                Logger.ReportError("Could not create Pin");
+                return "";
+            }
+        }
+
         /// <summary>
         /// Log in to default or show a login screen with choices
         /// </summary>
@@ -1858,10 +1922,30 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    //Unable to connect...
-                    Close();
+                    //Unable to connect through discovery or configuration
+                    ConnectLogin();
+                    return;
                 }
 
+            }
+
+            // see if we are a connect server and direct authenticate if so
+            if (Kernel.CurrentServer.UserLinkType != null)
+            {
+                var userDto = Kernel.ApiClient.AuthenticateConnectUser(Kernel.Instance.CommonConfigData.ConnectUserId, Kernel.CurrentServer.ExchangeToken);
+                if (userDto != null)
+                {
+                    LoginUser(ItemFactory.Instance.Create(new User {Name = userDto.Name, Dto = userDto, Id = new Guid(userDto.Id ?? ""), ParentalAllowed = userDto.HasPassword}), false);
+                    UsingDirectEntry = true;
+                    OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> { { "Application", this } });
+                    return;
+                }
+                else
+                {
+                    Logger.ReportError("Error logging into server {0}/{1} with connect", Kernel.CurrentServer.Name, Kernel.CurrentServer.RemoteAddress);
+                    Async.Queue("Connect error", () => MessageBox("Could not connect to server.  Please try again later."));
+                }
+                return;
             }
 
             var parms = Config.StartupParms ?? "";
@@ -1889,14 +1973,78 @@ namespace MediaBrowser
             {
                 // only one user or specified - log in automatically
                 UsingDirectEntry = true;
-                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application",this}});
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application", this}});
                 LoginUser(user);
             }
             else
             {
                 // show login screen
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application",this}});
+                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application", this}});
             }
+        }
+
+        public void ConnectLogin()
+        {
+            if (!String.IsNullOrEmpty(Kernel.Instance.CommonConfigData.ConnectUserToken))
+            {
+                //display server list from connect
+                OpenServerSelectionPage();
+            }
+            else
+            {
+                //login with connect screen
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/ConnectLogin", new Dictionary<string, object> { { "Application", this } });
+            }
+
+        }
+
+        public void PinLogin(string pin)
+        {
+            //Try to exchange the pin for a connect user id and token
+            try
+            {
+                var result = Kernel.ConnectApiClient.ExchangePin(pin, new DeviceId().Value);
+                Kernel.Instance.CommonConfigData.ConnectUserId = result.UserId;
+                Kernel.Instance.CommonConfigData.ConnectUserToken = result.AccessToken;
+                Kernel.Instance.CommonConfigData.Save();
+
+                //now load available servers and display selection screen
+                OpenServerSelectionPage();
+            }
+            catch (Exception e)
+            {
+                Logger.ReportException("Error trying to exchange pin {0}/{1}", e, pin, new DeviceId().Value);
+                DisplayDialog("Unable to verify PIN.  Please ensure you properly confirmed it on the web site.", "PIN not confirmed");
+            }
+        }
+
+        public void OpenServerSelectionPage()
+        {
+            //Get all available servers
+
+            //First the local one
+            var info = new ServerLocator().FindServer();
+            if (info != null)
+            {
+                Kernel.AddServer(info);
+            }
+
+            //Then connect ones
+            if (Kernel.Instance.CommonConfigData.ConnectUserToken != null)
+            {
+                Kernel.ConnectApiClient.SetUserToken(Kernel.Instance.CommonConfigData.ConnectUserToken);
+                var servers = Kernel.ConnectApiClient.GetAvailableServers(Kernel.Instance.CommonConfigData.ConnectUserId);
+                if (servers != null)
+                {
+                    foreach (var availableServer in servers)
+                    {
+                        Kernel.AddServer(availableServer);
+                    }
+                }
+            }
+            
+            session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ServerSelection", new Dictionary<string, object> { { "Application", this } });
+            
         }
 
         public void LoginUser(string name, string pw)
@@ -1938,7 +2086,7 @@ namespace MediaBrowser
             if (authenticate && Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
             {
                 // Try with saved pw
-                if (!Kernel.Instance.CommonConfigData.LogonAutomatically || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
+                if (!Kernel.Instance.CommonConfigData.LogonAutomatically || Kernel.CurrentUser.Name != user.Name || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
                 {
                     // show pw screen
                     OpenSecurityPage("Please Enter Password for " + CurrentUser.Name + " (select or enter when done)");

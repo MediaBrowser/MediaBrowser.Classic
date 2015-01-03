@@ -132,10 +132,23 @@ namespace MediaBrowser.ApiInteraction
 
         public int GetMaxBitRate()
         {
-            return ServerHostName.StartsWith("192.168") || ServerHostName.StartsWith("127.0")
-                || ServerHostName.StartsWith("172.16") || ServerHostName.StartsWith("10.0")
-                || ServerHostName.StartsWith("169.254") || !ServerHostName.Contains('.') 
-                ? Config.Instance.LocalMaxBitrate * 1000000 : Config.Instance.RemoteMaxBitrate * 1000000;
+                return IsLocalConnection ? Config.Instance.LocalMaxBitrate * 1000000 : Config.Instance.RemoteMaxBitrate * 1000000;
+        }
+
+        public bool IsLocalConnection
+        {
+            get
+            {
+                return ServerHostName.StartsWith("192.168") || ServerHostName.StartsWith("127.0")
+                       || ServerHostName.StartsWith("172.16") || ServerHostName.StartsWith("10.0")
+                       || ServerHostName.StartsWith("169.254") || !ServerHostName.Contains('.');
+
+            }
+        }
+
+        public bool IsRemoteConnection
+        {
+            get { return !IsLocalConnection; }
         }
 
         /// <summary>

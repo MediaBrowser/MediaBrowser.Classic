@@ -234,9 +234,6 @@ namespace MediaBrowser
         [Group("Display")]
         [Comment(@"Scroll poster views vertically instead of horizontally.")]
         public bool DefaultVerticalScroll = false;
-        [Group("Display")]
-        [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
-        public int DefaultMessageTimeout = 30;
         [Comment(@"The number of seconds to display new item notification.")]
         public int NewItemNotificationDisplayTime = 10;
         [Dangerous]

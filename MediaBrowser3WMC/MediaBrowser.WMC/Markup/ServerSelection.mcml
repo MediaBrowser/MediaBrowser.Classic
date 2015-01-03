@@ -1,0 +1,338 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+    xmlns:cor="assembly://MsCorLib/System"
+    xmlns:mcui="assembly://Microsoft/Microsoft.MediaCenter.UI/Microsoft.MediaCenter.UI"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+    xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+    xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+    xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"      
+      xmlns:spl="resx://Mediabrowser/MediaBrowser.Resources/Splash"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+	  xmlns:te="resx://MediaBrowser/MediaBrowser.Resources/TextEdit"
+    xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
+    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/DefaultSS"      
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:me="Me"
+    >
+
+  <UI Name="ServerSelection">
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+    </Properties>
+
+    <Locals>
+      <a:Config Name="Config" Config="[Application.Config]"/>
+      <ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="ScrollingHandler"/>
+
+      <ScrollingData Name="ScrollingData" EndPadding="50" BeginPadding="50" EndPaddingRelativeTo="Far" />
+
+      <Timer Name="MsgDelay" AutoRepeat="false" Interval="150" Enabled="false"/>
+      <Command Name="ShowManualLogin" />
+      <Command Name="ManualLogin" />
+      <Command Name="CloseMessage"/>
+      <EditableText Name="Address" />
+      <EditableText Name="Port" Value="8096" />
+    </Locals>
+
+    <Rules>
+      <!-- Give ScrollingData to ScrollingHandler. -->
+      <Binding Target="[ScrollingHandler.ScrollingData]" Source="[ScrollingData]"/>
+      <Binding Target="[Scroller.ScrollingData]" Source="[ScrollingData]" />
+      <!-- Give Repeater to ScrollingData. -->
+      <Default Target="[ScrollingData.Repeater]" Value="[Repeater]"/>
+
+      <!--We don't want to land here if we've already successfully logged in because plugins can't load twice-->
+      <Condition Source="[Application.LoggedIn]" SourceValue="true">
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Condition>
+      <!-- END Configuration Checks & Display Setup -->
+
+      <Binding Source="[Application.ScreenSaverActive]" Target="[ScreenSaver.Visible]" />
+
+      <Binding Source="[Application.AvailableServers]" Target="[Repeater.Source]" />
+      
+      <Default Target="[NoServers.Visible]" Value="true" >
+        <Conditions>
+          <Equality Source="[Application.AvailableServers.Count]" Value="0" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[ShowManualLogin.Invoke]" />
+        </Actions>
+      </Default>
+
+      <!--Manual Login-->
+      <Changed Source="[ManualLogin.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.ConnectToServer]" address="[Address.Value]" port="[Port.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowManualLogin.Invoked]" >
+        <Actions>
+          <Set Target="[ManualLoginPanel.Visible]" Value="true" />
+          <Set Target="[ShowManualBtn.Visible]" Value="false" />
+          <Invoke Target="[ManualLoginPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
+      <Binding Source="[Application.MessageText]" Target="[MessageBox.Msg]" />
+      <Binding Source="[Application.MessageUI]" Target="[MessageBox.Source]" />
+      <Changed Source="[CloseMessage.Invoked]">
+        <Actions>
+          <Set Target="[Application.ShowMessage]" Value="false" />
+        </Actions>
+      </Changed>
+
+      <!--Message box-->
+      <Changed Source="[Application.ShowMessage]" >
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[MsgDelay.Start]" />
+          <Set Target="[MouseBlocker.Visible]" Value="true" />
+          <Set Target="[MessageBox.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[MsgDelay.Tick]" >
+        <Actions>
+          <Invoke Target="[MessageBox.NavigateInto]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Application.ShowMessage]">
+        <Conditions>
+          <Equality Source="[Application.ShowMessage]" ConditionOp="Equals" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[MessageBox.Visible]" Value="false" />
+          <Set Target="[MouseBlocker.Visible]" Value="false" />
+          <Invoke Target="[Repeater.NavigateInto]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="Transparent" Layout="Form">
+        <Children>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Application.CurrentFolderModel]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </ss:DefaultScreenSaver>
+          <!--MessageBox-->
+          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
+                </Keyframes>
+              </Animation>
+              <Animation Type="Hide" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="1" />
+                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </msg:MessageBox>
+
+          <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+
+          <Text Name="Title" Content="Please Select a Server >" Font="Segoe UI Light, 48" Color="White" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,.1" Top="Parent,.1"/>
+            </LayoutInput>
+
+          </Text>
+          <Scroller Orientation="Horizontal" FadeSize="0" Name="Scroller" Navigation="RememberFocus" ScrollingData="[ScrollingData]">
+            <LayoutInput>
+              <FormLayoutInput Top="Title,1,10"/>
+            </LayoutInput>
+            <Children>
+              <Repeater Name="Repeater" DiscardOffscreenVisuals="false" Margins="20,55,0,0" MaximumSize="0,260" >
+                <Layout>
+                  <GridLayout Orientation="Vertical" Columns="0" AllowWrap="true" Spacing="20,10"/>
+                </Layout>
+                <Animations>
+                  <Animation Type="Move">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" RelativeTo="Current"/>
+                      <PositionKeyframe Time="0.3" RelativeTo="Final" Interpolation="EaseIn"/>
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="Show">
+                    <Keyframes>
+                      <ScaleKeyframe Time="0" Value="0,0,0" />
+                      <ScaleKeyframe Time=".3" Value="1,1,1" Interpolation="SCurve"/>
+                    </Keyframes>
+                  </Animation>
+                  <Animation Type="Hide">
+                    <Keyframes>
+                      <ScaleKeyframe Time="0" Value="1,1,1" Interpolation="SCurve"/>
+                      <ScaleKeyframe Time="0.2" Value="0,0,0" />
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+                <Content>
+                  <me:ServerTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" />
+                </Content>
+              </Repeater>
+            </Children>
+            </Scroller>
+          <Text Name="NoServers" Content="No Servers Found" Font="Segoe Media Center Light, 42, Bold" Color="White" Alpha=".5" Visible="false" />
+          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="400,0" MaintainAspectRatio="true">
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+
+          </Graphic>
+
+          <sb:SimpleButton  Name="ShowManualBtn" Text="[Application.LocalStrings.#ManualLogin!cor:String]" Alpha=".7" Margins="20,0,0,20"  Command="[ShowManualLogin]" Size="200,40" Font="Segoe Media Center Light, 14, Bold">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Far"/>
+            </LayoutInput>
+            
+          </sb:SimpleButton>
+
+
+          <Panel Name="ManualLoginPanel" Layout="HorizontalFlow" Visible="false"  >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0, 220" Bottom="Parent,1,-20"/>
+            </LayoutInput>
+            <Children>
+              <te:TextEdit Label="Address" EditableText="[Address]" MaximumSize="300,0" EditSize="200,34" 
+                           Font="Segoe Media Center Light, 16, Bold" MaxChars="60" />
+              <te:TextEdit Label="Port" EditableText="[Port]" MaximumSize="300,0" EditSize="200,34" 
+                           Font="Segoe Media Center Light, 16, Bold" MaxChars="60" />
+              <sb:SimpleButton  Name="ManualBtn" Text="[Application.LocalStrings.#Login!cor:String]" Margins="10,0,0,0"  Command="[ManualLogin]" Size="100,40" Font="Segoe Media Center Light, 16, Bold" />
+            </Children>
+          </Panel>
+              <ColorFill Content="[Config.LoginBgColor]" Layout="Fill"/>
+          <!--<Graphic Name="Bg" Content="image://i:Background" Layout="Fill"/>-->
+        </Children>
+      </ColorFill>
+
+    </Content>
+
+  </UI>
+
+  <UI Name="ServerTile">
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:Item Name="Item" Item="$Required" />
+      <Size Name="IconSize" Size="120,120" />
+      <Index Name="Index" Index="null" />
+      <cor:String Name="Label" String="" />
+      <Vector3 Name="FocusZoom" Vector3="1.1,1.1,1.1" />
+      <Font Name="Font" Font="Segoe UI Light, 40" />
+      <Size Name="Size" Size="505,120" />
+      <Command Name="Command" Available="false" />
+      <Color Name="BGColor" Color="60,60,60" />
+    </Properties>
+    <Locals>
+      <ClickHandler Name="Clicker" />
+    </Locals>
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Default Target="[Input.MakeTopmostOnFocus]" Value="true" />
+      <Default Target="[ItemPoster.Alpha]" Value=".9" />
+      <Default Target="[Title.Content]" Value="[Label]">
+        <Conditions>
+          <Equality Source="[Label]" ConditionOp="NotEquals" Value=""/>
+        </Conditions>
+      </Default>
+      <Default Target="[Title.Content]" Value="[Item.Name]">
+        <Conditions>
+          <Equality Source="[Label]" Value=""/>
+        </Conditions>
+        <Transformer>
+          <FormatTransformer ToLower="true"/>
+        </Transformer>
+      </Default>
+
+      <Changed Source="[Input.KeyFocus]">
+        <Conditions>
+          <Equality Source="[Input.KeyFocus]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ItemPoster.Alpha]" Value="1" />
+          <Set Target="[Bg.Content]" Value="188,188,188" />
+          <Set Target="[Title.Color]" Value="Black" />
+          <Set Target="[Address.Color]" Value="Black" />
+          <Set Target="[FocusInd.Visible]" Value="true" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="true" />
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Command.Invoke]" />
+        </Actions>
+      </Changed>
+      <Changed Source="[Clicker.Invoked]">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="false" />
+          <IsValid Source="[Item]"/>
+        </Conditions>
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Item.SelectAction]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <Panel Layout="Form" MinimumSize="[Size]" MaximumSize="[Size]" >
+        <Children>
+          <ColorFill Name="Bg" Content="[BGColor]" Layout="HorizontalFlow" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0,5" Top="Parent, 0"/>
+            </LayoutInput>
+            <Children>
+              <Graphic Name="ItemPoster" Content="resx://MediaBrowser/MediaBrowser.Resources/server"  MinimumSize="[IconSize]" MaximumSize="[IconSize]">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Parent, 0"/>
+                </LayoutInput>
+              </Graphic>
+              <Panel Name="TextBlock" Layout="VerticalFlow" MaximumSize="380,120" MinimumSize="380,120" >
+                <Children>
+                  <Text Name="Title" Content="[Label]" Font="[Font]" Color="White" Margins="25,3,0,0" HorizontalAlignment="Near" WordWrap="true" MaximumLines="2" FadeSize="150" />
+                  <Text Name="Address" Content="[Item.TagLine]" Font="Segoe UI Light, 16" Color="White" Margins="25,0,0,0" HorizontalAlignment="Near" WordWrap="true" MaximumLines="2" FadeSize="150" />
+              
+                </Children>
+              </Panel>
+            </Children>
+            <Animations>
+              <Animation Type="Scale">
+                <Keyframes>
+                  <ScaleKeyframe Time="0" Interpolation="Linear" RelativeTo="Current" />
+                  <ScaleKeyframe Time="0.4" Interpolation="Linear" RelativeTo="Final" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </ColorFill>
+
+          <ColorFill Name="FocusInd" Content="200,0,0" MinimumSize="5,120" MaximumSize="5,120" Visible="false" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0" Top="Parent, 0"/>
+            </LayoutInput>
+            
+          </ColorFill>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

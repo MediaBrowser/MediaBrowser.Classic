@@ -91,8 +91,7 @@ namespace MediaBrowser.Util
 
             try
             {
-                var systemInfo = Kernel.ApiClient.GetSystemInfo("/Public");
-                var serverVersion = new System.Version(systemInfo.Version ?? "3.0");
+                var serverVersion = new System.Version(Kernel.ServerInfo != null ? Kernel.ServerInfo.Version ?? "3.0" : "3.0");
                 
 
                 var mbClassic = Kernel.ApiClient.GetPackageInfo("MBClassic");

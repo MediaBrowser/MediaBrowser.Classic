@@ -1,0 +1,105 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+    xmlns:me="Me"
+      >
+
+
+  <UI Name="ConnectLogin"> 
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+
+    </Properties>
+
+    <Locals>
+      <Command Name="Next" />
+      <Command Name="Cancel" />
+      <cor:String Name="PinValue" String="" />
+    </Locals>
+
+    <Rules>
+      <!--if not called by us (user used "back" to get to us) exit immediately-->
+      <Condition Source="[Application.NavigatingForward]" SourceValue="false">
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Condition>
+
+      <Default Target="[PinValue]" Value="[Application.NewPin]" />
+      <Binding Target="[PIN.Content]" Source="[PinValue]" />
+      
+      <Changed Source="[Next.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.PinLogin]" pin="[PinValue]" />
+        </Actions>
+        
+      </Changed>
+      <Changed Source="[Cancel.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <Graphic Name="Main" Content="resx://MediaBrowser/MediaBrowser.Resources/BackgroundBlack" Layout="Form" >
+        <Children>
+          <Graphic Name="Logo" Content="[Application.LogonSplashImage]" Margins="50,55,50,0" MaintainAspectRatio="true" MaximumSize="400, 100" CenterPointPercent=".5,.5,.5" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Near" />
+            </LayoutInput>
+          </Graphic>
+
+          <Text Content="Welcome to Media Browser" Font="Segoe UI Light, 48" Color="White" Margins="50,50,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Near" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="FirstPara" Content="Media Browser is a centralized management and playback system for all of your videos, movies, tv shows, photos and more. It relies upon a server program to provide you access to and playback of your media." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,50,50,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="Parent, .2" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="SecondPara" Content="If you don't have a Media Browser server on your network but someone has shared theirs with you, you can access it by using Media Browser Connect.  Simply go to http://mediabrowser.tv/pin, login with your Media Browser Community ID and enter the PIN code below.  Then come back here and select 'Next'." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,10,50,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="FirstPara, 1" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="ThirdPara" Content="If you don't have access to a Media Browser Server, you can install one by going to http://mediabrowser.tv." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,20,50,50" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="SecondPara, 1" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="PIN" Font="Segoe UI, 24, Bold" Color="White" Margins="0,20,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Center" Top="ThirdPara, 1" />
+            </LayoutInput>
+          </Text>
+
+          <Panel Name="ButtonPanel" Layout="HorizontalFlow" Margins="0,0,50,30" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Far" />
+            </LayoutInput>
+            <Children>
+              <sb:SimpleButton Name="NextBtn" Text="Next" Command="[Next]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
+              <sb:SimpleButton Name="CancelBtn" Text="Cancel"  Command="[Cancel]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
+
+            </Children>
+          </Panel>
+
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+
+
+</Mcml>

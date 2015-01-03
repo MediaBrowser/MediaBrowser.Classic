@@ -21,11 +21,13 @@ namespace MediaBrowser
     public class CommonConfigData
     {
         public bool FindServerAutomatically = true;
+        public bool ShowServerSelection = false;
         public string ServerAddress = "";
         public int ServerPort = 8096;
         public string LastServerMacAddress;
 
         public bool LogonAutomatically = false;
+        public bool SavePassword = true;
         public string AutoLogonUserName;
         public string AutoLogonPw;
 
@@ -46,6 +48,12 @@ namespace MediaBrowser
 
         public DateTime LastNagDate = DateTime.MinValue;
 
+        public string ConnectUserId;
+        public string ConnectUserToken;
+
+        [Group("Display")]
+        [Comment(@"The number of seconds to wait for message boxes if not otherwise specified.")]
+        public int DefaultMessageTimeout = 30;
         [Group("Updates")]
         [Comment(@"Enable the automatic checking for updates (both MB and plugins).")]
         public bool EnableUpdates = true;

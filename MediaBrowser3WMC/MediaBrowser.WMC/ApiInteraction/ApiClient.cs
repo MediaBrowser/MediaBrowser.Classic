@@ -4,6 +4,7 @@ using System.Web;
 using MediaBrowser.Library;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Model.Configuration;
+using MediaBrowser.Model.Connect;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
@@ -1450,6 +1451,35 @@ namespace MediaBrowser.ApiInteraction
             CurrentSessionInfo = result.SessionInfo;
             AuthToken = result.AccessToken;
             HttpClient.SetAuthorizationToken(AuthToken);
+        }
+
+        public UserDto AuthenticateConnectUser(string connectId, string exchangeToken)
+        {
+            if (string.IsNullOrEmpty(connectId))
+            {
+                throw new ArgumentNullException("connectId");
+            }
+
+            var args = new QueryStringDictionary();
+
+            args["ConnectUserId"] = connectId;
+
+            var url = GetApiUrl("Connect/Exchange", args);
+            HttpClient.SetAuthorizationToken(exchangeToken);
+
+            using (var stream = GetSerializedStream(url))
+            {
+                var result = DeserializeFromStream<ConnectAuthenticationExchangeResult>(stream);
+                if (result != null)
+                {
+                    AuthToken = result.AccessToken;
+                    HttpClient.SetAuthorizationToken(AuthToken);
+                    //AuthenticateUser(result.LocalUserId, new byte[]{});
+                    return GetUser(new Guid(result.LocalUserId));
+                }
+
+                return null;
+            }
         }
 
         /// <summary>

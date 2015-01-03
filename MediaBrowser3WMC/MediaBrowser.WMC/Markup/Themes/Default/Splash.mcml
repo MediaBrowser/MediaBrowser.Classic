@@ -88,6 +88,13 @@
             </Animations>
           </Graphic>
 
+          <Text Name="RemoteWarning" Content="Note: Some operations may not perform well or function at all on a remote connection" Font="Segoe UI Light, 18, Bold" Color="AliceBlue" Visible="[Application.IsRemoteConnection]" WordWrap="true" >
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent, 1, -50" Right="Parent, 1, -50" Left="Parent, .4" />
+            </LayoutInput>
+            
+          </Text>
+
           <ColorFill Name="Dots" Content="Transparent" Layout="HorizontalFlow" >
             <LayoutInput>
               <FormLayoutInput Top="Logo, 1, 10" Bottom="Logo, 1, 20" Right="Parent, 1" Left="Parent, .4" />

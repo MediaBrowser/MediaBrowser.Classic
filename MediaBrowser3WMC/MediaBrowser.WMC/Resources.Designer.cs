@@ -1503,6 +1503,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] ConnectLogin {
+            get {
+                object obj = ResourceManager.GetObject("ConnectLogin", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ContextMenu {
             get {
                 object obj = ResourceManager.GetObject("ContextMenu", resourceCulture);
@@ -3845,6 +3855,26 @@ namespace MediaBrowser {
         internal static byte[] SeekBar {
             get {
                 object obj = ResourceManager.GetObject("SeekBar", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap server {
+            get {
+                object obj = ResourceManager.GetObject("server", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ServerSelection {
+            get {
+                object obj = ResourceManager.GetObject("ServerSelection", resourceCulture);
                 return ((byte[])(obj));
             }
         }

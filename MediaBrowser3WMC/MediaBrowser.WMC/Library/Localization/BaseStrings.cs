@@ -277,6 +277,8 @@ namespace MediaBrowser.Library.Localization
         public string MaxThumbWidthConfigDesc = "Maximum width of thumb images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
         public string MaxBackgroundWidthConfig = "Max Backdrop Width";
         public string MaxBackgroundWidthConfigDesc = "Maximum width of backdrop images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
+        public string SavePasswordConfig = "Save Password";
+        public string SavePasswordConfigDesc = "Deselect if you would like to be prompted for the password on auto login";
 
         //JIL
         public string ThisWeek = "This Week";
@@ -470,6 +472,7 @@ namespace MediaBrowser.Library.Localization
         public string AtStr = "at";  //x at y, e.g. 1920x1080 at 25 fps
         public string Rated = "Rated";
         public string Or = "Or ";
+        public string Configure = "Configure...";
         public string Lower = "Lower";
         public string Higher = "Higher";
         public string Search = "Search";

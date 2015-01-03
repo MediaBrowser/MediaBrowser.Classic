@@ -562,6 +562,37 @@ namespace MediaBrowser
                 CommonData.ServerAddress = Kernel.ApiClient.ServerHostName; Save(); FirePropertyChanged("FindServerAutomatically"); } }
         }
 
+        public bool ShowServerSelection
+        {
+            get { return this.CommonData.ShowServerSelection; }
+            set
+            {
+                if (this.CommonData.ShowServerSelection != value)
+                {
+                    this.CommonData.ShowServerSelection = value;
+                    Save(); FirePropertyChanged("ShowServerSelection");
+                }
+            }
+        }
+
+        public bool SavePassword
+        {
+            get { return this.CommonData.SavePassword; }
+            set
+            {
+                if (this.CommonData.SavePassword != value)
+                {
+                    this.CommonData.SavePassword = value;
+                    {
+                        CommonData.AutoLogonPw =  value ? Kernel.CurrentUser.PwHash : null;
+                        Save();
+                        FirePropertyChanged("SavePassword");
+                    }
+                }
+
+            }
+        }
+
         public bool WakeServer
         {
             get { return this.CommonData.WakeServer; }
@@ -716,8 +747,8 @@ namespace MediaBrowser
         }
         public int DefaultMessageTimeout
         {
-            get { return this.Data.DefaultMessageTimeout; }
-            set { if (this.Data.DefaultMessageTimeout != value) { this.Data.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
+            get { return this.CommonData.DefaultMessageTimeout; }
+            set { if (this.CommonData.DefaultMessageTimeout != value) { this.CommonData.DefaultMessageTimeout = value; Save(); FirePropertyChanged("DefaultMessageTimeout"); } }
         }
         public int HttpTimeout
         {

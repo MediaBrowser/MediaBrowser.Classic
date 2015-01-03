@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using MediaBrowser.Model.ApiClient;
+using Newtonsoft.Json;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -10,14 +12,14 @@ namespace MediaBrowser.ApiInteraction
         /// <summary>
         /// Attemps to discover the server within a local network
         /// </summary>
-        public IPEndPoint FindServer()
+        public ServerInfo FindServer()
         {
             // Create a udp client
             var client = new UdpClient(new IPEndPoint(IPAddress.Any, GetRandomUnusedPort()));
             client.Client.ReceiveTimeout = 5000;
 
             // Construct the message the server is expecting
-            var bytes = Encoding.UTF8.GetBytes("who is MediaBrowserServer?");
+            var bytes = Encoding.UTF8.GetBytes("who is MediaBrowserServer_v2?");
 
             // Send it - must be IPAddress.Broadcast, 7359
             var targetEndPoint = new IPEndPoint(IPAddress.Broadcast, 7359);
@@ -31,18 +33,16 @@ namespace MediaBrowser.ApiInteraction
                 var result = client.Receive(ref targetEndPoint);
 
                 // Convert bytes to text
-                var text = Encoding.UTF8.GetString(result);
+                var json = Encoding.UTF8.GetString(result);
 
-                // Expected response : MediaBrowserServer|192.168.1.1:1234
-                // If the response is what we're expecting, proceed
-                if (text.StartsWith("mediabrowserserver", StringComparison.OrdinalIgnoreCase))
-                {
-                    text = text.Split('|')[1];
+                var info = new NewtonsoftJsonSerializer().DeserializeFromString<ServerDiscoveryInfo>(json);
 
-                    var vals = text.Split(':');
-
-                    return new IPEndPoint(IPAddress.Parse(vals[0]), int.Parse(vals[1]));
-                }
+                return new ServerInfo
+                       {
+                           Name = info.Name,
+                           Id = info.Id,
+                           LocalAddress = info.Address
+                       };
             }
             catch (Exception exception)
             {

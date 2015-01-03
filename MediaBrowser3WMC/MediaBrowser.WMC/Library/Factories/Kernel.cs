@@ -23,7 +23,9 @@ using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UI;
 using MediaBrowser.Library.Util;
 using MediaBrowser.LibraryManagement;
+using MediaBrowser.Model.ApiClient;
 using MediaBrowser.Model.Configuration;
+using MediaBrowser.Model.Connect;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.System;
@@ -423,15 +425,18 @@ namespace MediaBrowser.Library {
         }
 
         public static ApiClient ApiClient;
+        public static ConnectApiClient ConnectApiClient = new ConnectApiClient(new NullLogger());
         public static User CurrentUser;
-        public static List<UserDto> AvailableUsers; 
+        public static List<UserDto> AvailableUsers;
+        public static ServerInfo CurrentServer;
         public static bool ServerConnected { get; set; }
         public static SystemInfo ServerInfo { get; set; }
+        public static Dictionary<String, ServerInfo> KnownServers = new Dictionary<string, ServerInfo>();
         public static ServerConfiguration ServerConfig { get; set; }
-        public static List<PluginInfo> ServerPlugins { get; set; } 
+        public static List<PluginInfo> ServerPlugins { get; set; }
         public string DashboardUrl { get { return ApiClient.ApiUrl + "/dashboard"; } }
 
-        public static bool ConnectToServer(string address, int port, int timeout)
+        public static bool ConnectToServer(string address, int port, int timeout, ServerInfo serverInfo = null)
         {
             ApiClient = new ApiClient
             {
@@ -454,20 +459,32 @@ namespace MediaBrowser.Library {
             }
 
             ServerConnected = ServerInfo != null;
-            if (ServerConnected)
+            if (ServerConnected && ServerInfo != null)
             {
-                AvailableUsers = ApiClient.GetAllUsers().ToList();
+                CurrentServer = new ServerInfo {Id = ServerInfo.Id, Name = ServerInfo.ServerName, LocalAddress = ServerInfo.LocalAddress, RemoteAddress = ServerInfo.WanAddress, UserLinkType = serverInfo != null ? serverInfo.UserLinkType : null, ExchangeToken = serverInfo != null ? serverInfo.ExchangeToken : null};
+                AddServer(CurrentServer);
+                AvailableUsers = CurrentServer.UserLinkType == UserLinkType.Guest ? new List<UserDto>() : ApiClient.GetAllUsers().ToList();
             }
 
-
             return ServerConnected;
+        }
+
+        public static bool AddServer(ServerInfo info)
+        {
+            if (KnownServers.ContainsKey(info.Id))
+            {
+                return false;
+            }
+            else
+            {
+                KnownServers.Add(info.Id, info);
+                return true;
+            }
         }
 
 
         static Kernel GetDefaultKernel(CommonConfigData config, KernelLoadDirective loadDirective) {
 
-            //Find MB 3 server
-            //ConnectToServer(config);
             var repository = new MB3ApiRepository();
             var localRepo = GetLocalRepository();
 
