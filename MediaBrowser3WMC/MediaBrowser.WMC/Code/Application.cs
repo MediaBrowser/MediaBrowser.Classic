@@ -1801,6 +1801,14 @@ namespace MediaBrowser
 
         }
 
+        public void RestartWithConnect()
+        {
+            Config.StartupParms = "ConnectLogin";
+            Restart();
+        }
+
+        public bool ConnectConfigured { get { return !String.IsNullOrEmpty(Kernel.Instance.CommonConfigData.ConnectUserToken); }}
+
         public bool IsRemoteConnection { get { return Kernel.ApiClient.IsRemoteConnection; }}
 
         bool ConnectAutomatically(int timeout)
@@ -1913,8 +1921,18 @@ namespace MediaBrowser
         /// </summary>
         public void Login()
         {
+            var parms = Config.StartupParms ?? "";
+            // reset these
+            Config.StartupParms = null;
+
             if (!Kernel.ServerConnected)
             {
+                if (parms == "ConnectLogin")
+                {
+                    ConnectLogin();
+                    return;
+                }
+
                 if (ConnectToServer(Kernel.Instance.CommonConfigData))
                 {
                     Logger.ReportInfo("Connected to server {0} at {1}", Kernel.ServerInfo.ServerName, Kernel.ServerInfo.LocalAddress);
@@ -1947,10 +1965,6 @@ namespace MediaBrowser
                 }
                 return;
             }
-
-            var parms = Config.StartupParms ?? "";
-            // reset these
-            Config.StartupParms = null;
 
             var user = !string.IsNullOrEmpty(parms) ? parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase) ? null : AvailableUsers.FirstOrDefault(u => u.Name.Equals(parms, StringComparison.OrdinalIgnoreCase)) : 
                         Kernel.Instance.CommonConfigData.LogonAutomatically ? AvailableUsers.FirstOrDefault(u => u.Name.Equals(Kernel.Instance.CommonConfigData.AutoLogonUserName, StringComparison.OrdinalIgnoreCase)) 

@@ -23,6 +23,8 @@
       <ShortcutHandler Name="BackHandler"  Handle="true" Shortcut="Back" HandlerStage="Bubbled" Command="[Close]"/>
       <cor:Int32 Name="ItemCount" Int32="0" />
       <Color Name="BackgroundColor"/>
+
+      <Command Name="Logout"/>
     </Locals>
 
     <Rules>
@@ -36,6 +38,24 @@
 
       <Default Target="[Title.Content]" Value="[Application.LocalStrings.#UserMenu!cor:String]" >
       </Default>
+
+      <Default Target="[LogoutButton.LabelText]" Value="Switch Server">
+        <Conditions>
+          <Equality Source="[Application.ConnectConfigured]" Value="true" />
+        </Conditions>
+      </Default>
+
+      <Default Target="[LogoutButton.LabelText]" Value="Login with Connect">
+        <Conditions>
+          <Equality Source="[Application.ConnectConfigured]" Value="false" />
+        </Conditions>
+      </Default>
+
+      <Changed Source="[Logout.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.RestartWithConnect]" />
+        </Actions>
+      </Changed>
 
       <Changed Source="[ItemCount]"  InitialEvaluate="true">
         <Conditions>
@@ -95,7 +115,13 @@
                 </Layout>
                 <Children>
                   <Text Content=" "/>
-                  <vm:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                  <Panel Layout="HorizontalFlow" >
+                    <Children>
+                      <vm:BaseBtn Name="LogoutButton" LabelText="" Margins="0,0,30,0" Command="[Logout]" Font="font://f:VM_ConfigItemFont" />
+                      <vm:BaseBtn LabelText="[Application.LocalStrings.#CloseCMenu!cor:String]" Margins="0,0,10,0" Command="[Close]" Font="font://f:VM_ConfigItemFont" />
+                      
+                    </Children>
+                  </Panel>
                 </Children>
               </Panel>
             </Children>
