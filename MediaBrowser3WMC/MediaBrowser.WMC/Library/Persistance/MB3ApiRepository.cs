@@ -422,7 +422,7 @@ namespace MediaBrowser.Library.Persistance
                     {
                         var vidStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Video);
                         var audStream = mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio && s.IsDefault) ?? mb3Item.MediaStreams.FirstOrDefault(s => s.Type == MediaStreamType.Audio);
-                        var subtStreams = mb3Item.MediaStreams.Where(s => s.Type == MediaStreamType.Subtitle && !string.IsNullOrEmpty(s.Language)).Select(s => s.Language).ToArray();
+                        var subtStreams = mb3Item.MediaStreams.Where(s => s.Type == MediaStreamType.Subtitle && !string.IsNullOrEmpty(s.Language)).Select(s => s.IsForced ? s.Language.ToUpper() : s.Language).ToArray();
                         media.MediaStreams = mb3Item.MediaStreams;
                         media.AspectRatio = !string.IsNullOrEmpty(mb3Item.AspectRatio) ? mb3Item.AspectRatio : null;
                         media.SubTitle = subtStreams.Any() ? string.Join(", ", subtStreams) : null;
