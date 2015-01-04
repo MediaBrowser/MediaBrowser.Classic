@@ -279,6 +279,8 @@ namespace MediaBrowser.Library.Localization
         public string MaxBackgroundWidthConfigDesc = "Maximum width of backdrop images retrieved from server. Increasing may produce higher quality images. Decreasing may improve performance (especially on extenders)";
         public string SavePasswordConfig = "Save Password";
         public string SavePasswordConfigDesc = "Deselect if you would like to be prompted for the password on auto login";
+        public string ClearConnectConfig = "Logout Connect";
+        public string ClearConnectConfigDesc = "Logout of MB Connect so you can use just local access or login with a different Connect Id";
 
         //JIL
         public string ThisWeek = "This Week";

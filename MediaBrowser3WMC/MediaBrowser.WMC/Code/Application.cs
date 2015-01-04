@@ -1807,6 +1807,13 @@ namespace MediaBrowser
             Restart();
         }
 
+        public void ClearConnectInfo()
+        {
+            Kernel.Instance.CommonConfigData.ConnectUserId = null;
+            Kernel.Instance.CommonConfigData.ConnectUserToken = null;
+            Kernel.Instance.CommonConfigData.Save();
+        }
+
         public bool ConnectConfigured { get { return !String.IsNullOrEmpty(Kernel.Instance.CommonConfigData.ConnectUserToken); }}
 
         public bool IsRemoteConnection { get { return Kernel.ApiClient.IsRemoteConnection; }}

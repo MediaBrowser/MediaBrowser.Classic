@@ -48,6 +48,7 @@
       <Command Name="CloseMessage"/>
       <Command Name="Logout"/>
       <Command Name="OSK"/>
+      <Command Name="ClearConnect"/>
 
       
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
@@ -262,6 +263,12 @@
         </Conditions>
         <Actions>
           <Set Target="[Application.AutoLogin]" Value="true" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ClearConnect.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.ClearConnectInfo]" />
         </Actions>
       </Changed>
 
@@ -578,6 +585,7 @@
                 <Children>
                   <sb:SimpleButton  Name="ContinueBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Close]" Visible="false" Size="200,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton FocusOrder="1" Name="BackBtn" Text="[Application.LocalStrings.#ContinueConfig!cor:String]" FocusItem="[FocusItem]"  Command="[Back]" Visible="true" Size="200,50" Font="font://f:CP_ButtonFont"/>
+                  <sb:SimpleButton Name="ClearConnectBtn" Text="[Application.LocalStrings.#ClearConnectConfig!cor:String]" Visible="[Application.ConnectConfigured]" FocusItem="[FocusItem]"  Command="[ClearConnect]" Size="250,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton Name="UpdateConfigBtn" Text="[Application.LocalStrings.#CheckForUpdateConfig!cor:String]" FocusItem="[FocusItem]"  Command="[UpdateCheck]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
                   <sb:SimpleButton Name="UpdateLibraryBtn" Text="[Application.LocalStrings.#UpdateLibraryConfig!cor:String]" FocusItem="[FocusItem]"  Command="[FullRefresh]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
 
