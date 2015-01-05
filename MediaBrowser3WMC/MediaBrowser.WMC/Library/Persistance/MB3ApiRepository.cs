@@ -25,6 +25,7 @@ namespace MediaBrowser.Library.Persistance
             public static Dictionary<string, Type> TypeMap = new Dictionary<string, Type>
                                                                  {
                                                                      {"Folder", typeof (Folder)},
+                                                                     {"UserView", typeof(UserView)},
                                                                      {"PlaylistsFolder", typeof (PlaylistsFolder)},
                                                                      {"Playlist", typeof (Playlist)},
                                                                      {"ChannelFolderItem", typeof (ChannelFolder)},
@@ -85,10 +86,17 @@ namespace MediaBrowser.Library.Persistance
 
         public AggregateFolder RetrieveRoot()
         {
-            // Retrieve the root for current user
-            var root = Kernel.ApiClient.GetRootFolder(Kernel.CurrentUser.Id);
-            return root != null ? (AggregateFolder)GetItem(root, "AggregateFolder") : null;
-            
+            // Retrieve the root for current user based on setting
+            if (Config.Instance.UseLegacyFolders)
+            {
+                var root = Kernel.ApiClient.GetRootFolder(Kernel.CurrentUser.Id);
+                return root != null ? (AggregateFolder)GetItem(root, "AggregateFolder") : null;
+            }
+            else
+            {
+                var id = ("TOPVIEW" + Kernel.CurrentUser.ApiId).GetMD5();
+                return new UserViewsFolder {Id = id, DisplayPreferencesId = id.ToString(), Name = "My Library"};
+            }
         }
 
         public BaseItem RetrieveItem(string id)
@@ -622,6 +630,12 @@ namespace MediaBrowser.Library.Persistance
 
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
+
+        public IEnumerable<BaseItem> RetrieveUserViews()
+        {
+            var dtos = Kernel.ApiClient.GetUserViews(Kernel.CurrentUser.ApiId);
+            return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        } 
 
         public IEnumerable<BaseItem> RetrieveAdditionalParts(string id)
         {

@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0096";
+        const string VERSION = "1.0097";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -281,6 +281,8 @@ namespace MediaBrowser.Library.Localization
         public string SavePasswordConfigDesc = "Deselect if you would like to be prompted for the password on auto login";
         public string ClearConnectConfig = "Logout Connect";
         public string ClearConnectConfigDesc = "Logout of MB Connect so you can use just local access or login with a different Connect Id";
+        public string UseLegacyFoldersConfig = "Use Legacy Folder Browsing*";
+        public string UseLegacyFoldersConfigDesc = "Use the old-style straight folder browsing instead of the new 'Views' defined on the server. Restart required.";
 
         //JIL
         public string ThisWeek = "This Week";

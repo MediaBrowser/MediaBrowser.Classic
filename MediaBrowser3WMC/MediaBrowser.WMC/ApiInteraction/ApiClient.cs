@@ -208,6 +208,22 @@ namespace MediaBrowser.ApiInteraction
             }
         }
 
+        public ItemsResult GetUserViews(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            var url = GetApiUrl("Users/" + userId + "/Views");
+
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+
+        }
+
         /// <summary>
         /// Gets Item Counts
         /// </summary>

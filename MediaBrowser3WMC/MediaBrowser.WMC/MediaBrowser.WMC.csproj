@@ -192,6 +192,8 @@
     <Compile Include="Library\Entities\TrailersChannel.cs" />
     <Compile Include="Library\Entities\User.cs" />
     <Compile Include="Library\Entities\PodCastAudio.cs" />
+    <Compile Include="Library\Entities\UserView.cs" />
+    <Compile Include="Library\Entities\UserViewsFolder.cs" />
     <Compile Include="Library\Events\GenericEventArgs.cs" />
     <Compile Include="Library\Events\PlaybackStateEventArgs.cs" />
     <Compile Include="Library\Events\PlayStateSaveEventArgs.cs" />

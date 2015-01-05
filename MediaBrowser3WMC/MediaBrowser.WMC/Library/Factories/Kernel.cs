@@ -610,7 +610,7 @@ namespace MediaBrowser.Library {
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();
 
-            if (kernel.RootFolder != null)
+            if (kernel.RootFolder != null && Config.Instance.UseLegacyFolders)
             {
                 if (ConfigData.ShowChannels)
                 {

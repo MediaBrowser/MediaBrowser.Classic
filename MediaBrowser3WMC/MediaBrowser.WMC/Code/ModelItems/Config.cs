@@ -549,6 +549,12 @@ namespace MediaBrowser
             set { if (this.Data.AssumeWatchedBefore != value) { this.Data.AssumeWatchedBefore = value; Save(); FirePropertyChanged("AssumeWatchedBefore"); FirePropertyChanged("AssumeWatchedBeforeStr"); } }
         }
 
+        public bool UseLegacyFolders
+        {
+            get { return this.Data.UseLegacyFolders; }
+            set { if (this.Data.UseLegacyFolders != value) { this.Data.UseLegacyFolders = value; Save(); FirePropertyChanged("UseLegacyFolders"); } }
+        }
+
         public int ServerPort
         {
             get { return this.CommonData.ServerPort; }

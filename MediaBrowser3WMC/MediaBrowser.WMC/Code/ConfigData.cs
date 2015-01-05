@@ -357,6 +357,8 @@ namespace MediaBrowser
         public int ThemeBackgroundRepeat = 1;
         public bool PlayTrailerAsBackground = false;
 
+        public bool UseLegacyFolders = false;
+
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;
 

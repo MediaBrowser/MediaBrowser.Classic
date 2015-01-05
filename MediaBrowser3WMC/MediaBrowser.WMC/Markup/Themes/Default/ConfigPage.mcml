@@ -54,6 +54,7 @@
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
+      <BooleanChoice Name="UseLegacyFolders" Value="[Application.Config.UseLegacyFolders]" />
       <BooleanChoice Name="EnableTranscode360" Value="[Application.Config.EnableTranscode360]" />
       <BooleanChoice Name="ShowThemeBackground" Value="[Application.Config.ShowThemeBackground]" />
       <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
@@ -379,6 +380,7 @@
       <Binding Source="[SSTimeout.Value]" Target="[Config.ScreenSaverTimeOut]" />
       <Binding Source="[SlideShowInterval.Value]" Target="[Config.SlideShowInterval]" />
       <Binding Source="[EnableRootPage.Value]" Target="[Config.EnableRootPage]" />
+      <Binding Source="[UseLegacyFolders.Value]" Target="[Config.UseLegacyFolders]" />
       <Binding Source="[EnableTranscode360.Value]" Target="[Config.EnableTranscode360]" />
       <Binding Source="[ShowThemeBackground.Value]" Target="[Config.ShowThemeBackground]" />
       <Binding Source="[EnableNestedMovieFolders.Value]" Target="[Config.EnableNestedMovieFolders]" />
@@ -671,13 +673,14 @@
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicAlbumCollectionConfig!cor:String]" Checked="[ShowMusicAlbumCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="40,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowChannelsConfig!cor:String]" Checked="[ShowChannels]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#GroupChannelsTogetherConfig!cor:String]" Padding="40,0,0,0" Checked="[GroupChannelsTogether]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#UseLegacyFoldersConfig!cor:String]" Checked="[UseLegacyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicAlbumCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicAlbumCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#ShowChannelsConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowChannels]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Label="[Application.LocalStrings.#GroupChannelsTogetherConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupChannelsTogether]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                       <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
                     </Children>
                   </Panel>
