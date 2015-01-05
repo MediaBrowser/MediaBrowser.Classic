@@ -11,6 +11,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
 using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.UserInput;
+using MediaBrowser.LibraryManagement;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter.UI;
@@ -156,8 +157,13 @@ namespace MediaBrowser.Code.ModelItems
         {
             Logger.ReportVerbose("{0} playback finished", ControllerName);
 
-            KeyboardListener.Instance.KeyDown -= KeyboardListener_KeyDown; 
-            
+            KeyboardListener.Instance.KeyDown -= KeyboardListener_KeyDown;
+
+            if (Config.Instance.WakeServer && !string.IsNullOrEmpty(Kernel.Instance.CommonConfigData.LastServerMacAddress))
+            {
+                Helper.WakeMachine(Kernel.Instance.CommonConfigData.LastServerMacAddress);
+            }
+
             _IsStopping = true;
 
             NormalizeEventProperties(args);
