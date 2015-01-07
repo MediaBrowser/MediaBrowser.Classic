@@ -66,7 +66,7 @@ namespace MediaBrowser.Library.Entities {
             get {
                 string longName = base.LongName;
                 if (SeasonNumber != null) {
-                    longName = Localization.LocalizedStrings.Instance.GetString("Season") + " " + SeasonNumber + " - " + longName;
+                    longName = "S" + SeasonNumber + " E" + longName;
                 }
                 if (Series != null) {
                     longName = Series.Name + " - " + longName;
