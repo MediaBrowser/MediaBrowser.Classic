@@ -3176,6 +3176,7 @@ namespace MediaBrowser
                     else
                         session.AddBreadcrumb(folder.Name);
                     folder.NavigatingInto(); //make sure we validate
+                    CurrentFolder = folder;
                     Navigate(folder.Children[0]);
                 }
                 else
