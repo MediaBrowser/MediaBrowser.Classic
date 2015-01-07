@@ -329,7 +329,7 @@ namespace MediaBrowser.ApiInteraction
             dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
 
 
-            return GetApiUrl("MusicGenres/", dict);
+            return GetApiUrl("MusicGenres", dict);
         }
 
         /// <summary>

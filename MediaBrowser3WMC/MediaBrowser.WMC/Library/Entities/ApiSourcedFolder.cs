@@ -36,7 +36,7 @@ namespace MediaBrowser.Library.Entities
             UnwatchedCount = item.UserData != null ? item.UserData.UnplayedItemCount ?? 0 : 0;
             Id = item.Id;
             DateCreated = item.DateCreated;
-            SearchParentId = searchParentId ?? Kernel.Instance.RootFolder.ApiId;
+            SearchParentId = searchParentId;
             Overview = item.Overview;
             PrimaryImagePath = !string.IsNullOrEmpty(item.PrimaryImagePath) ? item.PrimaryImagePath : null;
             BackdropImagePaths = item.BackdropImagePaths;
@@ -64,7 +64,7 @@ namespace MediaBrowser.Library.Entities
 
         protected override string RalParentId
         {
-            get { return Kernel.Instance.RootFolder.ApiId; }
+            get { return null; }
         }
 
         public override string[] RalIncludeTypes

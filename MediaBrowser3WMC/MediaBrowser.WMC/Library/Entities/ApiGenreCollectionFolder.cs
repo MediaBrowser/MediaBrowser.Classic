@@ -17,7 +17,6 @@ namespace MediaBrowser.Library.Entities
                 return new ItemQuery
                            {
                                UserId = Kernel.CurrentUser.ApiId,
-                               ParentId = Kernel.Instance.RootFolder.ApiId,
                                IncludeItemTypes = IncludeItemTypes,
                                Recursive = true,
                                Fields = new[] {ItemFields.SortName },
@@ -76,8 +75,8 @@ namespace MediaBrowser.Library.Entities
         protected override List<BaseItem> GetCachedChildren()
         {
             var ret = GenreType == GenreType.Music ?
-                Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(Query).Select(g => new ApiGenreFolder(g, Kernel.Instance.RootFolder.ApiId, IncludeItemTypes)).Cast<BaseItem>().ToList() :
-                Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, Kernel.Instance.RootFolder.ApiId, IncludeItemTypes)).Cast<BaseItem>().ToList();
+                Kernel.Instance.MB3ApiRepository.RetrieveMusicGenres(Query).Select(g => new ApiGenreFolder(g, null, IncludeItemTypes)).Cast<BaseItem>().ToList() :
+                Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, null, IncludeItemTypes)).Cast<BaseItem>().ToList();
             ApiRecursiveItemCount = ret.Count;
             return ret;
         }

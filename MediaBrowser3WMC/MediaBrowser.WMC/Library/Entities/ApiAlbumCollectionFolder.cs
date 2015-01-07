@@ -17,7 +17,6 @@ namespace MediaBrowser.Library.Entities
                 return new ItemQuery
                            {
                                UserId = Kernel.CurrentUser.ApiId,
-                               ParentId = Kernel.Instance.RootFolder.ApiId,
                                IncludeItemTypes = IncludeItemTypes,
                                Recursive = true,
                                Fields = MB3ApiRepository.StandardFields,
