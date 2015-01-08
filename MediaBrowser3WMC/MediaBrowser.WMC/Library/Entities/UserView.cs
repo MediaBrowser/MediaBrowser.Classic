@@ -6,8 +6,13 @@ using MediaBrowser.Library.Localization;
 
 namespace MediaBrowser.Library.Entities
 {
-    class UserView : Folder
+    class UserView : IbnSourcedFolder
     {
+        protected override bool ForceIbn
+        {
+            get { return true; }
+        }
+
         public override string[] RalIncludeTypes
         {
             get

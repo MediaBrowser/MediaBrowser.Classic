@@ -6,9 +6,10 @@ namespace MediaBrowser.Library.Entities
 {
     public class IbnSourcedFolder : Folder
     {
+        protected virtual bool ForceIbn { get { return false; } }
         public override string PrimaryImagePath
         {
-            get { return base.PrimaryImagePath ?? (base.PrimaryImagePath = GetImagePath(ImageType.Primary)); }
+            get { return !ForceIbn ? base.PrimaryImagePath ?? (base.PrimaryImagePath = GetImagePath(ImageType.Primary)) : (base.PrimaryImagePath = GetImagePath(ImageType.Primary) ?? base.PrimaryImagePath); }
             set
             {
                 base.PrimaryImagePath = value;
@@ -19,7 +20,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
+                return !ForceIbn ? base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) }) : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
             }
             set
             {
