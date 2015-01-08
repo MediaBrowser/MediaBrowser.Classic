@@ -1,0 +1,498 @@
+<Mcml xmlns="http://schemas.microsoft.com/2008/mcml"
+      xmlns:cor="assembly://MSCorLib/System"
+      xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+      xmlns:s="file://Styles_DoNotEdit.mcml"
+      xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+      xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+      xmlns:me="ME"
+>
+  
+  <UI Name="UpcomingTvView">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:FolderModel Name="Folder" FolderModel="$Required" />
+    </Properties>
+
+    <Locals>
+      <ScrollingHandler Name="ScrollingHandler"  HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" />
+      <ScrollingData Name="ScrollingData" EndPadding="100" BeginPadding="75"  />
+
+      <lib:UpcomingTvFolderModel Name="UpcomingFolder" UpcomingTvFolderModel="[Folder!lib:UpcomingTvFolderModel]" />
+
+    </Locals>
+
+    <Rules>
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]" />
+      <Default Target="[ScrollingData.Repeater]" Value="[MainRepeater]" />
+
+      <Binding Source="[UpcomingFolder.ViewBy.Options]" Target="[TypeRepeater.Source]" />
+      <Binding Source="[Folder.Children]" Target="[MainRepeater.Source]" />
+
+      <Changed Source="[UpcomingFolder.ViewBy.ChosenIndex]" >
+        <Actions>
+          <Invoke Target="[ScrollingData.Home]" />
+        </Actions>
+      </Changed>
+      
+
+      <Binding Source="[Application.CurrentItem.BackdropImage]" Target="[MainBG.Content]" />
+      <Condition Source="[Application.Config.Theme]" SourceValue="Black" Target="[Backing.Content]" Value="resx://MediaBrowser/MediaBrowser.Resources/BackgroundBlack2" />
+    </Rules>
+
+    <Content>
+      <Panel Name="Main" Layout="Form" >
+        <Children>
+          <Clip FadeAmount="1" FadeSize="225" Orientation="Vertical" ColorFilter="Beige" ShowNear="false" ShowFar="true" Margins="0,-20,30,0" >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Near" Horizontal="Far"/>
+            </LayoutInput>
+            <Children>
+              <Text Content="[Application.LocalStrings.#UTUpcomingTv!cor:String]" Font="Segoe Media Center Light, 86, Bold" Color="color://s:FontColorLight" Alpha=".7">
+              </Text>
+            </Children>
+          </Clip>
+          <Panel Name="ViewByPanel" Layout="HorizontalFlow" Margins="30,40,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Vertical="Near" Horizontal="Near"/>
+            </LayoutInput>
+            <Children>
+              <Text Content="[Application.LocalStrings.#UTViewBy!cor:String]" Font="Segoe Media Center Light, 32, Bold" Color="color://s:FontColorLight" Alpha=".6" />
+              <Repeater Name="TypeRepeater" Layout="HorizontalFlow" Navigation="RememberFocus" Margins="30,10,0,0" >
+                <Layout>
+                  <FlowLayout Spacing="20,20"/>
+                </Layout>
+                <Animations>
+                  <Animation Type="Move">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" RelativeTo="Current"/>
+                      <PositionKeyframe Time="0.25" RelativeTo="Final" Interpolation="EaseIn"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+                <Content>
+                  <me:ChoiceItem Text="[RepeatedItem!cor:String]" Index="[RepeatedItemIndex]" Choice="[UpcomingFolder.ViewBy]" />
+                </Content>
+              </Repeater>
+              
+            </Children>
+          </Panel>
+
+          <Scroller Name="MainScroller" Orientation="Vertical" FadeAmount="1" FadeSize="20" FarOffset="20" NearOffset="-20" ScrollingData="[ScrollingData]" Padding="40,0,40,0" MouseInteractive="true" >
+            <LayoutInput>
+              <FormLayoutInput Top="ViewByPanel, 1, 50" Horizontal="Near"/>
+            </LayoutInput>
+            <Children>
+              <Repeater Name="MainRepeater" Source="[Folder.Children]" Navigation="RememberFocus" DiscardOffscreenVisuals="false" Layout="VerticalFlow" >
+                <Animations>
+                  <Animation Type="Move">
+                    <Keyframes>
+                      <PositionKeyframe Time="0" RelativeTo="Current"/>
+                      <PositionKeyframe Time="0.25" RelativeTo="Final" Interpolation="EaseIn"/>
+                    </Keyframes>
+                  </Animation>
+                </Animations>
+                <Content>
+                  <me:ContentPanel Folder="[RepeatedItem!lib:FolderModel]" Application="[Application]" Index="[RepeatedItemIndex]" Parent="[UpcomingFolder]" />
+                </Content>
+              </Repeater>
+            </Children>
+          </Scroller>
+
+          <Graphic Name="MainBG" Margins="-50,-20,-150,-20" Layout="Fill" Alpha=".25">
+            <Animations>
+              <Animation Type="ContentChangeShow">
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time="0.2" Value="1" Interpolation="SCurve" RelativeTo="Final" />
+                </Keyframes>
+              </Animation>
+              <Animation Type="ContentChangeHide">
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="1" RelativeTo="Current" />
+                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+
+            </Animations>
+          </Graphic>
+          <Graphic Name="Backing" Content="image://i:Background" Layout="Fill" />
+        </Children>
+      </Panel>
+    </Content>
+
+  </UI>
+
+  <UI Name="ContentPanel" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:FolderModel Name="Folder" FolderModel="$Required" />
+      <Index Name="Index" Index="$Required"/>
+      <lib:UpcomingTvFolderModel Name="Parent" UpcomingTvFolderModel="$Required" />
+    </Properties>
+
+    <Locals>
+      <ScrollingHandler Name="ScrollingHandler"  HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+							  HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" />
+      <ScrollingData Name="ScrollingData"  />
+
+    </Locals>
+
+    <Rules>
+      <Binding Source="[Folder.Name]" Target="[Name.Content]" />
+      <Binding Source="[Folder.ThumbnailImage]" Target="[Banner.Content]" >
+        <Conditions>
+          <Equality Source="[Parent.ViewBy.Chosen!cor:String]" Value="Show" />
+          <Equality Source="[Folder.HasThumbnailImage]" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <Binding Source="[Folder.LogoImage]" Target="[Banner.Content]" >
+        <Conditions>
+          <Equality Source="[Parent.ViewBy.Chosen!cor:String]" Value="Show" />
+          <Equality Source="[Folder.HasThumbnailImage]" Value="false" />
+          <Equality Source="[Folder.HasLogoImage]" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <Rule>
+        <Conditions>
+          <Equality Source="[Parent.ViewBy.Chosen!cor:String]" Value="Show" />
+          <Equality Source="[Folder.HasThumbnailImage]" Value="false" />
+          <Equality Source="[Folder.HasLogoImage]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ShowTitle.Visible]" Value="true" />
+          <Set Target="[Banner.Visible]" Value="false" />
+        </Actions>
+      </Rule>
+      <Default Target="[ShowTitle.Visible]" Value="false" />
+
+      
+      <Condition Source="[Parent.ViewBy.Chosen!cor:String]" SourceValue="Date" Target="[ByDate.Visible]" Value="true" />
+      <Condition Source="[Parent.ViewBy.Chosen!cor:String]" SourceValue="Show" Target="[ByShow.Visible]" Value="true" />
+      <Default Target="[ByShow.Visible]" Value="false" />
+      <Default Target="[ByDate.Visible]" Value="false" />
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Container" Content="Transparent" >
+        <LayoutInput>
+          <AnchorLayoutInput Left="Parent, 0" Right="Parent, 1"/>
+        </LayoutInput>
+        <Children>
+          <Panel Name="ByDate">
+            <Animations>
+              <Animation Name="ListViewItem.NavigateToBackward" Type="Show" CenterPointPercent="0, 0.5, 0.0">
+                <Keyframes>
+                  <ScaleKeyframe Time="0.0" Value="1.1, 1.1, 1.0" RelativeTo="Final"/>
+                  <ScaleKeyframe Time="0.3" Value="1.1, 1.1, 1.0" RelativeTo="Final" Interpolation="EaseIn, 2.0, 0.4"/>
+                  <ScaleKeyframe Time="0.6" RelativeTo="Final"/>
+                  <AlphaKeyframe Time="0.0" Value="0.0" RelativeTo="Absolute"/>
+                  <AlphaKeyframe Time="0.3" Value="0.0" RelativeTo="Absolute" Interpolation="Log"/>
+                  <AlphaKeyframe Time="0.7" RelativeTo="Final"/>
+                </Keyframes>
+              </Animation>
+              <Animation Name="ListViewItem.NavigateAwayForward" Type="Hide" CenterPointPercent="0, 0.5, 0.0">
+                <Keyframes>
+                  <ScaleKeyframe Time="0.0" RelativeTo="Current" Interpolation="Log"/>
+                  <ScaleKeyframe Time="0.2" Value="1.1, 1.1, 1.0" RelativeTo="Current"/>
+                  <AlphaKeyframe Time="0.0" RelativeTo="Current" Interpolation="Log"/>
+                  <AlphaKeyframe Time="0.2" Value="0.0" RelativeTo="Absolute"/>
+                </Keyframes>
+              </Animation>
+
+            </Animations>
+            <Layout>
+              <FlowLayout Orientation="Vertical" />
+            </Layout>
+            <Children>
+              <!--<ColorFill Content="DarkGray" Layout="Fill" MaximumSize="0,2"/>-->
+              <ColorFill Content="80,80,80" MaximumSize="0,55" Layout="Center" >
+                <Children>
+                  <Text Name="Name" Font="Segoe Media Center Light, 28, Bold" Color="color://s:FontColorLight"  >
+                  </Text>
+                </Children>
+              </ColorFill>
+              <Scroller Name="DateScroller" Orientation="Horizontal" FadeAmount="1" FadeSize="20" NearOffset="-20" FarOffset="20" ScrollingData="[ScrollingData]" Padding="20,20,20,20" MouseInteractive="true" >
+                <Children>
+                  <Repeater Name="DateRepeater" Source="[Folder.Children]" Navigation="ContainHorizontal" DiscardOffscreenVisuals="false" Layout="HorizontalFlow" Margins="30,0,0,0" >
+                    <Layout>
+                      <FlowLayout Orientation="Horizontal" FillStrip="true"/>
+                    </Layout>
+                    <Animations>
+                      <Animation Type="Move">
+                        <Keyframes>
+                          <PositionKeyframe Time="0" RelativeTo="Current"/>
+                          <PositionKeyframe Time="0.25" RelativeTo="Final" Interpolation="EaseIn"/>
+                        </Keyframes>
+                      </Animation>
+                    </Animations>
+                    <Content>
+                      <me:ByDateItem Application="[Application]" Item="[RepeatedItem!lib:Item]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Scroller>
+            </Children>
+          </Panel>
+          <Panel Name="ByShow" Layout="VerticalFlow" >
+            <Animations>
+              <Animation Name="ListViewItem.NavigateToBackward" Type="Show" CenterPointPercent="0, 0.5, 0.0">
+                <Keyframes>
+                  <ScaleKeyframe Time="0.0" Value="1.1, 1.1, 1.0" RelativeTo="Final"/>
+                  <ScaleKeyframe Time="0.3" Value="1.1, 1.1, 1.0" RelativeTo="Final" Interpolation="EaseIn, 2.0, 0.4"/>
+                  <ScaleKeyframe Time="0.6" RelativeTo="Final"/>
+                  <AlphaKeyframe Time="0.0" Value="0.0" RelativeTo="Absolute"/>
+                  <AlphaKeyframe Time="0.3" Value="0.0" RelativeTo="Absolute" Interpolation="Log"/>
+                  <AlphaKeyframe Time="0.7" RelativeTo="Final"/>
+                </Keyframes>
+              </Animation>
+              <Animation Name="ListViewItem.NavigateAwayForward" Type="Hide" CenterPointPercent="0, 0.5, 0.0">
+                <Keyframes>
+                  <ScaleKeyframe Time="0.0" RelativeTo="Current" Interpolation="Log"/>
+                  <ScaleKeyframe Time="0.2" Value="1.1, 1.1, 1.0" RelativeTo="Current"/>
+                  <AlphaKeyframe Time="0.0" RelativeTo="Current" Interpolation="Log"/>
+                  <AlphaKeyframe Time="0.2" Value="0.0" RelativeTo="Absolute"/>
+                </Keyframes>
+              </Animation>
+
+            </Animations>
+            <Children>
+              <ColorFill Content="DarkGray" Layout="Fill" MaximumSize="0,2" Margins="0,20,0,20"/>
+              <Panel Layout="HorizontalFlow" >
+                <Children>
+                  <Text Name="ShowTitle" Color="color://s:FontColorLight" Content="[Folder.Name]" Font="Segoe Media Center Light, 32, Bold" Margins="10,0,0,0" WordWrap="true" MaximumSize="300,0" MinimumSize="300,0" Visible="false" />
+                  <Graphic Name="Banner" Alpha=".9" Margins="10,0,0,0" MaintainAspectRatio="true" MaximumSize="300,0" MinimumSize="300,0" />
+                  <Repeater Name="ShowRepeater" Source="[Folder.Children]" DiscardOffscreenVisuals="false" Layout="VerticalFlow" Margins="30,10,0,0" >
+                    <Layout>
+                      <FlowLayout Orientation="Vertical" />
+                    </Layout>
+                    <Content>
+                      <me:ByShowItem Application="[Application]" Item="[RepeatedItem!lib:Item]" />
+                    </Content>
+                  </Repeater>
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+
+  <UI Name="ByShowItem" BaseUI="me:ItemButton" >
+    <Properties>
+      <Size Name="Size" Size="0,50"/>
+
+    </Properties>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[Main.Content]" Value="80,80,110" />
+      <Default Target="[Main.Content]" Value="Transparent" />
+
+      <Binding Source="[Item.SeasonNumber]" Target="[SeasonNo.Content]" >
+        <Transformer>
+          <FormatTransformer Format=" {0}x"/>
+        </Transformer>
+      </Binding>
+
+    </Rules>
+
+    <Content>
+      <ColorFill Name="Main" Content="Transparent" Layout="VerticalFlow" Padding="10,10,10,10" MaximumSize="[Size]" MinimumSize="[Size]" >
+        <Children>
+          <Panel Layout="HorizontalFlow">
+            <Layout>
+              <FlowLayout Orientation="Horizontal" FillStrip="true" ItemAlignment="Center"/>
+            </Layout>
+            <LayoutInput>
+              <AnchorLayoutInput Horizontal="Center"/>
+            </LayoutInput>
+            <Children>
+              <Text Content="[Item.FirstAired]" Color="Beige" Font="Segoe Media Center, 18, Bold" />
+              <Text Name="SeasonNo" Color="color://s:FontColorLight" Font="Segoe Media Center, 18, Bold" />
+              <Text Name="EpisodeName" Content="[Item.Name]" Color="color://s:FontColorLight" Font="Segoe Media Center, 18, Bold" />
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+  
+  <UI Name="ByDateItem" BaseUI="me:ItemButton" >
+    <Properties>
+      <Size Name="ImageSize" Size="320,0"/>
+      <Size Name="Size" Size="325,0"/>
+      
+    </Properties>
+    
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[Main.Content]" Value="80,80,110" />
+      <Default Target="[Main.Content]" Value="Transparent" />
+
+      <Binding Source="[Series.BannerImage]" Target="[Image.Content]" >
+        <Conditions>
+          <Equality Source="[Series.HasBannerImage]" Value="true" />
+        </Conditions>
+      </Binding>
+
+      <Binding Source="[Series.ThumbnailImage]" Target="[Image.Content]" >
+        <Conditions>
+          <Equality Source="[Series.HasThumbnailImage]" Value="true" />
+        </Conditions>
+      </Binding>
+      
+      <Binding Source="[Series.LogoImage]" Target="[Image.Content]" >
+        <Conditions>
+          <Equality Source="[Series.HasLogoImage]" Value="true" />
+        </Conditions>
+      </Binding>
+      
+      <Rule>
+        <Conditions>
+          <Equality Source="[Series.HasLogoImage]" Value="false" />
+          <Equality Source="[Series.HasBannerImage]" Value="false" />
+        </Conditions>
+        <Actions>
+          <Set Target="[ItemName.Visible]" Value="true" />
+        </Actions>
+      </Rule>
+      
+      <Default  Target="[ItemName.Visible]" Value="false" />
+
+      <Binding Source="[Item.SeasonNumber]" Target="[SeasonNo.Content]" >
+        <Transformer>
+          <FormatTransformer Format="{0}x"/>
+        </Transformer>
+      </Binding>
+      
+    </Rules>
+    <Content>
+      <ColorFill Name="Main" Content="Transparent" Layout="VerticalFlow" Padding="10,10,10,10" MaximumSize="[Size]" MinimumSize="[Size]" >
+        <Layout>
+          <FlowLayout Orientation="Vertical" ItemAlignment="Center" Spacing="5,5"/>
+        </Layout>
+        <Children>
+          <Panel Name="ImagePanel" MaximumSize="[ImageSize]" >
+            <Children>
+              <Graphic Name="Image" MaintainAspectRatio="true" />
+              <Text Name="ItemName" Content="[Series.Name]" Color="color://s:FontColorLight" Alpha=".8" Font="Segoe Media Center Light, 24" />
+            </Children>
+          </Panel>
+          <Text Content="[Series.AirTime]" Color="Beige" Font="Segoe Media Center, 18, Bold" />
+          <Panel Layout="HorizontalFlow">
+            <Layout>
+              <FlowLayout Orientation="Horizontal" FillStrip="true" ItemAlignment="Center"/>
+            </Layout>
+            <LayoutInput>
+              <AnchorLayoutInput Horizontal="Center"/>
+            </LayoutInput>
+            <Children>
+              <Text Name="SeasonNo" Color="color://s:FontColorLight" Font="Segoe Media Center, 18, Bold" />
+              <Text Name="EpisodeName" Content="[Item.Name]" Color="color://s:FontColorLight" Font="Segoe Media Center, 18, Bold" />
+              
+            </Children>
+          </Panel>
+        </Children>
+      </ColorFill>
+    </Content>
+  </UI>
+  
+  <UI Name="ItemButton" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:Item Name="Item" Item="$Required" />
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Clicker" />
+      <lib:Item Name="Series" Item="[Item.Series]" />
+    </Locals>
+
+    <Rules>
+      <Changed Source="[Clicker.Invoked]" >
+        <Actions>
+          <PlaySound Sound="sound://sounds:Select" />
+          <Invoke Target="[Item.SelectAction]" />
+        </Actions>
+      </Changed>
+
+      <Condition Source="[Input.DeepKeyFocus]" SourceValue="true" Target="[Application.CurrentItem]" Value="[Item]" />
+
+
+    </Rules>
+
+  </UI>
+
+  <UI Name="ChoiceItem" BaseUI="me:FocusedText" >
+    <Properties>
+      <Index Name="Index" Index="$Required"/>
+      <Choice Name="Choice" Choice="$Required" />
+    </Properties>
+
+    <Rules>
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[Choice.ChosenIndex]" Value="[Index.Value]" />
+      <Condition Source="[Choice.ChosenIndex]" SourceValue="[Index.Value]" Target="[MyText.Alpha]" Value="1" />
+    </Rules>
+  </UI>
+
+  <UI Name="FocusedText" >
+    <Properties>
+      <cor:String Name="Text" cor:String="$Required"/>
+      <Font Name="Font" Font="Century Gothic, 28"/>
+      <Color Name="Color" Color="color://s:FontColorLight"/>
+      <Command Name="Command" />
+    </Properties>
+
+    <Locals>
+      <ClickHandler Name="Click" />
+    </Locals>
+
+    <Rules>
+      <Default Target="[Input.KeyInteractive]" Value="true" />
+      <Condition Source="[Input.KeyFocus]" SourceValue="true" >
+        <Actions>
+          <Set Target="[MyText.Alpha]" Value="1"/>
+          <Set Target="[Underline.Visible]" Value="true"/>
+        </Actions>
+      </Condition>
+
+      <Changed Source="[Click.Invoked]">
+        <Conditions>
+          <Equality Source="[Command.Available]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[Command.Invoke]" />
+        </Actions>
+      </Changed>
+
+    </Rules>
+
+    <Content>
+      <Panel Layout="Anchor">
+        <Children>
+          <Text Name="MyText" Content="[Text]" Font="[Font]" Color="[Color]" Alpha=".65" />
+          <Clip FadeAmount=".7" FadeSize="20" Layout="Form">
+            <LayoutInput>
+              <FormLayoutInput Top="MyText,1" Left="MyText,0" Right="MyText,1" Bottom="MyText,1,2"/>
+            </LayoutInput>
+            <Children>
+              <ColorFill Name="Underline" Visible="false" Content="[Color]" Layout="Fill" />
+            </Children>
+          </Clip>
+        </Children>
+      </Panel>
+    </Content>
+  </UI>
+
+
+</Mcml>

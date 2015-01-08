@@ -521,6 +521,8 @@ namespace MediaBrowser.Library.Localization
         public string User = "User: ";
         public string Password = "Password: ";
         public string Login = "Login";
+        public string UTUpcomingTv = "Upcoming TV";
+        public string UTViewBy = "View By:";
 
         //Search
         public string IncludeNested = "Include Subfolders";

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Library.Localization;
 
 namespace MediaBrowser.Library.Entities
 {
@@ -43,7 +44,13 @@ namespace MediaBrowser.Library.Entities
         {
             // since we have our own latest implementation, exclude those from these views.
             // also eliminate flat songs view since that will probably not perform well
-            return base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase)))).ToList();
+            var ret = base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase)))).ToList();
+            if (CollectionType.Equals("tvshows"))
+            {
+                ret.Add(new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") });
+            }
+
+            return ret;
         }
 
         public override string DisplayPreferencesId

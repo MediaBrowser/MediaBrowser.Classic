@@ -168,6 +168,8 @@
     <Compile Include="Library\Entities\Chapter.cs" />
     <Compile Include="Library\Entities\ChannelFolder.cs" />
     <Compile Include="Library\Entities\ChannelCollectionFolder.cs" />
+    <Compile Include="Library\Entities\UtvDateFolder.cs" />
+    <Compile Include="Library\Entities\UtvSeriesFolder.cs" />
     <Compile Include="Library\Entities\Server.cs" />
     <Compile Include="Library\Entities\FavoritesCollectionFolder.cs" />
     <Compile Include="Library\Entities\FavoritesTypeFolder.cs" />
@@ -190,6 +192,8 @@
     <Compile Include="Library\Entities\StaticFolder.cs" />
     <Compile Include="Library\Entities\ThemeItem.cs" />
     <Compile Include="Library\Entities\TrailersChannel.cs" />
+    <Compile Include="Library\Entities\UpcomingTvFolder.cs" />
+    <Compile Include="Code\ModelItems\UpcomingTvFolderModel.cs" />
     <Compile Include="Library\Entities\User.cs" />
     <Compile Include="Library\Entities\PodCastAudio.cs" />
     <Compile Include="Library\Entities\UserView.cs" />
@@ -571,6 +575,7 @@
     <None Include="Images\Ratings\rated-gb-18.png" />
     <None Include="Images\Ratings\rated-gb-12a.png" />
     <None Include="Images\Ratings\rated-gb-15.png" />
+    <Content Include="Images\plaintv.jpg" />
     <Content Include="Images\Puzzle.png" />
     <Content Include="Images\Ratings\Rated-NL-9.png" />
     <Content Include="Images\Ratings\Rated-NL-12.png" />
@@ -1163,6 +1168,7 @@
     <Content Include="Markup\Themes\Default\MetroLoginPage.mcml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Markup\UpcomingTvView.mcml" />
     <Content Include="Registration7.xml">
       <SubType>Designer</SubType>
     </Content>

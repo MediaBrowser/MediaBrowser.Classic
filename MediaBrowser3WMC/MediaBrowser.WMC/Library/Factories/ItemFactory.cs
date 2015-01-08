@@ -30,6 +30,10 @@ namespace MediaBrowser.Library
                     item = (Item)Activator.CreateInstance(itemFactoryItems[isOne]);
 
             if (item == null)
+                if (baseItem is UpcomingTvFolder)
+                {
+                    item = new UpcomingTvFolderModel();
+                } else
                 if (baseItem is User)
                 {
                     item = new UserItem();

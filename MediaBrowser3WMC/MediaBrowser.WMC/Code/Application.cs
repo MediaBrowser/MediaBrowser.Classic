@@ -2540,14 +2540,10 @@ namespace MediaBrowser
             var oldVersion = new System.Version(Config.MBVersion);
             if (oldVersion < new System.Version(2, 0, 0, 0))
             {
-                //FullRefresh();
                 return true;  //new install, don't need to migrate
             }
 
-            Kernel.Instance.CommonConfigData.MaxBackgroundWidth = 1280;
-            Kernel.Instance.CommonConfigData.CacheFileRetentionDays = 90;
-            Kernel.Instance.CommonConfigData.Save();
-
+            
             //Clear old ImageCache
             Logger.ReportInfo("=========== Clearing old image cache...");
             try
@@ -2559,7 +2555,7 @@ namespace MediaBrowser
             }
             catch (Exception e)
             {
-                Logger.ReportException("Error clearing custom Image path {0}", e, ApplicationPaths.CustomImagePath);
+                Logger.ReportException("Error clearing Image path {0}", e, ApplicationPaths.AppImagePath);
             }
 
 
@@ -2571,29 +2567,18 @@ namespace MediaBrowser
                     Logger.ReportInfo("Removing old theme video backdrop plug-in");
                     File.Delete(oldPlugin);
                 }
+                oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "UpcomingTv.dll");
+                if (File.Exists(oldPlugin))
+                {
+                    Logger.ReportInfo("Removing old Upcoming TV plug-in");
+                    File.Delete(oldPlugin);
+                }
             }
             catch (Exception e)
             {
-                Logger.ReportException("Error trying to remove theme backdrops plugin", e);
+                Logger.ReportException("Error trying to remove old plugins", e);
             }
             return true;
-        }
-
-        private void MigratePluginSource()
-        {
-                    try
-                    {
-                        Config.PluginSources.RemoveAt(Config.PluginSources.FindIndex(s => s.ToLower() == "http://www.mediabrowser.tv/plugins/plugin_info.xml"));
-                    }
-                    catch
-                    {
-                        //wasn't there - no biggie
-                    }
-                    if (Config.PluginSources.Find(s => s == "http://www.mediabrowser.tv/plugins/multi/plugin_info.xml") == null)
-                    {
-                        Config.PluginSources.Add("http://www.mediabrowser.tv/plugins/multi/plugin_info.xml");
-                        Logger.ReportInfo("Plug-in Source migrated to multi-version source");
-                    }
         }
 
         public bool IsInEntryPoint
