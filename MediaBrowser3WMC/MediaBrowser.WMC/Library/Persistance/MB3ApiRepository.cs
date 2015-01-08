@@ -631,11 +631,13 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
+        private static readonly List<string> IgnoreTypes = new List<string> { "livetv", "books" };
+
         public IEnumerable<BaseItem> RetrieveUserViews()
         {
             var dtos = Kernel.ApiClient.GetUserViews(Kernel.CurrentUser.ApiId);
-            return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
-        } 
+            return dtos == null ? new List<BaseItem>() : dtos.Items.Where(dto => !IgnoreTypes.Contains(dto.CollectionType, StringComparer.OrdinalIgnoreCase)).Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+        }
 
         public IEnumerable<BaseItem> RetrieveAdditionalParts(string id)
         {
