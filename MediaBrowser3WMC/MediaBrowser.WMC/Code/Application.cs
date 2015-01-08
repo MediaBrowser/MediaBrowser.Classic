@@ -2567,12 +2567,6 @@ namespace MediaBrowser
                     Logger.ReportInfo("Removing old theme video backdrop plug-in");
                     File.Delete(oldPlugin);
                 }
-                oldPlugin = Path.Combine(ApplicationPaths.AppPluginPath, "UpcomingTv.dll");
-                if (File.Exists(oldPlugin))
-                {
-                    Logger.ReportInfo("Removing old Upcoming TV plug-in");
-                    File.Delete(oldPlugin);
-                }
             }
             catch (Exception e)
             {
