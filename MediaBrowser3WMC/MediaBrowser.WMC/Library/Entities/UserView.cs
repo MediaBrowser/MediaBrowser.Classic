@@ -50,7 +50,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return (CollectionType + Name + Kernel.CurrentUser.Name).GetMD5().ToString();
+                return (CollectionType + Kernel.CurrentUser.Name).GetMD5().ToString();
             }
             set
             {
