@@ -2808,6 +2808,8 @@ namespace MediaBrowser
             }
         }
 
+        public bool SuppressInitialOverlay { get; set; }
+
         /// <summary>
         /// Legacy support - does not bind
         /// </summary>
@@ -3527,6 +3529,7 @@ namespace MediaBrowser
         {
             // unhook us
             currentPlaybackController.PlaybackFinished -= IntroPlaybackFinished;
+            SuppressInitialOverlay = false;
 
             // and kick off main item
             if (MainPlayable != null) Play(MainPlayable);
@@ -3561,6 +3564,8 @@ namespace MediaBrowser
                     // hook to finished event so we can kick off the main
                     introPlayable.PlaybackController.PlaybackFinished += IntroPlaybackFinished;
 
+                    RecentUserInput = false;
+                    SuppressInitialOverlay = true; // suppress the overlay for intros
                     introPlayable.Play();
 
                 });

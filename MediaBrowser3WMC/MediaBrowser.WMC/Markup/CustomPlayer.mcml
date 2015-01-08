@@ -98,6 +98,9 @@
       <Default Target="[Input.KeyInteractive]" Value="true" />
       <!--This will show the overlay when we first come up-->
       <Changed Source="[Application]" InitialEvaluate="true" >
+        <Conditions>
+          <Equality Source="[Application.SuppressInitialOverlay]" Value="false" />
+        </Conditions>
         <Actions>
           <Set Target="[Application.RecentUserInput]" Value="true" />
         </Actions>
