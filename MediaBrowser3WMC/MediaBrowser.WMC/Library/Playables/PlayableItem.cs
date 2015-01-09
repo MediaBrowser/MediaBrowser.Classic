@@ -89,12 +89,12 @@ namespace MediaBrowser.Library.Playables
                         // we have to search the loaded library for all occurrences of this item and set the status there
                         foreach (var item in Kernel.Instance.FindItems(media.Id).OfType<Media>())
                         {
-                            Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent.Name));
+                            Logger.ReportVerbose(string.Format("Setting new status on {0} with parent of {1}", item.Name, item.Parent != null ? item.Parent.Name : "<Unknown>"));
                             media.PlaybackStatus.LastPlayed = PlaybackStartTime;
                             item.PlaybackStatus.PositionTicks = newStatus.PositionTicks;
                             item.PlaybackStatus.WasPlayed = newStatus.WasPlayed;
                         }
-                        if (newStatus.WasPlayed && !media.PlaybackStatus.WasPlayed)
+                        if (newStatus.WasPlayed && !media.PlaybackStatus.WasPlayed && media.Parent != null)
                         {
                             //update our parent's unwatched count
                             media.Parent.AdjustUnwatched(-1);
