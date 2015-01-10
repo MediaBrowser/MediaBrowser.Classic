@@ -3,6 +3,8 @@ using System.Linq;
 using MediaBrowser.ApiInteraction;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Persistance;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
@@ -77,7 +79,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return base.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/plaintv";
+                return (base.PrimaryImagePath = Kernel.ApiClient.GetGeneralIbnImageUrl(this.Name, new ImageOptions { ImageType = ImageType.Primary }) ?? "resx://MediaBrowser/MediaBrowser.Resources/plaintv");
             }
             set
             {
