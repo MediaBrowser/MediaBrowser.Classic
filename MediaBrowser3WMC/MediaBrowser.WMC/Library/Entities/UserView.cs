@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Localization;
+using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser.Library.Entities
 {
@@ -43,6 +44,26 @@ namespace MediaBrowser.Library.Entities
                         return base.RalExcludeTypes;
                 }
             }
+        }
+
+        protected override bool CollapseBoxSets
+        {
+            get {
+                switch ((CollectionType ?? "").ToLower())
+                {
+                    case "moviegenre":
+                    case "musicgenre":
+                    case "tvgenre":
+                        return false;
+                    default:
+                        return base.CollapseBoxSets;
+                }
+            }
+        }
+
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
         }
 
         protected override List<BaseItem> GetCachedChildren()
