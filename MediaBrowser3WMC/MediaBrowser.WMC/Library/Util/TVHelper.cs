@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Extensions;
 
 namespace MediaBrowser.Library.Util
 {
     public static class TVHelper
     {
+        private static readonly Dictionary<string, Folder> TvCache = new Dictionary<string, Folder>(); 
         public static bool CreateEpisodeParents(Item item, FolderModel topParent = null)
         {
             var episode = item.BaseItem as Episode;
             if (episode == null) return false;
             //this item loaded out of context (no season/series parent) we need to derive and create them
-            var mySeason = episode.RetrieveSeason();
+            var mySeason = GetSeason(episode);
             if (mySeason != null)
             {
                 //found season - attach it
@@ -22,7 +24,7 @@ namespace MediaBrowser.Library.Util
                 item.PhysicalParent = ItemFactory.Instance.Create(mySeason) as FolderModel;
             }
             //gonna need a series too
-            var mySeries = episode.RetrieveSeries();
+            var mySeries = GetSeries(episode);
             if (mySeries != null)
             {
                 if (mySeason != null)
@@ -56,6 +58,26 @@ namespace MediaBrowser.Library.Util
                 return false;
             }
 
+        }
+
+        private static Folder GetSeason(Episode episode)
+        {
+            lock (TvCache)
+            {
+                if (!TvCache.ContainsKey(episode.SeasonId)) TvCache.Add(episode.SeasonId, episode.RetrieveSeason());
+
+                return TvCache[episode.SeasonId];
+            }
+        }
+
+        private static Folder GetSeries(Episode episode)
+        {
+            lock (TvCache)
+            {
+                if (!TvCache.ContainsKey(episode.SeriesId)) TvCache.Add(episode.SeriesId, episode.RetrieveSeries());
+
+                return TvCache[episode.SeriesId];
+            }
         }
 
     }

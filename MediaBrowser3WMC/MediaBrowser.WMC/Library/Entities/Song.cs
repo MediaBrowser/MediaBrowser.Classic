@@ -43,6 +43,7 @@ namespace MediaBrowser.Library.Entities
         private MusicAlbum _albumItem;
         private Person _albumArtistPerson;
         public IContainer MainContainer { get { return AlbumItem; } }
+        public string MainContainerId { get { return MainContainer.Id.ToString("N"); } }
         public MusicAlbum AlbumItem { get { return _albumItem ?? (_albumItem = (Parent as MusicAlbum) ?? RetrieveAlbum() ?? UnknownAlbum); } }
         public Person AlbumArtistPerson { get { return _albumArtistPerson ?? (_albumArtistPerson = RetrieveArtist() ?? UnknownArtist); } }
         public List<Actor> Actors { get; set; }

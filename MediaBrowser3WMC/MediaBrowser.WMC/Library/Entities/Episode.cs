@@ -178,6 +178,8 @@ namespace MediaBrowser.Library.Entities {
             get { return OurSeries; }
         }
 
+        public string MainContainerId { get { return SeriesId; }}
+
         #endregion
     }
 }

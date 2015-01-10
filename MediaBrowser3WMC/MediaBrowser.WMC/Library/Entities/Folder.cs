@@ -414,7 +414,7 @@ namespace MediaBrowser.Library.Entities {
                 //now collapse anything that needs to be and create the child list for the list folder
                 var containers = from item in items
                                  where item is IGroupInIndex
-                                 group item by (item as IGroupInIndex).MainContainer.Id;
+                                 group item by (item as IGroupInIndex).MainContainerId;
             foreach (var container in containers)
             {
                 var containerObj = ((IGroupInIndex)container.First()).MainContainer;
@@ -466,7 +466,7 @@ namespace MediaBrowser.Library.Entities {
 
                         //always roll into seasons
                         var seasons = from episode in container
-                                      group episode by (episode as Episode).Season.Id;
+                                      group episode by (episode as Episode).SeasonId;
                         foreach (var season in seasons)
                         {
                             var currentSeason = ((Episode) season.First()).Season;

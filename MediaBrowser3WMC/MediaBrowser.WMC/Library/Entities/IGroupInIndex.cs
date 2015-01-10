@@ -9,5 +9,6 @@ namespace MediaBrowser.Library.Entities
     {
         Guid Id { get; set; }
         IContainer MainContainer { get; }
+        string MainContainerId { get; }
     }
 }
