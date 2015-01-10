@@ -66,6 +66,21 @@ namespace MediaBrowser.Library.Entities
             get { return false; }
         }
 
+        public override Dictionary<string, string> IndexByOptions
+        {
+            get
+            {
+                switch ((CollectionType ?? "").ToLower())
+                {
+                    case "moviemovies":
+                    case "tvshowseries":
+                        return base.IndexByOptions;
+                    default:
+                        return new Dictionary<string, string> { { LocalizedStrings.Instance.GetString("NoneDispPref"), "" } };
+                }
+            }
+        }
+
         protected override List<BaseItem> GetCachedChildren()
         {
             // since we have our own latest implementation, exclude those from these views.
