@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using MediaBrowser.Library;
+﻿using System.Net;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Net;
 using System;

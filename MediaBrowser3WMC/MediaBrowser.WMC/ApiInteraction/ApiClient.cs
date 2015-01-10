@@ -1893,10 +1893,11 @@ namespace MediaBrowser.ApiInteraction
             return GetStudioImageUrl(item.Name, options);
         }
 
+        private readonly object _ibnLock = new object();
         private HashSet<string> _generalIbnImages;
         protected HashSet<string> GeneralIbnImages
         {
-            get { return _generalIbnImages ?? (_generalIbnImages = GetAvailableGeneralIbnImages()); }
+            get { lock (_ibnLock) {return _generalIbnImages ?? (_generalIbnImages = GetAvailableGeneralIbnImages());} }
         }
 
         private HashSet<string> GetAvailableGeneralIbnImages()
@@ -1950,8 +1951,7 @@ namespace MediaBrowser.ApiInteraction
 
             var url = "Images/General/" + HttpUtility.UrlEncode(name) + "/" + options.ImageType;
 
-            url = GetImageUrl(url, options, new QueryStringDictionary());
-            return TestUrl(url) ? url : null;
+            return GetImageUrl(url, options, new QueryStringDictionary());
         }
 
         /// <summary>

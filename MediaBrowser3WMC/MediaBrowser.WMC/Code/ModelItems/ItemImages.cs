@@ -350,7 +350,6 @@ namespace MediaBrowser.Library
                     EnsurePrimaryImageIsSet();
 
                     if (primaryImage.IsLoaded &&
-                        preferredImageSmallSize != null &&
                         (preferredImageSmallSize.Width > 0 ||
                         preferredImageSmallSize.Height > 0))
                     {
