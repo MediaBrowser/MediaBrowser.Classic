@@ -288,11 +288,14 @@ namespace MediaBrowser.Library {
             get {
                 if (unwatchedCountCache == -1) {
                     unwatchedCountCache = 0;
-                    Async.Queue("Unwatched Counter for " + Name, () =>
-                    { 
-                        unwatchedCountCache = folder.UnwatchedCount;
-                        FireWatchedChangedEvents();
-                    });
+                    if (Folder.ShowUnwatchedCount)
+                    {
+                        Async.Queue("Unwatched Counter for " + Name, () =>
+                                                                     { 
+                                                                         unwatchedCountCache = folder.UnwatchedCount;
+                                                                         FireWatchedChangedEvents();
+                                                                     });
+                    }
                 }
                 return unwatchedCountCache;
             }
@@ -313,7 +316,7 @@ namespace MediaBrowser.Library {
 
         public int FirstUnwatchedIndex {
             get {
-                if (Config.Instance.DefaultToFirstUnwatched) {
+                if (Config.Instance.DefaultToFirstUnwatched && this.Folder != Kernel.Instance.RootFolder) {
                     lock (this.Children)
                         for (int i = 0; i < this.Children.Count; ++i)
                             if (!this.Children[i].HaveWatched)
