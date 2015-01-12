@@ -1601,7 +1601,7 @@ namespace MediaBrowser
             // we don't want to tie up the ui when we call sleep
             Async.Queue("DeleteMediaItem", () =>
             {
-                if (!Kernel.CurrentUser.Dto.Configuration.EnableContentDeletion)
+                if (!Kernel.CurrentUser.Dto.Policy.EnableContentDeletion)
                 {
                     MessageBox("User not allowed to delete content.");
                     return;
@@ -2242,7 +2242,7 @@ namespace MediaBrowser
             }
 
             //load plug-in catalog info
-            if (user.Dto.Configuration.IsAdministrator)
+            if (user.Dto.Policy.IsAdministrator)
             {
                 Async.Queue("PackageLoad",() =>
                 {
@@ -2396,14 +2396,14 @@ namespace MediaBrowser
             else
             {
                 // add plug-ins config panel if admin
-                if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator)
+                if (Kernel.CurrentUser.Dto.Policy.IsAdministrator)
                     Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
                 
                 // load plugins
                 Kernel.Instance.LoadPlugins();
 
                 // add advanced config panel to end
-                if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator)
+                if (Kernel.CurrentUser.Dto.Policy.IsAdministrator)
                     Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("AdvancedConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#AdvancedPanel");
                 
                 //populate the config model choice
@@ -2479,7 +2479,7 @@ namespace MediaBrowser
                     // CANNOT be instantiated outside of the application thread.
                     Async.Queue(Async.STARTUP_QUEUE, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender), 10000);
 
-                    if (Kernel.CurrentUser.Dto.Configuration.IsAdministrator) // don't show these prompts to non-admins
+                    if (Kernel.CurrentUser.Dto.Policy.IsAdministrator) // don't show these prompts to non-admins
                     {
                         // Let the user know if the server needs to be restarted
                         // Put it on the same thread as the update checks so it will be behind them

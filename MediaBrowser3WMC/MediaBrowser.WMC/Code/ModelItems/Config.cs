@@ -878,7 +878,7 @@ namespace MediaBrowser
         [Comment(@"Advanced Command: Enable Delete")]
         public bool Advanced_EnableDelete
         {
-            get { return Kernel.CurrentUser.Dto.Configuration.EnableContentDeletion; }
+            get { return Kernel.CurrentUser.Dto.Policy.EnableContentDeletion; }
             set { if (this.Data.Advanced_EnableDelete != value) { this.Data.Advanced_EnableDelete = value; Save(); FirePropertyChanged("Advanced_EnableDelete"); } }
         }
 
