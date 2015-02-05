@@ -894,7 +894,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
-            var url = GetApiUrl("Persons/" + name);
+            var url = GetApiUrl("Persons/" + HttpUtility.UrlEncode(name));
 
             using (var stream = GetSerializedStream(url))
             {
@@ -915,7 +915,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("name");
             }
 
-            var url = GetApiUrl("Artists/" + name);
+            var url = GetApiUrl("Artists/" + HttpUtility.UrlEncode(name));
 
             using (var stream = GetSerializedStream(url))
             {
