@@ -37,6 +37,11 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
+        }
+
         public BaseItem FindVirtualChild(Guid id)
         {
             return virtualChildren.Find(i => i.Id == id);

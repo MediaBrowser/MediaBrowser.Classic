@@ -604,10 +604,13 @@ namespace MediaBrowser.Library.Entities {
 
         public void AdjustUnwatched(int adjustment)
         {
-            UnwatchedCount += adjustment;
-            if (UnwatchedCountChanged != null)
+            if (ShowUnwatchedCount)
             {
-                UnwatchedCountChanged(this, new UnwatchedChangedEventArgs {CountAdjustment = adjustment});
+                UnwatchedCount += adjustment;
+                if (UnwatchedCountChanged != null)
+                {
+                    UnwatchedCountChanged(this, new UnwatchedChangedEventArgs {CountAdjustment = adjustment});
+                }
             }
 
             // And cascade up
