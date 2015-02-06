@@ -69,6 +69,8 @@ namespace MediaBrowser.Library {
             // see if this will help get first unwatched index in time
             var ignore = FirstUnwatchedIndex;
 
+            Async.Queue("OnNavigatingInto", () => folder.OnNavigatingInto());
+
             base.NavigatingInto();
         }
 

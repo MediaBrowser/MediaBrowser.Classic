@@ -81,6 +81,19 @@ namespace MediaBrowser.Library.Entities
             }
         }
 
+        public override void OnNavigatingInto()
+        {
+            switch ((CollectionType ?? "").ToLower())
+            {
+                case "tvnextup":
+                    Logger.ReportVerbose("Reloading next up tv");
+                    ReloadChildren();
+                    break;
+            }
+
+            base.OnNavigatingInto();
+        }
+
         protected override List<BaseItem> GetCachedChildren()
         {
             // since we have our own latest implementation, exclude those from these views.
