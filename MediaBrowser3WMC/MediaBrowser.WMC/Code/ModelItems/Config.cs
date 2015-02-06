@@ -844,6 +844,12 @@ namespace MediaBrowser
             set { if (this.Data.PlayTrailerAsBackground != value) { this.Data.PlayTrailerAsBackground = value; Save(); FirePropertyChanged("PlayTrailerAsBackground"); } }
         }
 
+        public bool NewViewsIntroShown
+        {
+            get { return this.Data.NewViewsIntroShown; }
+            set { if (this.Data.NewViewsIntroShown != value) { this.Data.NewViewsIntroShown = value; Save(); FirePropertyChanged("NewViewsIntroShown"); } }
+        }
+
         public int ThemeBackgroundRepeat
         {
             get { return this.Data.ThemeBackgroundRepeat; }

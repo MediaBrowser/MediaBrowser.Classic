@@ -570,6 +570,7 @@
     <Content Include="Images\MediaInfo\media_wmv.png" />
     <Content Include="Images\MediaInfo\media_wtv.png" />
     <Content Include="Images\DefaultAlbum.png" />
+    <Content Include="Images\newviews.png" />
     <Content Include="Images\plainborder.png" />
     <None Include="Images\Ratings\rated-gb-12.png" />
     <None Include="Images\Ratings\rated-gb-18.png" />
@@ -1092,6 +1093,9 @@
     </Content>
     <Content Include="Markup\Controls\Weather.mcml" />
     <Content Include="Markup\Controls\Writers.mcml" />
+    <Content Include="Markup\NewViewsIntro.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\CustomPlayer.mcml">
       <SubType>Designer</SubType>
     </Content>

@@ -1,0 +1,102 @@
+<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+      xmlns:cor="assembly://MsCorLib/System"
+	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
+	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+    xmlns:me="Me"
+      >
+
+
+  <UI Name="NewViewsIntro"> 
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+
+    </Properties>
+
+    <Locals>
+      <Command Name="Cancel" />
+    </Locals>
+
+    <Rules>
+      <!--if not called by us (user used "back" to get to us) exit immediately-->
+      <Condition Source="[Application.NavigatingForward]" SourceValue="false">
+        <Actions>
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Condition>
+
+      <Changed Source="[Cancel.Invoked]" >
+        <Actions>
+          <Set Target="[Application.Config.NewViewsIntroShown]" Value="true" />
+          <Invoke Target="[Application.BackOut]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <Graphic Name="Main" Content="resx://MediaBrowser/MediaBrowser.Resources/BackgroundBlack" Layout="Form" >
+        <Children>
+          <Graphic Name="Logo" Content="[Application.LogonSplashImage]" Margins="50,55,50,0" MaintainAspectRatio="true" MaximumSize="400, 100" CenterPointPercent=".5,.5,.5" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Near" />
+            </LayoutInput>
+          </Graphic>
+
+          <Text Content="New Top Level Views" Font="Segoe UI Light, 48" Color="White" Margins="50,50,0,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Near" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="FirstPara" Content="The items you see on the home screen of MBC are now the same as those in the web interface.  This means you can now control their images, content and display order using the standard user preferences in the Dashboard/Web Client." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,50,50,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="Parent, .15" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="SecondPara" Content="These new views now combine your Movie, TV and Music content the same way the web interface does and they also provide new special views like 'Resume' and 'Next up' when you enter them.  Please give these new views a try as they will provide a much more consistent and easily configurable interface throughout the suite of apps." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,10,50,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="FirstPara, 1" />
+            </LayoutInput>
+          </Text>
+
+          <Text Name="ThirdPara" Content="If you really want to go back to the old way of pure folder browsing you can do this by selecting 'Use Legacy Folder Browsing' in the View options of the config pages." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,20,50,50" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Top="SecondPara, 1" />
+            </LayoutInput>
+          </Text>
+          
+          <ColorFill Content="Black" Alpha=".3" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Fill" Top="Parent, 0 , -10" Bottom="ThirdPara, 1" />
+            </LayoutInput>
+
+          </ColorFill>
+
+          <Graphic Name="Example" Content="resx://MediaBrowser/MediaBrowser.Resources/newviews" Alpha=".7" Margins="140,0,0,-5" MaintainAspectRatio="true" MaximumSize="900,0" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Far" />
+            </LayoutInput>
+            
+          </Graphic>
+
+          <Panel Name="ButtonPanel" Layout="HorizontalFlow" Margins="0,0,10,30" >
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Far" Vertical="Far" />
+            </LayoutInput>
+            <Children>
+              <sb:SimpleButton Name="CancelBtn" Text="Ok, Got it..."  Command="[Cancel]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
+
+            </Children>
+          </Panel>
+
+        </Children>
+      </Graphic>
+    </Content>
+  </UI>
+
+
+
+</Mcml>

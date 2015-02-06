@@ -2505,6 +2505,12 @@ namespace MediaBrowser
                         
                     }
 
+                    if (!Config.NewViewsIntroShown)
+                    {
+                        //Make this come up after the home screen
+                        Async.Queue("NewViews", () => OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/NewViewsIntro", new Dictionary<string, object> {{"Application", CurrentInstance}}), 3000);
+                    }
+
                     Navigate(this.RootFolderModel);
                 }
                 catch (Exception ex)
@@ -2540,6 +2546,7 @@ namespace MediaBrowser
             var oldVersion = new System.Version(Config.MBVersion);
             if (oldVersion < new System.Version(2, 0, 0, 0))
             {
+                Config.NewViewsIntroShown = true; // don't need this for new install
                 return true;  //new install, don't need to migrate
             }
 
