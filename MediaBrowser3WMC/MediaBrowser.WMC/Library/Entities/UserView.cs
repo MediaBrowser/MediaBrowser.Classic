@@ -14,6 +14,11 @@ namespace MediaBrowser.Library.Entities
             get { return true; }
         }
 
+        protected override bool HideEmptyFolders
+        {
+            get { return false; }
+        }
+
         public override string[] RalIncludeTypes
         {
             get
