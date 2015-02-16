@@ -47,7 +47,12 @@ namespace MediaBrowser.Library.Entities {
             return virtualChildren.Find(i => i.Id == id);
         }
 
-        
+        protected override bool HideEmptyFolders
+        {
+            get { return false; }
+        }
+
+
         //public override bool RefreshMetadata(MediaBrowser.Library.Metadata.MetadataRefreshOptions options) {
         //    // these are root folders they support no metadata
         //    return false;
