@@ -1657,6 +1657,23 @@ namespace MediaBrowser.ApiInteraction
             Post<DisplayPreferences, EmptyRequestResult>(url, displayPreferences);
         }
 
+        public void UpdateUserConfiguration(string userId, UserConfiguration userConfiguration)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            if (userConfiguration == null)
+            {
+                throw new ArgumentNullException("userConfiguration");
+            }
+
+            var url = GetApiUrl("Users/" + userId + "/Configuration");
+
+            Post<UserConfiguration, EmptyRequestResult>(url, userConfiguration);
+        }
+
         /// <summary>
         /// Posts a set of data to a url, and deserializes the return stream into T
         /// </summary>
