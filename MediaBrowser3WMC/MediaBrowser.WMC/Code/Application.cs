@@ -64,6 +64,8 @@ namespace MediaBrowser
             }
         }
 
+        public UserConfig ServerUserConfig { get; set; }
+
         public static Application CurrentInstance
         {
             get { return singleApplicationInstance; }
@@ -1890,7 +1892,17 @@ namespace MediaBrowser
                 if (config.ShowServerSelection) return false;
 
                 //server specified
-                connected = Kernel.ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
+                var retries = 0;
+                while (!connected && retries < 3)
+                {
+                    connected = Kernel.ConnectToServer(config.ServerAddress, config.ServerPort, config.HttpTimeout);
+                    if (!connected) {
+                        Logger.ReportInfo("Unable to connect to server at {0}. Will retry...", config.ServerAddress);
+                        retries++;
+                        Thread.Sleep(1500); //give it some time to wake up
+                    }
+                }
+
                 if (!connected)
                 {
                     Logger.ReportWarning("Unable to connect to configured server {0}:{1}. Will try automatic detection", config.ServerAddress, config.ServerPort);
@@ -2189,6 +2201,8 @@ namespace MediaBrowser
 
             // load user config
             Kernel.Instance.LoadUserConfig();
+            // and server-based user prefs
+            ServerUserConfig = new UserConfig(Kernel.CurrentUser.Dto.Configuration);
 
             // init activity timer
             ActivityTimerInterval = Config.InputActivityTimeout * 1000;
