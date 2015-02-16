@@ -340,12 +340,6 @@ namespace MediaBrowser
             set { if (this.Data.RememberIndexing != value) { this.Data.RememberIndexing = value; Save(); FirePropertyChanged("RememberIndexing"); } }
         }
 
-        public bool RememberFilters
-        {
-            get { return this.Data.RememberFilters; }
-            set { if (this.Data.RememberFilters != value) { this.Data.RememberFilters = value; Save(); FirePropertyChanged("RememberFilters"); } }
-        }
-
         public bool TreatWatchedAsInProgress
         {
             get { return this.Data.TreatWatchedAsInProgress; }

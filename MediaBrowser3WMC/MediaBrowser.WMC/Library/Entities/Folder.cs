@@ -988,12 +988,9 @@ namespace MediaBrowser.Library.Entities {
         {
             // Load from api
             DisplayPreferences = Kernel.ApiClient.GetDisplayPrefs(DisplayPreferencesId);
-            if (!Kernel.Instance.ConfigData.RememberFilters)
-            {
-                //Re-initialize these to un-filtered
-                DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
-                DisplayPreferences.CustomPrefs.Remove("IsFavorite");
-            }
+            //Re-initialize these to un-filtered
+            DisplayPreferences.CustomPrefs.Remove("IsUnWatched");
+            DisplayPreferences.CustomPrefs.Remove("IsFavorite");
         }
 
         public virtual void SaveDisplayPrefs(DisplayPreferences prefs)
