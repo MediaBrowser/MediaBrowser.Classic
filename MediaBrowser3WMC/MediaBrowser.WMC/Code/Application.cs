@@ -2413,6 +2413,12 @@ namespace MediaBrowser
                 if (Kernel.CurrentUser.Dto.Policy.IsAdministrator)
                     Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
                 
+                // add view config panel if legacy views not selected
+                if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"),"resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
+
+                // add legacy config panel
+                Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"),"resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
+                
                 // load plugins
                 Kernel.Instance.LoadPlugins();
 

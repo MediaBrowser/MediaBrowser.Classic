@@ -428,6 +428,7 @@
     <Content Include="Images\FavMusic.png" />
     <Content Include="Images\Favorites.png" />
     <Content Include="Images\FavTV.png" />
+    <Content Include="Images\GrayGradientRight.png" />
     <Content Include="Images\heart.png" />
     <Content Include="Images\Icons\Frames.png" />
     <Content Include="Images\Icons\FZoom.png" />
@@ -437,6 +438,7 @@
     <Content Include="Images\Icons\IconAdded.png" />
     <None Include="Images\Icons\IconNext.png" />
     <None Include="Images\Icons\IconPrevious.png" />
+    <Content Include="Images\Icons\IconArrowUp.png" />
     <Content Include="Images\Icons\IconAsterisk.png" />
     <Content Include="Images\Icons\IconExit.png" />
     <Content Include="Images\Icons\IconFavorite.png" />
@@ -804,6 +806,12 @@
     <Content Include="Images\Weather\readme.txt" />
     <Content Include="Images\zoompane.png" />
     <Content Include="Library\LICENSE.txt" />
+    <Content Include="Markup\LegacyConfigPanel.mcml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markup\ViewConfigPanel.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Base\Sounds.mcml" />
     <Content Include="Images\ApplicationInactive.png" />
     <Content Include="Images\Button\ButtonDisabled.png" />

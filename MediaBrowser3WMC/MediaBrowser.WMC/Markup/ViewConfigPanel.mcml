@@ -1,0 +1,348 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+	  xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+    xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
+    xmlns:cp="resx://MediaBrowser/MediaBrowser.Resources/ConfigPage"  
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+    xmlns:me="Me"
+  >
+  <!--*****************************************************************************************************************
+
+    This is an example of a config panel for your theme.  Modify this to include any theme-specific options you require.
+    You must also handle the saving/loading of any of these options somewhere in your assembly.
+
+  *********************************************************************************************************************-->
+
+  <UI Name="ViewConfigPanel">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <EditableText Name="FocusItem" />
+    </Properties>
+    <Locals>
+      <Inset Name="CMargin" Inset="25,0,0,0" />
+      <Inset Name="NMargin" Inset="25,10,0,0" />
+      <Inset Name="SMargin" Inset="10,0,0,0" />
+      <Size Name="LabelSize1" Size="250,0" />
+      <Size Name="PanelSize" Size="800,400" />
+      
+    </Locals>
+    
+    <Content>
+      <Panel Layout="Form" MinimumSize="[PanelSize]" MaximumSize="1200,400" Padding="[SMargin]">
+        <Children>
+          <Panel Name="ViewConfig" Layout="HorizontalFlow" Navigation="Group, RememberFocus">
+            <LayoutInput>
+              <FormLayoutInput Top="Parent,0" Left="Parent,0" />
+            </LayoutInput>
+            <Children>
+              <Panel Layout="VerticalFlow"  >
+                <Children>
+                  <cp:TextHeader Text="[Application.LocalStrings.#MyViewsConfig!cor:String]" />
+                  <Text Content="[Application.LocalStrings.#MyViewsDescConfig!cor:String]" Margins="[CMargin]" Color="White" Alpha=".8" Font="font://f:CP_ConfigItemFont" />
+                  <me:GroupPanel Application="[Application]" UserConfig="[Application.ServerUserConfig]" />
+                </Children>
+              </Panel>
+              <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
+                <Children>
+                  <cp:TextHeader Text="[Application.LocalStrings.#ChannelsOnEhsConfig!cor:String]" />
+                  <Text Content="[Application.LocalStrings.#ChannelsOnEhsDescConfig!cor:String]" Margins="[CMargin]" Color="White" Alpha=".8" Font="font://f:CP_ConfigItemFont" />
+                  <me:ChannelPanel Application="[Application]" UserConfig="[Application.ServerUserConfig]" />
+                </Children>
+              </Panel>
+              <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
+                <Children>
+                  <cp:TextHeader Text="[Application.LocalStrings.#ViewOrderConfig!cor:String]" />
+                  <Text Content="[Application.LocalStrings.#ViewOrderDescConfig!cor:String]" Margins="[CMargin]" Color="White" Alpha=".8" Font="font://f:CP_ConfigItemFont" />
+                  <me:ViewOrderPanel Application="[Application]" UserConfig="[Application.ServerUserConfig]" />
+                </Children>
+              </Panel>
+            </Children>
+          </Panel>
+          <Text Content="[Application.LocalStrings.#ServerUpdateConfig!cor:String]" Color="White" Font="font://f:CP_ConfigItemFont" >
+            <LayoutInput>
+              <FormLayoutInput Bottom="Parent,1,-10" Left="Parent, 0, 20" />
+            </LayoutInput>
+            
+          </Text>
+          
+        </Children>
+      </Panel>
+
+    </Content>
+
+  </UI>
+
+  <UI Name="GroupPanel" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:UserConfig Name="UserConfig" UserConfig="$Required" />
+    </Properties>
+
+    <Locals>
+      <ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+          HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="GroupScrollingHandler"/>
+
+      <ScrollingData Name="GroupScrollingData" />
+
+    </Locals>
+
+    <Rules>
+      <!-- Give ScrollingData to ScrollingHandler. -->
+      <Default Target="[GroupScrollingHandler.ScrollingData]" Value="[GroupScrollingData]"/>
+      <!-- Give Repeater to ScrollingData. -->
+      <Default Target="[GroupScrollingData.Repeater]" Value="[GroupRepeater]"/>
+      
+      <!-- Save when lose focus -->
+      <Changed Source="[Input.DeepKeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="false" />
+          <Equality Source="[UserConfig.HasChanged]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[UserConfig.Save]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="30,30,30"  Margins="25,0,0,5" MaximumSize="350,250" MinimumSize="350,250" >
+        <Children>
+          <Scroller Orientation="Vertical" FadeSize="10" Name="GroupScroller" Navigation="PreferFocusOrder" ScrollingData="[GroupScrollingData]" >
+            <Children>
+              <Repeater Source="[UserConfig.AvailableLibraryFolders]" Margins="0,10,0,10" Layout="Fill" Name="GroupRepeater">
+                <Layout>
+                  <FlowLayout Orientation="Vertical"  ItemAlignment="Near" Spacing="4,0"/>
+                </Layout>
+                <Content>
+                  <me:FolderGroupItem Application="[Application]" Item="[RepeatedItem!lib:FolderConfigItem]" />
+                </Content>
+              </Repeater>
+            </Children>
+          </Scroller>
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+  </UI>
+
+  <UI Name="ChannelPanel" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:UserConfig Name="UserConfig" UserConfig="$Required" />
+    </Properties>
+
+    <Locals>
+      <ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+          HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="ScrollingHandler"/>
+
+      <ScrollingData Name="ScrollingData" />
+
+    </Locals>
+
+    <Rules>
+      <!-- Give ScrollingData to ScrollingHandler. -->
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+      <!-- Give Repeater to ScrollingData. -->
+      <Default Target="[ScrollingData.Repeater]" Value="[MyRepeater]"/>
+      
+      <!-- Save when lose focus -->
+      <Changed Source="[Input.DeepKeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="false" />
+          <Equality Source="[UserConfig.HasChanged]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[UserConfig.Save]" />
+        </Actions>
+      </Changed>
+      
+      <Binding Source="[UserConfig.HasNoChannels]" Target="[NoChannels.Visible]" />
+    </Rules>
+
+    <Content>
+      <ColorFill Content="30,30,30"  Margins="25,0,0,5" MaximumSize="350,250" MinimumSize="350,250" >
+        <Children>
+          <Scroller Orientation="Vertical" FadeSize="10" Name="GroupScroller" Navigation="PreferFocusOrder" ScrollingData="[ScrollingData]" >
+            <Children>
+              <Repeater Source="[UserConfig.AvailableChannels]" Margins="0,10,0,10" Layout="Fill" Name="MyRepeater">
+                <Layout>
+                  <FlowLayout Orientation="Vertical"  ItemAlignment="Near" Spacing="4,0"/>
+                </Layout>
+                <Content>
+                  <me:ChannelItem Application="[Application]" Item="[RepeatedItem!lib:FolderConfigItem]" />
+                </Content>
+              </Repeater>
+              <Text Name="NoChannels" Content="No Channels" Font="Segoe Media Center Light, 16, Bold" Color="White" Alpha=".6" Visible="false" />
+            </Children>
+          </Scroller>
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+  </UI>
+
+  <UI Name="ViewOrderPanel" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:UserConfig Name="UserConfig" UserConfig="$Required" />
+    </Properties>
+
+    <Locals>
+      <ScrollingHandler HandleDirectionalKeys="true" HandleHomeEndKeys="true" HandleMouseWheel="true"
+          HandlePageCommands="true" HandlePageKeys="true" HandlerStage="Bubbled" Name="ScrollingHandler"/>
+
+      <ScrollingData Name="ScrollingData" BeginPadding="30" EndPadding="25" />
+      <Command Name="ItemMoved" />
+
+    </Locals>
+
+    <Rules>
+      <!-- Give ScrollingData to ScrollingHandler. -->
+      <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
+      <!-- Give Repeater to ScrollingData. -->
+      <Default Target="[ScrollingData.Repeater]" Value="[MyRepeater]"/>
+      
+      <!-- Save when lose focus -->
+      <Changed Source="[Input.DeepKeyFocus]" >
+        <Conditions>
+          <Equality Source="[Input.DeepKeyFocus]" Value="false" />
+          <Equality Source="[UserConfig.HasChanged]" Value="true" />
+        </Conditions>
+        <Actions>
+          <Invoke Target="[UserConfig.Save]" />
+        </Actions>
+      </Changed>
+      
+      <Binding Source="[UserConfig.OrderedViews]" Target="[MyRepeater.Source]" />
+
+      <Changed Source="[ItemMoved.Invoked]" >
+        <Actions>
+          <Invoke Target="[MyRepeater.NavigateIntoIndex]" index="[UserConfig.LandingIndex]" />
+        </Actions>
+      </Changed>
+    </Rules>
+
+    <Content>
+      <ColorFill Content="30,30,30"  Margins="25,0,0,5" MaximumSize="300,250" MinimumSize="300,250" >
+        <Children>
+          <Scroller Orientation="Vertical" FadeSize="10" Name="GroupScroller" Navigation="PreferFocusOrder" ScrollingData="[ScrollingData]" >
+            <Children>
+              <Repeater Margins="0,10,0,10" Layout="Fill" Name="MyRepeater">
+                <Layout>
+                  <FlowLayout Orientation="Vertical"  ItemAlignment="Near" Spacing="4,0"/>
+                </Layout>
+                <Content>
+                  <me:ViewOrderItem Application="[Application]" Item="[RepeatedItem!lib:FolderConfigItem]" Index="[RepeatedItemIndex]" Moved="[ItemMoved]" />
+                </Content>
+              </Repeater>
+            </Children>
+          </Scroller>
+
+        </Children>
+      </ColorFill>
+
+    </Content>
+  </UI>
+  
+  <UI Name="BaseFolderItem" >
+    <Properties>
+      <a:Application Name="Application" Application="$Required" />
+      <lib:FolderConfigItem Name="Item" FolderConfigItem="$Required" />
+    </Properties>
+  </UI>
+
+  <UI Name="FolderGroupItem" BaseUI="me:BaseFolderItem" >
+    <Locals>
+      <BooleanChoice Name="IsGrouped" />
+    </Locals>
+
+    <Rules>
+      
+      <Changed Source="[Item]" InitialEvaluate="true" >
+        <Actions>
+          <Invoke Target="[Application.ServerUserConfig.FolderIsGrouped]" id="[Item.Id]" ResultTarget="[IsGrouped.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[IsGrouped.Value]" >
+        <Actions>
+          <Invoke Target="[Application.ServerUserConfig.SetFolderIsGrouped]" id="[Item.Id]" group="[IsGrouped.Value]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <cb:CheckBox Name="CheckBox" Label="[Item.Name]" Checked="[IsGrouped]" Margins="10,0,0,0"  Font="font://f:CP_ConfigItemFont"/>
+
+    </Content>
+  </UI>
+
+  <UI Name="ChannelItem" BaseUI="me:BaseFolderItem" >
+    <Locals>
+      <BooleanChoice Name="IsAtTop" />
+    </Locals>
+
+    <Rules>
+      
+      <Changed Source="[Item]" InitialEvaluate="true" >
+        <Actions>
+          <Invoke Target="[Application.ServerUserConfig.ChannelAtTop]" id="[Item.Id]" ResultTarget="[IsAtTop.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[IsAtTop.Value]" >
+        <Actions>
+          <Invoke Target="[Application.ServerUserConfig.SetChannelAtTop]" id="[Item.Id]" top="[IsAtTop.Value]" />
+        </Actions>
+      </Changed>
+    </Rules>
+    <Content>
+      <cb:CheckBox Name="CheckBox" Label="[Item.Name]" Checked="[IsAtTop]" Margins="10,0,0,0"  Font="font://f:CP_ConfigItemFont"/>
+
+    </Content>
+  </UI>
+
+  <UI Name="ViewOrderItem" BaseUI="me:BaseFolderItem" >
+    <Properties>
+      <Index Name="Index" Index="$Required" />
+      <Command Name="Moved" Command="$Required" />
+    </Properties>
+    <Locals>
+      <Command Name="MoveUp" />
+    </Locals>
+
+    <Rules>
+      
+      <Changed Source="[MoveUp.Invoked]" >
+        <Actions>
+          <Invoke Target="[Application.ServerUserConfig.MoveViewOrderUp]" ndx="[Index.Value]" />
+          <Invoke Target="[Moved.Invoke]" />
+        </Actions>
+      </Changed>
+      
+      <Condition Source="[Index.Value]" SourceValue="0" Target="[MoveButton.Visible]" Value="false" />
+
+    </Rules>
+    <Content>
+      <Panel Layout="HorizontalFlow" Margins="10,0,0,0" >
+        <Children>
+          <Text Content="[Item.Name]" Font="font://f:CP_ConfigItemFont" Color="color://s:FontColorMedium" MinimumSize="220,0"  />
+          <ib:ImageButton Name="MoveButton" Text="" Color="color://s:FontColorMedium" Command="[MoveUp]"
+                          Icon="resx://MediaBrowser/MediaBrowser.Resources/IconArrowUp" ImageFocus="resx://MediaBrowser/MediaBrowser.Resources/GrayGradientRight"
+                          Font="Segoe Media Center" DisplayText="false" MinSize="25,25"  Margins="0,0,0,0" Alpha=".7" />
+        </Children>
+      </Panel>
+
+    </Content>
+  </UI>
+
+</Mcml>

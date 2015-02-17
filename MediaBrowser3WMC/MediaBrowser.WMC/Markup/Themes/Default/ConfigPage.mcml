@@ -41,6 +41,7 @@
       <Size Name="PanelSize" Size="800,400" />
       <addin:AddInHost Name="AddInHost" />
       <a:Config Name="Config" Config="[Application.Config]"/>
+      <lib:UserConfig Name="UserConfig" UserConfig="[Application.ServerUserConfig]" />
       <Command Name="Close" />
       <Command Name="Back"/>
       <Command Name="FullRefresh" />
@@ -52,18 +53,12 @@
 
       
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
+      <BooleanChoice Name="ShowFolders" Value="[Application.ServerUserConfig.ShowFolders]" />
+      <BooleanChoice Name="ShowCollections" Value="[Application.ServerUserConfig.ShowCollections]" />
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
-      <BooleanChoice Name="UseLegacyFolders" Value="[Application.Config.UseLegacyFolders]" />
       <BooleanChoice Name="EnableTranscode360" Value="[Application.Config.EnableTranscode360]" />
       <BooleanChoice Name="ShowThemeBackground" Value="[Application.Config.ShowThemeBackground]" />
-      <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
-      <BooleanChoice Name="ShowMusicAlbumCollection" Value="[Application.Config.ShowMusicAlbumCollection]" />
-      <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
-      <BooleanChoice Name="ShowMusicGenresCollection" Value="[Application.Config.ShowMusicGenreCollection]" />
-      <BooleanChoice Name="ShowChannels" Value="[Application.Config.ShowChannels]" />
-      <BooleanChoice Name="GroupChannelsTogether" Value="[Application.Config.GroupChannelsTogether]" />
-      <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
       <BooleanChoice Name="ShowNewItemNotification" Value="[Application.Config.ShowNewItemNotification]" />
       <BooleanChoice Name="ShowNewItemNotificationInPlayer" Value="[Application.Config.ShowNewItemNotificationInPlayer]" />
       <BooleanChoice Name="EnableNestedMovieFolders" Value="[Application.Config.EnableNestedMovieFolders]" />
@@ -378,7 +373,6 @@
       <Binding Source="[SSTimeout.Value]" Target="[Config.ScreenSaverTimeOut]" />
       <Binding Source="[SlideShowInterval.Value]" Target="[Config.SlideShowInterval]" />
       <Binding Source="[EnableRootPage.Value]" Target="[Config.EnableRootPage]" />
-      <Binding Source="[UseLegacyFolders.Value]" Target="[Config.UseLegacyFolders]" />
       <Binding Source="[EnableTranscode360.Value]" Target="[Config.EnableTranscode360]" />
       <Binding Source="[ShowThemeBackground.Value]" Target="[Config.ShowThemeBackground]" />
       <Binding Source="[EnableNestedMovieFolders.Value]" Target="[Config.EnableNestedMovieFolders]" />
@@ -393,13 +387,6 @@
       <Binding Source="[ShowWatchTickInPosterView.Value]" Target="[Config.ShowWatchTickInPosterView]" />
       <Binding Source="[ShowHDIndicatorOnPosters.Value]" Target="[Config.ShowHDIndicatorOnPosters]" />
       <Binding Source="[ShowRemoteIndicatorOnPosters.Value]" Target="[Config.ShowRemoteIndicatorOnPosters]" />
-      <Binding Source="[ShowFavoritesCollection.Value]" Target="[Config.ShowFavoritesCollection]" />
-      <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
-      <Binding Source="[ShowMusicGenresCollection.Value]" Target="[Config.ShowMusicGenreCollection]" />
-      <Binding Source="[ShowMusicAlbumCollection.Value]" Target="[Config.ShowMusicAlbumCollection]" />
-      <Binding Source="[ShowChannels.Value]" Target="[Config.ShowChannels]" />
-      <Binding Source="[GroupChannelsTogether.Value]" Target="[Config.GroupChannelsTogether]" />
-      <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ShowNewItemNotificationInPlayer.Value]" Target="[Config.ShowNewItemNotificationInPlayer]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
@@ -415,6 +402,20 @@
       <Binding Source="[RandomizeBackdrop.Value]" Target="[Config.RandomizeBackdrops]" />
       <Binding Source="[RotateBackdrop.Value]" Target="[Config.RotateBackdrops]" />
       <Binding Source="[HideFocusFrame.Value]" Target="[Config.HideFocusFrame]" />
+      
+      <!-- These items only apply if not legacy browsing -->
+      <Binding Source="[ShowFolders.Value]" Target="[UserConfig.ShowFolders]" />
+      <Binding Source="[ShowCollections.Value]" Target="[UserConfig.ShowCollections]" />
+      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowFoldersOption.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
+      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowCollectionsOption.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
 
       <Binding Source="[AlwaysShowDetailsPage.Value]" Target="[Config.AlwaysShowDetailsPage]" />
       <Binding Source="[ShowRootBackground.Value]" Target="[Config.ShowRootBackground]" />
@@ -668,15 +669,8 @@
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#UseLegacyFoldersConfig!cor:String]" Checked="[UseLegacyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicAlbumCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicAlbumCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowChannelsConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowChannels]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#GroupChannelsTogetherConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupChannelsTogether]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <!--<cb:CheckBox Label="[Application.LocalStrings.#AutoValidateConfig!cor:String]" Checked="[AutoValidate]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>-->
+                      <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>
                   </Panel>
                   <Panel Layout="VerticalFlow" Margins="40,0,0,0" >

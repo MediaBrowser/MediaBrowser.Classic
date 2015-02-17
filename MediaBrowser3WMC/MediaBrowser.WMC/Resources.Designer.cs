@@ -2102,6 +2102,16 @@ namespace MediaBrowser {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GrayGradientRight {
+            get {
+                object obj = ResourceManager.GetObject("GrayGradientRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GreenBallDark {
             get {
                 object obj = ResourceManager.GetObject("GreenBallDark", resourceCulture);
@@ -2305,6 +2315,16 @@ namespace MediaBrowser {
         internal static System.Drawing.Bitmap IconAdded {
             get {
                 object obj = ResourceManager.GetObject("IconAdded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconArrowUp {
+            get {
+                object obj = ResourceManager.GetObject("IconArrowUp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2755,6 +2775,16 @@ namespace MediaBrowser {
         internal static byte[] LayoutThumbStrip {
             get {
                 object obj = ResourceManager.GetObject("LayoutThumbStrip", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LegacyConfigPanel {
+            get {
+                object obj = ResourceManager.GetObject("LegacyConfigPanel", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -4365,6 +4395,16 @@ namespace MediaBrowser {
         internal static byte[] UserMenu {
             get {
                 object obj = ResourceManager.GetObject("UserMenu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ViewConfigPanel {
+            get {
+                object obj = ResourceManager.GetObject("ViewConfigPanel", resourceCulture);
                 return ((byte[])(obj));
             }
         }

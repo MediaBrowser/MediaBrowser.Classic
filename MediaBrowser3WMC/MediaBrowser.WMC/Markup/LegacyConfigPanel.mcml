@@ -1,0 +1,86 @@
+﻿<Mcml xmlns="http://schemas.microsoft.com/2006/mcml"
+	  xmlns:cor="assembly://MSCorLib/System"
+    xmlns:a="assembly://MediaBrowser/MediaBrowser"
+      xmlns:lib="assembly://MediaBrowser/MediaBrowser.Library"
+      xmlns:ent="assembly://MediaBrowser/MediaBrowser.Library.Entities"
+	  xmlns:cb="resx://MediaBrowser/MediaBrowser.Resources/CheckBox"
+	  xmlns:s="file://Styles_DoNotEdit.mcml"
+	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+    xmlns:ss="resx://MediaBrowser/MediaBrowser.Resources/SimpleSpinner"
+	    xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ImageButton"
+    xmlns:st="resx://MediaBrowser/MediaBrowser.Resources/SpinnerText"
+    xmlns:cp="resx://MediaBrowser/MediaBrowser.Resources/ConfigPage"  
+	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+    xmlns:me="Me"
+  >
+  <!--*****************************************************************************************************************
+
+    This is an example of a config panel for your theme.  Modify this to include any theme-specific options you require.
+    You must also handle the saving/loading of any of these options somewhere in your assembly.
+
+  *********************************************************************************************************************-->
+
+  <UI Name="LegacyConfigPanel">
+
+    <Properties>
+      <a:Application Name="Application" Application="$Required"/>
+      <EditableText Name="FocusItem" />
+    </Properties>
+    <Locals>
+      <Inset Name="CMargin" Inset="25,0,0,0" />
+      <Inset Name="NMargin" Inset="25,10,0,0" />
+      <Inset Name="SMargin" Inset="10,0,0,0" />
+      <Size Name="LabelSize1" Size="250,0" />
+      <Size Name="PanelSize" Size="800,400" />
+      <a:Config Name="Config" Config="[Application.Config]"/>
+
+      <BooleanChoice Name="UseLegacyFolders" Value="[Application.Config.UseLegacyFolders]" />
+      <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
+      <BooleanChoice Name="ShowMusicAlbumCollection" Value="[Application.Config.ShowMusicAlbumCollection]" />
+      <BooleanChoice Name="ShowMusicGenresCollection" Value="[Application.Config.ShowMusicGenreCollection]" />
+      <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
+      <BooleanChoice Name="GroupChannelsTogether" Value="[Application.Config.GroupChannelsTogether]" />
+      <BooleanChoice Name="GroupAlbumsByArtist" Value="[Application.Config.GroupAlbumsByArtist]" />
+      <BooleanChoice Name="ShowChannels" Value="[Application.Config.ShowChannels]" />
+
+    </Locals>
+    
+    <Rules>
+      <Binding Source="[UseLegacyFolders.Value]" Target="[Config.UseLegacyFolders]" />
+      <Binding Source="[ShowFavoritesCollection.Value]" Target="[Config.ShowFavoritesCollection]" />
+      <Binding Source="[ShowMusicGenresCollection.Value]" Target="[Config.ShowMusicGenreCollection]" />
+      <Binding Source="[ShowMusicAlbumCollection.Value]" Target="[Config.ShowMusicAlbumCollection]" />
+      <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
+      <Binding Source="[GroupChannelsTogether.Value]" Target="[Config.GroupChannelsTogether]" />
+      <Binding Source="[GroupAlbumsByArtist.Value]" Target="[Config.GroupAlbumsByArtist]" />
+      <Binding Source="[ShowChannels.Value]" Target="[Config.ShowChannels]" />
+
+    </Rules>
+
+    <Content>
+      <Graphic Name="Panel1" Content="image://cp:50AlphaBg" Layout="HorizontalFlow"
+               MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+        <Children>
+          <Panel Layout="VerticalFlow" >
+            <Children>
+              <cp:TextHeader Text="[Application.LocalStrings.#LegacyConfigurationConfig!cor:String]" />
+              <cb:CheckBox Label="[Application.LocalStrings.#UseLegacyFoldersConfig!cor:String]" Checked="[UseLegacyFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicAlbumCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicAlbumCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#ShowMusicGenresCollectionConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowMusicGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#GroupAlbumsByArtistConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupAlbumsByArtist]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#ShowChannelsConfig!cor:String]" Padding="40,0,0,0" Checked="[ShowChannels]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+              <cb:CheckBox Label="[Application.LocalStrings.#GroupChannelsTogetherConfig!cor:String]" Padding="80,0,0,0" Checked="[GroupChannelsTogether]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+            </Children>
+          </Panel>
+
+        </Children>
+      </Graphic>
+
+    </Content>
+
+  </UI>
+
+
+</Mcml>

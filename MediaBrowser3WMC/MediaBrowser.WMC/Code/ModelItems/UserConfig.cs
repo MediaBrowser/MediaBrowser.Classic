@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Code.ModelItems;
+using MediaBrowser.Library.Entities;
+using MediaBrowser.Library.Threading;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Querying;
+using Microsoft.MediaCenter.AddIn;
 
 namespace MediaBrowser.Library
 {
@@ -16,21 +19,23 @@ namespace MediaBrowser.Library
             this._data = data;
         }
 
-        private List<BaseItemDto> _availableLibraryFolders;
-        public List<BaseItemDto> AvailableLibraryFolders
+        public bool HasChanged { get; set; }
+
+        private List<FolderConfigItem> _availableLibraryFolders;
+        public List<FolderConfigItem> AvailableLibraryFolders
         {
             get { return _availableLibraryFolders ?? (_availableLibraryFolders = RetrieveLibraryFolders()); }
             set { _availableLibraryFolders = value; FirePropertyChanged("AvailableLibraryFolders"); }
         }
 
-        private List<BaseItemDto> RetrieveLibraryFolders()
+        private List<FolderConfigItem> RetrieveLibraryFolders()
         {
             return Kernel.ApiClient.GetItems(new ItemQuery
                                              {
                                                  UserId = Kernel.CurrentUser.ApiId,
                                                  SortBy = new []{"SortName"}
 
-                                             }).Items.ToList();
+                                             }).Items.Select(dto => new FolderConfigItem(dto.Id, dto.Name)).ToList();
         }
 
         private List<BaseItemDto> _availableViews;
@@ -57,7 +62,7 @@ namespace MediaBrowser.Library
 
         public List<FolderConfigItem> OrderedViews
         {
-            get { return _data.OrderedViews.Select(v => new FolderConfigItem(v, AvailableViews.First(i => i.Id == v).Name)).ToList(); }
+            get { return _data.OrderedViews.Select(v => new FolderConfigItem(v, (AvailableViews.FirstOrDefault(i => i.Id == v) ?? new BaseItemDto()).Name)).Where(i => i.Name != null).ToList(); }
 
             set { _data.OrderedViews = value.Select(v => v.Id).ToArray(); }
         }
@@ -69,8 +74,12 @@ namespace MediaBrowser.Library
             var temp = _data.OrderedViews[ndx - 1];
             _data.OrderedViews[ndx - 1] = _data.OrderedViews[ndx];
             _data.OrderedViews[ndx] = temp;
+            LandingIndex = ndx - 1;
+            HasChanged = true;
             FirePropertyChanged("OrderedViews");
         }
+
+        public int LandingIndex { get; set; }
 
         public bool FolderIsGrouped(string id)
         {
@@ -82,6 +91,13 @@ namespace MediaBrowser.Library
             _data.ExcludeFoldersFromGrouping = group ? 
                 _data.ExcludeFoldersFromGrouping.Where(i => i != id).ToArray() : 
                 _data.ExcludeFoldersFromGrouping.Concat(new [] {id}).Distinct().ToArray();
+
+            // also adjust ordered views
+            _data.OrderedViews = group ? 
+                _data.OrderedViews.Where(i => i != id).ToArray() :
+                _data.OrderedViews.Concat(new [] {id}).Distinct().ToArray();
+
+            HasChanged = true;
         }
 
         public bool ChannelAtTop(string id)
@@ -94,13 +110,53 @@ namespace MediaBrowser.Library
             _data.DisplayChannelsWithinViews = top ?
                 _data.DisplayChannelsWithinViews.Concat(new[] {id}).Distinct().ToArray() :
                 _data.DisplayChannelsWithinViews.Where(i => i != id).ToArray();
+
+            // also adjust ordered views
+            _data.OrderedViews = top ?
+                _data.OrderedViews.Concat(new[] { id }).Distinct().ToArray() :
+                _data.OrderedViews.Where(i => i != id).ToArray();
+
+            HasChanged = true;
+        }
+
+        public bool HasNoChannels { get { return AvailableChannels.Count == 0; }}
+
+        public bool ShowFolders
+        {
+            get { return _data.DisplayFoldersView; }
+            set
+            {
+                if (value != _data.DisplayFoldersView)
+                {
+                    _data.DisplayFoldersView = value;
+                    FirePropertyChanged("ShowFolders");
+
+                    Async.Queue("user config save", Save);
+                }
+            }
+        }
+
+        public bool ShowCollections
+        {
+            get { return _data.DisplayCollectionsView; }
+            set
+            {
+                if (value != _data.DisplayCollectionsView)
+                {
+                    _data.DisplayCollectionsView = value;
+                    FirePropertyChanged("ShowCollections");
+
+                    Async.Queue("user config save", Save);
+                }
+            }
         }
 
         public void Save()
         {
             Kernel.ApiClient.UpdateUserConfiguration(Kernel.CurrentUser.ApiId, _data);
+            HasChanged = false;
             _availableViews = null;
-            FireAllPropertiesChanged();
+            FirePropertiesChanged("OrderedViews");
         }
     }
 

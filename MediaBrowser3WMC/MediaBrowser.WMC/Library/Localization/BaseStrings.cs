@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0097";
+        const string VERSION = "1.0101";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -283,6 +283,19 @@ namespace MediaBrowser.Library.Localization
         public string ClearConnectConfigDesc = "Logout of MB Connect so you can use just local access or login with a different Connect Id";
         public string UseLegacyFoldersConfig = "Use Legacy Folder Browsing*";
         public string UseLegacyFoldersConfigDesc = "Use the old-style straight folder browsing instead of the new 'Views' defined on the server. Restart required.";
+        public string ViewConfigurationConfig = "View Configuration";
+        public string MyViewsConfig = "My Views";
+        public string MyViewsDescConfig = "Select folders to be grouped into views";
+        public string ChannelsOnEhsConfig = "Channels";
+        public string ChannelsOnEhsDescConfig = "Select channels to show on EHS";
+        public string ViewOrderConfig = "View Order";
+        public string ViewOrderDescConfig = "Move items to preferred order";
+        public string ServerUpdateConfig = "** These options will affect the behavior of all client apps.  Restart required to take effect.";
+        public string LegacyConfigurationConfig = "Legacy Browsing";
+        public string ShowFoldersConfig = "Show Folders View";
+        public string ShowFoldersConfigDesc = "Show a view of plain media folders";
+        public string ShowCollectionsConfig = "Show Collections View";
+        public string ShowCollectionsConfigDesc = "Show a view of all collections";
 
         //JIL
         public string ThisWeek = "This Week";
