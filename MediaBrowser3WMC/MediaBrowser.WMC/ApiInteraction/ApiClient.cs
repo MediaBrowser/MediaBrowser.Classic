@@ -722,8 +722,8 @@ namespace MediaBrowser.ApiInteraction
             var parms = new QueryStringDictionary
                             {
                                 {"PlayableMediaTypes", "Video,Audio,Photo"},
-                                {
-                                    "SupportedCommands", string.Join(",", new[]
+                                {"SupportsMediaControl", true},
+                                {"SupportedCommands", string.Join(",", new[]
                                                                               {
                                                                                   GeneralCommandType.VolumeDown.ToString(),
                                                                                   GeneralCommandType.VolumeUp.ToString(),
