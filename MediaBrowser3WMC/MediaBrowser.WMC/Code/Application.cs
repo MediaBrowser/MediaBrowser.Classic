@@ -2566,7 +2566,6 @@ namespace MediaBrowser
             var oldVersion = new System.Version(Config.MBVersion);
             if (oldVersion < new System.Version(2, 0, 0, 0))
             {
-                Config.NewViewsIntroShown = true; // don't need this for new install
                 return true;  //new install, don't need to migrate
             }
 
