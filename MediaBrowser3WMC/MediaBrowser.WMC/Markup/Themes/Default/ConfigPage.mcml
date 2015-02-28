@@ -55,6 +55,8 @@
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
       <BooleanChoice Name="ShowFolders" Value="[Application.ServerUserConfig.ShowFolders]" />
       <BooleanChoice Name="ShowCollections" Value="[Application.ServerUserConfig.ShowCollections]" />
+      <BooleanChoice Name="ShowMovieSubViews" Value="[Application.Config.ShowMovieSubViews]" />
+      <BooleanChoice Name="ShowTvSubViews" Value="[Application.Config.ShowTvSubViews]" />
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
       <BooleanChoice Name="EnableRootPage" Value="[Application.Config.EnableRootPage]" />
       <BooleanChoice Name="EnableTranscode360" Value="[Application.Config.EnableTranscode360]" />
@@ -406,12 +408,24 @@
       <!-- These items only apply if not legacy browsing -->
       <Binding Source="[ShowFolders.Value]" Target="[UserConfig.ShowFolders]" />
       <Binding Source="[ShowCollections.Value]" Target="[UserConfig.ShowCollections]" />
+      <Binding Source="[ShowMovieSubViews.Value]" Target="[Config.ShowMovieSubViews]" />
+      <Binding Source="[ShowTvSubViews.Value]" Target="[Config.ShowTvSubViews]" />
       <Binding Source="[Config.UseLegacyFolders]" Target="[ShowFoldersOption.Visible]" >
         <Transformer>
           <BooleanTransformer Inverse="true" />
         </Transformer>
       </Binding>
       <Binding Source="[Config.UseLegacyFolders]" Target="[ShowCollectionsOption.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
+      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowMovieSubOption.Visible]" >
+        <Transformer>
+          <BooleanTransformer Inverse="true" />
+        </Transformer>
+      </Binding>
+      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowTvSubOption.Visible]" >
         <Transformer>
           <BooleanTransformer Inverse="true" />
         </Transformer>
@@ -669,6 +683,8 @@
                     <Children>
                       <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
                       <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Name="ShowMovieSubOption" Label="[Application.LocalStrings.#ShowMovieSubConfig!cor:String]" Checked="[ShowMovieSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <cb:CheckBox Name="ShowTvSubOption" Label="[Application.LocalStrings.#ShowTvSubConfig!cor:String]" Checked="[ShowTvSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                       <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                     </Children>

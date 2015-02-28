@@ -844,6 +844,18 @@ namespace MediaBrowser
             set { if (this.Data.NewViewsIntroShown != value) { this.Data.NewViewsIntroShown = value; Save(); FirePropertyChanged("NewViewsIntroShown"); } }
         }
 
+        public bool ShowMovieSubViews
+        {
+            get { return this.Data.ShowMovieSubViews; }
+            set { if (this.Data.ShowMovieSubViews != value) { this.Data.ShowMovieSubViews = value; Save(); FirePropertyChanged("ShowMovieSubViews"); } }
+        }
+
+        public bool ShowTvSubViews
+        {
+            get { return this.Data.ShowTvSubViews; }
+            set { if (this.Data.ShowTvSubViews != value) { this.Data.ShowTvSubViews = value; Save(); FirePropertyChanged("ShowTvSubViews"); } }
+        }
+
         public int ThemeBackgroundRepeat
         {
             get { return this.Data.ThemeBackgroundRepeat; }

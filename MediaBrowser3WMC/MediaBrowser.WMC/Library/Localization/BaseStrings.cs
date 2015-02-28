@@ -296,6 +296,10 @@ namespace MediaBrowser.Library.Localization
         public string ShowFoldersConfigDesc = "Show a view of plain media folders";
         public string ShowCollectionsConfig = "Show Collections View";
         public string ShowCollectionsConfigDesc = "Show a view of all collections";
+        public string ShowMovieSubConfig = "Show movie sub-views";
+        public string ShowMovieSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main Movies view. Uncheck to go directly to movie list.";
+        public string ShowTvSubConfig = "Show TV sub-views";
+        public string ShowTvSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main TV view. Uncheck to go directly to series list.";
 
         //JIL
         public string ThisWeek = "This Week";

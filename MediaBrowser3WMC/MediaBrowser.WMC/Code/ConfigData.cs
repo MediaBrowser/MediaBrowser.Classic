@@ -119,6 +119,9 @@ namespace MediaBrowser
         [Comment("Show a menu to confirm exit")]
         public bool UseExitMenu = true;
 
+        public bool ShowMovieSubViews = false;
+        public bool ShowTvSubViews = false;
+
         [Group("Updates")]
         [Comment("The date auto update last checked for a new version")]
         public DateTime LastAutoUpdateCheck = DateTime.Today.AddYears(-1);
