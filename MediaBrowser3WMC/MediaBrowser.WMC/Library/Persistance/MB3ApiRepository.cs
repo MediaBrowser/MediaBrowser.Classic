@@ -250,6 +250,8 @@ namespace MediaBrowser.Library.Persistance
                 item.IsExternalDisc = mb3Item.IsPlaceHolder ?? false;
                 // playback access
                 item.PlaybackAllowed = (mb3Item.PlayAccess == PlayAccess.Full) && !(mb3Item.IsPlaceHolder ?? false);
+                // delete access
+                item.CanDelete = mb3Item.CanDelete ?? false;
 
                 //Ratings
                 item.CriticRating = mb3Item.CriticRating;

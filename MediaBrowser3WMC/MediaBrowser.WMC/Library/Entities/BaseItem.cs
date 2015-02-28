@@ -350,6 +350,8 @@ namespace MediaBrowser.Library.Entities {
             get { return false; }
         }
 
+        public bool CanDelete { get; set; }
+
         public virtual bool CanResume
         {
             get { return CanResumeMain; }

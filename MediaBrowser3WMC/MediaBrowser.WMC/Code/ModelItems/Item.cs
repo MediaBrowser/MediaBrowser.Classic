@@ -621,6 +621,8 @@ namespace MediaBrowser.Library
             Play(true);
         }
 
+        public bool CanDelete { get { return baseItem.CanDelete; } }
+
         public bool CanResume { get { return BaseItem.CanResume; } }
         public bool CanResumeMain { get { return BaseItem.CanResumeMain; } }
 
