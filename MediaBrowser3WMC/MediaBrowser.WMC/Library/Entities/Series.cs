@@ -174,6 +174,8 @@ namespace MediaBrowser.Library.Entities {
                     Directors = temp.Directors;
                     Genres = temp.Genres;
                     Studios = temp.Studios;
+                    PlaybackAllowed = temp.PlaybackAllowed;
+                    CanDelete = temp.CanDelete;
                 }
 
                 // and themes if enabled

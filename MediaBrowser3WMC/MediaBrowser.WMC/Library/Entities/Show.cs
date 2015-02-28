@@ -192,6 +192,7 @@ namespace MediaBrowser.Library.Entities {
                     Chapters = temp.Chapters;
                     CriticRatingSummary = temp.CriticRatingSummary;
                     PlaybackAllowed = temp.PlaybackAllowed;
+                    CanDelete = temp.CanDelete;
                     if (IsOffline)
                     {
                         //ensure we are still offline
