@@ -36,7 +36,7 @@ namespace MediaBrowser.Library.Playables
             if (info != null)
             {
                 //Further optimize for direct play if possible
-                return info.MediaSource.Protocol == MediaProtocol.Http && !string.IsNullOrEmpty(info.MediaSource.Path) && !info.MediaSource.RequiredHttpHeaders.Any() ? info.MediaSource.Path : info.ToUrl(Kernel.ApiClient.ApiUrl);
+                return info.MediaSource.Protocol == MediaProtocol.Http && !string.IsNullOrEmpty(info.MediaSource.Path) && !info.MediaSource.RequiredHttpHeaders.Any() ? info.MediaSource.Path : info.ToUrl(Kernel.ApiClient.ApiUrl, Kernel.ApiClient.AuthToken);
             }
 
             // fallback to legacy
