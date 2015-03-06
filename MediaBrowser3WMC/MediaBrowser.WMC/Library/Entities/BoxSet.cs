@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Interfaces;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Localization;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class BoxSet : Folder, IMovie
+    public class BoxSet : Folder, IMovie, IDetailLoad
     {
         [Persist]
         public string MpaaRating { get; set; }
@@ -96,5 +97,15 @@ namespace MediaBrowser.Library.Entities
         }
 
 
+        public void LoadFullDetails()
+        {
+            // just themes if enabled
+            if (Config.Instance.EnableThemeBackgrounds)
+            {
+                LoadThemes();
+            }
+
+
+        }
     }
 }
