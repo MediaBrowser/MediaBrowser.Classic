@@ -2620,8 +2620,8 @@ namespace MediaBrowser
         {
             Async.Queue(CurrentInstance.StringData("Manual Full Refresh"), () =>
                                                                                {
-                                                                                   Kernel.ApiClient.StartLibraryScan();
                                                                                    MessageBox(CurrentInstance.StringData("ManualRefreshDial"));
+                                                                                   Kernel.ApiClient.StartLibraryScan();
                                                                                });
         }
 
