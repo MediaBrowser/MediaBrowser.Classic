@@ -324,7 +324,7 @@
       
       <Changed Source="[MoveUp.Invoked]" >
         <Actions>
-          <Invoke Target="[Application.ServerUserConfig.MoveViewOrderUp]" ndx="[Index.Value]" />
+          <Invoke Target="[Application.ServerUserConfig.MoveViewOrderUp]" id="[Item.Id]" />
           <Invoke Target="[Moved.Invoke]" />
         </Actions>
       </Changed>

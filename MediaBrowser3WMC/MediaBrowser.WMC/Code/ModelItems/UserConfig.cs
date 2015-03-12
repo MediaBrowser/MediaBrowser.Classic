@@ -7,6 +7,7 @@ using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Querying;
 using Microsoft.MediaCenter.AddIn;
+using SuperSocket.ClientEngine;
 
 namespace MediaBrowser.Library
 {
@@ -67,8 +68,9 @@ namespace MediaBrowser.Library
             set { _data.OrderedViews = value.Select(v => v.Id).ToArray(); }
         }
 
-        public void MoveViewOrderUp(int ndx)
+        public void MoveViewOrderUp(string id)
         {
+            var ndx = _data.OrderedViews.ToList().IndexOf(id);
             if (ndx <= 0) return;
 
             var temp = _data.OrderedViews[ndx - 1];
