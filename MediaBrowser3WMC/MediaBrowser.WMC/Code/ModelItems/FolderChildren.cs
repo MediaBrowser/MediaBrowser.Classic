@@ -29,8 +29,8 @@ namespace MediaBrowser.Code.ModelItems {
         public void Assign(FolderModel folderModel, Action onChildrenChanged) {
 
             lock (this) {
-                Debug.Assert(this.folderModel == null);
-                Debug.Assert(this.folder == null);
+                //Debug.Assert(this.folderModel == null);
+                //Debug.Assert(this.folder == null);
 
                 this.onChildrenChanged = onChildrenChanged;
                 if (folderModel.Folder == this.folder && folderModel == this.folderModel) return;
@@ -134,7 +134,7 @@ namespace MediaBrowser.Code.ModelItems {
         {
             if (folder != null && !FolderIsIndexed && function != null) {
                 this.sortFunction = function;
-                Async.Queue("Background Sorter", () => folder.Sort(function));
+                Async.Queue(Async.ThreadPoolName.BackgroundSorter, () => folder.Sort(function));
             }
         }
 
@@ -244,7 +244,7 @@ namespace MediaBrowser.Code.ModelItems {
 
         
         public float GetChildAspect(bool useBanner) {
-            Async.Queue("Aspect Ratio Calculator", () => CalculateChildAspect(useBanner));
+            Async.Queue(Async.ThreadPoolName.AspectRatioCalculator, () => CalculateChildAspect(useBanner));
             return childImageAspect;
         }
 

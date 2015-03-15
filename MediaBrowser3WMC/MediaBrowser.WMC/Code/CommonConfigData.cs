@@ -13,6 +13,7 @@ using MediaBrowser.Model.Updates;
 using Microsoft.MediaCenter.UI;
 using Inset = MediaBrowser.Code.ShadowTypes.Inset;
 using Vector3 = MediaBrowser.Code.ShadowTypes.Vector3;
+using MediaBrowser.Library.Threading;
 
 namespace MediaBrowser
 {
@@ -246,7 +247,7 @@ namespace MediaBrowser
         public void Save() {
             this.settings.Write();
             //notify of the change
-            MediaBrowser.Library.Threading.Async.Queue("Config notify", () => Kernel.Instance.NotifyConfigChange());
+            MediaBrowser.Library.Threading.Async.Queue(Async.ThreadPoolName.ConfigNotify, () => Kernel.Instance.NotifyConfigChange());
         }
 
         /// <summary>

@@ -130,7 +130,7 @@ namespace MediaBrowser.Util
                             catch (Exception e)
                             {
                                 Logger.ReportException("Error attempting to update.",e);
-                                Async.Queue("error", () => _appRef.MessageBox("Error attempting to update.  Please update manually."));
+                                Async.Queue(Async.ThreadPoolName.Error, () => _appRef.MessageBox("Error attempting to update.  Please update manually."));
                                 return true;
                             }
                         }
@@ -167,18 +167,21 @@ namespace MediaBrowser.Util
         public bool PluginUpdatesAvailable()
         {
             Logger.ReportInfo("Checking for Plugin Updates...");
-            if (_appRef.InstalledPluginsCollection.Items.Any(i => i.UpdateAvailable))
+            if (_appRef.InstalledPluginsCollection != null)
             {
-                if (_appRef.YesNoBox(MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("PluginUpdatesAvailQ")) == "Y")
+                if (_appRef.InstalledPluginsCollection.Items.Any(i => i.UpdateAvailable))
                 {
-                    _appRef.ConfigPanelIndex = 3;
-                    _appRef.OpenConfiguration(true);
-                    Async.Queue("Panel Reset", () => { _appRef.ConfigPanelIndex = 0; }, 1000);
-                    
-                }
-                else
-                {
-                    return true;
+                    if (_appRef.YesNoBox(MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("PluginUpdatesAvailQ")) == "Y")
+                    {
+                        _appRef.ConfigPanelIndex = 3;
+                        _appRef.OpenConfiguration(true);
+                        Async.Queue(Async.ThreadPoolName.PanelReset, () => { _appRef.ConfigPanelIndex = 0; }, 1000);
+
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
 

@@ -23,7 +23,7 @@ namespace MediaBrowser.Library
                 if (_selectedItemIndex != value)
                 {
                     _selectedItemIndex = value;
-                    FirePropertiesChanged("SelectedItemIndex", "SelectedItem");
+                    UIFirePropertiesChange("SelectedItemIndex", "SelectedItem");
                 }
             }
         }
@@ -36,25 +36,25 @@ namespace MediaBrowser.Library
 
         public void ResetUpdatesAvailable()
         {
-            FirePropertyChanged("UpdatesAvailable");
+            UIFirePropertyChange("UpdatesAvailable");
         }
 
         public void Remove(PluginItem plugin)
         {
             if (Items.Remove(plugin)) Items = new List<PluginItem>(Items);
-            FirePropertyChanged("Items");
+            UIFirePropertyChange("Items");
         }
 
         public PluginItemCollection(IEnumerable<PackageInfo> plugins)
         {
             Items = plugins.Select(p => new PluginItem(p)).ToList();
-            FirePropertyChanged("Items");
+            UIFirePropertyChange("Items");
         }
 
         public PluginItemCollection(IEnumerable<PluginItem> plugins)
         {
             Items = plugins.ToList();
-            FirePropertyChanged("Items");
+            UIFirePropertyChange("Items");
         }
 
         private List<PluginItemCollection> _groupedItems; 

@@ -16,6 +16,7 @@
     xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
     xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ItemButton"
     xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
+    xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
     xmlns:me="Me"
 	  >
 
@@ -424,6 +425,11 @@
 
     <Rules>
 
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlayAnimation Target="[Main]" Animation="animation://an:ButtonPress"/>
+        </Actions>
+      </Changed>
       <!-- Set the UI to be mouse and keyboard interactive. -->
       <Default Target="[Input.KeyInteractive]" Value="true"/>
       <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>

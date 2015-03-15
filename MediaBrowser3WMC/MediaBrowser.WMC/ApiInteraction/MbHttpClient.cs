@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
+using System.Diagnostics;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -17,12 +18,7 @@ namespace MediaBrowser.ApiInteraction
         private string AuthHeader;
         private string AuthToken;
 
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        private ILogger Logger { get; set; }
-
+        
         public void SetAuthorizationToken(string token)
         {
             AuthToken = token;
@@ -34,9 +30,9 @@ namespace MediaBrowser.ApiInteraction
         /// Initializes a new instance of the <see cref="ApiClient" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public MbHttpClient(ILogger logger)
+        public MbHttpClient()
         {
-            Logger = logger;
+            
         }
 
         /// <summary>
@@ -49,56 +45,65 @@ namespace MediaBrowser.ApiInteraction
         {
 
             Library.Logging.Logger.ReportInfo("Sending Http Get to {0}", url);
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             try
             {
-                var req = (HttpWebRequest)WebRequest.Create(url);
-                req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
-                req.Headers.Add("X-MediaBrowser-Token", AuthToken);
-                var ms = new MemoryStream();
-                req.Timeout = Timeout > 0 ? Timeout : 30000;
-                using (var resp = (HttpWebResponse)req.GetResponse())
-                {
-                    var r = resp.GetResponseStream();
-                    int read = 1;
-                    var buffer = new byte[10000];
-                    while (read > 0)
-                    {
-                        read = r.Read(buffer, 0, buffer.Length);
-                        ms.Write(buffer, 0, read);
-                    }
-                    ms.Flush();
-                    ms.Seek(0, SeekOrigin.Begin);
 
-                    return ms;
-                }
-
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ((HttpWebResponse) ex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                try
                 {
-                    if (Application.CurrentInstance != null)
+                    var req = (HttpWebRequest)WebRequest.Create(url);
+                    req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
+                    req.Headers.Add("X-MediaBrowser-Token", AuthToken);
+                    var ms = new MemoryStream();
+                    req.Timeout = Timeout > 0 ? Timeout : 30000;
+                    using (var resp = (HttpWebResponse)req.GetResponse())
                     {
-                        var header = ex.Response.Headers["X-Application-Error-Code"];
-                        if (header == "ParentalControl")
+                        var r = resp.GetResponseStream();
+                        int read = 1;
+                        var buffer = new byte[10000];
+                        while (read > 0)
                         {
-                            AddInHost.Current.MediaCenterEnvironment.Dialog("User Access is Restricted at This Time", "Parental Control.", DialogButtons.Ok, 100, true);
+                            read = r.Read(buffer, 0, buffer.Length);
+                            ms.Write(buffer, 0, read);
                         }
-                        Logger.Error("Unauthorized Request received from server - logging out");
-                        Application.CurrentInstance.Logout(true);
+                        ms.Flush();
+                        ms.Seek(0, SeekOrigin.Begin);
+
+                        return ms;
                     }
+
                 }
+                catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.ProtocolError && ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        if (Application.CurrentInstance != null)
+                        {
+                            var header = ex.Response.Headers["X-Application-Error-Code"];
+                            if (header == "ParentalControl")
+                            {
+                                Application.MediaCenterEnvironment.Dialog("User Access is Restricted at This Time", "Parental Control.", DialogButtons.Ok, 100, true);
+                            }
+                            Library.Logging.Logger.ReportVerbose("Unauthorized Request received from server - logging out");
+                            Application.CurrentInstance.Logout(true);
+                        }
+                    }
 
-                Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
-                return new MemoryStream();
+                    Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
+                    return new MemoryStream();
 
+                }
+                catch (Exception ex)
+                {
+                    Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
+                    return new MemoryStream();
+                    //throw;
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
-                return new MemoryStream();
-                //throw;
+                Library.Logging.Logger.ReportInfo("Done Http Get to {0} in {1}ms", url, sw.ElapsedMilliseconds);
             }
         }
 
@@ -126,13 +131,13 @@ namespace MediaBrowser.ApiInteraction
                 }
                 catch (WebException ex)
                 {
-                    Logger.ErrorException("Error getting response from " + url, ex);
+                    Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
 
                     throw new HttpException(ex.Message, ex);
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorException("Error posting {0}", ex, url);
+                    Library.Logging.Logger.ReportException("Error posting {0}", ex, url);
 
                     return "";
                 }
@@ -160,13 +165,13 @@ namespace MediaBrowser.ApiInteraction
             }
             catch (WebException ex)
             {
-                Logger.ErrorException("Error getting response from " + url, ex);
+                Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
 
                 throw new HttpException(ex.Message, ex);
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error requesting {0}", ex, url);
+                Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
 
                 throw;
             }

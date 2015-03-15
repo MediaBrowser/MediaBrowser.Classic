@@ -17,7 +17,7 @@ namespace MediaBrowser.Library.Threading
             LinkedList<Action> actions = new LinkedList<Action>();
             List<Thread> threads = new List<Thread>();
             string name;
-            volatile int maxThreads = 1;
+            volatile int maxThreads = 10;
 
             public ThreadPool(string name)
             {
@@ -77,6 +77,7 @@ namespace MediaBrowser.Library.Threading
 
                 lock (actions)
                 {
+                    Logger.ReportVerbose("Queuing action for " + this.name);
                     if (urgent)
                     {
                         actions.AddFirst(action);
@@ -85,9 +86,9 @@ namespace MediaBrowser.Library.Threading
                     {
                         actions.AddLast(action);
                     }
-
                     Monitor.Pulse(actions);
                 }
+                
             }
 
             private void ThreadProc()
@@ -116,7 +117,7 @@ namespace MediaBrowser.Library.Threading
                         action = actions.First.Value;
                         actions.RemoveFirst();
                     }
-
+                    Logger.ReportVerbose("Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId.ToString());
                     action();
                 }
             }
@@ -136,7 +137,7 @@ namespace MediaBrowser.Library.Threading
             }
         }
 
-        static Dictionary<string, ThreadPool> threadPool = new Dictionary<string, ThreadPool>();
+        static Dictionary<ThreadPoolName, ThreadPool> threadPool = new Dictionary<ThreadPoolName, ThreadPool>();
 
         public static Timer Every(int milliseconds, Action action)
         {
@@ -144,27 +145,144 @@ namespace MediaBrowser.Library.Threading
             return timer;
         }
 
-        public static void SetMaxThreads(string uniqueId, int threads)
+        public enum ThreadPoolName
+        {
+            IsPlayingVideoDelay,
+            AccessError,
+            ActorLoad,
+            AddUser,
+            AspectRatioCalculator,
+            BackdropLoader,
+            BackgroundSorter,
+            BasePlaybackControllerOnProgress,
+            ChildRefresh,
+            ConfigNotify,
+            ConnectError,
+            Context,
+            CustomMsg,
+            DeleteMediaItem,
+            DetailLoad,
+            Error,
+            ExtPlayerMgmt,
+            ExtSplashShow,
+            FakeProgressForDownload,
+            FastLoadLoader,
+            FavToggle,
+            FileWatcherRefresher,
+            FolderModelItemCount,
+            FolderModelMediaCount,
+            FolderSetWatched,
+            GenreNavigation,
+            Ident,
+            ImageCacheCleanup,
+            IndexBy,
+            LaunchError,
+            LoadUser,
+            LogfileCleanup,
+            Logout,
+            ManualFullRefresh,
+            MBRegistration,
+            Migration,
+            Msg,
+            NewestItemLoader,
+            NewViews,
+            OnCurrentItemChanged,
+            OnNavigatingInto,
+            OnNavigationInto,
+            OnPlaybackFinished,
+            OnPlayStateSaved,
+            OverviewLoader,
+            PackageLoad,
+            PackageRating,
+            PanelReset,
+            PersonNavigation,
+            Ping,
+            PlayableItemPlaybackFinished,
+            PlayAction,
+            PlaybackFinished,
+            PlayIntros,
+            PluginRemove,
+            PluginUpdate,
+            PostDeleteValidate,
+            QuicklistUpdate,
+            RefreshRateError,
+            RefreshUI,
+            Registration,
+            RuntimeCalc,
+            Search,
+            SetDirectoryPermissions,
+            SimilarNavigation,
+            SpecialFeatureLoad,
+            SqliteDisplayWriter,
+            SqliteWriter,
+            StartupQueue,
+            SupporterCheck,
+            ToggleWatched,
+            UIForcedFolderMetadataLoader,
+            UITriggeredMetadataLoader,
+            UnwatchedCounterForFolderModel,
+            UpdateCheck,
+            UpdateFav,
+            UserConfigSave,
+            WaitForExternalPlayerToLaunch,
+            WaitForProcessToExit,
+            WeakRefExpiry,
+            Common
+        }
+
+        private static ThreadPoolName TranslatePool(ThreadPoolName name)
+        {
+            switch (name)
+            {
+                case ThreadPoolName.WaitForExternalPlayerToLaunch:
+                case ThreadPoolName.WaitForProcessToExit:
+                case ThreadPoolName.SqliteDisplayWriter:
+                case ThreadPoolName.SqliteWriter:
+                case ThreadPoolName.FastLoadLoader:
+                    return name;
+                default:
+                    return ThreadPoolName.Common;
+            }
+        }
+        private static bool AllowAsync(ThreadPoolName name)
+        {
+            
+            switch (name)
+            {
+                case ThreadPoolName.WaitForExternalPlayerToLaunch:
+                case ThreadPoolName.WaitForProcessToExit:
+                case ThreadPoolName.SqliteDisplayWriter:
+                case ThreadPoolName.SqliteWriter:
+                case ThreadPoolName.FastLoadLoader:
+                case ThreadPoolName.UnwatchedCounterForFolderModel:
+                case ThreadPoolName.BackgroundSorter:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static void SetMaxThreads(ThreadPoolName uniqueId, int threads)
         {
             GetThreadPool(uniqueId).SetMaxThreads(threads);
         }
 
-        public static void Queue(string uniqueId, Action action)
+        public static void Queue(ThreadPoolName uniqueId, Action action)
         {
             Queue(uniqueId, action, null);
         }
 
-        public static void Queue(string uniqueId, Action action, int delay)
+        public static void Queue(ThreadPoolName uniqueId, Action action, int delay)
         {
             Queue(uniqueId, action, null, false, delay);
         }
 
-        public static void Queue(string uniqueId, Action action, Action done)
+        public static void Queue(ThreadPoolName uniqueId, Action action, Action done)
         {
             Queue(uniqueId, action, done, false);
         }
 
-        public static void Queue(string uniqueId, Action action, Action done, bool urgent)
+        public static void Queue(ThreadPoolName uniqueId, Action action, Action done, bool urgent)
         {
             Queue(uniqueId, action, done, urgent, 0);
         }
@@ -177,14 +295,15 @@ namespace MediaBrowser.Library.Threading
         /// <param name="done"></param>
         /// <param name="urgent"></param>
         /// <param name="delay">Millisecond delay before executing </param>
-        public static void Queue(string uniqueId, Action action, Action done, bool urgent, int delay)
+        public static void Queue(ThreadPoolName uniqueId, Action action, Action done, bool urgent, int delay)
         {
 
-            Debug.Assert(uniqueId != null);
+            //Debug.Assert(uniqueId != null);
             Debug.Assert(action != null);
 
             Action workItem = () =>
             {
+                Logger.ReportVerbose("Starting work item");
                 try
                 {
                     action();
@@ -195,21 +314,35 @@ namespace MediaBrowser.Library.Threading
                     Logger.ReportException("Async thread threw the following exception: ", ex);
                     Debug.Assert(false, "Async thread threw the following exception: " + ex.ToString());
                 }
+                Logger.ReportVerbose("Finished work item");
                 if (done != null) done();
+                Logger.ReportVerbose("Finished done callback for work item");
             };
-
-            GetThreadPool(uniqueId).Queue(workItem, urgent, delay);
+            Logger.ReportVerbose("Getting threadpool " + uniqueId);
+            //GetThreadPool(uniqueId).Queue(workItem, urgent, delay);
+            if (AllowAsync(uniqueId))
+                GetThreadPool(uniqueId).Queue(workItem, urgent, delay);
+            else
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                workItem();
+                sw.Stop();
+                Logger.ReportVerbose("Work item for {0} took {1}ms", uniqueId.ToString(), sw.ElapsedMilliseconds);
+            }
         }
 
-        private static ThreadPool GetThreadPool(string uniqueId)
+        private static ThreadPool GetThreadPool(ThreadPoolName uniqueId)
         {
+            uniqueId = TranslatePool(uniqueId);
             ThreadPool currentPool;
             lock (threadPool)
             {
                 if (!threadPool.TryGetValue(uniqueId, out currentPool))
                 {
-                    currentPool = new ThreadPool(uniqueId);
+                    currentPool = new ThreadPool(uniqueId.ToString());
                     threadPool[uniqueId] = currentPool;
+                    currentPool.SetMaxThreads(10);
                 }
             }
             return currentPool;

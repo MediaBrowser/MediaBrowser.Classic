@@ -59,7 +59,8 @@ namespace MediaBrowser.ApiInteraction.WebSocket
 
                 _webSocket.OnReceiveDelegate = OnMessageReceived;
 
-                Async.Queue("ident", () =>
+                //"ident"
+                Async.Queue(Async.ThreadPoolName.Ident, () =>
                                          {
                                              while (_webSocket.State != WebSocketState.Open)
                                              {

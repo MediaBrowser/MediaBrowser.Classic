@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.258.0" ?>
-<?define Property_ProductCode = "{855E2623-4E76-4A63-96D8-6F2A06E6D7BE}" ?>
+<?define Property_ProductVersion = "3.0.256.0" ?>
+<?define Property_ProductCode = "{5E23F695-ABB6-4B71-BCA9-154BBCB63089}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -254,11 +254,9 @@
           <util:PermissionEx User="[WIX_ACCOUNT_USERS]" GenericAll="yes"/>
         </CreateFolder>
       </Component>
-      <!--
       <Component Id="Chocolate" Guid="92525169-2613-4A90-8695-5D12FF8536B3" DiskId="1">
         <File Id="Chocolate" Name="Chocolate.dll" Source="..\3rdParty\Chocolate.dll" Checksum="no" />
       </Component>
-      -->
     </DirectoryRef>
     
 
@@ -287,7 +285,7 @@
       <ComponentRef Id="JsonNet" />
       <ComponentRef Id="MediaBrowser.Model" />
       <ComponentRef Id="Websocket" />
-      <!--<ComponentRef Id="Chocolate" />-->
+      <ComponentRef Id="Chocolate" />
       <ComponentRef Id="DefaultShortcuts" />
       <ComponentRef Id="OptionalStartmenuFolderShortcut" />
       <ComponentRef Id="OptionalDesktopFolderShortcut" />

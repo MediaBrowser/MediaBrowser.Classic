@@ -25,7 +25,8 @@ namespace MediaBrowser {
             set {
                 if (_time != value) {
                     _time = value;
-                    FirePropertyChanged("Time");
+
+                    Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("Time"));
                 }
             }
         }

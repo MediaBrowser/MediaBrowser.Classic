@@ -48,16 +48,16 @@ namespace MediaBrowser.Code.ModelItems {
 
         #region IModelItemOwner Members
 
-        public void FireAllPropertiesChanged() {
+        public void UIFireAllPropertiesChanged() {
             RunInUIThread(() =>
             {
                 foreach (var property in this.GetType().GetProperties()) {
-                    FirePropertyChanged(property.Name);
+                    UIFirePropertyChange(property.Name);
                 }
             });
         }
 
-        protected void FirePropertiesChanged(params string[] properties) {
+        protected void UIFirePropertiesChange(params string[] properties) {
             RunInUIThread(() =>
             {
                 if (PropertyChanged != null && properties != null) {
@@ -68,16 +68,13 @@ namespace MediaBrowser.Code.ModelItems {
             });
         }
 
-        void RunInUIThread(Action action) {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => action());
-            } else {
-                action();
-            }
+        void RunInUIThread(Action action) 
+        {
+            Application.UIDeferredInvokeIfRequired(() => action());
         }
 
 
-        protected void FirePropertyChanged(string property) {
+        protected void UIFirePropertyChange(string property) {
            RunInUIThread(() =>
            {
                if (PropertyChanged != null) {

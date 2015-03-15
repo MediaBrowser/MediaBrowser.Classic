@@ -62,6 +62,8 @@ namespace MediaBrowser.Library.Util
 
         private static Folder GetSeason(Episode episode)
         {
+            if (episode.SeasonId == null)
+                return null;
             lock (TvCache)
             {
                 if (!TvCache.ContainsKey(episode.SeasonId)) TvCache.Add(episode.SeasonId, episode.RetrieveSeason());
@@ -72,6 +74,8 @@ namespace MediaBrowser.Library.Util
 
         private static Folder GetSeries(Episode episode)
         {
+            if (episode.Series == null)
+                return null;
             lock (TvCache)
             {
                 if (!TvCache.ContainsKey(episode.SeriesId)) TvCache.Add(episode.SeriesId, episode.RetrieveSeries());

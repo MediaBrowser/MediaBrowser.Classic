@@ -15,7 +15,7 @@ namespace MediaBrowser.Library
             set
             {
                 this.val = value;
-                FirePropertyChanged("Value");
+                UIFirePropertyChange("Value");
             }
         }
     }

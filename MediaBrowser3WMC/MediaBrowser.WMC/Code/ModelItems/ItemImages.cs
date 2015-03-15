@@ -55,7 +55,7 @@ namespace MediaBrowser.Library
                     bannerImage = new AsyncImageLoader(
                         () => baseItem.BannerImage,
                         null,
-                        () => this.FirePropertiesChanged("PreferredImage", "PreferredImageSmall", "BannerImage"));
+                        () => this.UIFirePropertiesChange("PreferredImage", "PreferredImageSmall", "BannerImage"));
                 }
                 return bannerImage.Image;
             }
@@ -121,7 +121,7 @@ namespace MediaBrowser.Library
                 primaryBackdropImage = backdropImage = new AsyncImageLoader(
                     () => baseItem.PrimaryBackdropImage,
                     null,
-                    () => this.FirePropertiesChanged("PrimaryBackdropImage"));
+                    () => this.UIFirePropertiesChange("PrimaryBackdropImage"));
                 backdropImage.LowPriority = true;
             }
         }
@@ -131,7 +131,7 @@ namespace MediaBrowser.Library
             backdropImage = new AsyncImageLoader(
                 () => baseItem.PrimaryBackdropImage,
                 null,
-                () => this.FirePropertiesChanged("BackdropImage"));
+                () => this.UIFirePropertiesChange("BackdropImage"));
             backdropImage.LowPriority = true;
         }
 
@@ -151,7 +151,7 @@ namespace MediaBrowser.Library
                     backdropImage = new AsyncImageLoader(
                         () => baseItem.BackdropImages[backdropImageIndex],
                         null,
-                        () => this.FirePropertyChanged("BackdropImage"));
+                        () => this.UIFirePropertyChange("BackdropImage"));
                     backdropImage.LowPriority = true;
                 }
             }
@@ -217,7 +217,7 @@ namespace MediaBrowser.Library
             {
                 backdropImages = new List<AsyncImageLoader>();
 
-                Async.Queue("Backdrop Loader", () =>
+                Async.Queue(Async.ThreadPoolName.BackdropLoader, () =>
                 {
                     foreach (var image in baseItem.BackdropImages)
                     {
@@ -226,7 +226,7 @@ namespace MediaBrowser.Library
                         var asyncImage = new AsyncImageLoader(
                              () => captureImage,
                              null,
-                             () => this.FirePropertiesChanged("BackdropImages", "BackdropImage"));
+                             () => this.UIFirePropertiesChange("BackdropImages", "BackdropImage"));
 
                         lock (backdropImages)
                         {
@@ -271,7 +271,7 @@ namespace MediaBrowser.Library
                 if (images[backdropImageIndex].Image != null)
                 {
                     backdropImage = images[backdropImageIndex];
-                    FirePropertyChanged("BackdropImage");
+                    UIFirePropertyChange("BackdropImage");
                 }
             }
         }
@@ -286,6 +286,7 @@ namespace MediaBrowser.Library
                     return DefaultImage;
                 }
                 EnsurePrimaryImageIsSet();
+                //Logger.ReportVerbose("Returning primary image for " + baseItem.Name);
                 return primaryImage.Image;
             }
         }
@@ -304,7 +305,7 @@ namespace MediaBrowser.Library
 
         void PrimaryImageChanged()
         {
-            FirePropertiesChanged("PrimaryImage", "PreferredImage", "PrimaryImageSmall", "PreferredImageSmall");
+            UIFirePropertiesChange("PrimaryImage", "PreferredImage", "PrimaryImageSmall", "PreferredImageSmall");
         }
 
         AsyncImageLoader secondaryImage = null;
@@ -335,7 +336,7 @@ namespace MediaBrowser.Library
 
         void SecondaryImageChanged()
         {
-            FirePropertiesChanged("SecondaryImage");
+            UIFirePropertiesChange("SecondaryImage");
         }
 
         AsyncImageLoader primaryImageSmall = null;
@@ -363,6 +364,7 @@ namespace MediaBrowser.Library
                     {
                         //Logger.ReportWarning("Primary image small size not set: " + Name);
                     }
+                    //Logger.ReportVerbose("Returning primary image for " + baseItem.Name);
                     return primaryImageSmall != null ? primaryImageSmall.Image : PrimaryImage;
                 }
                 else
@@ -420,7 +422,7 @@ namespace MediaBrowser.Library
                 primaryImageSmall.Size = new Size(width, height);
             }
 
-            FirePropertyChanged("SmallImageIsDistorted");
+            UIFirePropertyChange("SmallImageIsDistorted");
         }
 
         bool smallImageIsDistorted = false;
@@ -462,8 +464,8 @@ namespace MediaBrowser.Library
                 {
                     preferredImageSmallSize = value;
                     primaryImageSmall = null;
-                    FirePropertyChanged("PreferredImageSmall");
-                    FirePropertyChanged("PrimaryImageSmall");
+                    UIFirePropertyChange("PreferredImageSmall");
+                    UIFirePropertyChange("PrimaryImageSmall");
                 }
             }
         }
@@ -496,7 +498,7 @@ namespace MediaBrowser.Library
 
         void LogoImageChanged()
         {
-            FirePropertyChanged("LogoImage");
+            UIFirePropertyChange("LogoImage");
         }
 
         public bool HasLogoImage
@@ -536,7 +538,7 @@ namespace MediaBrowser.Library
 
         void ArtImageChanged()
         {
-            FirePropertyChanged("ArtImage");
+            UIFirePropertyChange("ArtImage");
         }
 
         public bool HasArtImage
@@ -575,7 +577,7 @@ namespace MediaBrowser.Library
 
         void ThumbnailImageChanged()
         {
-            FirePropertyChanged("ThumbnailImage");
+            UIFirePropertyChange("ThumbnailImage");
         }
 
         public bool HasThumbnailImage
@@ -614,7 +616,7 @@ namespace MediaBrowser.Library
 
         void DiscImageChanged()
         {
-            FirePropertyChanged("DiscImage");
+            UIFirePropertyChange("DiscImage");
         }
 
         public bool HasDiscImage
@@ -650,8 +652,8 @@ namespace MediaBrowser.Library
             set
             {
                 preferBanner = value;
-                FirePropertyChanged("HasPreferredImage");
-                FirePropertyChanged("PreferredImage");
+                UIFirePropertyChange("HasPreferredImage");
+                UIFirePropertyChange("PreferredImage");
             }
         }
 

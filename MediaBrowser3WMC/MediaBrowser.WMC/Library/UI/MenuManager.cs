@@ -32,7 +32,7 @@ namespace MediaBrowser.Library
             item.ToggleFavorite();
 
             // But kick off a search to be sure we get all instances marked
-            Async.Queue("fav toggle", () =>
+            Async.Queue(Async.ThreadPoolName.FavToggle, () =>
                                           {
                                               foreach (var instance in Kernel.Instance.FindItems(item.Id).Where(instance => instance != item.BaseItem))
                                               {

@@ -26,7 +26,7 @@ namespace MediaBrowser.Library
         public List<FolderConfigItem> AvailableLibraryFolders
         {
             get { return _availableLibraryFolders ?? (_availableLibraryFolders = RetrieveLibraryFolders()); }
-            set { _availableLibraryFolders = value; FirePropertyChanged("AvailableLibraryFolders"); }
+            set { _availableLibraryFolders = value; UIFirePropertyChange("AvailableLibraryFolders"); }
         }
 
         private List<FolderConfigItem> RetrieveLibraryFolders()
@@ -78,7 +78,7 @@ namespace MediaBrowser.Library
             _data.OrderedViews[ndx] = temp;
             LandingIndex = ndx - 1;
             HasChanged = true;
-            FirePropertyChanged("OrderedViews");
+            UIFirePropertyChange("OrderedViews");
         }
 
         public int LandingIndex { get; set; }
@@ -131,9 +131,9 @@ namespace MediaBrowser.Library
                 if (value != _data.DisplayFoldersView)
                 {
                     _data.DisplayFoldersView = value;
-                    FirePropertyChanged("ShowFolders");
+                    UIFirePropertyChange("ShowFolders");
 
-                    Async.Queue("user config save", Save);
+                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
                 }
             }
         }
@@ -146,9 +146,9 @@ namespace MediaBrowser.Library
                 if (value != _data.DisplayCollectionsView)
                 {
                     _data.DisplayCollectionsView = value;
-                    FirePropertyChanged("ShowCollections");
+                    UIFirePropertyChange("ShowCollections");
 
-                    Async.Queue("user config save", Save);
+                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace MediaBrowser.Library
             Kernel.ApiClient.UpdateUserConfiguration(Kernel.CurrentUser.ApiId, _data);
             HasChanged = false;
             _availableViews = null;
-            FirePropertiesChanged("OrderedViews");
+            UIFirePropertiesChange("OrderedViews");
         }
     }
 
@@ -176,13 +176,13 @@ namespace MediaBrowser.Library
         public string Id
         {
             get { return _id; }
-            set { _id = value; FirePropertyChanged("Id"); }
+            set { _id = value; UIFirePropertyChange("Id"); }
         }
 
         public string Name
         {
             get { return _name; }
-            set { _name = value; FirePropertyChanged("Name"); }
+            set { _name = value; UIFirePropertyChange("Name"); }
         }
     }
 }

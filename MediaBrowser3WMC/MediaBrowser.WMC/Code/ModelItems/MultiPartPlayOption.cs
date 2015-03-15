@@ -18,7 +18,7 @@ namespace MediaBrowser.Library
                 if (_name != value)
                 {
                     _name = value;
-                    FirePropertyChanged("Name");
+                    UIFirePropertyChange("Name");
                 }
             }
         }
@@ -31,7 +31,7 @@ namespace MediaBrowser.Library
                 if (_itemToPlay != value)
                 {
                     _itemToPlay = value;
-                    FirePropertyChanged("ItemToPlay");
+                    UIFirePropertyChange("ItemToPlay");
                 }
             }
         }

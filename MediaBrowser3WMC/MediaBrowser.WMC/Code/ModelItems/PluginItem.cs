@@ -155,7 +155,7 @@ namespace MediaBrowser.Library
                 if (_updatePending != value)
                 {
                     _updatePending = value;
-                    FirePropertyChanged("UpdatePending");
+                    UIFirePropertyChange("UpdatePending");
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace MediaBrowser.Library
 
         public void NotifyPropertiesChanged()
         {
-            FireAllPropertiesChanged();
+            UIFireAllPropertiesChanged();
         }
 
         // to keep mcml happy
@@ -213,7 +213,7 @@ namespace MediaBrowser.Library
         public PluginItem(PackageInfo info)
         {
             Info = info;
-            FireAllPropertiesChanged();
+            UIFireAllPropertiesChanged();
         }
 
     }
