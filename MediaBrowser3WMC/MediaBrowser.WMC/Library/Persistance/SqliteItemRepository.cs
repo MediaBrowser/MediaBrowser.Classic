@@ -392,7 +392,7 @@ namespace MediaBrowser.Library.Persistance {
 
             RunQueries(queries);
             alive = true; // tell writer to keep going
-            Async.Queue("Sqlite Writer", DelayedWriter);
+            Async.Queue(Async.ThreadPoolName.SqliteWriter, DelayedWriter);
 
         }
 

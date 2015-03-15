@@ -57,55 +57,60 @@ namespace MediaBrowser
         {
         }
 
+        public new void UIFirePropertyChanged(string name)
+        {
+            Application.UIDeferredInvokeIfRequired(() => base.FirePropertyChanged(name));
+        }
+
         public string Code
         {
             get { return _code; }
-            set { _code = value; FirePropertyChanged("Code"); }
+            set { _code = value; UIFirePropertyChanged("Code"); }
         }
 
         public string CodeDescription
         {
             get { return _codeDescription; }
-            set { _codeDescription = value; FirePropertyChanged("CodeDescription"); }
+            set { _codeDescription = value; UIFirePropertyChanged("CodeDescription"); }
         }
 
         public string ImageUrl
         {
             get { return _imageUrl; }
-            set { _imageUrl = value; FirePropertyChanged("ImageUrl"); }
+            set { _imageUrl = value; UIFirePropertyChanged("ImageUrl"); }
         }
 
         public string Location
         {
             get { return _location; }
-            set { _location = value; FirePropertyChanged("Location"); }
+            set { _location = value; UIFirePropertyChanged("Location"); }
         }
 
         public string Temp
         {
             get { return _temp; }
-            set { _temp = value; FirePropertyChanged("Temp"); }
+            set { _temp = value; UIFirePropertyChanged("Temp"); }
         }
 
         public string Unit
         {
             get { return _unit; }
-            set { _unit = value; FirePropertyChanged("Unit"); }
+            set { _unit = value; UIFirePropertyChanged("Unit"); }
         }
         public string LongTemp
         {
             get { return _longTemp;}
-            set { _longTemp = value; FirePropertyChanged("LongTemp"); }
+            set { _longTemp = value; UIFirePropertyChanged("LongTemp"); }
         }
         public string LongPressure
         {
             get { return _longPressure; }
-            set { _longPressure = value; FirePropertyChanged("LongPressure"); }
+            set { _longPressure = value; UIFirePropertyChanged("LongPressure"); }
         }
         public string LongWindSpeed
         {
             get { return _longWindSpeed; }
-            set { _longWindSpeed = value; FirePropertyChanged("LongWindSpeed"); }
+            set { _longWindSpeed = value; UIFirePropertyChanged("LongWindSpeed"); }
         }
         public string Humidity
         {
@@ -113,7 +118,7 @@ namespace MediaBrowser
             set
             {
                 _humidity = value;
-                FirePropertyChanged("Humidity");
+                UIFirePropertyChanged("Humidity");
             }
         }
 
@@ -123,7 +128,7 @@ namespace MediaBrowser
             set
             {
                 _speedunit = value;
-                FirePropertyChanged("SpeedUnit");
+                UIFirePropertyChanged("SpeedUnit");
             }
         }
         public string DistanceUnit
@@ -132,7 +137,7 @@ namespace MediaBrowser
             set
             {
                 _distanceUnit = value;
-                FirePropertyChanged("DistanceUnit");
+                UIFirePropertyChanged("DistanceUnit");
             }
         }
 
@@ -142,7 +147,7 @@ namespace MediaBrowser
             set
             {
                 _visibileDistance = value;
-                FirePropertyChanged("VisibileDistance");
+                UIFirePropertyChanged("VisibileDistance");
             }
         }
 
@@ -152,7 +157,7 @@ namespace MediaBrowser
             set
             {
                 _longVisibility = value;
-                FirePropertyChanged("LongVisibility");
+                UIFirePropertyChanged("LongVisibility");
             }
         }
 
@@ -162,7 +167,7 @@ namespace MediaBrowser
             set
             {
                 _chill = value;
-                FirePropertyChanged("Chill");
+                UIFirePropertyChanged("Chill");
             }
         }
 
@@ -196,7 +201,7 @@ namespace MediaBrowser
             set
             {
                 _direction = value;
-                FirePropertyChanged("Direction");
+                UIFirePropertyChanged("Direction");
             }
         }
 
@@ -206,18 +211,18 @@ namespace MediaBrowser
             set
             {
                 _speed = value;
-                FirePropertyChanged("Speed");
+                UIFirePropertyChanged("Speed");
             }
         }
         public string Sunrise
         {
             get { return _sunrise; }
-            set { _sunrise = value; FirePropertyChanged("Sunrise"); }
+            set { _sunrise = value; UIFirePropertyChanged("Sunrise"); }
         }
         public string Sunset
         {
             get { return _sunset;}
-            set { _sunset = value; FirePropertyChanged("Sunset"); }
+            set { _sunset = value; UIFirePropertyChanged("Sunset"); }
         }
         public string Pressure
         {
@@ -225,7 +230,7 @@ namespace MediaBrowser
             set
             {
                 _pressure = value;
-                FirePropertyChanged("Pressure");
+                UIFirePropertyChanged("Pressure");
             }
         }
 
@@ -235,7 +240,7 @@ namespace MediaBrowser
             set
             {
                 _pressureunit = value;
-                FirePropertyChanged("PressureUnit");
+                UIFirePropertyChanged("PressureUnit");
             }
         }
         public ArrayListDataSet Forecast

@@ -87,7 +87,7 @@ namespace MediaBrowser.Library
             var show = BaseItem as IDetailLoad;
             if (show != null)
             {
-                Async.Queue("Detail Load", show.LoadFullDetails, DetailsChanged);
+                Async.Queue(Async.ThreadPoolName.DetailLoad, show.LoadFullDetails, DetailsChanged);
             }
 
         }
@@ -97,7 +97,7 @@ namespace MediaBrowser.Library
             _chapters = null;
             _actors = null;
             
-            FirePropertiesChanged("Chapters","HasChapterInfo","Actors");
+            UIFirePropertiesChange("Chapters","HasChapterInfo","Actors");
         }
 
         public bool IsVideo
@@ -124,7 +124,7 @@ namespace MediaBrowser.Library
                 if (baseItem.IsFavorite != value)
                 {
                     baseItem.IsFavorite = value;
-                    FirePropertyChanged("IsFavorite");
+                    UIFirePropertyChange("IsFavorite");
                 }
             }
         }
@@ -244,10 +244,10 @@ namespace MediaBrowser.Library
                     if (HasSpecialFeatures && show != null)
                     {
                         _specialFeatures = new List<Item>();
-                        Async.Queue("Special Feature Load", () =>
+                        Async.Queue(Async.ThreadPoolName.SpecialFeatureLoad, () =>
                                                                 {
                                                                     _specialFeatures = show.SpecialFeatures.Select(s => ItemFactory.Instance.Create(s) as Item).ToList();
-                                                                    FirePropertiesChanged("SpecialFeatures", "HasSpecialFeatures");
+                                                                    UIFirePropertiesChange("SpecialFeatures", "HasSpecialFeatures");
                                                                 });
                     }
                     else
@@ -326,7 +326,7 @@ namespace MediaBrowser.Library
                 if (_currentPlaybackPosition != value)
                 {
                     _currentPlaybackPosition = value;
-                    FirePropertiesChanged("CurrentPlaybackPosition","CurrentPositionString","CurrentEndTimeString", "CurrentTimeRemainingString");
+                    UIFirePropertiesChange("CurrentPlaybackPosition","CurrentPositionString","CurrentEndTimeString", "CurrentTimeRemainingString");
                 }
             }
         }
@@ -339,7 +339,7 @@ namespace MediaBrowser.Library
         {
             var ndx = SeekPoints.FindIndex(SeekPositionIndex + 1, i => i.IsChapterPoint);
             SeekPositionIndex = ndx >= 0 ? ndx : 0;
-            FirePropertyChanged("CurrentDisplayChapter");
+            UIFirePropertyChange("CurrentDisplayChapter");
         }
 
         public void SetPrevChapterSeekIndex()
@@ -347,7 +347,7 @@ namespace MediaBrowser.Library
             var count = SeekPositionIndex > 0 ? SeekPositionIndex - 1 : SeekPoints.Count - 1;
             var ndx = SeekPoints.FindLastIndex(count, count, i => i.IsChapterPoint);
             SeekPositionIndex = ndx >= 0 ? ndx : 0;
-            FirePropertyChanged("CurrentDisplayChapter");
+            UIFirePropertyChange("CurrentDisplayChapter");
         }
 
         public bool ShowChapterImage
@@ -358,7 +358,7 @@ namespace MediaBrowser.Library
                 if (_showChapterImage != value)
                 {
                     _showChapterImage = value;
-                    FirePropertiesChanged("ShowChapterImage","CurrentDisplayChapter");
+                    UIFirePropertiesChange("ShowChapterImage","CurrentDisplayChapter");
                 }
             }
         }
@@ -374,7 +374,7 @@ namespace MediaBrowser.Library
             set
             {
                 _seekPositionIndex = value; 
-                FirePropertyChanged("SeekPositionIndex");
+                UIFirePropertyChange("SeekPositionIndex");
                 ShowChapterImage = (value >= 0 && value < SeekPoints.Count) && SeekPoints[value].IsChapterPoint;
             }
         }
@@ -598,7 +598,7 @@ namespace MediaBrowser.Library
         public void UpdateResume()
         {
             Logger.ReportVerbose("Updating Resume status...");
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("CanResume")); //force UI to update
+            Application.UIDeferredInvokeIfRequired(() => UIFirePropertyChange("CanResume")); //force UI to update
         }
 
         private void Play(bool resume)
@@ -670,7 +670,7 @@ namespace MediaBrowser.Library
         }
         public void RecentItemsChanged()
         {
-            FirePropertiesChanged("QuickListItems", "RecentItems","RecentWatchedItems","RecentUnwatchedItems");
+            UIFirePropertiesChange("QuickListItems", "RecentItems","RecentWatchedItems","RecentUnwatchedItems");
         }
 
         public virtual DateTime LastPlayed
@@ -747,14 +747,14 @@ namespace MediaBrowser.Library
                 unwatchedCountCache = -1;
 
             //force UI to update
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => 
+            Application.UIDeferredInvokeIfRequired(() => 
             {
-                FirePropertyChanged("HaveWatched");
-                FirePropertyChanged("UnwatchedCount");
-                FirePropertyChanged("ShowUnwatched");
-                FirePropertyChanged("UnwatchedCountString");
-                FirePropertyChanged("PlayState");
-                FirePropertyChanged("InProgress");
+                UIFirePropertyChange("HaveWatched");
+                UIFirePropertyChange("UnwatchedCount");
+                UIFirePropertyChange("ShowUnwatched");
+                UIFirePropertyChange("UnwatchedCountString");
+                UIFirePropertyChange("PlayState");
+                UIFirePropertyChange("InProgress");
             }); 
         }
 
@@ -780,12 +780,18 @@ namespace MediaBrowser.Library
 
         public bool ShowUnwatched
         {
-            get { return ((Config.Instance.ShowUnwatchedCount) && baseItem.ShowUnwatchedCount && (this.UnwatchedCountString.Length > 0)); }
+            get 
+            {                
+                return ((Config.Instance.ShowUnwatchedCount) && baseItem.ShowUnwatchedCount && (this.UnwatchedCountString.Length > 0)); 
+            }
         }
 
         public virtual bool ShowWatched
         {
-            get { return ((Config.Instance.ShowWatchTickInPosterView) && baseItem.ShowUnwatchedCount); }
+            get 
+            {
+                return ((Config.Instance.ShowWatchTickInPosterView) && baseItem.ShowUnwatchedCount); 
+            }
         }
 
         public string UnwatchedCountString
@@ -825,11 +831,11 @@ namespace MediaBrowser.Library
             SetWatched(!this.HaveWatched);
             lock (watchLock)
                 unwatchedCountCache = -1;
-            FirePropertyChanged("HaveWatched");
-            FirePropertyChanged("UnwatchedCount");
-            FirePropertyChanged("ShowUnwatched");
-            FirePropertyChanged("InProgress");
-            FirePropertyChanged("UnwatchedCountString");
+            UIFirePropertyChange("HaveWatched");
+            UIFirePropertyChange("UnwatchedCount");
+            UIFirePropertyChange("ShowUnwatched");
+            UIFirePropertyChange("InProgress");
+            UIFirePropertyChange("UnwatchedCountString");
             Logger.ReportVerbose("  ToggleWatched() changed to: " + HaveWatched.ToString());
             //HACK: This sort causes errors in detail lists, further debug necessary
             //this.PhysicalParent.Children.Sort();
@@ -868,7 +874,7 @@ namespace MediaBrowser.Library
                         }
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("ClearWatchedProf"), this.Name));
                     }
-                    Async.Queue("Toggle Watched", () => Kernel.ApiClient.UpdatePlayedStatus(this.Id.ToString(), Kernel.CurrentUser.Id, PlayState.WasPlayed));
+                    Async.Queue(Async.ThreadPoolName.ToggleWatched, () => Kernel.ApiClient.UpdatePlayedStatus(this.Id.ToString(), Kernel.CurrentUser.Id, PlayState.WasPlayed));
                 }
             }
 
@@ -888,7 +894,7 @@ namespace MediaBrowser.Library
         {
             if (displayMessage)
                 Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshProf") + " " + this.Name);
-            Async.Queue("UI Triggered Metadata Loader", () =>
+            Async.Queue(Async.ThreadPoolName.UITriggeredMetadataLoader, () =>
                                                             {
                                                                 if (!string.IsNullOrEmpty(baseItem.ApiId))
                                                                 {
@@ -917,7 +923,7 @@ namespace MediaBrowser.Library
             thumbnailImage = null;
             backdropImages = null;
             baseItem.ReCacheAllImages();
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => this.FireAllPropertiesChanged());
+            Application.UIDeferredInvokeIfRequired(() => this.UIFireAllPropertiesChanged());
         }
 
         public void ClearImages()
@@ -926,7 +932,7 @@ namespace MediaBrowser.Library
             primaryImage = null;
             bannerImage = null;
             backdropImage = null;
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => this.FireAllPropertiesChanged());
+            Application.UIDeferredInvokeIfRequired(() => this.UIFireAllPropertiesChanged());
         }
         #endregion
 

@@ -17,12 +17,7 @@ namespace MediaBrowser.ApiInteraction
     /// </summary>
     public abstract class BaseApiClient : IDisposable
     {
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        protected ILogger Logger { get; private set; }
-
+        
         /// <summary>
         /// Gets the json serializer.
         /// </summary>
@@ -34,25 +29,15 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <exception cref="System.ArgumentNullException">logger</exception>
-        protected BaseApiClient(ILogger logger)
+        protected BaseApiClient()
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException("logger");
-            }
+            
 
             JsonSerializer = new NewtonsoftJsonSerializer();
-            Logger = logger;
+            
             SerializationFormat = SerializationFormats.Json;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApiClient" /> class.
-        /// </summary>
-        protected BaseApiClient()
-            : this(new NullLogger())
-        {
-        }
         
         /// <summary>
         /// Gets or sets the server host name (myserver or 192.168.x.x)

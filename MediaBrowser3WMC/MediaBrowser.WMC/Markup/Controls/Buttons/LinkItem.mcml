@@ -42,6 +42,7 @@
       <Binding Source="[Item.LongName]" Target="[Label.Content]" />
       <Default Target="[Input.KeyInteractive]" Value="true" />
 
+      <!--
       <Rule>
         <Conditions>
           <Modified Source="[Clicker.Invoked]"/>
@@ -49,7 +50,7 @@
         <Actions>
           <PlaySound Sound="sound://sd:Select" />
         </Actions>
-      </Rule>
+      </Rule>-->
 
       <Condition Source="[Input.KeyFocus]" SourceValue="true">
         <Actions>
@@ -63,7 +64,7 @@
 
     <Content>
 
-      <Panel Layout="Anchor">
+      <Panel Name="Main" Layout="Anchor">
         <Children>
           <Graphic Name="Underline" Content="image://i:Underline"  Visible="true" MaximumSize="0,2" >
             <LayoutInput>
@@ -82,5 +83,8 @@
       </Panel>
     </Content>
   </UI>
+
+ 
+
 
 </Mcml>

@@ -14,35 +14,42 @@ using MediaBrowser.Library.Threading;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Filesystem;
 
-namespace MediaBrowser.Code.ModelItems {
-    public class AsyncImageLoader {
+namespace MediaBrowser.Code.ModelItems
+{
+    public class AsyncImageLoader
+    {
 
-        static BackgroundProcessor<Action> ImageLoadingProcessors = new BackgroundProcessor<Action>(2, action => action(), "Image loader");
-        static BackgroundProcessor<Action> NetImageLoadingProcessors = new BackgroundProcessor<Action>(2, action => action(), "Net Image loader");
+        static BackgroundProcessor<Action> ImageLoadingProcessors = new BackgroundProcessor<Action>(5, action => action(), "Image loader");
+        static BackgroundProcessor<Action> NetImageLoadingProcessors = new BackgroundProcessor<Action>(5, action => action(), "Net Image loader");
 
         Func<LibraryImage> source;
         Action afterLoad;
         Image image = null;
         Image defaultImage = null;
         Microsoft.MediaCenter.UI.Size size;
-        bool doneProcessing = false;
+        volatile bool doneProcessing = false;
         object sync = new object();
         LibraryImage localImage;
         string localPath;
 
-        public Microsoft.MediaCenter.UI.Size Size {
-            get {
+        public Microsoft.MediaCenter.UI.Size Size
+        {
+            get
+            {
                 return size;
             }
-            set {
-                lock (this) {
+            set
+            {
+                lock (this)
+                {
                     size = value;
                     image = null;
                 }
             }
         }
 
-        public bool IsLoaded {
+        public bool IsLoaded
+        {
             get;
             private set;
         }
@@ -52,7 +59,8 @@ namespace MediaBrowser.Code.ModelItems {
             get { return localImage != null && localImage.Corrupt; }
         }
 
-        public AsyncImageLoader(Func<LibraryImage> source, Image defaultImage, Action afterLoad) {
+        public AsyncImageLoader(Func<LibraryImage> source, Image defaultImage, Action afterLoad)
+        {
             this.source = source;
             this.afterLoad = afterLoad;
             this.IsLoaded = false;
@@ -62,27 +70,39 @@ namespace MediaBrowser.Code.ModelItems {
 
         public bool LowPriority { get; set; }
 
-        bool queued = false; 
+        bool queued = false;
 
-        public Image Image {
-            get {
-                lock (this) {
-                    if (image == null && source != null && !queued) {
-                        if (LowPriority) {
+        public Image Image
+        {
+            get
+            {
+                lock (this)
+                {
+                    if (image == null && source != null && !queued)
+                    {
+                        if (LowPriority)
+                        {
                             ImageLoadingProcessors.Enqueue(() => LoadImage(Loader.NormalLoader));
-                        } else {
+                        }
+                        else
+                        {
                             ImageLoadingProcessors.Inject(() => LoadImage(Loader.NormalLoader));
                         }
                         queued = true;
                     }
 
-                    if (image != null) {
+                    if (image != null)
+                    {
                         return image;
                     }
-                    else {
-                        if (doneProcessing) {
+                    else
+                    {
+                        if (doneProcessing)
+                        {
                             return defaultImage;
-                        } else {
+                        }
+                        else
+                        {
                             return null;
                         }
                     }
@@ -90,102 +110,122 @@ namespace MediaBrowser.Code.ModelItems {
             }
         }
 
-        private enum Loader {
-            SlowLoader, 
+        private enum Loader
+        {
+            SlowLoader,
             NormalLoader
         }
 
-        private void LoadImage(Loader loader) {
-            try {
-                lock (sync) {
+        private void LoadImage(Loader loader)
+        {
+            try
+            {
+                lock (sync)
+                {
                     LoadImageImpl(loader);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 // this may fail in if we are unable to write a file... its not a huge problem cause we will pick it up next time around
                 Logger.ReportException("Failed to load image", e);
-                if (Debugger.IsAttached) {
+                if (Debugger.IsAttached)
+                {
                     Debugger.Break();
                 }
             }
         }
 
 
-        private void LoadImageImpl(Loader loader) {
-            int retries = 0;   
-            while (retries++ < 4 && localImage == null) {
+        private void LoadImageImpl(Loader loader)
+        {
+            int retries = 0;
+            while (retries++ < 4 && localImage == null)
+            {
                 localImage = source();
                 if (localImage != null) break;
                 // during aggressive metadata updates - images may be blank
-                Logger.ReportInfo("Image source not available waiting..."); 
-                Thread.Sleep(100 * retries); 
+                Logger.ReportInfo("Image source not available waiting...");
+                Thread.Sleep(100 * retries);
             }
 
             // if the image is invalid it may be null.
-            if (localImage != null) {
+            if (localImage != null)
+            {
 
-                if (loader == Loader.NormalLoader && !localImage.IsCached) {
-                    if (LowPriority) {
+                if (loader == Loader.NormalLoader && !localImage.IsCached)
+                {
+                    if (LowPriority)
+                    {
                         NetImageLoadingProcessors.Enqueue(() => LoadImage(Loader.SlowLoader));
-                    } else {
+                    }
+                    else
+                    {
                         NetImageLoadingProcessors.Inject(() => LoadImage(Loader.SlowLoader));
                     }
-                } else {
+                }
+                else
+                {
 
                     FetchImage();
                 }
-            } else {
+            }
+            else
+            {
                 doneProcessing = true;
             }
         }
 
-        private void FetchImage() {
+        private void FetchImage()
+        {
             bool sizeIsSet = Size != null && Size.Height > 0 && Size.Width > 0;
             localPath = localImage.GetLocalImagePath();
-            if (sizeIsSet) {
+            if (sizeIsSet)
+            {
                 localPath = localImage.GetLocalImagePath(Size.Width, Size.Height);
             }
 
-            if (localImage.Corrupt) {
+            if (localImage.Corrupt)
+            {
                 Logger.ReportWarning("Image " + localPath + " is Corrupt.");
                 doneProcessing = true;
                 IsLoaded = true;
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+                Application.UIDeferredInvokeIfRequired(()=>
                 {
-                    if (afterLoad != null) {
+                    if (afterLoad != null)
+                    {
                         afterLoad();
                     }
                 });
                 return;
             }
 
-          
+
 
             Image newImage = null;
-
-
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+            if (newImage == null)
             {
+                Logger.ReportVerbose("Loading image : " + localPath);
+                string imageRef = "file://" + localPath;
+                newImage = new Image(imageRef);
+            }
 
-                if (newImage == null) {
-                    //Logger.ReportVerbose("Loading image : " + localPath);
-                    string imageRef = "file://" + localPath;
-                    newImage = new Image(imageRef);
+            lock (this)
+            {
+                image = newImage;
+                if (!sizeIsSet)
+                {
+                    size = new Size(localImage.Width, localImage.Height);
                 }
+                doneProcessing = true;
+            }
 
-                lock (this) {
-                    image = newImage;
-                    if (!sizeIsSet) {
-                        size = new Size(localImage.Width, localImage.Height);
-                    }
-                    doneProcessing = true;
-                }
+            IsLoaded = true;
 
-                IsLoaded = true;
-
-                if (afterLoad != null) {
-                    afterLoad();
-                }
-            });
+            if (afterLoad != null)
+            {
+                Application.UIDeferredInvokeIfRequired(() => afterLoad());
+            }
         }
 
     }

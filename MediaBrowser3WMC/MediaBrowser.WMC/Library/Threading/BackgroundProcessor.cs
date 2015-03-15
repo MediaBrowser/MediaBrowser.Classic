@@ -109,8 +109,14 @@ namespace MediaBrowser.Library
                         try
                         {
                             T item = Dequeue();
+
                             if (item != null)
+                            {
+                                Logger.ReportVerbose("Doing work: " + Thread.CurrentThread.ManagedThreadId.ToString());
                                 this.handler(item);
+                                Logger.ReportVerbose("Done work: " + Thread.CurrentThread.ManagedThreadId.ToString());
+                            }
+                            
                         }
                         catch (Exception ex)
                         {

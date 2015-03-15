@@ -69,7 +69,7 @@ namespace MediaBrowser.Library {
             // see if this will help get first unwatched index in time
             var ignore = FirstUnwatchedIndex;
 
-            Async.Queue("OnNavigatingInto", () => folder.OnNavigatingInto());
+            Async.Queue(Async.ThreadPoolName.OnNavigatingInto, () => folder.OnNavigatingInto());
 
             base.NavigatingInto();
         }
@@ -85,7 +85,7 @@ namespace MediaBrowser.Library {
             var searchText = (searchValue != "" ? "Items containing: '" + searchValue + "' " : "All Items ")
                              + (unwatchedOnly ? "Unwatched and " : "and ") + "Rated " + Ratings.ToString(rating)
                              + (ratingFactor > 0 ? " and below..." : " and above...");
-            Async.Queue("Search", () =>
+            Async.Queue(Async.ThreadPoolName.Search, () =>
             {
                 Application.CurrentInstance.ProgressBox(string.Format("Searching {0} for {1} ", Name == "Default" ? "Library" : Name , searchText));
                 searchValue = searchValue.ToLower();
@@ -97,11 +97,11 @@ namespace MediaBrowser.Library {
 
                 if (results.Any())
                 {
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Application.CurrentInstance.Navigate(ItemFactory.Instance.Create(new SearchResultFolder(GroupResults(results.ToList()))
+                     Application.CurrentInstance.Navigate(ItemFactory.Instance.Create(new SearchResultFolder(GroupResults(results.ToList()))
                         {
                             Name = this.Name + " - Search Results (" + searchValue + (unwatchedOnly ? "/unwatched" : "")
                                 + (rating > 0 ? "/" + Ratings.ToString(rating) + (ratingFactor > 0 ? "-" : "+") : "") + ")"
-                        })));
+                        }));
                 }
                 else
                 {
@@ -226,7 +226,7 @@ namespace MediaBrowser.Library {
         public void ResetMediaCount()
         {
             this.mediaCount = null;
-            FirePropertiesChanged("MediaCount", "MediaCountStr");
+            UIFirePropertiesChange("MediaCount", "MediaCountStr");
         }
 
         protected int? mediaCount;
@@ -237,10 +237,10 @@ namespace MediaBrowser.Library {
                 if (mediaCount == null)
                 {
                     //async this so we don't hang up the UI on large items
-                    Async.Queue(this.Name + " media count", () =>
+                    Async.Queue(Async.ThreadPoolName.FolderModelMediaCount, () => //this.Name + " media count", () =>
                     {
                         mediaCount = Folder.MediaCount;
-                        FirePropertiesChanged("MediaCount", "MediaCountStr");
+                        UIFirePropertiesChange("MediaCount", "MediaCountStr");
                     });
                 }
                 return mediaCount == null ? 0 : mediaCount.Value;
@@ -263,10 +263,10 @@ namespace MediaBrowser.Library {
                 if (mediaCount == null)
                 {
                     //async this so we don't hang up the UI on large items
-                    Async.Queue(this.Name + " item count", () =>
+                    Async.Queue(Async.ThreadPoolName.FolderModelItemCount, () => //this.Name + " item count", () =>
                     {
                         mediaCount = Folder.ItemCount;
-                        FirePropertiesChanged("ItemCount", "ItemCountStr");
+                        UIFirePropertiesChange("ItemCount", "ItemCountStr");
                     });
                 }
                 return mediaCount == null ? 0 : mediaCount.Value;
@@ -292,7 +292,7 @@ namespace MediaBrowser.Library {
                     unwatchedCountCache = 0;
                     if (Folder.ShowUnwatchedCount)
                     {
-                        Async.Queue("Unwatched Counter for " + Name, () =>
+                        Async.Queue(Async.ThreadPoolName.UnwatchedCounterForFolderModel, () => // " + Name, () =>
                                                                      { 
                                                                          unwatchedCountCache = folder.UnwatchedCount;
                                                                          FireWatchedChangedEvents();
@@ -396,7 +396,7 @@ namespace MediaBrowser.Library {
                         quickListItems = null;
                     }
                     if (quickListItems == null)
-                        Async.Queue("Newest Item Loader", () =>
+                        Async.Queue(Async.ThreadPoolName.NewestItemLoader, () =>
                         {
                             lock (quickListLock)
                             {
@@ -436,11 +436,11 @@ namespace MediaBrowser.Library {
 
         protected void FireQuicklistPropertiesChanged()
         {
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+            Application.UIDeferredInvokeIfRequired(()=>
             {
-                FirePropertyChanged("RecentItems");
-                FirePropertyChanged("NewestItems");
-                FirePropertyChanged("QuickListItems");
+                UIFirePropertyChange("RecentItems");
+                UIFirePropertyChange("NewestItems");
+                UIFirePropertyChange("QuickListItems");
             });
             
         }
@@ -512,12 +512,10 @@ namespace MediaBrowser.Library {
 
                     folderOverviewCache = "";
 
-                    Async.Queue("Overview Loader", () =>
+                    Async.Queue(Async.ThreadPoolName.OverviewLoader, () =>
                     {
                         RefreshFolderOverviewCache();
-                        Microsoft.MediaCenter.UI.Application.DeferredInvoke( _ => {
-                            FirePropertyChanged("Overview");
-                        });
+                        Application.UIDeferredInvokeIfRequired(() => UIFirePropertyChange("Overview"));
                     },null, true);
                   
                 }
@@ -568,7 +566,7 @@ namespace MediaBrowser.Library {
             //first do us
             base.RefreshMetadata(false);
             if (displayMsg) Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshFolderProf") + " " + this.Name);
-            Async.Queue("UI Forced Folder Metadata Loader", () =>
+            Async.Queue(Async.ThreadPoolName.UIForcedFolderMetadataLoader, () =>
             {
                 using (new MediaBrowser.Util.Profiler("Refresh " + this.Name))
                 {
@@ -582,7 +580,7 @@ namespace MediaBrowser.Library {
 
         public void RefreshChildren()
         {
-            Async.Queue("Child Refresh", () =>
+            Async.Queue(Async.ThreadPoolName.ChildRefresh, () =>
             {
                 this.folder.RetrieveChildren();
                 this.folderChildren.RefreshChildren();
@@ -597,7 +595,7 @@ namespace MediaBrowser.Library {
 
 
             //this could take a bit so kick this off in the background
-            Async.Queue("Refresh UI", () =>
+            Async.Queue(Async.ThreadPoolName.RefreshUI, () =>
             {
 
                 if (this.IsRoot)
@@ -621,43 +619,41 @@ namespace MediaBrowser.Library {
         }
 
         protected virtual void FireChildrenChangedEvents() {
-            if (!Microsoft.MediaCenter.UI.Application.IsApplicationThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke( _ => FireChildrenChangedEvents());
-                return;
+            Application.UIDeferredInvokeIfRequired(() =>
+            {
+
+                //   the only way to get the binder to update the underlying children is to 
+                //   change the refrence to the property bound, otherwise the binder thinks 
+                //   its all fine a dandy and will not update the children 
+                folderChildren.StopListeningForChanges();
+                folderChildren = folderChildren.Clone();
+                folderChildren.ListenForChanges();
+
+                ResetRunTime();
+                ResetMediaCount();
+                RefreshFolderOverviewCache();
+                UIFirePropertiesChange("Children", "SelectedChildIndex", "Overview");
+
+                lock (watchLock)
+                    unwatchedCountCache = -1;
+                FireWatchedChangedEvents();
+                if (this.displayPrefs != null)
+                    UpdateActualThumbSize();
+
+                JilOptions = null;
             }
-
-            //   the only way to get the binder to update the underlying children is to 
-            //   change the refrence to the property bound, otherwise the binder thinks 
-            //   its all fine a dandy and will not update the children 
-            folderChildren.StopListeningForChanges();
-            folderChildren = folderChildren.Clone();
-            folderChildren.ListenForChanges();
-
-            ResetRunTime();
-            ResetMediaCount();
-            RefreshFolderOverviewCache();
-            FirePropertiesChanged("Children", "SelectedChildIndex", "Overview");
-            
-            lock (watchLock)
-                unwatchedCountCache = -1;
-            FireWatchedChangedEvents();
-            if (this.displayPrefs != null)
-                UpdateActualThumbSize();
-
-            JilOptions = null;
+            );
 
         }
 
         private void FireWatchedChangedEvents() {
-            if (!Microsoft.MediaCenter.UI.Application.IsApplicationThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke( _ => FireWatchedChangedEvents());
-                return;
-            }
-
-            FirePropertyChanged("HaveWatched");
-            FirePropertyChanged("UnwatchedCount");
-            FirePropertyChanged("ShowUnwatched");
-            FirePropertyChanged("UnwatchedCountString");
+            Application.UIDeferredInvokeIfRequired(() =>
+            {
+                UIFirePropertyChange("HaveWatched");
+                UIFirePropertyChange("UnwatchedCount");
+                UIFirePropertyChange("ShowUnwatched");
+                UIFirePropertyChange("UnwatchedCountString");
+            });
         }
 
         void ChildMetadataPropertyChanged(IPropertyObject sender, string property) {
@@ -690,22 +686,22 @@ namespace MediaBrowser.Library {
 
                 }
             }
-            this.FirePropertyChanged("Children");
+            this.UIFirePropertyChange("Children");
         }
 
         void ChildPropertyChanged(IPropertyObject sender, string property) {
             if (property == "UnwatchedCount") {
                 lock (watchLock)
                     unwatchedCountCache = -1;
-                FirePropertyChanged("HaveWatched");
-                FirePropertyChanged("UnwatchedCount");
-                FirePropertyChanged("ShowUnwatched");
-                FirePropertyChanged("UnwatchedCountString");
+                UIFirePropertyChange("HaveWatched");
+                UIFirePropertyChange("UnwatchedCount");
+                UIFirePropertyChange("ShowUnwatched");
+                UIFirePropertyChange("UnwatchedCountString");
                 // note: need to be careful this doesn't trigger the load of the prefs 
                 // that can then trigger a cascade that loads metadata, prefs should only be loaded by 
                 // functions that are required when the item is the current item displayed
                 if ((this.displayPrefs != null) && (this.DisplayPrefs.SortOrder == "Unwatched")) {
-                    FirePropertyChanged("Children");
+                    UIFirePropertyChange("Children");
                 }
             } else if (property == "ThumbAspectRatio")
                 UpdateActualThumbSize();
@@ -823,14 +819,14 @@ namespace MediaBrowser.Library {
         }
                     
         private void SelectedChildChanged() {
-            FirePropertyChanged("SelectedChildIndex");
-            FirePropertyChanged("SelectedChild");
-            FirePropertyChanged("SelectedCondensedChild");
+            UIFirePropertyChange("SelectedChildIndex");
+            UIFirePropertyChange("SelectedChild");
+            UIFirePropertyChange("SelectedCondensedChild");
             Application.CurrentInstance.OnCurrentItemChanged();
         }
 
         public override void SetWatched(bool value) {
-            Async.Queue("Folder SetWatched", () =>
+            Async.Queue(Async.ThreadPoolName.FolderSetWatched, () =>
                                                  {
                                                      if (Application.CurrentInstance.YesNoBox(string.Format("Mark ALL content as {0}? Are you very sure...?", value ? "Played" : "UnPlayed")) == "Y")
                                                      {
@@ -860,7 +856,7 @@ namespace MediaBrowser.Library {
         protected void IndexByChoice_ChosenChanged(object sender, EventArgs e)
         {
             if (displayPrefs == null) return;
-            Async.Queue("Index By", () =>
+            Async.Queue(Async.ThreadPoolName.IndexBy, () =>
             {
                 Application.CurrentInstance.ProgressBox(string.Format("Building index on {0}. Please wait...", displayPrefs.IndexBy));
                 folderChildren.IndexBy(displayPrefs.IndexBy);
@@ -879,7 +875,7 @@ namespace MediaBrowser.Library {
             var step = max/4;
             var ndx = CurrentJilButtonIndex + step;
             CurrentJilButtonIndex = Math.Min(ndx, max - 1);
-            FirePropertyChanged("CurrentJilButtonIndex");
+            UIFirePropertyChange("CurrentJilButtonIndex");
         }
 
         public void PageUpJilButtons()
@@ -888,14 +884,14 @@ namespace MediaBrowser.Library {
             var step = max/4;
             var ndx = CurrentJilButtonIndex - step;
             CurrentJilButtonIndex = Math.Max(ndx, 0);
-            FirePropertyChanged("CurrentJilButtonIndex");
+            UIFirePropertyChange("CurrentJilButtonIndex");
         }
 
         private Choice _jilOptions;
         public Choice JilOptions
         {
             get { return _jilOptions ?? (_jilOptions = GetJilOptions()); }
-            set { _jilOptions = value; FirePropertyChanged("JilOptions"); }
+            set { _jilOptions = value; UIFirePropertyChange("JilOptions"); }
         }
 
         protected Choice GetJilOptions()
@@ -987,7 +983,7 @@ namespace MediaBrowser.Library {
             }
             set {
                 jilShift = value;
-                FirePropertyChanged("JILShift");
+                UIFirePropertyChange("JILShift");
             }
         }
 
@@ -1188,7 +1184,7 @@ namespace MediaBrowser.Library {
                         IndexByChoice_ChosenChanged(this, null);
                     }
                 }
-                FirePropertyChanged("DisplayPrefs");
+                UIFirePropertyChange("DisplayPrefs");
             }
         }
 
@@ -1231,31 +1227,32 @@ namespace MediaBrowser.Library {
 
         protected void UpdateActualThumbSize() {
 
-            if (!Microsoft.MediaCenter.UI.Application.IsApplicationThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => UpdateActualThumbSize());
-                return;
+            Application.UIDeferredInvokeIfRequired(() =>
+            {
+
+                if (this.displayPrefs == null) return;
+
+                bool useBanner = this.displayPrefs.UseBanner.Value;
+
+                float f = folderChildren.GetChildAspect(useBanner);
+
+                var s = GetThumbConstraint();
+                if (f == 0)
+                    f = 1;
+                float maxAspect = s.Height / s.Width;
+                if (f > maxAspect)
+                    s.Width = (int)(s.Height / f);
+                else
+                    s.Height = (int)(s.Width * f);
+
+                if (this.actualThumbSize.Value != s)
+                {
+                    this.actualThumbSize.Value = s;
+                    UIFirePropertyChange("ReferenceSize");
+                    UIFirePropertyChange("PosterZoom");
+                }
             }
-
-            if (this.displayPrefs == null) return;
-
-            bool useBanner = this.displayPrefs.UseBanner.Value;
-
-            float f = folderChildren.GetChildAspect(useBanner);
-
-            var s = GetThumbConstraint();
-            if (f == 0)
-                f = 1;
-            float maxAspect = s.Height / s.Width;
-            if (f > maxAspect)
-                s.Width = (int)(s.Height / f);
-            else
-                s.Height = (int)(s.Width * f);
-
-            if (this.actualThumbSize.Value != s) {
-                this.actualThumbSize.Value = s;
-                FirePropertyChanged("ReferenceSize");
-                FirePropertyChanged("PosterZoom");
-            }
+            );
         }
 
         protected virtual Size GetThumbConstraint()
@@ -1325,14 +1322,14 @@ namespace MediaBrowser.Library {
         }
 
         void ShowLabels_PropertyChanged(IPropertyObject sender, string property) {
-            FirePropertyChanged("ReferenceSize");
-            FirePropertyChanged("PosterZoom");
+            UIFirePropertyChange("ReferenceSize");
+            UIFirePropertyChange("PosterZoom");
         }
 
         void ThumbConstraint_PropertyChanged(IPropertyObject sender, string property) {
             UpdateActualThumbSize();
-            FirePropertyChanged("ReferenceSize");
-            FirePropertyChanged("PosterZoom");
+            UIFirePropertyChange("ReferenceSize");
+            UIFirePropertyChange("PosterZoom");
         }
 
         public bool FilterUnwatched
@@ -1350,7 +1347,7 @@ namespace MediaBrowser.Library {
                 {
                     folderChildren.RefreshChildren();
                 }
-                FirePropertyChanged("FilterUnwatched");
+                UIFirePropertyChange("FilterUnwatched");
             }
         }
 
@@ -1369,7 +1366,7 @@ namespace MediaBrowser.Library {
                 {
                     folderChildren.RefreshChildren();
                 }
-                FirePropertyChanged("FilterFavorite");
+                UIFirePropertyChange("FilterFavorite");
             }
         }
 

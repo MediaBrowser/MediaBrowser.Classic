@@ -22,7 +22,7 @@ namespace MediaBrowser.Library
                 if (User.IsAlsoHere != value)
                 {
                     User.IsAlsoHere = value;
-                    Async.Queue("Add User", () =>
+                    Async.Queue(Async.ThreadPoolName.AddUser, () =>
                     {
                         if (value)
                         {
@@ -36,7 +36,7 @@ namespace MediaBrowser.Library
                         }
                                                     
                     });
-                    FirePropertyChanged("IsAlsoHere");
+                    UIFirePropertyChange("IsAlsoHere");
                 }
             }
         }

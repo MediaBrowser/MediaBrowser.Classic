@@ -130,7 +130,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
 
             CurrentProcess = Process.Start(commandPath, commandArgs);
 
-            Async.Queue("Ext Player Mgmt", () => ManageExtPlayer(CurrentProcess, playable));
+            Async.Queue(Async.ThreadPoolName.ExtPlayerMgmt, () => ManageExtPlayer(CurrentProcess, playable));
         }
 
         private void ManageExtPlayer(Process player, PlayableItem playable)
@@ -164,7 +164,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
             }
 
             // async this so it doesn't slow us down if the service isn't responding for some reason
-            Async.Queue("Wait for external player to launch", () =>
+            Async.Queue(Async.ThreadPoolName.WaitForExternalPlayerToLaunch, () =>
             {
                 player.Refresh();
                 player.WaitForInputIdle(5000);
@@ -202,6 +202,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         /// </summary>
         protected void PlayUsingWMCNavigation(PlayableItem playable)
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
             string commandArgs = GetCommandArguments(playable);
 
             string url = GetCommandPath(playable);
@@ -213,7 +214,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
 
             Logging.Logger.ReportInfo("Navigating within WMC to " + url);
 
-            AddInHost.Current.MediaCenterEnvironment.NavigateToPage(Microsoft.MediaCenter.PageId.ExtensibilityUrl, url);
+            Application.MediaCenterEnvironment.NavigateToPage(Microsoft.MediaCenter.PageId.ExtensibilityUrl, url);
         }
 
         /// <summary>

@@ -97,7 +97,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Sqlite\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\Sqlite\System.Data.SQLite.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing" />
@@ -218,8 +218,14 @@
     <Compile Include="Library\Filesystem\VodcastContents.cs" />
     <Compile Include="Library\ImageManagement\CustomImageCache.cs" />
     <Compile Include="Library\ImageManagement\ResxImage.cs" />
+    <Compile Include="Library\ImageSource.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\Interfaces\IDetailLoad.cs" />
     <Compile Include="Library\Interfaces\ISupportsTrailers.cs" />
+    <Compile Include="Library\ItemNameComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\Logging\FileLogger.cs" />
     <Compile Include="Library\Logging\ILogger.cs" />
     <Compile Include="Library\Logging\LoggerBase.cs" />
@@ -228,13 +234,27 @@
     <Compile Include="Library\Logging\MultiLogger.cs" />
     <Compile Include="Library\Logging\ThreadedLogger.cs" />
     <Compile Include="Library\Logging\TraceLogger.cs" />
-    <Compile Include="Library\Metadata\MetadataProviders.cs" />
+    <Compile Include="Library\Metadata\MetadataProviderFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\Metadata\MetadataProviders.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\Metadata\MetadataRefreshOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\Network\DownloadPolicy.cs" />
     <Compile Include="Library\Network\RSSFeed.cs" />
     <Compile Include="Library\Persistance\MB3ApiRepository.cs" />
     <Compile Include="Library\Persistance\SQLiteDisplayRepository.cs" />
     <Compile Include="Library\Persistance\FileBasedDictionary.cs" />
     <Compile Include="Library\Persistance\IPersistableChangeNotifiable.cs" />
+    <Compile Include="Library\Persistance\SqliteItemRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\Persistance\SQLiteRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\Playables\ExternalPlayer\ConfigurableExternalPlaybackController.cs" />
     <Compile Include="Library\Playables\ExternalPlayer\ExternalPlaybackController.cs" />
     <Compile Include="Library\Playables\ExternalPlayer\PlayableExternal.cs" />
@@ -254,6 +274,9 @@
     <Compile Include="Library\Playables\VLC2\VLC2Configurator.cs" />
     <Compile Include="Library\Playables\VLC2\VLC2PlaybackController.cs" />
     <Compile Include="Library\Providers\BaseMetadataProvider.cs" />
+    <Compile Include="Library\Providers\FolderProviderFromXml.cs" />
+    <Compile Include="Library\Providers\LegacyMovieProviderFromXml.cs" />
+    <Compile Include="Library\Providers\MovieProviderFromXml.cs" />
     <Compile Include="Library\Providers\TVDB\TVUtils.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -306,10 +329,9 @@
     <Compile Include="Library\Interop\FindFileApis.cs" />
     <Compile Include="Library\Interop\ShellNativeMethods.cs" />
     <Compile Include="Library\Interop\ShortcutNativeMethods.cs" />
-    <Compile Include="Library\Metadata\MetadataProviderFactory.cs" />
-    <Compile Include="Library\Metadata\MetadataRefreshOptions.cs" />
     <Compile Include="Library\Plugins\IPlugin.cs" />
     <Compile Include="Library\Plugins\Plugin.cs" />
+    <Compile Include="Library\Providers\VirtualFolderProvider.cs" />
     <Compile Include="Library\Query\FilterProperties.cs" />
     <Compile Include="Library\Sorting\BaseItemEqualityComparer.cs" />
     <Compile Include="Library\Sorting\SortHelper.cs" />
@@ -318,7 +340,6 @@
     <Compile Include="Library\Threading\BackgroundProcessor.cs" />
     <Compile Include="Library\Providers\Attributes\SupportedTypeAttribute.cs" />
     <Compile Include="Library\Sorting\BaseItemComparer.cs" />
-    <Compile Include="Library\ItemNameComparer.cs" />
     <Compile Include="Library\Extensions\DiffAction.cs" />
     <Compile Include="Library\Extensions\DiffExtension.cs" />
     <Compile Include="Library\Extensions\DiffPair.cs" />
@@ -348,7 +369,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Library\Extensions\BinaryWriterExtensions.cs" />
-    <Compile Include="Library\ImageSource.cs" />
     <Compile Include="Library\Factories\ItemFactory.cs" />
     <Compile Include="Library\Persistance\ItemRepository.cs" />
     <Compile Include="Library\Interfaces\IItemRepository.cs" />
@@ -934,7 +954,6 @@
     <Compile Include="Library\ImageManagement\ImageCache.cs" />
     <Compile Include="Library\Input\IsMouseActiveHooker.cs" />
     <Compile Include="Library\Interfaces\ITrailerProvider.cs" />
-    <Compile Include="Library\Persistance\SQLiteRepository.cs" />
     <Compile Include="Library\Registration\MBRegistration.cs" />
     <Compile Include="Library\Localization\BaseStrings.cs" />
     <Compile Include="Library\Localization\LocalizedStrings.cs" />
@@ -943,7 +962,6 @@
     <Compile Include="Library\Persistance\MemoizingRepository.cs" />
     <Compile Include="Library\Persistance\SkipSerializationValidationAttribute.cs" />
     <Compile Include="Library\Persistance\XmlSettings.cs" />
-    <Compile Include="Library\Persistance\SqliteItemRepository.cs" />
     <Compile Include="Library\Plugins\Configuration\DefaultAttribute.cs" />
     <Compile Include="Library\Plugins\Configuration\ExtAttribute.cs" />
     <Compile Include="Library\Plugins\Configuration\GroupAttribute.cs" />

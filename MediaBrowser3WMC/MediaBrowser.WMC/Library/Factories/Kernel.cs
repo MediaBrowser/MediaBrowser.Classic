@@ -93,15 +93,17 @@ namespace MediaBrowser.Library {
         private static MultiLogger GetDefaultLogger(CommonConfigData config) {
             var logger = new MultiLogger(config.MinLoggingSeverity);
 
-            if (config.EnableTraceLogging) {
+            if (config.EnableTraceLogging)
+            {
                 logger.AddLogger(new FileLogger(ApplicationPaths.AppLogPath));
-#if (!DEBUG)
+                logger.AddLogger(new TraceLogger());
+            }
+            else
+            {
+#if DEBUG
                 logger.AddLogger(new TraceLogger());
 #endif
             }
-#if DEBUG
-            logger.AddLogger(new TraceLogger());
-#endif
             return logger;
         }
 
@@ -235,7 +237,7 @@ namespace MediaBrowser.Library {
             // Fire off event in async so we don't tie anything up
             if (_PlayStateSaved != null)
             {
-                Async.Queue("OnPlayStateSaved", () =>
+                Async.Queue(Async.ThreadPoolName.OnPlayStateSaved, () =>
                 {
                     _PlayStateSaved(this, new PlayStateSaveEventArgs() { PlaybackStatus = playstate, Item = media });
                 });
@@ -438,7 +440,8 @@ namespace MediaBrowser.Library {
 
         public static bool ConnectToServer(string address, int port, int timeout, ServerInfo serverInfo = null)
         {
-            ApiClient = new ApiClient
+            
+            ApiClient = new ApiClient()
             {
                 ServerHostName = address,
                 ServerApiPort = port,
@@ -523,7 +526,7 @@ namespace MediaBrowser.Library {
             //kick off log clean up task if needed
             if (config.LastFileCleanup < DateTime.UtcNow.AddDays(-7))
             {
-                Async.Queue("Logfile cleanup", () =>
+                Async.Queue(Async.ThreadPoolName.LogfileCleanup, () =>
                 {
                     Logger.ReportInfo("Running Logfile clean-up...");
                     var minDateModified = DateTime.UtcNow.AddDays(-(config.LogFileRetentionDays));
@@ -544,7 +547,7 @@ namespace MediaBrowser.Library {
                     config.Save();
                 });
 
-                Async.Queue("Image Cache cleanup", () =>
+                Async.Queue(Async.ThreadPoolName.ImageCacheCleanup, () =>
                                              {
                                                  foreach (var directory in Directory.GetDirectories(ApplicationPaths.AppImagePath))
                                                  {

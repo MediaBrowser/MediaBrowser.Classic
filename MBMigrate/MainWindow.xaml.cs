@@ -29,7 +29,7 @@ namespace MBMigrate
 
             InitializeComponent();
             //_serviceConfig = ServiceConfigData.FromFile(ApplicationPaths.ServiceConfigFile);
-            Async.Queue("Migration", () =>
+            Async.Queue(Async.ThreadPoolName.Migration, () =>
             {
                 var mbphoto = Path.Combine(ApplicationPaths.AppPluginPath, "mbphoto.classic.dll");
                 if (File.Exists(mbphoto))

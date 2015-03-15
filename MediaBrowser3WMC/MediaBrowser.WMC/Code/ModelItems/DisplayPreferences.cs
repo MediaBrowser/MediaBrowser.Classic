@@ -142,7 +142,7 @@ namespace MediaBrowser.Library
 
         void indexBy_ChosenChanged(object sender, EventArgs e)
         {
-            FirePropertyChanged("IndexBy");
+            UIFirePropertyChange("IndexBy");
             Save();
         }
 
@@ -163,13 +163,13 @@ namespace MediaBrowser.Library
 
         void viewType_ChosenChanged(object sender, EventArgs e)
         {
-            FirePropertyChanged("ViewTypeString");
+            UIFirePropertyChange("ViewTypeString");
             Save();
         }
 
         void sortOrders_ChosenChanged(object sender, EventArgs e)
         {
-            FirePropertyChanged("SortOrder");
+            UIFirePropertyChange("SortOrder");
             Save();
         }
 
@@ -358,7 +358,7 @@ namespace MediaBrowser.Library
         {
             customParms[key] = value;
             Save();
-            FirePropertyChanged("CustomParms");
+            UIFirePropertyChange("CustomParms");
         }
 
         internal void LoadDefaults()
@@ -390,7 +390,7 @@ namespace MediaBrowser.Library
         {
             this.ViewType.NextValue(true);
             Save();
-            FirePropertyChanged("DisplayPrefs");
+            UIFirePropertyChange("DisplayPrefs");
         }
     }
 

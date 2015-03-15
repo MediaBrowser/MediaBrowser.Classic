@@ -143,7 +143,7 @@ namespace MediaBrowser.Library {
         {
             this.runtime = null;
             this.runtimestr = null;
-            FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
+            UIFirePropertiesChange("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
         }
 
         public long RunTimeTicks
@@ -177,10 +177,10 @@ namespace MediaBrowser.Library {
                             if (folder != null)
                             {
                                 //this might take a bit...
-                                Async.Queue("runtime calc", () =>
+                                Async.Queue(Async.ThreadPoolName.RuntimeCalc, () =>
                                 {
                                     runtime = folder.RunTime;
-                                    FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
+                                    UIFirePropertiesChange("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
                                 });
                             }
                         }
@@ -295,7 +295,7 @@ namespace MediaBrowser.Library {
                 if (baseItem.OfficialRating != value)
                 {
                     baseItem.OfficialRating = value;
-                    FirePropertyChanged("OfficialRating");
+                    UIFirePropertyChange("OfficialRating");
                 }
             }
         }
@@ -332,7 +332,7 @@ namespace MediaBrowser.Library {
                 if (_actors == null)
                 {
                     _actors = new List<ActorItemWrapper>(); // nulls will cause mcml to blow
-                    Async.Queue("Actor Load", () =>
+                    Async.Queue(Async.ThreadPoolName.ActorLoad, () =>
                                                   {
                                                       var actors = new List<Actor>();
                                                       var show = baseItem as IShow;
@@ -374,7 +374,7 @@ namespace MediaBrowser.Library {
                                                           .Select(actor => new ActorItemWrapper(actor, this.PhysicalParent))
                                                           .ToList();
 
-                                                      FirePropertyChanged("Actors");
+                                                      UIFirePropertyChange("Actors");
 
                                                   });
 
@@ -487,7 +487,7 @@ namespace MediaBrowser.Library {
                 if (baseItem.ShortDescription != value)
                 {
                     baseItem.ShortDescription = value;
-                    FirePropertyChanged("ShortDescription");
+                    UIFirePropertyChange("ShortDescription");
                 }
             }
         }
@@ -503,7 +503,7 @@ namespace MediaBrowser.Library {
                 if (baseItem.TagLine != value)
                 {
                     baseItem.TagLine = value;
-                    FirePropertyChanged("TagLine");
+                    UIFirePropertyChange("TagLine");
                 }
             }
         }

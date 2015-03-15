@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowser.WMC", "MediaBrowser.WMC\MediaBrowser.WMC.csproj", "{C6B27E5F-3D83-4D71-85B9-AF83C8392721}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBMigrate", "..\MBMigrate\MBMigrate.csproj", "{D1149E4B-428E-4A98-8C20-9635FF14FDA5}"

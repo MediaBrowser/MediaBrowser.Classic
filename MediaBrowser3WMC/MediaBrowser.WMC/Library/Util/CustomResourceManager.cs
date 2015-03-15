@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Util
         private const string FONTS_FILE = "Fonts_DoNotEdit.mcml";
         private const string CUSTOM_FONTS_FILE = "CustomFonts.mcml";
 
-        public static void SetupFontsMcml(AddInHost host, Config config = null)
+        public static void SetupFontsMcml(Config config = null)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace MediaBrowser.Library.Util
                     Logger.ReportInfo("Using custom fonts mcml");
                     if (!VerifyXmlResource(custom, Resources.FontsDefault))
                     {
-                        host.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("FontsMissingDial"), CUSTOM_FONTS_FILE, DialogButtons.Ok, 100, true);
+                        Application.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("FontsMissingDial"), CUSTOM_FONTS_FILE, DialogButtons.Ok, 100, true);
                     }
                     File.Copy(custom, file);
                 }
@@ -70,7 +70,7 @@ namespace MediaBrowser.Library.Util
             }
         }
 
-        public static void SetupStylesMcml(AddInHost host, Config config = null)
+        public static void SetupStylesMcml(Config config = null)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace MediaBrowser.Library.Util
                     Logger.ReportInfo("Using custom styles mcml");
                     if (!VerifyXmlResource(custom, Resources.StylesDefault))
                     {
-                        host.MediaCenterEnvironment.Dialog(string.Format(Application.CurrentInstance.StringData("StyleMissingDial"), CUSTOM_STYLE_FILE), CUSTOM_STYLE_FILE, DialogButtons.Ok, 100, true);
+                        Application.MediaCenterEnvironment.Dialog(string.Format(Application.CurrentInstance.StringData("StyleMissingDial"), CUSTOM_STYLE_FILE), CUSTOM_STYLE_FILE, DialogButtons.Ok, 100, true);
                     }
                     File.Copy(custom, file);
                 }

@@ -40,7 +40,7 @@ namespace MediaBrowser.Library.Persistance
             RunQueries(queries);
             MigrateCustomDisplayPrefs();
             alive = true; // tell writer to keep going
-            Async.Queue("Sqlite Display Writer", DelayedWriter);
+            Async.Queue(Async.ThreadPoolName.SqliteDisplayWriter, DelayedWriter);
 
         }
 
