@@ -6,6 +6,7 @@
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
       xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
       xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ItemButton"
+      xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:me="Me"
 	  >
 
@@ -53,6 +54,13 @@
           <BooleanTransformer Inverse="true"/>
         </Transformer>
       </Binding>
+
+      <Changed Source="[Clicker.Invoked]">
+        <Actions>
+          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPress"/>
+        </Actions>
+      </Changed>
+      
       <Changed Source="[ImageSize]" InitialEvaluate="true" >
         <Actions>
           <Set Target="[GlowSize.Height]" Value="[Item.PreferredImageSmallSize.Height]" >
