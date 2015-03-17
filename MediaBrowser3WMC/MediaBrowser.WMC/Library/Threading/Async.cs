@@ -77,7 +77,7 @@ namespace MediaBrowser.Library.Threading
 
                 lock (actions)
                 {
-                    Logger.ReportVerbose("Queuing action for " + this.name);
+                    //Logger.ReportVerbose("Queuing action for " + this.name);
                     if (urgent)
                     {
                         actions.AddFirst(action);
@@ -117,7 +117,7 @@ namespace MediaBrowser.Library.Threading
                         action = actions.First.Value;
                         actions.RemoveFirst();
                     }
-                    Logger.ReportVerbose("Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId.ToString());
+                    //Logger.ReportVerbose("Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId.ToString());
                     action();
                 }
             }
@@ -330,7 +330,7 @@ namespace MediaBrowser.Library.Threading
 
             Action workItem = () =>
             {
-                Logger.ReportVerbose("Starting work item");
+                //Logger.ReportVerbose("Starting work item");
                 try
                 {
                     action();
@@ -341,11 +341,11 @@ namespace MediaBrowser.Library.Threading
                     Logger.ReportException("Async thread threw the following exception: ", ex);
                     Debug.Assert(false, "Async thread threw the following exception: " + ex.ToString());
                 }
-                Logger.ReportVerbose("Finished work item");
+                //Logger.ReportVerbose("Finished work item");
                 if (done != null) done();
-                Logger.ReportVerbose("Finished done callback for work item");
+                //Logger.ReportVerbose("Finished done callback for work item");
             };
-            Logger.ReportVerbose("Getting threadpool " + uniqueId);
+            //Logger.ReportVerbose("Getting threadpool " + uniqueId);
             GetThreadPool(uniqueId).Queue(workItem, urgent, delay);
         }
 
