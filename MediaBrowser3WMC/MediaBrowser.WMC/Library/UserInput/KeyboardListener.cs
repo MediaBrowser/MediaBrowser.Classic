@@ -42,10 +42,7 @@ namespace MediaBrowser.Library.UserInput
                 if (_KeyDown == null)
                 {
                     // Need to attach/detach on the UI
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                    {
-                        StartListening();
-                    });
+                    Application.UIDeferredInvokeIfRequired(() => StartListening());
                 } 
                 
                 _KeyDown += value;
@@ -57,10 +54,7 @@ namespace MediaBrowser.Library.UserInput
                 if (_KeyDown == null && _hookID != IntPtr.Zero)
                 {
                     // Need to attach/detach on the UI
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                    {
-                        StopListening();
-                    });                     
+                    Application.UIDeferredInvokeIfRequired(() => StopListening());                     
                 }
             }
         }

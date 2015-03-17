@@ -152,9 +152,12 @@ namespace MediaBrowser.Library
                 if (value != enabled)
                 {
                     enabled = value;
-                    FirePropertyChanged("Enabled");
-                    FirePropertyChanged("Text"); //in case we want to change text/icon as well
-                    FirePropertyChanged("Icon");
+                    Application.UIDeferredInvokeIfRequired(() =>
+                    {
+                        FirePropertyChanged("Enabled");
+                        FirePropertyChanged("Text"); //in case we want to change text/icon as well
+                        FirePropertyChanged("Icon");
+                    });
                 }
             }
         }
@@ -167,7 +170,7 @@ namespace MediaBrowser.Library
                 if (value != available)
                 {
                     available = value;
-                    FirePropertyChanged("Available");
+                    Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("Available"));
                 }
             }
         }

@@ -11,6 +11,7 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Model.Updates;
+using MediaBrowser.Library.Threading;
 
 namespace MediaBrowser
 {
@@ -411,7 +412,7 @@ namespace MediaBrowser
         public void Save() {
             this.settings.Write();
             //notify of the change
-            MediaBrowser.Library.Threading.Async.Queue("Config notify", () => Kernel.Instance.NotifyConfigChange());
+            MediaBrowser.Library.Threading.Async.Queue(Async.ThreadPoolName.ConfigNotify, () => Kernel.Instance.NotifyConfigChange());
         }
 
 

@@ -87,7 +87,7 @@ namespace MediaBrowser.Library
             var show = BaseItem as IDetailLoad;
             if (show != null)
             {
-                Async.Queue("Detail Load", show.LoadFullDetails, DetailsChanged);
+                Async.Queue(Async.ThreadPoolName.DetailLoad, show.LoadFullDetails, DetailsChanged);
             }
 
         }
@@ -244,7 +244,7 @@ namespace MediaBrowser.Library
                     if (HasSpecialFeatures && show != null)
                     {
                         _specialFeatures = new List<Item>();
-                        Async.Queue("Special Feature Load", () =>
+                        Async.Queue(Async.ThreadPoolName.SpecialFeatureLoad, () =>
                                                                 {
                                                                     _specialFeatures = show.SpecialFeatures.Select(s => ItemFactory.Instance.Create(s) as Item).ToList();
                                                                     FirePropertiesChanged("SpecialFeatures", "HasSpecialFeatures");
@@ -598,7 +598,7 @@ namespace MediaBrowser.Library
         public void UpdateResume()
         {
             Logger.ReportVerbose("Updating Resume status...");
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("CanResume")); //force UI to update
+            Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("CanResume")); //force UI to update
         }
 
         private void Play(bool resume)
@@ -747,7 +747,7 @@ namespace MediaBrowser.Library
                 unwatchedCountCache = -1;
 
             //force UI to update
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => 
+            Application.UIDeferredInvokeIfRequired(() => 
             {
                 FirePropertyChanged("HaveWatched");
                 FirePropertyChanged("UnwatchedCount");
@@ -780,12 +780,18 @@ namespace MediaBrowser.Library
 
         public bool ShowUnwatched
         {
-            get { return ((Config.Instance.ShowUnwatchedCount) && baseItem.ShowUnwatchedCount && (this.UnwatchedCountString.Length > 0)); }
+            get 
+            {                
+                return ((Config.Instance.ShowUnwatchedCount) && baseItem.ShowUnwatchedCount && (this.UnwatchedCountString.Length > 0)); 
+            }
         }
 
         public virtual bool ShowWatched
         {
-            get { return ((Config.Instance.ShowWatchTickInPosterView) && baseItem.ShowUnwatchedCount); }
+            get 
+            {
+                return ((Config.Instance.ShowWatchTickInPosterView) && baseItem.ShowUnwatchedCount); 
+            }
         }
 
         public string UnwatchedCountString
@@ -868,7 +874,7 @@ namespace MediaBrowser.Library
                         }
                         if (displayMessage) Application.CurrentInstance.Information.AddInformationString(string.Format(Application.CurrentInstance.StringData("ClearWatchedProf"), this.Name));
                     }
-                    Async.Queue("Toggle Watched", () => Kernel.ApiClient.UpdatePlayedStatus(this.Id.ToString(), Kernel.CurrentUser.Id, PlayState.WasPlayed));
+                    Async.Queue(Async.ThreadPoolName.ToggleWatched, () => Kernel.ApiClient.UpdatePlayedStatus(this.Id.ToString(), Kernel.CurrentUser.Id, PlayState.WasPlayed));
                 }
             }
 
@@ -888,7 +894,7 @@ namespace MediaBrowser.Library
         {
             if (displayMessage)
                 Application.CurrentInstance.Information.AddInformationString(Application.CurrentInstance.StringData("RefreshProf") + " " + this.Name);
-            Async.Queue("UI Triggered Metadata Loader", () =>
+            Async.Queue(Async.ThreadPoolName.UITriggeredMetadataLoader, () =>
                                                             {
                                                                 if (!string.IsNullOrEmpty(baseItem.ApiId))
                                                                 {
@@ -917,7 +923,7 @@ namespace MediaBrowser.Library
             thumbnailImage = null;
             backdropImages = null;
             baseItem.ReCacheAllImages();
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => this.FireAllPropertiesChanged());
+            Application.UIDeferredInvokeIfRequired(() => this.FireAllPropertiesChanged());
         }
 
         public void ClearImages()
@@ -926,7 +932,7 @@ namespace MediaBrowser.Library
             primaryImage = null;
             bannerImage = null;
             backdropImage = null;
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => this.FireAllPropertiesChanged());
+            Application.UIDeferredInvokeIfRequired(() => this.FireAllPropertiesChanged());
         }
         #endregion
 

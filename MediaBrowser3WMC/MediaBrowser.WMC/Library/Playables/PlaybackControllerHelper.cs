@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -256,8 +257,9 @@ namespace MediaBrowser.Library.Playables
 
         public static bool CallPlayMedia(MediaCenterEnvironment mediaCenterEnvironment, Microsoft.MediaCenter.MediaType type, object media, bool queue)
         {
-            Logger.ReportVerbose("Calling MediaCenterEnvironment.PlayMedia");
-            return mediaCenterEnvironment.PlayMedia(type, media, queue);
+            string file = media.ToString();
+            Logger.ReportVerbose("Calling MediaCenterEnvironment.PlayMedia: " + file);
+            return mediaCenterEnvironment.PlayMedia(type, file, queue);
         }
 
         public static PlayableItem GetCurrentPlaybackItemUsingMetadataTitle(PlaybackController controllerInstance, IEnumerable<PlayableItem> playableItems, string metadataTitle, out int filePlaylistPosition, out int currentMediaIndex)
@@ -334,7 +336,7 @@ namespace MediaBrowser.Library.Playables
         {
 
             // Otherwise see if another app within wmc is currently playing (such as live tv)
-            MediaExperience mce = AddInHost.Current.MediaCenterEnvironment.MediaExperience;
+            MediaExperience mce = Application.MediaExperience;
 
             // Try to access MediaExperience.Transport and get PlayState from there
             if (mce != null)
@@ -349,7 +351,7 @@ namespace MediaBrowser.Library.Playables
 
         public static PlayState GetCurrentPlayState()
         {
-            MediaExperience mce = AddInHost.Current.MediaCenterEnvironment.MediaExperience;
+            MediaExperience mce = Application.MediaExperience;
 
             // Try to access MediaExperience.Transport and get PlayState from there
             if (mce != null)
@@ -400,61 +402,7 @@ namespace MediaBrowser.Library.Playables
             }
         }
 
-        // Cache this so we don't have to keep retrieving it
-        private static FieldInfo _CheckedMediaExperienceFIeldInfo;
-
-        /// <summary>
-        /// This is a workaround for when AddInHost.Current.MediaCenterEnvironment.MediaExperience returns null
-        /// </summary>
-        public static MediaExperience GetMediaExperienceUsingReflection()
-        {
-            MediaCenterEnvironment env = AddInHost.Current.MediaCenterEnvironment;
-
-            var mce = env.MediaExperience;
-
-            // great window 7 has bugs, lets see if we can work around them 
-            // http://mediacentersandbox.com/forums/thread/9287.aspx
-            if (mce == null)
-            {
-                mce = env.MediaExperience;
-                
-                if (mce == null)
-                {
-                    try
-                    {
-                        if (_CheckedMediaExperienceFIeldInfo == null)
-                        {
-                            _CheckedMediaExperienceFIeldInfo = env.GetType().GetField("_checkedMediaExperience", BindingFlags.NonPublic | BindingFlags.Instance);
-                        }
-
-                        if (_CheckedMediaExperienceFIeldInfo != null)
-                        {
-                            _CheckedMediaExperienceFIeldInfo.SetValue(env, false);
-                            mce = env.MediaExperience;
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        // give up ... I do not know what to do 
-                        Logger.ReportException("AddInHost.Current.MediaCenterEnvironment.MediaExperience is null", e);
-                    }
-
-                }
-
-                if (mce == null)
-                {
-                    Logger.ReportVerbose("GetMediaExperienceUsingReflection was unsuccessful");
-                }
-                else
-                {
-                    Logger.ReportVerbose("GetMediaExperienceUsingReflection was successful");
-                }
-
-            }
-
-            return mce;
-        }
+        
 
         /// <summary>
         /// Gets the title of the currently playing content
@@ -524,10 +472,11 @@ namespace MediaBrowser.Library.Playables
             return 0;
         }
 
-        public static void WaitForStream(MediaCenterEnvironment mce)
+        public static void WaitForStream(MediaExperience mce)
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             int i = 0;
-            while ((i++ < 15) && (mce.MediaExperience.Transport.PlayState != Microsoft.MediaCenter.PlayState.Playing))
+            while ((i++ < 15) && (mce.Transport.PlayState != Microsoft.MediaCenter.PlayState.Playing))
             {
                 // settng the position only works once it is playing and on fast multicore machines we can get here too quick!
                 Thread.Sleep(100);
@@ -609,7 +558,7 @@ namespace MediaBrowser.Library.Playables
         public static MediaTransport GetCurrentMediaTransport()
         {
 
-            MediaExperience mce = AddInHost.Current.MediaCenterEnvironment.MediaExperience;
+            MediaExperience mce = Application.MediaExperience;
 
             if (mce != null)
             {
@@ -634,7 +583,8 @@ namespace MediaBrowser.Library.Playables
         /// </summary>
         public static void ReturnToApplication(bool force)
         {
-            Microsoft.MediaCenter.Hosting.ApplicationContext context = Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext;
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
+            Microsoft.MediaCenter.Hosting.ApplicationContext context = Application.ApplicationContext;
 
             if (force || !context.IsForegroundApplication)
             {

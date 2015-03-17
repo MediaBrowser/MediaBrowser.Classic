@@ -56,7 +56,7 @@ namespace MediaBrowser.Library.Registration
         {
             
             var rec = new MBRegistrationRecord();
-            Async.Queue(feature + " registration check", () =>
+            Async.Queue(Async.ThreadPoolName.MBRegistration, () => //feature + " registration check", () =>
             {
                 try
                 {

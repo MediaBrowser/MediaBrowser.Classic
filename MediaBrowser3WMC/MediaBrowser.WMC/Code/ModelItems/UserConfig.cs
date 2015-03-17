@@ -133,7 +133,7 @@ namespace MediaBrowser.Library
                     _data.DisplayFoldersView = value;
                     FirePropertyChanged("ShowFolders");
 
-                    Async.Queue("user config save", Save);
+                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace MediaBrowser.Library
                     _data.DisplayCollectionsView = value;
                     FirePropertyChanged("ShowCollections");
 
-                    Async.Queue("user config save", Save);
+                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
                 }
             }
         }

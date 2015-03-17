@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DisplayPreferences = MediaBrowser.Model.Entities.DisplayPreferences;
+using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -50,8 +51,8 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="logger">The logger.</param>
         /// <param name="httpClient">The HTTP client.</param>
         /// <exception cref="System.ArgumentNullException">httpClient</exception>
-        public ApiClient(ILogger logger, IHttpClient httpClient)
-            : base(logger)
+        public ApiClient(MediaBrowser.Model.Logging.ILogger logger, IHttpClient httpClient)
+            :base(logger)
         {
             if (httpClient == null)
             {
@@ -65,7 +66,7 @@ namespace MediaBrowser.ApiInteraction
         /// Initializes a new instance of the <see cref="ApiClient" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public ApiClient(ILogger logger)
+        public ApiClient(MediaBrowser.Model.Logging.ILogger logger)
             : this(logger, new MbHttpClient(logger))
         {
         }
@@ -84,6 +85,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="header">The header.</param>
         protected override void SetAuthorizationHeader(string header)
         {
+            
             HttpClient.SetAuthorizationHeader(header);
         }
 
@@ -95,6 +97,7 @@ namespace MediaBrowser.ApiInteraction
         /// <exception cref="System.ArgumentNullException">url</exception>
         public Stream GetImageStream(string url)
         {
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: Getting image: " + url);
             if (string.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException("url");
@@ -134,7 +137,7 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var url = GetApiUrl("Users/" + userId + "/Items/" + id);
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: Getting item: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<BaseItemDto>(stream);
@@ -152,7 +155,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 throw new ArgumentNullException("url");
             }
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: Query: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<ItemsResult>(stream);
@@ -180,7 +183,7 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var url = GetApiUrl("Users/" + userId + "/Items/" + itemId + "/Intros");
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: get intros: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<ItemsResult>(stream);
@@ -201,7 +204,7 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var url = GetApiUrl("Users/" + userId + "/Items/Root");
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetRootFolder: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<BaseItemDto>(stream);
@@ -216,7 +219,7 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var url = GetApiUrl("Users/" + userId + "/Views");
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetUserViews: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<ItemsResult>(stream);
@@ -238,7 +241,7 @@ namespace MediaBrowser.ApiInteraction
 
             var dict = new QueryStringDictionary {{"userId", userId.ToString()}};
             var url = GetApiUrl("Items/Counts/", dict);
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetItemCounts: " + url);
             using (var stream = GetSerializedStream(url))
             {
                 return DeserializeFromStream<ItemCounts>(stream);
@@ -871,12 +874,12 @@ namespace MediaBrowser.ApiInteraction
             try
             {
                 HttpClient.Get(url);
-                Logger.Debug("Tested url {0}", url);
+                MediaBrowser.Library.Logging.Logger.ReportVerbose("Tested url {0}", url);
                 return true;
             }
             catch (WebException)
             {
-                Logger.Debug("Url Test failed {0}", url);
+                MediaBrowser.Library.Logging.Logger.ReportVerbose("Url Test failed {0}", url);
                 return false;
             }
         }
@@ -1769,7 +1772,7 @@ namespace MediaBrowser.ApiInteraction
         public Stream GetSerializedStream(string url, SerializationFormats serializationFormat)
         {
             url = AddDataFormat(url, serializationFormat);
-
+            MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetSerializedStream: " + url);
             return HttpClient.Get(url);
         }
 

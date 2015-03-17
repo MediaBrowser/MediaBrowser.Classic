@@ -177,7 +177,7 @@ namespace MediaBrowser.Library {
                             if (folder != null)
                             {
                                 //this might take a bit...
-                                Async.Queue("runtime calc", () =>
+                                Async.Queue(Async.ThreadPoolName.RuntimeCalc, () =>
                                 {
                                     runtime = folder.RunTime;
                                     FirePropertiesChanged("RunningTime", "RunningTimeString", "EndTime", "EndTimeString");
@@ -332,7 +332,7 @@ namespace MediaBrowser.Library {
                 if (_actors == null)
                 {
                     _actors = new List<ActorItemWrapper>(); // nulls will cause mcml to blow
-                    Async.Queue("Actor Load", () =>
+                    Async.Queue(Async.ThreadPoolName.ActorLoad, () =>
                                                   {
                                                       var actors = new List<Actor>();
                                                       var show = baseItem as IShow;

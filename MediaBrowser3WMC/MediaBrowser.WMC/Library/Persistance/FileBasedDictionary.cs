@@ -61,7 +61,7 @@ namespace MediaBrowser.Library.Persistance {
             watcher.EnableRaisingEvents = true;
 
             if (enableAsyncValidation) {
-                Async.Queue("Fast Load Loader",() =>
+                Async.Queue(Async.ThreadPoolName.FastLoadLoader,() =>
                 {
                     using (new MediaBrowser.Util.Profiler("Dictionary loading and validation"))
                     {

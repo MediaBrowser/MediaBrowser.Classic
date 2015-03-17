@@ -134,7 +134,7 @@ namespace MediaBrowser.Code.ModelItems {
         {
             if (folder != null && !FolderIsIndexed && function != null) {
                 this.sortFunction = function;
-                Async.Queue("Background Sorter", () => folder.Sort(function));
+                Async.Queue(Async.ThreadPoolName.BackgroundSorter, () => folder.Sort(function));
             }
         }
 
@@ -244,7 +244,7 @@ namespace MediaBrowser.Code.ModelItems {
 
         
         public float GetChildAspect(bool useBanner) {
-            Async.Queue("Aspect Ratio Calculator", () => CalculateChildAspect(useBanner));
+            Async.Queue(Async.ThreadPoolName.AspectRatioCalculator, () => CalculateChildAspect(useBanner));
             return childImageAspect;
         }
 

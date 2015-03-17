@@ -120,7 +120,7 @@ namespace MediaBrowser.Code.ModelItems
             // Set the current PlayableItem based on the incoming args
             CurrentPlayableItemId = args.Item == null ? Guid.Empty : args.Item.Id;
 
-            Async.Queue("BasePlaybackController OnProgress", () =>
+            Async.Queue(Async.ThreadPoolName.BasePlaybackControllerOnProgress, () =>
             {
                 NormalizeEventProperties(args);
 
@@ -491,27 +491,32 @@ namespace MediaBrowser.Code.ModelItems
 
         private void SkipTimerExpired(object sender, EventArgs args)
         {
+            Application.UIDeferredInvokeIfRequired(()=>{
             if (SkipAmount != 0)
             {
                 lock (SkipTimer)
                 {
-                    Logger.ReportVerbose("================ Skipping {0} seconds", SkipAmount);
-                    Application.CurrentInstance.RecentUserInput = true;
-                    var current = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.Position.Ticks;
-                    var duration = CurrentFileDurationTicks > 0 ? CurrentFileDurationTicks : PlaybackControllerHelper.GetDurationOfCurrentlyPlayingMedia(AddInHost.Current.MediaCenterEnvironment.MediaExperience.MediaMetadata);
-                    if (duration == 0)
+                    if (SkipAmount != 0)
                     {
-                        // last ditch get from our metadata
-                        var playable = GetCurrentPlayableItem();
-                        duration = playable != null ? playable.CurrentMedia.RuntimeTicks : long.MaxValue;
+                        Logger.ReportVerbose("================ Skipping {0} seconds", SkipAmount);
+                        Application.CurrentInstance.RecentUserInput = true;
+                        var current = Application.MediaExperience.Transport.Position.Ticks;
+                        var duration = CurrentFileDurationTicks > 0 ? CurrentFileDurationTicks : PlaybackControllerHelper.GetDurationOfCurrentlyPlayingMedia(Application.MediaExperience.MediaMetadata);
+                        if (duration == 0)
+                        {
+                            // last ditch get from our metadata
+                            var playable = GetCurrentPlayableItem();
+                            duration = playable != null ? playable.CurrentMedia.RuntimeTicks : long.MaxValue;
+                        }
+
+                        var pos = SkipAmount > 0 ? Math.Min(current + TimeSpan.FromSeconds(SkipAmount).Ticks, duration)
+                                      : Math.Max(current - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
+                        SkipAmount = 0;
+                        Seek(pos);
                     }
-                    
-                    var pos = SkipAmount > 0 ? Math.Min(current + TimeSpan.FromSeconds(SkipAmount).Ticks, duration)
-                                  : Math.Max(current - TimeSpan.FromSeconds(-SkipAmount).Ticks, 0);
-                    SkipAmount = 0;
-                    Seek(pos);
                 }
             }
+            });
         }
 
         public void SkipAhead(string value)
@@ -840,7 +845,7 @@ namespace MediaBrowser.Code.ModelItems
 
         protected void PlayStateChanged()
         {
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
+            Application.UIDeferredInvokeIfRequired(() =>
             {
                 FirePropertyChanged("PlayState");
                 FirePropertyChanged("IsPlaying");

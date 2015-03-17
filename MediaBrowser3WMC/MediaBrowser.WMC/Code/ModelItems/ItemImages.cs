@@ -217,7 +217,7 @@ namespace MediaBrowser.Library
             {
                 backdropImages = new List<AsyncImageLoader>();
 
-                Async.Queue("Backdrop Loader", () =>
+                Async.Queue(Async.ThreadPoolName.BackdropLoader, () =>
                 {
                     foreach (var image in baseItem.BackdropImages)
                     {

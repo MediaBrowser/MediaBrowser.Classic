@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
+using System.Diagnostics;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -49,7 +50,10 @@ namespace MediaBrowser.ApiInteraction
         {
 
             Library.Logging.Logger.ReportInfo("Sending Http Get to {0}", url);
-
+#if DEBUG
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+#endif   
             try
             {
                 var req = (HttpWebRequest)WebRequest.Create(url);
@@ -83,9 +87,9 @@ namespace MediaBrowser.ApiInteraction
                         var header = ex.Response.Headers["X-Application-Error-Code"];
                         if (header == "ParentalControl")
                         {
-                            AddInHost.Current.MediaCenterEnvironment.Dialog("User Access is Restricted at This Time", "Parental Control.", DialogButtons.Ok, 100, true);
+                            Application.MediaCenterEnvironment.Dialog("User Access is Restricted at This Time", "Parental Control.", DialogButtons.Ok, 100, true);
                         }
-                        Logger.Error("Unauthorized Request received from server - logging out");
+                        Library.Logging.Logger.ReportVerbose("Unauthorized Request received from server - logging out");
                         Application.CurrentInstance.Logout(true);
                     }
                 }
@@ -99,6 +103,12 @@ namespace MediaBrowser.ApiInteraction
                 Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
                 return new MemoryStream();
                 //throw;
+            }
+            finally
+            {
+#if DEBUG
+                Library.Logging.Logger.ReportInfo("Done Http Get to {0} in {1}ms", url, sw.ElapsedMilliseconds);
+#endif
             }
         }
 
@@ -126,13 +136,13 @@ namespace MediaBrowser.ApiInteraction
                 }
                 catch (WebException ex)
                 {
-                    Logger.ErrorException("Error getting response from " + url, ex);
+                    Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
 
                     throw new HttpException(ex.Message, ex);
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorException("Error posting {0}", ex, url);
+                    Library.Logging.Logger.ReportException("Error posting {0}", ex, url);
 
                     return "";
                 }
@@ -160,13 +170,13 @@ namespace MediaBrowser.ApiInteraction
             }
             catch (WebException ex)
             {
-                Logger.ErrorException("Error getting response from " + url, ex);
+                Library.Logging.Logger.ReportException("Error getting response from " + url, ex);
 
                 throw new HttpException(ex.Message, ex);
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error requesting {0}", ex, url);
+                Library.Logging.Logger.ReportException("Error requesting {0}", ex, url);
 
                 throw;
             }
