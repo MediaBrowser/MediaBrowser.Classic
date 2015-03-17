@@ -464,12 +464,13 @@
     </Rules>
 
     <Content>
-      <Panel Layout="Form">
+      <Panel Layout="Center">
         <Animations>
           <Animation Animation="animation://an:PageHide" />
         </Animations>
         <Children>
-          
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
 
 
               <Panel Name="TimePanel">
@@ -660,7 +661,13 @@
               </Panel>
 
             </Children>
-          
+          </Clip>
+
+
+          <!--
+					<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>
+					-->
+        </Children>
       </Panel>
     </Content>
   </UI>

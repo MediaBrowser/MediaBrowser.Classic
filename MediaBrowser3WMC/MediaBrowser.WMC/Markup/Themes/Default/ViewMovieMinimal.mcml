@@ -227,207 +227,211 @@
     </Rules>
 
     <Content>
-      <ColorFill Content="Transparent" Layout="Form">
-
+      <Clip Name="MainClip" Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
         <Children>
 
-          <!-- Now Playing View -->
-          <np:NowPlayingViewport Name="NowPlaying" Application="[Application]">
-            <LayoutInput>
-              <FormLayoutInput Top="TitleText,0,78" Right="Parent,1,495" />
-            </LayoutInput>
-          </np:NowPlayingViewport>
-          
-          <!-- Movie Title -->
-          <Clip Name="TitleText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" NearOffset="-25"
-                CenterPointPercent="-100,-100,0">
-            <LayoutInput>
-              <AnchorLayoutInput Top="Parent,0,23" Left="Parent, 0.2"  Right="Parent,1"
-                                 Horizontal="Far"/>
-            </LayoutInput>
+          <ColorFill Content="Transparent" Layout="Form">
+
             <Children>
-              <Panel Layout="Scale">
+
+              <!-- Now Playing View -->
+              <np:NowPlayingViewport Name="NowPlaying" Application="[Application]">
+                <LayoutInput>
+                  <FormLayoutInput Top="TitleText,0,78" Right="Parent,1,495" />
+                </LayoutInput>
+              </np:NowPlayingViewport>
+
+              <!-- Movie Title -->
+              <Clip Name="TitleText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" NearOffset="-25"
+                    CenterPointPercent="-100,-100,0">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="Parent,0,23" Left="Parent, 0.2"  Right="Parent,1"
+                                     Horizontal="Far"/>
+                </LayoutInput>
                 <Children>
-                  <Panel  Layout="HorizontalFlow" Padding="100,0,38,0">
+                  <Panel Layout="Scale">
                     <Children>
-                      <Text Name="TitleName" Content="" Font="font://f:MM_TitleFont" Color="color://s:FontColorMedium"/>
-                      <Text Name="ProductionYear" Content="" Font="font://f:MM_TitleFont" Color="color://s:FontColorMedium" Margins="10,0,0,0" />
+                      <Panel  Layout="HorizontalFlow" Padding="100,0,38,0">
+                        <Children>
+                          <Text Name="TitleName" Content="" Font="font://f:MM_TitleFont" Color="color://s:FontColorMedium"/>
+                          <Text Name="ProductionYear" Content="" Font="font://f:MM_TitleFont" Color="color://s:FontColorMedium" Margins="10,0,0,0" />
+                        </Children>
+                      </Panel>
                     </Children>
                   </Panel>
-                </Children>
-              </Panel>
 
-            </Children>
-          </Clip>
-          <Clip Name="TitleClip" FadeSize="100" Orientation="Horizontal" ShowFar="false" FadeAmount="1" NearOffset="25" >
-            <LayoutInput>
-              <AnchorLayoutInput Top="TitleText,0" Bottom="TitleText,1" Left="TitleText,0" Right="TitleText,1" />
-            </LayoutInput>
-            <Children>
-              <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha">
-
-              </ColorFill>
-            </Children>
-          </Clip>
-          
-          <!-- Song Artist -->
-          <Clip Name="ArtistText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" NearOffset="-25"
-                CenterPointPercent="-100,-100,0">
-            <LayoutInput>
-              <AnchorLayoutInput Top="TitleText,1" Left="Parent, 0.2"  Right="Parent,1"
-                                 Horizontal="Far"/>
-            </LayoutInput>
-            <Children>
-              <Panel Layout="Scale">
-                <Children>
-                  <Panel  Layout="HorizontalFlow" Padding="100,0,40,0">
-                    <Children>
-                      <al:ArtistList Name="ArtistList" SourceData="[Item.Actors]" Font="font://f:MM_ArtistFont" Color="color://s:FontColorMedium" Visible="false"/>
-                    </Children>
-                  </Panel>
-                </Children>
-              </Panel>
-
-            </Children>
-          </Clip>
-          <Clip Name="ArtistClip" FadeSize="100" Orientation="Horizontal" ShowFar="false" FadeAmount="1" NearOffset="25" >
-            <LayoutInput>
-              <AnchorLayoutInput Top="ArtistText,0" Bottom="ArtistText,1" Left="ArtistText,0" Right="ArtistText,1" />
-            </LayoutInput>
-            <Children>
-              <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha"/>
-            </Children>
-          </Clip>
-
-          <!-- Time Panel -->
-          <Clip Name="TimeText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" FarOffset="25" CenterPointPercent="100,100,0" Visible="false">
-            <LayoutInput>
-              <AnchorLayoutInput Top="TitleText,0"  Left="Parent,0" />
-            </LayoutInput>
-            <Children>
-              <Panel  Layout="HorizontalFlow" Padding="20,0,100,0">
-                <Children>
-                  <Text Name="TimeDate" Content="" Font="font://f:MM_ClockFont" Color="color://s:FontColorMedium" MinimumSize="200,0"/>
-                </Children>
-              </Panel>
-            </Children>
-          </Clip>
-          <Clip Name="TimeClip" FadeSize="100" Orientation="Horizontal" ShowNear="false" FadeAmount="1" FarOffset="-25" Visible="false" >
-            <LayoutInput>
-              <AnchorLayoutInput Top="TimeText,0" Bottom="TimeText,1" Left="TimeText,0" Right="TimeText,1" />
-            </LayoutInput>
-            <Children>
-              <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha">
-              </ColorFill>
-            </Children>
-          </Clip>
-
-          <!-- play/resume buttons-->
-          <me:CommandButtons Application="[Application]"
-                             Name="CommandButtons"
-                             Item="[Item]" 
-                             FilterColor="[FilterColor]"
-                             Alpha="global://s:FilterAlpha"
-                             NextItemCommand="[NextItemCommand]"
-                             PreviousItemCommand="[PreviousItemCommand]">            
-            <LayoutInput>
-              <AnchorLayoutInput Left="Parent,0,0" Top="TitleText,0,77" />
-            </LayoutInput>
-          </me:CommandButtons>
-
-          <!-- Selector buttons-->
-          <Panel Name="SelectorPanel">
-            <Layout>
-              <AnchorLayout SizeToHorizontalChildren="true"/>
-            </Layout>
-            <LayoutInput>
-              <AnchorLayoutInput Bottom="ScreenBox, 0" Left="Parent,0" />
-            </LayoutInput>
-            <Children>
-              <Panel  Margins="50,0,45,0" Navigation="ContainHorizontal">
-                <Layout>
-                  <FlowLayout Orientation="Horizontal" ItemAlignment="Far"/>
-                </Layout>
-                <Children>
-                  <ta:Tab Model="[Model]" Name="FullConfigNav" FilterColor="[FilterColor]" Font="font://f:MM_TabFont"/>
-                </Children>
-              </Panel>
-            </Children>
-          </Panel>
-
-          <!-- Info Pane -->
-          <Panel Name="InfoPane" Padding="5,5,5,5" >
-            <Layout>
-              <AnchorLayout SizeToVerticalChildren="true"/>
-            </Layout>
-            <LayoutInput>
-              <AnchorLayoutInput Bottom="DetailBox, 1, 0" Top="DetailBox, 0" Left="DetailBox, 0" Right="DetailBox,1" />
-            </LayoutInput>
-            <Children>
-              <me:InfoBlock Name="Info" Item="[Item]" Application="[Application]" Padding="0,0,0,25" Visible="false" />
-              <me:ActorList Name="ActorScroller" Item="[Item]" Application="[Application]" Visible="false" />
-              <me:ChapterList Name="ChapterScroller" Item="[Item]" Application="[Application]" Visible="false" />
-            </Children>
-          </Panel>
-
-          <ColorFill Name="ScreenBox" Content="White" Alpha="global://s:FilterAlpha">
-            <LayoutInput>
-              <AnchorLayoutInput Bottom="DetailBox, 0" Top="DetailBox,0,-2" Left="Parent,0" Right="Parent,1"/>
-            </LayoutInput>
-          </ColorFill>
-
-          <!-- Activity Indicator -->
-          <ai:ActivityIndicator Name="ActivityInd" Application="[Application]">
-            <LayoutInput>
-              <AnchorLayoutInput Bottom="Parent, 1,-6" Left="Parent, 0,6"/>
-            </LayoutInput>
-          </ai:ActivityIndicator>
-
-          <!-- Detail Box (Alpha Gradient Bottom of Screen)-->
-          <ColorFill Content="color://s:FillColor"  Name="DetailBox" Alpha="global://s:FilterAlpha">
-            <LayoutInput>
-              <FormLayoutInput Left="Parent,0" Top="Parent,0.675" Bottom="Parent,1" Right="Parent,1"/>
-            </LayoutInput>
-          </ColorFill>
-
-          <!-- Poster (large movie pic) -->
-          <ColorFill Visible="true" Name="PosterPanel" Layout="VerticalFlow" MaximumSize="1000,350" Content="Transparent" Padding="1,1,1,1">
-            <LayoutInput>
-              <FormLayoutInput Right="Parent,.97" Bottom="ScreenBox, 0, -10" />
-            </LayoutInput>
-            <Children>
-              <Graphic Name="Preview" MaintainAspectRatio="true" Content="[Item.PrimaryImage]"
-									 SizingPolicy="SizeToConstraint" >
-              </Graphic>
-            </Children>
-          </ColorFill>
-
-          <!-- Movie Backdrop -->
-
-          <ColorFill Visible="true" Name="BackdropPanel" Content="Transparent" Alpha="0.4">
-            <LayoutInput>
-              <FormLayoutInput Top="Parent,0,-20" Left="Parent,0,-50" Bottom="Parent,1,10" Right="Parent,1,50" />
-            </LayoutInput>
-            <Children>
-              <bd:BackdropFullScreen Application="[Application]" Name="Backdrop" Visible="[Application.Config.ShowBackdrop]" Image="[Item.BackdropImage]" Item="[Item]"/>
-            </Children>
-          </ColorFill>
-
-          <!-- Main Background -->
-          <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
-            <Children>
-              <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
-                <Children>
-                  <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
                 </Children>
               </Clip>
-              <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+              <Clip Name="TitleClip" FadeSize="100" Orientation="Horizontal" ShowFar="false" FadeAmount="1" NearOffset="25" >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="TitleText,0" Bottom="TitleText,1" Left="TitleText,0" Right="TitleText,1" />
+                </LayoutInput>
+                <Children>
+                  <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha">
+
+                  </ColorFill>
+                </Children>
+              </Clip>
+
+              <!-- Song Artist -->
+              <Clip Name="ArtistText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" NearOffset="-25"
+                    CenterPointPercent="-100,-100,0">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="TitleText,1" Left="Parent, 0.2"  Right="Parent,1"
+                                     Horizontal="Far"/>
+                </LayoutInput>
+                <Children>
+                  <Panel Layout="Scale">
+                    <Children>
+                      <Panel  Layout="HorizontalFlow" Padding="100,0,40,0">
+                        <Children>
+                          <al:ArtistList Name="ArtistList" SourceData="[Item.Actors]" Font="font://f:MM_ArtistFont" Color="color://s:FontColorMedium" Visible="false"/>
+                        </Children>
+                      </Panel>
+                    </Children>
+                  </Panel>
+
+                </Children>
+              </Clip>
+              <Clip Name="ArtistClip" FadeSize="100" Orientation="Horizontal" ShowFar="false" FadeAmount="1" NearOffset="25" >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="ArtistText,0" Bottom="ArtistText,1" Left="ArtistText,0" Right="ArtistText,1" />
+                </LayoutInput>
+                <Children>
+                  <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha"/>
+                </Children>
+              </Clip>
+
+              <!-- Time Panel -->
+              <Clip Name="TimeText" FadeSize="40" Orientation="Vertical" FadeAmount="0.2" FarOffset="25" CenterPointPercent="100,100,0" Visible="false">
+                <LayoutInput>
+                  <AnchorLayoutInput Top="TitleText,0"  Left="Parent,0" />
+                </LayoutInput>
+                <Children>
+                  <Panel  Layout="HorizontalFlow" Padding="20,0,100,0">
+                    <Children>
+                      <Text Name="TimeDate" Content="" Font="font://f:MM_ClockFont" Color="color://s:FontColorMedium" MinimumSize="200,0"/>
+                    </Children>
+                  </Panel>
+                </Children>
+              </Clip>
+              <Clip Name="TimeClip" FadeSize="100" Orientation="Horizontal" ShowNear="false" FadeAmount="1" FarOffset="-25" Visible="false" >
+                <LayoutInput>
+                  <AnchorLayoutInput Top="TimeText,0" Bottom="TimeText,1" Left="TimeText,0" Right="TimeText,1" />
+                </LayoutInput>
+                <Children>
+                  <ColorFill Content="color://s:FillColor" Alpha="global://s:FilterAlpha">
+                  </ColorFill>
+                </Children>
+              </Clip>
+
+              <!-- play/resume buttons-->
+              <me:CommandButtons Application="[Application]"
+                                 Name="CommandButtons"
+                                 Item="[Item]"
+                                 FilterColor="[FilterColor]"
+                                 Alpha="global://s:FilterAlpha"
+                                 NextItemCommand="[NextItemCommand]"
+                                 PreviousItemCommand="[PreviousItemCommand]">
+                <LayoutInput>
+                  <AnchorLayoutInput Left="Parent,0,0" Top="TitleText,0,77" />
+                </LayoutInput>
+              </me:CommandButtons>
+
+              <!-- Selector buttons-->
+              <Panel Name="SelectorPanel">
+                <Layout>
+                  <AnchorLayout SizeToHorizontalChildren="true"/>
+                </Layout>
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="ScreenBox, 0" Left="Parent,0" />
+                </LayoutInput>
+                <Children>
+                  <Panel  Margins="50,0,45,0" Navigation="ContainHorizontal">
+                    <Layout>
+                      <FlowLayout Orientation="Horizontal" ItemAlignment="Far"/>
+                    </Layout>
+                    <Children>
+                      <ta:Tab Model="[Model]" Name="FullConfigNav" FilterColor="[FilterColor]" Font="font://f:MM_TabFont"/>
+                    </Children>
+                  </Panel>
+                </Children>
+              </Panel>
+
+              <!-- Info Pane -->
+              <Panel Name="InfoPane" Padding="5,5,5,5" >
+                <Layout>
+                  <AnchorLayout SizeToVerticalChildren="true"/>
+                </Layout>
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="DetailBox, 1, 0" Top="DetailBox, 0" Left="DetailBox, 0" Right="DetailBox,1" />
+                </LayoutInput>
+                <Children>
+                  <me:InfoBlock Name="Info" Item="[Item]" Application="[Application]" Padding="0,0,0,25" Visible="false" />
+                  <me:ActorList Name="ActorScroller" Item="[Item]" Application="[Application]" Visible="false" />
+                  <me:ChapterList Name="ChapterScroller" Item="[Item]" Application="[Application]" Visible="false" />
+                </Children>
+              </Panel>
+
+              <ColorFill Name="ScreenBox" Content="White" Alpha="global://s:FilterAlpha">
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="DetailBox, 0" Top="DetailBox,0,-2" Left="Parent,0" Right="Parent,1"/>
+                </LayoutInput>
+              </ColorFill>
+
+              <!-- Activity Indicator -->
+              <ai:ActivityIndicator Name="ActivityInd" Application="[Application]">
+                <LayoutInput>
+                  <AnchorLayoutInput Bottom="Parent, 1,-6" Left="Parent, 0,6"/>
+                </LayoutInput>
+              </ai:ActivityIndicator>
+
+              <!-- Detail Box (Alpha Gradient Bottom of Screen)-->
+              <ColorFill Content="color://s:FillColor"  Name="DetailBox" Alpha="global://s:FilterAlpha">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0" Top="Parent,0.675" Bottom="Parent,1" Right="Parent,1"/>
+                </LayoutInput>
+              </ColorFill>
+
+              <!-- Poster (large movie pic) -->
+              <ColorFill Visible="true" Name="PosterPanel" Layout="VerticalFlow" MaximumSize="1000,350" Content="Transparent" Padding="1,1,1,1">
+                <LayoutInput>
+                  <FormLayoutInput Right="Parent,.97" Bottom="ScreenBox, 0, -10" />
+                </LayoutInput>
+                <Children>
+                  <Graphic Name="Preview" MaintainAspectRatio="true" Content="[Item.PrimaryImage]"
+                       SizingPolicy="SizeToConstraint" >
+                  </Graphic>
+                </Children>
+              </ColorFill>
+
+              <!-- Movie Backdrop -->
+
+              <ColorFill Visible="true" Name="BackdropPanel" Content="Transparent" Alpha="0.4">
+                <LayoutInput>
+                  <FormLayoutInput Top="Parent,0,-20" Left="Parent,0,-50" Bottom="Parent,1,10" Right="Parent,1,50" />
+                </LayoutInput>
+                <Children>
+                  <bd:BackdropFullScreen Application="[Application]" Name="Backdrop" Visible="[Application.Config.ShowBackdrop]" Image="[Item.BackdropImage]" Item="[Item]"/>
+                </Children>
+              </ColorFill>
+
+              <!-- Main Background -->
+              <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+                <Children>
+                  <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                    <Children>
+                      <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                    </Children>
+                  </Clip>
+                  <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+                </Children>
+              </Panel>
+
             </Children>
-          </Panel>
-
+          </ColorFill>
         </Children>
-      </ColorFill>
-
+      </Clip>
     </Content>
 
   </UI>

@@ -188,81 +188,77 @@
     <Content>
       <ColorFill Content="Transparent" Layout="Form" TouchInteractive="true">
         <Children>
-          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
-            <Children>
-              <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Folder]" Application="[Application]" >
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
-                </LayoutInput>
+          <ss:DefaultScreenSaver Name="ScreenSaver" Folder="[Folder]" Application="[Application]" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
 
 
-              </ss:DefaultScreenSaver>
+          </ss:DefaultScreenSaver>
+          
+          <!--Message slide out-->
+          <mpo:MessagePopout Name="MessagePopout" Application="[Application]" Heading="[Application.MessageTitle]" Message="[Application.MessageText]" Visible="false" MaximumSize="450,450" >
+          <LayoutInput>
+            <FormLayoutInput Right="Parent,1" Top="Parent,.3"/>
+          </LayoutInput>
+              
+            <Animations>
+              <Animation Animation="animation://an:NewItemShow"/>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+          </mpo:MessagePopout>
+          
+          <!--New Item slide out-->
+          <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
+          <LayoutInput>
+            <FormLayoutInput Left="Parent,0,700" Right="Parent,1" Top="Parent,.3"/>
+          </LayoutInput>
+              
+            <Animations>
+              <Animation Animation="animation://an:NewItemShow"/>
+              <Animation Animation="animation://an:PageHide"/>
+            </Animations>
+          </po:SingleItemPopout>
+          
+          <em:ExitMenu Name="ExitMenu" Application="[Application]" Visible="false" />
 
-              <!--Message slide out-->
-              <mpo:MessagePopout Name="MessagePopout" Application="[Application]" Heading="[Application.MessageTitle]" Message="[Application.MessageText]" Visible="false" MaximumSize="450,450" >
-                <LayoutInput>
-                  <FormLayoutInput Right="Parent,1" Top="Parent,.3"/>
-                </LayoutInput>
+          <!--MessageBox-->
+          <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+            <Animations>
+              <Animation Type="Show" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="0" />
+                  <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
+                </Keyframes>
+              </Animation>
+              <Animation Type="Hide" >
+                <Keyframes>
+                  <AlphaKeyframe Time="0.0" Value="1" />
+                  <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
+                </Keyframes>
+              </Animation>
+            </Animations>
+          </msg:MessageBox>
 
-                <Animations>
-                  <Animation Animation="animation://an:NewItemShow"/>
-                  <Animation Animation="animation://an:PageHide"/>
-                </Animations>
-              </mpo:MessagePopout>
+          <cm:MultiPlayMenu Name="MultiPlayMenu" Application="[Application]" Close="[CloseMultiPlay]" Visible="false" />
 
-              <!--New Item slide out-->
-              <po:SingleItemPopout Name="NewItemPopout" Application="[Application]" Item="[Application.NewItem]" Visible="false" MaximumSize="0,450" >
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,0,700" Right="Parent,1" Top="Parent,.3"/>
-                </LayoutInput>
-
-                <Animations>
-                  <Animation Animation="animation://an:NewItemShow"/>
-                  <Animation Animation="animation://an:PageHide"/>
-                </Animations>
-              </po:SingleItemPopout>
-
-              <em:ExitMenu Name="ExitMenu" Application="[Application]" Visible="false" />
-
-              <!--MessageBox-->
-              <msg:MessageBox Name="MessageBox" Msg="Testing" Visible="false" Close="[CloseMessage]" Application="[Application]" MinimumSize="0,400" MaximumSize="0,400" >
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,0" Right="Parent,1"/>
-                </LayoutInput>
-                <Animations>
-                  <Animation Type="Show" >
-                    <Keyframes>
-                      <AlphaKeyframe Time="0.0" Value="0" />
-                      <AlphaKeyframe Time=".7" Value="1" Interpolation="EaseOut" />
-                    </Keyframes>
-                  </Animation>
-                  <Animation Type="Hide" >
-                    <Keyframes>
-                      <AlphaKeyframe Time="0.0" Value="1" />
-                      <AlphaKeyframe Time="0.2" Value="0" Interpolation="SCurve" />
-                    </Keyframes>
-                  </Animation>
-                </Animations>
-              </msg:MessageBox>
-
-              <cm:MultiPlayMenu Name="MultiPlayMenu" Application="[Application]" Close="[CloseMultiPlay]" Visible="false" />
-
-              <search:SearchPane Name="SearchPanel" Application="[Application]" Close="[CloseSearch]" Visible="false" >
-                <Animations>
-                  <Animation Animation="animation://an:SlideDownFade"/>
-                </Animations>
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,0" Bottom="Parent,0,300" Top="Parent,0" Right="Parent,1"/>
-                </LayoutInput>
-              </search:SearchPane>
-              <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
-              <pd:Page Name="ViewDefault" Folder="[Folder]" Application="[Application]" ThemeConfig ="[ThemeConfig]" Visible="true" >
-                <LayoutInput>
-                  <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
-                </LayoutInput>
-              </pd:Page>
-            </Children>
-          </Clip>
+          <search:SearchPane Name="SearchPanel" Application="[Application]" Close="[CloseSearch]" Visible="false" >
+            <Animations>
+              <Animation Animation="animation://an:SlideDownFade"/>
+            </Animations>
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Bottom="Parent,0,300" Top="Parent,0" Right="Parent,1"/>
+            </LayoutInput>
+          </search:SearchPane>
+          <Panel Name="MouseBlocker" MouseInteractive="true" Layout="Fill" Visible="false" />
+          <pd:Page Name="ViewDefault" Folder="[Folder]" Application="[Application]" ThemeConfig ="[ThemeConfig]" Visible="true" >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent,0" Top="Parent,0" Bottom="Parent,1" Right="Parent,1"/>
+            </LayoutInput>
+          </pd:Page>
         </Children>
       </ColorFill>
 
