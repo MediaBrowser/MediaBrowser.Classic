@@ -821,7 +821,7 @@
               </bd:InitialFolderBackground>
 
 
-              <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
+              <Panel Name="MainBG" Layout="Fill" Margins="0,0,0,0" >
                 <Children>
                   <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
                     <Children>
@@ -835,6 +835,11 @@
             </Children>
           </Clip>
 
+          <Clip Name="TemplateClip" Layout="Form" Padding="-100,-100,-100,-100" Scale="1,1,1" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
+              <ColorFill Layout="Fill" Content="LightBlue"/>
+            </Children>
+          </Clip>
         </Children>
       </Panel>
 
