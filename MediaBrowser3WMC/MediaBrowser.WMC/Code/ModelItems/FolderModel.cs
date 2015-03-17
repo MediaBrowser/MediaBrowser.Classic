@@ -515,7 +515,7 @@ namespace MediaBrowser.Library {
                     Async.Queue(Async.ThreadPoolName.OverviewLoader, () =>
                     {
                         RefreshFolderOverviewCache();
-                        Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("Overview"));
+                        FirePropertyChanged("Overview");
                     },null, true);
                   
                 }

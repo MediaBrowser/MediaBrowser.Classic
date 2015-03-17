@@ -598,7 +598,7 @@ namespace MediaBrowser.Library
         public void UpdateResume()
         {
             Logger.ReportVerbose("Updating Resume status...");
-            Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("CanResume")); //force UI to update
+            FirePropertyChanged("CanResume"); //force UI to update
         }
 
         private void Play(bool resume)
