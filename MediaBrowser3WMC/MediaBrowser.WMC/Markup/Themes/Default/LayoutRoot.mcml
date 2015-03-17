@@ -423,9 +423,11 @@
     </Rules>
 
     <Content>
-      <Panel Layout="Form" >
+      <Panel>
         <Children>
-          
+          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+            <Children>
+
               <!-- Popup Play Panel -->
               <!--<pp:PopupPlay Name="PopupPlay" Visible="false" Item="[Folder.SelectedChild]" Close="[ClosePopupPlay]"
                         Application="[Application]" >
@@ -698,7 +700,8 @@
               </bd:InitialFolderBackground>
 
             </Children>
-          
+          </Clip>
+        </Children>
       </Panel>
     </Content>
     <Content Name="BaseItem">
