@@ -516,6 +516,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     series.Status = mb3Item.Status.ToString();
                     series.AirTime = mb3Item.AirTime;
+                    series.ImdbRating = mb3Item.CommunityRating;
+                    series.CriticRating = mb3Item.CriticRating;
                     series.AirDay = mb3Item.AirDays != null ? mb3Item.AirDays.FirstOrDefault().ToString() : null;
                 }
 
@@ -649,7 +651,7 @@ namespace MediaBrowser.Library.Persistance
 
         public static ItemFields[] StandardFields = new[]
                                                         {
-                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType, 
+                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType,
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, ItemFields.Metascore, 
                                                             ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, ItemFields.SpecialEpisodeNumbers
                                                         };
