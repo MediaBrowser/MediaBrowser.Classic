@@ -147,7 +147,7 @@
 				</Actions>
 			</Condition>
 
-      <Changed Source="[Item.PreferredImage]">
+      <Changed Source="[Item.PreferredImageSmall]">
         <Conditions>
           <Equality  Source="[InFocus.Value]" Value="true"/>
         </Conditions>
@@ -157,7 +157,7 @@
               <BooleanTransformer Inverse="true"/>
             </Transformer>
           </Set>-->
-          <Set Target="[BoxArt.Content]" Value="[Item.PreferredImage]"/>
+          <Set Target="[BoxArt.Content]" Value="[Item.PreferredImageSmall]"/>
         </Actions>
 
       </Changed>
