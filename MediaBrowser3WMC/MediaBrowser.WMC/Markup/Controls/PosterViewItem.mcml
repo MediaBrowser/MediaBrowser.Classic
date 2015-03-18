@@ -55,11 +55,16 @@
         </Transformer>
       </Binding>
 
-      <Changed Source="[Clicker.Invoked]">
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
         <Actions>
-          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPress"/>
+          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPressDown"/>
         </Actions>
-      </Changed>
+      </Condition>
+      <Condition Source="[Clicker.Clicking]" SourceValue="false" >
+        <Actions>
+          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPressUp"/>
+        </Actions>
+      </Condition>
       
       <Changed Source="[ImageSize]" InitialEvaluate="true" >
         <Actions>

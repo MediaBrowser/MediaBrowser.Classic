@@ -425,11 +425,16 @@
 
     <Rules>
 
-      <Changed Source="[Clicker.Invoked]">
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
         <Actions>
-          <PlayAnimation Target="[Main]" Animation="animation://an:ButtonPress"/>
+          <PlayAnimation Target="[Main]" Animation="animation://an:ButtonPressDown"/>
         </Actions>
-      </Changed>
+      </Condition>
+      <Condition Source="[Clicker.Clicking]" SourceValue="false" >
+        <Actions>
+          <PlayAnimation Target="[Main]" Animation="animation://an:ButtonPressUp"/>
+        </Actions>
+      </Condition>
       <!-- Set the UI to be mouse and keyboard interactive. -->
       <Default Target="[Input.KeyInteractive]" Value="true"/>
       <Default Target="[Input.MakeTopmostOnFocus]" Value="true"/>
