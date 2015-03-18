@@ -27,7 +27,7 @@
       <lib:Item Name="PreSelectedItem" Item="[Folder.SelectedChild]" />
       <lib:Item Name="PreviousSelectedItem" Item="[Folder.SelectedChild]" />
       <lib:Item Name="BlankItem"  Item="[Folder.BlankItem]"/>
-      <Timer Name="FullDetailsTimer" Interval="300" AutoRepeat="false"/>
+      <Timer Name="FullDetailsTimer" Interval="500" AutoRepeat="false"/>
       <FormLayoutInput Name="Split" Left="Parent,0,10" Top="Parent,0.04" Right="Parent,0,400" Bottom="Parent,1,-80"></FormLayoutInput>
       <FormLayoutInput Name="Split2" Left="Parent,0,400" Top="Parent,0.04" Right="Parent,1" Bottom="Parent,1,-80"></FormLayoutInput>
     </Locals>
