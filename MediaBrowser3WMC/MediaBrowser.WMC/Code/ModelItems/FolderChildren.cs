@@ -29,8 +29,8 @@ namespace MediaBrowser.Code.ModelItems {
         public void Assign(FolderModel folderModel, Action onChildrenChanged) {
 
             lock (this) {
-                Debug.Assert(this.folderModel == null);
-                Debug.Assert(this.folder == null);
+                //Debug.Assert(this.folderModel == null); // this can happen when a metadata refresh occurs either as a message from the server or a user hitting the rec buttong
+                //Debug.Assert(this.folder == null); // this can happen when a metadata refresh occurs either as a message from the server or a user hitting the rec buttong
 
                 this.onChildrenChanged = onChildrenChanged;
                 if (folderModel.Folder == this.folder && folderModel == this.folderModel) return;
@@ -261,7 +261,7 @@ namespace MediaBrowser.Code.ModelItems {
             lock (this) {
                 childrenCopy = this.currentChildren;
             }
-
+            
             var aspects = childrenCopy
                 .Select(i =>
                 {
