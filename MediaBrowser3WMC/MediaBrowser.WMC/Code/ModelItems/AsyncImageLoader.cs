@@ -140,10 +140,11 @@ namespace MediaBrowser.Code.ModelItems {
 
         private void FetchImage() {
             bool sizeIsSet = Size != null && Size.Height > 0 && Size.Width > 0;
-            localPath = localImage.GetLocalImagePath();
-            if (sizeIsSet) {
+            
+            if (sizeIsSet) 
                 localPath = localImage.GetLocalImagePath(Size.Width, Size.Height);
-            }
+            else
+                localPath = localImage.GetLocalImagePath();
 
             if (localImage.Corrupt) {
                 Logger.ReportWarning("Image " + localPath + " is Corrupt.");
