@@ -436,12 +436,7 @@ namespace MediaBrowser.Library {
 
         protected void FireQuicklistPropertiesChanged()
         {
-            Application.UIDeferredInvokeIfRequired(()=>
-            {
-                FirePropertyChanged("RecentItems");
-                FirePropertyChanged("NewestItems");
-                FirePropertyChanged("QuickListItems");
-            });
+            FirePropertiesChanged("RecentItems", "NewestItems", "QuickListItems");
             
         }
 
@@ -649,10 +644,7 @@ namespace MediaBrowser.Library {
         private void FireWatchedChangedEvents() {
             Application.UIDeferredInvokeIfRequired(() =>
             {
-                FirePropertyChanged("HaveWatched");
-                FirePropertyChanged("UnwatchedCount");
-                FirePropertyChanged("ShowUnwatched");
-                FirePropertyChanged("UnwatchedCountString");
+                FirePropertiesChanged("HaveWatched","UnwatchedCount","ShowUnwatched","UnwatchedCountString");
             });
         }
 
@@ -693,10 +685,7 @@ namespace MediaBrowser.Library {
             if (property == "UnwatchedCount") {
                 lock (watchLock)
                     unwatchedCountCache = -1;
-                FirePropertyChanged("HaveWatched");
-                FirePropertyChanged("UnwatchedCount");
-                FirePropertyChanged("ShowUnwatched");
-                FirePropertyChanged("UnwatchedCountString");
+                FirePropertiesChanged("HaveWatched","UnwatchedCount","ShowUnwatched","UnwatchedCountString");
                 // note: need to be careful this doesn't trigger the load of the prefs 
                 // that can then trigger a cascade that loads metadata, prefs should only be loaded by 
                 // functions that are required when the item is the current item displayed
@@ -819,10 +808,8 @@ namespace MediaBrowser.Library {
         }
                     
         private void SelectedChildChanged() {
-            FirePropertyChanged("SelectedChildIndex");
-            FirePropertyChanged("SelectedChild");
-            FirePropertyChanged("SelectedCondensedChild");
-            Application.CurrentInstance.OnCurrentItemChanged();
+            FirePropertiesChanged("SelectedChildIndex","SelectedChild","SelectedCondensedChild");
+            Application.CurrentInstance.OnCurrentItemChanged();            
         }
 
         public override void SetWatched(bool value) {
@@ -1227,7 +1214,7 @@ namespace MediaBrowser.Library {
 
         protected void UpdateActualThumbSize() {
 
-            Application.UIDeferredInvokeIfRequired(() =>
+            Async.Queue(Async.ThreadPoolName.Common, ()=>
             {
 
                 if (this.displayPrefs == null) return;
@@ -1254,7 +1241,7 @@ namespace MediaBrowser.Library {
             }
             );
         }
-
+        
         protected virtual Size GetThumbConstraint()
         {
             return this.DisplayPrefs.ThumbConstraint.Value;
@@ -1322,14 +1309,12 @@ namespace MediaBrowser.Library {
         }
 
         void ShowLabels_PropertyChanged(IPropertyObject sender, string property) {
-            FirePropertyChanged("ReferenceSize");
-            FirePropertyChanged("PosterZoom");
+            FirePropertiesChanged("ReferenceSize","PosterZoom");
         }
 
         void ThumbConstraint_PropertyChanged(IPropertyObject sender, string property) {
             UpdateActualThumbSize();
-            FirePropertyChanged("ReferenceSize");
-            FirePropertyChanged("PosterZoom");
+            FirePropertiesChanged("ReferenceSize", "PosterZoom");
         }
 
         public bool FilterUnwatched
