@@ -298,13 +298,12 @@ namespace MediaBrowser.Library
                     () => baseItem.PrimaryImage,
                     DefaultImage,
                     PrimaryImageChanged);
-                    var ignore = primaryImage.Image;
+                var ignore = primaryImage.Image;
             }
         }
 
         void PrimaryImageChanged()
         {
-            VerifySmallImageIsDistorted();
             FirePropertiesChanged("PrimaryImage", "PreferredImage", "PrimaryImageSmall", "PreferredImageSmall");
         }
 
@@ -345,8 +344,7 @@ namespace MediaBrowser.Library
         {
             get
             {
-                return this.PrimaryImage;
-                /*
+
                 if (baseItem.PrimaryImagePath != null)
                 {
                     EnsurePrimaryImageIsSet();
@@ -358,7 +356,7 @@ namespace MediaBrowser.Library
 
                         if (primaryImageSmall == null)
                         {
-                            VerifySmallImageIsDistorted();
+                            LoadSmallPrimaryImage();
                         }
                     }
                     else
@@ -371,12 +369,12 @@ namespace MediaBrowser.Library
                 {
                     return DefaultImage;
                 }
-                */
+
 
             }
         }
 
-        private void VerifySmallImageIsDistorted()
+        private void LoadSmallPrimaryImage()
         {
             float aspect = primaryImage.Size.Height / (float)primaryImage.Size.Width;
             float constraintAspect = aspect;
@@ -386,17 +384,43 @@ namespace MediaBrowser.Library
                 constraintAspect = preferredImageSmallSize.Height / (float)preferredImageSmallSize.Width;
             }
 
-            bool newValue;
+            primaryImageSmall = new AsyncImageLoader(
+                () => baseItem.PrimaryImage,
+                DefaultImage,
+                PrimaryImageChanged);
+
             if (aspect == constraintAspect)
-                newValue = false;
-            else
-                newValue = Math.Abs(aspect - constraintAspect) < Config.Instance.MaximumAspectRatioDistortion;
-            
-            if (newValue != smallImageIsDistorted)
             {
-                smallImageIsDistorted = newValue;
-                FirePropertyChanged("SmallImageIsDistorted");
+                smallImageIsDistorted = false;
             }
+            else
+            {
+                smallImageIsDistorted = Math.Abs(aspect - constraintAspect) < Config.Instance.MaximumAspectRatioDistortion;
+            }
+
+            if (smallImageIsDistorted)
+            {
+                primaryImageSmall.Size = preferredImageSmallSize;
+            }
+            else
+            {
+
+                int width = preferredImageSmallSize.Width;
+                int height = preferredImageSmallSize.Height;
+
+                if (aspect > constraintAspect || width <= 0)
+                {
+                    width = (int)((float)height / aspect);
+                }
+                else
+                {
+                    height = (int)((float)width * aspect);
+                }
+
+                primaryImageSmall.Size = new Size(width, height);
+            }
+
+            FirePropertyChanged("SmallImageIsDistorted");
         }
 
         bool smallImageIsDistorted = false;
@@ -437,11 +461,9 @@ namespace MediaBrowser.Library
                 if (value != preferredImageSmallSize)
                 {
                     preferredImageSmallSize = value;
-                    // we don't actually resize or change the underlying image any more
-                    //primaryImageSmall = null;
-                    //FirePropertyChanged("PreferredImageSmall");
-                    //FirePropertyChanged("PrimaryImageSmall");
-                    FirePropertyChanged("PreferredImageSmallSize");
+                    primaryImageSmall = null;
+                    FirePropertyChanged("PreferredImageSmall");
+                    FirePropertyChanged("PrimaryImageSmall");
                 }
             }
         }
@@ -627,12 +649,9 @@ namespace MediaBrowser.Library
             }
             set
             {
-                if (preferBanner != value)
-                {
-                    preferBanner = value;
-                    FirePropertyChanged("HasPreferredImage");
-                    FirePropertyChanged("PreferredImage");
-                }
+                preferBanner = value;
+                FirePropertyChanged("HasPreferredImage");
+                FirePropertyChanged("PreferredImage");
             }
         }
 
