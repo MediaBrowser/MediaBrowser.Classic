@@ -75,6 +75,49 @@ namespace MediaBrowser.Library.ImageManagement {
 
         bool loaded = false;
 
+        private string GetPathWithSizeInfo(int width, int height)
+        {
+            return Path + string.Format("[CacheSize{0}x{1}]", width, height);
+        }
+
+        private string EnsureImageCached(int width, int height)
+        {
+            EnsureImageCached();
+            string newPath = GetPathWithSizeInfo(width, height);
+            string cachedPath = ImageCache.Instance.GetImagePath(newPath);
+            if (cachedPath == null)
+                return ResizeImage(ImageCache.Instance.GetImagePath(Path), width, height, newPath);
+            else
+                return cachedPath;
+
+        }
+
+        private string ResizeImage(string path, int width, int height, string newPathId)
+        {
+
+            using (System.Drawing.Bitmap bmp = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(path))
+            {
+                double xscale = (double)width / bmp.Width;
+                double yscale = (double)height / bmp.Height;
+                double scale = Math.Min(xscale, yscale);
+                using (System.Drawing.Bitmap newBmp = new System.Drawing.Bitmap((int)(bmp.Width * scale), (int)(bmp.Height * scale)))
+                using (System.Drawing.Graphics graphic = System.Drawing.Graphics.FromImage(newBmp))
+                {
+
+                    graphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    graphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    graphic.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                    graphic.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                    graphic.DrawImage(bmp, 0, 0, (int)(bmp.Width * scale), (int)(bmp.Height * scale));
+
+                    return ImageCache.Instance.CacheImage(newPathId, newBmp);
+                }
+            }
+
+
+        }
+
         private void EnsureImageCached()
         {
             if (loaded) return;
@@ -167,7 +210,9 @@ namespace MediaBrowser.Library.ImageManagement {
         }
 
         public string GetLocalImagePath(int width, int height) {
-            return GetLocalImagePath();
+            var path = EnsureImageCached(width, height);
+            if (String.IsNullOrEmpty(path)) this.Corrupt = true;
+            return path;
         }
 
 
