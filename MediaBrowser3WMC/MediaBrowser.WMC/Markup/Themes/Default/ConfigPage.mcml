@@ -19,10 +19,10 @@
     xmlns:pe="resx://MediaBrowser/MediaBrowser.Resources/PINEdit"
     xmlns:bd="resx://MediaBrowser/MediaBrowser.Resources/Backdrop"
     xmlns:pu="resx://MediaBrowser/MediaBrowser.Resources/PluginUpdateButton"
-    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"      
+    xmlns:msg="resx://MediaBrowser/MediaBrowser.Resources/Message"
     xmlns:is="resx://MediaBrowser/MediaBrowser.Resources/InfoStrip"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
-    xmlns:pc="resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog"  
+    xmlns:pc="resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog"
       xmlns:addin="assembly://Microsoft.MediaCenter/Microsoft.MediaCenter.Hosting"
 	  xmlns:me="Me"
 	  >
@@ -51,7 +51,7 @@
       <Command Name="OSK"/>
       <Command Name="ClearConnect"/>
 
-      
+
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
       <BooleanChoice Name="ShowFolders" Value="[Application.ServerUserConfig.ShowFolders]" />
       <BooleanChoice Name="ShowCollections" Value="[Application.ServerUserConfig.ShowCollections]" />
@@ -132,7 +132,7 @@
       <RangedValue Name="BackdropTransitionInterval" Value="[Application.Config.BackdropTransitionInterval]" MaxValue="3" MinValue=".1" Step=".1"/>
       <IntRangedValue Name="BackdropLoadDelay" Value="[Application.Config.BackdropLoadDelay]" MaxValue="1000" MinValue="300" Step="10"/>
       <BooleanChoice Name="AutoScrollText" Value="[Application.Config.AutoScrollText]" />
-      
+
 
       <ScrollingData Name="SD" BeginPadding="150" EndPadding="150"/>
       <Inset Name="SMargin" Inset="10,0,10,10" />
@@ -191,7 +191,7 @@
         </Options>
       </Choice>
       <Choice Name="ViewThemeModel" Options="[Application.AvailableThemeNames]" />
-      
+
       <BooleanChoice Name="ThemeLoaded" Value="false" />
 
       <BooleanChoice Name="ShowConfigButton" Value="[Application.Config.ShowConfigButton]" />
@@ -315,7 +315,7 @@
           <Set Target="[MouseBlocker.Visible]" Value="false" />
         </Actions>
       </Changed>
-      
+
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="0" ConditionOp="Equals" Target="[Panel1.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="1" ConditionOp="Equals" Target="[Panel2.Visible]" Value="true" />
       <Condition Source="[Application.ConfigModel.ChosenIndex]" SourceValue="2" ConditionOp="Equals" Target="[Panel3.Visible]" Value="true" />
@@ -404,7 +404,7 @@
       <Binding Source="[RandomizeBackdrop.Value]" Target="[Config.RandomizeBackdrops]" />
       <Binding Source="[RotateBackdrop.Value]" Target="[Config.RotateBackdrops]" />
       <Binding Source="[HideFocusFrame.Value]" Target="[Config.HideFocusFrame]" />
-      
+
       <!-- These items only apply if not legacy browsing -->
       <Binding Source="[ShowFolders.Value]" Target="[UserConfig.ShowFolders]" />
       <Binding Source="[ShowCollections.Value]" Target="[UserConfig.ShowCollections]" />
@@ -605,236 +605,241 @@
                 </Children>
               </Panel>
 
+
+              <!-- Description Panel-->
+              <Panel Layout="HorizontalFlow">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0,20" Right="Parent,1,-20" Top="Parent,1,-175"  />
+                </LayoutInput>
+                <Children>
+                  <Text Name="Description" Content="" Font="font://f:CP_ConfigHeaderFont"
+                        Color="color://s:FontColorLight" MaximumLines="2" WordWrap="true"/>
+                </Children>
+              </Panel>
+
+              <!-- Configuration Options selector -->
+              <pv:Pivot Model="[Application.ConfigModel]" Name="FullConfigNav" FocusItem="[FocusItem]"  Navigation="RememberFocus" InitialIndex="[Application.ConfigPanelIndex]" >
+                <LayoutInput>
+                  <FormLayoutInput Horizontal="Near" Top="Parent,0,100" />
+                </LayoutInput>
+              </pv:Pivot>
+
+              <!-- Full Configuration Options-->
+              <Panel Name="FullConfig" Layout="Anchor">
+                <LayoutInput>
+                  <FormLayoutInput Left="Parent,0, 5" Top="Parent,0,175" />
+                </LayoutInput>
+                <Children>
+
+                  <Graphic Name="Panel1" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
+                           MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                    <Children>
+                      <Panel Layout="VerticalFlow" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#GeneralBehaviorConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ConfirmExitConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[UseExitMenu]"  Font="font://f:CP_ConfigItemFont"/>
+                          <Panel Name="Weather" Layout="HorizontalFlow" Margins="[CMargin]">
+                            <Layout>
+                              <FlowLayout Orientation="Horizontal"/>
+                            </Layout>
+                            <Children>
+                              <te:TextEdit Label="[Application.LocalStrings.#WeatherLocationConfig!cor:String]" FocusItem="[FocusItem]" EditableText="[WeatherLocation]" MaximumSize="300,0" EditSize="120,34" Font="font://f:CP_ConfigItemFont" MaxChars="20" />
+                              <ss:SimpleSpinner Name="WeatherUnit" Label="[Application.LocalStrings.#WeatherUnitConfig!cor:String]" Margins="0,2,0,0" LabelMinSize="50,0" Model="[WeatherUnitModel]" ValueMinSize="20,35" ValueMaxSize="20,35" FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                            </Children>
+                          </Panel>
+
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" Margins="100,0,0,0" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#GeneralDisplayConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowClockConfig!cor:String]" Checked="[ShowClock]" Margins="[CMargin]"  FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <me:TextHeader Text="[Application.LocalStrings.#LoginConfig!cor:String]" />
+                          <ss:SimpleSpinner Name="AutoLogin" Label="[Application.LocalStrings.#StartUpConfig!cor:String]"  Model="[StartUp]" ValueMinSize="230,35" ValueMaxSize="230,35" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <Text Name="LoginAsOther" Content="Configured to Login as"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" Color="color://s:FontColorMedium" Alpha=".6" Visible="false"/>
+                          <cb:CheckBox Name="SavePasswordCbx" Label="[Application.LocalStrings.#SavePasswordConfig!cor:String]" Checked="[SavePassword]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                        </Children>
+                      </Panel>
+                    </Children>
+                  </Graphic>
+
+
+                  <Graphic Name="Panel2" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
+                           MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                    <Children>
+                      <Panel Layout="VerticalFlow" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Name="ShowMovieSubOption" Label="[Application.LocalStrings.#ShowMovieSubConfig!cor:String]" Checked="[ShowMovieSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Name="ShowTvSubOption" Label="[Application.LocalStrings.#ShowTvSubConfig!cor:String]" Checked="[ShowTvSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#IndicatorsConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#HideFocusFrameConfig!cor:String]" Checked="[HideFocusFrame]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowUnwatchedCountConfig!cor:String]" Checked="[ShowUnwatchedCount]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronFoldersConfig!cor:String]" Checked="[ShowWatchedTickOnFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#HighlightUnwatchedItemsConfig!cor:String]" Checked="[ShowUnwatchedIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronVideosConfig!cor:String]" Checked="[ShowWatchTickInPosterView]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatorinDetailViewConfig!cor:String]" Checked="[EnableListViewTicks]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowHDOverlayonPostersConfig!cor:String]" Checked="[ShowHDIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowIcononRemoteContentConfig!cor:String]" Checked="[ShowRemoteIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <!--<me:TextHeader Text="[Application.LocalStrings.#MultipleFileBehaviorConfig!cor:String]" />
+                      <cb:CheckBox Label="[Application.LocalStrings.#TreatMultipleFilesAsSingleMovieConfig!cor:String]" Checked="[EnableMoviePlaylists]"  FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                      <ss:SimpleSpinner  Label="[Application.LocalStrings.#MultipleFileSizeLimitConfig!cor:String]" Model="[PlaylistLimit]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />-->
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" Margins="40,0,20,0"  >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <me:TextHeader Text="[Application.LocalStrings.#ThemeBackgroundsConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#EnableThemeBackgroundsConfig!cor:String]" Checked="[EnableThemeBackgrounds]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#ThemeBackgroundRepeatConfig!cor:String]" Padding="0,10,0,0" Model="[ThemeBackgroundRepeat]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <cb:CheckBox Label="[Application.LocalStrings.#PlayTrailerAsBackgroundConfig!cor:String]" Checked="[PlayTrailerAsBackground]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" Visible="false" >
+                        <Children>
+                          <me:TextHeader Text="Extenders" />
+                          <cb:CheckBox Label="Transcode360" Checked="[EnableTranscode360]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <te:TextEdit LabelSize="[LabelSize1]" Label="Extender Native Types" EditableText="[ExtenderNativeTypes]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <me:TextHeader Text="ISO Playback, Daemon Tools" />
+                          <te:TextEdit LabelSize="[LabelSize1]" Label="Location" EditableText="[DaemonToolsLocation]" EditSize="150,0" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <te:TextEdit LabelSize="[LabelSize1]" Label="Drive" EditableText="[DaemonToolsDrive]" MaxChars="1" EditSize="50,0" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="Use Autoplay" Checked="[UseAutoPlayForIso]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                        </Children>
+                      </Panel>
+                    </Children>
+                  </Graphic>
+
+                  <Graphic Name="Panel3" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
+                           MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                    <Children>
+                      <Panel Layout="VerticalFlow" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#MBThemeConfig!cor:String]" />
+                          <st:SpinnerText Model="[ViewThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#VisualThemeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[Config.ViewTheme]" />
+                          <st:SpinnerText Model="[ThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#ColorSchemeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[ThemeInitial]" />
+                          <st:SpinnerText Model="[FontThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#FontSizeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[FontThemeModel.Chosen!cor:String]" />
+                          <me:TextLine Text="[Application.LocalStrings.#RequiresRestartConfig!cor:String]" />
+                          <me:TextHeader Text="[Application.LocalStrings.#ViewsConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#AutoScrollTextConfig!cor:String]" Checked="[AutoScrollText]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#PosterGridSpacingConfig!cor:String]" Model="[GridSpacing]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#ThumbWidthSplitConfig!cor:String]" Model="[ThumbStripPosterWidth]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#BreadcrumbCountConfig!cor:String]" Model="[BreadcrumbCount]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#BackdropSettingsConfig!cor:String]" />
+                          <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropRotationIntervalConfig!cor:String]" Model="[BackdropRotationInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropTransitionIntervalConfig!cor:String]" Model="[BackdropTransitionInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropLoadDelayConfig!cor:String]" Model="[BackdropLoadDelay]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowFanArtonViewsConfig!cor:String]" Checked="[ShowBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Padding="40,0,0,0" Label="[Application.LocalStrings.#RotateBackdropConfig!cor:String]" Checked="[RotateBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Padding="40,0,0,0" Label="[Application.LocalStrings.#RandomizeBackdropConfig!cor:String]" Checked="[RandomizeBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowInitialFolderBackgroundConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ShowRootBackground]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowThemeBackgroundConfig!cor:String]" Checked="[ShowThemeBackground]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                        </Children>
+                      </Panel>
+                    </Children>
+                  </Graphic>
+
+                  <Graphic Name="Panel4" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
+                           MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
+                    <Children>
+                      <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#PlayerConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#DisableMcConflictingOperationsConfig!cor:String]" Checked="[DisableMcConflictingOperations]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationInPlayerConfig!cor:String]" Checked="[ShowNewItemNotificationInPlayer]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowPauseIndicatorConfig!cor:String]" Checked="[ShowPauseIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#DisableCustomPlayerForDvdConfig!cor:String]" Checked="[DisableCustomPlayerForDvd]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#EnableMouseHookConfig!cor:String]" Checked="[EnableMouseHook]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipBackSecondsConfig!cor:String]" Model="[DefaultSkipBackSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#InputActivityTimeoutConfig!cor:String]" Model="[InputActivityTimeout]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                        </Children>
+                      </Panel>
+                      <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
+                        <Children>
+                          <me:TextHeader Text="[Application.LocalStrings.#StreamingConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#WarnOnStreamConfig!cor:String]" Checked="[WarnOnStream]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#LocalMaxBitrateConfig!cor:String]" Model="[LocalMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <ss:SimpleSpinner Label="[Application.LocalStrings.#RemoteMaxBitrateConfig!cor:String]" Model="[RemoteMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                        </Children>
+                      </Panel>
+                    </Children>
+                  </Graphic>
+
+                  <Graphic Name="Panel8" Visible="false" Content="image://me:50AlphaBg" Layout="Center" MinimumSize="500,200" MaximumSize="500,200" Padding="[SMargin]" Navigation="Column">
+                    <Children>
+                      <Panel Layout="VerticalFlow" MinimumSize="400,200" MaximumSize="400,200">
+                        <Children>
+                          <Text Content="Can you see text below here?" Color="0,128,0"  WordWrap="true"/>
+                          <Text Content="If you can see this colorFilters work." Color="Red"  WordWrap="true"/>
+                        </Children>
+                      </Panel>
+                      <ColorFill Content="Red" ColorFilter="128,0,0" MinimumSize="400,200" MaximumSize="400,200"/>
+                    </Children>
+                  </Graphic>
+
+                  <Graphic Name="Panel99" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow" MinimumSize="[PanelSize]" Padding="[SMargin]">
+                    <Children>
+                      <me:AddinPanel Name="AddinPanel" Application="[Application]" FocusItem="[FocusItem]" ConfigObject="[Application.CurrentConfigObject]"/>
+                    </Children>
+                  </Graphic>
+
+
+                </Children>
+              </Panel>
+
+              <!-- Initial Folder Backdrop -->
+              <bd:InitialFolderBackground Name="BG_InitialFolder" Application="[Application]"
+                                          Visible="[Application.Config.ShowRootBackground]"
+                                      >
+                <LayoutInput>
+                  <FormLayoutInput Name="LI_Bg" Left="Parent,0,-50" Top="Parent,0,-20" Bottom="Parent,1,20" Right="Parent,1,50"/>
+                </LayoutInput>
+              </bd:InitialFolderBackground>
+
+
+              <Panel Name="MainBG" Layout="Fill" Margins="0,0,0,0" >
+                <Children>
+                  <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
+                    <Children>
+                      <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
+                    </Children>
+                  </Clip>
+                  <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
+                </Children>
+              </Panel>
+              <!--<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>-->
             </Children>
           </Clip>
 
-          <!-- Description Panel-->
-          <Panel Layout="HorizontalFlow">
-            <LayoutInput>
-              <FormLayoutInput Left="Parent,0,20" Right="Parent,1,-20" Top="Parent,1,-175"  />
-            </LayoutInput>
+          <Clip Name="TemplateClip" Layout="Form" Padding="-100,-100,-100,-100" Scale="1,1,1" CenterPointPercent="0.5,0.5,0.5">
             <Children>
-              <Text Name="Description" Content="" Font="font://f:CP_ConfigHeaderFont"
-                    Color="color://s:FontColorLight" MaximumLines="2" WordWrap="true"/>
+              <ColorFill Layout="Fill" Content="LightBlue"/>
             </Children>
-          </Panel>
-
-          <!-- Configuration Options selector -->
-          <pv:Pivot Model="[Application.ConfigModel]" Name="FullConfigNav" FocusItem="[FocusItem]"  Navigation="RememberFocus" InitialIndex="[Application.ConfigPanelIndex]" >
-            <LayoutInput>
-              <FormLayoutInput Horizontal="Near" Top="Parent,0,100" />
-            </LayoutInput>
-          </pv:Pivot>
-
-          <!-- Full Configuration Options-->
-          <Panel Name="FullConfig" Layout="Anchor">
-            <LayoutInput>
-              <FormLayoutInput Left="Parent,0, 5" Top="Parent,0,175" />
-            </LayoutInput>
-            <Children>
-
-              <Graphic Name="Panel1" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
-                <Children>
-                  <Panel Layout="VerticalFlow" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#GeneralBehaviorConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#AutoEnterSingleFolderItemsConfig!cor:String]" Checked="[AutoEnterSingleDirs]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DefaultToFirstUnwatchedItemConfig!cor:String]" Checked="[DefaultToFirstUnwatched]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ConfirmExitConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[UseExitMenu]"  Font="font://f:CP_ConfigItemFont"/>
-                      <Panel Name="Weather" Layout="HorizontalFlow" Margins="[CMargin]">
-                        <Layout>
-                          <FlowLayout Orientation="Horizontal"/>
-                        </Layout>
-                        <Children>
-                          <te:TextEdit Label="[Application.LocalStrings.#WeatherLocationConfig!cor:String]" FocusItem="[FocusItem]" EditableText="[WeatherLocation]" MaximumSize="300,0" EditSize="120,34" Font="font://f:CP_ConfigItemFont" MaxChars="20" />
-                          <ss:SimpleSpinner Name="WeatherUnit" Label="[Application.LocalStrings.#WeatherUnitConfig!cor:String]" Margins="0,2,0,0" LabelMinSize="50,0" Model="[WeatherUnitModel]" ValueMinSize="20,35" ValueMaxSize="20,35" FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                        </Children>
-                      </Panel>
-
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" Margins="100,0,0,0" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#GeneralDisplayConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowClockConfig!cor:String]" Checked="[ShowClock]" Margins="[CMargin]"  FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#TreatWatchedAsInProgressConfig!cor:String]" Checked="[TreatWatchedAsInProgress]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Name="ScreenSaver" Label="[Application.LocalStrings.#EnableScreenSaverConfig!cor:String]" Checked="[EnableScreenSaver]" FocusItem="[FocusItem]"  Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#SSTimeOutConfig!cor:String]" Padding="40,0,0,0" Model="[SSTimeout]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#SlideShowIntervalConfig!cor:String]" Padding="0,10,0,0" Model="[SlideShowInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <me:TextHeader Text="[Application.LocalStrings.#LoginConfig!cor:String]" />
-                      <ss:SimpleSpinner Name="AutoLogin" Label="[Application.LocalStrings.#StartUpConfig!cor:String]"  Model="[StartUp]" ValueMinSize="230,35" ValueMaxSize="230,35" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <Text Name="LoginAsOther" Content="Configured to Login as"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" Color="color://s:FontColorMedium" Alpha=".6" Visible="false"/>
-                      <cb:CheckBox Name="SavePasswordCbx" Label="[Application.LocalStrings.#SavePasswordConfig!cor:String]" Checked="[SavePassword]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                    </Children>
-                  </Panel>
-                </Children>
-              </Graphic>
-
-
-              <Graphic Name="Panel2" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
-                <Children>
-                  <Panel Layout="VerticalFlow" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#TopLevelViewsConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Name="ShowMovieSubOption" Label="[Application.LocalStrings.#ShowMovieSubConfig!cor:String]" Checked="[ShowMovieSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Name="ShowTvSubOption" Label="[Application.LocalStrings.#ShowTvSubConfig!cor:String]" Checked="[ShowTvSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#IndicatorsConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#HideFocusFrameConfig!cor:String]" Checked="[HideFocusFrame]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowUnwatchedCountConfig!cor:String]" Checked="[ShowUnwatchedCount]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronFoldersConfig!cor:String]" Checked="[ShowWatchedTickOnFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#HighlightUnwatchedItemsConfig!cor:String]" Checked="[ShowUnwatchedIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatoronVideosConfig!cor:String]" Checked="[ShowWatchTickInPosterView]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#WatchedIndicatorinDetailViewConfig!cor:String]" Checked="[EnableListViewTicks]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowHDOverlayonPostersConfig!cor:String]" Checked="[ShowHDIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowIcononRemoteContentConfig!cor:String]" Checked="[ShowRemoteIndicatorOnPosters]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <!--<me:TextHeader Text="[Application.LocalStrings.#MultipleFileBehaviorConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#TreatMultipleFilesAsSingleMovieConfig!cor:String]" Checked="[EnableMoviePlaylists]"  FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner  Label="[Application.LocalStrings.#MultipleFileSizeLimitConfig!cor:String]" Model="[PlaylistLimit]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />-->
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" Margins="40,0,20,0"  >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#LibraryConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#SortYearsAscConfig!cor:String]" Checked="[YearSortAsc]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#CollapseBoxSetsConfig!cor:String]" Checked="[CollapseBoxSets]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <me:TextHeader Text="[Application.LocalStrings.#ThemeBackgroundsConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#EnableThemeBackgroundsConfig!cor:String]" Checked="[EnableThemeBackgrounds]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ThemeBackgroundRepeatConfig!cor:String]" Padding="0,10,0,0" Model="[ThemeBackgroundRepeat]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <cb:CheckBox Label="[Application.LocalStrings.#PlayTrailerAsBackgroundConfig!cor:String]" Checked="[PlayTrailerAsBackground]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" Visible="false" >
-                    <Children>
-                      <me:TextHeader Text="Extenders" />
-                      <cb:CheckBox Label="Transcode360" Checked="[EnableTranscode360]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <te:TextEdit LabelSize="[LabelSize1]" Label="Extender Native Types" EditableText="[ExtenderNativeTypes]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                      <me:TextHeader Text="ISO Playback, Daemon Tools" />
-                      <te:TextEdit LabelSize="[LabelSize1]" Label="Location" EditableText="[DaemonToolsLocation]" EditSize="150,0" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                      <te:TextEdit LabelSize="[LabelSize1]" Label="Drive" EditableText="[DaemonToolsDrive]" MaxChars="1" EditSize="50,0" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="Use Autoplay" Checked="[UseAutoPlayForIso]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                    </Children>
-                  </Panel>
-                </Children>
-              </Graphic>
-
-              <Graphic Name="Panel3" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
-                <Children>
-                  <Panel Layout="VerticalFlow" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#MBThemeConfig!cor:String]" />
-                      <st:SpinnerText Model="[ViewThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#VisualThemeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[Config.ViewTheme]" />
-                      <st:SpinnerText Model="[ThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#ColorSchemeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[ThemeInitial]" />
-                      <st:SpinnerText Model="[FontThemeModel]" FocusItem="[FocusItem]"  Label="[Application.LocalStrings.#FontSizeConfig!cor:String]" Color="color://s:FontColorMedium" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont" Margins="[CMargin]" DefaultString="[FontThemeModel.Chosen!cor:String]" />
-                      <me:TextLine Text="[Application.LocalStrings.#RequiresRestartConfig!cor:String]" />
-                      <me:TextHeader Text="[Application.LocalStrings.#ViewsConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#AutoScrollTextConfig!cor:String]" Checked="[AutoScrollText]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#PosterGridSpacingConfig!cor:String]" Model="[GridSpacing]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#ThumbWidthSplitConfig!cor:String]" Model="[ThumbStripPosterWidth]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#BreadcrumbCountConfig!cor:String]" Model="[BreadcrumbCount]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" >
-                    <Children>
-                  <me:TextHeader Text="[Application.LocalStrings.#BackdropSettingsConfig!cor:String]" />
-                  <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropRotationIntervalConfig!cor:String]" Model="[BackdropRotationInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                  <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropTransitionIntervalConfig!cor:String]" Model="[BackdropTransitionInterval]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                  <ss:SimpleSpinner  Label="[Application.LocalStrings.#BackdropLoadDelayConfig!cor:String]" Model="[BackdropLoadDelay]" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                  <cb:CheckBox Label="[Application.LocalStrings.#ShowFanArtonViewsConfig!cor:String]" Checked="[ShowBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                  <cb:CheckBox Padding="40,0,0,0" Label="[Application.LocalStrings.#RotateBackdropConfig!cor:String]" Checked="[RotateBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                  <cb:CheckBox Padding="40,0,0,0" Label="[Application.LocalStrings.#RandomizeBackdropConfig!cor:String]" Checked="[RandomizeBackdrop]" FocusItem="[FocusItem]" Margins="[CMargin]" Font="font://f:CP_ConfigItemFont"/>
-                  <cb:CheckBox Label="[Application.LocalStrings.#ShowInitialFolderBackgroundConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ShowRootBackground]"  Font="font://f:CP_ConfigItemFont"/>
-                  <cb:CheckBox Label="[Application.LocalStrings.#ShowThemeBackgroundConfig!cor:String]" Checked="[ShowThemeBackground]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                    </Children>
-                  </Panel>
-                </Children>
-              </Graphic>
-
-              <Graphic Name="Panel4" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow"
-                       MinimumSize="[PanelSize]" Padding="[SMargin]" Navigation="Group">
-                <Children>
-                  <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#PlayerConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DisableMcConflictingOperationsConfig!cor:String]" Checked="[DisableMcConflictingOperations]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationInPlayerConfig!cor:String]" Checked="[ShowNewItemNotificationInPlayer]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#ShowPauseIndicatorConfig!cor:String]" Checked="[ShowPauseIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#DisableCustomPlayerForDvdConfig!cor:String]" Checked="[DisableCustomPlayerForDvd]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <cb:CheckBox Label="[Application.LocalStrings.#EnableMouseHookConfig!cor:String]" Checked="[EnableMouseHook]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipBackSecondsConfig!cor:String]" Model="[DefaultSkipBackSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#InputActivityTimeoutConfig!cor:String]" Model="[InputActivityTimeout]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                    </Children>
-                  </Panel>
-                  <Panel Layout="VerticalFlow" Navigation="PreferFocusOrder" >
-                    <Children>
-                      <me:TextHeader Text="[Application.LocalStrings.#StreamingConfig!cor:String]" />
-                      <cb:CheckBox Label="[Application.LocalStrings.#WarnOnStreamConfig!cor:String]" Checked="[WarnOnStream]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#LocalMaxBitrateConfig!cor:String]" Model="[LocalMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                      <ss:SimpleSpinner Label="[Application.LocalStrings.#RemoteMaxBitrateConfig!cor:String]" Model="[RemoteMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
-                    </Children>
-                  </Panel>
-                </Children>
-              </Graphic>
-
-              <Graphic Name="Panel8" Visible="false" Content="image://me:50AlphaBg" Layout="Center" MinimumSize="500,200" MaximumSize="500,200" Padding="[SMargin]" Navigation="Column">
-                <Children>
-                  <Panel Layout="VerticalFlow" MinimumSize="400,200" MaximumSize="400,200">
-                    <Children>
-                      <Text Content="Can you see text below here?" Color="0,128,0"  WordWrap="true"/>
-                      <Text Content="If you can see this colorFilters work." Color="Red"  WordWrap="true"/>
-                    </Children>
-                  </Panel>
-                  <ColorFill Content="Red" ColorFilter="128,0,0" MinimumSize="400,200" MaximumSize="400,200"/>
-                </Children>
-              </Graphic>
-
-              <Graphic Name="Panel99" Visible="false" Content="image://me:50AlphaBg" Layout="HorizontalFlow" MinimumSize="[PanelSize]" Padding="[SMargin]">
-                <Children>
-                  <me:AddinPanel Name="AddinPanel" Application="[Application]" FocusItem="[FocusItem]" ConfigObject="[Application.CurrentConfigObject]"/>
-                </Children>
-              </Graphic>
-
-
-            </Children>
-          </Panel>
-
-          <!-- Initial Folder Backdrop -->
-          <bd:InitialFolderBackground Name="BG_InitialFolder" Application="[Application]"
-                                      Visible="[Application.Config.ShowRootBackground]"
-                                      >
-            <LayoutInput>
-              <FormLayoutInput Name="LI_Bg" Left="Parent,0,-50" Top="Parent,0,-20" Bottom="Parent,1,20" Right="Parent,1,50"/>
-            </LayoutInput>
-          </bd:InitialFolderBackground>
-
-
-          <Panel Name="MainBG" Layout="Fill" Margins="-50,-20,-150,-20" >
-            <Children>
-              <Clip FadeSize="360" Orientation="Vertical" FadeAmount="1" CenterPointPercent="0.5,0.5,0.5" FarOffset="50" NearOffset="50" >
-                <Children>
-                  <ColorFill Content="color://s:BackgroundColor1" Layout="Fill"/>
-                </Children>
-              </Clip>
-              <ColorFill Content="color://s:BackgroundColor2" Layout="Fill"/>
-            </Children>
-          </Panel>
-          <!--<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>-->
-
+          </Clip>
         </Children>
       </Panel>
 

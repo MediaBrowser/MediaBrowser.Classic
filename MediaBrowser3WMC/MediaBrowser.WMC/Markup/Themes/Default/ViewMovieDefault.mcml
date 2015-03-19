@@ -62,11 +62,12 @@
     </Rules>
 
     <Content>
-      <ColorFill Content="Transparent" Layout="Form">
+      <Clip Name="MainClip" Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
         <Children>
 
-          <Clip Layout="Form" Padding="[Application.Config.OverScanPadding]" Scale="[Application.Config.OverScanScaling]" CenterPointPercent="0.5,0.5,0.5">
+          <ColorFill Content="Transparent" Layout="Form">
             <Children>
+
 
               <!-- Gradiented movie title -->
               <Clip Name="Title" FadeSize="40" Orientation="Vertical" FadeAmount="0.7" NearOffset="-25" CenterPointPercent="-100,-100,0">
@@ -185,11 +186,10 @@
               <!--<Graphic Name="MainBG" Content="image://i:Background" Margins="-50,-20,-150,-20" Layout="Fill"/>-->
 
             </Children>
-          </Clip>
 
+          </ColorFill>
         </Children>
-      </ColorFill>
-
+      </Clip>
     </Content>
 
   </UI>
@@ -267,62 +267,62 @@
       <Condition Source="[Input.KeyFocus]" SourceValue="true" Target="[ImagePanel.Content]" Value="image://me:ButtonLeftFocus"/>
     </Rules>
     <Content>
-      <!-- Cast (Actors) -->
-      <Panel Name="MovieActors" Layout="Dock">
-        <Children>
-          <Graphic Content="image://i:BlankImage" Name="ImagePanel" MouseInteractive="true" Layout="Form" Padding="10,20,10,20" Margins="0,-4,0,0">
-            <LayoutInput>
-              <DockLayoutInput Position="Client"/>
-            </LayoutInput>
+          <!-- Cast (Actors) -->
+          <Panel Name="MovieActors" Layout="Dock">
             <Children>
-              <Scroller Name="ActorScroller" Orientation="Vertical" FadeSize="-5" Navigation="ContainVertical" ScrollingData="[ScrollingData]">
+              <Graphic Content="image://i:BlankImage" Name="ImagePanel" MouseInteractive="true" Layout="Form" Padding="10,20,10,20" Margins="0,-4,0,0">
                 <LayoutInput>
-                  <AnchorLayoutInput Horizontal="Fill" Vertical="Near"/>
+                  <DockLayoutInput Position="Client"/>
                 </LayoutInput>
                 <Children>
-                  <Repeater Name="ListRepeater" Source="[Item.Actors]">
-                    <Layout>
-                      <FlowLayout Orientation="Vertical"  />
-                    </Layout>
-                    <Content>
-                      <me:Actor wrapper="[RepeatedItem!lib:ActorItemWrapper]" Font="font://f:MD_ActorFont"/>
-                    </Content>
-                  </Repeater>
+                  <Scroller Name="ActorScroller" Orientation="Vertical" FadeSize="-5" Navigation="ContainVertical" ScrollingData="[ScrollingData]">
+                    <LayoutInput>
+                      <AnchorLayoutInput Horizontal="Fill" Vertical="Near"/>
+                    </LayoutInput>
+                    <Children>
+                      <Repeater Name="ListRepeater" Source="[Item.Actors]">
+                        <Layout>
+                          <FlowLayout Orientation="Vertical"  />
+                        </Layout>
+                        <Content>
+                          <me:Actor wrapper="[RepeatedItem!lib:ActorItemWrapper]" Font="font://f:MD_ActorFont"/>
+                        </Content>
+                      </Repeater>
+                    </Children>
+                    <Animations>
+                      <TransformAnimation Delay="0.8">
+                        <Source>
+                          <Animation Animation="animation://an:SlideRightFade" />
+                        </Source>
+                      </TransformAnimation>
+                    </Animations>
+                  </Scroller>
                 </Children>
-                <Animations>
-                  <TransformAnimation Delay="0.8">
-                    <Source>
-                      <Animation Animation="animation://an:SlideRightFade" />
-                    </Source>
-                  </TransformAnimation>
-                </Animations>
-              </Scroller>
-            </Children>
-          </Graphic>
+              </Graphic>
 
-          <!-- The pagination display at the bottom of the scroller-->
-          <Panel Name="ScrollInfo" Visible="true">
-            <LayoutInput>
-              <DockLayoutInput Position="Bottom" Alignment="Far"/>
-            </LayoutInput>
-            <Children>
-              <Panel Layout="HorizontalFlow" Margins="0,5,0,0">
+              <!-- The pagination display at the bottom of the scroller-->
+              <Panel Name="ScrollInfo" Visible="true">
+                <LayoutInput>
+                  <DockLayoutInput Position="Bottom" Alignment="Far"/>
+                </LayoutInput>
                 <Children>
-                  <Text Content="˄" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
-                  <Text Content="˅" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
-                  <Text Name="CurrentPage" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
-                  <Text Content="|" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
-                  <Text Name="TotalPages"  Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                  <Panel Layout="HorizontalFlow" Margins="0,5,0,0">
+                    <Children>
+                      <Text Content="˄" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                      <Text Content="˅" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                      <Text Name="CurrentPage" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                      <Text Content="|" Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                      <Text Name="TotalPages"  Font="font://f:MD_ActorFont" Color="color://s:FontColorMedium" />
+                    </Children>
+                  </Panel>
+
                 </Children>
               </Panel>
 
+
+
             </Children>
-          </Panel>
-
-
-
-        </Children>
-        <!--
+            <!--
               <Animations>
                   <TransformAnimation Delay="0.7">
                       <Source>
@@ -331,7 +331,7 @@
                   </TransformAnimation>
               </Animations>
 			  -->
-      </Panel>
+          </Panel>
     </Content>
   </UI>
   <!--Actor-->

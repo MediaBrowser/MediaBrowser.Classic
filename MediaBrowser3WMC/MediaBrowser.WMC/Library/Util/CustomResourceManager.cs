@@ -89,7 +89,7 @@ namespace MediaBrowser.Library.Util
                     Logger.ReportInfo("Using custom styles mcml");
                     if (!VerifyXmlResource(custom, Resources.StylesDefault))
                     {
-                        host.MediaCenterEnvironment.Dialog(string.Format(Application.CurrentInstance.StringData("StyleMissingDial"), CUSTOM_STYLE_FILE), CUSTOM_STYLE_FILE, DialogButtons.Ok, 100, true);
+                        Application.AddInHost.MediaCenterEnvironment.Dialog(string.Format(Application.CurrentInstance.StringData("StyleMissingDial"), CUSTOM_STYLE_FILE), CUSTOM_STYLE_FILE, DialogButtons.Ok, 100, true);
                     }
                     File.Copy(custom, file);
                 }

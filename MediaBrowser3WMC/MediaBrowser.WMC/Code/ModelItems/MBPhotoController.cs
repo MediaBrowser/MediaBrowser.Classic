@@ -82,7 +82,7 @@ namespace MediaBrowser
                     {
                         audioPlaying = false;
                         Logger.ReportVerbose("***** Playing audio background: " + audioFile);
-                        if (!Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.PlayMedia(Microsoft.MediaCenter.MediaType.Audio, audioFile, false))
+                        if (!Application.MediaCenterEnvironment.PlayMedia(Microsoft.MediaCenter.MediaType.Audio, audioFile, false))
                         {
                             Logger.ReportWarning("PlayMedia returned false");
                         }
@@ -122,7 +122,7 @@ namespace MediaBrowser
             {
                 try
                 {
-                    Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = 0;
+                    Application.MediaExperience.Transport.PlayRate = 0;
                 }
                 catch (Exception e)
                 {

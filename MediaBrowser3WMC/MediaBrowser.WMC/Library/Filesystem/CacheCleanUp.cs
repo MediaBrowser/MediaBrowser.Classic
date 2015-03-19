@@ -7,6 +7,7 @@ using MediaBrowser.Library.Logging;
 
 namespace MediaBrowser.Library.Filesystem
 {
+    [Obsolete]
     public static class CacheCleanUp
     {
         /// <summary>

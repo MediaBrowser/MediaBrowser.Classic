@@ -61,7 +61,7 @@ namespace Configurator
             } 
             catch (Exception ex)
             {
-                Async.Queue("error", () =>
+                Async.Queue(Async.ThreadPoolName.Error, () =>
                                          {
                                              MessageBox.Show("We encountered a critical error and will need to shut down.\n\n  It is possible we cannot contact your MB Server or the internet.\n\n" +
                                                              " If the problem persists, please post the following on http://mediabrowser3.com/community \n\n" + ex, "Critical Error", MessageBoxButton.OK);
@@ -144,7 +144,7 @@ namespace Configurator
             this.Visibility = Visibility.Hidden;
             waitWin = new PermissionDialog();
             waitWin.Show();
-            Async.Queue("Set Directory Permissions", 
+            Async.Queue(Async.ThreadPoolName.SetDirectoryPermissions, 
                 () => SetDirectoryAccess(folder, account, fsRights, AccessControlType.Allow), 
                 () => this.Dispatcher.Invoke(new DoneProcess(PermissionsDone)));
         }

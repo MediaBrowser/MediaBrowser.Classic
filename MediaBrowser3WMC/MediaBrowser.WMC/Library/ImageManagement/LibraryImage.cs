@@ -74,17 +74,61 @@ namespace MediaBrowser.Library.ImageManagement {
         }
 
         bool loaded = false;
-        private void EnsureLoaded() {
+
+        
+
+        private string EnsureImageCached(int width, int height)
+        {
+            EnsureImageCached();
+            string cachedPath = ImageCache.Instance.GetImagePath(Path, width, height);
+            if (cachedPath == null)
+                return ResizeImage(width, height);
+            else
+                return cachedPath;
+
+        }
+
+        private string ResizeImage(int width, int height)
+        {
+            string sourcePath = ImageCache.Instance.GetImagePath(Path);
+            
+            using (System.Drawing.Bitmap bmp = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(sourcePath))
+            {
+                double xscale = (double)width / bmp.Width;
+                double yscale = (double)height / bmp.Height;
+                double scale = Math.Min(xscale, yscale);
+                using (System.Drawing.Bitmap newBmp = new System.Drawing.Bitmap((int)(bmp.Width * scale), (int)(bmp.Height * scale)))
+                using (System.Drawing.Graphics graphic = System.Drawing.Graphics.FromImage(newBmp))
+                {
+
+                    graphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    graphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    graphic.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                    graphic.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                    graphic.DrawImage(bmp, 0, 0, (int)(bmp.Width * scale), (int)(bmp.Height * scale));
+
+                    return ImageCache.Instance.CacheImage(Path, newBmp, width, height);
+                }
+            }
+        }
+
+        private void EnsureImageCached()
+        {
             if (loaded) return;
-            lock (Lock) {
-                try {
-                    if (!loaded) {
+            lock (Lock)
+            {
+                try
+                {
+                    if (!loaded)
+                    {
                         var cached = !ReAcquireOnStart && !AcquiredOnce ? ImageCache.Instance.GetImagePath(Path) : null;
                         if (cached == null)
                         {
                             AcquiredOnce = true;
                             var image = OriginalImage;
-                            if (image == null) {
+                            if (image == null)
+                            {
                                 Corrupt = true;
                                 //if (Debugger.IsAttached) Debugger.Break();
                                 return;
@@ -92,8 +136,28 @@ namespace MediaBrowser.Library.ImageManagement {
                             _width = image.Width;
                             _height = image.Height;
                             ImageCache.Instance.CacheImage(Path, image);
+                            loaded = true;
                         }
-                        else
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Failed to deal with image: " + Path, e);
+                    Corrupt = true;
+                    loaded = true;
+                }
+            }
+        }
+
+        private void EnsureLoaded() {
+            if (loaded) return;
+            lock (Lock) {
+                try {
+                    if (!loaded) 
+                    {
+                        EnsureImageCached();
+                        var cached = !ReAcquireOnStart && !AcquiredOnce ? ImageCache.Instance.GetImagePath(Path) : null;
+                        if ((!loaded)  && cached!=null)
                         {
                             //Logger.ReportVerbose("=================== Image {0} obtained from local cache.", Path);
                             
@@ -134,17 +198,24 @@ namespace MediaBrowser.Library.ImageManagement {
         /// </summary>
         /// <returns></returns>
         public string GetLocalImagePath() {
-            EnsureLoaded();
+            EnsureImageCached();
             var path = ImageCache.Instance.GetImagePath(Path);
             if (String.IsNullOrEmpty(path)) this.Corrupt = true;
             return path;
         }
 
-        public string GetLocalImagePath(int width, int height) {
-            EnsureLoaded();
-            var path = ImageCache.Instance.GetImagePath(Path);
-            if (String.IsNullOrEmpty(path)) this.Corrupt = true;
-            return path;
+        public string GetLocalImagePath(int width, int height) 
+        {
+            if (Config.Instance.UseResizedImages)
+            {
+                var path = EnsureImageCached(width, height);
+                if (String.IsNullOrEmpty(path)) this.Corrupt = true;
+                return path;
+            }
+            else
+            {
+                return GetLocalImagePath();
+            }
         }
 
 
@@ -171,7 +242,7 @@ namespace MediaBrowser.Library.ImageManagement {
         }
 
 
-        /// <summary>
+       /// <summary>
         /// Will return true if the image is cached locally. 
         /// </summary>
         public bool IsCached {

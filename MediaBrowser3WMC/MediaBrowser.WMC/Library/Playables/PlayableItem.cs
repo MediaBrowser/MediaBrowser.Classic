@@ -150,7 +150,7 @@ namespace MediaBrowser.Library.Playables
             // Fire finished event
             if (_PlaybackFinished != null)
             {
-                Async.Queue("PlayableItem PlaybackFinished", () =>
+                Async.Queue(Async.ThreadPoolName.PlayableItemPlaybackFinished, () =>
                 {
                     _PlaybackFinished(this, new GenericEventArgs<PlayableItem>() { Item = this });
                 }); 
@@ -599,11 +599,17 @@ namespace MediaBrowser.Library.Playables
 
         internal void Play()
         {
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+            {
+                Application.UIDeferredInvokeIfRequired(()=> Play());
+                return;
+            }
+            System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             Prepare();
 
             if (!MediaItems.Any() && !Files.Any())
             {
-                Microsoft.MediaCenter.MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
+                Microsoft.MediaCenter.MediaCenterEnvironment ev = Application.MediaCenterEnvironment;
                 ev.Dialog(Application.CurrentInstance.StringData("NoContentDial"), Application.CurrentInstance.StringData("Playstr"), Microsoft.MediaCenter.DialogButtons.Ok, 500, true);
                 return;
             }
@@ -689,7 +695,7 @@ namespace MediaBrowser.Library.Playables
 
                         if (rate > 0 && !DisplayUtil.ChangeRefreshRate(rate))
                         {
-                            Async.Queue("refresh rate error", () => Application.CurrentInstance.MessageBox("Could not change refresh rate to " + rate));
+                            Async.Queue(Async.ThreadPoolName.RefreshRateError, () => Application.CurrentInstance.MessageBox("Could not change refresh rate to " + rate));
                         }
                         //test
                         Logger.ReportInfo("***************** refresh rate reported as: {0}", DisplayUtil.GetCurrentRefreshRate());

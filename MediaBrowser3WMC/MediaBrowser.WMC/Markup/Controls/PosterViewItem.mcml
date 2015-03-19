@@ -6,6 +6,7 @@
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
       xmlns:pp="resx://MediaBrowser/MediaBrowser.Resources/PopupPlay"
       xmlns:ib="resx://MediaBrowser/MediaBrowser.Resources/ItemButton"
+      xmlns:an="resx://MediaBrowser/MediaBrowser.Resources/Animations"
       xmlns:me="Me"
 	  >
 
@@ -53,6 +54,18 @@
           <BooleanTransformer Inverse="true"/>
         </Transformer>
       </Binding>
+
+      <Condition Source="[Clicker.Clicking]" SourceValue="true" >
+        <Actions>
+          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPressDown"/>
+        </Actions>
+      </Condition>
+      <Condition Source="[Clicker.Clicking]" SourceValue="false" >
+        <Actions>
+          <PlayAnimation Target="[MainPanel]" Animation="animation://an:ButtonPressUp"/>
+        </Actions>
+      </Condition>
+      
       <Changed Source="[ImageSize]" InitialEvaluate="true" >
         <Actions>
           <Set Target="[GlowSize.Height]" Value="[Item.PreferredImageSmallSize.Height]" >
@@ -139,7 +152,7 @@
 				</Actions>
 			</Condition>
 
-      <Changed Source="[Item.PreferredImage]">
+      <Changed Source="[Item.PreferredImageSmall]">
         <Conditions>
           <Equality  Source="[InFocus.Value]" Value="true"/>
         </Conditions>
@@ -149,7 +162,7 @@
               <BooleanTransformer Inverse="true"/>
             </Transformer>
           </Set>-->
-          <Set Target="[BoxArt.Content]" Value="[Item.PreferredImage]"/>
+          <Set Target="[BoxArt.Content]" Value="[Item.PreferredImageSmall]"/>
         </Actions>
 
       </Changed>
