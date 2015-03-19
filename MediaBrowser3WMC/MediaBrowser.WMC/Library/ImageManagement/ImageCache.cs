@@ -37,9 +37,26 @@ namespace MediaBrowser.Library.ImageManagement {
             return File.Exists(fn) ? fn : null;
         }
 
+        public string GetImagePath(string id, int width, int height)
+        {
+            var fn = Cache.GetCacheFileName(id, width, height);
+            return File.Exists(fn) ? fn : null;
+        }
+
         public string CacheImage(string id, Image image)
         {
             var fn = Cache.GetCacheFileName(id);
+            return SaveImage(image, fn);
+        }
+
+        public string CacheImage(string id, Image image, int width, int height)
+        {
+            string fn = Cache.GetCacheFileName(id, width, height);
+            return SaveImage(image, fn);
+        }
+
+        private static string SaveImage(Image image, string fn)
+        {
             try
             {
 
@@ -48,7 +65,7 @@ namespace MediaBrowser.Library.ImageManagement {
                     image.Save(fs, image.RawFormat.Equals(ImageFormat.MemoryBmp) ? ImageFormat.Png : image.RawFormat);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.ReportException("Error saving cache image {0}", e, fn);
                 return null;
@@ -57,7 +74,7 @@ namespace MediaBrowser.Library.ImageManagement {
             return fn;
         }
 
-        public DateTime GetDate(string id) {
+                public DateTime GetDate(string id) {
             return Cache.LastModified(id);
         }
 
@@ -72,6 +89,6 @@ namespace MediaBrowser.Library.ImageManagement {
                 Logger.ReportException("Error clearing cache file {0}", e, filename);
             }
         }
-
+        
     }
 }

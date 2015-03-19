@@ -69,5 +69,14 @@ namespace MediaBrowser.Library.Filesystem
             }
         }
 
+
+        internal string GetCacheFileName(string id, int width, int height)
+        {
+            string name = GetCacheFileName(id);
+            if (name != null)
+                return name + string.Format("_{0}x{1}", width, height);
+            else
+                return null;
+        }
     }
 }

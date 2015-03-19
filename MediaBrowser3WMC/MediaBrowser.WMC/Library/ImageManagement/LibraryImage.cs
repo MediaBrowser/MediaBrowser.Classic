@@ -75,27 +75,24 @@ namespace MediaBrowser.Library.ImageManagement {
 
         bool loaded = false;
 
-        private string GetPathWithSizeInfo(int width, int height)
-        {
-            return Path + string.Format("[CacheSize{0}x{1}]", width, height);
-        }
+        
 
         private string EnsureImageCached(int width, int height)
         {
             EnsureImageCached();
-            string newPath = GetPathWithSizeInfo(width, height);
-            string cachedPath = ImageCache.Instance.GetImagePath(newPath);
+            string cachedPath = ImageCache.Instance.GetImagePath(Path, width, height);
             if (cachedPath == null)
-                return ResizeImage(ImageCache.Instance.GetImagePath(Path), width, height, newPath);
+                return ResizeImage(width, height);
             else
                 return cachedPath;
 
         }
 
-        private string ResizeImage(string path, int width, int height, string newPathId)
+        private string ResizeImage(int width, int height)
         {
-
-            using (System.Drawing.Bitmap bmp = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(path))
+            string sourcePath = ImageCache.Instance.GetImagePath(Path);
+            
+            using (System.Drawing.Bitmap bmp = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(sourcePath))
             {
                 double xscale = (double)width / bmp.Width;
                 double yscale = (double)height / bmp.Height;
@@ -111,11 +108,9 @@ namespace MediaBrowser.Library.ImageManagement {
 
                     graphic.DrawImage(bmp, 0, 0, (int)(bmp.Width * scale), (int)(bmp.Height * scale));
 
-                    return ImageCache.Instance.CacheImage(newPathId, newBmp);
+                    return ImageCache.Instance.CacheImage(Path, newBmp, width, height);
                 }
             }
-
-
         }
 
         private void EnsureImageCached()
@@ -209,10 +204,18 @@ namespace MediaBrowser.Library.ImageManagement {
             return path;
         }
 
-        public string GetLocalImagePath(int width, int height) {
-            var path = EnsureImageCached(width, height);
-            if (String.IsNullOrEmpty(path)) this.Corrupt = true;
-            return path;
+        public string GetLocalImagePath(int width, int height) 
+        {
+            if (Application.RunningOnExtender)
+            {
+                var path = EnsureImageCached(width, height);
+                if (String.IsNullOrEmpty(path)) this.Corrupt = true;
+                return path;
+            }
+            else
+            {
+                return GetLocalImagePath();
+            }
         }
 
 
