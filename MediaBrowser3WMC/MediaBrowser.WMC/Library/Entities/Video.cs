@@ -59,6 +59,7 @@ namespace MediaBrowser.Library.Entities {
         public virtual IEnumerable<string> VideoFiles {
             get
             {
+                
                 if (LocationType == LocationType.FileSystem && Path != null && (Path == System.IO.Path.GetPathRoot(Path) || Directory.Exists(System.IO.Path.GetDirectoryName(Path ?? "") ?? "")))
                 {
                     yield return Path;

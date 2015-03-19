@@ -46,7 +46,7 @@ namespace Configurator
 
         private void FakeProgress(System.Windows.Controls.ProgressBar progress, Window window)
         {
-            Async.Queue("Fake progress for download", () =>
+            Async.Queue(Async.ThreadPoolName.FakeProgressForDownload, () =>
             {
                 int i = 0;
                 while (!done.WaitOne(500, false))

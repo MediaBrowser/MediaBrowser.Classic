@@ -108,7 +108,7 @@ namespace MediaBrowser.Code.ModelItems
                 //stop anything currently playing
                 PlaybackControllerHelper.Stop();
 
-                var mce = AddInHost.Current.MediaCenterEnvironment;
+                var mce = Application.MediaCenterEnvironment;
                 mce.PropertyChanged += EnvironmentPropertyChange;
 
                 if (mce.PlayMedia(MediaType.MediaCollection, coll, false))

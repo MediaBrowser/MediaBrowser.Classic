@@ -68,12 +68,9 @@ namespace MediaBrowser.Code.ModelItems {
             });
         }
 
-        void RunInUIThread(Action action) {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread) {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => action());
-            } else {
-                action();
-            }
+        void RunInUIThread(Action action) 
+        {
+            Application.UIDeferredInvokeIfRequired(() => action());
         }
 
 

@@ -401,13 +401,13 @@ namespace MediaBrowser.Library.Entities {
                     if (UserData.IsFavorite != value)
                     {
                         UserData.IsFavorite = value;
-                        Async.Queue("update fav", () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
+                        Async.Queue(Async.ThreadPoolName.UpdateFav, () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
                     }
                 }
                 else
                 {
                     UserData = new UserItemDataDto {IsFavorite = value};
-                    Async.Queue("update fav", () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
+                    Async.Queue(Async.ThreadPoolName.UpdateFav, () => Kernel.ApiClient.UpdateFavoriteStatus(ApiId, Kernel.CurrentUser.Id, value));
                 }
 
             }

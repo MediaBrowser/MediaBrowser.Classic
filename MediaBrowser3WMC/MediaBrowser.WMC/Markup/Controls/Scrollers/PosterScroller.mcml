@@ -45,12 +45,13 @@
 			<ShortcutHandler Name="JumpBack" Shortcut="SkipBack" HandlerStage="Bubbled" Handle="true"/>
 			<IntRangedValue Name="NavCount" Value="0" />
 
-			<cor:Int32 Name="NormalKeyRepeat" Int32="150"/>
+			<cor:Int32 Name="NormalKeyRepeat" Int32="100"/>
 			<!-- This must be less than anim delay -->
 
 			<cor:Int32 Name="FastKeyRepeat" Int32="75"/>
 
-			<cor:Int32 Name="AnimDelay" Int32="200" />
+      <!-- this needs to be at least 300 when working on xbox extenders -->
+			<cor:Int32 Name="AnimDelay" Int32="300" />
 			<!-- This must be greater than NormalKeyRepeat-->
 
 			<cor:Int32 Name="SpeedUpDelay" Int32="7"/>

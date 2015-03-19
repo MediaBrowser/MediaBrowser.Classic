@@ -18,7 +18,7 @@ namespace MediaBrowser.Library
         public static void Display(Bitmap bgImage)
         {
             var us = new ExternalSplashForm();
-            Async.Queue("Ext Splash Show", () =>
+            Async.Queue(Async.ThreadPoolName.ExtSplashShow, () =>
             {
                 Logger.ReportVerbose("Displaying Splash Screen");
                 us.Show(bgImage);

@@ -140,21 +140,20 @@ namespace MediaBrowser.Code.ModelItems {
 
         private void FetchImage() {
             bool sizeIsSet = Size != null && Size.Height > 0 && Size.Width > 0;
-            localPath = localImage.GetLocalImagePath();
-            if (sizeIsSet) {
+            
+            if (sizeIsSet) 
                 localPath = localImage.GetLocalImagePath(Size.Width, Size.Height);
-            }
+            else
+                localPath = localImage.GetLocalImagePath();
 
             if (localImage.Corrupt) {
                 Logger.ReportWarning("Image " + localPath + " is Corrupt.");
                 doneProcessing = true;
                 IsLoaded = true;
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-                {
-                    if (afterLoad != null) {
-                        afterLoad();
-                    }
-                });
+                if (afterLoad != null) {
+                    afterLoad();
+                }
+                
                 return;
             }
 
@@ -163,29 +162,27 @@ namespace MediaBrowser.Code.ModelItems {
             Image newImage = null;
 
 
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>
-            {
+            
+            if (newImage == null) {
+                //Logger.ReportVerbose("Loading image : " + localPath);
+                string imageRef = "file://" + localPath;
+                newImage = new Image(imageRef);
+            }
 
-                if (newImage == null) {
-                    //Logger.ReportVerbose("Loading image : " + localPath);
-                    string imageRef = "file://" + localPath;
-                    newImage = new Image(imageRef);
+            lock (this) {
+                image = newImage;
+                if (!sizeIsSet) {
+                    size = new Size(localImage.Width, localImage.Height);
                 }
+                doneProcessing = true;
+            }
 
-                lock (this) {
-                    image = newImage;
-                    if (!sizeIsSet) {
-                        size = new Size(localImage.Width, localImage.Height);
-                    }
-                    doneProcessing = true;
-                }
+            IsLoaded = true;
 
-                IsLoaded = true;
-
-                if (afterLoad != null) {
-                    afterLoad();
-                }
-            });
+            if (afterLoad != null) {
+                afterLoad();
+            }
+            
         }
 
     }

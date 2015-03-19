@@ -57,7 +57,7 @@ namespace MediaBrowser.Library.Filesystem
 
             this.fileSystemWatchers = new List<FileSystemWatcher>();
             InitFileSystemWatcher(this.watchedFolders, watchChanges);
-            Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => { InitTimers(); }); //timers only on app thread
+            Application.UIDeferredInvokeIfRequired(() =>  InitTimers()); //timers only on app thread
         }
 
         ~MBDirectoryWatcher()
@@ -217,7 +217,7 @@ namespace MediaBrowser.Library.Filesystem
             //if ((Application.CurrentInstance.CurrentFolder.Name == folder.Name || Application.CurrentInstance.CurrentItem.Name == folder.Name) &&
             //    lastChangedDirectory != lastRefreshedDirectory)
             {
-                Async.Queue("File Watcher Refresher", () =>
+                Async.Queue(Async.ThreadPoolName.FileWatcherRefresher, () =>
                 {
                     Logger.ReportInfo("Refreshing " + Application.CurrentInstance.CurrentFolder.Name + " due to change in " + folder.Name);
                     Logger.ReportInfo("  Directory changed was: " + lastChangedDirectory);
