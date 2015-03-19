@@ -26,7 +26,8 @@ namespace MediaBrowser.Library.ImageManagement {
 
         public string Path { get; protected set; }
 
-        public ImageCache(string path) {
+        public ImageCache(string path) 
+        {
             Path = path;
             Cache = new FileSystemCache(path);
         }
@@ -34,13 +35,28 @@ namespace MediaBrowser.Library.ImageManagement {
         public string GetImagePath(string id)
         {
             var fn = Cache.GetCacheFileName(id);
-            return File.Exists(fn) ? fn : null;
+            return CheckExistsAndTouch(fn);
         }
 
         public string GetImagePath(string id, int width, int height)
         {
             var fn = Cache.GetCacheFileName(id, width, height);
-            return File.Exists(fn) ? fn : null;
+            return CheckExistsAndTouch(fn);
+        }
+
+        private static string CheckExistsAndTouch(string fn)
+        {
+            if (File.Exists(fn))
+            {
+                try
+                {
+                    File.SetLastWriteTimeUtc(fn, DateTime.UtcNow);
+                }
+                catch (IOException) { } // occurs when we have just fetched the image on one thread and are accessing it on another
+                return fn;
+            }
+            else
+                return null;
         }
 
         public string CacheImage(string id, Image image)
@@ -74,19 +90,27 @@ namespace MediaBrowser.Library.ImageManagement {
             return fn;
         }
 
-                public DateTime GetDate(string id) {
+        [Obsolete("Not used by core, last modified is now updated to track usage")]
+        public DateTime GetDate(string id) 
+        {
             return Cache.LastModified(id);
         }
 
-        public void ClearCache(string id) {
+        public void ClearCache(string id) 
+        {
             var filename = GetImagePath(id);
-            try
+            string path = System.IO.Path.GetDirectoryName(filename);
+            string file = System.IO.Path.GetFileName(filename);
+            foreach (string fn in Directory.GetFiles(path, file + "*"))
             {
-                File.Delete(filename);
-            }
-            catch (Exception e)
-            {
-                Logger.ReportException("Error clearing cache file {0}", e, filename);
+                try
+                {
+                    File.Delete(fn);
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Error clearing cache file {0}", e, filename);
+                }
             }
         }
         
