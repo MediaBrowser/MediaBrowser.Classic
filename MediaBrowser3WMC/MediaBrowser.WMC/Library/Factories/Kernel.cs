@@ -547,13 +547,8 @@ namespace MediaBrowser.Library {
                     config.Save();
                 });
 
-                Async.Queue(Async.ThreadPoolName.ImageCacheCleanup, () =>
-                                             {
-                                                 foreach (var directory in Directory.GetDirectories(ApplicationPaths.AppImagePath))
-                                                 {
-                                                     CacheCleanUp.DeleteCacheFilesFromDirectory(directory, DateTime.UtcNow.AddDays(-(Instance.CommonConfigData.CacheFileRetentionDays)));
-                                                 }
-                                             });
+                Async.Queue(Async.ThreadPoolName.ImageCacheCleanup, () => ImageCache.Instance.Clean(DateTime.UtcNow.AddDays(-(Instance.CommonConfigData.CacheFileRetentionDays))));
+                
             }
 
             return kernel;

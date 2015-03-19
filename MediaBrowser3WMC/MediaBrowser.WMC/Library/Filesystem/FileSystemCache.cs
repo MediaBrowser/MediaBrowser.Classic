@@ -33,8 +33,6 @@ namespace MediaBrowser.Library.Filesystem
                     var prefixPath = Path.Combine(BasePath, prefix.ToString(CultureInfo.InvariantCulture));
                     if (!Directory.Exists(prefixPath)) Directory.CreateDirectory(prefixPath);
                 }
-                // once a day cache clean to remove all images not used within the last 30 days, delay on startup for 5 minutes
-                cleanupTimer = new Timer(new TimerCallback((object o)=>this.Clean(DateTime.UtcNow.AddDays(-30))),null,new TimeSpan(0,5,0), new TimeSpan(1,0,0,0));
             }
             catch (Exception e)
             {
@@ -88,8 +86,9 @@ namespace MediaBrowser.Library.Filesystem
         {
             try
             {
-                Logger.ReportInfo("Cleaning cache to UTC time: " + utcCutOff.ToString("HH:mm dd-MMM-yy"));
-                CleanFolder(this.BasePath, utcCutOff);
+                Logger.ReportInfo("Cleaning image cache to UTC time: " + utcCutOff.ToString("HH:mm dd-MMM-yy"));
+                foreach (string folder in Directory.GetDirectories(this.BasePath))
+                    CleanFolder(folder, utcCutOff);
             }
             catch (Exception e)
             {
@@ -99,8 +98,7 @@ namespace MediaBrowser.Library.Filesystem
 
         private void CleanFolder(string path, DateTime utcCutOff)
         {
-            foreach (string folder in Directory.GetDirectories(path))
-                CleanFolder(folder, utcCutOff);
+            
             foreach (string file in Directory.GetFiles(path))
             {
                 try

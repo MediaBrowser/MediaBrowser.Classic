@@ -101,6 +101,7 @@ namespace MediaBrowser.Library.ImageManagement {
             var filename = GetImagePath(id);
             string path = System.IO.Path.GetDirectoryName(filename);
             string file = System.IO.Path.GetFileName(filename);
+            // ensure we capture any resized versions as well
             foreach (string fn in Directory.GetFiles(path, file + "*"))
             {
                 try
@@ -112,6 +113,11 @@ namespace MediaBrowser.Library.ImageManagement {
                     Logger.ReportException("Error clearing cache file {0}", e, filename);
                 }
             }
+        }
+
+        public void Clean(DateTime utcCutOff)
+        {
+            this.Cache.Clean(utcCutOff);
         }
         
     }
