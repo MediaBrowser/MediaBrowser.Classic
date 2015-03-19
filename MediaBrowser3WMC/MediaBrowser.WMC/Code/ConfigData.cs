@@ -373,6 +373,7 @@ namespace MediaBrowser
         [Comment("Hide empty folders (and series and seasons)")]
         public bool HideEmptyFolders = false;
 
+        public bool UseResizedImages = Application.RunningOnExtender;
 
         // for our reset routine
         public ConfigData ()

@@ -1119,6 +1119,12 @@ namespace MediaBrowser
             }
         }
 
+        public bool UseResizedImages
+        {
+            get { return this.Data.UseResizedImages; }
+            set { if (this.Data.UseResizedImages != value) { this.Data.UseResizedImages = value; Save(); FireConfigPropertyChanged("UseResizedImages"); } }
+        }
+
         /* End of app specific settings*/
 
         private string[] _SortRemoveCharactersArray;

@@ -206,7 +206,7 @@ namespace MediaBrowser.Library.ImageManagement {
 
         public string GetLocalImagePath(int width, int height) 
         {
-            if (Application.RunningOnExtender)
+            if (Config.Instance.UseResizedImages)
             {
                 var path = EnsureImageCached(width, height);
                 if (String.IsNullOrEmpty(path)) this.Corrupt = true;
