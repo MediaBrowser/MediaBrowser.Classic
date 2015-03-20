@@ -140,7 +140,7 @@ namespace MediaBrowser.ApiInteraction
             get
             {
                 return ServerHostName.StartsWith("192.168") || ServerHostName.StartsWith("127.0")
-                       || ServerHostName.StartsWith("172.16") || ServerHostName.StartsWith("10.0")
+                       || ServerHostName.StartsWith("172.16") || ServerHostName.StartsWith("10.")
                        || ServerHostName.StartsWith("169.254") || !ServerHostName.Contains('.');
 
             }
