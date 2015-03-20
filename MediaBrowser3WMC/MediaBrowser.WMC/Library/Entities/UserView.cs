@@ -14,7 +14,7 @@ namespace MediaBrowser.Library.Entities
     {
         protected override bool ForceIbn
         {
-            get { return true; }
+            get { return Parent != Kernel.Instance.RootFolder; }
         }
 
         protected override bool HideEmptyFolders
