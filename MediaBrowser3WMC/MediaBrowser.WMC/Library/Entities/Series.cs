@@ -178,12 +178,6 @@ namespace MediaBrowser.Library.Entities {
                     CanDelete = temp.CanDelete;
                 }
 
-                // and themes if enabled
-                if (Config.Instance.EnableThemeBackgrounds)
-                {
-                    LoadThemes();
-                }
-
                 FullDetailsLoaded = true;
             }
         }

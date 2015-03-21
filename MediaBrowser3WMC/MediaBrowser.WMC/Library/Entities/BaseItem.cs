@@ -413,14 +413,16 @@ namespace MediaBrowser.Library.Entities {
             }
         }
 
+        private string _themeId;
+        public string ThemeId {get { return _themeId ?? ApiId; } set { _themeId = value; }}
         public virtual List<ThemeItem> ThemeSongs { get; set; }
         public virtual List<ThemeItem> ThemeVideos { get; set; }
 
-        protected void LoadThemes()
+        public void LoadThemes()
         {
             try
             {
-                var result = Kernel.ApiClient.GetAllThemeMedia(Kernel.CurrentUser.ApiId, ApiId);
+                var result = Kernel.ApiClient.GetAllThemeMedia(Kernel.CurrentUser.ApiId, ThemeId);
                 if (result == null) return;
 
                 if (result.ThemeSongsResult.TotalRecordCount > 0)

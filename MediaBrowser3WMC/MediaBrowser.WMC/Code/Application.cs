@@ -2965,6 +2965,10 @@ namespace MediaBrowser
             if (session != null)
             {
                 folder.NavigatingInto();
+                if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
+                {
+                    BackdropController.Play(folder.BaseItem);
+                }
 
                 session.GoToPage(folder.Folder.CustomUI ?? CurrentTheme.FolderPage, properties);
             }
@@ -3145,10 +3149,6 @@ namespace MediaBrowser
                 return;
             }
 
-            if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
-            {
-                BackdropController.Play(item.BaseItem);
-            }
 
             if (item.BaseItem is Show)
             {
@@ -3156,6 +3156,10 @@ namespace MediaBrowser
                     this.Config.AlwaysShowDetailsPage)
                 {
                     item.NavigatingInto();
+                    if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
+                    {
+                        BackdropController.Play(item.BaseItem);
+                    }
                     // go to details screen 
                     var properties = new Dictionary<string, object>();
                     properties["Application"] = this;
