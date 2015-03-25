@@ -15,9 +15,6 @@ namespace MediaBrowser.Library.Entities {
         public string MpaaRating { get; set; }
 
         [Persist]
-        public Single? ImdbRating { get; set; }
-
-        [Persist]
         private List<Actor> _actors;
 
         [Persist]
