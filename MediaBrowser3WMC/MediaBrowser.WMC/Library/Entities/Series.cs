@@ -15,9 +15,6 @@ namespace MediaBrowser.Library.Entities {
         public string MpaaRating { get; set; }
 
         [Persist]
-        public Single? ImdbRating { get; set; }
-
-        [Persist]
         private List<Actor> _actors;
 
         [Persist]
@@ -176,12 +173,6 @@ namespace MediaBrowser.Library.Entities {
                     Studios = temp.Studios;
                     PlaybackAllowed = temp.PlaybackAllowed;
                     CanDelete = temp.CanDelete;
-                }
-
-                // and themes if enabled
-                if (Config.Instance.EnableThemeBackgrounds)
-                {
-                    LoadThemes();
                 }
 
                 FullDetailsLoaded = true;

@@ -20,13 +20,19 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return !ForceIbn ? base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) }) : (base.BackdropImagePaths = new List<string> { GetImagePath(ImageType.Backdrop) });
+                return !ForceIbn ? base.BackdropImagePaths != null && base.BackdropImagePaths.Count > 0 ? base.BackdropImagePaths : (base.BackdropImagePaths = GetDefaultIbnImage(ImageType.Backdrop)) : (base.BackdropImagePaths = GetDefaultIbnImage(ImageType.Backdrop));
             }
             set
             {
                 base.BackdropImagePaths = value;
             }
         }
+
+        protected List<string> GetDefaultIbnImage(ImageType type)
+        {
+            var path = GetImagePath(type);
+            return path != null ? new List<string> {GetImagePath(type)} : new List<string>();
+        } 
 
         public override BaseItem ReLoad()
         {

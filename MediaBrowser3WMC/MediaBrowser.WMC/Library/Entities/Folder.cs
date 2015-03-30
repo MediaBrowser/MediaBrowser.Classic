@@ -25,7 +25,7 @@ namespace MediaBrowser.Library.Entities {
         public int CountAdjustment { get; set; }
     }
 
-    public class Folder : BaseItem, MediaBrowser.Library.Entities.IFolder {
+    public class Folder : BaseItem, IFolder {
 
         public event EventHandler<ChildrenChangedEventArgs> ChildrenChanged;
         public event EventHandler<EventArgs> QuickListChanged;
@@ -451,6 +451,7 @@ namespace MediaBrowser.Library.Entities {
                                              SecondaryImagePath = currentContainer.SecondaryImagePath,
                                              BannerImagePath = currentContainer.BannerImagePath,
                                              BackdropImagePaths = currentContainer.BackdropImagePaths,
+                                             ThemeId = currentSeries != null ? currentSeries.ApiId : null,
                                              TVDBSeriesId = currentSeries != null ? currentSeries.TVDBSeriesId : null,
                                              LogoImagePath = currentSeries != null ? currentSeries.LogoImagePath : null,
                                              ArtImagePath = currentSeries != null ? currentSeries.ArtImagePath : null,

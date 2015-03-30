@@ -208,12 +208,6 @@ namespace MediaBrowser.Library.Entities {
                     }
                 }
 
-                // and themes if enabled
-                if (Config.Instance.EnableThemeBackgrounds)
-                {
-                    LoadThemes();
-                }
-
                 FullDetailsLoaded = true;
             }
         }

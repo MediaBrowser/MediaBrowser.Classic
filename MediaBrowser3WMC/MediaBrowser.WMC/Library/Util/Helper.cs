@@ -7,6 +7,7 @@ using System.Linq;
 using System.Management;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using MediaBrowser.Interop;
@@ -1226,28 +1227,32 @@ namespace MediaBrowser.LibraryManagement
             }
             else
             {
-                return GetImageFromResources(name, id);
+                try
+                {
+                    return GetImageFromResources(name, id);
+                }
+                catch (Exception e)
+                {
+                    Logger.ReportException("Unable to get resource",e);
+                    return null;
+                }
             }
         }
 
         public static Image GetImageFromResources(string name, string id)
         {
             //not there, get it from resources in default or the current theme if it exists
-            var resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
+            var resourceRef = Application.CurrentInstance.CurrentTheme.PageArea.Substring(0, Application.CurrentInstance.CurrentTheme.PageArea.LastIndexOf("/") + 1);
             //Logger.ReportInfo("============== Current Theme: " + Application.CurrentInstance.CurrentTheme.Name);
             var assembly = Kernel.Instance.FindPluginAssembly(Application.CurrentInstance.CurrentTheme.Name);
             if (assembly != null)
             {
                 //Logger.ReportInfo("============== Found Assembly. ");
-                if (assembly.GetManifestResourceInfo(name) != null)
-                {
-                    //Logger.ReportInfo("============== Found Resource: " + name);
-                    //cheap way to grab a valid reference to the current themes resources...
-                    resourceRef = Application.CurrentInstance.CurrentTheme.PageArea.Substring(0, Application.CurrentInstance.CurrentTheme.PageArea.LastIndexOf("/") + 1);
-                }
-                else
+                var rman = new ResourceManager(Application.CurrentInstance.CurrentTheme.Name+".Resources", assembly);
+                if (rman.GetObject(name) == null)
                 {
                     Logger.ReportVerbose("Could not find resource '{0}' in theme {1}", name, Application.CurrentInstance.CurrentTheme.Name);
+                    resourceRef = "resx://MediaBrowser/MediaBrowser.Resources/";
                 }
             }
             //cache it
