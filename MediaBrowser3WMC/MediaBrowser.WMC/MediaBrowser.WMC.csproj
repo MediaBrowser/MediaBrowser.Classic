@@ -68,9 +68,9 @@
     <StartProgram>C:\Windows\ehome\ehshell.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MediaBrowser.Model, Version=3.0.5537.17267, Culture=neutral, PublicKeyToken=6cde51960597a7f9, processorArchitecture=MSIL">
+    <Reference Include="MediaBrowser.Model, Version=3.0.5568.24959, Culture=neutral, PublicKeyToken=6cde51960597a7f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MediaBrowser.Common.3.0.579\lib\net35\MediaBrowser.Model.dll</HintPath>
+      <HintPath>..\packages\MediaBrowser.Common.3.0.612\lib\net35\MediaBrowser.Model.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.MediaCenter, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -382,12 +382,12 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("genres", query.Genres);
             dict.AddIfNotNull("Ids", query.Ids);
-            dict.AddIfNotNull("studios", query.Studios);
+            dict.AddIfNotNull("studioIds", query.StudioIds);
             dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
             dict.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
             dict.AddIfNotNull("ExcludeLocationTypes", query.ExcludeLocationTypes.Select(t => t.ToString()));
 
-            dict.AddIfNotNullOrEmpty("person", query.Person);
+            dict.AddIfNotNull("personIds", query.PersonIds);
             dict.AddIfNotNull("personTypes", query.PersonTypes);
 
             dict.AddIfNotNull("years", query.Years);

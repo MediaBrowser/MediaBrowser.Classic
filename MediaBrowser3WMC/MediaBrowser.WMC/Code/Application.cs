@@ -3004,16 +3004,17 @@ namespace MediaBrowser
                                                  {
                                                     ProgressBox(string.Format("Finding items with {0} in them...", name));
                                                     
+                                                    var person = Kernel.Instance.MB3ApiRepository.RetrievePerson(name) ?? new Person();
 
                                                     var query = new ItemQuery
                                                                     {
                                                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                                                         Fields = MB3ApiRepository.StandardFields,
-                                                                        Person = name,
+                                                                        PersonIds = new [] {person.ApiId},
                                                                         PersonTypes = personTypes,
                                                                         Recursive = true
                                                                     };
-                                                     var person = Kernel.Instance.MB3ApiRepository.RetrievePerson(name) ?? new Person();
+
                                                     var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = name, Overview = person.Overview};
                                                     ShowMessage = false;
 

@@ -40,7 +40,7 @@ namespace MediaBrowser.Library.Entities
                                ExcludeItemTypes = ExcludeItemTypes,
                                Recursive = true,
                                Fields = MB3ApiRepository.StandardFields,
-                               Person = HttpUtility.UrlEncode(Name),
+                               PersonIds = new [] {ApiId},
                                PersonTypes = PersonTypes
                            };
             }
