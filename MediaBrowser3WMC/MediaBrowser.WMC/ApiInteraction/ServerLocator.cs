@@ -19,7 +19,7 @@ namespace MediaBrowser.ApiInteraction
             client.Client.ReceiveTimeout = 5000;
 
             // Construct the message the server is expecting
-            var bytes = Encoding.UTF8.GetBytes("who is MediaBrowserServer_v2?");
+            var bytes = Encoding.UTF8.GetBytes("who is EmbyServer?");
 
             // Send it - must be IPAddress.Broadcast, 7359
             var targetEndPoint = new IPEndPoint(IPAddress.Broadcast, 7359);
