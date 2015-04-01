@@ -32,7 +32,7 @@ namespace MediaBrowser.Library.Playables
         {
             // build based on WMC profile
             var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
-            var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder().BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
+            var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder(new LocalPlayer()).BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
             if (info != null)
             {
                 //Further optimize for direct play if possible

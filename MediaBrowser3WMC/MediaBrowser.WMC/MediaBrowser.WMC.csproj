@@ -239,6 +239,7 @@
     <Compile Include="Library\Playables\ExternalPlayer\ExternalPlaybackController.cs" />
     <Compile Include="Library\Playables\ExternalPlayer\PlayableExternal.cs" />
     <Compile Include="Library\Playables\ExternalPlayer\PlayableExternalConfigurator.cs" />
+    <Compile Include="Library\Playables\LocalPlayer.cs" />
     <Compile Include="Library\Playables\MpcHc\MpcHcConfigurator.cs" />
     <Compile Include="Library\Playables\MpcHc\MpcHcPlaybackController.cs" />
     <Compile Include="Library\Playables\MpcHc\PlayableMpcHc.cs" />
