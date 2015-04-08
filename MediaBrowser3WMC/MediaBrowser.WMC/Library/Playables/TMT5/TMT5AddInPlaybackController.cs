@@ -32,7 +32,7 @@ namespace MediaBrowser.Library.Playables.TMT5
         {
             base.OnExternalPlayerLaunched(playbackInfo);
 
-            Async.Queue("Wait for process to exit", WaitForProcessToExit);
+            Async.Queue(Async.ThreadPoolName.WaitForProcessToExit, WaitForProcessToExit);
         }
 
         /// <summary>

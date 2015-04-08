@@ -86,6 +86,7 @@ namespace MediaBrowser
 
         private static Application singleApplicationInstance;
         private MyHistoryOrientedPageSession session;
+        private Microsoft.MediaCenter.Hosting.AddInHost addinHost;
         private static object syncObj = new object();
         private bool navigatingForward;
         private BasePlaybackController currentPlaybackController = null;
@@ -102,10 +103,19 @@ namespace MediaBrowser
         private Updater Updater;
         private PowerSettings _powerSetings;
 
+        private new void UIFirePropertyChange(string property)
+        {
+            Application.UIDeferredInvokeIfRequired(() =>
+            {
+                base.FirePropertyChanged(property);
+            }
+            );
+        }
+
         public bool UpdateAvailable
         {
             get { return _updateAvailable; }
-            set { _updateAvailable = value; FirePropertyChanged("UpdateAvailable"); }
+            set { _updateAvailable = value; UIFirePropertyChange("UpdateAvailable"); }
         }
 
         public PowerSettings PowerSettings { get { return _powerSetings ?? (_powerSetings = new PowerSettings()); } }
@@ -130,10 +140,11 @@ namespace MediaBrowser
 
         internal void OnCurrentItemChanged()
         {
-            FirePropertyChanged("CurrentItem");
+            UIFirePropertyChange("CurrentItem");
 
             // send context message
-            Async.Queue("Context", () =>
+            //"Context"
+            Async.Queue(Async.ThreadPoolName.Context, () =>
             {
                 try
                 {
@@ -147,7 +158,8 @@ namespace MediaBrowser
 
             if (_CurrentItemChanged != null)
             {
-                Async.Queue("OnCurrentItemChanged", () => _CurrentItemChanged(this, new GenericEventArgs<Item>() { Item = CurrentItem })); 
+                //"OnCurrentItemChanged"
+                Async.Queue(Async.ThreadPoolName.OnCurrentItemChanged, () => _CurrentItemChanged(this, new GenericEventArgs<Item>() { Item = CurrentItem })); 
             }
         }
 
@@ -257,7 +269,7 @@ namespace MediaBrowser
         {
             if (_NavigationInto != null)
             {
-                Async.Queue("OnNavigationInto", () => _NavigationInto(this, new GenericEventArgs<Item>() { Item = item }));
+                Async.Queue(Async.ThreadPoolName.OnNavigationInto, () => _NavigationInto(this, new GenericEventArgs<Item>() { Item = item }));
             }
         }
         #endregion
@@ -292,7 +304,7 @@ namespace MediaBrowser
                     Logger.ReportException("Application.PrePlayback event listener had an error: ", ex);
                 }
             }
-            Async.Queue("IsPlayingVideo delay", () => { FirePropertyChanged("IsPlayingVideo"); FirePropertyChanged("IsPlaying"); }, 1500);
+            Async.Queue(Async.ThreadPoolName.IsPlayingVideoDelay, () => { UIFirePropertyChange("IsPlayingVideo"); UIFirePropertyChange("IsPlaying"); }, 1500);
         }
         #endregion
 
@@ -317,10 +329,10 @@ namespace MediaBrowser
         {
             if (_PlaybackFinished != null)
             {
-                Async.Queue("OnPlaybackFinished", () => _PlaybackFinished(this, new GenericEventArgs<PlayableItem>() { Item = playableItem })); 
+                Async.Queue(Async.ThreadPoolName.OnPlaybackFinished, () => _PlaybackFinished(this, new GenericEventArgs<PlayableItem>() { Item = playableItem })); 
             }
-            FirePropertyChanged("IsPlayingVideo");
-            FirePropertyChanged("IsPlaying");
+            UIFirePropertyChange("IsPlayingVideo");
+            UIFirePropertyChange("IsPlaying");
         }
         #endregion
 
@@ -333,7 +345,7 @@ namespace MediaBrowser
             set {if (_showNewItemPopout != value)
             {
                 _showNewItemPopout = value;
-                FirePropertyChanged("ShowNewItemPopout");
+                UIFirePropertyChange("ShowNewItemPopout");
             }}
         }
 
@@ -346,7 +358,7 @@ namespace MediaBrowser
                 if (_newItem != value)
                 {
                     _newItem = value;
-                    FirePropertyChanged("NewItem");
+                    UIFirePropertyChange("NewItem");
                 }
             }
         }
@@ -376,7 +388,7 @@ namespace MediaBrowser
                 if (showSplash != value)
                 {
                     showSplash = value;
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowSplash"));
+                    UIFirePropertyChange("ShowSplash");
                 }
             }
         }
@@ -391,7 +403,7 @@ namespace MediaBrowser
                 if (showMessage != value)
                 {
                     showMessage = value;
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowMessage"));
+                    UIFirePropertyChange("ShowMessage");
                 }
             }
         }
@@ -412,7 +424,7 @@ namespace MediaBrowser
                 {
                     showMessagePopout = value;
                     if (value) _popoutMessageTimer.Start();
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("ShowMessagePopout"));
+                    UIFirePropertyChange("ShowMessagePopout");
                 }
             }
         }
@@ -430,7 +442,7 @@ namespace MediaBrowser
                 if (messageText != value)
                 {
                     messageText = value;
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageText"));
+                    UIFirePropertyChange("MessageText");
                 }
             }
         }
@@ -447,7 +459,7 @@ namespace MediaBrowser
                 if (messageTitle != value)
                 {
                     messageTitle = value;
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageTitle"));
+                    UIFirePropertyChange("MessageTitle");
                 }
             }
         }
@@ -461,7 +473,7 @@ namespace MediaBrowser
                 if (messageUI != value)
                 {
                     messageUI = value;
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => FirePropertyChanged("MessageUI"));
+                    UIFirePropertyChange("MessageUI");
                 }
             }
         }
@@ -482,7 +494,7 @@ namespace MediaBrowser
                 else
                 {
                     //async the timeout
-                    Async.Queue("Custom Msg", () => WaitForMessage(timeout));
+                    Async.Queue(Async.ThreadPoolName.CustomMsg, () => WaitForMessage(timeout));
                 }
             }
 
@@ -581,7 +593,7 @@ namespace MediaBrowser
                             model.PhysicalParent = ItemFactory.Instance.Create(item.Parent) as FolderModel;
                         }
                         CurrentFolder = model.PhysicalParent;
-                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(model));
+                        Application.UIDeferredInvokeIfRequired(()=>Navigate(model));
                     }
                     else
                     {
@@ -749,7 +761,7 @@ namespace MediaBrowser
                     break;
 
                 case "GoToSettings":
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenConfiguration(true));
+                    Application.UIDeferredInvokeIfRequired(()=>OpenConfiguration(true));
                     break;
 
                 case "Mute":
@@ -926,7 +938,7 @@ namespace MediaBrowser
             set
             {
                 pluginUpdatesAvailable = value;
-                FirePropertyChanged("PluginUpdatesAvailable");
+                UIFirePropertyChange("PluginUpdatesAvailable");
             }
         }
 
@@ -941,7 +953,7 @@ namespace MediaBrowser
                 if (systemUpdateCheckInProgress != value)
                 {
                     systemUpdateCheckInProgress = value;
-                    FirePropertyChanged("SystemUpdateCheckInProgress");
+                    UIFirePropertyChange("SystemUpdateCheckInProgress");
                 }
             }
         }
@@ -951,7 +963,7 @@ namespace MediaBrowser
         public bool ScreenSaverActive
         {
             get { return _ScreenSaverActive; }
-            set { if (_ScreenSaverActive != value) { _ScreenSaverActive = value; FirePropertyChanged("ScreenSaverActive"); } }
+            set { if (_ScreenSaverActive != value) { _ScreenSaverActive = value; UIFirePropertyChange("ScreenSaverActive"); } }
         }
 
         public bool ScreenSaverTempDisabled { get; set; }
@@ -979,7 +991,7 @@ namespace MediaBrowser
                 if (_multipleUsersHere != value)
                 {
                     _multipleUsersHere = value;
-                    FirePropertyChanged("MultipleUsersHere");
+                    UIFirePropertyChange("MultipleUsersHere");
                 }
             }
         }
@@ -1060,7 +1072,7 @@ namespace MediaBrowser
             if (AvailableThemes.ContainsKey(theme))
             {
                 AvailableThemes[theme].Status = status;
-                FirePropertyChanged("CurrentThemeStatus");
+                UIFirePropertyChange("CurrentThemeStatus");
                 return true;
             }
             else
@@ -1084,11 +1096,7 @@ namespace MediaBrowser
 
         public void RefreshPluginCollections()
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => RefreshPluginCollections());
-            }
-            else
+            Application.UIDeferredInvokeIfRequired(() =>
             {
                 AvailablePluginsCollection = new PluginItemCollection(Packages);
 
@@ -1124,6 +1132,7 @@ namespace MediaBrowser
 
                 InstalledPluginsCollection = new PluginItemCollection(installedPluginItems);
             }
+            );
         }
 
         public FavoritesCollectionFolder FavoritesFolder
@@ -1180,7 +1189,7 @@ namespace MediaBrowser
                     //Logger.ReportVerbose("************* Updating currently playing item to {0}",value);
                     _currentlyPlayingItemId = value;
                     CurrentlyPlayingItem = null;
-                    FirePropertyChanged("CurrentlyPlayingItem");
+                    UIFirePropertyChange("CurrentlyPlayingItem");
                 }
             }
         }
@@ -1188,7 +1197,7 @@ namespace MediaBrowser
         public Item CurrentlyPlayingItem
         {
             get { return _currentlyPlayingItem ?? (_currentlyPlayingItem = GetCurrentlyPlayingItem()); }
-            set { _currentlyPlayingItem = value; FirePropertyChanged("CurrentlyPlayingItem"); }
+            set { _currentlyPlayingItem = value; UIFirePropertyChange("CurrentlyPlayingItem"); }
         }
 
         private Item GetCurrentlyPlayingItem()
@@ -1211,7 +1220,7 @@ namespace MediaBrowser
             {
                 currentContextMenu = value;
                 //Logger.ReportVerbose("Context Menu Changed.  Items: " + currentContextMenu.Count);
-                FirePropertyChanged("ContextMenu");
+                UIFirePropertyChange("ContextMenu");
             }
         }
 
@@ -1299,6 +1308,7 @@ namespace MediaBrowser
         {
 
             this.session = session;
+            this.addinHost = host;
             if (session != null)
             {
                 this.session.Application = this;
@@ -1325,16 +1335,22 @@ namespace MediaBrowser
 
         private void IdleTimer_Tick(object sender, EventArgs e)
         {
+            Logger.ReportVerbose("Keep alive call, IsCurretntlyVisible={0}", Application.ApplicationContext.IsCurrentlyVisible);
+
             if (LoggedIn && Config.EnableAutoLogoff && !IsPlaying)
             {
-                if (Helper.SystemIdleTime > Config.AutoLogoffTimeOut*60000)
+                if (Helper.SystemIdleTime > Config.AutoLogoffTimeOut * 60000)
                 {
                     Logger.ReportInfo("System logging off automatically due to timeout of {0} minutes of inactivity...", Config.AutoLogoffTimeOut);
                     Config.StartupParms = "ShowLogin";
-                    if (AddInHost.Current.ApplicationContext.IsCurrentlyVisible) Restart();
-                    else Close();
+                    if (Application.ApplicationContext.IsCurrentlyVisible) 
+                        Restart();
+                    else 
+                        Close();
                 }
             }
+            
+            
         }
 
         void ScreenSaverTimer_Tick(object sender, EventArgs e)
@@ -1376,7 +1392,7 @@ namespace MediaBrowser
         /// <param name="message"></param>
         public static void DialogBoxViaReflection(string message)
         {
-            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
+            MediaCenterEnvironment ev = Application.MediaCenterEnvironment;
             FieldInfo fi = ev.GetType().GetField("_legacyAddInHost", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance);
             if (fi != null)
             {
@@ -1394,16 +1410,18 @@ namespace MediaBrowser
             }
         }
 
+        
+
         private static bool? _RunningOnExtender;
         public static bool RunningOnExtender
         {
             get
             {
-                if (!_RunningOnExtender.HasValue && AddInHost.Current != null)
+                if (!_RunningOnExtender.HasValue)
                 {
                     try
                     {
-                        Dictionary<string, object> capabilities = AddInHost.Current.MediaCenterEnvironment.Capabilities;
+                        Dictionary<string, object> capabilities = Application.MediaCenterEnvironment.Capabilities;
 
                         bool isLocal = capabilities.ContainsKey("Console") && (bool)capabilities["Console"];
 
@@ -1433,7 +1451,7 @@ namespace MediaBrowser
             Logger.ReportInfo("Attempting to use reflection that sometimes works to show a dialog box");
             // for some reason using reflection still works
             Application.DialogBoxViaReflection(CurrentInstance.StringData("BrokenEnvironmentDial"));
-            Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+            Application.ApplicationContext.CloseApplication();
         }
 
         public void FixRepeatRate(object scroller, int val)
@@ -1455,12 +1473,128 @@ namespace MediaBrowser
 
         }
 
+        public static Microsoft.MediaCenter.Hosting.AddInHost AddInHost
+        {
+            get
+            {
+                System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+                    Debugger.Break();
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+                {
+                    StackTrace stk = new StackTrace();
+                    Logger.ReportWarning("AddInHost accessed from non-UI thread.\n" + stk.ToString());
+                }
+                return Application.CurrentInstance.addinHost;
+            }
+        }
+
+        public static Microsoft.MediaCenter.Hosting.ApplicationContext ApplicationContext
+        {
+            get
+            {
+                //System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+                {
+                    StackTrace stk = new StackTrace();
+                    Logger.ReportWarning("ApplicationContext accessed from non-UI thread.\n" + stk.ToString());
+                }
+                if (Application.AddInHost == null)
+                {
+                    StackTrace stk = new StackTrace();
+                    Logger.ReportError("AddInHost is null\n" + stk.ToString());
+                }
+                return Application.AddInHost.ApplicationContext;
+            }
+        }
+
         public static MediaCenterEnvironment MediaCenterEnvironment
         {
             get
             {
-                return Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
+                //System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+                {
+                    StackTrace stk = new StackTrace();
+                    Logger.ReportWarning("MediaCenterEnvironment accessed from non-UI thread.\n" + stk.ToString());
+                }
+                if (Application.AddInHost == null)
+                {
+                    StackTrace stk = new StackTrace();
+                    Logger.ReportError("AddInHost is null\n" + stk.ToString());
+                }
+                return Application.AddInHost.MediaCenterEnvironment;
             }
+        }
+
+        public static Microsoft.MediaCenter.MediaExperience MediaExperience
+        {
+            get
+            {
+                return Application.MediaCenterEnvironment.MediaExperience ?? GetMediaExperienceUsingReflection();
+            }
+        }
+
+
+        public static void UIDeferredInvokeIfRequired(Action action)
+        {
+            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_=>action());
+            else
+                action();
+        }
+
+        private static FieldInfo _CheckedMediaExperienceFIeldInfo;
+
+        public static Microsoft.MediaCenter.MediaExperience GetMediaExperienceUsingReflection()
+        {
+            Logger.ReportVerbose("Having to get media experience by reflection due to bug in Windows 7");
+            MediaCenterEnvironment env = Application.MediaCenterEnvironment;
+
+            var mce = env.MediaExperience;
+
+            // great window 7 has bugs, lets see if we can work around them 
+            // http://mediacentersandbox.com/forums/thread/9287.aspx
+            if (mce == null)
+            {
+                mce = env.MediaExperience;
+
+                if (mce == null)
+                {
+                    try
+                    {
+                        if (_CheckedMediaExperienceFIeldInfo == null)
+                        {
+                            _CheckedMediaExperienceFIeldInfo = env.GetType().GetField("_checkedMediaExperience", BindingFlags.NonPublic | BindingFlags.Instance);
+                        }
+
+                        if (_CheckedMediaExperienceFIeldInfo != null)
+                        {
+                            _CheckedMediaExperienceFIeldInfo.SetValue(env, false);
+                            mce = env.MediaExperience;
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        // give up ... I do not know what to do 
+                        Logger.ReportException("AddInHost.Current.MediaCenterEnvironment.MediaExperience is null", e);
+                    }
+
+                }
+
+                if (mce == null)
+                {
+                    Logger.ReportVerbose("GetMediaExperienceUsingReflection was unsuccessful");
+                }
+                else
+                {
+                    Logger.ReportVerbose("GetMediaExperienceUsingReflection was successful");
+                }
+
+            }
+
+            return mce;
         }
 
         public BasePlaybackController PlaybackController
@@ -1541,7 +1675,8 @@ namespace MediaBrowser
 
         public void Close()
         {
-            Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+            
+            Application.ApplicationContext.CloseApplication();
         }
 
         /// <summary>
@@ -1565,6 +1700,7 @@ namespace MediaBrowser
 
         public void BackOut()
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             //back up and close the app if that fails
             if (!session.BackPage())
                 Close();
@@ -1572,6 +1708,7 @@ namespace MediaBrowser
 
         public void Back()
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             if (LoggedIn && Config.UseExitMenu && session.AtRoot)
             {
                 // show menu
@@ -1591,9 +1728,8 @@ namespace MediaBrowser
 
         public void FinishInitialConfig()
         {
-            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-            ev.Dialog(CurrentInstance.StringData("InitialConfigDial"), CurrentInstance.StringData("Restartstr"), DialogButtons.Ok, 60, true);
-            Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+            Application.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("InitialConfigDial"), CurrentInstance.StringData("Restartstr"), DialogButtons.Ok, 60, true);
+            Application.ApplicationContext.CloseApplication();
 
         }
 
@@ -1601,7 +1737,7 @@ namespace MediaBrowser
         {
             // Need to put delete on a thread because the play process is asynchronous and
             // we don't want to tie up the ui when we call sleep
-            Async.Queue("DeleteMediaItem", () =>
+            Async.Queue(Async.ThreadPoolName.DeleteMediaItem, () =>
             {
                 if (!Kernel.CurrentUser.Dto.Policy.EnableContentDeletion)
                 {
@@ -1610,7 +1746,7 @@ namespace MediaBrowser
                 }
 
                 // Setup variables
-                MediaCenterEnvironment mce = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
+                MediaCenterEnvironment mce = Application.MediaCenterEnvironment;
                 var msg = CurrentInstance.StringData("DeleteMediaDial");
                 var caption = CurrentInstance.StringData("DeleteMediaCapDial");
 
@@ -1674,7 +1810,7 @@ namespace MediaBrowser
         private void DeleteNavigationHelper(Item item)
         {
             Back(); // Back to the Parent Item; This parent still contains old data.
-            Async.Queue("Post delete validate", () =>
+            Async.Queue(Async.ThreadPoolName.PostDeleteValidate, () =>
                                                     {
                                                         //update parent info on all occurences in lib
                                                         foreach (var occurence in Kernel.Instance.FindItems(item.Id))
@@ -1737,8 +1873,8 @@ namespace MediaBrowser
             }
             catch (Exception e)
             {
-                AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("CriticalErrorDial") + e + " " + e.StackTrace, CurrentInstance.StringData("CriticalErrorCapDial"), DialogButtons.Ok, 60, true);
-                AddInHost.Current.ApplicationContext.CloseApplication();
+                Application.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("CriticalErrorDial") + e + " " + e.StackTrace, CurrentInstance.StringData("CriticalErrorCapDial"), DialogButtons.Ok, 60, true);
+                Application.ApplicationContext.CloseApplication();
             }
         }
 
@@ -1761,7 +1897,7 @@ namespace MediaBrowser
                     Kernel.Instance.CommonConfigData.AutoLogonUserName = Kernel.CurrentUser.Name;
                     Kernel.Instance.CommonConfigData.AutoLogonPw = Kernel.Instance.CommonConfigData.SavePassword ? Kernel.CurrentUser.PwHash : null;
                     Kernel.Instance.CommonConfigData.Save();
-                    FirePropertyChanged("AutoLogin");
+                    UIFirePropertyChange("AutoLogin");
                 }
             }
         }
@@ -1791,7 +1927,7 @@ namespace MediaBrowser
         public void Logout()
         {
             // Present dialog - must be asynced to get off the UI thread
-            Async.Queue("Logout", () =>
+            Async.Queue(Async.ThreadPoolName.Logout, () =>
                                       {
                                           if (YesNoBox(string.Format("Logout of user profile {0}?", Kernel.CurrentUser.Name)) == "Y")
                                           {
@@ -1980,7 +2116,7 @@ namespace MediaBrowser
                 else
                 {
                     Logger.ReportError("Error logging into server {0}/{1} with connect", Kernel.CurrentServer.Name, Kernel.CurrentServer.RemoteAddress);
-                    Async.Queue("Connect error", () => MessageBox("Could not connect to server.  Please try again later."));
+                    Async.Queue(Async.ThreadPoolName.ConnectError, () => MessageBox("Could not connect to server.  Please try again later."));
                 }
                 return;
             }
@@ -2012,7 +2148,7 @@ namespace MediaBrowser
             else
             {
                 // show login screen
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> {{"Application", this}});
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/MetroLoginPage", new Dictionary<string, object> { { "Application", this } });
             }
         }
 
@@ -2053,6 +2189,7 @@ namespace MediaBrowser
 
         public void OpenServerSelectionPage()
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             //Get all available servers
 
             //First the local one
@@ -2075,8 +2212,8 @@ namespace MediaBrowser
                     }
                 }
             }
-            
-            session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ServerSelection", new Dictionary<string, object> { { "Application", this } });
+
+            OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/ServerSelection", new Dictionary<string, object> { { "Application", this } });
             
         }
 
@@ -2100,7 +2237,7 @@ namespace MediaBrowser
                 {
                     if (!UsingDirectEntry)
                     {
-                        AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect User or Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                        Application.MediaCenterEnvironment.Dialog("Incorrect User or Password.", "Access Denied", DialogButtons.Ok, 100, true);
                     }
                     UsingDirectEntry = false;
                     ShowSplash = false;
@@ -2115,7 +2252,7 @@ namespace MediaBrowser
             Kernel.CurrentUser = user.BaseItem as User;
             CurrentUser = user;
             var ignore = CurrentUser.PrimaryImage; // force this to load
-            FirePropertyChanged("CurrentUser");
+            UIFirePropertyChange("CurrentUser");
             if (authenticate && Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
             {
                 // Try with saved pw
@@ -2128,7 +2265,7 @@ namespace MediaBrowser
             else
             {
                 // just log in as we don't have a pw or we've already authenticated manually
-                Async.Queue("Load user", () => LoadUser(user.BaseItem as User, "", authenticate));
+                Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(user.BaseItem as User, "", authenticate));
             }
         }
 
@@ -2172,7 +2309,7 @@ namespace MediaBrowser
                     {
                         if (!UsingDirectEntry)
                         {
-                            AddInHost.Current.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
+                            Application.MediaCenterEnvironment.Dialog("Incorrect Password.", "Access Denied", DialogButtons.Ok, 100, true);
                         }
                         UsingDirectEntry = false;
                         ShowSplash = false;
@@ -2211,13 +2348,13 @@ namespace MediaBrowser
             // setup styles and fonts with user options
             try
             {
-                CustomResourceManager.SetupStylesMcml(AddInHost.Current, Config.Instance);
-                CustomResourceManager.SetupFontsMcml(AddInHost.Current, Config.Instance);
+                CustomResourceManager.SetupStylesMcml(null, Config.Instance);
+                CustomResourceManager.SetupFontsMcml(null, Config.Instance);
             }
             catch (Exception ex)
             {
-                AddInHost.Current.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
-                AddInHost.Current.ApplicationContext.CloseApplication();
+                Application.MediaCenterEnvironment.Dialog(ex.Message, "Error", DialogButtons.Ok, 100, true);
+                Application.ApplicationContext.CloseApplication();
                 return false;
             }
 
@@ -2235,7 +2372,7 @@ namespace MediaBrowser
 
             if (Kernel.Instance.RootFolder == null)
             {
-                Async.Queue("Launch Error", () =>
+                Async.Queue(Async.ThreadPoolName.LaunchError, () =>
                                                 {
                                                     MessageBox("Unable to retrieve root folder.  Application will exit.");
                                                     Close();
@@ -2245,20 +2382,13 @@ namespace MediaBrowser
             {
                 Logger.ReportInfo("*** Theme in use is: " + Config.ViewTheme);
                 //Launch into our entrypoint
-                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-                {
-                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => LaunchEntryPoint(EntryPointResolver.EntryPointPath));
-                }
-                else
-                {
-                    LaunchEntryPoint(EntryPointResolver.EntryPointPath);
-                }
+                Application.UIDeferredInvokeIfRequired(() => LaunchEntryPoint(EntryPointResolver.EntryPointPath));
             }
 
             //load plug-in catalog info
             if (user.Dto.Policy.IsAdministrator)
             {
-                Async.Queue("PackageLoad",() =>
+                Async.Queue(Async.ThreadPoolName.PackageLoad,() =>
                 {
                     LoadPackages();
                     RefreshPluginCollections();
@@ -2271,7 +2401,7 @@ namespace MediaBrowser
                 Kernel.Instance.CommonConfigData.LastNagDate > DateTime.Now || 
                 DateTime.Now > Kernel.Instance.CommonConfigData.LastNagDate.AddDays(2))
             {
-                Async.Queue("Supporter Check", () =>
+                Async.Queue(Async.ThreadPoolName.SupporterCheck, () =>
                                                    {
                                                        var supporter = MBRegistration.GetRegistrationStatus("mbsupporter", Kernel.Instance.Version);
                                                        while (!supporter.RegChecked) { Thread.Sleep(500);}
@@ -2296,22 +2426,22 @@ namespace MediaBrowser
 
         public void UpdateAllPlugins(bool silent = false)
         {
-            Async.Queue("Plugin Update", () => Updater.UpdateAllPlugins(InstalledPluginsCollection, silent));
+            Async.Queue(Async.ThreadPoolName.PluginUpdate, () => Updater.UpdateAllPlugins(InstalledPluginsCollection, silent));
         }
 
         public void UpdatePlugin(PluginItem plugin)
         {
-            Async.Queue("Plugin Update", () => Updater.UpdatePlugin(plugin));
+            Async.Queue(Async.ThreadPoolName.PluginUpdate, () => Updater.UpdatePlugin(plugin));
         }
 
         public void InstallPlugin(PluginItem plugin)
         {
-            Async.Queue("Plugin Update", () => Updater.UpdatePlugin(plugin, "Installing"));
+            Async.Queue(Async.ThreadPoolName.PluginUpdate, () => Updater.UpdatePlugin(plugin, "Installing"));
         }
 
         public void RemovePlugin(PluginItem plugin)
         {
-            Async.Queue("Plugin Remove", () =>
+            Async.Queue(Async.ThreadPoolName.PluginRemove, () =>
             {
                 if (YesNoBox("Remove Plug-in "+plugin.Name+" - Are you sure?") == "Y")
                 {
@@ -2327,7 +2457,7 @@ namespace MediaBrowser
                     catch (Exception e)
                     {
                         Logger.ReportException("Error attempting to remove plugin {0}", e, plugin.TargetFilename);
-                        Async.Queue("msg", () => MessageBox("Could not delete plugin " + plugin.Name));
+                        Async.Queue(Async.ThreadPoolName.Msg, () => MessageBox("Could not delete plugin " + plugin.Name));
                     }
                 }
             });
@@ -2335,7 +2465,7 @@ namespace MediaBrowser
 
         public void RatePlugin(PluginItem plugin, int rating, bool recommend)
         {
-            Async.Queue("PackageRating", () => Kernel.ApiClient.RatePackage(plugin.Id, rating, recommend));
+            Async.Queue(Async.ThreadPoolName.PackageRating, () => Kernel.ApiClient.RatePackage(plugin.Id, rating, recommend));
             Information.AddInformationString("Thank you for submitting your rating");
         }
 
@@ -2345,7 +2475,7 @@ namespace MediaBrowser
         /// <param name="plugin"></param>
         public void RegisterPlugin(PluginItem plugin)
         {
-            Async.Queue("Registration", () =>
+            Async.Queue(Async.ThreadPoolName.Registration, () =>
             {
                 if (YesNoBox("The Registration Page will open in your web browser.  You will need a keyboard to complete the transaction.  Continue?") == "Y")
                 {
@@ -2388,48 +2518,42 @@ namespace MediaBrowser
 
         protected void BuildUserMenu()
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => BuildUserMenu());
-            }
-            else
+            Application.UIDeferredInvokeIfRequired(() =>
             {
                 foreach (var otherUser in AvailableUsers.Where(u => u.Name != CurrentUser.Name))
                 {
                     Kernel.Instance.AddMenuItem(new MenuItem(otherUser.Name, otherUser.BaseItem.PrimaryImagePath ?? "resx://MediaBrowser/MediaBrowser.Resources/UserLoginDefault", SwitchUser, new List<MenuType> { MenuType.User }));
                 }
             }
+            );
         }
 
         protected void LoadPluginsAndModels()
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => LoadPluginsAndModels());
-            }
-            else
+            Application.UIDeferredInvokeIfRequired(() =>
             {
                 // add plug-ins config panel if admin
                 if (Kernel.CurrentUser.Dto.Policy.IsAdministrator)
-                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
-                
+                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"), "resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
+
                 // add view config panel if legacy views not selected
-                if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"),"resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
+                if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
 
                 // add legacy config panel
-                Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"),"resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
-                
+                Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
+
                 // load plugins
                 Kernel.Instance.LoadPlugins();
 
                 // add advanced config panel to end
                 if (Kernel.CurrentUser.Dto.Policy.IsAdministrator)
-                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("AdvancedConfig"),"resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#AdvancedPanel");
-                
+                    Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("AdvancedConfig"), "resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#AdvancedPanel");
+
                 //populate the config model choice
                 ConfigModel = new Choice { Options = ConfigPanelNames };
 
             }
+            );
         }
 
         protected void ValidateRoot()
@@ -2449,6 +2573,8 @@ namespace MediaBrowser
 
         public void LaunchEntryPoint(string entryPointPath)
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
+            
             this.entryPointPath = entryPointPath;
 
             if (IsInEntryPoint)
@@ -2486,7 +2612,7 @@ namespace MediaBrowser
                   
                     if (Config.EnableUpdates && Config.EnableSilentUpdates && !RunningOnExtender)
                     {
-                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                        Async.Queue(Async.ThreadPoolName.StartupQueue, () =>
                                                              {
                                                                  while (!PackagesRetrieved) {Thread.Sleep(500);}
                                                                  RefreshPluginCollections();
@@ -2497,13 +2623,13 @@ namespace MediaBrowser
 
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.
-                    Async.Queue(Async.STARTUP_QUEUE, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender), 10000);
+                    Async.Queue(Async.ThreadPoolName.StartupQueue, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender), 10000);
 
                     if (Kernel.CurrentUser.Dto.Policy.IsAdministrator) // don't show these prompts to non-admins
                     {
                         // Let the user know if the server needs to be restarted
                         // Put it on the same thread as the update checks so it will be behind them
-                        Async.Queue(Async.STARTUP_QUEUE, () =>
+                        Async.Queue(Async.ThreadPoolName.StartupQueue, () =>
                                                              {
                                                                  if (Kernel.ServerInfo.HasPendingRestart)
                                                                  {
@@ -2528,14 +2654,14 @@ namespace MediaBrowser
                     if (!Config.NewViewsIntroShown)
                     {
                         //Make this come up after the home screen
-                        Async.Queue("NewViews", () => OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/NewViewsIntro", new Dictionary<string, object> {{"Application", CurrentInstance}}), 3000);
+                        Async.Queue(Async.ThreadPoolName.NewViews, () => OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/NewViewsIntro", new Dictionary<string, object> {{"Application", CurrentInstance}}), 3000);
                     }
 
                     Navigate(this.RootFolderModel);
                 }
                 catch (Exception ex)
                 {
-                    Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("EntryPointErrorDial") + this.EntryPointPath + ". " + ex.ToString() + " " + ex.StackTrace.ToString(), CurrentInstance.StringData("EntryPointErrorCapDial"), DialogButtons.Ok, 30, true);
+                    Application.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("EntryPointErrorDial") + this.EntryPointPath + ". " + ex.ToString() + " " + ex.StackTrace.ToString(), CurrentInstance.StringData("EntryPointErrorCapDial"), DialogButtons.Ok, 30, true);
                     Close();
                 }
             }
@@ -2545,7 +2671,7 @@ namespace MediaBrowser
         {
             if (!systemUpdateCheckInProgress)
             {
-                Async.Queue("UPDATE CHECK", () =>
+                Async.Queue(Async.ThreadPoolName.UpdateCheck, () =>
                                                 {
                                                     if (prompt && RunningOnExtender)
                                                     {
@@ -2618,7 +2744,7 @@ namespace MediaBrowser
 
         public void FullRefresh()
         {
-            Async.Queue(CurrentInstance.StringData("Manual Full Refresh"), () =>
+            Async.Queue(Async.ThreadPoolName.ManualFullRefresh, () =>
                                                                                {
                                                                                    MessageBox(CurrentInstance.StringData("ManualRefreshDial"));
                                                                                    Kernel.ApiClient.StartLibraryScan();
@@ -2659,7 +2785,7 @@ namespace MediaBrowser
             set
             {
                 this.displayPopupPlay = value;
-                FirePropertyChanged("DisplayPopupPlay");
+                UIFirePropertyChange("DisplayPopupPlay");
             }
         }
 
@@ -2673,7 +2799,7 @@ namespace MediaBrowser
             set
             {
                 this.displayUserMenu = value;
-                FirePropertyChanged("DisplayUserMenu");
+                UIFirePropertyChange("DisplayUserMenu");
             }
         }
 
@@ -2687,7 +2813,7 @@ namespace MediaBrowser
             set
             {
                 this._displayMultiMenu = value;
-                FirePropertyChanged("DisplayMultiMenu");
+                UIFirePropertyChange("DisplayMultiMenu");
             }
         }
 
@@ -2701,7 +2827,7 @@ namespace MediaBrowser
             set
             {
                 this._displayExitMenu = value;
-                FirePropertyChanged("DisplayExitMenu");
+                UIFirePropertyChange("DisplayExitMenu");
             }
         }
 
@@ -2714,7 +2840,7 @@ namespace MediaBrowser
                 if (showSearchPanel != value)
                 {
                     showSearchPanel = value;
-                    FirePropertyChanged("ShowSearchPanel");
+                    UIFirePropertyChange("ShowSearchPanel");
                 }
             }
         }
@@ -2728,7 +2854,7 @@ namespace MediaBrowser
                 if (_showPluginDetailPage != value)
                 {
                     _showPluginDetailPage = value;
-                    FirePropertyChanged("ShowPluginDetailPage");
+                    UIFirePropertyChange("ShowPluginDetailPage");
                 }
             }
         }
@@ -2745,7 +2871,7 @@ namespace MediaBrowser
                     
                     showNowPlaying = value; 
                     
-                    FirePropertyChanged("ShowNowPlaying");
+                    UIFirePropertyChange("ShowNowPlaying");
                 }
             }
         }
@@ -2808,7 +2934,7 @@ namespace MediaBrowser
                 if (_recentUserInput != value)
                 {
                     _recentUserInput = value;
-                    FirePropertyChanged("RecentUserInput");
+                    UIFirePropertyChange("RecentUserInput");
                 }
             }
         }
@@ -2836,31 +2962,32 @@ namespace MediaBrowser
 
         public void ClearCache()
         {
-            MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
-            DialogResult r = ev.Dialog(CurrentInstance.StringData("ClearCacheDial"), CurrentInstance.StringData("ClearCacheCapDial"), DialogButtons.Yes | DialogButtons.No, 60, true);
+            
+            DialogResult r = Application.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("ClearCacheDial"), CurrentInstance.StringData("ClearCacheCapDial"), DialogButtons.Yes | DialogButtons.No, 60, true);
             if (r == DialogResult.Yes)
             {
                 bool ok = Kernel.Instance.MB3ApiRepository.ClearEntireCache();
                 if (!ok)
                 {
-                    ev.Dialog(string.Format(CurrentInstance.StringData("ClearCacheErrorDial"), ApplicationPaths.AppCachePath), CurrentInstance.StringData("Errorstr"), DialogButtons.Ok, 60, true);
+                    Application.MediaCenterEnvironment.Dialog(string.Format(CurrentInstance.StringData("ClearCacheErrorDial"), ApplicationPaths.AppCachePath), CurrentInstance.StringData("Errorstr"), DialogButtons.Ok, 60, true);
                 }
                 else
                 {
-                    ev.Dialog(CurrentInstance.StringData("RestartMBDial"), CurrentInstance.StringData("CacheClearedDial"), DialogButtons.Ok, 60, true);
+                    Application.MediaCenterEnvironment.Dialog(CurrentInstance.StringData("RestartMBDial"), CurrentInstance.StringData("CacheClearedDial"), DialogButtons.Ok, 60, true);
                 }
-                Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.CloseApplication();
+                Application.ApplicationContext.CloseApplication();
             }
         }
 
         public void OpenCatalogPage()
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             var properties = new Dictionary<string, object>();
             properties["Application"] = this;
 
             if (session != null)
             {
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog#PluginCatalog", properties);
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/PluginCatalog#PluginCatalog", properties);
             }
             else
             {
@@ -2871,11 +2998,7 @@ namespace MediaBrowser
 
         public void OpenConfiguration(bool showFullOptions)
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenConfiguration(showFullOptions));
-            }
-            else
+            Application.UIDeferredInvokeIfRequired(() =>
             {
                 var properties = new Dictionary<string, object>();
                 properties["Application"] = this;
@@ -2883,23 +3006,24 @@ namespace MediaBrowser
 
                 if (session != null)
                 {
-                    session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
+                    OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/ConfigPage", properties);
                     if (AvailablePluginsCollection == null || !AvailablePluginsCollection.Items.Any())
-                    if (PackagesRetrieved)
-                    {
-                        RefreshPluginCollections();
-                    }
-                    else
-                    {
-                        InstalledPluginsCollection = new PluginItemCollection(new List<PluginItem>());
-                        AvailablePluginsCollection = new PluginItemCollection(new List<PluginItem>());
-                    }
+                        if (PackagesRetrieved)
+                        {
+                            RefreshPluginCollections();
+                        }
+                        else
+                        {
+                            InstalledPluginsCollection = new PluginItemCollection(new List<PluginItem>());
+                            AvailablePluginsCollection = new PluginItemCollection(new List<PluginItem>());
+                        }
                 }
                 else
                 {
                     Logger.ReportError("Session is null in OpenPage");
                 }
             }
+            );
         }
 
 
@@ -2912,7 +3036,7 @@ namespace MediaBrowser
 
             if (session != null)
             {
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ExternalPlayback", properties);
+                OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/ExternalPlayback", properties);
             }
             else
             {
@@ -2931,7 +3055,7 @@ namespace MediaBrowser
                 if (CurrentFolder != value)
                 {
                     CurrentFolder = value;
-                    FirePropertyChanged("CurrentFolderModel");
+                    UIFirePropertyChange("CurrentFolderModel");
                 }
             }
         }
@@ -2945,13 +3069,14 @@ namespace MediaBrowser
                 if (_currentPluginItem != value)
                 {
                     _currentPluginItem = value;
-                    FirePropertyChanged("CurrentPluginItem");
+                    UIFirePropertyChange("CurrentPluginItem");
                 }
             }
         }
 
         public void OpenFolderPage(FolderModel folder)
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             var properties = new Dictionary<string, object>();
             properties["Application"] = this;
             properties["Folder"] = folder;
@@ -2969,8 +3094,7 @@ namespace MediaBrowser
                 {
                     BackdropController.Play(folder.BaseItem);
                 }
-
-                session.GoToPage(folder.Folder.CustomUI ?? CurrentTheme.FolderPage, properties);
+                OpenMCMLPage(folder.Folder.CustomUI ?? CurrentTheme.FolderPage, properties);
             }
             else
             {
@@ -3000,7 +3124,7 @@ namespace MediaBrowser
 
         void NavigateToPerson(string name, string[] personTypes)
         {
-            Async.Queue("Person navigation", () =>
+            Async.Queue(Async.ThreadPoolName.PersonNavigation, () =>
                                                  {
                                                     ProgressBox(string.Format("Finding items with {0} in them...", name));
                                                     
@@ -3018,7 +3142,7 @@ namespace MediaBrowser
                                                     var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = name, Overview = person.Overview};
                                                     ShowMessage = false;
 
-                                                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ =>Navigate(ItemFactory.Instance.Create(index)));
+                                                    Application.UIDeferredInvokeIfRequired(() => Navigate(ItemFactory.Instance.Create(index)));
                                                      
                                                  });
             
@@ -3052,7 +3176,7 @@ namespace MediaBrowser
                     break;
             }
 
-            Async.Queue("Genre navigation", () =>
+            Async.Queue(Async.ThreadPoolName.GenreNavigation, () =>
                                                 {
                                                     ProgressBox(string.Format("Finding items in the {0} genre...", genre));
                                                     var searchStart = GetStartingFolder(currentMovie.BaseItem.Parent);
@@ -3069,7 +3193,7 @@ namespace MediaBrowser
                                                     var index = new SearchResultFolder(Kernel.Instance.MB3ApiRepository.RetrieveItems(query).ToList()) {Name = genre};
                                                     ShowMessage = false;
 
-                                                    Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(ItemFactory.Instance.Create(index)));
+                                                    Navigate(ItemFactory.Instance.Create(index));
                                                 });
         }
 
@@ -3096,7 +3220,7 @@ namespace MediaBrowser
                     break;
             }
 
-            Async.Queue("Similar navigation", () =>
+            Async.Queue(Async.ThreadPoolName.SimilarNavigation, () =>
                                                 {
                                                     ProgressBox(string.Format("Finding {0} similar to {1}...", itemType, item.Name));
 
@@ -3121,7 +3245,7 @@ namespace MediaBrowser
 
                                                     if (index.Children.Any())
                                                     {
-                                                        Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => Navigate(ItemFactory.Instance.Create(index)));
+                                                        Navigate(ItemFactory.Instance.Create(index));
                                                     }
                                                     else
                                                     {
@@ -3142,64 +3266,68 @@ namespace MediaBrowser
 
         public void Navigate(Item item)
         {
-            currentContextMenu = null; //any sort of navigation should reset our context menu so it will properly re-evaluate on next ref
-            
-            if (item.BaseItem is Person)
-            {
-                NavigateToActor(item);
-                return;
-            }
-
-
-            if (item.BaseItem is Show)
-            {
-                if ((item.HasDataForDetailPage) ||
-                    this.Config.AlwaysShowDetailsPage)
+            Application.UIDeferredInvokeIfRequired(() =>
                 {
-                    item.NavigatingInto();
+                    Logger.ReportVerbose("Navigating to {0} item type {1}", item.Name, item.GetType());
+                    currentContextMenu = null; //any sort of navigation should reset our context menu so it will properly re-evaluate on next ref
+
+                    if (item.BaseItem is Person)
+                    {
+                        NavigateToActor(item);
+                        return;
+                    }
+
+
+                    if (item.BaseItem is Show)
+                    {
+                        if ((item.HasDataForDetailPage) ||
+                            this.Config.AlwaysShowDetailsPage)
+                        {
+                            item.NavigatingInto();
                     if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
                     {
                         BackdropController.Play(item.BaseItem);
                     }
-                    // go to details screen 
-                    var properties = new Dictionary<string, object>();
-                    properties["Application"] = this;
-                    properties["Item"] = item;
-                    properties["ThemeConfig"] = CurrentTheme.Config;
-                    
-                    session.GoToPage(item.BaseItem.CustomUI ?? CurrentTheme.DetailPage, properties);
+                            // go to details screen 
+                            var properties = new Dictionary<string, object>();
+                            properties["Application"] = this;
+                            properties["Item"] = item;
+                            properties["ThemeConfig"] = CurrentTheme.Config;
+                            OpenMCMLPage(item.BaseItem.CustomUI ?? CurrentTheme.DetailPage, properties);
 
-                    return;
-                }
-            }
+                            return;
+                        }
+                    }
 
 
-            var folder = item as MediaBrowser.Library.FolderModel;
-            if (folder != null)
-            {
-                if (!Config.Instance.RememberIndexing)
-                {
-                    folder.DisplayPrefs.IndexBy = MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("NoneDispPref");
-                }
-                if (Config.Instance.AutoEnterSingleDirs && (folder.Folder.Children.Count == 1))
-                {
-                    if (folder.IsRoot) //special breadcrumb if we are going from a single item root
-                        session.AddBreadcrumb("DIRECTENTRY");
+                    var folder = item as MediaBrowser.Library.FolderModel;
+                    if (folder != null)
+                    {
+                        if (!Config.Instance.RememberIndexing)
+                        {
+                            folder.DisplayPrefs.IndexBy = MediaBrowser.Library.Localization.LocalizedStrings.Instance.GetString("NoneDispPref");
+                        }
+                        if (Config.Instance.AutoEnterSingleDirs && (folder.Folder.Children.Count == 1))
+                        {
+                            if (folder.IsRoot) //special breadcrumb if we are going from a single item root
+                                session.AddBreadcrumb("DIRECTENTRY");
+                            else
+                                session.AddBreadcrumb(folder.Name);
+                            folder.NavigatingInto(); //make sure we validate
+                            CurrentFolder = folder;
+                            Navigate(folder.Children[0]);
+                        }
+                        else
+                        {
+                            OpenFolderPage(folder);
+                        }
+                    }
                     else
-                        session.AddBreadcrumb(folder.Name);
-                    folder.NavigatingInto(); //make sure we validate
-                    CurrentFolder = folder;
-                    Navigate(folder.Children[0]);
+                    {
+                        Resume(item);
+                    }
                 }
-                else
-                {
-                    OpenFolderPage(folder);
-                }
-            }
-            else
-            {
-                Resume(item);
-            }
+            );
         }
 
         public void OpenSecurityPage(object prompt)
@@ -3208,35 +3336,27 @@ namespace MediaBrowser
             properties["Application"] = this;
             properties["PromptString"] = prompt;
             this.RequestingPIN = true; //tell page we are calling it (not a back action)
-            session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/ParentalPINEntry", properties);
+            OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/ParentalPINEntry", properties);
         }
 
         public void OpenCustomPlayerUi()
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenCustomPlayerUi());
-            }
-            else
-            {
-                ShowNowPlaying = true; // be sure this is set when we enter so we don't just back right out
-                var properties = new Dictionary<string, object>();
-                properties["Application"] = this;
-                session.GoToPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
-            }
+            ShowNowPlaying = true; // be sure this is set when we enter so we don't just back right out
+            var properties = new Dictionary<string, object>();
+            properties["Application"] = this;
+                
+            OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/CustomPlayer", properties);
         }
 
         public void OpenMCMLPage(string page, Dictionary<string, object> properties)
         {
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
-            {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => OpenMCMLPage(page, properties));
-            }
-            else
-            {
-                currentContextMenu = null; //good chance this has happened as a result of a menu item selection so be sure this is reset
-                session.GoToPage(page, properties);
-            }
+            Application.UIDeferredInvokeIfRequired(() =>
+                {
+                    currentContextMenu = null; //good chance this has happened as a result of a menu item selection so be sure this is reset
+                    Logger.ReportVerbose("GoToPage: {0}", page);
+                    session.GoToPage(page, properties);
+                }
+            );
         }
 
         /// <summary>
@@ -3469,7 +3589,7 @@ namespace MediaBrowser
                             }
 
                             //just display menu - it will take it from there
-                            FirePropertyChanged("MultiPartOptions");
+                            UIFirePropertyChange("MultiPartOptions");
                             DisplayMultiMenu = true;
                             return;
                         }
@@ -3480,7 +3600,7 @@ namespace MediaBrowser
                 {
                     Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
-                    Async.Queue("Access Error", () => MessageBox("Could not access media. Will attempt to stream.  Use UNC paths or path substitution on server and ensure this machine can access them.", true, 10000));
+                    Async.Queue(Async.ThreadPoolName.AccessError, () => MessageBox("Could not access media. Will attempt to stream.  Use UNC paths or path substitution on server and ensure this machine can access them.", true, 10000));
 
                 }
 
@@ -3565,7 +3685,7 @@ namespace MediaBrowser
             {
                 CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
 
-                Async.Queue("Play Intros", () =>
+                Async.Queue(Async.ThreadPoolName.PlayIntros, () =>
                 {
                     // save the main playable so we can play it when we're finished
                     MainPlayable = playable;
@@ -3587,7 +3707,7 @@ namespace MediaBrowser
             CurrentlyPlayingItemId = playable.HasMediaItems ? playable.CurrentMedia.Id : CurrentItem.Id;
             MainPlayable = null; // just make sure this doesn't hang around
 
-            Async.Queue("Play Action", () =>
+            Async.Queue(Async.ThreadPoolName.PlayAction, () =>
             {
                 currentPlaybackController = playable.PlaybackController;
 
@@ -3615,7 +3735,7 @@ namespace MediaBrowser
                 // cause the RAL to re-load if set to watched or un-watched
                 if (RecentItemOption == "watched" || RecentItemOption == "unwatched")
                 {
-                    Async.Queue("quicklist update", () => { foreach (var item in playableItem.PlayedMediaItems.Select(i => i.TopParent).Where(i => i != null).Distinct()) UpdateQuicklist(item); });
+                    Async.Queue(Async.ThreadPoolName.QuicklistUpdate, () => { foreach (var item in playableItem.PlayedMediaItems.Select(i => i.TopParent).Where(i => i != null).Distinct()) UpdateQuicklist(item); });
                 }
             }
 
@@ -3639,21 +3759,19 @@ namespace MediaBrowser
         public void ParentalPINEntered()
         {
             RequestingPIN = false;
-            Async.Queue("Load user", () => LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry)))));
+            Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry)))));
         }
         public void BackToRoot()
         {
-            //be sure we are on the app thread for session access
-            if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
+            Application.UIDeferredInvokeIfRequired(() =>
             {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => BackToRoot());
-                return;
+                //back up the app to the root page - used when library re-locks itself
+                while (!session.AtRoot)
+                {
+                    session.BackPage();
+                }
             }
-            //back up the app to the root page - used when library re-locks itself
-            while (!session.AtRoot)
-            {
-                session.BackPage();
-            }
+            );
         }
 
         public string DescString(string name)
@@ -3683,6 +3801,7 @@ namespace MediaBrowser
 
         public static DialogResult DisplayDialog(string message, string caption, DialogButtons buttons, int timeout)
         {
+            Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == Thread.CurrentThread);
             // We won't be able to take this during a page transition.  This is good!
             // Conversly, no new pages can be navigated while this is present.
             lock (syncObj)

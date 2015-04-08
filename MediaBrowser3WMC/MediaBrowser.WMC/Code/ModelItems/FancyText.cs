@@ -65,7 +65,7 @@ namespace MediaBrowser
                 if (this.useDynamic != value)
                 {
                     this.useDynamic = value;
-                    FirePropertyChanged("UseDynamic");
+                    Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("UseDynamic"));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace MediaBrowser
                 if (this.abc != value)
                 {
                     this.abc = value;
-                    FirePropertyChanged("ABC");
+                    Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("ABC"));
                 }
             }
         }

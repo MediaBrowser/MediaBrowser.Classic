@@ -45,7 +45,7 @@ namespace MediaBrowser
             {
                 _displayText = value;
                 // Im a little worried about this line, if we somehow execue off the UI thread then its messed
-                FirePropertyChanged("DisplayText");
+                Application.UIDeferredInvokeIfRequired(() =>FirePropertyChanged("DisplayText"));
             }
         }
         bool changePending = false;
@@ -70,7 +70,7 @@ namespace MediaBrowser
                     _majorActivity = value;
                     if (!changePending)
                     {
-                        FirePropertyChanged("MajorActivity");
+                        Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("MajorActivity"));
                         changePending = true;
                         activityChangeTimer.Start();
                     }
@@ -85,7 +85,7 @@ namespace MediaBrowser
         {
             lock (informationItems)
             {
-                FirePropertyChanged("MajorActivity");
+                Application.UIDeferredInvokeIfRequired(() => FirePropertyChanged("MajorActivity"));
                 changePending = false;
             }
         }

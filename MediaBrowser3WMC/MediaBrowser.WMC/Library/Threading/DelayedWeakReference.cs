@@ -28,7 +28,7 @@ namespace MediaBrowser.Library.Threading {
         public DelayedWeakReference(T instance, int timeout) {
             Debug.Assert(timeout > 0); 
             obj = instance;
-            Async.Queue("WeakRefExpiry", () => { delayedRef = new WeakReference(obj); obj = null;  }, timeout);
+            Async.Queue(Async.ThreadPoolName.WeakRefExpiry, () => { delayedRef = new WeakReference(obj); obj = null;  }, timeout);
         }
 
 

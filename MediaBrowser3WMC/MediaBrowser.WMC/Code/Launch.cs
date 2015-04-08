@@ -42,11 +42,11 @@ namespace MediaBrowser
             var config = GetConfig();
             if (config == null)
             {
-                AddInHost.Current.ApplicationContext.CloseApplication();
+                host.ApplicationContext.CloseApplication();
                 return;
             }
             //set us up for single instance
-            AddInHost.Current.ApplicationContext.SingleInstance = true;
+            host.ApplicationContext.SingleInstance = true;
 
             Environment.CurrentDirectory = ApplicationPaths.AppProgramPath;
             using (new Util.Profiler("Total Kernel Init"))
@@ -73,7 +73,7 @@ namespace MediaBrowser
             }
             catch (Exception ex)
             {
-                MediaCenterEnvironment ev = Microsoft.MediaCenter.Hosting.AddInHost.Current.MediaCenterEnvironment;
+                MediaCenterEnvironment ev = Application.MediaCenterEnvironment;
                 DialogResult r = ev.Dialog(ex.Message + "\n" + Application.CurrentInstance.StringData("ConfigErrorDial"), Application.CurrentInstance.StringData("ConfigErrorCapDial"), DialogButtons.Yes | DialogButtons.No, 600, true);
                 if (r == DialogResult.Yes)
                 {
@@ -82,7 +82,7 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    AddInHost.Current.ApplicationContext.CloseApplication();
+                    Application.ApplicationContext.CloseApplication();
 
                 }
             }

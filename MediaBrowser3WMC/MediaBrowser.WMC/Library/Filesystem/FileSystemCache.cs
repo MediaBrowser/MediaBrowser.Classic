@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using MediaBrowser.Library.Extensions;
 using MediaBrowser.Library.Logging;
+using MediaBrowser.Library.Threading;
 
 namespace MediaBrowser.Library.Filesystem
 {
@@ -13,6 +15,8 @@ namespace MediaBrowser.Library.Filesystem
     {
         protected string BasePath { get; set; }
         private const string Prefixes = "0123456789abcdef";
+        Timer cleanupTimer;
+
 
         public FileSystemCache(string path)
         {
@@ -29,7 +33,6 @@ namespace MediaBrowser.Library.Filesystem
                     var prefixPath = Path.Combine(BasePath, prefix.ToString(CultureInfo.InvariantCulture));
                     if (!Directory.Exists(prefixPath)) Directory.CreateDirectory(prefixPath);
                 }
-
             }
             catch (Exception e)
             {
@@ -69,5 +72,45 @@ namespace MediaBrowser.Library.Filesystem
             }
         }
 
+
+        internal string GetCacheFileName(string id, int width, int height)
+        {
+            string name = GetCacheFileName(id);
+            if (name != null)
+                return name + string.Format("_{0}x{1}", width, height);
+            else
+                return null;
+        }
+
+        internal void Clean(DateTime utcCutOff)
+        {
+            try
+            {
+                Logger.ReportInfo("Cleaning image cache to UTC time: " + utcCutOff.ToString("HH:mm dd-MMM-yy"));
+                foreach (string folder in Directory.GetDirectories(this.BasePath))
+                    CleanFolder(folder, utcCutOff);
+            }
+            catch (Exception e)
+            {
+                Logger.ReportError("Error cleaning cache: " + e.Message);
+            }
+        }
+
+        private void CleanFolder(string path, DateTime utcCutOff)
+        {
+            
+            foreach (string file in Directory.GetFiles(path))
+            {
+                try
+                {
+                    if (File.GetLastWriteTimeUtc(file) < utcCutOff)
+                        File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    Logger.ReportVerbose("Unable to remove cache file {0} error:{1}", file, ex.Message);
+                }
+            }
+        }
     }
 }

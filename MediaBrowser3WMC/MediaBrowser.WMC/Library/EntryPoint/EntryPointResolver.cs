@@ -20,9 +20,9 @@ namespace MediaBrowser.Library
 
                 try
                 {
-                    if (Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.EntryPointInfo.ContainsKey("context"))
+                    if (Application.ApplicationContext.EntryPointInfo.ContainsKey("context"))
                     {
-                        entryPointPath = Microsoft.MediaCenter.Hosting.AddInHost.Current.ApplicationContext.EntryPointInfo["context"].ToString().Trim().ToLower();
+                        entryPointPath = Application.ApplicationContext.EntryPointInfo["context"].ToString().Trim().ToLower();
 
                         entryPointPath = entryPointPath.Replace("{", String.Empty);
                         entryPointPath = entryPointPath.Replace("}", String.Empty);

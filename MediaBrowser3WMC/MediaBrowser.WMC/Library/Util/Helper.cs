@@ -25,6 +25,7 @@ namespace MediaBrowser.LibraryManagement
     using System.Text.RegularExpressions;
     using System.Xml;
     using MediaBrowser.Library.Logging;
+    using MediaBrowser.Library.Threading;
 
     public static class Helper
     {
@@ -1068,7 +1069,7 @@ namespace MediaBrowser.LibraryManagement
         /// <param name="path"></param>
         public static void Ping(string path)
         {
-            MediaBrowser.Library.Threading.Async.Queue("Ping", () =>
+            MediaBrowser.Library.Threading.Async.Queue(Async.ThreadPoolName.Ping, () =>
             {
                 try
                 {

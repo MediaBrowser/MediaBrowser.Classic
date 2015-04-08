@@ -86,11 +86,11 @@ namespace MediaBrowser
         {
             if (playable.QueueItem)
             {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => QueuePlayableItem(playable));
+                Application.UIDeferredInvokeIfRequired(() => QueuePlayableItem(playable));
             }
             else
             {
-                Microsoft.MediaCenter.UI.Application.DeferredInvoke(_ => PlayPlayableItem(playable));
+                Application.UIDeferredInvokeIfRequired(() => PlayPlayableItem(playable));
             }
         }
 
@@ -99,6 +99,7 @@ namespace MediaBrowser
         /// </summary>
         protected virtual void PlayPlayableItem(PlayableItem playable)
         {
+            System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
             // Prevent sleep/screen saver
             Helper.PreventSleep();
 
@@ -106,7 +107,7 @@ namespace MediaBrowser
             _HasStartedPlaying = false;
 
             // Get this now since we'll be using it frequently
-            MediaCenterEnvironment mediaCenterEnvironment = AddInHost.Current.MediaCenterEnvironment;
+            MediaCenterEnvironment mediaCenterEnvironment = Application.MediaCenterEnvironment;
 
             try
             {
@@ -123,7 +124,7 @@ namespace MediaBrowser
                     return;
                 }
 
-                MediaExperience exp = mediaCenterEnvironment.MediaExperience ?? PlaybackControllerHelper.GetMediaExperienceUsingReflection();
+                MediaExperience exp = Application.MediaExperience;
 
                 if (exp != null)
                 {
@@ -326,7 +327,7 @@ namespace MediaBrowser
 
             foreach (string file in playable.FilesFormattedForPlayer)
             {
-                if (!PlaybackControllerHelper.CallPlayMedia(AddInHost.Current.MediaCenterEnvironment, type, file, true))
+                if (!PlaybackControllerHelper.CallPlayMedia(Application.MediaCenterEnvironment, type, file, true))
                 {
                     success = false;
                     break;
@@ -344,6 +345,8 @@ namespace MediaBrowser
         /// </summary>
         protected void MediaCenterEnvironment_PropertyChanged(IPropertyObject sender, string property)
         {
+            System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
+
             Logger.ReportVerbose("MediaCenterEnvironment_PropertyChanged: " + property);
 
             MediaCenterEnvironment env = sender as MediaCenterEnvironment;
@@ -377,9 +380,10 @@ namespace MediaBrowser
         /// </summary>
         protected void MediaTransport_PropertyChanged(IPropertyObject sender, string property)
         {
+            System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
             MediaTransport transport = sender as MediaTransport;
 
-            MediaCenterEnvironment env = AddInHost.Current.MediaCenterEnvironment;
+            MediaCenterEnvironment env = Application.MediaCenterEnvironment;
 
             MediaExperience exp = env.MediaExperience;
 
@@ -540,7 +544,7 @@ namespace MediaBrowser
             Helper.AllowSleep();
 
             // Fire the OnFinished event for each item
-            Async.Queue("Playback Finished", () => OnPlaybackFinished(e));
+            Async.Queue(Async.ThreadPoolName.PlaybackFinished, () => OnPlaybackFinished(e));
         }
 
         /// <summary>
@@ -582,13 +586,14 @@ namespace MediaBrowser
         /// </summary>
         public override void GoToFullScreen()
         {
+            System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
             if (Playable != null && Playable.UseCustomPlayer)
             {
                 Application.CurrentInstance.OpenCustomPlayerUi();
             }
             else
             {
-                var mce = MediaExperience ?? PlaybackControllerHelper.GetMediaExperienceUsingReflection();
+                var mce = Application.MediaExperience;;
 
                 if (mce != null)
                 {
@@ -597,21 +602,16 @@ namespace MediaBrowser
                 }
                 else
                 {
-                    Logger.ReportError("AddInHost.Current.MediaCenterEnvironment.MediaExperience is null, we have no way to go full screen!");
-                    AddInHost.Current.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("CannotMaximizeDial"), "", Microsoft.MediaCenter.DialogButtons.Ok, 0, true);
+                    Logger.ReportError("this.MediaExperience is null, we have no way to go full screen!");
+                    Application.MediaCenterEnvironment.Dialog(Application.CurrentInstance.StringData("CannotMaximizeDial"), "", Microsoft.MediaCenter.DialogButtons.Ok, 0, true);
                 }
                 
             }
         }
 
-        protected MediaExperience MediaExperience
-        {
-            get
-            {
-                return AddInHost.Current.MediaCenterEnvironment.MediaExperience;
-            }
-        }
+       
 
+        
         /// <summary>
         /// Pauses playback
         /// </summary>
@@ -705,7 +705,7 @@ namespace MediaBrowser
 
         public override void FastForward()
         {
-            var rate = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate;
+            var rate = Application.MediaExperience.Transport.PlayRate;
             if (rate.Equals(2))
             {
                 rate = 3;
@@ -721,12 +721,12 @@ namespace MediaBrowser
                 rate = 2;
             }
 
-            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = rate;
+            Application.MediaExperience.Transport.PlayRate = rate;
         }
 
         public override void Rewind()
         {
-            var rate = AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate;
+            var rate = Application.MediaExperience.Transport.PlayRate;
             if (rate.Equals(2))
             {
                 rate = 6;
@@ -742,7 +742,7 @@ namespace MediaBrowser
                 rate = 2;
             }
 
-            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = rate;
+            Application.MediaExperience.Transport.PlayRate = rate;
         }
 
         /// <summary>
@@ -769,7 +769,7 @@ namespace MediaBrowser
                 if (IsPlaying && !IsPlayingVideo)
                 {
                     // This should skip ahead in music
-                    AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.SkipForward();
+                    Application.MediaExperience.Transport.SkipForward();
                 }
             }
         }
@@ -783,13 +783,13 @@ namespace MediaBrowser
             else if (IsPlaying)
             {
                 // This should skip back in music
-                AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.SkipBack();
+                Application.MediaExperience.Transport.SkipBack();
             }
         }
 
         public override void ResetPlayRate()
         {
-            AddInHost.Current.MediaCenterEnvironment.MediaExperience.Transport.PlayRate = 2;
+            Application.MediaExperience.Transport.PlayRate = 2;
         }
 
         /// <summary>
@@ -799,10 +799,9 @@ namespace MediaBrowser
         {
             try
             {
-                var mce = AddInHost.Current.MediaCenterEnvironment;
                 Logger.ReportVerbose("Trying to seek position :" + new TimeSpan(position).ToString());
-                PlaybackControllerHelper.WaitForStream(mce);
-                mce.MediaExperience.Transport.Position = new TimeSpan(position);
+                PlaybackControllerHelper.WaitForStream(Application.MediaExperience);
+                Application.MediaExperience.Transport.Position = new TimeSpan(position);
             }
             catch (Exception e)
             {
@@ -834,7 +833,7 @@ namespace MediaBrowser
 
         public override void DisplayMessage(string header, string message, int timeout)
         {
-            AddInHost.Current.MediaCenterEnvironment.Dialog(message, header, DialogButtons.Ok, timeout, false);
+            Application.MediaCenterEnvironment.Dialog(message, header, DialogButtons.Ok, timeout, false);
         }
     }
 }
