@@ -459,30 +459,7 @@ namespace Configurator
             e.Handled = true;
         }
 
-        void HandleDashboardNavigate(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(Kernel.ApiClient.DashboardUrl));
-            e.Handled = true;
-        }
 
-
-        private void openLogsFolder_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Process.Start("" + ApplicationPaths.AppLogPath + "");
-            }
-            catch
-            {
-                MessageBox.Show("We were unable to open the Logs folder:\n\n" + ApplicationPaths.AppLogPath + "\n\nMake sure the actual folder exists on the local disk.");
-            }
-        }
-
-        private void tbxNumericOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !Char.IsDigit(e.Text[0]);
-            base.OnPreviewTextInput(e);
-        }
 
         private void Window_Closing(object sender, EventArgs e)
         {

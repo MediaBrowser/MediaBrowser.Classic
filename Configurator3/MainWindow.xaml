@@ -138,11 +138,6 @@
                             <Grid>
                                 <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h5">mediabrowser.tv</Hyperlink></TextBlock>
                                 <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
-                                <TextBlock Margin="282.045,0,0,42.591" VerticalAlignment="Bottom" Height="44.789" HorizontalAlignment="Left" Width="198.955" TextWrapping="Wrap">Server side configuration is done via the  
-                                        <Hyperlink NavigateUri="http://localhost:8096/mediabrowser/dashboard/dashboard.html" RequestNavigate="HandleDashboardNavigate">
-                                            Server Dashboard
-                                        </Hyperlink>
-                                </TextBlock>
                                 <!--<Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
                                     <TextBox Margin="0,31,31,0" Name="tbxSupporterKey" ToolTip="Paste the key from the email you received when you donated" Height="22.38" VerticalAlignment="Top" HorizontalAlignment="Right" Width="254" />
                                     <Button Margin="0,59,31,0" Name="btnValidateKey" HorizontalAlignment="Right" Width="75" Height="22.38" VerticalAlignment="Top" Click="btnValidateKey_Click">Save</Button>
