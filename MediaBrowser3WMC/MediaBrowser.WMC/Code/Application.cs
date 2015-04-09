@@ -1417,7 +1417,7 @@ namespace MediaBrowser
         {
             get
             {
-                if (!_RunningOnExtender.HasValue)
+                if (!_RunningOnExtender.HasValue && AddInHost.Current != null) //need this check to be sure we are actually in WMC
                 {
                     try
                     {
