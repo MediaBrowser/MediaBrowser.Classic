@@ -1478,7 +1478,7 @@ namespace MediaBrowser
             get
             {
                 System.Diagnostics.Debug.Assert(Microsoft.MediaCenter.UI.Application.ApplicationThread == System.Threading.Thread.CurrentThread);
-                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread)
+                if (Microsoft.MediaCenter.UI.Application.ApplicationThread != Thread.CurrentThread && Debugger.IsAttached)
                     Debugger.Break();
                 if (Microsoft.MediaCenter.UI.Application.ApplicationThread != System.Threading.Thread.CurrentThread)
                 {

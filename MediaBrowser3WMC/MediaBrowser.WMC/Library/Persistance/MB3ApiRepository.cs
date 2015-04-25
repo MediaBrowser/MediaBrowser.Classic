@@ -783,7 +783,6 @@ namespace MediaBrowser.Library.Persistance
                 pb.PlayCount = mb3Item.UserData.PlayCount;
                 pb.WasPlayed = mb3Item.UserData.Played;
                 pb.LastPlayed = (mb3Item.UserData.LastPlayedDate ?? DateTime.MinValue).ToLocalTime();
-                Debugger.Break();
             }
             return pb;
         }
