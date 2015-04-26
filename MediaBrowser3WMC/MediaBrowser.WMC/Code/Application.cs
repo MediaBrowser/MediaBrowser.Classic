@@ -1737,7 +1737,8 @@ namespace MediaBrowser
         {
             // Need to put delete on a thread because the play process is asynchronous and
             // we don't want to tie up the ui when we call sleep
-            Async.Queue(Async.ThreadPoolName.DeleteMediaItem, () =>
+            Application.UIDeferredInvokeIfRequired(() =>
+            //Async.Queue(Async.ThreadPoolName.DeleteMediaItem, () =>
             {
                 if (!Kernel.CurrentUser.Dto.Policy.EnableContentDeletion)
                 {
