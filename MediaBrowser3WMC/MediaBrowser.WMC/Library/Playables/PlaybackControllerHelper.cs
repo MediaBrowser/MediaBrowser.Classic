@@ -259,7 +259,7 @@ namespace MediaBrowser.Library.Playables
         {
             string file = media.ToString();
             Logger.ReportVerbose("Calling MediaCenterEnvironment.PlayMedia: " + file);
-            return mediaCenterEnvironment.PlayMedia(type, file, queue);
+            return mediaCenterEnvironment.PlayMedia(type, media, queue);
         }
 
         public static PlayableItem GetCurrentPlaybackItemUsingMetadataTitle(PlaybackController controllerInstance, IEnumerable<PlayableItem> playableItems, string metadataTitle, out int filePlaylistPosition, out int currentMediaIndex)
