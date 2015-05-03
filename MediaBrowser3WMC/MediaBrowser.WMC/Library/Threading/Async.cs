@@ -40,6 +40,7 @@ namespace MediaBrowser.Library.Threading
                 this.maxThreads = maxThreads;
             }
 
+
             public void Queue(Action action, bool urgent)
             {
                 Queue(action, urgent, 0);
@@ -288,6 +289,27 @@ namespace MediaBrowser.Library.Threading
         }
 
 
+        /// <summary>
+        /// Makes a call on a different thread while holding the current thread until it completes or a timeout occurs.
+        /// If an exception is thrown on the other thread it will be re-thrown on this thread
+        /// If a timeout occurs the call will still continue to execute until it actually times out.
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <param name="action"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static bool CallWithTimeout(ThreadPoolName uniqueId, Action action, TimeSpan timeout)
+        {
+            using (AutoResetEvent ev = new AutoResetEvent(false))
+            {
+                Exception exception = null;
+                Queue(uniqueId, () => { try { action(); } catch (Exception ex) { exception = ex; } finally { ev.Set(); } });
+                bool ret = ev.WaitOne(timeout);
+                if (exception != null)
+                    throw exception;
+                return ret;
+            }
+        }
         
         public static void SetMaxThreads(ThreadPoolName uniqueId, int threads)
         {
