@@ -106,7 +106,7 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            if (!Config.Instance.ShowMovieSubViews && CollectionType.Equals("movies"))
+            if (!Config.Instance.ShowMovieSubViews && CollectionType == "movies")
             {
                 //Just get all movies under us instead of the split- out views that will be our children
                 return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
@@ -120,7 +120,7 @@ namespace MediaBrowser.Library.Entities
 
             }
 
-            if (!Config.Instance.ShowTvSubViews && CollectionType.Equals("tvshows"))
+            if (!Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
             {
                 //Just get all series under us instead of the split- out views that will be our children
                 return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
@@ -139,7 +139,7 @@ namespace MediaBrowser.Library.Entities
             // since we have our own latest implementation, exclude those from these views.
             // also eliminate flat songs view since that will probably not perform well
             var ret = base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase)))).ToList();
-            if (CollectionType.Equals("tvshows"))
+            if (CollectionType == "tvshows")
             {
                 ret.Add(new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") });
             }
