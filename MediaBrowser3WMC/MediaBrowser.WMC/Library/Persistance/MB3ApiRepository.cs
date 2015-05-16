@@ -635,7 +635,7 @@ namespace MediaBrowser.Library.Persistance
             return dtos == null ? new List<BaseItem>() : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
         }
 
-        private static readonly List<string> IgnoreTypes = new List<string> { "livetv", "books" };
+        private static readonly List<string> IgnoreTypes = new List<string> { "livetv" };
 
         public IEnumerable<BaseItem> RetrieveUserViews()
         {
