@@ -4,7 +4,9 @@
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
 	  xmlns:s="file://Styles_DoNotEdit.mcml"
 	  xmlns:f="file://Fonts_DoNotEdit.mcml"
+	  xmlns:te="resx://MediaBrowser/MediaBrowser.Resources/TextEdit"
 	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
+      xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
     xmlns:me="Me"
       >
 
@@ -18,7 +20,11 @@
     <Locals>
       <Command Name="Next" />
       <Command Name="Cancel" />
+      <Command Name="ShowManualLogin" />
+      <Command Name="ManualLogin" />
       <cor:String Name="PinValue" String="" />
+      <EditableText Name="Address" />
+      <EditableText Name="Port" Value="8096" />
     </Locals>
 
     <Rules>
@@ -43,6 +49,23 @@
           <Invoke Target="[Application.BackOut]" />
         </Actions>
       </Changed>
+
+      <!--Manual Login-->
+      <Changed Source="[ManualLogin.Invoked]" >
+        <Actions>
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Application.ConnectToServerAsync]" address="[Address.Value]" port="[Port.Value]" />
+        </Actions>
+      </Changed>
+
+      <Changed Source="[ShowManualLogin.Invoked]" >
+        <Actions>
+          <Set Target="[ManualLoginPanel.Visible]" Value="true" />
+          <Set Target="[ShowManualBtn.Visible]" Value="false" />
+          <Invoke Target="[ManualLoginPanel.NavigateInto]" />
+        </Actions>
+      </Changed>
+
     </Rules>
 
     <Content>
@@ -92,6 +115,26 @@
               <sb:SimpleButton Name="NextBtn" Text="Next" Command="[Next]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
               <sb:SimpleButton Name="CancelBtn" Text="Cancel"  Command="[Cancel]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
 
+            </Children>
+          </Panel>
+          <sb:SimpleButton  Name="ShowManualBtn" Text="[Application.LocalStrings.#ManualLogin!cor:String]" Alpha=".7" Margins="20,0,0,20"  Command="[ShowManualLogin]" Size="200,40" Font="Segoe Media Center Light, 14, Bold">
+            <LayoutInput>
+              <FormLayoutInput Horizontal="Near" Vertical="Far"/>
+            </LayoutInput>
+            
+          </sb:SimpleButton>
+
+
+          <Panel Name="ManualLoginPanel" Layout="HorizontalFlow" Visible="false"  >
+            <LayoutInput>
+              <FormLayoutInput Left="Parent, 0, 120" Bottom="Parent,1,-30"/>
+            </LayoutInput>
+            <Children>
+              <te:TextEdit Label="Address" EditableText="[Address]" MaximumSize="300,0" EditSize="200,34" 
+                           Font="Segoe Media Center Light, 16, Bold" MaxChars="60" />
+              <te:TextEdit Label="Port" EditableText="[Port]" MaximumSize="200,0" EditSize="100,34" 
+                           Font="Segoe Media Center Light, 16, Bold" MaxChars="8" />
+              <sb:SimpleButton  Name="ManualBtn" Text="[Application.LocalStrings.#Login!cor:String]" Margins="10,0,0,0"  Command="[ManualLogin]" Size="100,40" Font="Segoe Media Center Light, 16, Bold" />
             </Children>
           </Panel>
 

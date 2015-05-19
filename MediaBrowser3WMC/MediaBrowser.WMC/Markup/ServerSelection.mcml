@@ -67,7 +67,8 @@
       <!--Manual Login-->
       <Changed Source="[ManualLogin.Invoked]" >
         <Actions>
-          <Invoke Target="[Application.ConnectToServer]" address="[Address.Value]" port="[Port.Value]" />
+          <PlaySound Sound="sound://sounds:Miniselect" />
+          <Invoke Target="[Application.ConnectToServerAsync]" address="[Address.Value]" port="[Port.Value]" />
         </Actions>
       </Changed>
 

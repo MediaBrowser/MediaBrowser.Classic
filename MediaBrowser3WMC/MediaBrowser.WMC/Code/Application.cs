@@ -1974,9 +1974,9 @@ namespace MediaBrowser
             return false;
         }
 
-        public void ConnectToServer(string address, string port)
+        public void ConnectToServerAsync(string address, string port)
         {
-            ConnectToServer(address, port, null);
+            Async.Queue(Async.ThreadPoolName.Common, ()=> ConnectToServer(address, port, null));
         }
 
         public void ConnectToServer(string address, string port, ServerInfo info)
