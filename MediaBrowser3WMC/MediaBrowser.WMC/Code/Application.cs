@@ -2133,8 +2133,17 @@ namespace MediaBrowser
                 {
                     // we're in - if this fails, we'll fall through to the login screen
                     UsingDirectEntry = true;
-                    OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application",this}});
+                    OpenMCMLPage("resx://MediaBrowser/MediaBrowser.Resources/SplashPage", new Dictionary<string, object> {{"Application", this}});
                     return;
+                }
+                else
+                {
+                    // must be invalid credentials saved - clear them out
+                    Kernel.Instance.CommonConfigData.AutoLogonUserName = null;
+                    Kernel.Instance.CommonConfigData.AutoLogonPw = null;
+                    Kernel.Instance.CommonConfigData.LogonAutomatically = false;
+                    Kernel.Instance.CommonConfigData.FindServerAutomatically = true;
+                    Kernel.Instance.CommonConfigData.Save();
                 }
             }
 
