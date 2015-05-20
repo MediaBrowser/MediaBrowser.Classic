@@ -1737,7 +1737,8 @@ namespace MediaBrowser
         {
             // Need to put delete on a thread because the play process is asynchronous and
             // we don't want to tie up the ui when we call sleep
-            Async.Queue(Async.ThreadPoolName.DeleteMediaItem, () =>
+            Application.UIDeferredInvokeIfRequired(() =>
+            //Async.Queue(Async.ThreadPoolName.DeleteMediaItem, () =>
             {
                 if (!Kernel.CurrentUser.Dto.Policy.EnableContentDeletion)
                 {
@@ -1764,10 +1765,16 @@ namespace MediaBrowser
                     Item parent = Item.PhysicalParent;
                     string path = Item.Path;
                     string name = Item.Name;
-                    var topParents = Kernel.Instance.FindItems(Item.Id).Select(i => i.TopParent).Distinct(i => i.Id);
-
+                    IEnumerable<Folder> topParents = null;
                     try
                     {
+                        if (!Async.CallWithTimeout(Async.ThreadPoolName.DeleteMediaItem, () => { topParents = Kernel.Instance.FindItems(Item.Id).Select(i => i.TopParent).Distinct(i => i.Id); }, new TimeSpan(0, 0, 30)))
+                        {
+                            // call has failed notify user an abort?
+                            mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
+                            return;
+                        }
+
                         //play something innocuous to be sure the file we are trying to delete is not in the now playing window
                         string DingFile = System.Environment.ExpandEnvironmentVariables("%WinDir%") + "\\Media\\Windows Recycle.wav";
 
@@ -1779,8 +1786,36 @@ namespace MediaBrowser
                         System.Threading.Thread.Sleep(1000);
 
                         // Now ask the server to delete it
-                        Kernel.ApiClient.DeleteItem(Item.BaseItem.ApiId);
+                        if (!Async.CallWithTimeout(Async.ThreadPoolName.DeleteMediaItem, () => Kernel.ApiClient.DeleteItem(Item.BaseItem.ApiId), new TimeSpan(0, 0, 30)))
+                        {
+                            // call has failed notify user an abort?
+                            mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
+                            return;
+                        }
 
+                   
+                        DeleteNavigationHelper(Item);
+                        // Show a message - the time it takes them to respond to this will hopefully be enough for it to be gone from the server
+                        Thread.Sleep(1000);
+                        Information.AddInformationString(LocalizedStrings.Instance.GetString("DelServerDial"));
+                        //MessageBox(LocalizedStrings.Instance.GetString("DelServerDial"));
+                        Thread.Sleep(7000); // in case they dismiss very quickly
+
+                        IEnumerable<BaseItem> items = null;
+                        if (!Async.CallWithTimeout(Async.ThreadPoolName.DeleteMediaItem, () => { items = Kernel.Instance.FindItems(Item.Id); }, new TimeSpan(0, 0, 30)))
+                        {
+                            // call has failed notify user an abort?
+                            mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
+                            return;
+                        }
+
+                        if (items!=null)
+                            foreach (var item in items) 
+                                item.Parent.RefreshMetadata();
+                        this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
+                        // And refresh the RAL of all needed parents
+                        foreach (var folder in topParents) 
+                            folder.OnQuickListChanged(null);
                     }
                     catch (Exception e)
                     {
@@ -1788,16 +1823,6 @@ namespace MediaBrowser
                         mce.Dialog(CurrentInstance.StringData("NotDelUnknownDial"), CurrentInstance.StringData("DelFailedDial"), DialogButtons.Ok, 0, true);
                         return;
                     }
-                    DeleteNavigationHelper(Item);
-                    // Show a message - the time it takes them to respond to this will hopefully be enough for it to be gone from the server
-                    Thread.Sleep(1000);
-                    Information.AddInformationString(LocalizedStrings.Instance.GetString("DelServerDial"));
-                    //MessageBox(LocalizedStrings.Instance.GetString("DelServerDial"));
-                    Thread.Sleep(7000); // in case they dismiss very quickly
-                    foreach (var item in Kernel.Instance.FindItems(Item.Id)) item.Parent.RefreshMetadata();
-                    this.Information.AddInformation(new InfomationItem("Deleted media item: " + name, 2));
-                    // And refresh the RAL of all needed parents
-                    foreach (var folder in topParents) folder.OnQuickListChanged(null);
                     
                 }
                 else
