@@ -2050,8 +2050,6 @@ namespace MediaBrowser
             }
             else
             {
-                if (config.ShowServerSelection) return false;
-
                 //server specified
                 var retries = 0;
                 while (!connected && retries < 3)

@@ -71,7 +71,6 @@
         <Options>
           <cor:String String="Find Automatically" />
           <cor:String String="[Application.ServerAddressOptionString]" />
-          <cor:String String="Show Server Selection" />
         </Options>
       </Choice>
     </Locals>
@@ -110,7 +109,6 @@
         </Conditions>
         <Actions>
           <Set Target="[Application.Config.FindServerAutomatically]" Value="true" />
-          <Set Target="[Application.Config.ShowServerSelection]" Value="false" />
         </Actions>
       </Changed>
 
@@ -120,17 +118,6 @@
         </Conditions>
         <Actions>
           <Set Target="[Application.Config.FindServerAutomatically]" Value="false" />
-          <Set Target="[Application.Config.ShowServerSelection]" Value="false" />
-        </Actions>
-      </Changed>
-
-      <Changed Source="[ServerConnectModel.Chosen]" >
-        <Conditions>
-          <Equality Source="[ServerConnectModel.ChosenIndex]" Value="2" />
-        </Conditions>
-        <Actions>
-          <Set Target="[Application.Config.FindServerAutomatically]" Value="false" />
-          <Set Target="[Application.Config.ShowServerSelection]" Value="true" />
         </Actions>
       </Changed>
 

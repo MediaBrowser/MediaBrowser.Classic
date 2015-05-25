@@ -22,7 +22,6 @@ namespace MediaBrowser
     public class CommonConfigData
     {
         public bool FindServerAutomatically = true;
-        public bool ShowServerSelection = false;
         public string ServerAddress = "";
         public int ServerPort = 8096;
         public string LastServerMacAddress;

@@ -562,19 +562,6 @@ namespace MediaBrowser
                 CommonData.ServerAddress = Kernel.ApiClient.ServerHostName; Save(); FireConfigPropertyChanged("FindServerAutomatically"); } }
         }
 
-        public bool ShowServerSelection
-        {
-            get { return this.CommonData.ShowServerSelection; }
-            set
-            {
-                if (this.CommonData.ShowServerSelection != value)
-                {
-                    this.CommonData.ShowServerSelection = value;
-                    Save(); FireConfigPropertyChanged("ShowServerSelection");
-                }
-            }
-        }
-
         public bool SavePassword
         {
             get { return this.CommonData.SavePassword; }
