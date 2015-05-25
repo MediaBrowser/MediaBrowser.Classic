@@ -508,8 +508,8 @@
                 <Children>
                   <ColorFill Content="Transparent" Layout="Anchor">
                     <Children>
-                      <Text Name="logoName" Content="media browser " Color="White" Font="Segoe UI, 16" />
-                      <Text Content="media browser " Color="Black" Font="Segoe UI, 16" >
+                      <Text Name="logoName" Content="emby " Color="White" Font="Segoe UI, 16" />
+                      <Text Content="emby " Color="Black" Font="Segoe UI, 16" >
                         <LayoutInput>
                           <AnchorLayoutInput Top="logoName, 0, 2" Left="logoName, 0, 2"/>
                         </LayoutInput>

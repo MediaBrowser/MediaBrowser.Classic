@@ -1404,7 +1404,7 @@ namespace MediaBrowser
                     if (pi != null)
                     {
                         HostControl hc = (HostControl)pi.GetValue(ah2, null);
-                        hc.Dialog(message, "Media Browser", 1, 120, true);
+                        hc.Dialog(message, "Emby", 1, 120, true);
                     }
                 }
             }
@@ -1855,7 +1855,7 @@ namespace MediaBrowser
         public void Init()
         {
             Config.IsFirstRun = false;
-            Logger.ReportInfo("Media Browser (version " + AppVersion + ") Starting up.");
+            Logger.ReportInfo("Emby (version " + AppVersion + ") Starting up.");
             Logger.ReportInfo("Startup parameters: "+ Config.StartupParms);
             //let's put some useful info in here for diagnostics
             if (!Config.AutoValidate)

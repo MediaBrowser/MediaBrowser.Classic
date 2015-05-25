@@ -102,10 +102,10 @@ namespace MediaBrowser.Util
                     if (newVersion != null)
                     {
                         Logger.ReportVerbose("New version {0} found.",newVersion.versionStr);
-                        if (prompt && _appRef.YesNoBox(string.Format("Version {0} ({1}) of MB Classic available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
+                        if (prompt && _appRef.YesNoBox(string.Format("Version {0} ({1}) of Emby for WMC available.  Update now?", newVersion.versionStr, newVersion.classification)) == "Y")
                         {
-                            WriteToUpdateLog("Updating MBC to new version "+newVersion.versionStr);
-                            _appRef.MessageBox("MB Classic will now exit to update.  It will restart when the update is complete.");
+                            WriteToUpdateLog("Updating Emby to new version "+newVersion.versionStr);
+                            _appRef.MessageBox("Emby for WMC will now exit to update.  It will restart when the update is complete.");
                             //Kick off the installer and shut us down
                             try
                             {
@@ -143,7 +143,7 @@ namespace MediaBrowser.Util
                     }
                     else
                     {
-                        _appRef.Information.AddInformationString("MB Classic is up to date");
+                        _appRef.Information.AddInformationString("Emby for WMC is up to date");
                         Logger.ReportInfo("==== MB Classic is up to date.");
                         return false;
                     }
@@ -152,7 +152,7 @@ namespace MediaBrowser.Util
             catch (Exception e)
             {
                 // No biggie, just return out.
-                Logger.ReportException("Error attempting to check for an update to Media Browser Classic", e);
+                Logger.ReportException("Error attempting to check for an update to Emby for WMC", e);
             }
 
             return false;

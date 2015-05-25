@@ -75,25 +75,25 @@
             </LayoutInput>
           </Graphic>
 
-          <Text Content="Welcome to Media Browser" Font="Segoe UI Light, 48" Color="White" Margins="50,50,0,0" >
+          <Text Content="Welcome to Emby for WMC" Font="Segoe UI Light, 48" Color="White" Margins="50,50,0,0" >
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Vertical="Near" />
             </LayoutInput>
           </Text>
 
-          <Text Name="FirstPara" Content="Media Browser is a centralized management and playback system for all of your videos, movies, tv shows, photos and more. It relies upon a server program to provide you access to and playback of your media." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,50,50,0" >
+          <Text Name="FirstPara" Content="Emby is a centralized management and playback system for all of your videos, movies, tv shows, photos and more. It relies upon a server program to provide you access to and playback of your media." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,50,50,0" >
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Top="Parent, .2" />
             </LayoutInput>
           </Text>
 
-          <Text Name="SecondPara" Content="If you don't have a Media Browser server on your network but someone has shared theirs with you, you can access it by using Media Browser Connect.  Simply go to http://mediabrowser.tv/pin, login with your Media Browser Community ID and enter the PIN code below.  Then come back here and select 'Next'." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,10,50,0" >
+          <Text Name="SecondPara" Content="If you don't have an Emby server on your network but someone has shared theirs with you, you can access it by using Emby Connect.  Simply go to http://emby.media/pin, login with your Emby Community ID and enter the PIN code below.  Then come back here and select 'Next'." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,10,50,0" >
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Top="FirstPara, 1" />
             </LayoutInput>
           </Text>
 
-          <Text Name="ThirdPara" Content="If you don't have access to a Media Browser Server, you can install one by going to http://mediabrowser.tv." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,20,50,50" >
+          <Text Name="ThirdPara" Content="If you don't have access to an Emby Server, you can install one by going to http://emby.media." WordWrap="true" Font="Segoe UI Light, 18, Bold" Color="White" Margins="50,20,50,50" >
             <LayoutInput>
               <FormLayoutInput Horizontal="Near" Top="SecondPara, 1" />
             </LayoutInput>

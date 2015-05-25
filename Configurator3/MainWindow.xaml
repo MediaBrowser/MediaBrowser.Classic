@@ -150,7 +150,7 @@
             </TabControl>
             <TextBlock Height="25" Margin="10,536,79,0" Name="alertText" VerticalAlignment="Top" Text="Some of your plugins have updates available" FontSize="16" Foreground="MidnightBlue" FontWeight="Bold" Opacity="0" IsEnabled="False" Visibility="Hidden" />
         </Grid>
-        <Image Height="53" HorizontalAlignment="Right" Margin="0,15,10,0" Name="ConfiguratorLogo" Stretch="Fill" VerticalAlignment="Top" Width="349" Source="Images/mbclogo400.png" />
+        <Image Height="53" HorizontalAlignment="Right" Margin="0,15,10,0" Name="ConfiguratorLogo" VerticalAlignment="Top" Width="349" Source="Images/mbclogo400.png" />
         <Label FontSize="10" Height="21" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,10,0" Name="lblVersion" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Width="141">Version 0.0.0.0</Label>
     </Grid>
 </Window>

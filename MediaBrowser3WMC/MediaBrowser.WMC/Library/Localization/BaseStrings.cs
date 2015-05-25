@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0102";
+        const string VERSION = "1.0103";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -88,7 +88,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowMusicGenresCollectionConfigDesc = "Show a top level folder of all music by genre. Restart MBC to see changes.";
         public string ShowMusicAlbumCollectionConfigDesc = "Show a top level folder of all music by album. Restart MBC to see changes.";
         public string ShowNewItemNotificationConfigDesc = "Show a notification window when new items are added";
-        public string CheckForUpdateConfigDesc = "Check for updates to MB Classic";
+        public string CheckForUpdateConfigDesc = "Check for updates to Emby for WMC";
         public string TreatWatchedAsInProgressConfigDesc = "Treat the 'Watched' recent list as an 'In-Progress' list instead.  Anything resumable will appear instead of fully-watched items.";
         public string SlideShowIntervalConfigDesc = "The number of seconds to show each item in a photo slide show";
         public string HttpTimeoutConfigDesc = "The maximum amount of time to wait for the server to respond to a request. 1000 = 1 second.";
@@ -194,7 +194,7 @@ namespace MediaBrowser.Library.Localization
         public string MultipleFileBehaviorConfig = "Multiple File Behavior";
         public string TreatMultipleFilesAsSingleMovieConfig = "Treat Multiple Files As Single Movie";
         public string MultipleFileSizeLimitConfig = "Multiple File Size Limit";
-        public string MBThemeConfig = "Media Browser Theme";
+        public string MBThemeConfig = "Emby Theme";
         public string VisualThemeConfig = "Visual Theme";
         public string ColorSchemeConfig = "Color Scheme *";
         public string FontSizeConfig = "Font Size *";
@@ -429,24 +429,24 @@ namespace MediaBrowser.Library.Localization
         public string NotDelTypeDial = "The selected media item cannot be deleted due to its Item-Type or you have not enabled this feature in the configuration file.";
         public string FirstTimeDial = "As this is the first time you have run Media Browser please setup the inital configuration";
         public string FirstTimeCapDial = "Configure";
-        public string EntryPointErrorDial = "Media Browser could not launch.  Please be sure the server is running, awake and available on the network. ";
+        public string EntryPointErrorDial = "Emby could not launch.  Please be sure the server is running, awake and available on the network. ";
         public string EntryPointErrorCapDial = "Entrypoint Error";
-        public string CriticalErrorDial = "Media Browser encountered a critical error and had to shut down: ";
+        public string CriticalErrorDial = "Emby encountered a critical error and had to shut down: ";
         public string CriticalErrorCapDial = "Critical Error";
         public string ClearCacheErrorDial = "An error occured during the clearing of the cache, you may wish to manually clear it from {0} before restarting Media Browser";
-        public string RestartMBDial = "Please restart Media Browser";
+        public string RestartMBDial = "Please restart Emby";
         public string ClearCacheDial = "Are you sure you wish to clear the cache?\nThis will erase all cached and downloaded information and images.";
         public string ClearCacheCapDial = "Clear Cache";
         public string CacheClearedDial = "Cache Cleared";
         public string ResetConfigDial = "Are you sure you wish to reset all configuration to defaults?";
         public string ResetConfigCapDial = "Reset Configuration";
         public string ConfigResetDial = "Configuration Reset";
-        public string UpdateMBDial = "Please visit www.mediabrowser.tv/download to install the new version.";
+        public string UpdateMBDial = "Please visit emby.media/download to install the new version.";
         public string UpdateMBCapDial = "Update Available";
-        public string UpdateMBExtDial = "There is an update available for Media Browser.  Please update Media Browser next time you are at your MediaCenter PC.";
-        public string DLUpdateFailDial = "Media Browser will operate normally and prompt you again the next time you load it.";
+        public string UpdateMBExtDial = "There is an update available for Emby for WMC.  Please update the next time you are at your MediaCenter PC.";
+        public string DLUpdateFailDial = "Emby will operate normally and prompt you again the next time you load it.";
         public string DLUpdateFailCapDial = "Update Download Failed";
-        public string UpdateSuccessDial = "Media Browser must now exit to apply the update.  It will restart automatically when it is done";
+        public string UpdateSuccessDial = "Emby for WMC must now exit to apply the update.  It will restart automatically when it is done";
         public string UpdateSuccessCapDial = "Update Downloaded";
         public string CustomErrorDial = "Customisation Error";
         public string ConfigErrorDial = "Reset to default?";
@@ -469,7 +469,7 @@ namespace MediaBrowser.Library.Localization
         public string NoContentDial = "No Content that can be played in this context.";
         public string FontsMissingDial = "CustomFonts.mcml as been patched with missing values";
         public string StyleMissingDial = "{0} has been patched with missing values";
-        public string ManualRefreshDial = "The server will scan your library. Changes will be reflected in MB Classic when it is finished.";
+        public string ManualRefreshDial = "The server will scan your library. Changes will be reflected in Emby for WMC when it is finished.";
         public string ForcedRebuildDial = "Your library is currently being migrated by the service.  The service will re-start when it is finished and you may then run Media Browser.";
         public string ForcedRebuildCapDial = "Library Migration";
         public string RefreshFailedDial = "The last service refresh process failed.  Please run a manual refresh from the service.";
@@ -523,7 +523,7 @@ namespace MediaBrowser.Library.Localization
         public string AlsoHere = "Also Here";
         public string Part = "Part";
         public string AllParts = "All Parts";
-        public string ExitApplication = "Exit MB Classic";
+        public string ExitApplication = "Exit Emby for WMC";
         public string Logout = "Logout";
         public string SleepMachine = "Put Machine to Sleep";
         public string StartingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -547,7 +547,7 @@ namespace MediaBrowser.Library.Localization
         public string FilterByRated = "Filter by Rating";
 
         //Profiler
-        public string WelcomeProf = "Welcome to Media Browser";
+        public string WelcomeProf = "Welcome to Emby for WMC";
         public string ProfilerTimeProf = "{1} took {2} seconds.";
         public string RefreshProf = "Refresh";
         public string SetWatchedProf = "Set Played {0}";
