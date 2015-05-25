@@ -7,12 +7,12 @@ using System;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Media Browser 3")]
-[assembly: AssemblyDescription("Windows7/Vista MCE Media Browser")]
+[assembly: AssemblyTitle("Emby for WMC")]
+[assembly: AssemblyDescription("Windows7/8 MCE Emby")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Media Browser Team")]
-[assembly: AssemblyProduct("Media Browser 3")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("Emby Media")]
+[assembly: AssemblyProduct("Emby for WMC")]
+[assembly: AssemblyCopyright("Copyright ©  2013-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
@@ -33,6 +33,6 @@ using System;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.268")]
+[assembly: AssemblyVersion("3.0.269")]
 
 [assembly: InternalsVisibleTo("TestMediaBrowser,PublicKey=00240000048000009400000006020000002400005253413100040000010001008fa0e394adf886d9c516901270b31bbb969a2e7557ea7321255097a7047f83f385fc8092939b08b283e47f24ed1e9572fa9d718ef93243204ff1ffccd6d02e6b5258443b13230289436318434c7226206483ca78103ff04db174b77d1db7cf1faf83184245338d5837311fcb683a58cd348d02fcb154b3675533eac5f6f903ec")]

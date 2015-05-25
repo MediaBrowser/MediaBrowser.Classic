@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.268.0" ?>
-<?define Property_ProductCode = "{80264641-BDF3-4A60-99E3-F1C4CDF79E70}" ?>
+<?define Property_ProductVersion = "3.0.269.0" ?>
+<?define Property_ProductCode = "{842F0F3F-DF04-4CE1-9450-423FB4459D64}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -87,17 +87,17 @@
         <CreateFolder Directory="ApplicationHelpAndSupportFolder"/>
         <!-- Create the default startmenu shortcuts-->
         <Shortcut Id="Configurator"
-                  Name="Media Browser Classic Configurator"
-                  Description="Configuration for MB Classic"
+                  Name="Emby for WMC Configurator"
+                  Description="Configuration for Emby"
                   Target="[APPROOTDIRECTORY]Configurator.exe"
                   WorkingDirectory="APPROOTDIRECTORY"/>
         <util:InternetShortcut Id="OfficialWebsite"
-                  Name="Media Browser Official Website"
-                  Target="http://www.mediabrowser3.com"
+                  Name="Emby Official Website"
+                  Target="http://emby.media"
                   Type="url"/>
         <util:InternetShortcut Id="CommunityTracker"
-                  Name="Media Browser Community"
-                  Target="http://mediabrowser3.com/community"
+                  Name="Emby Community"
+                  Target="http://emby.media/community"
                   Directory="ApplicationHelpAndSupportFolder"
                   Type="url"/>
         <RemoveFolder Id="RemoveApplicationHelpAndSupportFolder" Directory="ApplicationHelpAndSupportFolder" On="uninstall"/>
@@ -111,8 +111,8 @@
       <Component Id="OptionalStartmenuFolderShortcut" Guid="BE717AEA-F75B-43c7-9C94-510CA3F0F77E">
         <Condition>OPTIONALSTARTMENUSHORTCUT</Condition>
         <Shortcut Id="MediaBrowerStartmenu"
-                  Name="Media Browser Classic"
-                  Description="Media Browser 3 WMC Client"
+                  Name="Emby for WMC"
+                  Description="Emby WMC Client"
                   Target="[EhomeFolder]ehshell.exe"
                   Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
                   WorkingDirectory="EhomeFolder"
@@ -127,8 +127,8 @@
       <Component Id="OptionalDesktopFolderShortcut" Guid="F2BBDA11-689A-41BA-B58B-8AEA48A572BF">
         <Condition>OPTIONALDESKTOPSHORTCUT</Condition>
         <Shortcut Id="MediaBrowerDesktop"
-                  Name="MB Classic"
-                  Description="Media Browser 3 WMC Client"
+                  Name="Emby for WMC"
+                  Description="Emby WMC Client"
                   Target="[EhomeFolder]ehshell.exe"
                   Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
                   WorkingDirectory="EhomeFolder"
@@ -143,8 +143,8 @@
       <Component Id="OptionalMediaBrowserStartupFolderShortcut" Guid="987A0CDA-87F1-455e-9BE3-59AFE185D8DD">
         <Condition>OPTIONALMBSTARTUPSHORTCUT</Condition>
         <Shortcut Id="MediaBrowerStartup"
-                  Name="Media Browser Classic"
-                  Description="Media Browser 3 WMC Client"
+                  Name="Emby for WMC"
+                  Description="Emby WMC Client"
                   Target="[EhomeFolder]ehshell.exe"
                   Arguments="/nostartupanimation /entrypoint:{CE32C570-4BEC-4aeb-AD1D-CF47B91DE0B2}\{FC9ABCCC-36CB-47ac-8BAB-03E8EF5F6F22}"
                   WorkingDirectory="EhomeFolder"
