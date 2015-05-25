@@ -2,8 +2,6 @@
       xmlns:cor="assembly://MsCorLib/System"
 	  xmlns:a="assembly://MediaBrowser/MediaBrowser"
 	  xmlns:i="resx://MediaBrowser/MediaBrowser.Resources/Images"
-	  xmlns:s="file://Styles_DoNotEdit.mcml"
-	  xmlns:f="file://Fonts_DoNotEdit.mcml"
 	  xmlns:te="resx://MediaBrowser/MediaBrowser.Resources/TextEdit"
 	  xmlns:sb="resx://MediaBrowser/MediaBrowser.Resources/SimpleButton"
       xmlns:sounds="resx://MediaBrowser/MediaBrowser.Resources/Sounds"
@@ -112,8 +110,8 @@
               <FormLayoutInput Horizontal="Far" Vertical="Far" />
             </LayoutInput>
             <Children>
-              <sb:SimpleButton Name="NextBtn" Text="Next" Command="[Next]" Visible="true" Size="250,50" Font="font://f:CP_ButtonFont"/>
-              <sb:SimpleButton Name="CancelBtn" Text="Cancel"  Command="[Cancel]" Visible="true" Size="225,50" Font="font://f:CP_ButtonFont"/>
+              <sb:SimpleButton Name="NextBtn" Text="Next" Command="[Next]" Visible="true" Size="250,50" Font="Segoe Media Center Light, 20, Bold"/>
+              <sb:SimpleButton Name="CancelBtn" Text="Cancel"  Command="[Cancel]" Visible="true" Size="225,50" Font="Segoe Media Center Light, 20, Bold"/>
 
             </Children>
           </Panel>
