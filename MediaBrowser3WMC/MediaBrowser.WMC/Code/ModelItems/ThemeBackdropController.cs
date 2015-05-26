@@ -67,7 +67,7 @@ namespace MediaBrowser.Code.ModelItems
         public bool Play(BaseItem item)
         {
             var coll = new MediaCollection();
-            if (item.ThemeVideos != null)
+            if (item.ThemeVideos != null && item.ThemeVideos.Count > 0)
             {
                 for (var i = 0; i < Config.Instance.ThemeBackgroundRepeat; i++ )
                 {
@@ -77,7 +77,7 @@ namespace MediaBrowser.Code.ModelItems
                 IsPlayingVideo = true;
             }
 
-            else if (item.ThemeSongs != null)
+            else if (item.ThemeSongs != null && item.ThemeSongs.Count > 0)
             {
                 for (var i = 0; i < Config.Instance.ThemeBackgroundRepeat; i++)
                 {
