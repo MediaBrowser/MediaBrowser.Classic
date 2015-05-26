@@ -425,14 +425,8 @@ namespace MediaBrowser.Library.Entities {
                 var result = Kernel.ApiClient.GetAllThemeMedia(Kernel.CurrentUser.ApiId, ThemeId);
                 if (result == null) return;
 
-                if (result.ThemeSongsResult.TotalRecordCount > 0)
-                {
-                    ThemeSongs = result.ThemeSongsResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList();
-                }
-                if (result.ThemeVideosResult.TotalRecordCount > 0)
-                {
-                    ThemeVideos = result.ThemeVideosResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList();
-                }
+                ThemeSongs = result.ThemeSongsResult.TotalRecordCount > 0 ? result.ThemeSongsResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList() : new List<ThemeItem>();
+                ThemeVideos = result.ThemeVideosResult.TotalRecordCount > 0 ? result.ThemeVideosResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList() : new List<ThemeItem>();
             }
             catch (Exception e)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
@@ -18,6 +19,10 @@ namespace MediaBrowser.Library.Entities {
 
         public string SeriesId { get; set; }
         public string SeasonId { get; set; }
+
+        protected static Dictionary<Guid, Series> SeriesCache = new Dictionary<Guid, Series>();
+        protected static Dictionary<Guid, Season> SeasonCache = new Dictionary<Guid, Season>();
+ 
 
         public override bool IsMissing
         {
@@ -104,9 +109,14 @@ namespace MediaBrowser.Library.Entities {
             var sid = SeasonId ?? ApiParentId;
             if (seasonItem == null && !string.IsNullOrEmpty(sid))
             {
-                var seasonId = new Guid(sid);
-                seasonItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(seasonId) as Season;
+                lock (SeasonCache)
+                {
+                    var id = new Guid(sid);
+                    seasonItem = SeasonCache.GetValueOrDefault(id, null) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(id) as Season;
+                   SeasonCache[id] = seasonItem;
+                }
             }
+
             return seasonItem;
         }
 
@@ -115,7 +125,12 @@ namespace MediaBrowser.Library.Entities {
         {
             if (seriesItem == null && !string.IsNullOrEmpty(this.SeriesId))
             {
-                seriesItem = Kernel.Instance.MB3ApiRepository.RetrieveItem(new Guid(SeriesId)) as Series;
+                lock (SeriesCache)
+                {
+                    var id = new Guid(SeriesId);
+                    seriesItem = SeriesCache.GetValueOrDefault(id, null) ?? Kernel.Instance.MB3ApiRepository.RetrieveItem(id) as Series;
+                    SeriesCache[id] = seriesItem;
+                }
             }
             return seriesItem;
         }
