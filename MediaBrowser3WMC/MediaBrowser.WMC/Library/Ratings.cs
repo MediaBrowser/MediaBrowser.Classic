@@ -12,8 +12,8 @@ namespace MediaBrowser.Library
 {
     public class Ratings
     {
-        private static Dictionary<string, int> ratings;
-        private static Dictionary<int, string> ratingsStrings = new Dictionary<int, string>();
+        private static Dictionary<string, int> _ratings;
+        private static readonly Dictionary<int, string> ratingsStrings = new Dictionary<int, string>();
         private static ConfigData _config;
         private static ConfigData Config
         {
@@ -22,12 +22,12 @@ namespace MediaBrowser.Library
 
         public Ratings(bool blockUnrated)
         {
-            if (ratings == null) Initialize(blockUnrated);
+            if (_ratings == null) Initialize(blockUnrated);
         }
 
         public Ratings()
         {
-            this.Initialize(false);
+            if (_ratings == null) Initialize(false);
         }
 
         /// <summary>
@@ -37,18 +37,20 @@ namespace MediaBrowser.Library
         public Ratings(ConfigData cfg)
         {
             _config = cfg;
-            this.Initialize(false);
+            if (_ratings== null) Initialize(false);
         }
 
         public void Initialize(bool blockUnrated)
         {
+            if (_ratings != null) return;  //already intitialized
+
             //We get our ratings from the server
-            ratings = new Dictionary<string, int>();
+            _ratings = new Dictionary<string, int>();
             try
             {
                 foreach (var rating in Kernel.ApiClient.GetParentalRatings())
                 {
-                    ratings.Add(rating.Name, rating.Value);
+                    _ratings.Add(rating.Name, rating.Value);
                 }
             }
             catch (Exception e)
@@ -59,7 +61,7 @@ namespace MediaBrowser.Library
 
             try
             {
-                ratings.Add("", blockUnrated ? 1000 : 0);
+                _ratings.Add("", blockUnrated ? 1000 : 0);
             }
             catch (Exception e)
             {
@@ -69,7 +71,7 @@ namespace MediaBrowser.Library
             ratingsStrings.Clear();
             int lastLevel = -10;
             ratingsStrings.Add(-1,LocalizedStrings.Instance.GetString("Any"));
-            foreach (var pair in ratings.OrderBy(p => p.Value))
+            foreach (var pair in _ratings.OrderBy(p => p.Value))
             {
                 if (pair.Value > lastLevel)
                 {
@@ -89,27 +91,27 @@ namespace MediaBrowser.Library
 
         public void SwitchUnrated(bool block)
         {
-            ratings.Remove("");
+            _ratings.Remove("");
             if (block)
             {
-                ratings.Add("", 1000);
+                _ratings.Add("", 1000);
             }
             else
             {
-                ratings.Add("", 0);
+                _ratings.Add("", 0);
             }
         }
         public static int Level(string ratingStr)
         {
-            if (ratingStr != null && ratings.ContainsKey(ratingStr))
-                return ratings[ratingStr];
+            if (ratingStr != null && _ratings.ContainsKey(ratingStr))
+                return _ratings[ratingStr];
             else
             {
                 string stripped = stripCountry(ratingStr);
-                if (ratingStr != null && ratings.ContainsKey(stripped))
-                    return ratings[stripped];
+                if (ratingStr != null && _ratings.ContainsKey(stripped))
+                    return _ratings[stripped];
                 else
-                    return ratings[""]; //return "unknown" level
+                    return _ratings[""]; //return "unknown" level
             }
         }
 

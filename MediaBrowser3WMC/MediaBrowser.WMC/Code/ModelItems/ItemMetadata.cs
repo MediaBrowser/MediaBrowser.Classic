@@ -103,7 +103,7 @@ namespace MediaBrowser.Library {
             get {
                 var show = baseItem as Show;
 
-                if ( directors == null && show != null) {
+                if (directors == null && show != null) {
                     Async.Queue(Async.ThreadPoolName.DetailLoad, () => directors = show.Directors, () => FirePropertiesChanged("Directors","DirectorString"));
                 }
                 return directors ?? new List<string>();
