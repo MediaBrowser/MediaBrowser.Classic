@@ -134,7 +134,7 @@
             </Children>
             </Scroller>
           <Text Name="NoUsers" Content="No Public Users Found" Font="Segoe Media Center Light, 42, Bold" Color="White" Alpha=".5" Visible="false" />
-          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="400,0" MaintainAspectRatio="true">
+          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="300,0" MaintainAspectRatio="true">
             <LayoutInput>
               <FormLayoutInput Bottom="Parent,1" Right="Parent,1"/>
             </LayoutInput>

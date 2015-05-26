@@ -88,7 +88,7 @@
               <me:UserTile Item="[RepeatedItem!lib:Item]" Index="[RepeatedItemIndex]" FocusZoom="1.1,1.1,1.1" Application="[Application]" BGColor="[Config.UserTileColor]" />
             </Content>
           </Repeater>
-          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="400,0" MaintainAspectRatio="true">
+          <Graphic Content="image://i:MBLogo" Alpha=".9" Margins="10,0,20,20" MaximumSize="300,0" MaintainAspectRatio="true">
             <LayoutInput>
               <FormLayoutInput Bottom="Parent,1" Right="Parent,1"/>
             </LayoutInput>
