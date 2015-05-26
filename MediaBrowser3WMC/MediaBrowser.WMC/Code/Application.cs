@@ -2667,10 +2667,10 @@ namespace MediaBrowser
                                                                  {
                                                                      if (Kernel.ServerInfo.CanSelfRestart)
                                                                      {
-                                                                         if (YesNoBox("The MB Server needs to re-start to apply an update.  Restart now?") == "Y")
+                                                                         if (YesNoBox("The Emby Server needs to re-start to apply an update.  Restart now?") == "Y")
                                                                          {
                                                                              Kernel.ApiClient.PerformPendingRestart();
-                                                                             MessageBox("Your server is being re-started.  MB Classic will now exit so you can re load it.");
+                                                                             MessageBox("Your server is being re-started.  Emby for WMC will now exit so you can re load it.");
                                                                              Close();
                                                                          }
                                                                      }

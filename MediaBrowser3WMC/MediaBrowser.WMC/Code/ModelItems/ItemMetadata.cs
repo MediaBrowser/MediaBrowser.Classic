@@ -98,12 +98,13 @@ namespace MediaBrowser.Library {
             get { return string.Join(", ", this.Writers.ToArray()); }
         }
 
+        protected List<string> directors = null;
         public List<string> Directors {
             get {
-                List<string> directors = null;
                 var show = baseItem as Show;
-                if (show != null && show.Directors != null) {
-                    directors = show.Directors;
+
+                if ( directors == null && show != null) {
+                    Async.Queue(Async.ThreadPoolName.DetailLoad, () => directors = show.Directors, () => FirePropertiesChanged("Directors","DirectorString"));
                 }
                 return directors ?? new List<string>();
             }

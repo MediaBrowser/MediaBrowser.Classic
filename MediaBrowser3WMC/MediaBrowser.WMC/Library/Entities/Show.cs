@@ -33,7 +33,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (_actors == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -67,7 +67,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (_genres == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -84,7 +84,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (_studios == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -101,7 +101,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (_writers == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -115,7 +115,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded)
+                if (base.Chapters == null && !FullDetailsLoaded)
                 {
                     LoadFullDetails();
                 }
@@ -151,7 +151,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded) LoadFullDetails();
+                if (base.ThemeSongs == null) LoadThemes();
                 return base.ThemeSongs;
             }
             set
@@ -164,7 +164,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                if (!FullDetailsLoaded) LoadFullDetails();
+                if (base.ThemeVideos == null) LoadThemes();
                 return base.ThemeVideos;
             }
             set

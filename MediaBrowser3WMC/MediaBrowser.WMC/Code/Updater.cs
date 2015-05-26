@@ -144,7 +144,7 @@ namespace MediaBrowser.Util
                     else
                     {
                         _appRef.Information.AddInformationString("Emby for WMC is up to date");
-                        Logger.ReportInfo("==== MB Classic is up to date.");
+                        Logger.ReportInfo("==== Emby for WMC is up to date.");
                         return false;
                     }
                 }
