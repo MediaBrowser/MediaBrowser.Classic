@@ -71,12 +71,12 @@
               </Panel>
             </Children>
           </ColorFill>
-          <Graphic Name="Logo" Content="[Application.LogonSplashImage]" Margins="50,50,50,0" MaintainAspectRatio="true" MaximumSize="400, 100" CenterPointPercent=".5,.5,.5" >
+          <Graphic Name="Logo" Content="[Application.LogonSplashImage]" Margins="50,0,50,0" MaintainAspectRatio="true" MaximumSize="300, 100" CenterPointPercent=".5,.5,.5" >
             <Animations>
               <Animation Loop="0" Type="Show">
                 <Keyframes>
-                  <PositionKeyframe Time="0.0" Value="1500,300,0" Interpolation="Log" RelativeTo="Absolute" />
-                  <PositionKeyframe Time="0.250" Value="520,300,0" RelativeTo="Absolute" />
+                  <PositionKeyframe Time="0.0" Value="1500,280,0" Interpolation="Log" RelativeTo="Absolute" />
+                  <PositionKeyframe Time="0.250" Value="520,280,0" RelativeTo="Absolute" />
                 </Keyframes>
               </Animation>
               <Animation Loop="0" Type="Hide">

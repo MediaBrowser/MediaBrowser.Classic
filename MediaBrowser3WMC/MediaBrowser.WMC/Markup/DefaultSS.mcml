@@ -37,7 +37,7 @@
         <Children>
           <ColorFill Content="Black" >
             <Children>
-              <Graphic Content="image://i:MBLogo" Scale=".45, .12, 0" MaintainAspectRatio="true" Alpha=".7">
+              <Graphic Content="image://i:MBLogo" Scale=".45, .22, 0" MaintainAspectRatio="true" Alpha=".7">
                 <Animations>
                   <Animation Animation="animation://an:FloatAround"/>
                 </Animations>

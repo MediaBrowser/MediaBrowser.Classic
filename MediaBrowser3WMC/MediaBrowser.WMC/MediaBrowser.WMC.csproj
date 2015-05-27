@@ -425,6 +425,7 @@
     <None Include="Images\Root\rootscrollhilite.png" />
     <Content Include="Images\DefaultSong.png" />
     <Content Include="Images\DefaultVideo.jpg" />
+    <Content Include="Images\extsplash.png" />
     <Content Include="Images\FavMovies.png" />
     <Content Include="Images\FavMusic.png" />
     <Content Include="Images\Favorites.png" />
@@ -1156,7 +1157,9 @@
     <Content Include="Markup\Themes\Default\SearchPane.mcml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Markup\Themes\Default\Splash.mcml" />
+    <Content Include="Markup\Themes\Default\Splash.mcml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Markup\Themes\Default\ParentalPINEntry.mcml">
       <SubType>Designer</SubType>
     </Content>

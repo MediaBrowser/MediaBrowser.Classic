@@ -1883,7 +1883,7 @@ namespace MediaBrowser
 
                 // setup image to use in external splash screen
                 string splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "extsplash.jpg");
-                ExtSplashBmp = File.Exists(splashFilename) ? new System.Drawing.Bitmap(splashFilename) : new System.Drawing.Bitmap(Resources.mblogo1000);
+                ExtSplashBmp = File.Exists(splashFilename) ? new System.Drawing.Bitmap(splashFilename) : new System.Drawing.Bitmap(Resources.extsplash);
 
                 // setup image to use in login splash screen
                 splashFilename = Path.Combine(ApplicationPaths.CommonConfigPath, "loginsplash.png");
