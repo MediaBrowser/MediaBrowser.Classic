@@ -793,7 +793,6 @@ namespace MediaBrowser.Library.Entities {
 
         public virtual void OnNavigatingInto()
         {
-            
         }
 
         public bool ChildrenLoaded { get { return children != null; } }

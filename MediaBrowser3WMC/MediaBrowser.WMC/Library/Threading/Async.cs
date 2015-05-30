@@ -219,6 +219,7 @@ namespace MediaBrowser.Library.Threading
             StartupQueue,
             SupporterCheck,
             ToggleWatched,
+            ThemeLoad,
             UIForcedFolderMetadataLoader,
             UITriggeredMetadataLoader,
             UnwatchedCounterForFolderModel, 

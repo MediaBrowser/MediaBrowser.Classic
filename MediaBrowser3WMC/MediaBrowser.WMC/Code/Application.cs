@@ -3124,7 +3124,7 @@ namespace MediaBrowser
                 folder.NavigatingInto();
                 if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
                 {
-                    BackdropController.Play(folder.BaseItem);
+                    BackdropController.PlayAsync(folder.BaseItem);
                 }
                 OpenMCMLPage(folder.Folder.CustomUI ?? CurrentTheme.FolderPage, properties);
             }
@@ -3318,7 +3318,7 @@ namespace MediaBrowser
                             item.NavigatingInto();
                     if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
                     {
-                        BackdropController.Play(item.BaseItem);
+                        BackdropController.PlayAsync(item.BaseItem);
                     }
                             // go to details screen 
                             var properties = new Dictionary<string, object>();

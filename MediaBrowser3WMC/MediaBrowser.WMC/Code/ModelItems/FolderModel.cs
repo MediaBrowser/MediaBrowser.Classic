@@ -745,7 +745,7 @@ namespace MediaBrowser.Library {
                 if (Config.Instance.EnableThemeBackgrounds && !Application.CurrentInstance.IsPlaying)
                 {
                     Application.CurrentInstance.BackdropController.StopIfOutOfScope(SelectedChild.BaseItem);
-                    Application.CurrentInstance.BackdropController.Play(SelectedChild.BaseItem);
+                    Application.CurrentInstance.BackdropController.PlayAsync(SelectedChild.BaseItem);
                 }
                 return SelectedChild;
             }
@@ -769,7 +769,7 @@ namespace MediaBrowser.Library {
                 if (Config.Instance.EnableThemeBackgrounds && !Application.CurrentInstance.IsPlaying)
                 {
                     Application.CurrentInstance.BackdropController.StopIfOutOfScope(SelectedChild.BaseItem);
-                    Application.CurrentInstance.BackdropController.Play(SelectedChild.BaseItem);
+                    Application.CurrentInstance.BackdropController.PlayAsync(SelectedChild.BaseItem);
                 }
                 return SelectedChild;
             }

@@ -6,6 +6,7 @@ using MediaBrowser.Library;
 using MediaBrowser.Library.Entities;
 using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Playables;
+using MediaBrowser.Library.Threading;
 using Microsoft.MediaCenter;
 using Microsoft.MediaCenter.Hosting;
 using Microsoft.MediaCenter.UI;
@@ -64,8 +65,18 @@ namespace MediaBrowser.Code.ModelItems
             }
         }
 
-        public bool Play(BaseItem item)
+        public void PlayAsync(BaseItem item)
         {
+            Async.Queue(Async.ThreadPoolName.ThemeLoad, () => PlayInternal(item));
+        }
+
+        private void PlayInternal(BaseItem item)
+        {
+            if (!item.ThemesLoaded)
+            {
+                item.LoadThemes();
+            }
+
             var coll = new MediaCollection();
             if (item.ThemeVideos != null && item.ThemeVideos.Count > 0)
             {
@@ -105,26 +116,29 @@ namespace MediaBrowser.Code.ModelItems
 
             if (coll.Any())
             {
-                //stop anything currently playing
-                PlaybackControllerHelper.Stop();
+                Application.UIDeferredInvokeIfRequired(() =>
+                                                       {
+                    //stop anything currently playing
+                    PlaybackControllerHelper.Stop();
 
-                var mce = Application.MediaCenterEnvironment;
-                mce.PropertyChanged += EnvironmentPropertyChange;
+                    var mce = Application.MediaCenterEnvironment;
+                    mce.PropertyChanged += EnvironmentPropertyChange;
 
-                if (mce.PlayMedia(MediaType.MediaCollection, coll, false))
-                {
-                    IsPlaying = true;
-                    Application.CurrentInstance.ShowNowPlaying = IsPlayingVideo;
-                    CurrentScope = item;
-                    return true;
-                }
-                else
-                {
-                    mce.PropertyChanged -= EnvironmentPropertyChange;
-                }
+                    if (mce.PlayMedia(MediaType.MediaCollection, coll, false))
+                    {
+                        IsPlaying = true;
+                        Application.CurrentInstance.ShowNowPlaying = IsPlayingVideo;
+                        CurrentScope = item;
+                    }
+                    else
+                    {
+                        mce.PropertyChanged -= EnvironmentPropertyChange;
+                    }
+                                                           
+                                                       });
             }
-
-            return false;
+                                                            
+            
         }
 
         public void StopIfOutOfScope(BaseItem item)

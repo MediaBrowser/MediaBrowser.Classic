@@ -415,6 +415,7 @@ namespace MediaBrowser.Library.Entities {
 
         private string _themeId;
         public string ThemeId {get { return _themeId ?? ApiId; } set { _themeId = value; }}
+        public Boolean ThemesLoaded { get; set; }
         public virtual List<ThemeItem> ThemeSongs { get; set; }
         public virtual List<ThemeItem> ThemeVideos { get; set; }
 
@@ -423,6 +424,7 @@ namespace MediaBrowser.Library.Entities {
             try
             {
                 var result = Kernel.ApiClient.GetAllThemeMedia(Kernel.CurrentUser.ApiId, ThemeId);
+                ThemesLoaded = true;
                 if (result == null) return;
 
                 ThemeSongs = result.ThemeSongsResult.TotalRecordCount > 0 ? result.ThemeSongsResult.Items.Select(i => new ThemeItem {Id = i.Id, Path = i.Path}).ToList() : new List<ThemeItem>();

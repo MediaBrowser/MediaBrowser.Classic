@@ -84,13 +84,6 @@ namespace MediaBrowser.Library
 
         public virtual void NavigatingInto()
         {
-            // load themes if enabled
-            if (Config.Instance.EnableThemeBackgrounds)
-            {
-                baseItem.LoadThemes();
-                //Async.Queue("Theme Load", baseItem.LoadThemes);
-            }
-
             var show = BaseItem as IDetailLoad;
             if (show != null)
             {
