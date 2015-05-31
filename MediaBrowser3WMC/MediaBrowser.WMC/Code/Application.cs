@@ -2655,7 +2655,7 @@ namespace MediaBrowser
 
                     // We check config here instead of in the Updater class because the Config class 
                     // CANNOT be instantiated outside of the application thread.
-                    Async.Queue(Async.ThreadPoolName.StartupQueue, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender), 10000);
+                    Async.Queue(Async.ThreadPoolName.StartupQueue, () => CheckForSystemUpdate(Config.EnableUpdates && !RunningOnExtender && Kernel.CurrentUser.Dto.Policy.IsAdministrator), 10000);
 
                     if (Kernel.CurrentUser.Dto.Policy.IsAdministrator) // don't show these prompts to non-admins
                     {
