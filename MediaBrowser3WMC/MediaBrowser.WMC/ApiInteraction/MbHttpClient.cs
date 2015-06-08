@@ -57,6 +57,7 @@ namespace MediaBrowser.ApiInteraction
             try
             {
                 var req = (HttpWebRequest)WebRequest.Create(url);
+                req.ServicePoint.ConnectionLimit = 20;
                 req.Headers.Add(HttpRequestHeader.Authorization, AuthHeader);
                 req.Headers.Add("X-MediaBrowser-Token", AuthToken);
                 var ms = new MemoryStream();
