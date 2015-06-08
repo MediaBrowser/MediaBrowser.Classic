@@ -610,7 +610,7 @@ namespace MediaBrowser.Library {
                     //this.SelectedChildChanged(); //make sure recent list changes
                 }
                 this.FireChildrenChangedEvents();
-            }, null, true);
+            });
         }
 
         protected virtual void FireChildrenChangedEvents() {
