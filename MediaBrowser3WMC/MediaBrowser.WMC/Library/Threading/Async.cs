@@ -78,7 +78,7 @@ namespace MediaBrowser.Library.Threading
 
                 lock (actions)
                 {
-                    //Logger.ReportVerbose("Queuing action for " + this.name);
+                    Logger.ReportVerbose("*********** Queuing action for " + this.name);
                     if (urgent)
                     {
                         actions.AddFirst(action);
@@ -118,7 +118,7 @@ namespace MediaBrowser.Library.Threading
                         action = actions.First.Value;
                         actions.RemoveFirst();
                     }
-                    //Logger.ReportVerbose("Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId.ToString());
+                    Logger.ReportVerbose("********** Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId);
                     action();
                 }
             }
