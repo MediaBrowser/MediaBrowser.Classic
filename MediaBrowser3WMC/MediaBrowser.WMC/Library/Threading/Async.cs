@@ -220,6 +220,7 @@ namespace MediaBrowser.Library.Threading
             SupporterCheck,
             ToggleWatched,
             ThemeLoad,
+            TVRefresh,
             UIForcedFolderMetadataLoader,
             UITriggeredMetadataLoader,
             UnwatchedCounterForFolderModel, 
@@ -247,6 +248,8 @@ namespace MediaBrowser.Library.Threading
                 case ThreadPoolName.SqliteDisplayWriter:
                 case ThreadPoolName.SqliteWriter:
                 case ThreadPoolName.FastLoadLoader:
+                case ThreadPoolName.TVRefresh:
+                case ThreadPoolName.RefreshUI:
                 case ThreadPoolName.Legacy:
                     return name;
                 default:
