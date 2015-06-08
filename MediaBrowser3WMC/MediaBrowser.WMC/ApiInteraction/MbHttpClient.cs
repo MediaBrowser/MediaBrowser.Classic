@@ -74,6 +74,9 @@ namespace MediaBrowser.ApiInteraction
                     }
                     ms.Flush();
                     ms.Seek(0, SeekOrigin.Begin);
+                    
+                    r.Close();
+                    resp.Close();
 
                     return ms;
                 }
