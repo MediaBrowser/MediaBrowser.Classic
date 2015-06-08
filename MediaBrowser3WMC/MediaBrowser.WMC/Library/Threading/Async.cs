@@ -17,7 +17,7 @@ namespace MediaBrowser.Library.Threading
             LinkedList<Action> actions = new LinkedList<Action>();
             List<Thread> threads = new List<Thread>();
             string name;
-            volatile int maxThreads = 20;
+            volatile int maxThreads = 10;
 
             public ThreadPool(string name)
             {
@@ -78,7 +78,7 @@ namespace MediaBrowser.Library.Threading
 
                 lock (actions)
                 {
-                    Logger.ReportVerbose("*********** Queuing action for " + this.name);
+                    //Logger.ReportVerbose("*********** Queuing action for " + this.name);
                     if (urgent)
                     {
                         actions.AddFirst(action);
@@ -118,9 +118,9 @@ namespace MediaBrowser.Library.Threading
                         action = actions.First.Value;
                         actions.RemoveFirst();
                     }
-                    Logger.ReportVerbose("********** Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId);
+                    //Logger.ReportVerbose("********** Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId);
                     action();
-                    Logger.ReportVerbose("********** Action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId + " completed.");
+                    //Logger.ReportVerbose("********** Action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId + " completed.");
                 }
             }
 
@@ -242,7 +242,7 @@ namespace MediaBrowser.Library.Threading
         /// <returns></returns>
         private static ThreadPoolName TranslatePool(ThreadPoolName name)
         {
-            Logger.ReportVerbose("================= Action called on threadpool: {0}", name.ToString());
+            //Logger.ReportVerbose("================= Action called on threadpool: {0}", name.ToString());
             switch (name)
             {
                 case ThreadPoolName.WaitForExternalPlayerToLaunch:
@@ -406,7 +406,7 @@ namespace MediaBrowser.Library.Threading
                 {
                     currentPool = new ThreadPool(uniqueId.ToString());
                     threadPool[uniqueId] = currentPool;
-                    currentPool.SetMaxThreads(20);
+                    currentPool.SetMaxThreads(10);
                 }
             }
             return currentPool;
