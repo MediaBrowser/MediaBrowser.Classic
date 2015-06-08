@@ -66,7 +66,7 @@ namespace MediaBrowser.Library.Threading
                     // should be fixed 
                     if (maxThreads > threads.Count)
                     {
-                        Thread t = new Thread(new ThreadStart(ThreadProc));
+                        Thread t = new Thread(ThreadProc);
                         t.IsBackground = true;
                         // dont affect the UI.
                         t.Priority = ThreadPriority.Lowest;
@@ -138,7 +138,7 @@ namespace MediaBrowser.Library.Threading
             }
         }
 
-        static Dictionary<ThreadPoolName, ThreadPool> threadPool = new Dictionary<ThreadPoolName, ThreadPool>();
+        static readonly Dictionary<ThreadPoolName, ThreadPool> threadPool = new Dictionary<ThreadPoolName, ThreadPool>();
 
         public static Timer Every(int milliseconds, Action action)
         {
@@ -241,6 +241,7 @@ namespace MediaBrowser.Library.Threading
         /// <returns></returns>
         private static ThreadPoolName TranslatePool(ThreadPoolName name)
         {
+            Logger.ReportVerbose("================= Action called on threadpool: {0}", name.ToString());
             switch (name)
             {
                 case ThreadPoolName.WaitForExternalPlayerToLaunch:
@@ -250,6 +251,7 @@ namespace MediaBrowser.Library.Threading
                 case ThreadPoolName.FastLoadLoader:
                 case ThreadPoolName.TVRefresh:
                 case ThreadPoolName.RefreshUI:
+                case ThreadPoolName.UnwatchedCounterForFolderModel:
                 case ThreadPoolName.Legacy:
                     return name;
                 default:
@@ -377,6 +379,8 @@ namespace MediaBrowser.Library.Threading
 
         private static ThreadPoolName GetThreadPoolNameFromLegacyString(string uniqueId)
         {
+            Logger.ReportVerbose("=========== Action called on legacy thread name: {0}", uniqueId);
+
             ThreadPoolName name = ThreadPoolName.Legacy;
             try
             {
