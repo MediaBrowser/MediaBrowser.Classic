@@ -120,6 +120,7 @@ namespace MediaBrowser.Library.Threading
                     }
                     Logger.ReportVerbose("********** Performing action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId);
                     action();
+                    Logger.ReportVerbose("********** Action for " + this.name + " on thread " + Thread.CurrentThread.ManagedThreadId + " completed.");
                 }
             }
 
