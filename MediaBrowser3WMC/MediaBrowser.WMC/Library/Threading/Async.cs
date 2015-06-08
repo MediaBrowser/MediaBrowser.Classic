@@ -17,7 +17,7 @@ namespace MediaBrowser.Library.Threading
             LinkedList<Action> actions = new LinkedList<Action>();
             List<Thread> threads = new List<Thread>();
             string name;
-            volatile int maxThreads = 10;
+            volatile int maxThreads = 20;
 
             public ThreadPool(string name)
             {
@@ -401,7 +401,7 @@ namespace MediaBrowser.Library.Threading
                 {
                     currentPool = new ThreadPool(uniqueId.ToString());
                     threadPool[uniqueId] = currentPool;
-                    currentPool.SetMaxThreads(10);
+                    currentPool.SetMaxThreads(20);
                 }
             }
             return currentPool;
