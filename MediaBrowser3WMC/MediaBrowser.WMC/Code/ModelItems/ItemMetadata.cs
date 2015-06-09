@@ -387,7 +387,7 @@ namespace MediaBrowser.Library {
         public bool HasDataForDetailPage {
             get {
 
-                var movie = baseItem as Movie;
+                var movie = baseItem as Show;
                 if (movie == null) return false;
 
                 int score = 0;
@@ -402,7 +402,7 @@ namespace MediaBrowser.Library {
                 if (Writers.Count > 0)
                     score += 2;
                 if (movie.Overview != null)
-                    score += 2;
+                    score += 4;
                 if (movie.MpaaRating != null)
                     score += 1;
                 if (movie.ImdbRating != null)
@@ -411,7 +411,7 @@ namespace MediaBrowser.Library {
                     score += 1;
                 if (movie.RunningTime != null)
                     score += 1;
-                return score > 5;
+                return score >= 4;
             }
         }
 

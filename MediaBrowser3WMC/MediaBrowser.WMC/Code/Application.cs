@@ -3316,10 +3316,10 @@ namespace MediaBrowser
                             this.Config.AlwaysShowDetailsPage)
                         {
                             item.NavigatingInto();
-                    if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
-                    {
-                        BackdropController.PlayAsync(item.BaseItem);
-                    }
+                            if (Config.EnableThemeBackgrounds && (currentPlaybackController == null || !currentPlaybackController.IsPlaying))
+                            {
+                                BackdropController.PlayAsync(item.BaseItem);
+                            }
                             // go to details screen 
                             var properties = new Dictionary<string, object>();
                             properties["Application"] = this;
