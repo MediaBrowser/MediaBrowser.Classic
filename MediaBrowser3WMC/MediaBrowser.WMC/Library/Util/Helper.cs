@@ -1272,7 +1272,7 @@ namespace MediaBrowser.LibraryManagement
         private static readonly char[] Digits = "0123456789".ToArray();
         public static string FirstCharOrDefault(string str, bool capitalize = true)
         {
-            if (str == null) return "<Unknown>";
+            if (string.IsNullOrEmpty(str)) return "<Unknown>";
             var val = Digits.Contains(str[0]) ? "0" : str.Substring(0, 1);
             return capitalize ? val.ToUpper() : val;
         }
