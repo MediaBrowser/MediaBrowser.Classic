@@ -106,15 +106,55 @@
                                 <Button Margin="0,0,10,10" VerticalAlignment="Bottom" Height="32" Content="Remove" x:Name="removeExtenderFormat" Click="removeExtenderFormat_Click" FontSize="14" HorizontalAlignment="Right" Width="80" />
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="ISO Mounting Settings" Name="groupBox5" Margin="300,35,20,20" VerticalAlignment="Top" Height="180">
+                        <GroupBox Header="ISO Mounting Settings" Name="groupBox5" Margin="300,35,20,0" VerticalAlignment="Top" Height="262">
                             <Grid>
-                                <Label Margin="10,90,10,0" Content="Drive Letter:" Height="28" VerticalAlignment="Top" ToolTip="Enter drive for mounting tool to use" />
-                                <TextBox Margin="10,45,10,0" Height="28" VerticalAlignment="Top" x:Name="daemonToolsLocation" IsReadOnly="True" />
-                                <!--<Label Margin="10,40,10,0" VerticalAlignment="Top" Height="28" Content="C:\DaemonTools\Somewhere\" x:Name="daemonToolsLocation" FontSize="12" />-->
-                                <Label Margin="10,10,10,0" VerticalAlignment="Top" Height="28" Content="Path to ISO mounter:" />
-                                <Button Margin="0,10,10,0" HorizontalAlignment="Right" Content="Change Location..." x:Name="changeDaemonToolsLocation" Click="changeDaemonToolsLocation_Click" FontSize="14" ToolTip="Enter the location of your ISO mounting tool" Height="28" Width="130" VerticalAlignment="Top" />
-                                <ComboBox IsSynchronizedWithCurrentItem="True" Margin="0,90,10,0" x:Name="daemonToolsDrive" SelectionChanged="daemonToolsDrive_SelectionChanged" FontSize="14" Height="28" HorizontalAlignment="Right" VerticalAlignment="Top" Width="60" />
-                                <CheckBox Margin="10,130,0,0" Content="Use Autoplay" x:Name="useAutoPlay" Click="useAutoPlay_Click" Height="22" Width="110" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type DockPanel}">
+                                        <Setter Property="Margin" Value="10,8,10,2"/>
+                                    </Style>
+                                </Grid.Resources>
+
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock Text="Path to ISO mounter:" />
+                                </DockPanel>
+                                
+                                <DockPanel Grid.Row="1">
+                                    <Button DockPanel.Dock="Right" Content="..." x:Name="changeDaemonToolsLocation" Click="changeDaemonToolsLocation_Click" FontSize="14" ToolTip="Enter the location of your ISO mounting tool" Padding="10,0,10,0" />
+                                    <TextBox Margin="0,0,2,0" x:Name="daemonToolsLocation" IsReadOnly="True" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Width="Auto" />
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="2" LastChildFill="False">
+                                    <TextBlock Margin="0,3,0,0" Text="Drive Letter:"  />
+                                    <ComboBox Margin="10,0,0,0"  IsSynchronizedWithCurrentItem="True" x:Name="daemonToolsDrive" SelectionChanged="daemonToolsDrive_SelectionChanged" Width="50" ToolTip="Enter drive for mounting tool to use" />
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="3">
+                                    <CheckBox Content="Use Autoplay" x:Name="useAutoPlay" Click="useAutoPlay_Click" Height="22" Width="110" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="4">
+                                    <TextBlock Text="Supported Mounting Tools:" />
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="5">
+                                    <TextBlock Margin="20,0,0,0">
+                                    Daemon Tools: <Italic>daemon.exe</Italic>
+                                    <LineBreak />
+                                    Virtual CloneDrive: <Italic>vcdmount.exe</Italic>
+                                    <LineBreak />
+                                    Alcohol: <Italic>axcmd.exe</Italic>
+                                    </TextBlock>
+                                </DockPanel>
+
                             </Grid>
                         </GroupBox>
                     </Grid>
