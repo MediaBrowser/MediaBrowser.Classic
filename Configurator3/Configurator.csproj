@@ -329,7 +329,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "c:\program files (x86)\mediabrowser\mediabrowser"</PostBuildEvent>
+    <PostBuildEvent>IF EXIST "c:\program files (x86)\mediabrowser\mediabrowser" Copy "$(TargetPath)" "c:\program files (x86)\mediabrowser\mediabrowser"
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
