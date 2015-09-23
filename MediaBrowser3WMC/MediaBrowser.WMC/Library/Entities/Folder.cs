@@ -418,7 +418,10 @@ namespace MediaBrowser.Library.Entities {
             {
                 var containerObj = ((IGroupInIndex)container.First()).MainContainer;
                 //Logger.ReportVerbose("Container " + (containerObj == null ? "--Unknown--" : containerObj.Name) + " items: " + container.Count());
-                if (container.Count() < Kernel.Instance.ConfigData.RecentItemCollapseThresh)
+
+                bool forceCollapse = Config.Instance.AlwaysLoadFullSeriesInRecentList && containerObj is Series;
+
+                if (!forceCollapse && container.Count() < Kernel.Instance.ConfigData.RecentItemCollapseThresh)
                 {
                     //add the items without rolling up
                     foreach (var i in container)
@@ -437,7 +440,7 @@ namespace MediaBrowser.Library.Entities {
                     var currentContainer = containerObj ?? new IndexFolder() {Name = "<Unknown>"};
                     var currentSeries = currentContainer as Series;
                     containerNo++;
-                    var aContainer = new SearchResultFolder(new List<BaseItem>())
+                    Series aContainer = new SearchResultFolder(new List<BaseItem>())
                                          {
                                              Id = ("container" + recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
                                              Name = currentContainer.Name + " (" + container.Count() + " Items)",
@@ -461,46 +464,61 @@ namespace MediaBrowser.Library.Entities {
                                          };
                     if (containerObj is Series)
                     {
-
-                        //always roll into seasons
-                        var seasons = from episode in container
-                                      group episode by (episode as Episode).SeasonId;
-                        foreach (var season in seasons)
+                        if (Config.Instance.AlwaysLoadFullSeriesInRecentList)
                         {
-                            var currentSeason = ((Episode) season.First()).Season;
-                            containerNo++;
-                            var aSeason = new SearchResultFolder(season.ToList())
-                                              {
-                                                  Id = ("season" + recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
-                                                  Name = currentSeason.Name + " (" + season.Count() + " Items)",
-                                                  Overview = currentSeason.Overview,
-                                                  MpaaRating = currentSeason.MpaaRating,
-                                                  Genres = currentSeason.Genres,
-                                                  ImdbRating = currentSeason.ImdbRating,
-                                                  Studios = currentSeason.Studios,
-                                                  PrimaryImagePath = currentSeason.PrimaryImagePath ?? containerObj.PrimaryImagePath,
-                                                  SecondaryImagePath = currentSeason.SecondaryImagePath,
-                                                  BannerImagePath = currentSeason.BannerImagePath ?? containerObj.BannerImagePath,
-                                                  BackdropImagePaths = currentSeason.BackdropImagePaths ?? containerObj.BackdropImagePaths,
-                                                  TVDBSeriesId = currentSeason.TVDBSeriesId,
-                                                  LogoImagePath = currentSeason.LogoImagePath,
-                                                  ArtImagePath = currentSeason.ArtImagePath,
-                                                  ThumbnailImagePath = currentSeason.ThumbnailImagePath,
-                                                  DisplayMediaType = currentSeason.DisplayMediaType,
-                                                  DateCreated = season.First().DateCreated,
-                                                  Parent = currentSeason.Id == aContainer.Id ? this : aContainer
-                                              };
+                            if (containerObj is Season)
+                            {
+                                var tempSeason = (Season)containerObj;
+                                if (tempSeason.Parent is Series)
+                                {
+                                    currentSeries = (Series)tempSeason.Parent;
+                                }
+                            }
 
-                            aContainer.AddChild(aSeason);
+                            aContainer = (Series)Kernel.Instance.MB3ApiRepository.RetrieveItem(currentSeries.Id);
+                        }
+                        else
+                        {
+                            //always roll into seasons
+                            var seasons = from episode in container
+                                          group episode by (episode as Episode).SeasonId;
+                            foreach (var season in seasons)
+                            {
+                                var currentSeason = ((Episode)season.First()).Season;
+                                containerNo++;
+                                var aSeason = new SearchResultFolder(season.ToList())
+                                                  {
+                                                      Id = ("season" + recentItemOption + this.Name + this.Path + containerNo).GetMD5(),
+                                                      Name = currentSeason.Name + " (" + season.Count() + " Items)",
+                                                      Overview = currentSeason.Overview,
+                                                      MpaaRating = currentSeason.MpaaRating,
+                                                      Genres = currentSeason.Genres,
+                                                      ImdbRating = currentSeason.ImdbRating,
+                                                      Studios = currentSeason.Studios,
+                                                      PrimaryImagePath = currentSeason.PrimaryImagePath ?? containerObj.PrimaryImagePath,
+                                                      SecondaryImagePath = currentSeason.SecondaryImagePath,
+                                                      BannerImagePath = currentSeason.BannerImagePath ?? containerObj.BannerImagePath,
+                                                      BackdropImagePaths = currentSeason.BackdropImagePaths ?? containerObj.BackdropImagePaths,
+                                                      TVDBSeriesId = currentSeason.TVDBSeriesId,
+                                                      LogoImagePath = currentSeason.LogoImagePath,
+                                                      ArtImagePath = currentSeason.ArtImagePath,
+                                                      ThumbnailImagePath = currentSeason.ThumbnailImagePath,
+                                                      DisplayMediaType = currentSeason.DisplayMediaType,
+                                                      DateCreated = season.First().DateCreated,
+                                                      Parent = currentSeason.Id == aContainer.Id ? this : aContainer
+                                                  };
+
+                                ((SearchResultFolder)aContainer).AddChild(aSeason);
+                            }
                         }
                     }
                     else
                     {
                         //not series so just add all children to container
-                        aContainer.AddChildren(container.ToList());
+                        ((SearchResultFolder)aContainer).AddChildren(container.ToList());
                     }
 
-                    //and container to children
+                    //add container to children
                     folderChildren.Add(aContainer);
                 }
 

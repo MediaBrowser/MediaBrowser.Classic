@@ -852,6 +852,14 @@ namespace MediaBrowser
             set { if (this.Data.ShowTvSubViews != value) { this.Data.ShowTvSubViews = value; Save(); FireConfigPropertyChanged("ShowTvSubViews"); } }
         }
 
+        [Comment("Loads complete Series in the recent items list")]
+        public bool AlwaysLoadFullSeriesInRecentList
+        {
+            get { return this.Data.AlwaysLoadFullSeriesInRecentList; }
+            set { if (this.Data.AlwaysLoadFullSeriesInRecentList != value) { this.Data.AlwaysLoadFullSeriesInRecentList = value; Save(); FireConfigPropertyChanged("AlwaysLoadFullSeriesInRecentList"); } }
+        }
+
+
         public int ThemeBackgroundRepeat
         {
             get { return this.Data.ThemeBackgroundRepeat; }
