@@ -1,11 +1,10 @@
 ﻿using System.Xml.Serialization;
 using MediaBrowser.Model.Dlna;
-using MediaBrowser.Model.Dlna.Profiles;
 
 namespace MediaBrowser.Library.Streaming
 {
     [XmlRoot("Profile")]
-    public class WindowsExtenderProfile : DefaultProfile
+    public class WindowsExtenderProfile : DeviceProfile
     {
         public WindowsExtenderProfile()
         {

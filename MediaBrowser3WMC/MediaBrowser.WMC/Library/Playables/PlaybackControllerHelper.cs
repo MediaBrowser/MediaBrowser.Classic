@@ -13,7 +13,6 @@ using MediaBrowser.Library.Logging;
 using MediaBrowser.Library.Streaming;
 using MediaBrowser.LibraryManagement;
 using MediaBrowser.Model.Dlna;
-using MediaBrowser.Model.Dlna.Profiles;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.MediaInfo;
 using Microsoft.MediaCenter;
@@ -32,8 +31,8 @@ namespace MediaBrowser.Library.Playables
         public static string BuildStreamingUrl(Media item, int bitrate)
         {
             // build based on WMC profile
-            var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DefaultProfile : new WindowsMediaCenterProfile();
-            var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder(new LocalPlayer()).BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
+            var profile = Application.RunningOnExtender ? new WindowsExtenderProfile() as DeviceProfile : new WindowsMediaCenterProfile();
+            var info = item.MediaSources != null && item.MediaSources.Any() ? new StreamBuilder(new LocalPlayer(), new NullLogger()).BuildVideoItem(new VideoOptions { DeviceId = Kernel.ApiClient.DeviceId, ItemId = item.ApiId, MediaSources = item.MediaSources, MaxBitrate = bitrate, Profile = profile }) : null;
             if (info != null)
             {
                 //Further optimize for direct play if possible

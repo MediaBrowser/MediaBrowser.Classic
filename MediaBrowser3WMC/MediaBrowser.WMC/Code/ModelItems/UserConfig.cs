@@ -36,7 +36,7 @@ namespace MediaBrowser.Library
                                                  UserId = Kernel.CurrentUser.ApiId,
                                                  SortBy = new []{"SortName"}
 
-                                             }).Items.Select(dto => new FolderConfigItem(dto.Id, dto.Name)).ToList();
+                                             }).Items.Where(dto => dto.CollectionType != "photos").Select(dto => new FolderConfigItem(dto.Id, dto.Name)).ToList();
         }
 
         private List<BaseItemDto> _availableViews;
@@ -47,7 +47,7 @@ namespace MediaBrowser.Library
 
         private List<BaseItemDto> RetrieveViews()
         {
-            return Kernel.ApiClient.GetUserViews(Kernel.CurrentUser.ApiId).Items.ToList();
+            return Kernel.ApiClient.GetUserViews(Kernel.CurrentUser.ApiId).Items.Where(dto => dto.CollectionType != "livetv").ToList();
         }
 
         private List<FolderConfigItem> _availableChannels;
@@ -85,14 +85,14 @@ namespace MediaBrowser.Library
 
         public bool FolderIsGrouped(string id)
         {
-            return !_data.ExcludeFoldersFromGrouping.Contains(id);
+            return _data.GroupedFolders.Contains(id);
         }
 
         public void SetFolderIsGrouped(string id, bool group)
         {
-            _data.ExcludeFoldersFromGrouping = group ? 
-                _data.ExcludeFoldersFromGrouping.Where(i => i != id).ToArray() : 
-                _data.ExcludeFoldersFromGrouping.Concat(new [] {id}).Distinct().ToArray();
+            _data.GroupedFolders = group ? 
+                _data.GroupedFolders.Concat(new [] {id}).Distinct().ToArray() : 
+                _data.GroupedFolders.Where(i => i != id).ToArray();
 
             // also adjust ordered views
             _data.OrderedViews = group ? 

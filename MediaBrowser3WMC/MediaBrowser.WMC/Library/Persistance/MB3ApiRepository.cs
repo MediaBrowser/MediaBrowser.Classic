@@ -511,21 +511,25 @@ namespace MediaBrowser.Library.Persistance
                         }
                 }
 
-                var series = item as Series;
-                if (series != null)
-                {
-                    series.Status = mb3Item.Status.ToString();
-                    series.AirTime = mb3Item.AirTime;
-                    series.ImdbRating = mb3Item.CommunityRating;
-                    series.CriticRating = mb3Item.CriticRating;
-                    series.AirDay = mb3Item.AirDays != null ? mb3Item.AirDays.FirstOrDefault().ToString() : null;
-                }
-
                 var season = item as Season;
                 if (season != null)
                 {
                     season.SeasonNumber = (mb3Item.IndexNumber ?? 0).ToString("000");
                 }
+                else
+                {
+                    var series = item as Series;
+                    if (series != null)
+                    {
+                        series.Status = mb3Item.Status;
+                        series.AirTime = mb3Item.AirTime;
+                        series.ImdbRating = mb3Item.CommunityRating;
+                        series.CriticRating = mb3Item.CriticRating;
+                        series.AirDay = mb3Item.AirDays != null ? mb3Item.AirDays.FirstOrDefault().ToString() : null;
+                    }
+                    
+                }
+
 
                 var song = item as Song;
                 if (song != null)
