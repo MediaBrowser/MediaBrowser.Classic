@@ -2440,7 +2440,7 @@ namespace MediaBrowser
 
                                                        if (!supporter.IsRegistered)
                                                        {
-                                                           PopoutMessage("Please Support Media Browser", "Please become a Media Browser Supporter.  Go to your server dashboard Help/Become a Supporter.  Thanks!");
+                                                           PopoutMessage("Please Consider Emby Premiere", "Emby Premiere gives you tons of extra features like mobile sync (in supported clients) free apps, Cinema Mode and CoverArt.");
                                                            Kernel.Instance.CommonConfigData.LastNagDate = DateTime.Now;
                                                            Kernel.Instance.CommonConfigData.Save();
                                                        }
