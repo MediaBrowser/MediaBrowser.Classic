@@ -342,10 +342,8 @@ namespace MediaBrowser.Library.Persistance
                 {
                     // Collection Type
                     folder.CollectionType = mb3Item.CollectionType;
-                    // Fill in display prefs and indexby options
+                    // Fill in display prefs
                     folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId ?? mb3Item.Id;
-                    folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
-                        new Dictionary<string, string> {{LocalizedStrings.Instance.GetString("NoneDispPref"), ""}};
 
                     // cumulative runtime
                     if (mb3Item.CumulativeRunTimeTicks != null)
@@ -632,7 +630,7 @@ namespace MediaBrowser.Library.Persistance
                                                          IsPlayed = isPlayed,
                                                          CollapseBoxSetItems = collapseBoxSets,
                                                          Fields = new[] {ItemFields.Overview, ItemFields.Path, ItemFields.ParentId, ItemFields.DisplayPreferencesId, 
-                                                            ItemFields.DateCreated, ItemFields.IndexOptions, ItemFields.DateLastMediaAdded, ItemFields.Metascore,
+                                                            ItemFields.DateCreated, ItemFields.DateLastMediaAdded, ItemFields.Metascore,
                                                             ItemFields.MediaStreams, ItemFields.SortName, ItemFields.Taglines, ItemFields.MediaSources, ItemFields.SpecialEpisodeNumbers }
                                                      });
 
@@ -655,7 +653,7 @@ namespace MediaBrowser.Library.Persistance
 
         public static ItemFields[] StandardFields = new[]
                                                         {
-                                                            ItemFields.Overview, ItemFields.IndexOptions, ItemFields.SortName, ItemFields.DisplayMediaType,
+                                                            ItemFields.Overview, ItemFields.SortName, ItemFields.DisplayMediaType,
                                                             ItemFields.Path, ItemFields.DisplayPreferencesId, ItemFields.DateCreated, ItemFields.Taglines, ItemFields.Metascore, 
                                                             ItemFields.MediaStreams, ItemFields.ParentId, ItemFields.DateLastMediaAdded, ItemFields.MediaSources, ItemFields.SpecialEpisodeNumbers
                                                         };
