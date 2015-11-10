@@ -343,7 +343,7 @@ namespace MediaBrowser.Library.Persistance
                     // Collection Type
                     folder.CollectionType = mb3Item.CollectionType;
                     // Fill in display prefs and indexby options
-                    folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId;
+                    folder.DisplayPreferencesId = mb3Item.DisplayPreferencesId ?? mb3Item.Id;
                     folder.IndexByOptions = mb3Item.IndexOptions != null ? mb3Item.IndexOptions.ToDictionary(o => o) : 
                         new Dictionary<string, string> {{LocalizedStrings.Instance.GetString("NoneDispPref"), ""}};
 
