@@ -122,6 +122,10 @@ namespace MediaBrowser.Library.Localization
         public string RightConfigDesc = "Adjust to account for blue borders around edge or screen too large for physical screen. Positive or Negative.";
         public string WeatherLocationConfigDesc = "Enter Yahoo weather feed code for weather display in themes that support it";
         public string WeatherUnitConfigDesc = "Fahrenheit or Celsius";
+        public string CinemaModeConfig = "Cinema Mode";
+        public string AllowCinemaModeConfig = "Enable Cinema Mode";
+        public string AllowCinemaModeConfigDesc = "If enabled on the server, play configured intros and trailers before movies played from the detail screen.";
+
 
         //Config Panel
         public string AdvancedConfig = "Advanced";

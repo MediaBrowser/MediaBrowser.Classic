@@ -104,6 +104,7 @@
       <BooleanChoice Name="DefaultVerticalScroll" Value="[Application.Config.DefaultVerticalScroll]" />
       <BooleanChoice Name="UseAutoPlayForIso" Value="[Application.Config.UseAutoPlayForIso]" />
       <BooleanChoice Name="YearSortAsc" Value="[Application.Config.YearSortAsc]" />
+      <BooleanChoice Name="AllowCinemaMode" Value="[Application.Config.AllowCinemaMode]" />
       <EditableText Name="InitialFolder" Value="[Application.Config.InitialFolder]" />
       <EditableText Name="ImageByNameLocation" Value="[Application.Config.ImageByNameLocation]" />
       <EditableText Name="ExtenderNativeTypes" Value="[Application.Config.ExtenderNativeTypes]" />
@@ -407,6 +408,7 @@
       <Binding Source="[RandomizeBackdrop.Value]" Target="[Config.RandomizeBackdrops]" />
       <Binding Source="[RotateBackdrop.Value]" Target="[Config.RotateBackdrops]" />
       <Binding Source="[HideFocusFrame.Value]" Target="[Config.HideFocusFrame]" />
+      <Binding Source="[AllowCinemaMode.Value]" Target="[Config.AllowCinemaMode]" />
 
       <!-- These items only apply if not legacy browsing -->
       <Binding Source="[ShowFolders.Value]" Target="[UserConfig.ShowFolders]" />
@@ -772,10 +774,10 @@
                         <Children>
                           <me:TextHeader Text="[Application.LocalStrings.#PlayerConfig!cor:String]" />
                           <cb:CheckBox Label="[Application.LocalStrings.#UseCustomPlayerConfig!cor:String]" Checked="[UseCustomPlayerInterface]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#DisableCustomPlayerForDvdConfig!cor:String]" Checked="[DisableCustomPlayerForDvd]" FocusItem="[FocusItem]" Margins="50,0,0,0"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#DisableMcConflictingOperationsConfig!cor:String]" Checked="[DisableMcConflictingOperations]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationInPlayerConfig!cor:String]" Checked="[ShowNewItemNotificationInPlayer]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowPauseIndicatorConfig!cor:String]" Checked="[ShowPauseIndicator]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
-                          <cb:CheckBox Label="[Application.LocalStrings.#DisableCustomPlayerForDvdConfig!cor:String]" Checked="[DisableCustomPlayerForDvd]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#EnableMouseHookConfig!cor:String]" Checked="[EnableMouseHook]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipSecondsConfig!cor:String]" Model="[DefaultSkipSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                           <ss:SimpleSpinner Label="[Application.LocalStrings.#DefaultSkipBackSecondsConfig!cor:String]" Model="[DefaultSkipBackSeconds]" LabelMinSize="400,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
@@ -788,6 +790,8 @@
                           <cb:CheckBox Label="[Application.LocalStrings.#WarnOnStreamConfig!cor:String]" Checked="[WarnOnStream]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <ss:SimpleSpinner Label="[Application.LocalStrings.#LocalMaxBitrateConfig!cor:String]" Model="[LocalMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="25,10,0,0" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
                           <ss:SimpleSpinner Label="[Application.LocalStrings.#RemoteMaxBitrateConfig!cor:String]" Model="[RemoteMaxBitrate]" LabelMinSize="380,0" FocusItem="[FocusItem]"  Margins="[CMargin]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                          <me:TextHeader Text="[Application.LocalStrings.#CinemaModeConfig!cor:String]" />
+                          <cb:CheckBox Label="[Application.LocalStrings.#AllowCinemaModeConfig!cor:String]" Checked="[AllowCinemaMode]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                         </Children>
                       </Panel>
                     </Children>

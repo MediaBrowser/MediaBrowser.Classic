@@ -598,6 +598,15 @@ namespace MediaBrowser
             }
         }
 
+        public bool AllowCinemaMode
+        {
+            get { return this.Data.AllowCinemaMode; }
+            set
+            {
+                if (this.Data.AllowCinemaMode != value) { this.Data.AllowCinemaMode = value; Save(); FireConfigPropertyChanged("AllowCinemaMode"); }
+            }
+        }
+
         public bool ShowPauseIndicator
         {
             get { return this.Data.ShowPauseIndicator; }

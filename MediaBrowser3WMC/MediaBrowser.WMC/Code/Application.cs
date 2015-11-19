@@ -3638,7 +3638,7 @@ namespace MediaBrowser
 
                 PlayableItem introPlayable = null;
 
-                if (!resume && !queue && playIntros != false)
+                if (!resume && !queue && Config.AllowCinemaMode && playIntros != false)
                 {
                     // Get intros for this item
                     // if we're playing multiples, look for intros for the first one

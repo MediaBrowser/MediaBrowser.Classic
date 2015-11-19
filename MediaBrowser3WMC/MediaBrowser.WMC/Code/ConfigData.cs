@@ -120,6 +120,8 @@ namespace MediaBrowser
         [Comment("Show a menu to confirm exit")]
         public bool UseExitMenu = true;
 
+        public bool AllowCinemaMode = true;
+
         public bool ShowMovieSubViews = false;
         public bool ShowTvSubViews = false;
 
