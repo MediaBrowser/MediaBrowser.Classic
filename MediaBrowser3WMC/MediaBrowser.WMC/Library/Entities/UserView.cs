@@ -151,7 +151,7 @@ namespace MediaBrowser.Library.Entities
         {
             get
             {
-                return (CollectionType + Kernel.CurrentUser.Name).GetMD5().ToString();
+                return Parent == Kernel.Instance.RootFolder ? ApiId : (CollectionType + Kernel.CurrentUser.Name).GetMD5().ToString();
             }
             set
             {
