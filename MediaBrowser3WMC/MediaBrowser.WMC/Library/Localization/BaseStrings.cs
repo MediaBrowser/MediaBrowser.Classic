@@ -8,7 +8,7 @@ namespace MediaBrowser.Library.Localization
     [Serializable]
     public class BaseStrings
     {
-        const string VERSION = "1.0103";
+        const string VERSION = "1.0104";
         const string ENFILE = "strings-en.xml";
 
         public string Version = VERSION; //this is used to see if we have changed and need to re-save
@@ -301,9 +301,9 @@ namespace MediaBrowser.Library.Localization
         public string ShowCollectionsConfig = "Show Collections View";
         public string ShowCollectionsConfigDesc = "Show a view of all collections";
         public string ShowMovieSubConfig = "Show movie sub-views";
-        public string ShowMovieSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main Movies view. Uncheck to go directly to movie list.";
+        public string ShowMovieSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main Movies view. Uncheck to go directly to movie list. Restart required.";
         public string ShowTvSubConfig = "Show TV sub-views";
-        public string ShowTvSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main TV view. Uncheck to go directly to series list.";
+        public string ShowTvSubConfigDesc = "Show sub views for resume, favorites, genres, etc. under main TV view. Uncheck to go directly to series list. Restart required.";
 
         //JIL
         public string ThisWeek = "This Week";

@@ -218,7 +218,9 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var url = GetApiUrl("Users/" + userId + "/Views?PresetViews=movies,tvshows,music");
+            var presetOption = "?PresetViews=music" + (Config.Instance.ShowMovieSubViews ? ",movies" : "") + (Config.Instance.ShowTvSubViews ? ",tvshows" : "");
+
+            var url = GetApiUrl("Users/" + userId + "/Views"+presetOption);
             //MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetUserViews: " + url);
             using (var stream = GetSerializedStream(url))
             {
