@@ -85,7 +85,6 @@ namespace MediaBrowser.Library.Entities {
             {LocalizedStrings.Instance.GetString("GenreDispPref"), "Genres"},
             {LocalizedStrings.Instance.GetString("DirectorDispPref"), "Directors"},
             {LocalizedStrings.Instance.GetString("YearDispPref"), "ProductionYear"},
-            {LocalizedStrings.Instance.GetString("OfficialRatingDispPref"), "MpaaRating"},
             {LocalizedStrings.Instance.GetString("StudioDispPref"), "Studios"}
         };
         /// <summary>
@@ -708,7 +707,7 @@ namespace MediaBrowser.Library.Entities {
 
             if (string.IsNullOrEmpty(property)) throw new ArgumentException("Index type should not be none!");
 
-            if (property == LocalizedStrings.Instance.GetString("GenreDispPref"))
+            if (property == "Genres")
             {
                 var query = new ItemQuery
                 {
@@ -726,21 +725,21 @@ namespace MediaBrowser.Library.Entities {
                 Logger.ReportVerbose("=========== Indexing with new technique...");
                 return ret;
 
-            } else if (property == LocalizedStrings.Instance.GetString("ActorDispPref"))
+            } else if (property == "Actors")
             {
                 var personTypes = new[] {PersonType.Actor, PersonType.GuestStar};
                 var ret = LocalizedStrings.Instance.GetString("StartingLetters").Select(c => new PersonLetterFolder(c.ToString(), false, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
                 ret.Add(new PersonLetterFolder("#", true, ApiId, personTypes, null, null, this));
                 ApiRecursiveItemCount = ret.Count;
                 return ret;
-            } else if (property == LocalizedStrings.Instance.GetString("DirectorDispPref"))
+            } else if (property == "Directors")
             {
                 var personTypes = new[] {PersonType.Director};
                 var ret = LocalizedStrings.Instance.GetString("StartingLetters").Select(c => new PersonLetterFolder(c.ToString(), false, ApiId, personTypes, null, null, this)).Cast<BaseItem>().ToList();
                 ret.Add(new PersonLetterFolder("#", true, ApiId, personTypes, null, null, this));
                 ApiRecursiveItemCount = ret.Count;
                 return ret;
-            } else if (property == LocalizedStrings.Instance.GetString("YearDispPref"))
+            } else if (property == "ProductionYear")
             {
                 var query = new ItemsByNameQuery
                                 {
@@ -754,7 +753,7 @@ namespace MediaBrowser.Library.Entities {
                 var ret = Kernel.Instance.MB3ApiRepository.RetrieveIbnItems("Years", query).Select(p => new ApiYearFolder(p, ApiId, null, new[] {"Audio"}, this)).Cast<BaseItem>().ToList();
                 ApiRecursiveItemCount = ret.Count;
                 return ret;
-            } else if (property == LocalizedStrings.Instance.GetString("StudioDispPref"))
+            } else if (property == "Studios")
             {
                 var query = new ItemsByNameQuery
                                 {
