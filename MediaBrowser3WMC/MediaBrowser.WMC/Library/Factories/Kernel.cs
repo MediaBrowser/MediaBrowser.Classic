@@ -32,6 +32,7 @@ using MediaBrowser.Model.System;
 using MediaBrowser.Model.Updates;
 using MediaBrowser.Util;
 using Microsoft.MediaCenter.UI;
+using Version = System.Version;
 
 namespace MediaBrowser.Library {
 
@@ -788,6 +789,20 @@ namespace MediaBrowser.Library {
         public string VersionStr
         {
             get { return Version + " " + versionExtension; }
+        }
+
+        public System.Version ServerVersion
+        {
+            get
+            {
+                if (ServerInfo != null)
+                {
+                    var parts = ServerInfo.Version.Split('.');
+                    return new System.Version(Int32.Parse(parts[0]), Int32.Parse(parts[1]), Int32.Parse(parts[2]));
+                }
+
+                return new System.Version(3,0);
+            }
         }
 
 
