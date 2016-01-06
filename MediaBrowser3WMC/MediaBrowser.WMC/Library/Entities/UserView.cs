@@ -114,38 +114,34 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            if (Kernel.Instance.ServerVersion < new System.Version(3, 0, 5790))
+            if (!Config.Instance.ShowMovieSubViews && CollectionType == "movies")
             {
-                if (!Config.Instance.ShowMovieSubViews && CollectionType == "movies")
+                //Just get all movies under us instead of the split- out views that will be our children
+                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
                 {
-                    //Just get all movies under us instead of the split- out views that will be our children
-                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                    {
-                        UserId = Kernel.CurrentUser.ApiId,
-                        ParentId = ApiId,
-                        Recursive = true,
-                        IncludeItemTypes = new[] { "Movie" },
-                        Fields = MB3ApiRepository.StandardFields,
-                    }).ToList();
+                    UserId = Kernel.CurrentUser.ApiId,
+                    ParentId = ApiId,
+                    Recursive = true,
+                    IncludeItemTypes = new[] { "Movie" },
+                    Fields = MB3ApiRepository.StandardFields,
+                }).ToList();
 
-                }
-
-                if (!Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
-                {
-                    //Just get all series under us instead of the split- out views that will be our children
-                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                    {
-                        UserId = Kernel.CurrentUser.ApiId,
-                        ParentId = ApiId,
-                        Recursive = true,
-                        IncludeItemTypes = new[] { "Series" },
-                        Fields = MB3ApiRepository.StandardFields,
-                    }).ToList();
-
-                }
-                
             }
-            
+
+            if (!Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
+            {
+                //Just get all series under us instead of the split- out views that will be our children
+                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                {
+                    UserId = Kernel.CurrentUser.ApiId,
+                    ParentId = ApiId,
+                    Recursive = true,
+                    IncludeItemTypes = new[] { "Series" },
+                    Fields = MB3ApiRepository.StandardFields,
+                }).ToList();
+
+            }
+                            
             // Otherwise get our children which will be the split views
 
             // since we have our own latest implementation, exclude those from these views.
