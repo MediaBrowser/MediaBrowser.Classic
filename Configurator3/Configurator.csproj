@@ -69,10 +69,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Reference Include="MediaBrowser.Model">
-      <HintPath>..\MediaBrowser3WMC\packages\MediaBrowser.Common.3.0.637\lib\net35\MediaBrowser.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.MediaCenter, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Windows\ehome\Microsoft.MediaCenter.dll</HintPath>
@@ -245,7 +241,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Migrated rules for Configurator.ruleset" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
