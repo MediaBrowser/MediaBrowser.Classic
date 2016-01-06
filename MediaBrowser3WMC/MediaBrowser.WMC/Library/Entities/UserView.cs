@@ -36,8 +36,14 @@ namespace MediaBrowser.Library.Entities
                         return new[] {"boxset"};
                     case "musicvideos":
                         return new[] { "musicvideo" };
+                    case "photos":
+                        return new[] { "photo", "video" };
+                    case "homevideos":
+                        return new[] { "video" };
+                    case "playlists":
+                        return new[] { "playlist" };
                     default:
-                        return new[] {"movie"};
+                        return new[] {"movie","video"};
                 }
             }
         }
