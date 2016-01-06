@@ -54,7 +54,7 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"ChannelAudioItem", typeof(Song)},
                                                                      {"MusicVideo", typeof(MusicVideo)},
                                                                      {"AggregateFolder", typeof (AggregateFolder)},
-                                                                     {"CollectionFolder", typeof (Folder)},
+                                                                     {"CollectionFolder", typeof (UserView)},
                                                                      {"YoutubeCollectionFolder", typeof (Folder)},
                                                                      {"YoutubeVideo", typeof (Movie)},
                                                                      {"VodCastVideo", typeof (VodCastVideo)},
