@@ -104,21 +104,22 @@ namespace MediaBrowser.Library
 
         public bool ChannelAtTop(string id)
         {
-            return _data.DisplayChannelsWithinViews.Contains(id);
+            return false;
+            //return _data.DisplayChannelsWithinViews.Contains(id);
         }
 
         public void SetChannelAtTop(string id, bool top)
         {
-            _data.DisplayChannelsWithinViews = top ?
-                _data.DisplayChannelsWithinViews.Concat(new[] {id}).Distinct().ToArray() :
-                _data.DisplayChannelsWithinViews.Where(i => i != id).ToArray();
+            //_data.DisplayChannelsWithinViews = top ?
+            //    _data.DisplayChannelsWithinViews.Concat(new[] {id}).Distinct().ToArray() :
+            //    _data.DisplayChannelsWithinViews.Where(i => i != id).ToArray();
 
-            // also adjust ordered views
-            _data.OrderedViews = top ?
-                _data.OrderedViews.Concat(new[] { id }).Distinct().ToArray() :
-                _data.OrderedViews.Where(i => i != id).ToArray();
+            //// also adjust ordered views
+            //_data.OrderedViews = top ?
+            //    _data.OrderedViews.Concat(new[] { id }).Distinct().ToArray() :
+            //    _data.OrderedViews.Where(i => i != id).ToArray();
 
-            HasChanged = true;
+            //HasChanged = true;
         }
 
         public bool HasNoChannels { get { return AvailableChannels.Count == 0; }}

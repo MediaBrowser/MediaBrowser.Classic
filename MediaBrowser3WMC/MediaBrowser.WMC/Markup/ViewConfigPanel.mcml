@@ -36,7 +36,7 @@
     </Locals>
     
     <Content>
-      <Panel Layout="Form" MinimumSize="[PanelSize]" MaximumSize="1200,400" Padding="[SMargin]">
+      <Panel Layout="Form" MinimumSize="[PanelSize]" MaximumSize="1000,400" Padding="[SMargin]">
         <Children>
           <Panel Name="ViewConfig" Layout="HorizontalFlow" Navigation="Group, RememberFocus">
             <LayoutInput>
@@ -50,13 +50,13 @@
                   <me:GroupPanel Application="[Application]" UserConfig="[Application.ServerUserConfig]" />
                 </Children>
               </Panel>
-              <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
+              <!--<Panel Layout="VerticalFlow" Margins="40,0,0,0" >
                 <Children>
                   <cp:TextHeader Text="[Application.LocalStrings.#ChannelsOnEhsConfig!cor:String]" />
                   <Text Content="[Application.LocalStrings.#ChannelsOnEhsDescConfig!cor:String]" Margins="[CMargin]" Color="White" Alpha=".8" Font="font://f:CP_ConfigItemFont" />
                   <me:ChannelPanel Application="[Application]" UserConfig="[Application.ServerUserConfig]" />
                 </Children>
-              </Panel>
+              </Panel>-->
               <Panel Layout="VerticalFlow" Margins="40,0,0,0" >
                 <Children>
                   <cp:TextHeader Text="[Application.LocalStrings.#ViewOrderConfig!cor:String]" />
@@ -134,7 +134,7 @@
     </Content>
   </UI>
 
-  <UI Name="ChannelPanel" >
+  <!--<UI Name="ChannelPanel" >
     <Properties>
       <a:Application Name="Application" Application="$Required" />
       <lib:UserConfig Name="UserConfig" UserConfig="$Required" />
@@ -149,12 +149,12 @@
     </Locals>
 
     <Rules>
-      <!-- Give ScrollingData to ScrollingHandler. -->
+      --><!-- Give ScrollingData to ScrollingHandler. --><!--
       <Default Target="[ScrollingHandler.ScrollingData]" Value="[ScrollingData]"/>
-      <!-- Give Repeater to ScrollingData. -->
+      --><!-- Give Repeater to ScrollingData. --><!--
       <Default Target="[ScrollingData.Repeater]" Value="[MyRepeater]"/>
       
-      <!-- Save when lose focus -->
+      --><!-- Save when lose focus --><!--
       <Changed Source="[Input.DeepKeyFocus]" >
         <Conditions>
           <Equality Source="[Input.DeepKeyFocus]" Value="false" />
@@ -189,7 +189,7 @@
       </ColorFill>
 
     </Content>
-  </UI>
+  </UI>-->
 
   <UI Name="ViewOrderPanel" >
     <Properties>
@@ -286,7 +286,7 @@
     </Content>
   </UI>
 
-  <UI Name="ChannelItem" BaseUI="me:BaseFolderItem" >
+  <!--<UI Name="ChannelItem" BaseUI="me:BaseFolderItem" >
     <Locals>
       <BooleanChoice Name="IsAtTop" />
     </Locals>
@@ -309,7 +309,7 @@
       <cb:CheckBox Name="CheckBox" Label="[Item.Name]" Checked="[IsAtTop]" Margins="10,0,0,0"  Font="font://f:CP_ConfigItemFont"/>
 
     </Content>
-  </UI>
+  </UI>-->
 
   <UI Name="ViewOrderItem" BaseUI="me:BaseFolderItem" >
     <Properties>
