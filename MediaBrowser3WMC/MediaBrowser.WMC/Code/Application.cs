@@ -2569,7 +2569,8 @@ namespace MediaBrowser
                     Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("PluginsConfig"), "resx://MediaBrowser/MediaBrowser.Resources/AdvancedConfigPanel#PluginsPanel");
 
                 // add view config panel if legacy views not selected
-                if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
+                // *** Remove for now because it is broken with server changes
+                //if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
 
                 // add legacy config panel
                 Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
