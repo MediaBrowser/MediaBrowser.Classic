@@ -114,7 +114,7 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            if (!Config.Instance.ShowMovieSubViews && CollectionType == "movies")
+            if (!Config.Instance.UseLegacyFolders && !Config.Instance.ShowMovieSubViews && CollectionType == "movies")
             {
                 //Just get all movies under us instead of the split- out views that will be our children
                 return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
@@ -128,7 +128,7 @@ namespace MediaBrowser.Library.Entities
 
             }
 
-            if (!Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
+            if (!Config.Instance.UseLegacyFolders && !Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
             {
                 //Just get all series under us instead of the split- out views that will be our children
                 return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
