@@ -28,6 +28,8 @@ namespace MediaBrowser.Library.Entities
             {
                 switch (CollectionType)
                 {
+                    case "movies":
+                        return new[] {"movie"};
                     case "tvshows":
                         return new[] {"episode"};
                     case "music":
@@ -43,7 +45,7 @@ namespace MediaBrowser.Library.Entities
                     case "playlists":
                         return new[] { "playlist" };
                     default:
-                        return new[] {"movie","video","episode","musicvideo"};
+                        return null;
                 }
             }
         }
