@@ -43,7 +43,7 @@ namespace MediaBrowser.Library.Entities
                     case "playlists":
                         return new[] { "playlist" };
                     default:
-                        return new[] {"movie","video"};
+                        return new[] {"movie","video","episode","musicvideo"};
                 }
             }
         }
