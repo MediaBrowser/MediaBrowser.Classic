@@ -148,8 +148,8 @@ namespace MediaBrowser.Library.Entities
 
             // since we have our own latest implementation, exclude those from these views.
             // also eliminate flat songs view since that will probably not perform well
-            var ret = base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase)))).ToList();
-            if (CollectionType == "tvshows")
+            var ret = base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Collections", StringComparison.OrdinalIgnoreCase)))).ToList();
+            if (CollectionType == "tvshows" && Config.Instance.ShowTvSubViews)
             {
                 ret.Add(new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") });
             }
