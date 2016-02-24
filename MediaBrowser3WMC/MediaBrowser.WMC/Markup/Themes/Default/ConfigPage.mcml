@@ -135,6 +135,9 @@
       <IntRangedValue Name="BackdropLoadDelay" Value="[Application.Config.BackdropLoadDelay]" MaxValue="1000" MinValue="300" Step="10"/>
       <BooleanChoice Name="AutoScrollText" Value="[Application.Config.AutoScrollText]" />
 
+      <!--Old legacy options moved here-->
+      <BooleanChoice Name="ShowFavoritesCollection" Value="[Application.Config.ShowFavoritesCollection]" />
+      <BooleanChoice Name="ShowGenresCollection" Value="[Application.Config.ShowMovieGenreCollection]" />
 
       <ScrollingData Name="SD" BeginPadding="150" EndPadding="150"/>
       <Inset Name="SMargin" Inset="10,0,10,10" />
@@ -486,6 +489,10 @@
       <Binding Source="[BackdropLoadDelay.Value]" Target="[Config.BackdropLoadDelay]" />
       <Binding Source="[AutoScrollText.Value]" Target="[Config.AutoScrollText]" />
 
+      <!--Old legacy options-->
+      <Binding Source="[ShowFavoritesCollection.Value]" Target="[Config.ShowFavoritesCollection]" />
+      <Binding Source="[ShowGenresCollection.Value]" Target="[Config.ShowMovieGenreCollection]" />
+
 
       <Changed Source="[FocusItem.Value]">
         <Actions>
@@ -691,6 +698,8 @@
                           <cb:CheckBox Name="ShowTvSubOption" Label="[Application.LocalStrings.#ShowTvSubConfig!cor:String]" Checked="[ShowTvSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Padding="0,0,0,0" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Padding="0,0,0,0" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                         </Children>
                       </Panel>
                       <Panel Layout="VerticalFlow" Margins="40,0,0,0" >

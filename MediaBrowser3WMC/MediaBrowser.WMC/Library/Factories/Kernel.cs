@@ -609,23 +609,40 @@ namespace MediaBrowser.Library {
             //clear image factory cache to free memory
             LibraryImageFactory.Instance.ClearCache();
 
-            if (kernel.RootFolder != null && Config.Instance.UseLegacyFolders)
+            if (kernel.RootFolder != null)
             {
-                if (ConfigData.ShowChannels)
+                if (Config.Instance.UseLegacyFolders)
                 {
-                    //Create Channels
-                    if (ConfigData.GroupChannelsTogether)
+                    if (ConfigData.ShowChannels)
                     {
-                        var channels = new ChannelCollectionFolder { Id = ChannelsFolderGuid, DisplayMediaType = "ChannelsFolder", Name = LocalizedStrings.Instance.GetString("ChannelsFolderName") };
-                        channels.AddChildren(MB3ApiRepository.RetrieveChannels().ToList());
-                        kernel.RootFolder.AddVirtualChild(channels);
-                    }
-                    else
-                    {
-                        foreach (var channel in MB3ApiRepository.RetrieveChannels())
+                        //Create Channels
+                        if (ConfigData.GroupChannelsTogether)
                         {
-                            kernel.RootFolder.AddVirtualChild(channel);
+                            var channels = new ChannelCollectionFolder { Id = ChannelsFolderGuid, DisplayMediaType = "ChannelsFolder", Name = LocalizedStrings.Instance.GetString("ChannelsFolderName") };
+                            channels.AddChildren(MB3ApiRepository.RetrieveChannels().ToList());
+                            kernel.RootFolder.AddVirtualChild(channels);
                         }
+                        else
+                        {
+                            foreach (var channel in MB3ApiRepository.RetrieveChannels())
+                            {
+                                kernel.RootFolder.AddVirtualChild(channel);
+                            }
+                        }
+                    }
+                    
+                    if (ConfigData.ShowMusicGenreCollection)
+                    {
+                        //Create Music Genre collection
+                        MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, DisplayMediaType = "MusicGenres", IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
+                        kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
+                    }
+                
+                    if (ConfigData.ShowMusicAlbumCollection)
+                    {
+                        //Create Music Album collection
+                        MusicAlbumFolder = new ApiAlbumCollectionFolder {Id = MusicAlbumFolderGuid, Name = ConfigData.MusicAlbumFolderName, DisplayMediaType = "MusicAlbums", IncludeItemTypes = new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
+                        kernel.RootFolder.AddVirtualChild(MusicAlbumFolder);
                     }
                 }
 
@@ -646,19 +663,6 @@ namespace MediaBrowser.Library {
                     kernel.RootFolder.AddVirtualChild(MovieGenreFolder);
                 }
                 
-                if (ConfigData.ShowMusicGenreCollection)
-                {
-                    //Create Music Genre collection
-                    MusicGenreFolder = new ApiGenreCollectionFolder {Id = MusicGenreFolderGuid, Name = ConfigData.MusicGenreFolderName, DisplayMediaType = "MusicGenres", IncludeItemTypes = ConfigData.GroupAlbumsByArtist ? new[] {"MusicArtist"} : new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}, GenreType = GenreType.Music};
-                    kernel.RootFolder.AddVirtualChild(MusicGenreFolder);
-                }
-                
-                if (ConfigData.ShowMusicAlbumCollection)
-                {
-                    //Create Music Album collection
-                    MusicAlbumFolder = new ApiAlbumCollectionFolder {Id = MusicAlbumFolderGuid, Name = ConfigData.MusicAlbumFolderName, DisplayMediaType = "MusicAlbums", IncludeItemTypes = new[] {"MusicAlbum"}, RalIncludeTypes = new[] {"Audio"}};
-                    kernel.RootFolder.AddVirtualChild(MusicAlbumFolder);
-                }
                 
             }
         }
