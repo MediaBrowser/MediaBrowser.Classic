@@ -33,7 +33,7 @@ namespace MediaBrowser.Library.Entities {
         {
             get
             {
-                return base.ActualChildren.Concat(virtualChildren).OrderBy(i => i.SortName).OfType<Folder>().Cast<BaseItem>().ToList();
+                return base.ActualChildren.Concat(virtualChildren).OrderBy(i => i.SortName).OfType<Folder>().Where(i => !Config.Instance.UseLegacyFolders || i.CollectionType != "boxsets").Cast<BaseItem>().ToList();
             }
         }
 
