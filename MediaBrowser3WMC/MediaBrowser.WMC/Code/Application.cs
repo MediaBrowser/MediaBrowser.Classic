@@ -2440,7 +2440,7 @@ namespace MediaBrowser
 
                                                        if (!supporter.IsRegistered)
                                                        {
-                                                           PopoutMessage("Try The All New Emby Theater", "Emby Theater 2.0 now has a Live TV guide and a full-featured advanced playback engine.  It is fast and modern.\n\nCurrently requires Emby Premiere subscription");
+                                                           PopoutMessage("Try The All New Emby Theater", "Emby Theater 2.0 now has a Live TV guide and a full-featured advanced playback engine.  It is fast and modern.  Get it now at http://emby.media/download. \n\nCurrently requires Emby Premiere subscription");
                                                            Kernel.Instance.CommonConfigData.LastNagDate = DateTime.Now;
                                                            Kernel.Instance.CommonConfigData.Save();
                                                        }
