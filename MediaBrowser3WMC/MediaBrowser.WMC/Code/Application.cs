@@ -2440,7 +2440,7 @@ namespace MediaBrowser
 
                                                        if (!supporter.IsRegistered)
                                                        {
-                                                           PopoutMessage("Please Consider Emby Premiere", "Emby Premiere gives you tons of extra features like mobile sync (in supported clients) free apps, Cinema Mode and CoverArt.");
+                                                           PopoutMessage("Try The All New Emby Theater", "Emby Theater 2.0 now has a Live TV guide and a full-featured advanced playback engine.  It is fast and modern.\n\nCurrently requires Emby Premiere subscription");
                                                            Kernel.Instance.CommonConfigData.LastNagDate = DateTime.Now;
                                                            Kernel.Instance.CommonConfigData.Save();
                                                        }
