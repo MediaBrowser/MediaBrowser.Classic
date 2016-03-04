@@ -5,8 +5,8 @@
 
 <!-- We change the ProductVersion and ProductCode with each release                                      -->
 
-<?define Property_ProductVersion = "3.0.301.0" ?>
-<?define Property_ProductCode = "{D1A8093C-ABA4-450C-8F55-18E2061684B8}" ?>
+<?define Property_ProductVersion = "3.0.302.0" ?>
+<?define Property_ProductCode = "{B9FD7526-7F6B-40B6-B4DC-F6A5D15275CC}" ?>
 
 <!-- The UpgradeCode always stays the same                                                               -->
 <?define Property_UpgradeCode = "1AA59629-46C2-42d5-AD06-534A20F68296" ?>
@@ -200,10 +200,10 @@
         <File Id="MBMigrate.exe.config" Name="MBMigrate.exe.config" Source="..\Windows 8.config" CompanionFile="MBMigrate.exe" Checksum="yes" Vital="yes"/>
       </Component>
       <Component Id="MediaBrowser.Classic.Installer.exe" Guid="2FA65C5D-8CBA-428E-953B-082871924BEA" DiskId="1">
-        <File Id="MediaBrowser.Classic.Installer.exe" Name="MediaBrowser.Classic.Installer.exe" Source="..\..\MediaBrowser\Installation\MediaBrowser.Classic.Installer.exe" Checksum="no"/>
+        <File Id="MediaBrowser.Classic.Installer.exe" Name="MediaBrowser.Classic.Installer.exe" Source="..\3rdParty\MediaBrowser.Classic.Installer.exe" Checksum="no"/>
       </Component>
       <Component Id="MediaBrowser.InstallUtil.dll" Guid="B4EFFC0B-1AEC-4BD2-A215-EB072A3C2BE3" DiskId="1">
-        <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\..\MediaBrowser\Installation\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
+        <File Id="MediaBrowser.InstallUtil.dll" Name="MediaBrowser.InstallUtil.dll" Source="..\3rdParty\MediaBrowser.InstallUtil.dll" Checksum="no" Vital="yes"/>
       </Component>
       <Component Id="ServiceStack.Text.dll" Guid="BD6616A9-4FF3-4544-BD8B-B2EBAD9CC89D" DiskId="1">
         <File Id="ServiceStack.Text.dll" Name="ServiceStack.Text.dll" Source="..\3rdParty\ServiceStack.Text.dll" Checksum="no" Vital="yes"/>
