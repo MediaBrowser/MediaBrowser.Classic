@@ -114,7 +114,7 @@ namespace MediaBrowser.ApiInteraction
         {
             get
             {
-                return string.Format("http://{0}:{1}/mediabrowser", ServerHostName, ServerApiPort);
+                return string.Format("http://{0}:{1}/emby", ServerHostName, ServerApiPort);
             }
         }
 
