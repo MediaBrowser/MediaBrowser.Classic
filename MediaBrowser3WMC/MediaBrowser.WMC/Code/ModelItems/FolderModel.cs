@@ -851,6 +851,7 @@ namespace MediaBrowser.Library {
                 selectedchildIndex = -1;
                 if (folderChildren.Count > 0)
                     SelectedChildIndex = 0;
+                FireChildrenChangedEvents();
 
             });
         }
