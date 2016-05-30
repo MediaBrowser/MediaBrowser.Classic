@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +23,7 @@ namespace MediaBrowser
         private static readonly string FileName = string.Format("weather_{1}_{0}.xml", Application.CurrentInstance.Config.YahooWeatherFeed, Application.CurrentInstance.Config.YahooWeatherUnit);
         private readonly string DownloadToFilePath = Path.Combine(ApplicationPaths.AppRSSPath, FileName);        
         
-        private readonly string Feed = string.Format("http://xml.weather.yahoo.com/forecastrss/{0}_{1}.xml",
+        private readonly string Feed = string.Format("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D{0}%20AND%20u%3D%22{1}%22&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
             Application.CurrentInstance.Config.YahooWeatherFeed,
             Application.CurrentInstance.Config.YahooWeatherUnit);
         private const int RefreshIntervalHrs = 3;
@@ -319,23 +319,23 @@ namespace MediaBrowser
             XmlNamespaceManager man = new XmlNamespaceManager(xDoc.NameTable);
             man.AddNamespace("yweather", "http://xml.weather.yahoo.com/ns/rss/1.0");
 
-            Unit = xDoc.SelectSingleNode("rss/channel/yweather:units", man).Attributes["temperature"].Value.ToString();
-            SpeedUnit = xDoc.SelectSingleNode("rss/channel/yweather:units", man).Attributes["speed"].Value.ToString();
-            PressureUnit = xDoc.SelectSingleNode("rss/channel/yweather:units", man).Attributes["pressure"].Value.ToString();
-            DistanceUnit = xDoc.SelectSingleNode("rss/channel/yweather:units", man).Attributes["distance"].Value.ToString();
+            Unit = xDoc.SelectSingleNode("query/results/channel/yweather:units", man).Attributes["temperature"].Value.ToString();
+            SpeedUnit = xDoc.SelectSingleNode("query/results/channel/yweather:units", man).Attributes["speed"].Value.ToString();
+            PressureUnit = xDoc.SelectSingleNode("query/results/channel/yweather:units", man).Attributes["pressure"].Value.ToString();
+            DistanceUnit = xDoc.SelectSingleNode("query/results/channel/yweather:units", man).Attributes["distance"].Value.ToString();
             
-            CodeDescription = xDoc.SelectSingleNode("rss/channel/item/yweather:condition", man).Attributes["text"].Value.ToString();
-            Location = xDoc.SelectSingleNode("rss/channel/yweather:location", man).Attributes["city"].Value.ToString();
-            Humidity = xDoc.SelectSingleNode("rss/channel/yweather:atmosphere", man).Attributes["humidity"].Value.ToString();
-            VisibileDistance = xDoc.SelectSingleNode("rss/channel/yweather:atmosphere", man).Attributes["visibility"].Value.ToString();
-            Chill = xDoc.SelectSingleNode("rss/channel/yweather:wind", man).Attributes["chill"].Value.ToString();
-            Direction = xDoc.SelectSingleNode("rss/channel/yweather:wind", man).Attributes["direction"].Value.ToString();
-            Speed = xDoc.SelectSingleNode("rss/channel/yweather:wind", man).Attributes["speed"].Value.ToString();
-            Pressure = xDoc.SelectSingleNode("rss/channel/yweather:atmosphere", man).Attributes["pressure"].Value.ToString();
-            Sunrise = xDoc.SelectSingleNode("rss/channel/yweather:astronomy", man).Attributes["sunrise"].Value.ToString();
-            Sunset = xDoc.SelectSingleNode("rss/channel/yweather:astronomy", man).Attributes["sunset"].Value.ToString();
-            Temp = xDoc.SelectSingleNode("rss/channel/item/yweather:condition", man).Attributes["temp"].Value.ToString();
-            Code = xDoc.SelectSingleNode("rss/channel/item/yweather:condition", man).Attributes["code"].Value.ToString();
+            CodeDescription = xDoc.SelectSingleNode("query/results/channel/item/yweather:condition", man).Attributes["text"].Value.ToString();
+            Location = xDoc.SelectSingleNode("query/results/channel/yweather:location", man).Attributes["city"].Value.ToString();
+            Humidity = xDoc.SelectSingleNode("query/results/channel/yweather:atmosphere", man).Attributes["humidity"].Value.ToString();
+            VisibileDistance = xDoc.SelectSingleNode("query/results/channel/yweather:atmosphere", man).Attributes["visibility"].Value.ToString();
+            Chill = xDoc.SelectSingleNode("query/results/channel/yweather:wind", man).Attributes["chill"].Value.ToString();
+            Direction = xDoc.SelectSingleNode("query/results/channel/yweather:wind", man).Attributes["direction"].Value.ToString();
+            Speed = xDoc.SelectSingleNode("query/results/channel/yweather:wind", man).Attributes["speed"].Value.ToString();
+            Pressure = xDoc.SelectSingleNode("query/results/channel/yweather:atmosphere", man).Attributes["pressure"].Value.ToString();
+            Sunrise = xDoc.SelectSingleNode("query/results/channel/yweather:astronomy", man).Attributes["sunrise"].Value.ToString();
+            Sunset = xDoc.SelectSingleNode("query/results/channel/yweather:astronomy", man).Attributes["sunset"].Value.ToString();
+            Temp = xDoc.SelectSingleNode("query/results/channel/item/yweather:condition", man).Attributes["temp"].Value.ToString();
+            Code = xDoc.SelectSingleNode("query/results/channel/item/yweather:condition", man).Attributes["code"].Value.ToString();
             ImageUrl = string.Format("resx://MediaBrowser/MediaBrowser.Resources/_{0}", this.Code);
             //this.ImageUrl = string.Format("http://l.yimg.com/a/i/us/we/52/{0}.gif", this.Code);
             LongTemp = string.Format("{0}°{1} {2}", Temp, Unit, CodeDescription);
@@ -343,7 +343,7 @@ namespace MediaBrowser
             LongWindSpeed = string.Format("{0} {1} {2}", Speed, SpeedUnit, Direction);
             LongVisibility = string.Format("{0} {1}", VisibileDistance, DistanceUnit);
 
-            var tempForecast = xDoc.SelectNodes("rss/channel/item/yweather:forecast", man);
+            var tempForecast = xDoc.SelectNodes("query/results/channel/item/yweather:forecast", man);
             //<yweather:forecast day="Fri" date="24 Apr 2009" low="50" high="63" text="Partly Cloudy" code="30" />
             foreach (XmlNode temp in tempForecast)
             {
