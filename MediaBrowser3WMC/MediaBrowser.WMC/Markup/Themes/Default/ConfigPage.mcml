@@ -48,6 +48,7 @@
       <Command Name="UpdateCheck" />
       <Command Name="CloseMessage"/>
       <Command Name="Logout"/>
+      <Command Name="OSK"/>
       <Command Name="ClearConnect"/>
 
 
@@ -113,6 +114,7 @@
       <EditableText Name="SortReplaceCharacters" Value="[Application.Config.SortReplaceCharacters]" />
       <EditableText Name="SortReplaceWords" Value="[Application.Config.SortReplaceWords]" />
       <EditableText Name="FocusItem"/>
+      <EditableText Name="WeatherLocation" Value="[Application.Config.YahooWeatherFeed]" />
 
       <IntRangedValue Name="SSTimeout" Value="[Application.Config.ScreenSaverTimeOut]" MaxValue="100" MinValue="1" Step="1" />
       <IntRangedValue Name="SlideShowInterval" Value="[Application.Config.SlideShowInterval]" MaxValue="300" MinValue="1" Step="1" />
@@ -174,6 +176,13 @@
         </Options>
       </Choice>
 
+      <Choice Name="WeatherUnitModel">
+        <Options>
+          <cor:String String="f" />
+          <cor:String String="c" />
+        </Options>
+      </Choice>
+
       <Choice Name="FontThemeModel">
         <Options>
           <cor:String String="Default" />
@@ -199,6 +208,7 @@
     <Rules>
       <Default Target="[FontThemeModel.Chosen]" Value="[Application.Config.FontTheme]" />
       <Default Target="[ViewThemeModel.Chosen]" Value="[Application.Config.ViewTheme]" />
+      <Default Target="[WeatherUnitModel.Chosen]" Value="[Application.Config.YahooWeatherUnit]" />
       <Default Target="[ThemeInitial]" Value="[Application.Config.Theme]" >
         <Actions>
           <Set Target="[ThemeLoaded.Value]" Value="true" />
@@ -261,6 +271,17 @@
       <Changed Source="[ClearConnect.Invoked]" >
         <Actions>
           <Invoke Target="[Application.ClearConnectInfo]" />
+        </Actions>
+      </Changed>
+
+      <!--Bring up keyboard-->
+      <Changed Source="[OSK.Invoked]" >
+        <Actions>
+          <Invoke
+                  Target="[AddInHost.MediaCenterEnvironment.ShowOnscreenKeyboard]"
+                  editableText="[WeatherLocation]"
+                  passwordMasked="false"
+                  maxLength="50"/>
         </Actions>
       </Changed>
 
@@ -432,6 +453,7 @@
       <Binding Source="[DefaultSkipBackSeconds.Value]" Target="[Config.DefaultSkipBackSeconds]" />
       <Binding Source="[DisableCustomPlayerForDvd.Value]" Target="[Config.DisableCustomPlayerForDvd]" />
       <Binding Source="[InputActivityTimeout.Value]" Target="[Config.InputActivityTimeout]" />
+      <Binding Source="[WeatherLocation.Value]" Target="[Config.YahooWeatherFeed]" />
       <Binding Source="[ThemeBackgroundRepeat.Value]" Target="[Config.ThemeBackgroundRepeat]" />
 
       <Binding Source="[ThemeModel.Chosen!cor:String]" Target="[Config.Theme]" >
@@ -441,6 +463,7 @@
       </Binding>
       <Binding Source="[FontThemeModel.Chosen!cor:String]" Target="[Config.FontTheme]" />
       <Binding Source="[ViewThemeModel.Chosen!cor:String]" Target="[Config.ViewTheme]" />
+      <Binding Source="[WeatherUnitModel.Chosen!cor:String]" Target="[Config.YahooWeatherUnit]" />
       <Binding Source="[DefaultToFirstUnwatched.Value]" Target="[Config.DefaultToFirstUnwatched]" />
       <Binding Source="[AutoEnterSingleDirs.Value]" Target="[Config.AutoEnterSingleDirs]" />
       <Binding Source="[DefaultShowLabels.Value]" Target="[Config.DefaultShowLabels]" />
@@ -633,6 +656,15 @@
                           <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ConfirmExitConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[UseExitMenu]"  Font="font://f:CP_ConfigItemFont"/>
+                          <Panel Name="Weather" Layout="HorizontalFlow" Margins="[CMargin]">
+                            <Layout>
+                              <FlowLayout Orientation="Horizontal"/>
+                            </Layout>
+                            <Children>
+                              <te:TextEdit Label="[Application.LocalStrings.#WeatherLocationConfig!cor:String]" FocusItem="[FocusItem]" EditableText="[WeatherLocation]" MaximumSize="300,0" EditSize="120,34" Font="font://f:CP_ConfigItemFont" MaxChars="20" />
+                              <ss:SimpleSpinner Name="WeatherUnit" Label="[Application.LocalStrings.#WeatherUnitConfig!cor:String]" Margins="0,2,0,0" LabelMinSize="50,0" Model="[WeatherUnitModel]" ValueMinSize="20,35" ValueMaxSize="20,35" FocusItem="[FocusItem]" Font="font://f:CP_ConfigItemFont" ValueFont="font://f:CP_ConfigItemFont"  />
+                            </Children>
+                          </Panel>
 
                         </Children>
                       </Panel>
