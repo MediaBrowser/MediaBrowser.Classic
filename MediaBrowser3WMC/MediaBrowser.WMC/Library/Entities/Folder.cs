@@ -620,7 +620,7 @@ namespace MediaBrowser.Library.Entities {
             _unwatchedCount = null;
         }
 
-        protected int GetUnwatchedCount()
+        protected virtual int GetUnwatchedCount()
         {
             var count = 0;
 
@@ -794,7 +794,7 @@ namespace MediaBrowser.Library.Entities {
         {
         }
 
-        public bool ChildrenLoaded { get { return children != null; } }
+        public bool ChildrenLoaded { get { return children != null && children.HasValue; } }
 
         /// <summary>
         /// Recursive enumerator that returns recursive children only if they have already been loaded
