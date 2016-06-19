@@ -57,7 +57,8 @@ namespace MediaBrowser.Library.Entities {
             get
             {
                 var files = Files.ToList();
-                return files.Any() && files.First().StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+                return files.Any() && (files.First().StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                    || files.First().StartsWith("https://", StringComparison.OrdinalIgnoreCase));
             }
         }
 

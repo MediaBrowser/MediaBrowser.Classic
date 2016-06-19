@@ -255,6 +255,21 @@ namespace MediaBrowser
                 playedWithPlaylist = true;
             }
 
+            // For streamed audio, create an asx file to supply additional item information for display in WMC's player
+            if (playable.HasMediaItems && playable.MediaItems.All(f => f.WillStream && f is Song))
+            {
+                IEnumerable<string> files = playable.FilesFormattedForPlayer;
+
+                string playlistFile = PlaybackControllerHelper.CreateASXPlaylist(playable);
+
+                if (!PlaybackControllerHelper.CallPlayMedia(mediaCenterEnvironment, type, playlistFile, false))
+                {
+                    return false;
+                }
+
+                playedWithPlaylist = true;
+            }
+
             // If we're playing a dvd and the last item played was a MediaCollection, we need to make sure the MediaCollection has
             // fully cleared out of the player or there will be quirks such as ff/rew remote buttons not working
             if (playable.HasMediaItems)
@@ -325,12 +340,26 @@ namespace MediaBrowser
 
             bool success = true;
 
-            foreach (string file in playable.FilesFormattedForPlayer)
+            if (playable.HasMediaItems && playable.MediaItems.All(f => f.WillStream && f is Song))
             {
-                if (!PlaybackControllerHelper.CallPlayMedia(Application.MediaCenterEnvironment, type, file, true))
+                IEnumerable<string> files = playable.FilesFormattedForPlayer;
+
+                string playlistFile = PlaybackControllerHelper.CreateASXPlaylist(playable);
+
+                if (!PlaybackControllerHelper.CallPlayMedia(Application.MediaCenterEnvironment, type, playlistFile, true))
                 {
                     success = false;
-                    break;
+                }
+            }
+            else
+            {
+                foreach (string file in playable.FilesFormattedForPlayer)
+                {
+                    if (!PlaybackControllerHelper.CallPlayMedia(Application.MediaCenterEnvironment, type, file, true))
+                    {
+                        success = false;
+                        break;
+                    }
                 }
             }
 
@@ -425,7 +454,8 @@ namespace MediaBrowser
                 {
                     Logger.ReportVerbose("HandlePropertyChange has recognized that playback has started");
                     _HasStartedPlaying = true;
-                    IsStreaming = Playable.CurrentFile.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+                    IsStreaming = Playable.CurrentFile.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                        || Playable.CurrentFile.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
                     if (Playable.HasMediaItems)
                     {
                         Application.CurrentInstance.CurrentlyPlayingItemId = lastItemId = Playable.CurrentMedia.Id;
