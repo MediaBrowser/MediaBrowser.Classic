@@ -3226,7 +3226,7 @@ namespace MediaBrowser
                                                                     {
                                                                         UserId = Kernel.CurrentUser.Id.ToString(),
                                                                         Fields = MB3ApiRepository.StandardFields,
-                                                                        ParentId = searchStart.ApiId,
+                                                                        ParentId = searchStart == RootFolder ? null : searchStart.ApiId,
                                                                         Genres = new[] {genre},
                                                                         IncludeItemTypes = new [] {itemType},
                                                                         Recursive = true
