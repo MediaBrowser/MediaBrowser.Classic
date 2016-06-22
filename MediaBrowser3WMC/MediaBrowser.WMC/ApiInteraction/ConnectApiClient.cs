@@ -174,8 +174,14 @@ namespace MediaBrowser.ApiInteraction
         {
             var dict = new QueryStringDictionary {{"deviceId", deviceId}};
             var url = GetApiUrl("pin");
-
-            return Post<PinCreationResult>(url, dict);
+            try
+            {
+                return Post<PinCreationResult>(url, dict);
+            }
+            catch (Exception e)
+            {
+                return new PinCreationResult() {IsConfirmed = false, Pin = "Error: Could not retrieve PIN"};
+            }
         }
 
         public PinExchangeResult ExchangePin(string pin, string deviceId)
@@ -183,7 +189,14 @@ namespace MediaBrowser.ApiInteraction
             var dict = new QueryStringDictionary {{"pin", pin}, {"deviceId", deviceId}};
             var url = GetApiUrl("pin/authenticate");
 
-            return Post<PinExchangeResult>(url, dict);
+            try
+            {
+                return Post<PinExchangeResult>(url, dict);
+            }
+            catch (Exception e)
+            {
+                return new PinExchangeResult();
+            }
         }
 
     }
