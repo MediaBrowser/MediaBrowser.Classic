@@ -467,7 +467,8 @@ namespace MediaBrowser.Library.Entities {
             get
             {
                 if (isRemoteContent == null) { 
-                    isRemoteContent = LocationType == LocationType.Remote || Path != null && Path.ToLower().StartsWith("http://");
+                    isRemoteContent = LocationType == LocationType.Remote 
+                        || Path != null && (Path.ToLower().StartsWith("http://") || Path.ToLower().StartsWith("https://"));
                 }
                 return isRemoteContent.Value;
             }

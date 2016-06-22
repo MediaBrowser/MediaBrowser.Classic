@@ -173,8 +173,44 @@ namespace MediaBrowser.Library.Playables
                     // Set a friendly title
                     friendlyData["Title"] = media.Name;
 
-                    coll.AddItem(path, collectionIndex, -1, string.Empty, friendlyData);
+                    var song = media as Song;
 
+                    if (song != null)
+                    {
+                        var itemImage = song.PrimaryImagePath;
+
+                        // The following "friendly" data fields are undocumented but working for song items...
+                        if (playable.Folder != null)
+                        {
+                            // This is either a music album or a playlist
+                            friendlyData["AlbumTitle"] = playable.Folder.Name;
+                            if (string.IsNullOrEmpty(itemImage))
+                            {
+                                itemImage = playable.Folder.PrimaryImagePath;
+                            }
+                        }
+                        else
+                        {
+                            friendlyData["AlbumTitle"] = song.Album;
+                        }
+
+                        friendlyData["AlbumArtist"] = song.AlbumArtist;
+                        friendlyData["Artist"] = song.Artist;
+                        friendlyData["TrackNumber"] = currentFileIndex;
+
+                        if (song.PremierDate != DateTime.MinValue)
+                        {
+                            friendlyData["YearReleased"] = song.PremierDate.Year;
+                        }
+
+                        if (!string.IsNullOrEmpty(itemImage))
+                        {
+                            friendlyData["AlbumCoverUrl"] = itemImage;
+                        }
+                    }
+
+                    coll.AddItem(path, collectionIndex, -1, string.Empty, friendlyData);
+                    
                     currentFileIndex++;
                     collectionIndex++;
                 }
@@ -550,6 +586,160 @@ namespace MediaBrowser.Library.Playables
             xml.WriteEndElement();
 
             File.WriteAllText(playListFile, @"<?wpl version=""1.0""?>" + writer.ToString());
+
+            return playListFile;
+        }
+
+        public static string CreateASXPlaylist(PlayableItem playable)
+        {
+            // we need to filter out all invalid chars 
+            var name = new string(playable.Id.ToString()
+                .ToCharArray()
+                .Where(e => !Path.GetInvalidFileNameChars().Contains(e))
+                .ToArray());
+
+            var playListFile = Path.Combine(ApplicationPaths.AutoPlaylistPath, name + ".asx");
+
+            BaseItem primaryItem = playable.Folder;
+
+            if (primaryItem == null)
+            {
+                primaryItem = playable.MediaItems.First();
+            }
+
+            StringWriter writer = new StringWriter();
+            XmlTextWriter xml = new XmlTextWriter(writer);
+
+            xml.Indentation = 2;
+            xml.IndentChar = ' ';
+
+            xml.WriteStartElement("ASX");
+            xml.WriteAttributeString("version", "3.0");
+
+            xml.WriteStartElement("TITLE");
+            xml.WriteString(primaryItem.Name);
+            xml.WriteEndElement();
+
+            foreach (var mediaItem in playable.MediaItems)
+            {
+                foreach (string file in mediaItem.Files)
+                {
+                    xml.WriteStartElement("ENTRY");
+
+                    xml.WriteStartElement("TITLE");
+                    xml.WriteString(mediaItem.Name);
+                    xml.WriteEndElement();
+
+                    if (!string.IsNullOrEmpty(mediaItem.PrimaryImagePath))
+                    {
+                        xml.WriteStartElement("PARAM");
+                        xml.WriteAttributeString("name", "WM/AlbumCoverURL");
+                        xml.WriteAttributeString("value", mediaItem.PrimaryImagePath);
+                        xml.WriteEndElement();
+                    }
+
+                    if (!string.IsNullOrEmpty(mediaItem.Overview))
+                    {
+                        xml.WriteStartElement("PARAM");
+                        xml.WriteAttributeString("name", "Description");
+                        xml.WriteAttributeString("value", mediaItem.Overview);
+                        xml.WriteEndElement();
+                    }
+
+                    var song = mediaItem as Song;
+
+                    if (song != null)
+                    {
+                        xml.WriteStartElement("PARAM");
+                        xml.WriteAttributeString("name", "MediaType");
+                        xml.WriteAttributeString("value", "audio");
+                        xml.WriteEndElement();
+
+                        if (song.CriticRating.HasValue)
+                        {
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "UserRating");
+                            xml.WriteAttributeString("value", Math.Ceiling(song.CriticRating.Value).ToString());
+                            xml.WriteEndElement();
+                        }
+
+                        if (song.PremierDate != DateTime.MinValue)
+                        {
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "ReleaseDateDay");
+                            xml.WriteAttributeString("value", song.PremierDate.Day.ToString());
+                            xml.WriteEndElement();
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "ReleaseDateMonth");
+                            xml.WriteAttributeString("value", song.PremierDate.Month.ToString());
+                            xml.WriteEndElement();
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "ReleaseDateYear");
+                            xml.WriteAttributeString("value", song.PremierDate.Year.ToString());
+                            xml.WriteEndElement();
+                        }
+
+                        if (song.RuntimeTicks > 0)
+                        {
+                            var ts = TimeSpan.FromTicks(song.RuntimeTicks);
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "Duration");
+                            xml.WriteAttributeString("value", ts.TotalSeconds.ToString("F0"));
+                            xml.WriteEndElement();
+                        }
+
+                        if (!string.IsNullOrEmpty(song.Artist))
+                        {
+                            xml.WriteStartElement("AUTHOR");
+                            xml.WriteString(song.Artist);
+                            xml.WriteEndElement();
+                        }
+
+                        if (!string.IsNullOrEmpty(song.AlbumArtist))
+                        {
+                            xml.WriteStartElement("WM/AlbumArtist");
+                            xml.WriteString(song.AlbumArtist);
+                            xml.WriteEndElement();
+                        }
+
+                        var albumName = song.Album;
+
+                        if (string.IsNullOrEmpty(albumName) && primaryItem is Folder)
+                        {
+                            albumName = primaryItem.Name;
+                        }
+
+                        if (!string.IsNullOrEmpty(albumName))
+                        {
+                            xml.WriteStartElement("PARAM");
+                            xml.WriteAttributeString("name", "WM/AlbumTitle");
+                            xml.WriteAttributeString("value", albumName);
+                            xml.WriteEndElement();
+                        }
+
+                        if (song.Genres != null)
+                        {
+                            foreach (var genre in song.Genres)
+                            {
+                                xml.WriteStartElement("PARAM");
+                                xml.WriteAttributeString("name", "WM/Genre");
+                                xml.WriteAttributeString("value", genre);
+                                xml.WriteEndElement();
+                            }
+                        }
+                    }
+
+                    xml.WriteStartElement("REF");
+                    xml.WriteAttributeString("href", file);
+                    xml.WriteEndElement();
+
+                    xml.WriteEndElement();
+                }
+            }
+
+            xml.WriteEndElement();
+
+            File.WriteAllText(playListFile, writer.ToString());
 
             return playListFile;
         }

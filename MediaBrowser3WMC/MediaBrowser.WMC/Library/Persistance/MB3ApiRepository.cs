@@ -536,6 +536,7 @@ namespace MediaBrowser.Library.Persistance
                     song.AlbumArtist = mb3Item.AlbumArtist;
                     song.AlbumId = mb3Item.AlbumId;
                     song.Artist = mb3Item.Artists.FirstOrDefault();
+                    song.CriticRating = mb3Item.CommunityRating;
                 }
 
                 var album = item as MusicAlbum;

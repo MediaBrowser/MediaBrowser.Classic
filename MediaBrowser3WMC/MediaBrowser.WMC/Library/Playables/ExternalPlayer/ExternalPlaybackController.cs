@@ -81,7 +81,7 @@ namespace MediaBrowser.Library.Playables.ExternalPlayer
         {
             // Report start to server
             var file = (playable.HasMediaItems ? playable.CurrentMedia.Files.FirstOrDefault() : playable.CurrentFile) ?? "";
-            IsStreaming = file.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+            IsStreaming = file.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || file.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
             if (playable.HasMediaItems) Application.CurrentInstance.ReportPlaybackStart(playable.CurrentMedia.ApiId, IsStreaming);
 
             // Two different launch methods depending on how the player is configured
