@@ -53,8 +53,6 @@
 
 
       <Timer Name="MsgDelay" AutoRepeat="false" Interval="200" Enabled="false"/>
-      <BooleanChoice Name="ShowFolders" Value="[Application.ServerUserConfig.ShowFolders]" />
-      <BooleanChoice Name="ShowCollections" Value="[Application.ServerUserConfig.ShowCollections]" />
       <BooleanChoice Name="ShowMovieSubViews" Value="[Application.Config.ShowMovieSubViews]" />
       <BooleanChoice Name="ShowTvSubViews" Value="[Application.Config.ShowTvSubViews]" />
       <BooleanChoice Name="EnableScreenSaver" Value="[Application.Config.EnableScreenSaver]" />
@@ -414,20 +412,8 @@
       <Binding Source="[AllowCinemaMode.Value]" Target="[Config.AllowCinemaMode]" />
 
       <!-- These items only apply if not legacy browsing -->
-      <Binding Source="[ShowFolders.Value]" Target="[UserConfig.ShowFolders]" />
-      <Binding Source="[ShowCollections.Value]" Target="[UserConfig.ShowCollections]" />
       <Binding Source="[ShowMovieSubViews.Value]" Target="[Config.ShowMovieSubViews]" />
       <Binding Source="[ShowTvSubViews.Value]" Target="[Config.ShowTvSubViews]" />
-      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowFoldersOption.Visible]" >
-        <Transformer>
-          <BooleanTransformer Inverse="true" />
-        </Transformer>
-      </Binding>
-      <Binding Source="[Config.UseLegacyFolders]" Target="[ShowCollectionsOption.Visible]" >
-        <Transformer>
-          <BooleanTransformer Inverse="true" />
-        </Transformer>
-      </Binding>
       <Binding Source="[Config.UseLegacyFolders]" Target="[ShowMovieSubOption.Visible]" >
         <Transformer>
           <BooleanTransformer Inverse="true" />
@@ -696,8 +682,6 @@
                           <cb:CheckBox Label="[Application.LocalStrings.#EnableEHSConfig!cor:String]" Checked="[EnableRootPage]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Name="ShowMovieSubOption" Label="[Application.LocalStrings.#ShowMovieSubConfig!cor:String]" Checked="[ShowMovieSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Name="ShowTvSubOption" Label="[Application.LocalStrings.#ShowTvSubConfig!cor:String]" Checked="[ShowTvSubViews]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                          <cb:CheckBox Name="ShowFoldersOption" Label="[Application.LocalStrings.#ShowFoldersConfig!cor:String]" Checked="[ShowFolders]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
-                          <cb:CheckBox Name="ShowCollectionsOption" Label="[Application.LocalStrings.#ShowCollectionsConfig!cor:String]" Checked="[ShowCollections]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowFavoritesCollectionConfig!cor:String]" Padding="0,0,0,0" Checked="[ShowFavoritesCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowGenresCollectionConfig!cor:String]" Padding="0,0,0,0" Checked="[ShowGenresCollection]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                         </Children>

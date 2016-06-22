@@ -124,36 +124,6 @@ namespace MediaBrowser.Library
 
         public bool HasNoChannels { get { return AvailableChannels.Count == 0; }}
 
-        public bool ShowFolders
-        {
-            get { return _data.DisplayFoldersView; }
-            set
-            {
-                if (value != _data.DisplayFoldersView)
-                {
-                    _data.DisplayFoldersView = value;
-                    FirePropertyChanged("ShowFolders");
-
-                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
-                }
-            }
-        }
-
-        public bool ShowCollections
-        {
-            get { return _data.DisplayCollectionsView; }
-            set
-            {
-                if (value != _data.DisplayCollectionsView)
-                {
-                    _data.DisplayCollectionsView = value;
-                    FirePropertyChanged("ShowCollections");
-
-                    Async.Queue(Async.ThreadPoolName.UserConfigSave, Save);
-                }
-            }
-        }
-
         public void Save()
         {
             Kernel.ApiClient.UpdateUserConfiguration(Kernel.CurrentUser.ApiId, _data);
