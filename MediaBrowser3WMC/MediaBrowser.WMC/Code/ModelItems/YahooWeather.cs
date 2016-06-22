@@ -360,6 +360,7 @@ namespace MediaBrowser
                     _forecast.Add(fi);
                 }
                 _extendedForecast.Add(fi);
+                if (_extendedForecast.Count > 5) break; //limit to 6 days
             }
 
         }
