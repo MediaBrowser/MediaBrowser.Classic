@@ -2935,7 +2935,7 @@ namespace MediaBrowser
                 catch (Exception e)
                 {
                     // never crash here
-                    Logger.ReportException("Something strange happend while getting media name, please report to community.mediabrowser.tv", e);                    
+                    Logger.ReportException("Something strange happend while getting media name, please report to emby.media/community", e);                    
 
                 }
                 return "Unknown";

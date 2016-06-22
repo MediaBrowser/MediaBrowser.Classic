@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="Configurator.MainWindow"
-    Title="Media Browser Classic Configurator" Height="605" Width="800" MinWidth="800" MinHeight="600" Icon="/Configurator;component/Images/configurator.ico" 
+    Title="Emby for Media Center Configurator" Height="605" Width="800" MinWidth="800" MinHeight="600" Icon="/Configurator;component/Images/configurator.ico" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" 
@@ -165,23 +165,19 @@
                         <Label HorizontalAlignment="Right" Margin="0,10,20,0" HorizontalContentAlignment="Right" Name="lblVersion2" VerticalAlignment="Top" Width="192" Height="25">Version 0.0.0.0</Label>
                         <GroupBox Header="Help &amp; Support" Margin="20,35,20,0" Height="234" FontSize="14" VerticalAlignment="Top">
                             <Grid>
-                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community/index.php?/topic/733-mb-classic-setup-and-configuration/" RequestNavigate="HandleRequestNavigate" Name="h2">Media Browser Classic Guide</Hyperlink></TextBlock>
-                                <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to learn how to setup Media Browser Classic...</TextBlock>
-                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community/index.php?/forum/23-knowledge-base/" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
-                                <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find helpful information and guides for the various Media Browser components...</TextBlock>
-                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://mediabrowser.tv/community" RequestNavigate="HandleRequestNavigate" Name="h4">Media Browser Community</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,7,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://emby.media/community/index.php?/topic/733-mb-classic-setup-and-configuration/" RequestNavigate="HandleRequestNavigate" Name="h2">Emby for Media Center Guide</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,32,10,0" VerticalAlignment="Top" Height="25">Read this knowledge base article to learn how to setup Emby for Media Center...</TextBlock>
+                                <TextBlock Margin="10,57,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://emby.media/community/index.php?/forum/23-knowledge-base/" RequestNavigate="HandleRequestNavigate" Name="h3">Knowledge Base</Hyperlink></TextBlock>
+                                <TextBlock Margin="10,82,10,0" VerticalAlignment="Top" Height="25">Find helpful information and guides for the various Emby components...</TextBlock>
+                                <TextBlock Margin="10,107,10,0" VerticalAlignment="Top" Height="25"><Hyperlink NavigateUri="http://emby.media/community" RequestNavigate="HandleRequestNavigate" Name="h4">Emby Community</Hyperlink></TextBlock>
                                 <TextBlock Margin="10,132,10,0" VerticalAlignment="Top" Height="25">This is the place to be to find answers to your questions, post feature requests or report bugs...</TextBlock>
                             </Grid>
                         </GroupBox>
 
-                        <GroupBox Header="About Media Browser" Margin="20,277,20,0" Height="142" FontSize="14" VerticalAlignment="Top">
+                        <GroupBox Header="About Emby" Margin="20,277,20,0" Height="142" FontSize="14" VerticalAlignment="Top">
                             <Grid>
-                                <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://mediabrowser.tv" RequestNavigate="HandleRequestNavigate" Name="h5">mediabrowser.tv</Hyperlink></TextBlock>
+                                <TextBlock Margin="35.381,48.409,0,0" HorizontalAlignment="Left" Width="173" Height="25.38" VerticalAlignment="Top"><Hyperlink NavigateUri="http://emby.media" RequestNavigate="HandleRequestNavigate" Name="h5">emby.media</Hyperlink></TextBlock>
                                 <TextBlock Margin="31.381,29.409,0,0" HorizontalAlignment="Left" Width="177" Height="25" VerticalAlignment="Top" Text="Visit the official website"></TextBlock>
-                                <!--<Label Margin="0,5,165,0" Name="label9" HorizontalAlignment="Right" Width="120" Height="27.38" VerticalAlignment="Top">Supporter Key</Label>
-                                    <TextBox Margin="0,31,31,0" Name="tbxSupporterKey" ToolTip="Paste the key from the email you received when you donated" Height="22.38" VerticalAlignment="Top" HorizontalAlignment="Right" Width="254" />
-                                    <Button Margin="0,59,31,0" Name="btnValidateKey" HorizontalAlignment="Right" Width="75" Height="22.38" VerticalAlignment="Top" Click="btnValidateKey_Click">Save</Button>
-                                    <TextBlock Margin="216,0,134,31" Height="25.38" VerticalAlignment="Bottom"><Hyperlink Name="lostKey" NavigateUri="http://www.mediabrowser.tv/lost-key" RequestNavigate="HandleRequestNavigate">Retrieve My Key</Hyperlink></TextBlock>-->
                             </Grid>
                         </GroupBox>
                         <TextBlock Margin="20,10,327,0" VerticalAlignment="Top" Height="25" Width="401">If you need any help, have a look at these resources:</TextBlock>

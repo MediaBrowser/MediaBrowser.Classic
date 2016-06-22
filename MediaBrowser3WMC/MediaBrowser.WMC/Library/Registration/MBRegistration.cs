@@ -74,54 +74,5 @@ namespace MediaBrowser.Library.Registration
             return rec;
         }
             
-        private static DateTime GetExpirationDate(string feature, System.Version version)
-        {
-            try
-            {
-                string path = "http://www.mediabrowser.tv/registration/hits?feature=" + feature + "&version=" + version.ToString() + "&key=" + Kernel.Instance.ConfigData.SupporterKey + "&mac_addr=" + Helper.GetMACAddress();
-                WebRequest request = WebRequest.Create(path);
-                var response = request.GetResponse();
-                using (Stream stream = response.GetResponseStream())
-                {
-                    byte[] buffer = new byte[11];
-                    stream.Read(buffer, 0, 11);
-                    response.Close();
-                    stream.Close();
-                    return DateTime.ParseExact(System.Text.Encoding.ASCII.GetString(buffer).Trim(), "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US"));
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.ReportException("Error obtaining expiration date for feature: " + feature, ex);
-                throw new ApplicationException();
-            }
-        }
-
-        private static bool Validate(string feature)
-        {
-            string path = "http://www.mediabrowser.tv/registration/registrations?feature="+feature+"&key=" + Kernel.Instance.ConfigData.SupporterKey;
-            bool valid = false;
-            try
-            {
-                WebRequest request = WebRequest.Create(path);
-                var response = request.GetResponse();
-                using (Stream stream = response.GetResponseStream())
-                {
-                    byte[] buffer = new byte[5];
-                    stream.Read(buffer, 0, 5);
-                    response.Close();
-                    stream.Close();
-                    string res = System.Text.Encoding.ASCII.GetString(buffer).Trim();
-                    //Logger.ReportInfo("MB validation result: " + res);
-                    valid = (res.StartsWith("true"));
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.ReportException("Error checking registration status of " + feature, e);
-                throw new ApplicationException();
-            }
-            return valid;
-        }
     }
 }

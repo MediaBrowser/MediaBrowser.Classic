@@ -46,7 +46,7 @@ namespace MediaBrowser.ApiInteraction
         {
             get
             {
-                return "https://connect.mediabrowser.tv/service";
+                return "https://connect.emby.media/service";
             }
         }
 
