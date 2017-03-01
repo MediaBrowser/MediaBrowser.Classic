@@ -5,6 +5,8 @@ using System.Text;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Entities.Attributes;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
     public class Person : BaseItem {
@@ -20,6 +22,13 @@ namespace MediaBrowser.Library.Entities {
                 }
                 return person;
         }
+
+        public Person(Actor actor)
+        {
+            this.name = actor.Name;
+            this.Id = actor.PersonId;
+            this.primaryImageTag = actor.PrimaryImageTag;
+        }
         
         public Person() {
         }
@@ -27,6 +36,7 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         [NotSourcedFromProvider]
         string name;
+        private string primaryImageTag;
 
         public override string Name {
             get {
@@ -54,6 +64,10 @@ namespace MediaBrowser.Library.Entities {
             this.Id = id;
         }
 
-        
+        public override string PrimaryImagePath
+        {
+            get { return primaryImageTag != null ? Kernel.ApiClient.GetPersonImageUrl(Id, new ImageOptions {ImageType = ImageType.Primary, Tag = primaryImageTag, MaxWidth = 400}) : null; }
+            set { base.PrimaryImagePath = value;  }
+        }
     }
 }

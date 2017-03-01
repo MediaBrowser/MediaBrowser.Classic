@@ -2022,6 +2022,25 @@ namespace MediaBrowser.ApiInteraction
         /// <summary>
         /// Gets an image url that can be used to download an image from the api
         /// </summary>
+        /// <param name="id">The id of the person</param>
+        /// <param name="options">The options.</param>
+        /// <returns>System.String.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        public string GetPersonImageUrl(Guid id, ImageOptions options)
+        {
+            if (id.Equals(Guid.Empty))
+            {
+                throw new ArgumentNullException("id");
+            }
+
+            var url = "Items/" + id + "/Images/" + options.ImageType;
+            url = GetImageUrl(url, options, new QueryStringDictionary());
+            return url;
+        }
+
+        /// <summary>
+        /// Gets an image url that can be used to download an image from the api
+        /// </summary>
         /// <param name="year">The year.</param>
         /// <param name="options">The options.</param>
         /// <returns>System.String.</returns>

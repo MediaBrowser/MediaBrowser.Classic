@@ -4,10 +4,20 @@ using System.Linq;
 using System.Text;
 using MediaBrowser.Library.Persistance;
 using MediaBrowser.Library.Extensions;
+using MediaBrowser.Model.Dto;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Library.Entities {
 
     public class Actor  {
+
+        public Actor(BaseItemPerson a)
+        {
+            this.Name = a.Name;
+            this.Role = a.Role ?? (a.Type == PersonType.GuestStar ? "Guest Star" : "");
+            this.PersonId = new Guid(a.Id);
+            this.PrimaryImageTag = a.HasPrimaryImage ? a.PrimaryImageTag : null;
+        }
 
         [Persist]
         public string Name { get; set; }
@@ -15,18 +25,16 @@ namespace MediaBrowser.Library.Entities {
         [Persist]
         public string Role { get; set; }
 
+        public string PrimaryImageTag { get; set; }
+
         private Person _person;
         public Person Person {
             get {
-                return _person ?? (_person = Person.GetPerson(Name));
+                return _person ?? (_person = new Person(this));
             }
         }
 
-        public Guid PersonId {
-            get {
-                return Person.GetPersonId(Name);
-            }
-        }
+        public Guid PersonId { get; set; }
 
         public string DisplayName {
             get {
