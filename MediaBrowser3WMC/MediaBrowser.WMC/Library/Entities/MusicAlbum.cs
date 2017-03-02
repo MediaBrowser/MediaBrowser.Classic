@@ -29,5 +29,9 @@ namespace MediaBrowser.Library.Entities
 
         public List<string> Studios { get; set; }
 
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
+        }
     }
 }

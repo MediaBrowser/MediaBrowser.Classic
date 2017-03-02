@@ -2,5 +2,9 @@
 {
     class MusicGenre : Genre
     {
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
+        }
     }
 }

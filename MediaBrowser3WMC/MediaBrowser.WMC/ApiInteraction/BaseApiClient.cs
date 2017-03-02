@@ -389,6 +389,7 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("personIds", query.PersonIds);
             dict.AddIfNotNull("personTypes", query.PersonTypes);
+            dict.AddIfNotNull("artistIds", query.ArtistIds);
 
             dict.AddIfNotNull("years", query.Years);
 

@@ -1058,10 +1058,26 @@ namespace MediaBrowser.Library.Entities {
         }
 
         protected virtual bool CollapseBoxSets {get { return Config.Instance.CollapseBoxSets; }}
+        protected ItemQuery MusicArtistQuery
+        {
+            get
+            {
+                return new ItemQuery
+                {
+                    UserId = Kernel.CurrentUser.ApiId,
+                    IncludeItemTypes = new []{"MusicAlbum"},
+                    Recursive = true,
+                    Fields = new[] { ItemFields.SortName },
+                    SortBy = new[] { "SortName" },
+                    ArtistIds = new[] {ApiId}
+                };
+            }
+        }
+
 
         protected virtual List<BaseItem> GetCachedChildren()
         {
-            return Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, CollapseBoxSets).ToList();
+            return this.GetType() == typeof(MusicArtist) ? Kernel.Instance.MB3ApiRepository.RetrieveItems(MusicArtistQuery).ToList() : Kernel.Instance.MB3ApiRepository.RetrieveChildren(ApiId, CollapseBoxSets).ToList();
         }
 
         public bool HasVideoChildren {

@@ -10,5 +10,9 @@ namespace MediaBrowser.Library.Entities
     {
         public Dictionary<string, string> AlbumCovers { get; set; }
 
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
+        }
     }
 }

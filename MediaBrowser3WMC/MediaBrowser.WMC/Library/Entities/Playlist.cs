@@ -32,5 +32,10 @@ namespace MediaBrowser.Library.Entities
                 return false;
             }
         }
+
+        public override bool ShowUnwatchedCount
+        {
+            get { return false; }
+        }
     }
 }

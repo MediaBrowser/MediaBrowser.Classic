@@ -144,6 +144,20 @@ namespace MediaBrowser.Library.Entities
 
             }
                             
+            if (!Config.Instance.UseLegacyFolders && CollectionType == "MusicGenres")
+            {
+                
+                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                {
+                    UserId = Kernel.CurrentUser.ApiId,
+                    ParentId = ApiId,
+                    Recursive = true,
+                    IncludeItemTypes = new[] { "MusicGenre" },
+                    Fields = MB3ApiRepository.StandardFields,
+                }).Select(g => new ApiGenreFolder(g, null, new []{"MusicAlbum","MusicArtist"})).Cast<BaseItem>().ToList();
+
+            }
+                            
             // Otherwise get our children which will be the split views
 
             // since we have our own latest implementation, exclude those from these views.
