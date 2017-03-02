@@ -547,7 +547,7 @@ namespace MediaBrowser.Library {
             }
             else // normal folder
             {
-                folderOverviewCache = string.Join("\n", folder.Children.OrderByDescending(i => i.DateCreated).Select(i => i.LongName).Take(Config.Instance.RecentItemCount).ToArray());
+                folderOverviewCache = string.Join("\n", folder.Children.OrderByDescending(i => i.DateCreated).Select(i => i.GetType() == typeof(Song) ? i.Name : i.LongName).Take(Config.Instance.RecentItemCount).ToArray());
             }
         }
 
