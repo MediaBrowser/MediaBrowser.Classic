@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using MediaBrowser.Library.Extensions;
 
 namespace MediaBrowser.ApiInteraction
 {
@@ -24,7 +25,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 var hash = provider.ComputeHash(Encoding.UTF8.GetBytes(password ?? string.Empty));
 
-                apiClient.AuthenticateUser(userId, hash);
+                apiClient.AuthenticateUser(userId, hash, password.GetMD5());
             }
         }
     }

@@ -1452,9 +1452,10 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <param name="sha1Hash">The sha1 hash.</param>
+        /// <param name="md5Hash"></param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public void AuthenticateUser(string userId, byte[] sha1Hash)
+        public void AuthenticateUser(string userId, byte[] sha1Hash, Guid md5Hash)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -1462,11 +1463,13 @@ namespace MediaBrowser.ApiInteraction
             }
 
             var password = BitConverter.ToString(sha1Hash).Replace("-", string.Empty);
+            var passwordMd5 = md5Hash.ToString().Replace("-", string.Empty);
             var url = GetApiUrl("Users/" + userId + "/Authenticate");
 
             var args = new Dictionary<string, string>();
 
             args["password"] = password;
+            args["passwordMd5"] = passwordMd5;
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;
