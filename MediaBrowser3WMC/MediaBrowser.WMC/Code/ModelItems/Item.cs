@@ -530,11 +530,6 @@ namespace MediaBrowser.Library
             get { return baseItem.IsRemoteContent; }
         }
 
-        public bool IsChannelItem
-        {
-            get { return baseItem.IsChannelItem; }
-        }
-
         public bool SelectAction()
         {
             if (this.BaseItem != null)

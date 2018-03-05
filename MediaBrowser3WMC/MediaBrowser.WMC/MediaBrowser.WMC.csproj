@@ -165,9 +165,7 @@
     <Compile Include="Library\Entities\ApiYearFolder.cs" />
     <Compile Include="Library\Entities\ApiStudioFolder.cs" />
     <Compile Include="Library\Entities\ApiAlbumCollectionFolder.cs" />
-    <Compile Include="Library\Entities\Channel.cs" />
     <Compile Include="Library\Entities\Chapter.cs" />
-    <Compile Include="Library\Entities\ChannelFolder.cs" />
     <Compile Include="Library\Entities\ChannelCollectionFolder.cs" />
     <Compile Include="Library\Entities\UtvDateFolder.cs" />
     <Compile Include="Library\Entities\UtvSeriesFolder.cs" />
@@ -184,7 +182,6 @@
     <Compile Include="Library\Entities\PhotoFolder.cs" />
     <Compile Include="Library\Entities\Playlist.cs" />
     <Compile Include="Library\Entities\PlaylistsFolder.cs" />
-    <Compile Include="Library\Entities\PodcastsChannel.cs" />
     <Compile Include="Library\Entities\RemoteVideo.cs" />
     <Compile Include="Library\Entities\Song.cs" />
     <Compile Include="Library\Entities\LocalCacheFolder.cs" />
@@ -192,7 +189,6 @@
     <Compile Include="Library\Entities\MusicArtist.cs" />
     <Compile Include="Library\Entities\StaticFolder.cs" />
     <Compile Include="Library\Entities\ThemeItem.cs" />
-    <Compile Include="Library\Entities\TrailersChannel.cs" />
     <Compile Include="Library\Entities\UpcomingTvFolder.cs" />
     <Compile Include="Code\ModelItems\UpcomingTvFolderModel.cs" />
     <Compile Include="Library\Entities\User.cs" />

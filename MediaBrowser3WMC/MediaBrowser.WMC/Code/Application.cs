@@ -3637,7 +3637,7 @@ namespace MediaBrowser
                     }
                 }
 
-                if (Config.WarnOnStream && !item.IsFolder && !item.IsRemoteContent && !item.IsChannelItem && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
+                if (Config.WarnOnStream && !item.IsFolder && !item.IsRemoteContent && !Directory.Exists(Path.GetDirectoryName(item.Path) ?? ""))
                 {
                     Logger.ReportWarning("Unable to directly access {0}.  Attempting to stream.", item.Path);
 
