@@ -28,8 +28,8 @@ namespace MediaBrowser.Library.Persistance
                                                                      {"UserView", typeof(UserView)},
                                                                      {"PlaylistsFolder", typeof (PlaylistsFolder)},
                                                                      {"Playlist", typeof (Playlist)},
-                                                                     {"ChannelFolderItem", typeof (ChannelFolder)},
-                                                                     {"Channel", typeof (Channel)},
+                                                                     {"ChannelFolderItem", typeof (Folder)},
+                                                                     {"Channel", typeof (Folder)},
                                                                      {"PhotoAlbum", typeof (PhotoFolder)},
                                                                      {"Photo", typeof (Photo)},
                                                                      {"Movie", typeof (Movie)},
@@ -166,16 +166,6 @@ namespace MediaBrowser.Library.Persistance
                     return new StreamingTrailer();
                 }
 
-                if (itemType.Equals("channel", StringComparison.OrdinalIgnoreCase) && mb3Item.Name == "Trailers")
-                {
-                    return new TrailersChannel();
-                }
-
-                if (itemType.Equals("channel", StringComparison.OrdinalIgnoreCase) && mb3Item.Name == "Podcasts")
-                {
-                    return new PodcastsChannel();
-                }
-
                 Type typ;
                 if (Mb3Translator.TypeMap.TryGetValue(itemType, out typ))
                 {
@@ -225,7 +215,7 @@ namespace MediaBrowser.Library.Persistance
             if (item != null)
             {
                 item.Name = mb3Item.Name;
-                Logger.ReportVerbose("Item {0} is {1}", item.Name, item.GetType().Name);
+                //Logger.ReportVerbose("Item {0} is {1}", item.Name, item.GetType().Name);
                 item.Path = mb3Item.Path;
                 item.DateCreated = (mb3Item.DateCreated ?? DateTime.MinValue).ToLocalTime();
                 item.DisplayMediaType = mb3Item.DisplayMediaType;
