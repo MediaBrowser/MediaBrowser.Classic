@@ -7,7 +7,7 @@ using MediaBrowser.Model.Querying;
 
 namespace MediaBrowser.Library.Entities
 {
-    public class ApiAlbumCollectionFolder : ApiSourcedFolder<ItemQuery>
+    public class ApiCollectionFolder : ApiSourcedFolder<ItemQuery>
     {
 
         public override ItemQuery Query
@@ -20,6 +20,8 @@ namespace MediaBrowser.Library.Entities
                                IncludeItemTypes = IncludeItemTypes,
                                Recursive = true,
                                ParentId = SearchParentId,
+                               MediaTypes = new [] {MediaType},
+                               Filters = ItemFilters,
                                Fields = MB3ApiRepository.StandardFields,
                                SortBy = new[] {"SortName"}
                            };
@@ -28,14 +30,7 @@ namespace MediaBrowser.Library.Entities
 
         public override int MediaCount
         {
-            get { return ApiRecursiveItemCount ?? (int)(ApiRecursiveItemCount = GetItemCount()); }
-        }
-
-        protected int GetItemCount()
-        {
-            var counts = Kernel.ApiClient.GetItemCounts(Kernel.CurrentUser.Id);
-            return counts.AlbumCount;
-
+            get { return ApiRecursiveItemCount ?? 0; }
         }
 
         /// <summary>
@@ -57,5 +52,4 @@ namespace MediaBrowser.Library.Entities
         }
 
     }
-
 }

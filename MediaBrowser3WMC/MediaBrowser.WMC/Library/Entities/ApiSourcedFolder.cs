@@ -14,7 +14,9 @@ namespace MediaBrowser.Library.Entities
         public virtual T Query { get { return new T(); } }
         public virtual string[] IncludeItemTypes { get; set; }
         public virtual string[] ExcludeItemTypes { get; set; }
-        protected string SearchParentId { get; set; }
+        public ItemFilter[] ItemFilters { get; set; }
+        public string SearchParentId { get; set; }
+        public string MediaType { get; set; }
         protected bool PrimaryImageChecked { get; set; }
         protected bool ThumbImageChecked { get; set; }
         protected bool BackdropImageChecked { get; set; }

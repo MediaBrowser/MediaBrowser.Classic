@@ -157,6 +157,19 @@ namespace MediaBrowser.Library.Entities
                 }).Select(g => new ApiGenreFolder(g, null, new []{"MusicAlbum","MusicArtist"})).Cast<BaseItem>().ToList();
 
             }
+
+            if (CollectionType == "music")
+            {
+                return new List<BaseItem>
+                       {
+                           new ApiCollectionFolder {Id = Kernel.Instance.MusicAlbumFolderGuid, IndexId = ApiId, Name = "Albums", DisplayMediaType = "MusicAlbums", IncludeItemTypes = new[] {"MusicAlbum"}, SearchParentId = ApiId},
+                           new ApiCollectionFolder {Id = Kernel.Instance.MusicPlaylistsFolderGuid, IndexId = ApiId, Name = "Playlists", DisplayMediaType = "MusicAlbums", IncludeItemTypes = new[] {"Playlist"}, MediaType = "Audio", SearchParentId = ApiId},
+                           new ApiCollectionFolder {Id = Kernel.Instance.MusicFavoritesFolderGuid, IndexId = ApiId, Name = "Favorites", DisplayMediaType = "MusicAlbums", ItemFilters = new ItemFilter[] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
+                           new ApiArtistsCollectionFolder {Id = Kernel.Instance.MusicArtistsFolderGuid, IndexId = ApiId, Name = "Artists", DisplayMediaType = "MusicArtists", IncludeItemTypes = new[] {"MusicArtist"}, SearchParentId = ApiId},
+                           new ApiArtistsCollectionFolder {Id = Kernel.Instance.MusicAlbumArtistsFolderGuid, IndexId = ApiId, Name = "Album Artists", DisplayMediaType = "MusicArtists", IncludeItemTypes = new[] {"AlbumArtist"}, SearchParentId = ApiId},
+                           new ApiGenreCollectionFolder {Id = Kernel.Instance.MusicGenreFolderGuid, IndexId = ApiId, Name = Kernel.Instance.ConfigData.MusicGenreFolderName, SearchParentId = ApiId, DisplayMediaType = "MusicGenres", IncludeItemTypes = new[] {"MusicAlbum"}, GenreType = GenreType.Music}
+                       };
+            }
                             
             // Otherwise get our children which will be the split views
 

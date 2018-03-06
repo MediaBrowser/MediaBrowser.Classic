@@ -218,7 +218,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var presetOption = "?PresetViews=music" + (Config.Instance.ShowMovieSubViews ? ",movies" : "") + (Config.Instance.ShowTvSubViews ? ",tvshows" : "");
+            var presetOption = "?" + (Config.Instance.ShowMovieSubViews ? ",movies" : "") + (Config.Instance.ShowTvSubViews ? ",tvshows" : "");
 
             var url = GetApiUrl("Users/" + userId + "/Views"+presetOption);
             //MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetUserViews: " + url);
@@ -569,6 +569,17 @@ namespace MediaBrowser.ApiInteraction
         public ItemsResult GetArtists(ItemsByNameQuery query)
         {
             return GetIbnItems("Artists", query);
+        }
+
+        /// <summary>
+        /// Queries for music artists
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetAlbumArtists(ItemsByNameQuery query)
+        {
+            return GetIbnItems("Artists/AlbumArtists", query);
         }
 
         /// <summary>
