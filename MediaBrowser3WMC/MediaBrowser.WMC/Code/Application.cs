@@ -2369,9 +2369,9 @@ namespace MediaBrowser
             Kernel.Instance.CommonConfigData.Save();
 
             // check server version
-            if (new System.Version(Kernel.ServerInfo.Version) < new System.Version(3, 2, 0))
+            if (new System.Version(Kernel.ServerInfo.Version) < new System.Version(3, 2, 33))
             {
-                MediaCenterEnvironment.Dialog("Please update your Emby Server to at least version 3.0.5821", "Incompatible Server", DialogButtons.Ok, 100, true);
+                MediaCenterEnvironment.Dialog("Please update your Emby Server to at least version 3.2.33", "Incompatible Server", DialogButtons.Ok, 100, true);
                 ApplicationContext.CloseApplication();
                 return false;
             }
