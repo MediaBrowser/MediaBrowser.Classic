@@ -1921,6 +1921,7 @@ namespace MediaBrowser
                     Kernel.Instance.CommonConfigData.LogonAutomatically = value;
                     Kernel.Instance.CommonConfigData.AutoLogonUserName = Kernel.CurrentUser.Name;
                     Kernel.Instance.CommonConfigData.AutoLogonPw = Kernel.Instance.CommonConfigData.SavePassword ? Kernel.CurrentUser.PwHash : null;
+                    Kernel.Instance.CommonConfigData.AutoLogonPwPlain = Kernel.Instance.CommonConfigData.SavePassword ? Kernel.CurrentUser.PwPlain : null;
                     Kernel.Instance.CommonConfigData.Save();
                     UIFirePropertyChange("AutoLogin");
                 }
@@ -2152,7 +2153,7 @@ namespace MediaBrowser
             if (user == null && Kernel.Instance.CommonConfigData.LogonAutomatically && !parms.Equals("ShowLogin", StringComparison.OrdinalIgnoreCase))
             {
                 //Must be a hidden user configured
-                if (LoginUser(Kernel.Instance.CommonConfigData.AutoLogonUserName, Kernel.Instance.CommonConfigData.AutoLogonPw, true))
+                if (LoginUser(Kernel.Instance.CommonConfigData.AutoLogonUserName, Kernel.Instance.CommonConfigData.AutoLogonPwPlain, false))
                 {
                     // we're in - if this fails, we'll fall through to the login screen
                     UsingDirectEntry = true;
@@ -2164,6 +2165,7 @@ namespace MediaBrowser
                     // must be invalid credentials saved - clear them out
                     Kernel.Instance.CommonConfigData.AutoLogonUserName = null;
                     Kernel.Instance.CommonConfigData.AutoLogonPw = null;
+                    Kernel.Instance.CommonConfigData.AutoLogonPwPlain = null;
                     Kernel.Instance.CommonConfigData.LogonAutomatically = false;
                     Kernel.Instance.CommonConfigData.FindServerAutomatically = true;
                     Kernel.Instance.CommonConfigData.Save();
@@ -2259,8 +2261,8 @@ namespace MediaBrowser
             try
             {
                 var pwHash = isPwHashed ? pw : BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(pw ?? CustomPINEntry ?? "")));
-                var result = Kernel.ApiClient.AuthenticateUserByName(name, pwHash);
-                LoginUser(ItemFactory.Instance.Create(new User { Name = result.User.Name, Dto = result.User, Id = new Guid(result.User.Id ?? ""), PwHash = pwHash, ParentalAllowed = !result.User.HasPassword }), false);
+                var result = Kernel.ApiClient.AuthenticateUserByName(name, pwHash, pw);
+                LoginUser(ItemFactory.Instance.Create(new User { Name = result.User.Name, Dto = result.User, Id = new Guid(result.User.Id ?? ""), PwHash = pwHash, PwPlain = pw, ParentalAllowed = !result.User.HasPassword }), false);
                 return true;
             }
             catch (HttpException e)
@@ -2288,7 +2290,7 @@ namespace MediaBrowser
             if (authenticate && Kernel.CurrentUser != null && Kernel.CurrentUser.HasPassword)
             {
                 // Try with saved pw
-                if (!Kernel.Instance.CommonConfigData.LogonAutomatically || Kernel.CurrentUser.Name != user.Name || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw))
+                if (!Kernel.Instance.CommonConfigData.LogonAutomatically || Kernel.CurrentUser.Name != user.Name || !LoadUser(Kernel.CurrentUser, Kernel.Instance.CommonConfigData.AutoLogonPw, Kernel.Instance.CommonConfigData.AutoLogonPwPlain))
                 {
                     // show pw screen
                     OpenSecurityPage("Please Enter Password for " + CurrentUser.Name + " (select or enter when done)");
@@ -2297,7 +2299,7 @@ namespace MediaBrowser
             else
             {
                 // just log in as we don't have a pw or we've already authenticated manually
-                Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(user.BaseItem as User, "", authenticate));
+                Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(user.BaseItem as User, "", "", authenticate));
             }
         }
 
@@ -2314,7 +2316,7 @@ namespace MediaBrowser
             SwitchUser(CurrentMenuOption);
         }
 
-        protected bool LoadUser(User user, string pw, bool authenticate = true)
+        protected bool LoadUser(User user, string pw, string pwPlain, bool authenticate = true)
         {
             ShowSplash = true;
             Kernel.ApiClient.CurrentUserId = user.Id;
@@ -2326,13 +2328,13 @@ namespace MediaBrowser
                     if (!string.IsNullOrEmpty(pw))
                     {
                         //Logger.ReportVerbose("Authenticating with pw: {0} ({1})",CustomPINEntry, pw);
-                        Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw);
+                        Kernel.ApiClient.AuthenticateUserWithHash(user.Id, pw, pwPlain);
                         //If we get here the pw was correct - save it so we can use it if automatically logging in
                         user.PwHash = pw;
                     }
                     else
                     {
-                        Kernel.ApiClient.AuthenticateUser(user.ApiId, pw);
+                        Kernel.ApiClient.AuthenticateUser(user.ApiId, pwPlain);
                     }
                 }
                 catch (HttpException e)
@@ -3800,7 +3802,7 @@ namespace MediaBrowser
         public void ParentalPINEntered()
         {
             RequestingPIN = false;
-            Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry)))));
+            Async.Queue(Async.ThreadPoolName.LoadUser, () => LoadUser(CurrentUser.BaseItem as User, BitConverter.ToString(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(CustomPINEntry))), CustomPINEntry));
         }
         public void BackToRoot()
         {

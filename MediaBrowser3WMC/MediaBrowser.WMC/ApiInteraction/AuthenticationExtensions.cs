@@ -25,7 +25,7 @@ namespace MediaBrowser.ApiInteraction
             {
                 var hash = provider.ComputeHash(Encoding.UTF8.GetBytes(password ?? string.Empty));
 
-                apiClient.AuthenticateUser(userId, hash, password.GetMD5());
+                apiClient.AuthenticateUser(userId, hash, password.GetMD5(), password);
             }
         }
     }

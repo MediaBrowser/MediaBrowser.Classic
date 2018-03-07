@@ -1464,9 +1464,10 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="userId">The user id.</param>
         /// <param name="sha1Hash">The sha1 hash.</param>
         /// <param name="md5Hash"></param>
+        /// <param name="pwPlain"></param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public void AuthenticateUser(string userId, byte[] sha1Hash, Guid md5Hash)
+        public void AuthenticateUser(string userId, byte[] sha1Hash, Guid md5Hash, string pwPlain)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -1481,6 +1482,7 @@ namespace MediaBrowser.ApiInteraction
 
             args["password"] = password;
             args["passwordMd5"] = passwordMd5;
+            args["pw"] = pwPlain;
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;
@@ -1556,9 +1558,10 @@ namespace MediaBrowser.ApiInteraction
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <param name="sha1Hash">The sha1 hash.</param>
+        /// <param name="pwPlain"></param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public void AuthenticateUserWithHash(Guid userId, string sha1Hash)
+        public void AuthenticateUserWithHash(Guid userId, string sha1Hash, string pwPlain)
         {
             if (userId == Guid.Empty)
             {
@@ -1571,6 +1574,7 @@ namespace MediaBrowser.ApiInteraction
             var args = new Dictionary<string, string>();
 
             args["password"] = password;
+            args["pw"] = pwPlain;
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;
@@ -1585,7 +1589,7 @@ namespace MediaBrowser.ApiInteraction
         /// <param name="sha1Hash">The sha1 hash.</param>
         /// <returns>AuthenticationResult.</returns>
         /// <exception cref="System.ArgumentNullException">userId</exception>
-        public AuthenticationResult AuthenticateUserByName(string name, string sha1Hash)
+        public AuthenticationResult AuthenticateUserByName(string name, string sha1Hash, string pwPlain)
         {
             var password = sha1Hash.Replace("-", string.Empty);
             var url = GetApiUrl("Users/AuthenticateByName");
@@ -1594,6 +1598,7 @@ namespace MediaBrowser.ApiInteraction
 
             args["username"] = name;
             args["password"] = password;
+            args["pw"] = pwPlain;
 
             var result = Post<AuthenticationResult>(url, args);
             CurrentSessionInfo = result.SessionInfo;

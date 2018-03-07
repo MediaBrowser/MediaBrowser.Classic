@@ -30,6 +30,7 @@ namespace MediaBrowser
         public bool SavePassword = true;
         public string AutoLogonUserName;
         public string AutoLogonPw;
+        public string AutoLogonPwPlain;
 
         public bool WakeServer = true;
 
