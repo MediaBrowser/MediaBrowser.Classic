@@ -218,7 +218,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var presetOption = "?" + (Config.Instance.ShowMovieSubViews ? ",movies" : "") + (Config.Instance.ShowTvSubViews ? ",tvshows" : "");
+            var presetOption = Config.Instance.ShowTvSubViews ? "?PresetViews=tvshows" : "";
 
             var url = GetApiUrl("Users/" + userId + "/Views"+presetOption);
             //MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetUserViews: " + url);

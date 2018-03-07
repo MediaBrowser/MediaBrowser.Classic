@@ -599,6 +599,10 @@ namespace MediaBrowser.Library {
         public Guid MusicFavoritesFolderGuid = new Guid("39F7ED50-F0C1-4BF6-B0E7-28EBD4148902");
         public Guid MusicAlbumArtistsFolderGuid = new Guid("36484512-9E72-4914-9C05-E33A0B763200");
         public Guid MusicPlaylistsFolderGuid = new Guid("639F4EB0-35FF-4892-BE75-C65CDE34C16E");
+        public Guid MovieCwFolderGuid = new Guid("C8CA907E-65D8-4269-AFB6-345D0AD26F19");
+        public Guid MovieFavoritesFolderGuid = new Guid("94554799-9498-420F-A148-7A4F09B9D2F9");
+        public Guid MovieFolderGuid = new Guid("B921120F-04D3-4C34-BF0E-7AB9F70AB2B3");
+        public Guid MovieGenresFolderGuid = new Guid("722CA4DB-0028-435F-8172-FAC976164C90");
         public Guid ChannelsFolderGuid = new Guid("629C0FF7-3139-4BDC-874E-CF84688E7C7C");
 
         public void ReLoadRoot()

@@ -116,17 +116,33 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            if (!Config.Instance.UseLegacyFolders && !Config.Instance.ShowMovieSubViews && CollectionType == "movies")
+            if (CollectionType == "movies")
             {
-                //Just get all movies under us instead of the split- out views that will be our children
-                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                if (!Config.Instance.ShowMovieSubViews)
                 {
-                    UserId = Kernel.CurrentUser.ApiId,
-                    ParentId = ApiId,
-                    Recursive = true,
-                    IncludeItemTypes = new[] { "Movie" },
-                    Fields = MB3ApiRepository.StandardFields,
-                }).ToList();
+                    //Just get all movies under us instead of the split- out views that will be our children
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                    {
+                        UserId = Kernel.CurrentUser.ApiId,
+                        ParentId = ApiId,
+                        Recursive = true,
+                        IncludeItemTypes = new[] { "Movie" },
+                        Fields = MB3ApiRepository.StandardFields,
+                    }).ToList();
+               
+                }
+                else
+                {
+                    //Create sub-views
+                    return new List<BaseItem>
+                           {
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieCwFolderGuid, IndexId = ApiId, Name = "Continue Watching", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, ItemFilters = new [] {ItemFilter.IsResumable}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFavoritesFolderGuid, IndexId = ApiId, Name = "Favorites", DisplayMediaType = "Movies", ItemFilters = new [] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFolderGuid, IndexId = ApiId, Name = "Movies", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, SearchParentId = ApiId},
+                               new ApiGenreCollectionFolder {Id = Kernel.Instance.MovieGenreFolderGuid, IndexId = ApiId, Name = Kernel.Instance.ConfigData.MovieGenreFolderName, SearchParentId = ApiId, DisplayMediaType = "MovieGenres", IncludeItemTypes = new[] {"Movie"}, GenreType = GenreType.Movie}
+                           };
+
+                }
 
             }
 
