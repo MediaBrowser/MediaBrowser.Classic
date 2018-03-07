@@ -218,9 +218,7 @@ namespace MediaBrowser.ApiInteraction
                 throw new ArgumentNullException("userId");
             }
 
-            var presetOption = Config.Instance.ShowTvSubViews ? "?PresetViews=tvshows" : "";
-
-            var url = GetApiUrl("Users/" + userId + "/Views"+presetOption);
+            var url = GetApiUrl("Users/" + userId + "/Views");
             //MediaBrowser.Library.Logging.Logger.ReportVerbose("ApiClient: GetUserViews: " + url);
             using (var stream = GetSerializedStream(url))
             {
@@ -558,6 +556,27 @@ namespace MediaBrowser.ApiInteraction
             {
                 return DeserializeFromStream<AllThemeMediaResult>(stream);
             }
+        }
+
+        /// <summary>
+        /// Queries for next up items
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns>Task{ItemsResult}.</returns>
+        /// <exception cref="System.ArgumentNullException">query</exception>
+        public ItemsResult GetNextUpItems(string parentId)
+        {
+            var dict = new QueryStringDictionary();
+            dict.AddIfNotNullOrEmpty("parentId",parentId);
+            dict.Add("limit",50);
+            dict.Add("userId",Kernel.CurrentUser.ApiId);
+
+            var url = GetApiUrl("Shows/Nextup", dict);
+            using (var stream = GetSerializedStream(url))
+            {
+                return DeserializeFromStream<ItemsResult>(stream);
+            }
+
         }
 
         /// <summary>

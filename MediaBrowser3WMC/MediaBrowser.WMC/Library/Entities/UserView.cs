@@ -146,17 +146,37 @@ namespace MediaBrowser.Library.Entities
 
             }
 
-            if (!Config.Instance.UseLegacyFolders && !Config.Instance.ShowTvSubViews && CollectionType == "tvshows")
+            if (CollectionType == "tvshows")
             {
-                //Just get all series under us instead of the split- out views that will be our children
-                return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                if (!Config.Instance.ShowTvSubViews)
                 {
-                    UserId = Kernel.CurrentUser.ApiId,
-                    ParentId = ApiId,
-                    Recursive = true,
-                    IncludeItemTypes = new[] { "Series" },
-                    Fields = MB3ApiRepository.StandardFields,
-                }).ToList();
+                    //Just get all series under us instead of the split- out views that will be our children
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                    {
+                        UserId = Kernel.CurrentUser.ApiId,
+                        ParentId = ApiId,
+                        Recursive = true,
+                        IncludeItemTypes = new[] { "Series" },
+                        Fields = MB3ApiRepository.StandardFields,
+                    }).ToList();
+                    
+                }
+                else
+                {
+                    //Build views
+                    return new List<BaseItem>
+                           {
+                               new ApiCollectionFolder {Id = Kernel.Instance.TvCwFolderGuid, IndexId = ApiId, Name = "Continue Watching", DisplayMediaType = "Series", IncludeItemTypes = new[] {"Episode"}, ItemFilters = new [] {ItemFilter.IsResumable}, SearchParentId = ApiId},
+                               new NextUpFolder {Id = Kernel.Instance.NextUpFolderGuid, Name = "Next Up", DisplayMediaType = "Episode", SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.TvFavoriteShowsFolderGuid, IndexId = ApiId, Name = "Favorite Shows", DisplayMediaType = "Series", IncludeItemTypes = new [] {"Series"}, ItemFilters = new [] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.TvFavoriteEpisodesFolderGuid, IndexId = ApiId, Name = "Favorite Episodes", DisplayMediaType = "Episode", IncludeItemTypes = new [] {"Episode"}, ItemFilters = new [] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.TvFolderGuid, IndexId = ApiId, Name = "Shows", DisplayMediaType = "Series", IncludeItemTypes = new[] {"Series"}, SearchParentId = ApiId},
+                               new ApiGenreCollectionFolder {Id = Kernel.Instance.TvGenresFolderGuid, IndexId = ApiId, Name = "Genres", SearchParentId = ApiId, DisplayMediaType = "TvGenres", IncludeItemTypes = new[] {"Series"}, GenreType = GenreType.Movie},
+                               new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") }                           
+                           };
+
+
+                }
 
             }
                             
@@ -191,13 +211,8 @@ namespace MediaBrowser.Library.Entities
 
             // since we have our own latest implementation, exclude those from these views.
             // also eliminate flat songs view since that will probably not perform well
-            var ret = base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Collections", StringComparison.OrdinalIgnoreCase)))).ToList();
-            if (CollectionType == "tvshows" && Config.Instance.ShowTvSubViews)
-            {
-                ret.Add(new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") });
-            }
+            return base.GetCachedChildren().Where(c => !(c is UserView && (c.Name.Equals("Latest", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Songs", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("Collections", StringComparison.OrdinalIgnoreCase)))).ToList();
 
-            return ret;
         }
 
         public override string DisplayPreferencesId

@@ -602,7 +602,12 @@ namespace MediaBrowser.Library {
         public Guid MovieCwFolderGuid = new Guid("C8CA907E-65D8-4269-AFB6-345D0AD26F19");
         public Guid MovieFavoritesFolderGuid = new Guid("94554799-9498-420F-A148-7A4F09B9D2F9");
         public Guid MovieFolderGuid = new Guid("B921120F-04D3-4C34-BF0E-7AB9F70AB2B3");
-        public Guid MovieGenresFolderGuid = new Guid("722CA4DB-0028-435F-8172-FAC976164C90");
+        public Guid TvCwFolderGuid = new Guid("1276503C-E061-45F4-B392-D375AF6F129C");
+        public Guid TvFavoriteShowsFolderGuid = new Guid("7DB236F2-4813-459E-8AD5-287C314881C2");
+        public Guid TvFavoriteEpisodesFolderGuid = new Guid("6A34C832-1E5B-44A0-AEC6-CD7899762636");
+        public Guid TvFolderGuid = new Guid("863C9429-9B39-4AF2-AB4E-361C0D4944B0");
+        public Guid NextUpFolderGuid = new Guid("42A5AE32-E6C6-456E-A772-33253AF48437");
+        public Guid TvGenresFolderGuid = new Guid("630149CF-8ED2-42E9-99F3-E330556D7CAC");
         public Guid ChannelsFolderGuid = new Guid("629C0FF7-3139-4BDC-874E-CF84688E7C7C");
 
         public void ReLoadRoot()

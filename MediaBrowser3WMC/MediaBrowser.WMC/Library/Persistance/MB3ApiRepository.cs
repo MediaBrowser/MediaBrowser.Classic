@@ -657,6 +657,14 @@ namespace MediaBrowser.Library.Persistance
             
         }
 
+        public IEnumerable<BaseItem> RetrieveNextUpItems(string parentId)
+        {
+            var dtos = Kernel.ApiClient.GetNextUpItems(parentId);
+
+            return dtos == null ? new BaseItem[] {} : dtos.Items.Select(dto => GetItem(dto, dto.Type)).Where(item => item != null);
+            
+        }
+
         public IEnumerable<BaseItem> RetrieveGenres(ItemQuery query)
         {
             var dtos = Kernel.ApiClient.GetGenres(query);

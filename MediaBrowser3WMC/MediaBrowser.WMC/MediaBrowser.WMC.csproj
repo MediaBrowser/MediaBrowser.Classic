@@ -169,6 +169,7 @@
     <Compile Include="Library\Entities\Chapter.cs" />
     <Compile Include="Library\Entities\ChannelCollectionFolder.cs" />
     <Compile Include="Library\Entities\ApiCollectionFolder.cs" />
+    <Compile Include="Library\Entities\NextUpFolder.cs" />
     <Compile Include="Library\Entities\UtvDateFolder.cs" />
     <Compile Include="Library\Entities\UtvSeriesFolder.cs" />
     <Compile Include="Library\Entities\Server.cs" />
