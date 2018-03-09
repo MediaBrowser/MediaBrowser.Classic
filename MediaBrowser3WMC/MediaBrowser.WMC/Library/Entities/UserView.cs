@@ -118,7 +118,19 @@ namespace MediaBrowser.Library.Entities
         {
             if (CollectionType == "movies")
             {
-                if (!Config.Instance.ShowMovieSubViews)
+                if (Config.Instance.ShowMovieSubViews)
+                {
+                    //Create sub-views
+                    return new List<BaseItem>
+                           {
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieCwFolderGuid, IndexId = ApiId, Name = "Continue Watching", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, ItemFilters = new [] {ItemFilter.IsResumable}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFavoritesFolderGuid, IndexId = ApiId, Name = "Favorites", DisplayMediaType = "Movies", ItemFilters = new [] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
+                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFolderGuid, IndexId = ApiId, Name = "Movies", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, SearchParentId = ApiId},
+                               new ApiGenreCollectionFolder {Id = Kernel.Instance.MovieGenreFolderGuid, IndexId = ApiId, Name = Kernel.Instance.ConfigData.MovieGenreFolderName, SearchParentId = ApiId, DisplayMediaType = "MovieGenres", IncludeItemTypes = new[] {"Movie"}, GenreType = GenreType.Movie}
+                           };
+
+                }
+                if (!Config.Instance.UseLegacyFolders)
                 {
                     //Just get all movies under us instead of the split- out views that will be our children
                     return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
@@ -131,38 +143,14 @@ namespace MediaBrowser.Library.Entities
                     }).ToList();
                
                 }
-                else
-                {
-                    //Create sub-views
-                    return new List<BaseItem>
-                           {
-                               new ApiCollectionFolder {Id = Kernel.Instance.MovieCwFolderGuid, IndexId = ApiId, Name = "Continue Watching", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, ItemFilters = new [] {ItemFilter.IsResumable}, SearchParentId = ApiId},
-                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFavoritesFolderGuid, IndexId = ApiId, Name = "Favorites", DisplayMediaType = "Movies", ItemFilters = new [] {ItemFilter.IsFavorite}, SearchParentId = ApiId},
-                               new ApiCollectionFolder {Id = Kernel.Instance.MovieFolderGuid, IndexId = ApiId, Name = "Movies", DisplayMediaType = "Movies", IncludeItemTypes = new[] {"Movie"}, SearchParentId = ApiId},
-                               new ApiGenreCollectionFolder {Id = Kernel.Instance.MovieGenreFolderGuid, IndexId = ApiId, Name = Kernel.Instance.ConfigData.MovieGenreFolderName, SearchParentId = ApiId, DisplayMediaType = "MovieGenres", IncludeItemTypes = new[] {"Movie"}, GenreType = GenreType.Movie}
-                           };
-
-                }
 
             }
 
             if (CollectionType == "tvshows")
             {
-                if (!Config.Instance.ShowTvSubViews)
+                if (Config.Instance.ShowTvSubViews)
                 {
-                    //Just get all series under us instead of the split- out views that will be our children
-                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
-                    {
-                        UserId = Kernel.CurrentUser.ApiId,
-                        ParentId = ApiId,
-                        Recursive = true,
-                        IncludeItemTypes = new[] { "Series" },
-                        Fields = MB3ApiRepository.StandardFields,
-                    }).ToList();
                     
-                }
-                else
-                {
                     //Build views
                     return new List<BaseItem>
                            {
@@ -175,6 +163,19 @@ namespace MediaBrowser.Library.Entities
                                new UpcomingTvFolder { Id = new Guid("63CFD844-61AE-42E6-878D-916BC2372173"), Name = LocalizedStrings.Instance.GetString("UTUpcomingTv") }                           
                            };
 
+                }
+                
+                if (!Config.Instance.UseLegacyFolders)
+                {
+                    //Just get all series under us instead of the split- out views that will be our children
+                    return Kernel.Instance.MB3ApiRepository.RetrieveItems(new ItemQuery
+                    {
+                        UserId = Kernel.CurrentUser.ApiId,
+                        ParentId = ApiId,
+                        Recursive = true,
+                        IncludeItemTypes = new[] { "Series" },
+                        Fields = MB3ApiRepository.StandardFields,
+                    }).ToList();
 
                 }
 
@@ -207,7 +208,7 @@ namespace MediaBrowser.Library.Entities
                        };
             }
                             
-            // Otherwise get our children which will be the split views
+            // Otherwise get our children which will be whatever the default is
 
             // since we have our own latest implementation, exclude those from these views.
             // also eliminate flat songs view since that will probably not perform well

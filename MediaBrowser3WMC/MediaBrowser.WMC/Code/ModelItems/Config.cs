@@ -545,7 +545,7 @@ namespace MediaBrowser
 
         public bool UseLegacyFolders
         {
-            get { return false; }
+            get { return this.Data.UseLegacyFolders; }
             set { if (this.Data.UseLegacyFolders != value) { this.Data.UseLegacyFolders = value; Save(); FireConfigPropertyChanged("UseLegacyFolders"); } }
         }
 
