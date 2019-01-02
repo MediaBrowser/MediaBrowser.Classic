@@ -75,7 +75,7 @@ namespace MediaBrowser.Library.Entities
 
         protected override List<BaseItem> GetCachedChildren()
         {
-            var ret = Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, null, IncludeItemTypes)).Cast<BaseItem>().ToList();
+            var ret = Kernel.Instance.MB3ApiRepository.RetrieveGenres(Query).Select(g => new ApiGenreFolder(g, SearchParentId, IncludeItemTypes)).Cast<BaseItem>().ToList();
             ApiRecursiveItemCount = ret.Count;
             return ret;
         }

@@ -380,7 +380,7 @@ namespace MediaBrowser.ApiInteraction
 
             dict.Add("recursive", query.Recursive);
 
-            dict.AddIfNotNull("genres", query.Genres);
+            dict.AddIfNotNull("genreIds", query.Genres);
             dict.AddIfNotNull("Ids", query.Ids);
             dict.AddIfNotNull("studioIds", query.StudioIds);
             dict.AddIfNotNull("ExcludeItemTypes", query.ExcludeItemTypes);
