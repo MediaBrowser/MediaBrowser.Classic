@@ -359,6 +359,10 @@ namespace MediaBrowser.ApiInteraction
 
             dict.AddIfNotNull("IsPlayed", query.IsPlayed);
             dict.AddIfNotNull("CollapseBoxSetItems", query.CollapseBoxSetItems);
+            if (query.CollapseBoxSetItems.HasValue && query.CollapseBoxSetItems == true)
+            {
+                dict["GroupItemsIntoCollections"] = "true";
+            }
 
             if (query.SortOrder.HasValue)
             {

@@ -22,6 +22,7 @@ namespace MediaBrowser.Library.Entities
                                ParentId = SearchParentId,
                                MediaTypes = new [] {MediaType},
                                Filters = ItemFilters,
+                               CollapseBoxSetItems = CollapseBoxSets,
                                Fields = MB3ApiRepository.StandardFields,
                                SortBy = new[] {"SortName"}
                            };
