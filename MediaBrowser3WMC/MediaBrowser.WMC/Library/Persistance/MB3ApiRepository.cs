@@ -387,28 +387,13 @@ namespace MediaBrowser.Library.Persistance
 
                     if (mb3Item.MediaType == Model.Entities.MediaType.Video)
                     {
-                        if (mb3Item.VideoType == VideoType.VideoFile && media.Path != null)
+                        if (media.Path != null)
                         {
                             media.MediaType = MediaTypeResolver.DetermineType(media.Path);
                         }
                         else
                         {
-                            switch (mb3Item.VideoType)
-                            {
-                                case VideoType.BluRay:
-                                    media.MediaType = MediaType.BluRay;
-                                    break;
-                                case VideoType.Dvd:
-                                    media.MediaType = MediaType.DVD;
-                                    break;
-                                case VideoType.Iso:
-                                    media.MediaType = MediaType.ISO;
-                                    break;
-                                default:
-                                    media.MediaType = MediaType.Unknown;
-                                    break;
-                            }
-                            
+                            media.MediaType = MediaType.Unknown;
                         }
                     }
                     else

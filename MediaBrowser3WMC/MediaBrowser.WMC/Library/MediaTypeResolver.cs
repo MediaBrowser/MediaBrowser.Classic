@@ -65,6 +65,8 @@ namespace MediaBrowser.Library {
                     return MediaType.Threegp;
                 if (path.EndsWith(".wma"))
                     return MediaType.Wma;
+                if (path.EndsWith(".iso"))
+                    return MediaType.ISO;
             }
 
             if (path.Contains("\\bdmv"))
@@ -82,7 +84,7 @@ namespace MediaBrowser.Library {
                     return MediaType.HDDVD;
             }
 
-            return MediaType.Unknown;
+            return MediaType.DVD;  //Assume DVD since we no longer have videoType on DTO
         }
     }
 }
