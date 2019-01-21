@@ -2583,7 +2583,7 @@ namespace MediaBrowser
                 //if (!Config.UseLegacyFolders) Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("ViewConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/ViewConfigPanel#ViewConfigPanel");
 
                 // add legacy config panel
-                Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
+                //Kernel.Instance.AddConfigPanel(LocalizedStrings.Instance.GetString("LegacyConfigurationConfig"), "resx://MediaBrowser/MediaBrowser.Resources/LegacyConfigPanel#LegacyConfigPanel");
 
                 // load plugins
                 Kernel.Instance.LoadPlugins();
