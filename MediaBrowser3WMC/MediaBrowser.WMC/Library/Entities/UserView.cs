@@ -138,6 +138,7 @@ namespace MediaBrowser.Library.Entities
                         UserId = Kernel.CurrentUser.ApiId,
                         ParentId = ApiId,
                         Recursive = true,
+                        CollapseBoxSetItems = CollapseBoxSets,
                         IncludeItemTypes = new[] { "Movie" },
                         Fields = MB3ApiRepository.StandardFields,
                     }).ToList();
@@ -173,6 +174,7 @@ namespace MediaBrowser.Library.Entities
                         UserId = Kernel.CurrentUser.ApiId,
                         ParentId = ApiId,
                         Recursive = true,
+                        CollapseBoxSetItems = CollapseBoxSets,
                         IncludeItemTypes = new[] { "Series" },
                         Fields = MB3ApiRepository.StandardFields,
                     }).ToList();
