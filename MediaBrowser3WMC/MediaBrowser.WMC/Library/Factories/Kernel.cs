@@ -1090,7 +1090,7 @@ namespace MediaBrowser.Library {
                 WebRequest req = requestState.request;
 
                 // HTTP 
-                if (requestState.fileURI.Scheme == Uri.UriSchemeHttp) {
+                if (requestState.fileURI.Scheme == Uri.UriSchemeHttps || requestState.fileURI.Scheme == Uri.UriSchemeHttp) {
                     HttpWebResponse resp = ((HttpWebResponse)(req.EndGetResponse(asyncResult)));
                     requestState.response = resp;
                     requestState.totalBytes = requestState.response.ContentLength;
