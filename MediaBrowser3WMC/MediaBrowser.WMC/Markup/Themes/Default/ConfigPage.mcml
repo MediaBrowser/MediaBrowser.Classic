@@ -96,6 +96,7 @@
       <BooleanChoice Name="ShowUnwatchedIndicator" Value="[Application.Config.ShowUnwatchedIndicator]" />
       <BooleanChoice Name="TreatWatchedAsInProgress" Value="[Application.Config.TreatWatchedAsInProgress]" />
       <BooleanChoice Name="ExcludeRemoteContentInSearch" Value="[Application.Config.ExcludeRemoteContentInSearch]" />
+      <BooleanChoice Name="AlwaysLoadFullSeriesInRecentList" Value="[Application.Config.AlwaysLoadFullSeriesInRecentList]" />
       <BooleanChoice Name="DefaultToFirstUnwatched" Value="[Application.Config.DefaultToFirstUnwatched]" />
       <BooleanChoice Name="AutoEnterSingleDirs" Value="[Application.Config.AutoEnterSingleDirs]" />
       <BooleanChoice Name="DefaultShowLabels" Value="[Application.Config.DefaultShowLabels]" />
@@ -396,6 +397,7 @@
       <Binding Source="[ShowNewItemNotification.Value]" Target="[Config.ShowNewItemNotification]" />
       <Binding Source="[ShowNewItemNotificationInPlayer.Value]" Target="[Config.ShowNewItemNotificationInPlayer]" />
       <Binding Source="[ExcludeRemoteContentInSearch.Value]" Target="[Config.ExcludeRemoteContentInSearch]" />
+      <Binding Source="[AlwaysLoadFullSeriesInRecentList.Value]" Target="[Config.AlwaysLoadFullSeriesInRecentList]" />
       <Binding Source="[DimUnselectedPosters.Value]" Target="[Config.DimUnselectedPosters]" />
       <Binding Source="[SavePassword.Value]" Target="[Config.SavePassword]" />
       <Binding Source="[AllowInternetMetadataProviders.Value]" Target="[Config.AllowInternetMetadataProviders]" />
@@ -640,6 +642,7 @@
                           <cb:CheckBox Label="[Application.LocalStrings.#RememberFolderIndexingConfig!cor:String]" Checked="[RememberIndexing]" FocusItem="[FocusItem]" Margins="[CMargin]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ExcludeRemoteContentInSearchesConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[ExcludeRemoteContentInSearch]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#AlwaysShowDetailsConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysShowDetailsPage]"  Font="font://f:CP_ConfigItemFont"/>
+                          <cb:CheckBox Label="[Application.LocalStrings.#AlwaysLoadFullSeriesInRecentListConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[AlwaysLoadFullSeriesInRecentList]"  Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ShowNewItemNotificationConfig!cor:String]" Checked="[ShowNewItemNotification]" FocusItem="[FocusItem]" Margins="[CMargin]"   Font="font://f:CP_ConfigItemFont"/>
                           <cb:CheckBox Label="[Application.LocalStrings.#ConfirmExitConfig!cor:String]" Margins="[CMargin]" FocusItem="[FocusItem]"   Checked="[UseExitMenu]"  Font="font://f:CP_ConfigItemFont"/>
                           <Panel Name="Weather" Layout="HorizontalFlow" Margins="[CMargin]">

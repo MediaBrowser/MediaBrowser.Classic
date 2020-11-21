@@ -69,6 +69,7 @@ namespace MediaBrowser.Library.Localization
         public string ShowHDOverlayonPostersConfigDesc = "Show 'HD' or resolution overlay on Hi-def items in Poster views";
         public string ShowIcononRemoteContentConfigDesc = "Show an indicator on items from the web in Poster views";
         public string ExcludeRemoteContentInSearchesConfigDesc = "Don't show content from the web when searching entire library";
+        public string AlwaysLoadFullSeriesInRecentListConfigDesc = "Navigates to a full series view when selecting a series from the recent list";
         public string HighlightUnwatchedItemsConfigDesc = "Show a highlight on unplayed content";
         public string RandomizeBackdropConfigDesc = "Select random fan art from the available ones";
         public string RotateBackdropConfigDesc = "Show all available fan art in a sequence (can be random)";
@@ -166,6 +167,7 @@ namespace MediaBrowser.Library.Localization
         public string HideFocusFrameConfig = "Hide Focus Frame";
         public string AlwaysShowDetailsConfig = "Always Show Details";
         public string ExcludeRemoteContentInSearchesConfig = "Exclude Remote Content In Searches";
+        public string AlwaysLoadFullSeriesInRecentListConfig = "Open full series from recent list";
         public string EnableMouseHookConfig = "Show Overlay on Mouse Movement";
         public string ShowFavoritesCollectionConfig = "Show Favorites Folder";
         public string ShowGenresCollectionConfig = "Show Movie Genres Folder";

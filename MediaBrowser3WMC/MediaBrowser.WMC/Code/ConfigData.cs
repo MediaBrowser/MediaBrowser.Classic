@@ -364,6 +364,8 @@ namespace MediaBrowser
         public bool UseLegacyFolders = false;
         public bool NewViewsIntroShown = false;
 
+        public bool AlwaysLoadFullSeriesInRecentList = false;
+
         [Comment("Cache all images in memory so navigation is faster, consumes a lot more memory")]
         public bool CacheAllImagesInMemory = false;
 
